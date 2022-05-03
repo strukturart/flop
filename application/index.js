@@ -1,5 +1,12 @@
 "use strict";
 
+import Handlebars from "handlebars";
+
+import { bottom_bar } from "./assets/js/helper.js";
+import top_bar from "./assets/js/helper.js";
+import toaster from "./assets/js/helper.js";
+import side_toaster from "./assets/js/helper.js";
+
 let once = false;
 
 let settings = {};
@@ -18,21 +25,6 @@ let getManifest = function (callback) {
   };
   self.onerror = function () {};
 };
-
-let self;
-//KaiOs store true||false
-function manifest(a) {
-  self = a.origin;
-  let t = document.getElementById("KaiOsAds-Wrapper");
-  if (a.installOrigin == "app://kaios-plus.kaiostech.com") {
-    document.querySelector("#KaiOsAds-Wrapper iframe").src = "ads.html";
-  } else {
-    console.log("Ads free");
-    t.style.display = "none";
-  }
-}
-
-getManifest(manifest);
 
 let set_tabindex = function () {
   document.querySelectorAll(".item").forEach(function (i, p) {
@@ -71,11 +63,11 @@ const page_chats = document.getElementById("page-chats");
 const page_chat = document.getElementById("page-chat");
 const options = document.getElementById("options");
 
-let status = { view: "page-login" };
+export let status = { view: "page-login" };
 
 const pages = document.querySelectorAll(".page");
 
-let router = function (path) {
+export let router = function (path) {
   //status.view = path;
   pages.forEach(function (index) {
     index.style.display = "none";
@@ -85,7 +77,7 @@ let router = function (path) {
   if (status.view == "page-login") {
     page_login.style.display = "block";
     document.querySelectorAll(".item")[0].focus();
-    helper.bottom_bar("", "", "");
+    //bottom_bar("", "", "");
   }
 
   // chats
@@ -94,7 +86,7 @@ let router = function (path) {
 
     page_chats.style.display = "block";
     page_chats.firstElementChild.focus();
-    helper.bottom_bar("", "select", "");
+    bottom_bar("", "select", "");
   }
 
   // chat
@@ -107,7 +99,7 @@ let router = function (path) {
     );
     page_chat.style.display = "block";
     page_chat.firstElementChild.focus();
-    helper.bottom_bar("write", "select", "option");
+    bottom_bar("write", "select", "option");
   }
 };
 

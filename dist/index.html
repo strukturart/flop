@@ -1,0 +1,18 @@
+<!DOCTYPE html><html><head><title>greg</title><meta charset="utf-8"><meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1"><link rel="stylesheet" href="/index.a2590add.css"><link rel="stylesheet" href="/index.8300b786.css"><link rel="stylesheet" href="/index.f6988572.css"></head><body> <div id="wrapper"> <div id="toast" class="width-100"></div> <div id="side-toast">hey</div> <div id="intro" class="height-100 width-100"> <img src="/intro.2f75700d.svg"> <div class="width-100" id="version"></div> <div class="width-100" id="intro-message"></div> <div class="flex justify-content-spacearound width-100" id="loading-progress"> <div> <div></div> </div> </div> </div> <div id="qr-screen"> <video id="video"></video> <div id="corner-nw"></div> <div id="corner-no"></div> <div id="corner-so"></div> <div id="corner-sw"></div> <div id="startDecoding" hidden>Start Scanning</div> </div>    <div class="height-100 width-100"> <div id="page-login" class="page"> <div class="input-parent item" tabindex="0"> <label>..</label> <input type="text" placeholder="username"> </div> <div class="input-parent item" tabindex="1"> <label>..</label> <input type="password" placeholder="password"> </div> <button tabindex="2" data-function="login-check" class="item"> Login</button> </div> <div id="page-chats" class="page width-100"> </div> <div id="page-chat" class="page width-100"> </div> <div id="settings" class="page"></div> </div> <script id="template-chats" type="x-handlebars-template">
+           
+        {{#each data}}
+        <article data-function="open-chat" tabindex="{{@index}}" data-id="{{chat_group}}">
+           
+                <h2>{{chat_group}}</h2>
+         
+        </article>
+        {{/each}}
+        </script> <script id="template-chat" type="x-handlebars-template">
+            {{#each data}}
+                {{#DocumentList}}
+                <article tabindex="{{@index}}">
+                    {{user}}{{message}}
+                </article>
+                {{/DocumentList}}
+            {{/each}}
+        </script> <div id="bottom-bar"> <div class="flex inner justify-content-spacebetween width-100"> <div id="button-left"></div> <div id="button-center"></div> <div id="button-right"></div> </div> </div> <div id="options" class="width-100"> <ul id="keys" class="item" tabindex="0"> <li><span>Keys</span></li> <li><span>1 & 3</span>Months</li> <li><span>2</span>Event Slider</li> <li><span>Enter</span>Toggle Events / Month</li> <li><span>#</span>Moon</li> <li><span>*</span>Jump to today</li> </ul> <div class="input-parent item" tabindex="0"> <label for="default-notification"><strong>default Notification</strong></label> <select id="default-notification-time"> <option value="none">none</option> <option value="5">5 Minutes</option> <option value="10">10 Minutes</option> <option value="30">30 Minutes</option> <option value="1440">1 Day</option> </select> </div> <button class="item" data-function="export" tabindex="1">export all events</button> <button class="item" data-function="add-subscription" tabindex="2">add subscription</button> <div id="subscription-text">Subscriptions</div> <div id="import-text">The following events can be imported</div> </div> </div> <div id="qr-screen"> <video id="video"></video> <div id="corner-nw"></div> <div id="corner-no"></div> <div id="corner-so"></div> <div id="corner-sw"></div> <div id="startDecoding" hidden>Start Scanning</div> </div> </body><script src="/index.8be6d635.js"></script><script type="module" src="/index.1dcec701.js"></script><script src="/index.2a366981.js" nomodule="" defer></script></html>

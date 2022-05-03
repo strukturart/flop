@@ -67,7 +67,7 @@
         </div>
 
 
-        <script id="template-chats" type="text/x-handlebars-template">
+        <script id="template-chats" type="x-handlebars-template">
            
         {{#each data}}
         <article data-function="open-chat" tabindex="{{@index}}" data-id="{{chat_group}}">
@@ -80,7 +80,7 @@
 
 
 
-        <script id="template-chat" type="text/x-handlebars-template">
+        <script id="template-chat" type="x-handlebars-template">
             {{#each data}}
                 {{#DocumentList}}
                 <article tabindex="{{@index}}">
@@ -131,7 +131,6 @@
                 <button class="item" data-function="add-subscription" tabindex="2">add subscription</button>
                 <div id="subscription-text">Subscriptions</div>
                 <div id="import-text">The following events can be imported</div>
-                <div id="KaiOsAds-Wrapper" class="item"><iframe  src=""></iframe>
                 </div>
             </div>
 
@@ -161,18 +160,8 @@
 </body>
 
 
-<script src="assets/js/handlebars.js"></script>
-
-
 <script src="dummy-data.js"></script>
-
-<script src="assets/js/localforage.js"></script>
-<script src="assets/js/jsQR.js"></script>
-<script src="assets/js/helper.js"></script>
-<script src="assets/js/scan.js"></script>
-<script src="assets/js/applait.finder.min.js"></script>
-<script src="assets/js/modules.js"></script>
-<script src="index.js"></script>
+<script type="module" src="index.js"></script>
 
 
 
