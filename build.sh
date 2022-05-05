@@ -1,5 +1,5 @@
 #!/bin/sh 
-parcel build application/index.html --no-source-maps  --no-cache
+parcel build --public-url ./ application/index.html --no-source-maps  --no-cache
 
 #!/bin/bash
 #create default app zip
@@ -20,6 +20,18 @@ cp application.zip watermelon-omnisd/
 cd watermelon-omnisd/
 zip -r ../watermelon-omnisd.zip ./*
 rm -fr ../watermelon-omnisd
-rm ./application.zip
+rm ../application.zip
+
+
+#github page
+cd ../..
+rm -fr ./docs
+mkdir docs
+cp -r ./dist/* ./docs/
+exit
+
+
+
+
 
 

@@ -425,6 +425,15 @@ article {
   padding: 3px;
 }
 
+article div.user-date {
+  font-size: 0.8rem;
+  margin: 0 0 5px 0;
+}
+
+article div.user-date span {
+  font-weight: bold;
+}
+
 [id*="page-"] {
   padding: 5px;
 }
@@ -461,6 +470,21 @@ div#settings label {
   min-width: 80%;
   height: 30px;
   margin: 5px 5px 0 0;
+}
+
+div#message-input {
+  position: fixed;
+  z-index: 5;
+  background: gray;
+  height: 40px;
+  padding: 5px;
+  bottom: 28px;
+  display: none;
+  justify-content: center;
+}
+
+div#message-input input {
+  margin: 0 auto;
 }
 
 @keyframes jump {

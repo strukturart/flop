@@ -7,13 +7,13 @@ export const dummy_data = [
       {
         user: "ivan",
         message: "hello",
-        time: 1651756417,
+        time: 1607110465663,
         read: false,
       },
       {
         user: "per",
         message: "hello world",
-        time: 1651756417,
+        time: 1607110465663,
         read: true,
       },
     ],
@@ -24,7 +24,7 @@ export const dummy_data = [
       {
         user: "perry",
         message: "hey",
-        time: 1651756417,
+        time: 1607110465663,
         read: false,
       },
       {
@@ -42,13 +42,13 @@ export const dummy_data = [
       {
         user: "perry",
         message: "hey",
-        time: 1651756417,
+        time: 1607110465663,
         read: false,
       },
       {
         user: "northman",
         message: "hey you",
-        time: 1651756417,
+        time: 1607110465663,
         read: false,
       },
     ],
