@@ -3,13 +3,10 @@
 import Handlebars from "handlebars";
 
 import { bottom_bar } from "./assets/js/helper.js";
-import top_bar from "./assets/js/helper.js";
-import toaster from "./assets/js/helper.js";
-import side_toaster from "./assets/js/helper.js";
+import { chats } from "./chats.js";
+import { chat } from "./chat.js";
 
 import { dummy_data } from "./assets/js/dummy-data.js";
-
-let once = false;
 
 let settings = {};
 
@@ -38,7 +35,7 @@ const month = [
   "November",
   "December",
 ];
-
+/*
 Handlebars.registerHelper("transform_date", function (value) {
   let t = new Date(value);
 
@@ -54,7 +51,7 @@ Handlebars.registerHelper("transform_date", function (value) {
     t.getMinutes()
   );
 });
-
+*/
 function renderHello(arr, src, target, filter) {
   if (filter) {
     let myFunction = function (num) {
@@ -65,10 +62,8 @@ function renderHello(arr, src, target, filter) {
     arr = op;
   }
 
-  var source = document.getElementById(src).innerHTML;
-
   try {
-    var template = Handlebars.compile(source);
+    var template = Handlebars.compile(src);
     document.getElementById(target).innerHTML = template({ data: arr });
   } catch (e) {
     alert(e.message);
@@ -112,7 +107,7 @@ export let router = function () {
 
     page_chats.style.display = "block";
 
-    renderHello(dummy_data, "template-chats", "page-chats");
+    renderHello(dummy_data, chat, "page-chats");
 
     page_chats.firstElementChild.focus();
     bottom_bar("", "select", "");
@@ -122,7 +117,7 @@ export let router = function () {
   if (status.view == "page-chat") {
     renderHello(
       dummy_data,
-      "template-chat",
+      chats,
       "page-chat",
       document.activeElement.getAttribute("data-id")
     );

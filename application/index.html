@@ -48,10 +48,9 @@
 
                 <div class="item input-parent" tabindex="1">
                     <label>..</label>
-                    <input type="password" placeholder="password">
+                    <input type="password" autocomplete placeholder="password">
                 </div>
                 <button tabindex="2" data-function="login-check" class="item"> Login</button>
-
                 
             </div>
             <div id="page-chats" class="page width-100">
@@ -70,30 +69,7 @@
         </div>
 
 
-        <script id="template-chats" type="x-handlebars-template">
-           
-        {{#each data}}
-        <article data-function="open-chat" tabindex="{{@index}}" data-id="{{chat_group}}">
-           
-                <h2>{{chat_group}}</h2>
-         
-        </article>
-        {{/each}}
-        </script>
-
-
-
-        <script id="template-chat" type="x-handlebars-template">
-            {{#each data}}
-                {{#DocumentList}}
-                <article tabindex="{{@index}}">
-                    <div class="user-date"><span>{{user}}</span> {{transform_date time}}</div>
-                        <div>{{message}}</div>
-                </article>
-                {{/DocumentList}}
-            {{/each}}
-        </script>
-
+   
          
         
 

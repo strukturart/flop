@@ -535,10 +535,10 @@ parcelHelpers.export(exports, "router", ()=>router
 var _handlebars = require("handlebars");
 var _handlebarsDefault = parcelHelpers.interopDefault(_handlebars);
 var _helperJs = require("./assets/js/helper.js");
-var _helperJsDefault = parcelHelpers.interopDefault(_helperJs);
+var _chatsJs = require("./chats.js");
+var _chatJs = require("./chat.js");
 var _dummyDataJs = require("./assets/js/dummy-data.js");
 "use strict";
-let once = false;
 let settings = {};
 let blob = "";
 let events = [];
@@ -562,11 +562,23 @@ const month = [
     "November",
     "December", 
 ];
-_handlebarsDefault.default.registerHelper("transform_date", function(value) {
-    let t = new Date(value);
-    return t.getDate() + " " + month[t.getMonth()] + " " + t.getFullYear() + ", " + t.getHours() + ":" + t.getMinutes();
+/*
+Handlebars.registerHelper("transform_date", function (value) {
+  let t = new Date(value);
+
+  return (
+    t.getDate() +
+    " " +
+    month[t.getMonth()] +
+    " " +
+    t.getFullYear() +
+    ", " +
+    t.getHours() +
+    ":" +
+    t.getMinutes()
+  );
 });
-function renderHello(arr, src, target, filter) {
+*/ function renderHello(arr, src, target, filter) {
     if (filter) {
         let myFunction = function(num) {
             return num.chat_group == filter;
@@ -574,14 +586,13 @@ function renderHello(arr, src, target, filter) {
         const op = arr.filter(myFunction);
         arr = op;
     }
-    var source = document.getElementById(src).innerHTML;
     try {
-        var template = _handlebarsDefault.default.compile(source);
+        var template = _handlebarsDefault.default.compile(src);
         document.getElementById(target).innerHTML = template({
             data: arr
         });
     } catch (e) {
-        alert(e);
+        alert(e.message);
     }
 }
 /*
@@ -615,13 +626,13 @@ let router = function() {
     if (status.view == "page-chats") {
         document.getElementById("message-input").style.display = "none";
         page_chats.style.display = "block";
-        renderHello(_dummyDataJs.dummy_data, "template-chats", "page-chats");
+        renderHello(_dummyDataJs.dummy_data, _chatJs.chat, "page-chats");
         page_chats.firstElementChild.focus();
         _helperJs.bottom_bar("", "select", "");
     }
     // chat
     if (status.view == "page-chat") {
-        renderHello(_dummyDataJs.dummy_data, "template-chat", "page-chat", document.activeElement.getAttribute("data-id"));
+        renderHello(_dummyDataJs.dummy_data, _chatsJs.chats, "page-chat", document.activeElement.getAttribute("data-id"));
         page_chat.style.display = "block";
         page_chat.firstElementChild.focus();
         _helperJs.bottom_bar("write", "select", "option");
@@ -798,7 +809,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
     document.addEventListener("visibilitychange", handleVisibilityChange, false);
 });
 
-},{"handlebars":"dH8Fg","./assets/js/helper.js":"db1Xp","./assets/js/dummy-data.js":"gmFgS","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"dH8Fg":[function(require,module,exports) {
+},{"handlebars":"dH8Fg","./assets/js/helper.js":"db1Xp","./chats.js":"gTvEw","./chat.js":"fNKlf","./assets/js/dummy-data.js":"gmFgS","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"dH8Fg":[function(require,module,exports) {
 // USAGE:
 // var handlebars = require('handlebars');
 /* eslint-disable no-var */ // var local = handlebars.create();
@@ -12449,7 +12460,23 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"gmFgS":[function(require,module,exports) {
+},{}],"gTvEw":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "chats", ()=>chats
+);
+"use strict";
+const chats = '{{#each data}}{{#DocumentList}}<article tabindex="{{@index}}"><div class="user-date"><span>{{user}}</span> {{time}}</div><div>{{message}}</div></article>{{/DocumentList}}{{/each}}';
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"fNKlf":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "chat", ()=>chat
+);
+"use strict";
+const chat = '{{#each data}}<article data-function="open-chat" tabindex="{{@index}}" data-id="{{chat_group}}"> <h2>{{chat_group}}</h2></article> {{/each}}';
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"gmFgS":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "dummy_data", ()=>dummy_data
