@@ -35,7 +35,7 @@ const month = [
   "November",
   "December",
 ];
-/*
+
 Handlebars.registerHelper("transform_date", function (value) {
   let t = new Date(value);
 
@@ -51,7 +51,7 @@ Handlebars.registerHelper("transform_date", function (value) {
     t.getMinutes()
   );
 });
-*/
+
 function renderHello(arr, src, target, filter) {
   if (filter) {
     let myFunction = function (num) {

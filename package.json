@@ -1,29 +1,25 @@
 {
    "source": "application/index.html",
    "browserslist": "Firefox <= 48",
-     "targets": {
-    "default": {
-      "distDir": "./dist",
-      "publicUrl":"./"
-    }
-  },
- 
+   "targets": {
+      "default": {
+         "distDir": "./dist",
+         "publicUrl": "./"
+      }
+   },
    "scripts": {
       "start": "parcel --no-source-maps ./application/index.html",
       "build": "parcel build ./application/index.html --no-source-maps --log-level error"
    },
    "devDependencies": {
-      "parcel": "^2.3.2",
+      "parcel": "^2.5.0",
       "parcel-plugin-static-files-copy": "^2.6.0"
    },
-
    "dependencies": {
- 
+      "handlebars": "^4.7.7",
       "jsqr": "^1.4.0",
-      "handlebars": "^4.7.7"
+      "parcel-bundler": "^1.3.1"
    },
-
-
    "staticFiles": {
       "staticPath": [
          {
