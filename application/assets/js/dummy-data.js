@@ -37,7 +37,7 @@ export const dummy_data = [
   },
 
   {
-    chat_group: "chaos",
+    chat_group: "peerJS",
     DocumentList: [
       {
         user: "perry",

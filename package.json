@@ -16,9 +16,11 @@
       "parcel-plugin-static-files-copy": "^2.6.0"
    },
    "dependencies": {
+      "jsqr": "^1.4.0",
       "mithril": "^2.0.4",
-      "jsqr": "^1.4.0"
-      
+      "peer": "0.6.1",
+      "peerjs": "^1.4.5-rc.1",
+      "minidenticons":"^1.0.3"
    },
    "staticFiles": {
       "staticPath": [

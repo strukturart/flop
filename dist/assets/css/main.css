@@ -183,6 +183,10 @@ div#intro img {
   animation-fill-mode: forwards;
 }
 
+div#app {
+  padding: 5px;
+}
+
 @keyframes intro_img {
   from {
     transform: translateX(0px);
@@ -263,6 +267,8 @@ div#side-toast {
   z-index: 10;
   padding: 5px;
   top: 70vh;
+  background: rgb(219, 82, 18);
+  max-width: 20px;
 
   transition: all 0.5s ease-in-out;
   transform-origin: left top;
@@ -271,6 +277,21 @@ div#side-toast {
 
 div#side-toast img {
   width: 60px;
+}
+
+#login-icon-box {
+  width: 100px;
+  height: 100px;
+  outline: 0px solid red;
+  margin: 0 0 10px 0;
+}
+
+identicon-svg {
+  width: 100px;
+  height: 100px;
+  border-radius: 5%;
+  background-color: #eef;
+  display: block;
 }
 /*///////////////////////////
 ///VIEWS////////////////*/
@@ -293,23 +314,6 @@ div#options div#import-text {
   margin: 0 0 20px 0;
   text-align: center;
   display: none;
-}
-
-div#options div#subscription-text {
-  padding: 10px;
-  font-weight: bold;
-  margin: 0 0 10px 0;
-  text-align: center;
-}
-
-div#subscription-form {
-  position: fixed;
-  z-index: 5;
-  bottom: 15px;
-  display: none;
-  height: 190px;
-  background: white;
-  border-top: 2px solid black;
 }
 
 /*/////////////////
@@ -421,7 +425,6 @@ div#top-bar div#button-right {
 
 article {
   margin: 0 0 10px 0;
-  outline: 2px solid gray;
   padding: 3px;
 }
 
@@ -472,6 +475,19 @@ div#settings label {
   margin: 5px 5px 0 0;
 }
 
+article {
+  padding: 10px;
+}
+
+article div.message-head {
+  font-size: 0.7rem;
+  color: gray;
+}
+
+article div.message-head div:nth-child(2) {
+  margin: 0 0 0 20px;
+}
+
 div#message-input {
   position: fixed;
   z-index: 5;
@@ -480,7 +496,6 @@ div#message-input {
   padding: 5px;
   bottom: 28px;
   display: none;
-  justify-content: center;
 }
 
 div#message-input input {

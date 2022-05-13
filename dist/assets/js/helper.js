@@ -334,7 +334,6 @@ function formatFileSize(bytes, decimalPoint) {
   }
 }
 
-
 //pick image
 export let pick_image = function (cb) {
   var activity = new MozActivity({

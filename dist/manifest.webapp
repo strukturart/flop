@@ -71,7 +71,10 @@
 		},
 		"systemXHR": {
 			"description": "Required to load remote content"
-		}
+		},
+		"tcp-socket":{}
+
+
 	}
 
 
