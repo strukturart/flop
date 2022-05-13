@@ -1,23 +1,7 @@
 "use strict";
 
-import Handlebars from "handlebars";
-
 import { bottom_bar } from "./assets/js/helper.js";
-import { chats } from "./chats.js";
-import { chat } from "./chat.js";
-
 import { dummy_data } from "./assets/js/dummy-data.js";
-
-let settings = {};
-
-let blob = "";
-let events = [];
-
-let set_tabindex = function () {
-  document.querySelectorAll(".item").forEach(function (i, p) {
-    i.setAttribute("tabindex", p);
-  });
-};
 
 //RENDER
 
@@ -36,113 +20,76 @@ const month = [
   "December",
 ];
 
-Handlebars.registerHelper("transform_date", function (value) {
-  let t = new Date(value);
+var root = document.getElementById("app");
 
-  return (
-    t.getDate() +
-    " " +
-    month[t.getMonth()] +
-    " " +
-    t.getFullYear() +
-    ", " +
-    t.getHours() +
-    ":" +
-    t.getMinutes()
-  );
+var login = {
+  view: function () {
+    return m("div", { class: "flex", id: "login" }, [
+      m("div", { class: "item input-parent  width-100", tabindex: 0 }, [
+        m("input", { class: "title", placeholder: "name" }),
+      ]),
+      m("div", { class: "item input-parent  width-100", tabindex: 1 }, [
+        m("input", { class: "width-70", placeholder: "password" }),
+      ]),
+      m(
+        "button",
+        {
+          class: "item",
+          "data-function": "login-check",
+          tabindex: 2,
+          onclick: function () {
+            window.location.replace("!#/chats");
+          },
+        },
+        "login"
+      ),
+    ]);
+  },
+};
+let t;
+var chats = {
+  view: function (vnode) {
+    return dummy_data.map(function (item, index) {
+      return m(
+        "div",
+        {
+          tabindex: index,
+          class: "item",
+          onclick: function () {
+            alert("h");
+          },
+        },
+        item.chat_group
+      );
+    });
+  },
+};
+
+var chat = {
+  view: function (vnode) {
+    return dummy_data.map(function (item, index) {
+      if (item.chat_group == "t") {
+        return m(
+          "div",
+          {
+            tabindex: index,
+            class: "item",
+          },
+          "hey"
+        );
+      }
+    });
+  },
+};
+
+m.route(root, "/login", {
+  "/login": login,
+  "/chats": chats,
+  "/chat": chat,
 });
 
-function renderHello(arr, src, target, filter) {
-  if (filter) {
-    let myFunction = function (num) {
-      return num.chat_group == filter;
-    };
-    const op = arr.filter(myFunction);
-
-    arr = op;
-  }
-
-  try {
-    var template = Handlebars.compile(src);
-    document.getElementById(target).innerHTML = template({ data: arr });
-  } catch (e) {
-    alert(e.message);
-  }
-}
-/*
- ///////////////
-// ///////////////
-// /////////////////
-// /ROUTER
-// ///////////////
-// ///////////////
-// //////////////
-*/
-
-const page_login = document.getElementById("page-login");
-const page_chats = document.getElementById("page-chats");
-const page_chat = document.getElementById("page-chat");
-const options = document.getElementById("options");
-
-export let status = { view: "page-login" };
-
-const pages = document.querySelectorAll(".page");
-
-export let router = function () {
-  //status.view = path;
-  pages.forEach(function (index) {
-    index.style.display = "none";
-  });
-
-  // login
-  if (status.view == "page-login") {
-    page_login.style.display = "block";
-    document.querySelector("div#page-login div").focus();
-    bottom_bar("", "", "");
-  }
-
-  // chats
-  if (status.view == "page-chats") {
-    document.getElementById("message-input").style.display = "none";
-
-    page_chats.style.display = "block";
-
-    renderHello(dummy_data, chat, "page-chats");
-
-    page_chats.firstElementChild.focus();
-    bottom_bar("", "select", "");
-  }
-
-  // chat
-  if (status.view == "page-chat") {
-    renderHello(
-      dummy_data,
-      chats,
-      "page-chat",
-      document.activeElement.getAttribute("data-id")
-    );
-    page_chat.style.display = "block";
-    page_chat.firstElementChild.focus();
-    bottom_bar("write", "select", "option");
-  }
-
-  // optiions
-  if (status.view == "page-options") {
-    options.style.display = "block";
-    document.querySelector("div#page-login div").focus();
-    bottom_bar("", "select", "");
-  }
-};
-
-router();
-
-let write_message = function () {
-  document.getElementById("message-input").style.display = "flex";
-  document.querySelector("div#message-input input").focus();
-  bottom_bar("cancel", "send", "attachment");
-};
-
 document.addEventListener("DOMContentLoaded", function (e) {
+  bottom_bar("", "", "");
   /////////////////
   ///NAVIGATION
   /////////////////
@@ -164,16 +111,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
     if (document.activeElement.parentNode.classList.contains("input-parent")) {
       document.activeElement.parentNode.focus();
       return true;
-    }
-
-    if (status.view == "page-chats") {
-      let b = document.activeElement.parentNode;
-      items = b.querySelectorAll("div#page-chats article");
-    }
-
-    if (status.view == "page-chat") {
-      let b = document.activeElement.parentNode;
-      items = b.querySelectorAll("div#page-chat article");
     }
 
     let targetElement = 0;
@@ -245,13 +182,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
       case "ArrowUp":
         nav(-1);
-        if (status.view == "page-login") {
-        }
+
         break;
       case "ArrowDown":
         nav(+1);
-        if (status.view == "page-login") {
-        }
 
         break;
       case "ArrowRight":
@@ -260,6 +194,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         break;
 
       case "1":
+        window.location.replace("!#/chats");
         break;
       case "3":
         break;
@@ -279,8 +214,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
       case "SoftLeft":
       case "Control":
-        if (status.view == "page-chat") write_message();
-
         break;
 
       case "Enter":
@@ -288,32 +221,16 @@ document.addEventListener("DOMContentLoaded", function (e) {
           document.activeElement.children[1].focus();
         }
         if (document.activeElement.tagName == "BUTTON") {
-          if (
-            document.activeElement.getAttribute("data-function") ==
-            "login-check"
-          ) {
-            status.view = "page-chats";
-            router();
-            return;
-          }
         }
 
         if (
           document.activeElement.getAttribute("data-function") == "open-chat"
         ) {
-          console.log("chea");
-          status.view = "page-chat";
-          router();
-          return;
         }
 
         break;
 
       case "Backspace":
-        if (status.view == "page-chat") {
-          status.view = "page-chats";
-          router();
-        }
         break;
     }
   }
@@ -324,13 +241,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
   function handleKeyDown(evt) {
     if (evt.key === "Backspace") {
-      if (
-        status.view == "options" ||
-        status.view == "add-edit-event" ||
-        status.view == "scan"
-      ) {
-        evt.preventDefault();
-      }
     }
 
     if (evt.key === "EndCall") {

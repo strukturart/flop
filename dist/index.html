@@ -5,9 +5,13 @@
     <title>watermelon</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1">
-    <link rel="stylesheet" href="/index.f92417b9.css">
-    <link rel="stylesheet" href="/index.5a40ec6c.css">
-    <link rel="stylesheet" href="/index.49f126d6.css">
+    <link rel="stylesheet" href="/index.00930d66.css">
+    <link rel="stylesheet" href="/index.be0cb71d.css">
+    <link rel="stylesheet" href="/index.c2427f29.css">
+        <script src="https://unpkg.com/mithril/mithril.js"></script>
+
+    <script src="/index.f66516e0.js" defer=""></script>
+
 </head>
 
 <body>
@@ -15,18 +19,19 @@
 
     <div id="wrapper">
 
+     
+
         <div id="toast" class="width-100"></div>
         <div id="side-toast" class=""></div>
-        <div id="intro" class="width-100 height-100">
-            <img src="/intro.e0e620ba.svg">
-            <div class="width-100" id="version"></div>
-            <div class="width-100" id="intro-message"></div>
-            <div class="width-100 flex justify-content-spacearound" id="loading-progress">
-                <div>
-                    <div></div>
+
+            <div id="bottom-bar">
+                <div class="inner flex justify-content-spacebetween width-100">
+                    <div id="button-left"></div>
+                    <div id="button-center"></div>
+                    <div id="button-right"></div>
                 </div>
             </div>
-        </div>
+        
 
 
         <div id="qr-screen">
@@ -39,57 +44,17 @@
         </div>
 
 
-        <div class="width-100 height-100">
-            <div id="page-login" class="page flex justify-content-center">
-                <div class="item input-parent" tabindex="0">  
-                    <label>..</label>
-                    <input type="text" placeholder="username">
-                </div>
-
-                <div class="item input-parent" tabindex="1">
-                    <label>..</label>
-                    <input type="password" autocomplete="" placeholder="password">
-                </div>
-                <button tabindex="2" data-function="login-check" class="item"> Login</button>
-                
-            </div>
-            <div id="page-chats" class="page width-100">
-                
-            </div>
-            <div id="page-chat" class="page width-100">
-
-             
-            </div>
-            <div class="width-100 flex justify-content-center" id="message-input"><input class="width-90" type="text"></div>
-
-            <div id="settings" class="page"></div>
-            <div id="options" class="width-100 page">
-                <button>hey</button>
-            </div>
+        <div id="app" class="width-100 height-100">
+     
         </div>
 
 
-            <div id="bottom-bar">
-                <div class="inner flex justify-content-spacebetween width-100">
-                    <div id="button-left"></div>
-                    <div id="button-center"></div>
-                    <div id="button-right"></div>
-                </div>
-            </div>
+        
 
         </div>
 
     
 
-
-    <div id="qr-screen">
-        <video id="video"></video>
-        <div id="corner-nw"></div>
-        <div id="corner-no"></div>
-        <div id="corner-so"></div>
-        <div id="corner-sw"></div>
-        <div id="startDecoding" hidden="">Start Scanning</div>
-    </div>
 
 
 
@@ -100,7 +65,6 @@
 </body>
 
 
-<script src="/index.804403f5.js" defer=""></script>
 
 
 

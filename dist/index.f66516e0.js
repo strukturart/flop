@@ -580,6 +580,7 @@ var login = {
         ]);
     }
 };
+let t;
 var chats = {
     view: function(vnode) {
         return _dummyDataJs.dummy_data.map(function(item, index) {
@@ -587,7 +588,7 @@ var chats = {
                 tabindex: index,
                 class: "item",
                 onclick: function() {
-                    window.location.replace("!#/chat");
+                    alert("h");
                 }
             }, item.chat_group);
         });
@@ -596,13 +597,10 @@ var chats = {
 var chat = {
     view: function(vnode) {
         return _dummyDataJs.dummy_data.map(function(item, index) {
-            return m("div", {
+            if (item.chat_group == "t") return m("div", {
                 tabindex: index,
-                class: "item",
-                onclick: function() {
-                    window.location.replace("!#/chat");
-                }
-            }, item.chat_group);
+                class: "item"
+            }, "hey");
         });
     }
 };
