@@ -1,5 +1,20 @@
 "use strict";
 
+export const month = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 //polyfill
 if (window.NodeList && !NodeList.prototype.forEach) {
   NodeList.prototype.forEach = Array.prototype.forEach;
@@ -344,9 +359,7 @@ export let pick_image = function (cb) {
   });
 
   activity.onsuccess = function () {
-    console.log("Activity successfuly handled");
-
-    let p = this.result.blob;
+    let p = this.result;
     cb(p);
   };
 

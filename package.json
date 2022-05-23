@@ -17,10 +17,11 @@
    },
    "dependencies": {
       "jsqr": "^1.4.0",
+      "minidenticons": "^1.0.3",
       "mithril": "^2.0.4",
       "peer": "0.6.1",
       "peerjs": "^1.4.5-rc.1",
-      "minidenticons":"^1.0.3"
+      "qrious": "^4.0.2"
    },
    "staticFiles": {
       "staticPath": [
