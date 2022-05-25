@@ -69,11 +69,15 @@ h1 {
 }
 
 h2 {
-  font-size: 1rem;
+  font-size: 1.4rem;
 }
 
 h3 {
   font-size: 1rem;
+}
+
+label {
+  font-weight: bold;
 }
 
 img {
@@ -130,13 +134,13 @@ select {
 
 textarea {
   height: 30px;
-  width: 90%;
+  width: 95%;
   padding: 3px;
   border: 1px solid silver;
 }
 
 input {
-  width: 90%;
+  width: 95%;
   height: 30px;
   padding: 3px;
   border: 1px solid silver;
@@ -172,10 +176,10 @@ div#intro {
 }
 
 div#intro img {
-  width: 180px;
+  width: 100px;
   height: auto;
   position: absolute;
-  top: 50px;
+  top: 100px;
   left: 50%;
   margin-left: -90px;
   animation-name: intro_img;
@@ -199,11 +203,15 @@ div#login {
 }
 
 @keyframes intro_img {
-  from {
-    transform: translateX(0px);
+  0% {
+    transform: rotate(0);
   }
-  to {
-    transform: translateX(-450px);
+  50% {
+    transform: rotate(60deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
   }
 }
 
@@ -303,6 +311,10 @@ identicon-svg {
   border-radius: 5%;
   background-color: #eef;
   display: block;
+}
+
+div.nickname {
+  font-weight: bold;
 }
 /*///////////////////////////
 ///VIEWS////////////////*/
@@ -511,14 +523,4 @@ div#message-input {
 
 div#message-input input {
   margin: 0 auto;
-}
-
-@keyframes jump {
-  0% {
-    transform: translateY(0);
-  }
-
-  100% {
-    transform: translateY(-30px);
-  }
 }

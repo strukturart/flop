@@ -12,21 +12,40 @@ import { start_scan } from "./assets/js/scan.js";
 import { stop_scan } from "./assets/js/scan.js";
 import { identiconSvg } from "minidenticons";
 import { qrious } from "qrious";
+import localforage from "localforage";
+import { set } from "mithril/route";
 
 //github.com/laurentpayot/minidenticons#usage
 
 export let status = "";
+export let settings = {};
 
 let chat_data = [];
 
-let settings = {
-  peerid: "",
-  username: "",
-};
+localforage
+  .getItem("settings")
+  .then(function (value) {
+    settings = value;
+    if (settings == null) {
+      settings = {
+        nickname: "DEFAULT",
+        server_url: "-",
+        server_path: "-",
+        server_port: "-",
+      };
+    }
+  })
+  .catch(function (err) {
+    console.log(err);
+  });
 
 let lastPeerId = null;
 let peer = null;
 let conn = null;
+
+let server_config = {
+  "iceServers": [{ url: "stun:stun.l.google.com:19302" }],
+};
 
 const focus_last_article = function () {
   setTimeout(function () {
@@ -37,11 +56,6 @@ const focus_last_article = function () {
 
 function sendMessage(msg, type) {
   if (conn && conn.open) {
-    if (settings.username != "") {
-      //msg = "#" + settings.username + " " + msg;
-      //chat_data.push({ "content": msg, "datetime": new Date() });
-    }
-
     if (type == "image") {
       // Encode the file using the FileReader API
       const reader = new FileReader();
@@ -50,6 +64,7 @@ function sendMessage(msg, type) {
         let src = URL.createObjectURL(msg.blob);
 
         chat_data.push({
+          "username": settings.nickname,
           "content": "",
           "datetime": new Date(),
           "image": src,
@@ -73,6 +88,7 @@ function sendMessage(msg, type) {
         text: msg,
       };
       chat_data.push({
+        "nickname": settings.nickname,
         "content": msg.text,
         "datetime": new Date(),
       });
@@ -104,6 +120,7 @@ function ready() {
   conn.on("data", function (data) {
     if (data.file) {
       chat_data.push({
+        "nickname": settings.nickname,
         "content": "",
         "datetime": new Date(),
         "image": data.file,
@@ -112,6 +129,8 @@ function ready() {
 
     if (data.text) {
       chat_data.push({
+        "nickname": settings.nickname,
+
         "content": data.text,
         "datetime": new Date(),
       });
@@ -128,21 +147,23 @@ function ready() {
 function initialize() {
   // Create own peer object with connection to shared PeerJS server
   peer = new Peer(null, {
+    host: "0.peerjs.com",
+    port: 443,
+    path: "/",
+    pingInterval: 5000,
     debug: 3,
     referrerPolicy: "origin-when-cross-origin",
     initiator: true,
     trickle: false,
+    config: server_config,
   });
 
   peer.on("open", function (id) {
-    // Workaround for peer.reconnect deleting previous id
     if (peer.id === null) {
       peer.id = lastPeerId;
     } else {
       lastPeerId = peer.id;
     }
-
-    console.log("ID: " + peer.id);
   });
   peer.on("connection", function (c) {
     ready();
@@ -183,6 +204,7 @@ function join(id) {
   conn.on("data", function (data) {
     if (data.file) {
       chat_data.push({
+        "nickname": settings.nickname,
         "content": "",
         "datetime": new Date(),
         "image": data.file,
@@ -191,6 +213,7 @@ function join(id) {
 
     if (data.text) {
       chat_data.push({
+        "nickname": settings.nickname,
         "content": data.text,
         "datetime": new Date(),
       });
@@ -211,6 +234,11 @@ let create_peer = function () {
   peer = new Peer(null, {
     debug: 3,
     referrerPolicy: "origin-when-cross-origin",
+    host: "0.peerjs.com",
+    port: 443,
+    path: "/",
+    pingInterval: 5000,
+    config: server_config,
   });
 
   peer.on("open", function (id) {
@@ -234,6 +262,7 @@ let create_peer = function () {
     });
 
     chat_data.push({
+      "nickname": settings.nickname,
       "content": "room created",
       "datetime": new Date(),
       "image": qrs.toDataURL(),
@@ -288,7 +317,193 @@ let time_parse = function (value) {
   );
 };
 
+let scan_callback = function (n) {
+  stop_scan();
+  connect_to_peer(n);
+  chat_data.push({ "content": "connected", "datetime": new Date() });
+  m.redraw();
+};
+
 var root = document.getElementById("app");
+
+var settings_page = {
+  view: function () {
+    return m(
+      "div",
+      { class: "flex justify-content-spacearound", id: "settings_page" },
+      [
+        m(
+          "div",
+          {
+            tabindex: 0,
+            class:
+              "item input-parent  flex width-100 justify-content-spacearound",
+            oncreate: ({ dom }) =>
+              setTimeout(function () {
+                dom.focus();
+              }, 500),
+          },
+          [
+            m(
+              "label",
+              {
+                for: "Nickname",
+              },
+              "Nickname"
+            ),
+            m("input", {
+              id: "nickname",
+              placeholder: "nickname",
+              value: settings.nickname,
+            }),
+          ]
+        ),
+
+        m("H2", {}, "Server Settings"),
+
+        m(
+          "div",
+          {
+            tabindex: 1,
+
+            class:
+              "item input-parent  flex width-100 justify-content-spacearound",
+          },
+          [
+            m(
+              "label",
+              {
+                for: "server_url",
+              },
+              "URL"
+            ),
+            m("input", {
+              id: "server_url",
+              placeholder: "Server URL",
+              value: settings.server_url,
+            }),
+          ]
+        ),
+
+        m(
+          "div",
+          {
+            tabindex: 2,
+
+            class:
+              "item input-parent  flex width-100 justify-content-spacearound",
+          },
+          [
+            m(
+              "label",
+              {
+                for: "server_path",
+              },
+              "Path"
+            ),
+            m("input", {
+              id: "server_path",
+              placeholder: "Path",
+              value: settings.server_path,
+            }),
+          ]
+        ),
+
+        m(
+          "div",
+          {
+            tabindex: 3,
+
+            class:
+              "item input-parent  flex width-100 justify-content-spacearound",
+          },
+          [
+            m(
+              "label",
+              {
+                for: "server_port",
+              },
+              "Port"
+            ),
+            m("input", {
+              id: "server_port",
+              placeholder: "Port",
+              value: settings.server_port,
+            }),
+          ]
+        ),
+
+        m(
+          "button",
+          {
+            tabindex: 4,
+
+            class: "item",
+            "data-function": "save-settings",
+            onclick: function () {
+              settings.nickname = document.getElementById("nickname").value;
+              settings.server_url = document.getElementById("server_url").value;
+              settings.server_path =
+                document.getElementById("server_path").value;
+
+              settings.server_port =
+                document.getElementById("server_port").value;
+
+              localforage
+                .setItem("settings", settings)
+                .then(function (value) {
+                  // Do other things once the value has been saved.
+                  side_toaster("settings saved", 2000);
+                  window.location.replace("#/start");
+                })
+                .catch(function (err) {
+                  // This code runs if there were any errors
+                  console.log(err);
+                });
+            },
+          },
+          "save settings"
+        ),
+      ]
+    );
+  },
+};
+
+var options = {
+  view: function () {
+    return m(
+      "div",
+      { class: "flex justify-content-spacearound", id: "login" },
+      [
+        m(
+          "button",
+          {
+            oncreate: ({ dom }) =>
+              setTimeout(function () {
+                dom.focus();
+              }, 500),
+            class: "item",
+            tabindex: 0,
+            onclick: function () {
+              pick_image(handleImage);
+            },
+          },
+          "share image"
+        ),
+
+        m(
+          "button",
+          {
+            class: "item",
+            tabindex: 1,
+            onclick: function () {},
+          },
+          "share location"
+        ),
+      ]
+    );
+  },
+};
 
 var login = {
   view: function () {
@@ -332,14 +547,20 @@ var start = {
   view: function () {
     return m(
       "div",
-      { class: "flex justify-content-spacearound", id: "login" },
+      { class: "flex justify-content-spacearound", id: "start" },
       [
         m(
           "button",
           {
+            oncreate: ({ dom }) =>
+              setTimeout(function () {
+                dom.focus();
+              }, 500),
             class: "item",
-            "data-function": "connect-to-peer",
             tabindex: 0,
+            onclick: function () {
+              start_scan(scan_callback);
+            },
           },
           "connect to room by QR-Code"
         ),
@@ -350,8 +571,24 @@ var start = {
             class: "item",
             "data-function": "create-peer",
             tabindex: 1,
+            onclick: function () {
+              create_peer();
+            },
           },
           "create room"
+        ),
+
+        m(
+          "button",
+          {
+            class: "item",
+            "data-function": "settings",
+            tabindex: 2,
+            onclick: function () {
+              window.location.replace("#/settings_page");
+            },
+          },
+          "settings"
         ),
       ]
     );
@@ -383,6 +620,7 @@ var chat = {
       return m("article", { class: "item", tabindex: index }, [
         m("div", { class: "flex message-head" }, [
           m("div", time_parse(item.datetime)),
+          m("div", { class: "nickname" }, item.nickname),
         ]),
         m("div", { class: "message-main" }, item.content),
         m("img", { class: "message-media", src: item.image }),
@@ -408,8 +646,6 @@ var intro = {
 
 setTimeout(function () {
   window.location.replace("#/start");
-
-  document.querySelector("[data-function='connect-to-peer]").focus();
 }, 3000);
 
 m.route(root, "/intro", {
@@ -418,6 +654,8 @@ m.route(root, "/intro", {
   "/start": start,
   "/chats": chats,
   "/chat": chat,
+  "/options": options,
+  "/settings_page": settings_page,
 });
 m.route.prefix = "#";
 
@@ -428,7 +666,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
     if (document.getElementById("message-input").style.display == "none") {
       document.getElementById("message-input").style.display = "block";
       document.querySelector("div#message-input input").focus();
-      bottom_bar("cancel", "send", "attachment");
+      bottom_bar("cancel", "send", "options");
       status = "write";
     } else {
       document.querySelector("div#message-input input").value = "";
@@ -496,6 +734,20 @@ document.addEventListener("DOMContentLoaded", function (e) {
     if (t != "") sendMessage(t, "image");
   };
 
+  let warning_leave_chat = function () {
+    status = "confirm";
+    if (confirm("Do you really want leave the room?")) {
+      window.location.replace("#/start");
+      setTimeout(function () {
+        status = "";
+      }, 1000);
+    } else {
+      setTimeout(function () {
+        status = "";
+      }, 1000);
+    }
+  };
+
   // ////////////////////////////
   // //KEYPAD HANDLER////////////
   // ////////////////////////////
@@ -534,6 +786,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
   // ////////////
 
   function shortpress_action(param) {
+    if (status == "confirm") return false;
     let route = m.route.get();
 
     //user avatar
@@ -588,7 +841,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
       case "SoftRight":
       case "Alt":
-        if (status == "write") pick_image(handleImage);
+        window.location.replace("#/options");
         break;
 
       case "SoftLeft":
@@ -612,32 +865,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
           window.location.replace("#/chat");
         }
 
-        if (
-          document.activeElement.getAttribute("data-function") ==
-          "connect-to-peer"
-        ) {
-          let t = function (n) {
-            stop_scan();
-            connect_to_peer(n);
-            chat_data.push({ "content": "connected", "datetime": new Date() });
-            m.redraw();
-          };
-
-          start_scan(t);
-        }
-
-        if (
-          document.activeElement.getAttribute("data-function") == "create-peer"
-        ) {
-          create_peer();
-        }
         if (route == "/chat") {
           if (document.getElementsByTagName("input")[0].value != "")
             sendMessage(
               document.getElementsByTagName("input")[0].value,
               "text"
             );
-          write();
 
           break;
         }
@@ -657,9 +890,19 @@ document.addEventListener("DOMContentLoaded", function (e) {
   function handleKeyDown(evt) {
     if (evt.key === "Backspace") {
       evt.preventDefault();
+
       if (m.route.get() == "/chat") {
+        warning_leave_chat();
+        return false;
+      }
+      if (m.route.get() == "/chat" || m.route.get() == "/settings_page") {
         window.location.replace("#/start");
         bottom_bar("", "", "");
+      }
+
+      if (m.route.get() == "/options") {
+        window.location.replace("#/chat");
+        bottom_bar("write", "select", "options");
       }
     }
 

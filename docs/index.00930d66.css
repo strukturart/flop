@@ -54,8 +54,20 @@ html, body {
   overflow: hidden;
 }
 
-h1, h2, h3 {
+h1 {
   font-size: 1rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+h3 {
+  font-size: 1rem;
+}
+
+label {
+  font-weight: bold;
 }
 
 img {
@@ -101,13 +113,13 @@ select {
 
 textarea {
   height: 30px;
-  width: 90%;
+  width: 95%;
   border: 1px solid silver;
   padding: 3px;
 }
 
 input {
-  width: 90%;
+  width: 95%;
   height: 30px;
   border: 1px solid silver;
   padding: 3px;
@@ -140,11 +152,12 @@ div#intro {
   animation-delay: 2s;
   animation-fill-mode: forwards;
   position: fixed;
+  top: 0;
   left: 0;
 }
 
 div#intro img {
-  width: 180px;
+  width: 100px;
   height: auto;
   margin-left: -90px;
   animation-name: intro_img;
@@ -153,7 +166,7 @@ div#intro img {
   animation-delay: 1s;
   animation-fill-mode: forwards;
   position: absolute;
-  top: 50px;
+  top: 100px;
   left: 50%;
 }
 
@@ -166,13 +179,21 @@ div#app {
   overflow: hidden;
 }
 
+div#login {
+  padding: 30px 0 0;
+}
+
 @keyframes intro_img {
-  from {
-    transform: translateX(0);
+  0% {
+    transform: rotate(0);
   }
 
-  to {
-    transform: translateX(-450px);
+  50% {
+    transform: rotate(60deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
   }
 }
 
@@ -266,6 +287,10 @@ identicon-svg {
   background-color: #eef;
   border-radius: 5%;
   display: block;
+}
+
+div.nickname {
+  font-weight: bold;
 }
 
 div#options {
@@ -460,15 +485,5 @@ div#message-input {
 
 div#message-input input {
   margin: 0 auto;
-}
-
-@keyframes jump {
-  0% {
-    transform: translateY(0);
-  }
-
-  100% {
-    transform: translateY(-30px);
-  }
 }
 
