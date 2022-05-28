@@ -9,6 +9,19 @@
 Is a <a href="https://en.wikipedia.org/wiki/WebRTC">WebRTC</a> chat-client, for the KaiOs.
 Currently you can exchange text messages and pictures with each other. You can create new rooms and join rooms.
 
+### Features
+
+- create room
+- join room
+- room favorits
+- share location
+- share image
+
+![image-1](/images/image-1.png)
+![image-2](/images/image-2.png)
+![image-2](/images/image-3.png)
+![image-4](/images/image-4.png)
+
 ## How to install
 
 - bHaCkerStore

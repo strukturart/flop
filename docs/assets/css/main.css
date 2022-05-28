@@ -64,6 +64,18 @@ body {
   background: white;
 }
 
+div#wrapper {
+}
+
+div#app {
+  padding: 5px;
+  max-height: 88vh;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  top: 0px;
+}
+
 h1 {
   font-size: 1rem;
 }
@@ -170,7 +182,7 @@ div#intro {
   top: 0;
   animation-name: intro;
   animation-duration: 1s;
-  animation-delay: 3s;
+  animation-delay: 8s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
 }
@@ -183,19 +195,10 @@ div#intro img {
   left: 50%;
   margin-left: -50px;
   animation-name: intro_img;
-  animation-duration: 2s;
-  animation-delay: 1s;
+  animation-duration: 3s;
+  animation-delay: 0s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
-}
-
-div#app {
-  padding: 5px;
-  max-height: 88vh;
-  overflow: hidden;
-  position: relative;
-  width: 100vw;
-  top: 0px;
 }
 
 div#login {
@@ -206,8 +209,16 @@ div#login {
   0% {
     transform: rotate(0);
   }
-  50% {
-    transform: rotate(60deg);
+  20% {
+    transform: rotate(10deg);
+  }
+
+  40% {
+    transform: rotate(0deg);
+  }
+
+  60% {
+    transform: rotate(-10deg);
   }
 
   100% {

@@ -158,7 +158,7 @@ div#intro {
   animation-name: intro;
   animation-duration: 1s;
   animation-iteration-count: 1;
-  animation-delay: 3s;
+  animation-delay: 8s;
   animation-fill-mode: forwards;
   position: fixed;
   top: 0;
@@ -170,9 +170,9 @@ div#intro img {
   height: auto;
   margin-left: -50px;
   animation-name: intro_img;
-  animation-duration: 2s;
+  animation-duration: 3s;
   animation-iteration-count: 1;
-  animation-delay: 1s;
+  animation-delay: 0s;
   animation-fill-mode: forwards;
   position: absolute;
   top: 120px;
@@ -188,8 +188,16 @@ div#login {
     transform: rotate(0);
   }
 
-  50% {
-    transform: rotate(60deg);
+  20% {
+    transform: rotate(10deg);
+  }
+
+  40% {
+    transform: rotate(0deg);
+  }
+
+  60% {
+    transform: rotate(-10deg);
   }
 
   100% {

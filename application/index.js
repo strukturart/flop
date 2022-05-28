@@ -14,18 +14,23 @@ import { identiconSvg } from "minidenticons";
 import { qrious } from "qrious";
 import localforage from "localforage";
 import { set } from "mithril/route";
+import * as linkify from "linkifyjs";
 
 import { geolocation } from "./assets/js/helper.js";
 
-// response will be undefined if the promise is rejected
 //github.com/laurentpayot/minidenticons#usage
 export let status = "";
 export let settings = {};
+export let current_room = "h";
 
-// Create the service
-
+let links = "";
 let chat_data = [];
+let lastPeerId = null;
+let peer = null;
+let conn = null;
+let room_favorits = [];
 
+//load settings
 localforage
   .getItem("settings")
   .then(function (value) {
@@ -43,9 +48,16 @@ localforage
     console.log(err);
   });
 
-let lastPeerId = null;
-let peer = null;
-let conn = null;
+//load room favorits
+
+localforage
+  .getItem("roomfavorits")
+  .then(function (value) {
+    if (value != null) room_favorits = value;
+  })
+  .catch(function (err) {
+    console.log(err);
+  });
 
 let warning_leave_chat = function () {
   status = "confirm";
@@ -61,8 +73,62 @@ let warning_leave_chat = function () {
   }
 };
 
-let server_config = {
-  "iceServers": [{ url: "stun:stun.l.google.com:19302" }],
+let addToFavorit = function () {
+  console.log(typeof room_favorits);
+  room_favorits.push(current_room);
+  console.log("favorits: " + room_favorits);
+
+  localforage
+    .setItem("roomfavorits", room_favorits)
+    .then(function (value) {
+      // Do other things once the value has been saved.
+      side_toaster("favorit saved", 2000);
+      window.location.replace("#/chat");
+    })
+    .catch(function (err) {
+      // This code runs if there were any errors
+      console.log(err);
+    });
+
+  console.log(room_favorits);
+};
+
+let hide_input = function () {
+  document.querySelector("div#message-input input").value = "";
+  document.getElementById("message-input").style.display = "none";
+  focus_last_article();
+  status = "";
+};
+const server_config = {
+  "iceServers": [
+    {
+      "urls": "stun:stun.l.google.com:19302",
+    },
+    {
+      "urls": "stun:iphone-stun.strato-iphone.de:3478",
+    },
+    {
+      "urls": "stun:numb.viagenie.ca:3478",
+    },
+    {
+      "urls": "stun:openrelay.metered.ca:80",
+    },
+    {
+      "urls": "turn:openrelay.metered.ca:80",
+      "username": "openrelayproject",
+      "credential": "openrelayproject",
+    },
+    {
+      "urls": "turn:openrelay.metered.ca:443",
+      "username": "openrelayproject",
+      "credential": "openrelayproject",
+    },
+    {
+      "urls": "turn:openrelay.metered.ca:443?transport=tcp",
+      "username": "openrelayproject",
+      "credential": "openrelayproject",
+    },
+  ],
 };
 
 const focus_last_article = function () {
@@ -126,6 +192,10 @@ function sendMessage(msg, type) {
   }
 }
 
+let close_connection = function () {
+  conn.close();
+};
+
 let list_peers = function () {
   try {
     peer.listAllPeers(function (res) {
@@ -161,6 +231,7 @@ function ready() {
   });
   conn.on("close", function () {
     conn = null;
+    side_toaster("connection closed", 1000);
   });
 }
 
@@ -169,15 +240,7 @@ function initialize() {
   peer = new Peer({
     debug: 3,
     referrerPolicy: "origin-when-cross-origin",
-    config: {
-      "iceServers": [
-        { url: "stun:stun.l.google.com:19302" },
-        { url: "stun:stun1.l.google.com:19302" },
-        { url: "stun:stun2.l.google.com:19302" },
-        { url: "stun:stun3.l.google.com:19302" },
-        { url: "stun:stun4.l.google.com:19302" },
-      ],
-    },
+    //config: server_config,
   });
 
   peer.on("open", function (id) {
@@ -186,22 +249,22 @@ function initialize() {
     } else {
       lastPeerId = peer.id;
     }
+
+    current_room = peer.id;
+    console.log("ccm" + current_room);
   });
   peer.on("connection", function (c) {
     ready();
   });
   peer.on("disconnected", function () {
-    side_toaster("Connection lost. Please reconnect", 4000);
-
     // Workaround for peer.reconnect deleting previous id
     peer.id = lastPeerId;
     peer._lastServerId = lastPeerId;
     peer.reconnect();
   });
   peer.on("close", function () {
-    side_toaster("Connection destroyed", 4000);
+    side_toaster("connection closed", 1000);
     conn = null;
-    console.log("Connection destroyed");
   });
   peer.on("error", function (err) {
     console.log(err);
@@ -214,7 +277,7 @@ function join(id) {
     conn.close();
   }
 
-  // Create connection to destination peer specified in the input field
+  // Create connection to destination peer
   conn = peer.connect(id, {
     reliable: true,
   });
@@ -256,15 +319,7 @@ let create_peer = function () {
   peer = new Peer({
     debug: 3,
     referrerPolicy: "origin-when-cross-origin",
-    config: {
-      "iceServers": [
-        { url: "stun:stun.l.google.com:19302" },
-        { url: "stun:stun1.l.google.com:19302" },
-        { url: "stun:stun2.l.google.com:19302" },
-        { url: "stun:stun3.l.google.com:19302" },
-        { url: "stun:stun4.l.google.com:19302" },
-      ],
-    },
+    // config: server_config,
   });
 
   peer.on("open", function (id) {
@@ -274,7 +329,10 @@ let create_peer = function () {
     } else {
       lastPeerId = peer.id;
     }
-    console.log("ID: " + peer.id + " " + lastPeerId);
+
+    current_room = peer.id;
+
+    console.log("ccm" + current_room);
 
     //make qr code
     var qrs = new QRious();
@@ -524,6 +582,8 @@ var settings_page = {
 
 var options = {
   view: function () {
+    bottom_bar("", "select", "");
+    hide_input();
     return m(
       "div",
       { class: "flex justify-content-spacearound", id: "login" },
@@ -554,6 +614,18 @@ var options = {
             },
           },
           "share location"
+        ),
+
+        m(
+          "button",
+          {
+            class: "item",
+            tabindex: 2,
+            onclick: function () {
+              addToFavorit();
+            },
+          },
+          "add room to favorits"
         ),
       ]
     );
@@ -637,8 +709,21 @@ var start = {
           "button",
           {
             class: "item",
-            "data-function": "settings",
+            "data-function": "create-peer",
             tabindex: 2,
+            onclick: function () {
+              window.location.replace("#/favorits_page");
+            },
+          },
+          "favorits"
+        ),
+
+        m(
+          "button",
+          {
+            class: "item",
+            "data-function": "settings",
+            tabindex: 3,
             onclick: function () {
               window.location.replace("#/settings_page");
             },
@@ -651,18 +736,40 @@ var start = {
 };
 
 let t;
-var chats = {
+var links_page = {
   view: function (vnode) {
-    return dummy_data.map(function (item, index) {
+    return links.map(function (item, index) {
       return m(
-        "div",
+        "button",
         {
           tabindex: index,
           class: "item",
-          "data-function": "open-chat",
-          "data-chat-name": item.chat_group,
+          onclick: function () {
+            window.open(item.href);
+            window.location.replace("#/chat");
+          },
         },
-        item.chat_group
+        item.href
+      );
+    });
+  },
+};
+
+var favorits_page = {
+  view: function (vnode) {
+    return room_favorits.map(function (item, index) {
+      bottom_bar("", "select", "");
+      console.log(item);
+      return m(
+        "button",
+        {
+          class: "item",
+          tabindex: index,
+          onclick: function () {
+            connect_to_peer(item);
+          },
+        },
+        item
       );
     });
   },
@@ -707,10 +814,11 @@ m.route(root, "/intro", {
   "/intro": intro,
   "/login": login,
   "/start": start,
-  "/chats": chats,
+  "/links_page": links_page,
   "/chat": chat,
   "/options": options,
   "/settings_page": settings_page,
+  "/favorits_page": favorits_page,
 });
 m.route.prefix = "#";
 
@@ -725,7 +833,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
       status = "write";
     } else {
       document.querySelector("div#message-input input").value = "";
-
       document.getElementById("message-input").style.display = "none";
       focus_last_article();
       bottom_bar("write", "select", "options");
@@ -889,14 +996,21 @@ document.addEventListener("DOMContentLoaded", function (e) {
           document.activeElement.children[0].focus();
         }
 
-        if (
-          document.activeElement.getAttribute("data-function") == "open-chat"
-        ) {
-          t = document.activeElement.getAttribute("data-chat-name");
-          window.location.replace("#/chat");
-        }
-
         if (route == "/chat") {
+          if (document.activeElement.tagName == "ARTICLE") {
+            console.log(linkify.find(document.activeElement.textContent));
+
+            links = linkify.find(document.activeElement.textContent);
+            console.log(links);
+
+            if (links.length >= 0) {
+              window.location.replace("#/links_page");
+            }
+
+            links.forEach(function (e) {
+              console.log(e);
+            });
+          }
           if (document.getElementsByTagName("input")[0].value != "") {
             sendMessage(
               document.getElementsByTagName("input")[0].value,
@@ -921,19 +1035,28 @@ document.addEventListener("DOMContentLoaded", function (e) {
   // //////////////////////////////
 
   function handleKeyDown(evt) {
-    if (evt.key === "Backspace") {
+    if (evt.key === "Backspace" && m.route.get() != "/start") {
       evt.preventDefault();
+    }
 
+    if (evt.key === "Backspace") {
       if (m.route.get() == "/chat") {
         warning_leave_chat();
         return false;
       }
-      if (m.route.get() == "/chat" || m.route.get() == "/settings_page") {
+      if (
+        m.route.get() == "/chat" ||
+        m.route.get() == "/settings_page" ||
+        m.route.get() == "/favorits_page"
+      ) {
         window.location.replace("#/start");
-        bottom_bar("", "", "");
+        if (conn) {
+          close_connection();
+        }
+        bottom_bar("", "select", "");
       }
 
-      if (m.route.get() == "/options") {
+      if (m.route.get() == "/options" || m.route.get() == "/links_page") {
         window.location.replace("#/chat");
         bottom_bar("write", "select", "options");
       }

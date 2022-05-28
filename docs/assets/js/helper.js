@@ -21,8 +21,15 @@ if (window.NodeList && !NodeList.prototype.forEach) {
 }
 
 export const geolocation = function (callback) {
+  let n = document.getElementById("side-toast");
+
+  n.style.transform = "translate(0vw,0px)";
+  n.innerHTML = "determine position";
+
   let showPosition = function (position) {
     callback(position);
+    n.style.transform = "translate(-100vw,0px)";
+    n.innerHTML = "";
   };
 
   let error = function (error) {
@@ -296,7 +303,6 @@ let toast_q = function (text, time) {
 //side toaster
 
 let queue_st = [];
-let ttimeout;
 export let side_toaster = function (text, time) {
   queue_st.push({ text: text, time: time });
   if (queue_st.length === 1) {
@@ -311,7 +317,6 @@ let toast_qq = function (text, time) {
   x.style.transform = "translate(0vh, 0px)";
 
   timeout = setTimeout(function () {
-    ttimeout = null;
     x.style.transform = "translate(-100vw,0px)";
     queue_st = queue.slice(1);
     if (queue_st.length > 0) {
