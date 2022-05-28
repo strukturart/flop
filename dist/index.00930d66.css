@@ -54,6 +54,15 @@ html, body {
   overflow: hidden;
 }
 
+div#app {
+  max-height: 88vh;
+  width: 100%;
+  padding: 5px;
+  position: relative;
+  top: 0;
+  overflow: hidden;
+}
+
 h1 {
   font-size: 1rem;
 }
@@ -149,7 +158,7 @@ div#intro {
   animation-name: intro;
   animation-duration: 1s;
   animation-iteration-count: 1;
-  animation-delay: 2s;
+  animation-delay: 3s;
   animation-fill-mode: forwards;
   position: fixed;
   top: 0;
@@ -159,24 +168,15 @@ div#intro {
 div#intro img {
   width: 100px;
   height: auto;
-  margin-left: -90px;
+  margin-left: -50px;
   animation-name: intro_img;
   animation-duration: 2s;
   animation-iteration-count: 1;
   animation-delay: 1s;
   animation-fill-mode: forwards;
   position: absolute;
-  top: 100px;
+  top: 120px;
   left: 50%;
-}
-
-div#app {
-  max-height: 88vh;
-  width: 100vw;
-  padding: 5px;
-  position: relative;
-  top: 0;
-  overflow: hidden;
 }
 
 div#login {
@@ -260,10 +260,11 @@ div#side-toast {
   overflow: none;
   color: #fff;
   z-index: 10;
-  max-width: 20px;
   transform-origin: 0 0;
-  background: #db5212;
-  padding: 5px;
+  background: orange;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  padding: 8px;
   transition: all .5s ease-in-out;
   position: fixed;
   top: 70vh;
@@ -271,6 +272,7 @@ div#side-toast {
 }
 
 div#side-toast img {
+  width: 30px;
   width: 60px;
 }
 

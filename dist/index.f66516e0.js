@@ -544,6 +544,7 @@ var _route = require("mithril/route");
 "use strict";
 let status = "";
 let settings = {};
+// Create the service
 let chat_data = [];
 _localforageDefault.default.getItem("settings").then(function(value) {
     settings = value;
@@ -559,6 +560,17 @@ _localforageDefault.default.getItem("settings").then(function(value) {
 let lastPeerId = null;
 let peer = null;
 let conn = null;
+let warning_leave_chat = function() {
+    status = "confirm";
+    if (confirm("Do you really want leave the room?")) {
+        window.location.replace("#/start");
+        setTimeout(function() {
+            status = "";
+        }, 1000);
+    } else setTimeout(function() {
+        status = "";
+    }, 1000);
+};
 let server_config = {
     "iceServers": [
         {
@@ -573,6 +585,7 @@ const focus_last_article = function() {
     }, 1000);
 };
 function sendMessage(msg, type) {
+    console.log(msg);
     if (conn && conn.open) {
         if (type == "image") {
             // Encode the file using the FileReader API
@@ -645,16 +658,28 @@ function ready() {
 }
 function initialize() {
     // Create own peer object with connection to shared PeerJS server
-    peer = new _peerjs.Peer(null, {
-        host: "0.peerjs.com",
-        port: 443,
-        path: "/",
-        pingInterval: 5000,
+    peer = new _peerjs.Peer({
         debug: 3,
         referrerPolicy: "origin-when-cross-origin",
-        initiator: true,
-        trickle: false,
-        config: server_config
+        config: {
+            "iceServers": [
+                {
+                    url: "stun:stun.l.google.com:19302"
+                },
+                {
+                    url: "stun:stun1.l.google.com:19302"
+                },
+                {
+                    url: "stun:stun2.l.google.com:19302"
+                },
+                {
+                    url: "stun:stun3.l.google.com:19302"
+                },
+                {
+                    url: "stun:stun4.l.google.com:19302"
+                }, 
+            ]
+        }
     });
     peer.on("open", function(id) {
         if (peer.id === null) peer.id = lastPeerId;
@@ -712,14 +737,28 @@ function join(id) {
 //create peer
 let create_peer = function() {
     window.location.replace("#/chat");
-    peer = new _peerjs.Peer(null, {
+    peer = new _peerjs.Peer({
         debug: 3,
         referrerPolicy: "origin-when-cross-origin",
-        host: "0.peerjs.com",
-        port: 443,
-        path: "/",
-        pingInterval: 5000,
-        config: server_config
+        config: {
+            "iceServers": [
+                {
+                    url: "stun:stun.l.google.com:19302"
+                },
+                {
+                    url: "stun:stun1.l.google.com:19302"
+                },
+                {
+                    url: "stun:stun2.l.google.com:19302"
+                },
+                {
+                    url: "stun:stun3.l.google.com:19302"
+                },
+                {
+                    url: "stun:stun4.l.google.com:19302"
+                }, 
+            ]
+        }
     });
     peer.on("open", function(id) {
         // Workaround for peer.reconnect deleting previous id
@@ -772,10 +811,19 @@ let connect_to_peer = function(_id) {
         join(_id);
     }, 2000);
 };
-let time_parse = function(value) {
-    let t1 = new Date(value);
-    return t1.getDate() + " " + _helperJs.month[t1.getMonth()] + " " + t1.getFullYear() + ", " + t1.getHours() + ":" + t1.getMinutes();
+let handleImage = function(t1) {
+    window.location.replace("#/chat");
+    if (t1 != "") sendMessage(t1, "image");
+    let a = document.querySelectorAll("div#app article");
+    a[a.length - 1].focus();
+    _helperJs.bottom_bar("write", "select", "options");
+    status = "";
 };
+let time_parse = function(value) {
+    let t2 = new Date(value);
+    return t2.getDate() + " " + _helperJs.month[t2.getMonth()] + " " + t2.getFullYear() + ", " + t2.getHours() + ":" + t2.getMinutes();
+};
+//callback qr-code scan
 let scan_callback = function(n) {
     _scanJs.stop_scan();
     connect_to_peer(n);
@@ -784,6 +832,17 @@ let scan_callback = function(n) {
         "datetime": new Date()
     });
     m.redraw();
+};
+//callback geolocation
+let geolocation_callback = function(e) {
+    console.log(e.coords.latitude);
+    let link_url = "https://www.openstreetmap.org/#map=19/" + e.coords.latitude + "/" + e.coords.longitude;
+    chat_data.push({
+        "content": link_url,
+        "datetime": new Date()
+    });
+    sendMessage(link_url, "text");
+    window.location.replace("#/chat");
 };
 var root = document.getElementById("app");
 var settings_page = {
@@ -890,7 +949,9 @@ var options = {
             m("button", {
                 class: "item",
                 tabindex: 1,
-                onclick: function() {}
+                onclick: function() {
+                    _helperJs.geolocation(geolocation_callback);
+                }
             }, "share location"), 
         ]);
     }
@@ -1077,26 +1138,6 @@ document.addEventListener("DOMContentLoaded", function(e) {
             behavior: "smooth"
         });
     };
-    let handleImage = function(t2) {
-        document.querySelector("div#message-input input").value = "";
-        document.getElementById("message-input").style.display = "none";
-        let a = document.querySelectorAll("div#app article");
-        a[a.length - 1].focus();
-        _helperJs.bottom_bar("write", "select", "options");
-        status = "";
-        if (t2 != "") sendMessage(t2, "image");
-    };
-    let warning_leave_chat = function() {
-        status = "confirm";
-        if (confirm("Do you really want leave the room?")) {
-            window.location.replace("#/start");
-            setTimeout(function() {
-                status = "";
-            }, 1000);
-        } else setTimeout(function() {
-            status = "";
-        }, 1000);
-    };
     // ////////////////////////////
     // //KEYPAD HANDLER////////////
     // ////////////////////////////
@@ -1184,7 +1225,10 @@ document.addEventListener("DOMContentLoaded", function(e) {
                     window.location.replace("#/chat");
                 }
                 if (route == "/chat") {
-                    if (document.getElementsByTagName("input")[0].value != "") sendMessage(document.getElementsByTagName("input")[0].value, "text");
+                    if (document.getElementsByTagName("input")[0].value != "") {
+                        sendMessage(document.getElementsByTagName("input")[0].value, "text");
+                        write();
+                    }
                     break;
                 }
                 break;
@@ -1246,6 +1290,8 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "month", ()=>month
 );
+parcelHelpers.export(exports, "geolocation", ()=>geolocation
+);
 parcelHelpers.export(exports, "sort_array", ()=>sort_array
 );
 parcelHelpers.export(exports, "validate", ()=>validate
@@ -1282,6 +1328,39 @@ const month = [
 ];
 //polyfill
 if (window.NodeList && !NodeList.prototype.forEach) NodeList.prototype.forEach = Array.prototype.forEach;
+const geolocation = function(callback) {
+    let n = document.getElementById("side-toast");
+    n.style.transform = "translate(0vw,0px)";
+    n.innerHTML = "determine position";
+    let showPosition = function(position) {
+        callback(position);
+        n.style.transform = "translate(-100vw,0px)";
+        n.innerHTML = "";
+    };
+    let error1 = function(error) {
+        console.log(error.code);
+        switch(error.code){
+            case error.PERMISSION_DENIED:
+                side_toaster("Location not provided", 2000);
+                break;
+            case error.POSITION_UNAVAILABLE:
+                side_toaster("Current location not available", 2000);
+                break;
+            case error.TIMEOUT:
+                side_toaster("Timeout", 2000);
+                break;
+            default:
+                side_toaster("unknown error", 2000);
+                break;
+        }
+    };
+    if (navigator.geolocation) navigator.geolocation.getCurrentPosition(showPosition, error1, {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 0
+    });
+    else side_toaster("Geolocation is not supported by this browser.", 2000);
+};
 function hashCode(str) {
     var hash = 0;
     for(var i = 0; i < str.length; i++)hash = ~~((hash << 5) - hash + str.charCodeAt(i));
@@ -1460,7 +1539,6 @@ let toast_q = function(text, time) {
 };
 //side toaster
 let queue_st = [];
-let ttimeout;
 let side_toaster = function(text, time) {
     queue_st.push({
         text: text,
@@ -1473,8 +1551,7 @@ let toast_qq = function(text, time) {
     x.innerHTML = queue_st[0].text;
     x.style.transform = "translate(0vh, 0px)";
     timeout = setTimeout(function() {
-        ttimeout = null;
-        x.style.transform = "translate(-100vh,0px)";
+        x.style.transform = "translate(-100vw,0px)";
         queue_st = queue.slice(1);
         if (queue_st.length > 0) setTimeout(()=>{
             toast_qq(text, time);
@@ -1541,6 +1618,7 @@ let pick_image = function(cb) {
         }
     });
     activity.onsuccess = function() {
+        console.log("success");
         let p = this.result;
         cb(p);
     };

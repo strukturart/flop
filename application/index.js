@@ -15,10 +15,14 @@ import { qrious } from "qrious";
 import localforage from "localforage";
 import { set } from "mithril/route";
 
-//github.com/laurentpayot/minidenticons#usage
+import { geolocation } from "./assets/js/helper.js";
 
+// response will be undefined if the promise is rejected
+//github.com/laurentpayot/minidenticons#usage
 export let status = "";
 export let settings = {};
+
+// Create the service
 
 let chat_data = [];
 
@@ -43,6 +47,20 @@ let lastPeerId = null;
 let peer = null;
 let conn = null;
 
+let warning_leave_chat = function () {
+  status = "confirm";
+  if (confirm("Do you really want leave the room?")) {
+    window.location.replace("#/start");
+    setTimeout(function () {
+      status = "";
+    }, 1000);
+  } else {
+    setTimeout(function () {
+      status = "";
+    }, 1000);
+  }
+};
+
 let server_config = {
   "iceServers": [{ url: "stun:stun.l.google.com:19302" }],
 };
@@ -55,6 +73,7 @@ const focus_last_article = function () {
 };
 
 function sendMessage(msg, type) {
+  console.log(msg);
   if (conn && conn.open) {
     if (type == "image") {
       // Encode the file using the FileReader API
@@ -95,6 +114,7 @@ function sendMessage(msg, type) {
 
       conn.send(msg);
       console.log("Sent: " + msg);
+
       m.redraw();
       focus_last_article();
     }
@@ -146,16 +166,18 @@ function ready() {
 
 function initialize() {
   // Create own peer object with connection to shared PeerJS server
-  peer = new Peer(null, {
-    host: "0.peerjs.com",
-    port: 443,
-    path: "/",
-    pingInterval: 5000,
+  peer = new Peer({
     debug: 3,
     referrerPolicy: "origin-when-cross-origin",
-    initiator: true,
-    trickle: false,
-    config: server_config,
+    config: {
+      "iceServers": [
+        { url: "stun:stun.l.google.com:19302" },
+        { url: "stun:stun1.l.google.com:19302" },
+        { url: "stun:stun2.l.google.com:19302" },
+        { url: "stun:stun3.l.google.com:19302" },
+        { url: "stun:stun4.l.google.com:19302" },
+      ],
+    },
   });
 
   peer.on("open", function (id) {
@@ -231,14 +253,18 @@ function join(id) {
 let create_peer = function () {
   window.location.replace("#/chat");
 
-  peer = new Peer(null, {
+  peer = new Peer({
     debug: 3,
     referrerPolicy: "origin-when-cross-origin",
-    host: "0.peerjs.com",
-    port: 443,
-    path: "/",
-    pingInterval: 5000,
-    config: server_config,
+    config: {
+      "iceServers": [
+        { url: "stun:stun.l.google.com:19302" },
+        { url: "stun:stun1.l.google.com:19302" },
+        { url: "stun:stun2.l.google.com:19302" },
+        { url: "stun:stun3.l.google.com:19302" },
+        { url: "stun:stun4.l.google.com:19302" },
+      ],
+    },
   });
 
   peer.on("open", function (id) {
@@ -301,6 +327,16 @@ let connect_to_peer = function (_id) {
   }, 2000);
 };
 
+let handleImage = function (t) {
+  window.location.replace("#/chat");
+  if (t != "") sendMessage(t, "image");
+
+  let a = document.querySelectorAll("div#app article");
+  a[a.length - 1].focus();
+  bottom_bar("write", "select", "options");
+  status = "";
+};
+
 let time_parse = function (value) {
   let t = new Date(value);
 
@@ -317,11 +353,28 @@ let time_parse = function (value) {
   );
 };
 
+//callback qr-code scan
 let scan_callback = function (n) {
   stop_scan();
   connect_to_peer(n);
   chat_data.push({ "content": "connected", "datetime": new Date() });
   m.redraw();
+};
+
+//callback geolocation
+let geolocation_callback = function (e) {
+  console.log(e.coords.latitude);
+
+  let link_url =
+    "https://www.openstreetmap.org/#map=19/" +
+    e.coords.latitude +
+    "/" +
+    e.coords.longitude;
+
+  chat_data.push({ "content": link_url, "datetime": new Date() });
+
+  sendMessage(link_url, "text");
+  window.location.replace("#/chat");
 };
 
 var root = document.getElementById("app");
@@ -496,7 +549,9 @@ var options = {
           {
             class: "item",
             tabindex: 1,
-            onclick: function () {},
+            onclick: function () {
+              geolocation(geolocation_callback);
+            },
           },
           "share location"
         ),
@@ -724,30 +779,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
     });
   };
 
-  let handleImage = function (t) {
-    document.querySelector("div#message-input input").value = "";
-    document.getElementById("message-input").style.display = "none";
-    let a = document.querySelectorAll("div#app article");
-    a[a.length - 1].focus();
-    bottom_bar("write", "select", "options");
-    status = "";
-    if (t != "") sendMessage(t, "image");
-  };
-
-  let warning_leave_chat = function () {
-    status = "confirm";
-    if (confirm("Do you really want leave the room?")) {
-      window.location.replace("#/start");
-      setTimeout(function () {
-        status = "";
-      }, 1000);
-    } else {
-      setTimeout(function () {
-        status = "";
-      }, 1000);
-    }
-  };
-
   // ////////////////////////////
   // //KEYPAD HANDLER////////////
   // ////////////////////////////
@@ -866,11 +897,13 @@ document.addEventListener("DOMContentLoaded", function (e) {
         }
 
         if (route == "/chat") {
-          if (document.getElementsByTagName("input")[0].value != "")
+          if (document.getElementsByTagName("input")[0].value != "") {
             sendMessage(
               document.getElementsByTagName("input")[0].value,
               "text"
             );
+            write();
+          }
 
           break;
         }

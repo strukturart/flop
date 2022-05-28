@@ -55,6 +55,9 @@
 		"alarms": {
 			"description": "Required to schedule alarms"
 		},
+		  "geolocation": {
+      "description": "Required to show user's location on map"
+    },
 		"mobiledata": {},
 		"wifidata": {},
 		"calllog": {},

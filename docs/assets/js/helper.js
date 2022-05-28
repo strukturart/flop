@@ -20,6 +20,41 @@ if (window.NodeList && !NodeList.prototype.forEach) {
   NodeList.prototype.forEach = Array.prototype.forEach;
 }
 
+export const geolocation = function (callback) {
+  let showPosition = function (position) {
+    callback(position);
+  };
+
+  let error = function (error) {
+    console.log(error.code);
+
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        side_toaster("Location not provided", 2000);
+        break;
+      case error.POSITION_UNAVAILABLE:
+        side_toaster("Current location not available", 2000);
+        break;
+      case error.TIMEOUT:
+        side_toaster("Timeout", 2000);
+        break;
+      default:
+        side_toaster("unknown error", 2000);
+        break;
+    }
+  };
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition, error, {
+      enableHighAccuracy: true,
+      timeout: 20000,
+      maximumAge: 0,
+    });
+  } else {
+    side_toaster("Geolocation is not supported by this browser.", 2000);
+  }
+};
+
 function hashCode(str) {
   var hash = 0;
   for (var i = 0; i < str.length; i++) {
@@ -277,7 +312,7 @@ let toast_qq = function (text, time) {
 
   timeout = setTimeout(function () {
     ttimeout = null;
-    x.style.transform = "translate(-100vh,0px)";
+    x.style.transform = "translate(-100vw,0px)";
     queue_st = queue.slice(1);
     if (queue_st.length > 0) {
       setTimeout(() => {
@@ -359,6 +394,7 @@ export let pick_image = function (cb) {
   });
 
   activity.onsuccess = function () {
+    console.log("success");
     let p = this.result;
     cb(p);
   };

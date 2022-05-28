@@ -170,7 +170,7 @@ div#intro {
   top: 0;
   animation-name: intro;
   animation-duration: 1s;
-  animation-delay: 2s;
+  animation-delay: 3s;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
 }
@@ -179,9 +179,9 @@ div#intro img {
   width: 100px;
   height: auto;
   position: absolute;
-  top: 100px;
+  top: 120px;
   left: 50%;
-  margin-left: -90px;
+  margin-left: -50px;
   animation-name: intro_img;
   animation-duration: 2s;
   animation-delay: 1s;
@@ -281,17 +281,21 @@ div#side-toast {
   position: fixed;
   height: auto;
   overflow: none;
-  background: none;
+  background: orange;
   color: white;
   z-index: 10;
-  padding: 5px;
+  padding: 8px;
   top: 70vh;
-  background: rgb(219, 82, 18);
-  max-width: 20px;
+  border-bottom-right-radius: 15px;
+  border-top-right-radius: 15px;
 
   transition: all 0.5s ease-in-out;
   transform-origin: left top;
   transform: translate(-100vw, 0px);
+}
+
+div#side-toast img {
+  width: 30px;
 }
 
 div#side-toast img {
