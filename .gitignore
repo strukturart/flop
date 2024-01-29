@@ -3,3 +3,15 @@ node_modules/*
 build
 build/*
 .parcel-cache
+node_modules
+node_modules/*
+.parcel-cache
+build/*
+dist/*
+dist
+build
+.cache
+application/assets/js/google_cred.js
+application/google_cred.js
+.env
+

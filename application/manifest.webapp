@@ -1,28 +1,38 @@
 {
-	"version": "0.0.1",
-	"name": "watermelon",
-	"id":"watermelon",
-	"categories": ["utilities"],
-	"description": "watermelon",
+	"version": "0.0.2",
+	"name": "mimamo",
+	"id":"mimamo",
+	"description": "mimamo",
 	"launch_path": "/index.html",
+	"categories": ["social"],
+	"subtitle": "chat app",
+  	"description": "chat app",
 	"type": "privileged",
 	"fullscreen": "true",
+	"lang": "en-US",
+	"orientation": "portrait-primary",
+  	"theme_color": "#6054EF",
+
+
+
+	"userAgentInfo": "watermelons / 1.9.755  written by strukturart@gmail.com",
+
 	"icons": {
 		"56": "/assets/icons/icon-56-56.svg",
 		"112": "/assets/icons/icon-112-112.svg"
 	},
 	"developer": {
 		"name": "strukturart",
-		"url": "https://strukturart.com"
+		"url": "https://github.com/strukturart/mimamo"
 	},
 	"dependencies": {
 		"ads-sdk": "1.5.0"
 	},
 	"locales": {
 		"en-US": {
-			"name": "watermelon",
-			"subtitle": "watermelon",
-			"description": "watermelon"
+			"name": "mimamo",
+			"subtitle": "mimamo",
+			"description": "mimamo"
 		}
 	},
 	"default_locale": "en-US",

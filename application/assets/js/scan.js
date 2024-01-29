@@ -1,15 +1,21 @@
 import jsQR from "jsqr";
 
-let video;
+let video = document.querySelector("video");
 let intv;
+let mediaStream;
 
-export let stop_scan = function () {
+export let stop_scan = function (callback) {
+  mediaStream.getTracks().map(function (val) {
+    val.stop();
+  });
+
   document.getElementById("qr-screen").style.display = "none";
+
+  callback();
 };
 
 export let start_scan = function (callback) {
   document.getElementById("qr-screen").style.display = "block";
-  console.log("start");
 
   navigator.getUserMedia =
     navigator.getUserMedia ||
@@ -26,8 +32,9 @@ export let start_scan = function (callback) {
         },
       },
       function (stream) {
-        video = document.querySelector("video");
         video.srcObject = stream;
+        console.log(stream);
+        mediaStream = stream;
 
         video.onloadedmetadata = function (e) {
           video.play();
@@ -53,9 +60,9 @@ export let start_scan = function (callback) {
             let code = jsQR(idd, imageWidth, imageHeight);
 
             if (code) {
+              clearInterval(intv);
               callback(code.data);
               stop_scan();
-              clearInterval(intv);
             }
           }, 1000);
         };

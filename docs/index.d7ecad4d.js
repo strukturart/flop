@@ -1,3 +1,4 @@
+(function () {
 
       var $parcel$global =
         typeof globalThis !== 'undefined'
@@ -45,9 +46,9 @@ if (parcelRequire == null) {
 }
 
 var parcelRegister = parcelRequire.register;
-parcelRegister("6eh63", function(module, exports) {
+parcelRegister("ahPL4", function(module, exports) {
 "use strict";
-function $48914fe86425e792$var$Vnode(tag, key, attrs, children, text, dom) {
+function $77d3a4009e38b328$var$Vnode(tag, key, attrs, children, text, dom) {
     return {
         tag: tag,
         key: key,
@@ -61,13 +62,13 @@ function $48914fe86425e792$var$Vnode(tag, key, attrs, children, text, dom) {
         instance: undefined
     };
 }
-$48914fe86425e792$var$Vnode.normalize = function(node) {
-    if (Array.isArray(node)) return $48914fe86425e792$var$Vnode("[", undefined, undefined, $48914fe86425e792$var$Vnode.normalizeChildren(node), undefined, undefined);
+$77d3a4009e38b328$var$Vnode.normalize = function(node) {
+    if (Array.isArray(node)) return $77d3a4009e38b328$var$Vnode("[", undefined, undefined, $77d3a4009e38b328$var$Vnode.normalizeChildren(node), undefined, undefined);
     if (node == null || typeof node === "boolean") return null;
     if (typeof node === "object") return node;
-    return $48914fe86425e792$var$Vnode("#", undefined, undefined, String(node), undefined, undefined);
+    return $77d3a4009e38b328$var$Vnode("#", undefined, undefined, String(node), undefined, undefined);
 };
-$48914fe86425e792$var$Vnode.normalizeChildren = function(input) {
+$77d3a4009e38b328$var$Vnode.normalizeChildren = function(input) {
     var children = [];
     if (input.length) {
         var isKeyed = input[0] != null && input[0].key != null;
@@ -77,43 +78,43 @@ $48914fe86425e792$var$Vnode.normalizeChildren = function(input) {
         for(var i = 1; i < input.length; i++){
             if ((input[i] != null && input[i].key != null) !== isKeyed) throw new TypeError(isKeyed && (input[i] != null || typeof input[i] === "boolean") ? "In fragments, vnodes must either all have keys or none have keys. You may wish to consider using an explicit keyed empty fragment, m.fragment({key: ...}), instead of a hole." : "In fragments, vnodes must either all have keys or none have keys.");
         }
-        for(var i = 0; i < input.length; i++)children[i] = $48914fe86425e792$var$Vnode.normalize(input[i]);
+        for(var i = 0; i < input.length; i++)children[i] = $77d3a4009e38b328$var$Vnode.normalize(input[i]);
     }
     return children;
 };
-module.exports = $48914fe86425e792$var$Vnode;
+module.exports = $77d3a4009e38b328$var$Vnode;
 
 });
 
-parcelRegister("8K51h", function(module, exports) {
+parcelRegister("hc09f", function(module, exports) {
 "use strict";
 
-var $6eh63 = parcelRequire("6eh63");
+var $ahPL4 = parcelRequire("ahPL4");
 module.exports = function(html) {
     if (html == null) html = "";
-    return $6eh63("<", undefined, undefined, html, undefined, undefined);
+    return $ahPL4("<", undefined, undefined, html, undefined, undefined);
 };
 
 });
 
-parcelRegister("df15h", function(module, exports) {
+parcelRegister("uUr9B", function(module, exports) {
 "use strict";
 
-var $6eh63 = parcelRequire("6eh63");
+var $ahPL4 = parcelRequire("ahPL4");
 
-var $iCmA2 = parcelRequire("iCmA2");
+var $lNZGj = parcelRequire("lNZGj");
 module.exports = function() {
-    var vnode = $iCmA2.apply(0, arguments);
+    var vnode = $lNZGj.apply(0, arguments);
     vnode.tag = "[";
-    vnode.children = $6eh63.normalizeChildren(vnode.children);
+    vnode.children = $ahPL4.normalizeChildren(vnode.children);
     return vnode;
 };
 
 });
-parcelRegister("iCmA2", function(module, exports) {
+parcelRegister("lNZGj", function(module, exports) {
 "use strict";
 
-var $6eh63 = parcelRequire("6eh63");
+var $ahPL4 = parcelRequire("ahPL4");
 // Call via `hyperscriptVnode.apply(startOffset, arguments)`
 //
 // The reason I do it this way, forwarding the arguments and passing the start
@@ -159,16 +160,16 @@ module.exports = function() {
         children = [];
         while(start < arguments.length)children.push(arguments[start++]);
     }
-    return $6eh63("", attrs.key, attrs, children);
+    return $ahPL4("", attrs.key, attrs, children);
 };
 
 });
 
 
-parcelRegister("cx1fz", function(module, exports) {
+parcelRegister("4kqT7", function(module, exports) {
 "use strict";
-/** @constructor */ var $91f989581edf3c1c$var$PromisePolyfill = function PromisePolyfill1(executor) {
-    if (!(this instanceof $91f989581edf3c1c$var$PromisePolyfill)) throw new Error("Promise must be called with 'new'.");
+/** @constructor */ var $326de31341d20e95$var$PromisePolyfill = function PromisePolyfill1(executor) {
+    if (!(this instanceof $326de31341d20e95$var$PromisePolyfill)) throw new Error("Promise must be called with 'new'.");
     if (typeof executor !== "function") throw new TypeError("executor must be a function.");
     var self = this, resolvers = [], rejectors = [], resolveCurrent = handler(resolvers, true), rejectCurrent = handler(rejectors, false);
     var instance = self._instance = {
@@ -214,7 +215,7 @@ parcelRegister("cx1fz", function(module, exports) {
     }
     executeOnce(executor);
 };
-$91f989581edf3c1c$var$PromisePolyfill.prototype.then = function(onFulfilled, onRejection) {
+$326de31341d20e95$var$PromisePolyfill.prototype.then = function(onFulfilled, onRejection) {
     var self = this, instance = self._instance;
     function handle(callback, list, next, state) {
         list.push(function(value) {
@@ -228,39 +229,39 @@ $91f989581edf3c1c$var$PromisePolyfill.prototype.then = function(onFulfilled, onR
         if (typeof instance.retry === "function" && state === instance.state) instance.retry();
     }
     var resolveNext, rejectNext;
-    var promise = new $91f989581edf3c1c$var$PromisePolyfill(function(resolve, reject) {
+    var promise = new $326de31341d20e95$var$PromisePolyfill(function(resolve, reject) {
         resolveNext = resolve, rejectNext = reject;
     });
     handle(onFulfilled, instance.resolvers, resolveNext, true), handle(onRejection, instance.rejectors, rejectNext, false);
     return promise;
 };
-$91f989581edf3c1c$var$PromisePolyfill.prototype["catch"] = function(onRejection) {
+$326de31341d20e95$var$PromisePolyfill.prototype.catch = function(onRejection) {
     return this.then(null, onRejection);
 };
-$91f989581edf3c1c$var$PromisePolyfill.prototype["finally"] = function(callback) {
+$326de31341d20e95$var$PromisePolyfill.prototype.finally = function(callback) {
     return this.then(function(value) {
-        return $91f989581edf3c1c$var$PromisePolyfill.resolve(callback()).then(function() {
+        return $326de31341d20e95$var$PromisePolyfill.resolve(callback()).then(function() {
             return value;
         });
     }, function(reason) {
-        return $91f989581edf3c1c$var$PromisePolyfill.resolve(callback()).then(function() {
-            return $91f989581edf3c1c$var$PromisePolyfill.reject(reason);
+        return $326de31341d20e95$var$PromisePolyfill.resolve(callback()).then(function() {
+            return $326de31341d20e95$var$PromisePolyfill.reject(reason);
         });
     });
 };
-$91f989581edf3c1c$var$PromisePolyfill.resolve = function(value) {
-    if (value instanceof $91f989581edf3c1c$var$PromisePolyfill) return value;
-    return new $91f989581edf3c1c$var$PromisePolyfill(function(resolve) {
+$326de31341d20e95$var$PromisePolyfill.resolve = function(value) {
+    if (value instanceof $326de31341d20e95$var$PromisePolyfill) return value;
+    return new $326de31341d20e95$var$PromisePolyfill(function(resolve) {
         resolve(value);
     });
 };
-$91f989581edf3c1c$var$PromisePolyfill.reject = function(value) {
-    return new $91f989581edf3c1c$var$PromisePolyfill(function(resolve, reject) {
+$326de31341d20e95$var$PromisePolyfill.reject = function(value) {
+    return new $326de31341d20e95$var$PromisePolyfill(function(resolve, reject) {
         reject(value);
     });
 };
-$91f989581edf3c1c$var$PromisePolyfill.all = function(list) {
-    return new $91f989581edf3c1c$var$PromisePolyfill(function(resolve, reject) {
+$326de31341d20e95$var$PromisePolyfill.all = function(list) {
+    return new $326de31341d20e95$var$PromisePolyfill(function(resolve, reject) {
         var total = list.length, count = 0, values = [];
         if (list.length === 0) resolve([]);
         else for(var i = 0; i < list.length; i++)(function(i) {
@@ -274,25 +275,25 @@ $91f989581edf3c1c$var$PromisePolyfill.all = function(list) {
         })(i);
     });
 };
-$91f989581edf3c1c$var$PromisePolyfill.race = function(list) {
-    return new $91f989581edf3c1c$var$PromisePolyfill(function(resolve, reject) {
+$326de31341d20e95$var$PromisePolyfill.race = function(list) {
+    return new $326de31341d20e95$var$PromisePolyfill(function(resolve, reject) {
         for(var i = 0; i < list.length; i++)list[i].then(resolve, reject);
     });
 };
-module.exports = $91f989581edf3c1c$var$PromisePolyfill;
+module.exports = $326de31341d20e95$var$PromisePolyfill;
 
 });
 
-parcelRegister("lI9DA", function(module, exports) {
+parcelRegister("iHb4t", function(module, exports) {
 "use strict";
 
-module.exports = (parcelRequire("gXSNh"))(typeof window !== "undefined" ? window : null);
+module.exports = (parcelRequire("lNBAB"))(typeof window !== "undefined" ? window : null);
 
 });
-parcelRegister("gXSNh", function(module, exports) {
+parcelRegister("lNBAB", function(module, exports) {
 "use strict";
 
-var $6eh63 = parcelRequire("6eh63");
+var $ahPL4 = parcelRequire("ahPL4");
 module.exports = function($window) {
     var $doc = $window && $window.document;
     var currentRedraw;
@@ -441,7 +442,7 @@ module.exports = function($window) {
         }
         initLifecycle(vnode.state, vnode, hooks);
         if (vnode.attrs != null) initLifecycle(vnode.attrs, vnode, hooks);
-        vnode.instance = $6eh63.normalize(callHook.call(vnode.state.view, vnode));
+        vnode.instance = $ahPL4.normalize(callHook.call(vnode.state.view, vnode));
         if (vnode.instance === vnode) throw Error("A view cannot return the vnode it received as argument");
         sentinel.$$reentrantLock$$ = null;
     }
@@ -740,7 +741,7 @@ module.exports = function($window) {
         if (!maybeSetContentEditable(vnode)) updateNodes(element, old.children, vnode.children, hooks, null, ns);
     }
     function updateComponent(parent, old, vnode, hooks, nextSibling, ns) {
-        vnode.instance = $6eh63.normalize(callHook.call(vnode.state.view, vnode));
+        vnode.instance = $ahPL4.normalize(callHook.call(vnode.state.view, vnode));
         if (vnode.instance === vnode) throw Error("A view cannot return the vnode it received as argument");
         updateLifecycle(vnode.state, vnode, hooks);
         if (vnode.attrs != null) updateLifecycle(vnode.attrs, vnode, hooks);
@@ -1182,7 +1183,7 @@ module.exports = function($window) {
         try {
             // First time rendering into a node clears it out
             if (dom.vnodes == null) dom.textContent = "";
-            vnodes = $6eh63.normalizeChildren(Array.isArray(vnodes) ? vnodes : [
+            vnodes = $ahPL4.normalizeChildren(Array.isArray(vnodes) ? vnodes : [
                 vnodes
             ]);
             updateNodes(dom, dom.vnodes, vnodes, hooks, null, namespace === "http://www.w3.org/1999/xhtml" ? undefined : namespace);
@@ -1200,17 +1201,17 @@ module.exports = function($window) {
 });
 
 
-parcelRegister("e8CF5", function(module, exports) {
+parcelRegister("UfRe2", function(module, exports) {
 "use strict";
 
-var $6eh63 = parcelRequire("6eh63");
+var $ahPL4 = parcelRequire("ahPL4");
 module.exports = function(render, schedule, console) {
     var subscriptions = [];
     var pending = false;
     var offset = -1;
     function sync() {
         for(offset = 0; offset < subscriptions.length; offset += 2)try {
-            render(subscriptions[offset], $6eh63(subscriptions[offset + 1]), redraw);
+            render(subscriptions[offset], $ahPL4(subscriptions[offset + 1]), redraw);
         } catch (e) {
             console.error(e);
         }
@@ -1236,7 +1237,7 @@ module.exports = function(render, schedule, console) {
         }
         if (component != null) {
             subscriptions.push(root, component);
-            render(root, $6eh63(component), redraw);
+            render(root, $ahPL4(component), redraw);
         }
     }
     return {
@@ -1247,12 +1248,12 @@ module.exports = function(render, schedule, console) {
 
 });
 
-parcelRegister("dEYHd", function(module, exports) {
+parcelRegister("8ohAQ", function(module, exports) {
 "use strict";
 
-var $1dGiU = parcelRequire("1dGiU");
+var $bGJ5a = parcelRequire("bGJ5a");
 
-var $4PZUy = parcelRequire("4PZUy");
+var $9MCRO = parcelRequire("9MCRO");
 module.exports = function($window, Promise, oncompletion) {
     var callbackCount = 0;
     function PromiseProxy(executor) {
@@ -1271,7 +1272,7 @@ module.exports = function($window, Promise, oncompletion) {
                 url = url.url;
             } else if (args == null) args = {};
             var promise = new Promise(function(resolve, reject) {
-                factory($1dGiU(url, args.params), args, function(data) {
+                factory($bGJ5a(url, args.params), args, function(data) {
                     if (typeof args.type === "function") {
                         if (Array.isArray(data)) for(var i = 0; i < data.length; i++)data[i] = new args.type(data[i]);
                         else data = new args.type(data);
@@ -1310,7 +1311,7 @@ module.exports = function($window, Promise, oncompletion) {
     }
     function hasHeader(args, name) {
         for(var key in args.headers){
-            if ($4PZUy.call(args.headers, key) && key.toLowerCase() === name) return true;
+            if ($9MCRO.call(args.headers, key) && key.toLowerCase() === name) return true;
         }
         return false;
     }
@@ -1333,7 +1334,7 @@ module.exports = function($window, Promise, oncompletion) {
             if (args.withCredentials) xhr.withCredentials = args.withCredentials;
             if (args.timeout) xhr.timeout = args.timeout;
             xhr.responseType = responseType;
-            for(var key in args.headers)if ($4PZUy.call(args.headers, key)) xhr.setRequestHeader(key, args.headers[key]);
+            for(var key in args.headers)if ($9MCRO.call(args.headers, key)) xhr.setRequestHeader(key, args.headers[key]);
             xhr.onreadystatechange = function(ev) {
                 // Don't throw errors on xhr.abort().
                 if (aborted) return;
@@ -1435,12 +1436,12 @@ module.exports = function($window, Promise, oncompletion) {
 };
 
 });
-parcelRegister("1dGiU", function(module, exports) {
+parcelRegister("bGJ5a", function(module, exports) {
 "use strict";
 
-var $2OUex = parcelRequire("2OUex");
+var $6KLd1 = parcelRequire("6KLd1");
 
-var $jiyQ0 = parcelRequire("jiyQ0");
+var $bVkaq = parcelRequire("bVkaq");
 // Returns `path` from `template` + `params`
 module.exports = function(template, params) {
     if (/:([^\/\.-]+)(\.{3})?:/.test(template)) throw new SyntaxError("Template parameter names must be separated by either a '/', '-', or '.'.");
@@ -1451,7 +1452,7 @@ module.exports = function(template, params) {
     var pathEnd = queryIndex < 0 ? queryEnd : queryIndex;
     var path = template.slice(0, pathEnd);
     var query = {};
-    $jiyQ0(query, params);
+    $bVkaq(query, params);
     var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m, key, variadic) {
         delete query[key];
         // If no such parameter exists, don't interpolate it.
@@ -1467,7 +1468,7 @@ module.exports = function(template, params) {
     var result = resolved.slice(0, newPathEnd);
     if (queryIndex >= 0) result += template.slice(queryIndex, queryEnd);
     if (newQueryIndex >= 0) result += (queryIndex < 0 ? "?" : "&") + resolved.slice(newQueryIndex, newQueryEnd);
-    var querystring = $2OUex(query);
+    var querystring = $6KLd1(query);
     if (querystring) result += (queryIndex < 0 && newQueryIndex < 0 ? "?" : "&") + querystring;
     if (hashIndex >= 0) result += template.slice(hashIndex);
     if (newHashIndex >= 0) result += (hashIndex < 0 ? "" : "&") + resolved.slice(newHashIndex);
@@ -1475,7 +1476,7 @@ module.exports = function(template, params) {
 };
 
 });
-parcelRegister("2OUex", function(module, exports) {
+parcelRegister("6KLd1", function(module, exports) {
 "use strict";
 module.exports = function(object) {
     if (Object.prototype.toString.call(object) !== "[object Object]") return "";
@@ -1491,17 +1492,17 @@ module.exports = function(object) {
 
 });
 
-parcelRegister("jiyQ0", function(module, exports) {
+parcelRegister("bVkaq", function(module, exports) {
 // This exists so I'm only saving it once.
 "use strict";
 
-var $4PZUy = parcelRequire("4PZUy");
+var $9MCRO = parcelRequire("9MCRO");
 module.exports = Object.assign || function(target, source) {
-    for(var key in source)if ($4PZUy.call(source, key)) target[key] = source[key];
+    for(var key in source)if ($9MCRO.call(source, key)) target[key] = source[key];
 };
 
 });
-parcelRegister("4PZUy", function(module, exports) {
+parcelRegister("9MCRO", function(module, exports) {
 // This exists so I'm only saving it once.
 "use strict";
 module.exports = ({}).hasOwnProperty;
@@ -1511,43 +1512,43 @@ module.exports = ({}).hasOwnProperty;
 
 
 
-parcelRegister("7AzvW", function(module, exports) {
+parcelRegister("jFffZ", function(module, exports) {
 "use strict";
 
-var $2Mjqa = parcelRequire("2Mjqa");
+var $fBKqb = parcelRequire("fBKqb");
 
-module.exports = (parcelRequire("e7LPu"))(typeof window !== "undefined" ? window : null, $2Mjqa);
+module.exports = (parcelRequire("bO6oz"))(typeof window !== "undefined" ? window : null, $fBKqb);
 
 });
-parcelRegister("2Mjqa", function(module, exports) {
+parcelRegister("fBKqb", function(module, exports) {
 "use strict";
 
-var $lI9DA = parcelRequire("lI9DA");
+var $iHb4t = parcelRequire("iHb4t");
 
-module.exports = (parcelRequire("e8CF5"))($lI9DA, typeof requestAnimationFrame !== "undefined" ? requestAnimationFrame : null, typeof console !== "undefined" ? console : null);
+module.exports = (parcelRequire("UfRe2"))($iHb4t, typeof requestAnimationFrame !== "undefined" ? requestAnimationFrame : null, typeof console !== "undefined" ? console : null);
 
 });
 
-parcelRegister("e7LPu", function(module, exports) {
+parcelRegister("bO6oz", function(module, exports) {
 "use strict";
 
-var $6eh63 = parcelRequire("6eh63");
+var $ahPL4 = parcelRequire("ahPL4");
 
-var $7EpIm = parcelRequire("7EpIm");
+var $hPUTp = parcelRequire("hPUTp");
 
-var $ebgA8 = parcelRequire("ebgA8");
+var $dXPdz = parcelRequire("dXPdz");
 
-var $1dGiU = parcelRequire("1dGiU");
+var $bGJ5a = parcelRequire("bGJ5a");
 
-var $1h0el = parcelRequire("1h0el");
+var $1bhZB = parcelRequire("1bhZB");
 
-var $gCGHa = parcelRequire("gCGHa");
+var $427bo = parcelRequire("427bo");
 
-var $jiyQ0 = parcelRequire("jiyQ0");
+var $bVkaq = parcelRequire("bVkaq");
 
-var $kU92C = parcelRequire("kU92C");
-var $a486d21768d97099$var$sentinel = {};
-function $a486d21768d97099$var$decodeURIComponentSave(component) {
+var $1Zud9 = parcelRequire("1Zud9");
+var $8989532d49d4b2cf$var$sentinel = {};
+function $8989532d49d4b2cf$var$decodeURIComponentSave(component) {
     try {
         return decodeURIComponent(component);
     } catch (e) {
@@ -1556,7 +1557,7 @@ function $a486d21768d97099$var$decodeURIComponentSave(component) {
 }
 module.exports = function($window, mountRedraw) {
     var callAsync = $window == null ? null : typeof $window.setImmediate === "function" ? $window.setImmediate : $window.setTimeout;
-    var p = $ebgA8.resolve();
+    var p = $dXPdz.resolve();
     var scheduled = false;
     // state === 0: init
     // state === 1: scheduled
@@ -1564,21 +1565,21 @@ module.exports = function($window, mountRedraw) {
     var ready = false;
     var state = 0;
     var compiled, fallbackRoute;
-    var currentResolver = $a486d21768d97099$var$sentinel, component, attrs, currentPath, lastUpdate;
+    var currentResolver = $8989532d49d4b2cf$var$sentinel, component, attrs, currentPath, lastUpdate;
     var RouterRoot = {
         onbeforeupdate: function onbeforeupdate() {
             state = state ? 2 : 1;
-            return !(!state || $a486d21768d97099$var$sentinel === currentResolver);
+            return !(!state || $8989532d49d4b2cf$var$sentinel === currentResolver);
         },
         onremove: function onremove() {
             $window.removeEventListener("popstate", fireAsync, false);
             $window.removeEventListener("hashchange", resolveRoute, false);
         },
         view: function view() {
-            if (!state || $a486d21768d97099$var$sentinel === currentResolver) return;
+            if (!state || $8989532d49d4b2cf$var$sentinel === currentResolver) return;
             // Wrap in a fragment to preserve existing key semantics
             var vnode = [
-                $6eh63(component, attrs.key, attrs)
+                $ahPL4(component, attrs.key, attrs)
             ];
             if (currentResolver) vnode = currentResolver.render(vnode[0]);
             return vnode;
@@ -1600,9 +1601,9 @@ module.exports = function($window, mountRedraw) {
         // This seemingly useless `.concat()` speeds up the tests quite a bit,
         // since the representation is consistently a relatively poorly
         // optimized cons string.
-        var path = prefix.concat().replace(/(?:%[a-f89][a-f0-9])+/gim, $a486d21768d97099$var$decodeURIComponentSave).slice(route.prefix.length);
-        var data = $1h0el(path);
-        $jiyQ0(data.params, $window.history.state);
+        var path = prefix.concat().replace(/(?:%[a-f89][a-f0-9])+/gim, $8989532d49d4b2cf$var$decodeURIComponentSave).slice(route.prefix.length);
+        var data = $1bhZB(path);
+        $bVkaq(data.params, $window.history.state);
         function reject(e) {
             console.error(e);
             setPath(fallbackRoute, null, {
@@ -1661,7 +1662,7 @@ module.exports = function($window, mountRedraw) {
         }
     }
     function setPath(path, data, options) {
-        path = $1dGiU(path, data);
+        path = $bGJ5a(path, data);
         if (ready) {
             fireAsync();
             var state = options ? options.state : null;
@@ -1678,12 +1679,12 @@ module.exports = function($window, mountRedraw) {
             return {
                 route: route,
                 component: routes[route],
-                check: $gCGHa(route)
+                check: $427bo(route)
             };
         });
         fallbackRoute = defaultRoute;
         if (defaultRoute != null) {
-            var defaultData = $1h0el(defaultRoute);
+            var defaultData = $1bhZB(defaultRoute);
             if (!compiled.some(function(i) {
                 return i.check(defaultData);
             })) throw new ReferenceError("Default route doesn't match any known routes.");
@@ -1713,7 +1714,7 @@ module.exports = function($window, mountRedraw) {
             //
             // We don't strip the other parameters because for convenience we
             // let them be specified in the selector as well.
-            var child = $7EpIm(vnode.attrs.selector || "a", $kU92C(vnode.attrs, [
+            var child = $hPUTp(vnode.attrs.selector || "a", $1Zud9(vnode.attrs, [
                 "options",
                 "params",
                 "selector",
@@ -1735,7 +1736,7 @@ module.exports = function($window, mountRedraw) {
                 options = vnode.attrs.options;
                 onclick = vnode.attrs.onclick;
                 // Easier to build it now to keep it isomorphic.
-                href = $1dGiU(child.attrs.href, vnode.attrs.params);
+                href = $bGJ5a(child.attrs.href, vnode.attrs.params);
                 child.attrs.href = route.prefix + href;
                 child.attrs.onclick = function(e) {
                     var result;
@@ -1772,23 +1773,23 @@ module.exports = function($window, mountRedraw) {
 };
 
 });
-parcelRegister("7EpIm", function(module, exports) {
+parcelRegister("hPUTp", function(module, exports) {
 "use strict";
 
-var $6eh63 = parcelRequire("6eh63");
+var $ahPL4 = parcelRequire("ahPL4");
 
-var $iCmA2 = parcelRequire("iCmA2");
+var $lNZGj = parcelRequire("lNZGj");
 
-var $4PZUy = parcelRequire("4PZUy");
-var $592037321c32a7fb$var$selectorParser = /(?:(^|#|\.)([^#\.\[\]]+))|(\[(.+?)(?:\s*=\s*("|'|)((?:\\["'\]]|.)*?)\5)?\])/g;
-var $592037321c32a7fb$var$selectorCache = {};
-function $592037321c32a7fb$var$isEmpty(object) {
-    for(var key in object)if ($4PZUy.call(object, key)) return false;
+var $9MCRO = parcelRequire("9MCRO");
+var $cfc354cae4080493$var$selectorParser = /(?:(^|#|\.)([^#\.\[\]]+))|(\[(.+?)(?:\s*=\s*("|'|)((?:\\["'\]]|.)*?)\5)?\])/g;
+var $cfc354cae4080493$var$selectorCache = {};
+function $cfc354cae4080493$var$isEmpty(object) {
+    for(var key in object)if ($9MCRO.call(object, key)) return false;
     return true;
 }
-function $592037321c32a7fb$var$compileSelector(selector) {
+function $cfc354cae4080493$var$compileSelector(selector) {
     var match, tag = "div", classes = [], attrs = {};
-    while(match = $592037321c32a7fb$var$selectorParser.exec(selector)){
+    while(match = $cfc354cae4080493$var$selectorParser.exec(selector)){
         var type = match[1], value = match[2];
         if (type === "" && value !== "") tag = value;
         else if (type === "#") attrs.id = value;
@@ -1801,65 +1802,65 @@ function $592037321c32a7fb$var$compileSelector(selector) {
         }
     }
     if (classes.length > 0) attrs.className = classes.join(" ");
-    return $592037321c32a7fb$var$selectorCache[selector] = {
+    return $cfc354cae4080493$var$selectorCache[selector] = {
         tag: tag,
         attrs: attrs
     };
 }
-function $592037321c32a7fb$var$execSelector(state, vnode) {
+function $cfc354cae4080493$var$execSelector(state, vnode) {
     var attrs = vnode.attrs;
-    var hasClass = $4PZUy.call(attrs, "class");
-    var className = hasClass ? attrs["class"] : attrs.className;
+    var hasClass = $9MCRO.call(attrs, "class");
+    var className = hasClass ? attrs.class : attrs.className;
     vnode.tag = state.tag;
     vnode.attrs = {};
-    if (!$592037321c32a7fb$var$isEmpty(state.attrs) && !$592037321c32a7fb$var$isEmpty(attrs)) {
+    if (!$cfc354cae4080493$var$isEmpty(state.attrs) && !$cfc354cae4080493$var$isEmpty(attrs)) {
         var newAttrs = {};
-        for(var key in attrs)if ($4PZUy.call(attrs, key)) newAttrs[key] = attrs[key];
+        for(var key in attrs)if ($9MCRO.call(attrs, key)) newAttrs[key] = attrs[key];
         attrs = newAttrs;
     }
-    for(var key in state.attrs)if ($4PZUy.call(state.attrs, key) && key !== "className" && !$4PZUy.call(attrs, key)) attrs[key] = state.attrs[key];
+    for(var key in state.attrs)if ($9MCRO.call(state.attrs, key) && key !== "className" && !$9MCRO.call(attrs, key)) attrs[key] = state.attrs[key];
     if (className != null || state.attrs.className != null) attrs.className = className != null ? state.attrs.className != null ? String(state.attrs.className) + " " + String(className) : className : state.attrs.className != null ? state.attrs.className : null;
-    if (hasClass) attrs["class"] = null;
-    for(var key in attrs)if ($4PZUy.call(attrs, key) && key !== "key") {
+    if (hasClass) attrs.class = null;
+    for(var key in attrs)if ($9MCRO.call(attrs, key) && key !== "key") {
         vnode.attrs = attrs;
         break;
     }
     return vnode;
 }
-function $592037321c32a7fb$var$hyperscript(selector) {
+function $cfc354cae4080493$var$hyperscript(selector) {
     if (selector == null || typeof selector !== "string" && typeof selector !== "function" && typeof selector.view !== "function") throw Error("The selector must be either a string or a component.");
-    var vnode = $iCmA2.apply(1, arguments);
+    var vnode = $lNZGj.apply(1, arguments);
     if (typeof selector === "string") {
-        vnode.children = $6eh63.normalizeChildren(vnode.children);
-        if (selector !== "[") return $592037321c32a7fb$var$execSelector($592037321c32a7fb$var$selectorCache[selector] || $592037321c32a7fb$var$compileSelector(selector), vnode);
+        vnode.children = $ahPL4.normalizeChildren(vnode.children);
+        if (selector !== "[") return $cfc354cae4080493$var$execSelector($cfc354cae4080493$var$selectorCache[selector] || $cfc354cae4080493$var$compileSelector(selector), vnode);
     }
     vnode.tag = selector;
     return vnode;
 }
-module.exports = $592037321c32a7fb$var$hyperscript;
+module.exports = $cfc354cae4080493$var$hyperscript;
 
 });
 
-parcelRegister("ebgA8", function(module, exports) {
+parcelRegister("dXPdz", function(module, exports) {
 /* global window */ "use strict";
 
-var $cx1fz = parcelRequire("cx1fz");
+var $4kqT7 = parcelRequire("4kqT7");
 if (typeof window !== "undefined") {
-    if (typeof window.Promise === "undefined") window.Promise = $cx1fz;
-    else if (!window.Promise.prototype["finally"]) window.Promise.prototype["finally"] = $cx1fz.prototype["finally"];
+    if (typeof window.Promise === "undefined") window.Promise = $4kqT7;
+    else if (!window.Promise.prototype.finally) window.Promise.prototype.finally = $4kqT7.prototype.finally;
     module.exports = window.Promise;
 } else if (typeof $parcel$global !== "undefined") {
-    if (typeof $parcel$global.Promise === "undefined") $parcel$global.Promise = $cx1fz;
-    else if (!$parcel$global.Promise.prototype["finally"]) $parcel$global.Promise.prototype["finally"] = $cx1fz.prototype["finally"];
+    if (typeof $parcel$global.Promise === "undefined") $parcel$global.Promise = $4kqT7;
+    else if (!$parcel$global.Promise.prototype.finally) $parcel$global.Promise.prototype.finally = $4kqT7.prototype.finally;
     module.exports = $parcel$global.Promise;
-} else module.exports = $cx1fz;
+} else module.exports = $4kqT7;
 
 });
 
-parcelRegister("1h0el", function(module, exports) {
+parcelRegister("1bhZB", function(module, exports) {
 "use strict";
 
-var $59vIi = parcelRequire("59vIi");
+var $iahK6 = parcelRequire("iahK6");
 // Returns `{path, params}` from `url`
 module.exports = function(url) {
     var queryIndex = url.indexOf("?");
@@ -1874,14 +1875,14 @@ module.exports = function(url) {
     }
     return {
         path: path,
-        params: queryIndex < 0 ? {} : $59vIi(url.slice(queryIndex + 1, queryEnd))
+        params: queryIndex < 0 ? {} : $iahK6(url.slice(queryIndex + 1, queryEnd))
     };
 };
 
 });
-parcelRegister("59vIi", function(module, exports) {
+parcelRegister("iahK6", function(module, exports) {
 "use strict";
-function $3c0664a0ec7ed11b$var$decodeURIComponentSave(str) {
+function $d396ec7404febe23$var$decodeURIComponentSave(str) {
     try {
         return decodeURIComponent(str);
     } catch (err) {
@@ -1894,8 +1895,8 @@ module.exports = function(string) {
     var entries = string.split("&"), counters = {}, data = {};
     for(var i = 0; i < entries.length; i++){
         var entry = entries[i].split("=");
-        var key = $3c0664a0ec7ed11b$var$decodeURIComponentSave(entry[0]);
-        var value = entry.length === 2 ? $3c0664a0ec7ed11b$var$decodeURIComponentSave(entry[1]) : "";
+        var key = $d396ec7404febe23$var$decodeURIComponentSave(entry[0]);
+        var value = entry.length === 2 ? $d396ec7404febe23$var$decodeURIComponentSave(entry[1]) : "";
         if (value === "true") value = true;
         else if (value === "false") value = false;
         var levels = key.split(/\]\[?|\[/);
@@ -1926,17 +1927,17 @@ module.exports = function(string) {
 });
 
 
-parcelRegister("gCGHa", function(module, exports) {
+parcelRegister("427bo", function(module, exports) {
 "use strict";
 
-var $1h0el = parcelRequire("1h0el");
+var $1bhZB = parcelRequire("1bhZB");
 // Compiles a template into a function that takes a resolved path (without query
 // strings) and returns an object containing the template parameters with their
 // parsed values. This expects the input of the compiled template to be the
 // output of `parsePathname`. Note that it does *not* remove query parameters
 // specified in the template.
 module.exports = function(template) {
-    var templateData = $1h0el(template);
+    var templateData = $1bhZB(template);
     var templateKeys = Object.keys(templateData.params);
     var keys = [];
     var regexp = new RegExp("^" + templateData.path.replace(// I escape literal text so people can use things like `:file.:ext` or
@@ -1970,18 +1971,18 @@ module.exports = function(template) {
 
 });
 
-parcelRegister("kU92C", function(module, exports) {
+parcelRegister("1Zud9", function(module, exports) {
 "use strict";
 
-var $4PZUy = parcelRequire("4PZUy");
+var $9MCRO = parcelRequire("9MCRO");
 // Words in RegExp literals are sometimes mangled incorrectly by the internal bundler, so use RegExp().
-var $f3800d011b806959$var$magic = new RegExp("^(?:key|oninit|oncreate|onbeforeupdate|onupdate|onbeforeremove|onremove)$");
+var $1732ec3cd5be4a3d$var$magic = new RegExp("^(?:key|oninit|oncreate|onbeforeupdate|onupdate|onbeforeremove|onremove)$");
 module.exports = function(attrs, extras) {
     var result = {};
     if (extras != null) {
-        for(var key in attrs)if ($4PZUy.call(attrs, key) && !$f3800d011b806959$var$magic.test(key) && extras.indexOf(key) < 0) result[key] = attrs[key];
+        for(var key in attrs)if ($9MCRO.call(attrs, key) && !$1732ec3cd5be4a3d$var$magic.test(key) && extras.indexOf(key) < 0) result[key] = attrs[key];
     } else {
-        for(var key in attrs)if ($4PZUy.call(attrs, key) && !$f3800d011b806959$var$magic.test(key)) result[key] = attrs[key];
+        for(var key in attrs)if ($9MCRO.call(attrs, key) && !$1732ec3cd5be4a3d$var$magic.test(key)) result[key] = attrs[key];
     }
     return result;
 };
@@ -1990,14 +1991,14 @@ module.exports = function(attrs, extras) {
 
 
 
-function $4cfdb3add9285597$export$5f0017c582d45a2d(obj) {
+function $7bd6d9ddf4a378c5$export$5f0017c582d45a2d(obj) {
     "@swc/helpers - typeof";
     return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
 }
 
 
 "use strict";
-var $6d3f4b507512327e$export$af5de1609f06c8e6 = [
+var $162001cafa2b40fd$export$af5de1609f06c8e6 = [
     "January",
     "February",
     "March",
@@ -2011,9 +2012,18 @@ var $6d3f4b507512327e$export$af5de1609f06c8e6 = [
     "November",
     "December"
 ];
+function $162001cafa2b40fd$export$9e15fb06e64c4810(length) {
+    var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var result = "";
+    for(var i = 0; i < length; i++){
+        var randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters.charAt(randomIndex);
+    }
+    return result;
+}
 //polyfill
 if (window.NodeList && !NodeList.prototype.forEach) NodeList.prototype.forEach = Array.prototype.forEach;
-var $6d3f4b507512327e$export$33d904bed5c25b69 = function geolocation(callback) {
+var $162001cafa2b40fd$export$33d904bed5c25b69 = function geolocation(callback) {
     var n = document.getElementById("side-toast");
     n.style.transform = "translate(0vw,0px)";
     n.innerHTML = "determine position";
@@ -2022,20 +2032,20 @@ var $6d3f4b507512327e$export$33d904bed5c25b69 = function geolocation(callback) {
         n.style.transform = "translate(-100vw,0px)";
         n.innerHTML = "";
     };
-    var error = function error(_error) {
-        console.log(_error.code);
-        switch(_error.code){
-            case _error.PERMISSION_DENIED:
-                $6d3f4b507512327e$export$6593825dc0f3a767("Location not provided", 2000);
+    var error = function error(error) {
+        console.log(error.code);
+        switch(error.code){
+            case error.PERMISSION_DENIED:
+                $162001cafa2b40fd$export$6593825dc0f3a767("Location not provided", 2000);
                 break;
-            case _error.POSITION_UNAVAILABLE:
-                $6d3f4b507512327e$export$6593825dc0f3a767("Current location not available", 2000);
+            case error.POSITION_UNAVAILABLE:
+                $162001cafa2b40fd$export$6593825dc0f3a767("Current location not available", 2000);
                 break;
-            case _error.TIMEOUT:
-                $6d3f4b507512327e$export$6593825dc0f3a767("Timeout", 2000);
+            case error.TIMEOUT:
+                $162001cafa2b40fd$export$6593825dc0f3a767("Timeout", 2000);
                 break;
             default:
-                $6d3f4b507512327e$export$6593825dc0f3a767("unknown error", 2000);
+                $162001cafa2b40fd$export$6593825dc0f3a767("unknown error", 2000);
                 break;
         }
     };
@@ -2044,23 +2054,23 @@ var $6d3f4b507512327e$export$33d904bed5c25b69 = function geolocation(callback) {
         timeout: 20000,
         maximumAge: 0
     });
-    else $6d3f4b507512327e$export$6593825dc0f3a767("Geolocation is not supported by this browser.", 2000);
+    else $162001cafa2b40fd$export$6593825dc0f3a767("Geolocation is not supported by this browser.", 2000);
 };
-function $6d3f4b507512327e$var$hashCode(str) {
+function $162001cafa2b40fd$var$hashCode(str) {
     var hash = 0;
     for(var i = 0; i < str.length; i++)hash = ~~((hash << 5) - hash + str.charCodeAt(i));
     return hash;
 }
-function $6d3f4b507512327e$var$intToRGB(i) {
+function $162001cafa2b40fd$var$intToRGB(i) {
     var c = (i & 0x00ffffff).toString(16).toUpperCase();
     return "00000".substring(0, 6 - c.length) + c;
 }
-function $6d3f4b507512327e$var$getRandomInteger(min, max) {
+function $162001cafa2b40fd$var$getRandomInteger(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
 }
-function $6d3f4b507512327e$var$share(url) {
+function $162001cafa2b40fd$var$share(url) {
     var activity = new MozActivity({
         name: "share",
         data: {
@@ -2074,16 +2084,16 @@ function $6d3f4b507512327e$var$share(url) {
     };
 }
 //check if internet connection
-function $6d3f4b507512327e$var$check_iconnection() {
+function $162001cafa2b40fd$var$check_iconnection() {
     function updateOfflineStatus() {
-        $6d3f4b507512327e$export$a224d1f4f6f98541("Your Browser is offline", 15000);
+        $162001cafa2b40fd$export$a224d1f4f6f98541("Your Browser is offline", 15000);
         return false;
     }
     window.addEventListener("offline", updateOfflineStatus);
 }
-function $6d3f4b507512327e$var$delete_file(filename) {
+function $162001cafa2b40fd$var$delete_file(filename) {
     var sdcard = navigator.getDeviceStorages("sdcard");
-    var request = sdcard[1]["delete"](filename);
+    var request = sdcard[1].delete(filename);
     request.onsuccess = function() {
     //toaster("File deleted", 2000);
     };
@@ -2091,7 +2101,7 @@ function $6d3f4b507512327e$var$delete_file(filename) {
     //toaster("Unable to delete the file: " + this.error, 2000);
     };
 }
-function $6d3f4b507512327e$var$get_file(filename) {
+function $162001cafa2b40fd$var$get_file(filename) {
     var sdcard = navigator.getDeviceStorages("sdcard");
     var request = sdcard[1].get(filename);
     request.onsuccess = function() {
@@ -2102,7 +2112,7 @@ function $6d3f4b507512327e$var$get_file(filename) {
     //alert("Unable to get the file: " + this.error);
     };
 }
-function $6d3f4b507512327e$var$write_file(data, filename) {
+function $162001cafa2b40fd$var$write_file(data, filename) {
     var sdcard = navigator.getDeviceStorages("sdcard");
     var file = new Blob([
         data
@@ -2116,10 +2126,10 @@ function $6d3f4b507512327e$var$write_file(data, filename) {
     };
     // An error typically occur if a file with the same name already exist
     request.onerror = function() {
-        $6d3f4b507512327e$export$a224d1f4f6f98541("Unable to write the file: " + this.error, 2000);
+        $162001cafa2b40fd$export$a224d1f4f6f98541("Unable to write the file: " + this.error, 2000);
     };
 }
-var $6d3f4b507512327e$export$b04ad9f70842c3f1 = function sort_array(arr, item_key, type) {
+var $162001cafa2b40fd$export$b04ad9f70842c3f1 = function sort_array(arr, item_key, type) {
     if (type == "date") arr.sort(function(a, b) {
         var da = new Date(a[item_key]), db = new Date(b[item_key]);
         return da - db;
@@ -2136,15 +2146,15 @@ var $6d3f4b507512327e$export$b04ad9f70842c3f1 = function sort_array(arr, item_ke
         return 0;
     });
 };
-var $6d3f4b507512327e$var$uid = function uid() {
+var $162001cafa2b40fd$var$uid = function uid() {
     function _p8(s) {
         var p = (Math.random().toString(16) + "000000000").substr(2, 8);
         return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
     }
     return "greg@" + _p8() + _p8(true) + _p8(true) + _p8();
 };
-var $6d3f4b507512327e$var$notification = "";
-var $6d3f4b507512327e$var$notify = function notify(param_title, param_text, param_silent) {
+var $162001cafa2b40fd$var$notification = "";
+var $162001cafa2b40fd$var$notify = function notify(param_title, param_text, param_silent) {
     var options = {
         body: param_text,
         silent: param_silent,
@@ -2152,15 +2162,15 @@ var $6d3f4b507512327e$var$notify = function notify(param_title, param_text, para
     };
     // Let's check whether notification permissions have already been granted
     if (Notification.permission === "granted") // If it's okay let's create a notification
-    $6d3f4b507512327e$var$notification = new Notification(param_title, options);
+    $162001cafa2b40fd$var$notification = new Notification(param_title, options);
     // Otherwise, we need to ask the user for permission
     if (Notification.permission !== "denied") Notification.requestPermission().then(function(permission) {
         // If the user accepts, let's create a notification
-        if (permission === "granted") $6d3f4b507512327e$var$notification = new Notification(param_title, options);
+        if (permission === "granted") $162001cafa2b40fd$var$notification = new Notification(param_title, options);
     });
 };
 //https://notifications.spec.whatwg.org/#dictdef-notificationaction
-var $6d3f4b507512327e$var$pushLocalNotification = function pushLocalNotification(title, body) {
+var $162001cafa2b40fd$var$pushLocalNotification = function pushLocalNotification(title, body) {
     window.Notification.requestPermission().then(function(result) {
         var notification = new window.Notification(title, {
             body: body
@@ -2184,12 +2194,12 @@ var $6d3f4b507512327e$var$pushLocalNotification = function pushLocalNotification
         };
     });
 };
-function $6d3f4b507512327e$export$a22775fa5e2eebd9(url) {
+function $162001cafa2b40fd$export$a22775fa5e2eebd9(url) {
     var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
     if (pattern.test(url)) return true;
     return false;
 }
-var $6d3f4b507512327e$export$39e873de56f329d8 = function getManifest(callback) {
+var $162001cafa2b40fd$export$39e873de56f329d8 = function getManifest(callback) {
     if (!navigator.mozApps) //let t = document.getElementById("kaisos-ads");
     //t.remove();
     return false;
@@ -2200,82 +2210,82 @@ var $6d3f4b507512327e$export$39e873de56f329d8 = function getManifest(callback) {
     self.onerror = function() {};
 };
 //top toaster
-var $6d3f4b507512327e$var$queue = [];
-var $6d3f4b507512327e$var$timeout;
-var $6d3f4b507512327e$export$a224d1f4f6f98541 = function toaster(text, time) {
-    $6d3f4b507512327e$var$queue.push({
+var $162001cafa2b40fd$var$queue = [];
+var $162001cafa2b40fd$var$timeout;
+var $162001cafa2b40fd$export$a224d1f4f6f98541 = function toaster(text, time) {
+    $162001cafa2b40fd$var$queue.push({
         text: text,
         time: time
     });
-    if ($6d3f4b507512327e$var$queue.length === 1) $6d3f4b507512327e$var$toast_q(text, time);
+    if ($162001cafa2b40fd$var$queue.length === 1) $162001cafa2b40fd$var$toast_q(text, time);
 };
-var $6d3f4b507512327e$var$toast_q = function toast_q1(text, time) {
+var $162001cafa2b40fd$var$toast_q = function toast_q1(text, time) {
     var x = document.querySelector("div#toast");
-    x.innerHTML = $6d3f4b507512327e$var$queue[0].text;
+    x.innerHTML = $162001cafa2b40fd$var$queue[0].text;
     x.style.transform = "translate(0px, 0px)";
-    $6d3f4b507512327e$var$timeout = setTimeout(function() {
-        $6d3f4b507512327e$var$timeout = null;
+    $162001cafa2b40fd$var$timeout = setTimeout(function() {
+        $162001cafa2b40fd$var$timeout = null;
         x.style.transform = "translate(0px, -100px)";
-        $6d3f4b507512327e$var$queue = $6d3f4b507512327e$var$queue.slice(1);
-        if ($6d3f4b507512327e$var$queue.length > 0) setTimeout(function() {
-            $6d3f4b507512327e$var$toast_q(text, time);
+        $162001cafa2b40fd$var$queue = $162001cafa2b40fd$var$queue.slice(1);
+        if ($162001cafa2b40fd$var$queue.length > 0) setTimeout(function() {
+            $162001cafa2b40fd$var$toast_q(text, time);
         }, 1000);
     }, time);
 };
 //side toaster
-var $6d3f4b507512327e$var$queue_st = [];
-var $6d3f4b507512327e$export$6593825dc0f3a767 = function side_toaster(text, time) {
-    $6d3f4b507512327e$var$queue_st.push({
+var $162001cafa2b40fd$var$queue_st = [];
+var $162001cafa2b40fd$export$6593825dc0f3a767 = function side_toaster(text, time) {
+    $162001cafa2b40fd$var$queue_st.push({
         text: text,
         time: time
     });
-    if ($6d3f4b507512327e$var$queue_st.length === 1) $6d3f4b507512327e$var$toast_qq(text, time);
+    if ($162001cafa2b40fd$var$queue_st.length === 1) $162001cafa2b40fd$var$toast_qq(text, time);
 };
-var $6d3f4b507512327e$var$toast_qq = function toast_qq1(text, time) {
+var $162001cafa2b40fd$var$toast_qq = function toast_qq1(text, time) {
     var x = document.querySelector("div#side-toast");
-    x.innerHTML = $6d3f4b507512327e$var$queue_st[0].text;
+    x.innerHTML = $162001cafa2b40fd$var$queue_st[0].text;
     x.style.transform = "translate(0vh, 0px)";
-    $6d3f4b507512327e$var$timeout = setTimeout(function() {
+    $162001cafa2b40fd$var$timeout = setTimeout(function() {
         x.style.transform = "translate(-100vw,0px)";
-        $6d3f4b507512327e$var$queue_st = $6d3f4b507512327e$var$queue.slice(1);
-        if ($6d3f4b507512327e$var$queue_st.length > 0) setTimeout(function() {
-            $6d3f4b507512327e$var$toast_qq(text, time);
+        $162001cafa2b40fd$var$queue_st = $162001cafa2b40fd$var$queue.slice(1);
+        if ($162001cafa2b40fd$var$queue_st.length > 0) setTimeout(function() {
+            $162001cafa2b40fd$var$toast_qq(text, time);
         }, 1000);
     }, time);
 };
-var $6d3f4b507512327e$export$247be4ede8e3a24a = function bottom_bar(left, center, right) {
+var $162001cafa2b40fd$export$247be4ede8e3a24a = function bottom_bar(left, center, right) {
     document.querySelector("div#bottom-bar div#button-left").innerHTML = left;
     document.querySelector("div#bottom-bar div#button-center").innerHTML = center;
     document.querySelector("div#bottom-bar div#button-right").innerHTML = right;
     if (left == "" && center == "" && right == "") document.querySelector("div#bottom-bar").style.display = "none";
     else document.querySelector("div#bottom-bar").style.display = "block";
 };
-var $6d3f4b507512327e$export$7ce2ea7c45ae9a07 = function top_bar(left, center, right) {
+var $162001cafa2b40fd$export$7ce2ea7c45ae9a07 = function top_bar(left, center, right) {
     document.querySelector("div#top-bar div.button-left").innerHTML = left;
     document.querySelector("div#top-bar div.button-center").textContent = center;
     document.querySelector("div#top-bar div.button-right").textContent = right;
     if (left == "" && center == "" && right == "") document.querySelector("div#top-bar").style.display = "none";
     else document.querySelector("div#top-bar").style.display = "block";
 };
-var $6d3f4b507512327e$var$add_script = function add_script(script) {
+var $162001cafa2b40fd$var$add_script = function add_script(script) {
     document.body.appendChild(document.createElement("script")).src = script;
 };
-var $6d3f4b507512327e$var$lock;
-var $6d3f4b507512327e$var$screenlock = function screenlock(stat) {
+var $162001cafa2b40fd$var$lock;
+var $162001cafa2b40fd$var$screenlock = function screenlock(stat) {
     if (typeof window.navigator.requestWakeLock === "undefined") return false;
     if (stat == "lock") {
-        $6d3f4b507512327e$var$lock = window.navigator.requestWakeLock("screen");
-        $6d3f4b507512327e$var$lock.onsuccess = function() {};
-        $6d3f4b507512327e$var$lock.onerror = function() {
+        $162001cafa2b40fd$var$lock = window.navigator.requestWakeLock("screen");
+        $162001cafa2b40fd$var$lock.onsuccess = function() {};
+        $162001cafa2b40fd$var$lock.onerror = function() {
             alert("An error occurred: " + this.error.name);
         };
     }
     if (stat == "unlock") {
-        if ($6d3f4b507512327e$var$lock.topic == "screen") $6d3f4b507512327e$var$lock.unlock();
+        if ($162001cafa2b40fd$var$lock.topic == "screen") $162001cafa2b40fd$var$lock.unlock();
     }
 };
 //filesize
-function $6d3f4b507512327e$var$formatFileSize(bytes, decimalPoint) {
+function $162001cafa2b40fd$var$formatFileSize(bytes, decimalPoint) {
     if (bytes || bytes > 0 || bytes != undefined || bytes != NaN) {
         var k = 1000, dm = decimalPoint || 2, sizes = [
             "Bytes",
@@ -2291,7 +2301,7 @@ function $6d3f4b507512327e$var$formatFileSize(bytes, decimalPoint) {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
     }
 }
-var $6d3f4b507512327e$export$6714d0f9237d35de = function pick_image(cb) {
+var $162001cafa2b40fd$export$6714d0f9237d35de = function pick_image(cb) {
     var activity = new MozActivity({
         name: "pick",
         data: {
@@ -2311,9 +2321,9 @@ var $6d3f4b507512327e$export$6714d0f9237d35de = function pick_image(cb) {
         console.log("The activity encouter en error: " + this.error);
     };
 };
-function $6d3f4b507512327e$export$dccb98b97a3cb8be(storage, path, notification) {
+function $162001cafa2b40fd$export$dccb98b97a3cb8be(storage, path, notification) {
     var sdcard = navigator.getDeviceStorages("sdcard");
-    var requestDel = sdcard[storage]["delete"](path);
+    var requestDel = sdcard[storage].delete(path);
     requestDel.onsuccess = function() {
         if (notification == "notification") helper.toaster('File "' + name + '" successfully deleted frome the sdcard storage area');
     };
@@ -2323,10 +2333,10 @@ function $6d3f4b507512327e$export$dccb98b97a3cb8be(storage, path, notification) 
 }
 
 
-var $ba501d359f0081e2$exports = {};
+var $39e0152360893de3$exports = {};
 (function webpackUniversalModuleDefinition(root, factory) {
-    $ba501d359f0081e2$exports = factory();
-})(typeof self !== "undefined" ? self : $ba501d359f0081e2$exports, function() {
+    $39e0152360893de3$exports = factory();
+})(typeof self !== "undefined" ? self : $39e0152360893de3$exports, function() {
     return /******/ function(modules) {
         /******/ // The module cache
         /******/ var installedModules = {};
@@ -2430,10 +2440,10 @@ var $ba501d359f0081e2$exports = {};
                         if (x >= this.size) x = (x ^ this.primitive) & this.size - 1; // tslint:disable-line:no-bitwise
                     }
                     for(var i = 0; i < this.size - 1; i++)this.logTable[this.expTable[i]] = i;
-                    this.zero = new GenericGFPoly_1["default"](this, Uint8ClampedArray.from([
+                    this.zero = new GenericGFPoly_1.default(this, Uint8ClampedArray.from([
                         0
                     ]));
-                    this.one = new GenericGFPoly_1["default"](this, Uint8ClampedArray.from([
+                    this.one = new GenericGFPoly_1.default(this, Uint8ClampedArray.from([
                         1
                     ]));
                 }
@@ -2450,7 +2460,7 @@ var $ba501d359f0081e2$exports = {};
                     if (coefficient === 0) return this.zero;
                     var coefficients = new Uint8ClampedArray(degree + 1);
                     coefficients[0] = coefficient;
-                    return new GenericGFPoly_1["default"](this, coefficients);
+                    return new GenericGFPoly_1.default(this, coefficients);
                 };
                 GenericGF.prototype.log = function(a) {
                     if (a === 0) throw new Error("Can't take log(0)");
@@ -2461,7 +2471,7 @@ var $ba501d359f0081e2$exports = {};
                 };
                 return GenericGF;
             }();
-            exports["default"] = GenericGF;
+            exports.default = GenericGF;
         /***/ },
         /* 2 */ /***/ function(module1, exports, __webpack_require__) {
             "use strict";
@@ -2557,7 +2567,7 @@ var $ba501d359f0081e2$exports = {};
                 };
                 return GenericGFPoly;
             }();
-            exports["default"] = GenericGFPoly;
+            exports.default = GenericGFPoly;
         /***/ },
         /* 3 */ /***/ function(module1, exports, __webpack_require__) {
             "use strict";
@@ -2610,8 +2620,8 @@ var $ba501d359f0081e2$exports = {};
                 if (!result && (options.inversionAttempts === "attemptBoth" || options.inversionAttempts === "invertFirst")) result = scan(tryInvertedFirst ? binarized : inverted);
                 return result;
             }
-            jsQR["default"] = jsQR;
-            exports["default"] = jsQR;
+            jsQR.default = jsQR;
+            exports.default = jsQR;
         /***/ },
         /* 4 */ /***/ function(module1, exports, __webpack_require__) {
             "use strict";
@@ -2728,8 +2738,8 @@ var $ba501d359f0081e2$exports = {};
                 }
                 return bitCount;
             }
-            function pushBit(bit, _byte) {
-                return _byte << 1 | bit;
+            function pushBit(bit, byte) {
+                return byte << 1 | bit;
             }
             // tslint:enable:no-bitwise
             var FORMAT_INFO_TABLE = [
@@ -10615,8 +10625,8 @@ var $ba501d359f0081e2$exports = {};
             function decode(bytes, twoS) {
                 var outputBytes = new Uint8ClampedArray(bytes.length);
                 outputBytes.set(bytes);
-                var field = new GenericGF_1["default"](0x011D, 256, 0); // x^8 + x^4 + x^3 + x^2 + 1
-                var poly = new GenericGFPoly_1["default"](field, outputBytes);
+                var field = new GenericGF_1.default(0x011D, 256, 0); // x^8 + x^4 + x^3 + x^2 + 1
+                var poly = new GenericGFPoly_1.default(field, outputBytes);
                 var syndromeCoefficients = new Uint8ClampedArray(twoS);
                 var error = false;
                 for(var s = 0; s < twoS; s++){
@@ -10625,7 +10635,7 @@ var $ba501d359f0081e2$exports = {};
                     if (evaluation !== 0) error = true;
                 }
                 if (!error) return outputBytes;
-                var syndrome = new GenericGFPoly_1["default"](field, syndromeCoefficients);
+                var syndrome = new GenericGFPoly_1.default(field, syndromeCoefficients);
                 var sigmaOmega = runEuclideanAlgorithm(field, field.buildMonomial(twoS, 1), syndrome, twoS);
                 if (sigmaOmega === null) return null;
                 var errorLocations = findErrorLocations(field, sigmaOmega[0]);
@@ -13697,14 +13707,18 @@ var $ba501d359f0081e2$exports = {};
 });
 
 
-var $da5c51e5866985e6$var$video;
-var $da5c51e5866985e6$var$intv;
-var $da5c51e5866985e6$export$55e6c60a43cc74e2 = function stop_scan() {
+var $2b0cc46421a6d3fe$var$video = document.querySelector("video");
+var $2b0cc46421a6d3fe$var$intv;
+var $2b0cc46421a6d3fe$var$mediaStream;
+var $2b0cc46421a6d3fe$export$55e6c60a43cc74e2 = function stop_scan(callback) {
+    $2b0cc46421a6d3fe$var$mediaStream.getTracks().map(function(val) {
+        val.stop();
+    });
     document.getElementById("qr-screen").style.display = "none";
+    callback();
 };
-var $da5c51e5866985e6$export$be96fe42679d1b7e = function start_scan(callback) {
+var $2b0cc46421a6d3fe$export$be96fe42679d1b7e = function start_scan(callback) {
     document.getElementById("qr-screen").style.display = "block";
-    console.log("start");
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
     if (navigator.getUserMedia) navigator.getUserMedia({
         audio: false,
@@ -13713,24 +13727,25 @@ var $da5c51e5866985e6$export$be96fe42679d1b7e = function start_scan(callback) {
             height: 200
         }
     }, function(stream) {
-        $da5c51e5866985e6$var$video = document.querySelector("video");
-        $da5c51e5866985e6$var$video.srcObject = stream;
-        $da5c51e5866985e6$var$video.onloadedmetadata = function(e) {
-            $da5c51e5866985e6$var$video.play();
+        $2b0cc46421a6d3fe$var$video.srcObject = stream;
+        console.log(stream);
+        $2b0cc46421a6d3fe$var$mediaStream = stream;
+        $2b0cc46421a6d3fe$var$video.onloadedmetadata = function(e) {
+            $2b0cc46421a6d3fe$var$video.play();
             var barcodeCanvas = document.createElement("canvas");
-            $da5c51e5866985e6$var$intv = setInterval(function() {
-                barcodeCanvas.width = $da5c51e5866985e6$var$video.videoWidth;
-                barcodeCanvas.height = $da5c51e5866985e6$var$video.videoHeight;
+            $2b0cc46421a6d3fe$var$intv = setInterval(function() {
+                barcodeCanvas.width = $2b0cc46421a6d3fe$var$video.videoWidth;
+                barcodeCanvas.height = $2b0cc46421a6d3fe$var$video.videoHeight;
                 var barcodeContext = barcodeCanvas.getContext("2d");
-                var imageWidth = Math.max(1, Math.floor($da5c51e5866985e6$var$video.videoWidth)), imageHeight = Math.max(1, Math.floor($da5c51e5866985e6$var$video.videoHeight));
-                barcodeContext.drawImage($da5c51e5866985e6$var$video, 0, 0, imageWidth, imageHeight);
+                var imageWidth = Math.max(1, Math.floor($2b0cc46421a6d3fe$var$video.videoWidth)), imageHeight = Math.max(1, Math.floor($2b0cc46421a6d3fe$var$video.videoHeight));
+                barcodeContext.drawImage($2b0cc46421a6d3fe$var$video, 0, 0, imageWidth, imageHeight);
                 var imageData = barcodeContext.getImageData(0, 0, imageWidth, imageHeight);
                 var idd = imageData.data;
-                var code = (0, (/*@__PURE__*/$parcel$interopDefault($ba501d359f0081e2$exports)))(idd, imageWidth, imageHeight);
+                var code = (0, (/*@__PURE__*/$parcel$interopDefault($39e0152360893de3$exports)))(idd, imageWidth, imageHeight);
                 if (code) {
+                    clearInterval($2b0cc46421a6d3fe$var$intv);
                     callback(code.data);
-                    $da5c51e5866985e6$export$55e6c60a43cc74e2();
-                    clearInterval($da5c51e5866985e6$var$intv);
+                    $2b0cc46421a6d3fe$export$55e6c60a43cc74e2();
                 }
             }, 1000);
         };
@@ -13741,7 +13756,7 @@ var $da5c51e5866985e6$export$be96fe42679d1b7e = function start_scan(callback) {
 };
 
 
-var $f09be4829256f6d5$exports = {};
+var $9fbe31c6ff058869$exports = {};
 
 /*!
     localForage -- Offline Storage, Improved
@@ -13750,7 +13765,7 @@ var $f09be4829256f6d5$exports = {};
     (c) 2013-2017 Mozilla, Apache License 2.0
 */ (function(f) {
     var g;
-    $f09be4829256f6d5$exports = f();
+    $9fbe31c6ff058869$exports = f();
 })(function() {
     var define, module1, exports;
     return (function e(t, n, r) {
@@ -14050,10 +14065,10 @@ var $f09be4829256f6d5$exports = {};
         4: [
             function(_dereq_, module1, exports) {
                 "use strict";
-                var _typeof = typeof Symbol === "function" && (0, $4cfdb3add9285597$export$5f0017c582d45a2d)(Symbol.iterator) === "symbol" ? function _typeof(obj) {
-                    return typeof obj === "undefined" ? "undefined" : (0, $4cfdb3add9285597$export$5f0017c582d45a2d)(obj);
+                var _typeof = typeof Symbol === "function" && (0, $7bd6d9ddf4a378c5$export$5f0017c582d45a2d)(Symbol.iterator) === "symbol" ? function _typeof(obj) {
+                    return typeof obj === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$5f0017c582d45a2d)(obj);
                 } : function(obj) {
-                    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : (0, $4cfdb3add9285597$export$5f0017c582d45a2d)(obj);
+                    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$5f0017c582d45a2d)(obj);
                 };
                 function _classCallCheck(instance, Constructor) {
                     if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
@@ -15956,7 +15971,7 @@ var $f09be4829256f6d5$exports = {};
  * transition to t is the accepting token type, if any. If this is the terminal
  * state, then it does not emit a token.
  * @param {string|class} token to emit
- */ function $a06d5a398bbbfd36$var$State(token) {
+ */ function $410e7a787f87a2b4$var$State(token) {
     this.j = {}; // IMPLEMENTATION 1
     // this.j = []; // IMPLEMENTATION 2
     this.jr = [];
@@ -15970,7 +15985,7 @@ var $f09be4829256f6d5$exports = {};
  * @param {string} input character or token to transition on
  * @param {string|class} [token] token or multi-token to emit when reaching
  * this state
- */ $a06d5a398bbbfd36$var$State.prototype = {
+ */ $410e7a787f87a2b4$var$State.prototype = {
     /**
    * @param {State} state
    */ accepts: function accepts() {
@@ -16008,8 +16023,8 @@ var $f09be4829256f6d5$exports = {};
              // overrwites previous token
             return nextState;
         } // Create a new state for this input
-        nextState = $a06d5a398bbbfd36$var$makeState(); // Take the transition using the usual default mechanisms
-        var templateState = $a06d5a398bbbfd36$var$takeT(this, input);
+        nextState = $410e7a787f87a2b4$var$makeState(); // Take the transition using the usual default mechanisms
+        var templateState = $410e7a787f87a2b4$var$takeT(this, input);
         if (templateState) {
             // Some default state transition, make a prime state based on this one
             Object.assign(nextState.j, templateState.j);
@@ -16024,21 +16039,21 @@ var $f09be4829256f6d5$exports = {};
 /**
  * Utility function to create state without using new keyword (reduced file size
  * when minified)
- */ var $a06d5a398bbbfd36$var$makeState = function makeState() {
-    return new $a06d5a398bbbfd36$var$State();
+ */ var $410e7a787f87a2b4$var$makeState = function makeState() {
+    return new $410e7a787f87a2b4$var$State();
 };
 /**
  * Similar to previous except it is an accepting state that emits a token
  * @param {Token} token
- */ var $a06d5a398bbbfd36$var$makeAcceptingState = function makeAcceptingState(token) {
-    return new $a06d5a398bbbfd36$var$State(token);
+ */ var $410e7a787f87a2b4$var$makeAcceptingState = function makeAcceptingState(token) {
+    return new $410e7a787f87a2b4$var$State(token);
 };
 /**
  * Create a transition from startState to nextState via the given character
  * @param {State} startState transition from thie starting state
  * @param {Token} input via this input character or other concrete token type
  * @param {State} nextState to this next state
- */ var $a06d5a398bbbfd36$var$makeT = function makeT(startState, input, nextState) {
+ */ var $410e7a787f87a2b4$var$makeT = function makeT(startState, input, nextState) {
     // IMPLEMENTATION 1: Add to object (fast)
     if (!startState.j[input]) startState.j[input] = nextState;
      // IMPLEMENTATION 2: Add to array (slower)
@@ -16049,7 +16064,7 @@ var $f09be4829256f6d5$exports = {};
  * @param {State} startState stransition from this starting state
  * @param {RegExp} regex Regular expression to match on input
  * @param {State} nextState transition to this next state if there's are regex match
- */ var $a06d5a398bbbfd36$var$makeRegexT = function makeRegexT(startState, regex, nextState) {
+ */ var $410e7a787f87a2b4$var$makeRegexT = function makeRegexT(startState, regex, nextState) {
     startState.jr.push([
         regex,
         nextState
@@ -16060,7 +16075,7 @@ var $f09be4829256f6d5$exports = {};
  * @param {State} state
  * @param {Token} input character or other concrete token type to transition
  * @returns {?State} the next state, if any
- */ var $a06d5a398bbbfd36$var$takeT = function takeT(state, input) {
+ */ var $410e7a787f87a2b4$var$takeT = function takeT(state, input) {
     // IMPLEMENTATION 1: Object key lookup (faster)
     var nextState = state.j[input];
     if (nextState) return nextState;
@@ -16084,8 +16099,8 @@ var $f09be4829256f6d5$exports = {};
  * @param {State} startState
  * @param {Array} chars
  * @param {State} nextState
- */ var $a06d5a398bbbfd36$var$makeMultiT = function makeMultiT(startState, chars, nextState) {
-    for(var i = 0; i < chars.length; i++)$a06d5a398bbbfd36$var$makeT(startState, chars[i], nextState);
+ */ var $410e7a787f87a2b4$var$makeMultiT = function makeMultiT(startState, chars, nextState) {
+    for(var i = 0; i < chars.length; i++)$410e7a787f87a2b4$var$makeT(startState, chars[i], nextState);
 };
 /**
  * Set up a list of multiple transitions at once. transitions is a list of
@@ -16093,11 +16108,11 @@ var $f09be4829256f6d5$exports = {};
  * is the state to transition to
  * @param {State} startState
  * @param {Array} transitions
- */ var $a06d5a398bbbfd36$var$makeBatchT = function makeBatchT(startState, transitions) {
+ */ var $410e7a787f87a2b4$var$makeBatchT = function makeBatchT(startState, transitions) {
     for(var i = 0; i < transitions.length; i++){
         var input = transitions[i][0];
         var nextState = transitions[i][1];
-        $a06d5a398bbbfd36$var$makeT(startState, input, nextState);
+        $410e7a787f87a2b4$var$makeT(startState, input, nextState);
     }
 };
 /**
@@ -16113,7 +16128,7 @@ var $f09be4829256f6d5$exports = {};
  * @param {string} str
  * @param {Token} endStateFactory
  * @param {Token} defaultStateFactory
- */ var $a06d5a398bbbfd36$var$makeChainT = function makeChainT(state, str, endState, defaultStateFactory) {
+ */ var $410e7a787f87a2b4$var$makeChainT = function makeChainT(state, str, endState, defaultStateFactory) {
     var i = 0, len = str.length, nextState; // Find the next state without a jump to the next character
     while(i < len && (nextState = state.j[str[i]])){
         state = nextState;
@@ -16123,110 +16138,110 @@ var $f09be4829256f6d5$exports = {};
      // no new tokens were added
     while(i < len - 1){
         nextState = defaultStateFactory();
-        $a06d5a398bbbfd36$var$makeT(state, str[i], nextState);
+        $410e7a787f87a2b4$var$makeT(state, str[i], nextState);
         state = nextState;
         i++;
     }
-    $a06d5a398bbbfd36$var$makeT(state, str[len - 1], endState);
+    $410e7a787f87a2b4$var$makeT(state, str[len - 1], endState);
 };
 /******************************************************************************
 	Text Tokens
 	Tokens composed of strings
 ******************************************************************************/ // A valid web domain token
-var $a06d5a398bbbfd36$var$DOMAIN = "DOMAIN";
-var $a06d5a398bbbfd36$var$LOCALHOST = "LOCALHOST"; // special case of domain
+var $410e7a787f87a2b4$var$DOMAIN = "DOMAIN";
+var $410e7a787f87a2b4$var$LOCALHOST = "LOCALHOST"; // special case of domain
 // Valid top-level domain (see tlds.js)
-var $a06d5a398bbbfd36$var$TLD = "TLD"; // Any sequence of digits 0-9
-var $a06d5a398bbbfd36$var$NUM = "NUM"; // A web URL protocol. Supported types include
+var $410e7a787f87a2b4$var$TLD = "TLD"; // Any sequence of digits 0-9
+var $410e7a787f87a2b4$var$NUM = "NUM"; // A web URL protocol. Supported types include
 // - `http:`
 // - `https:`
 // - `ftp:`
 // - `ftps:`
 // - user-defined custom protocols
-var $a06d5a398bbbfd36$var$PROTOCOL = "PROTOCOL"; // Start of the email URI protocol
-var $a06d5a398bbbfd36$var$MAILTO = "MAILTO"; // mailto:
+var $410e7a787f87a2b4$var$PROTOCOL = "PROTOCOL"; // Start of the email URI protocol
+var $410e7a787f87a2b4$var$MAILTO = "MAILTO"; // mailto:
 // Any number of consecutive whitespace characters that are not newline
-var $a06d5a398bbbfd36$var$WS = "WS"; // New line (unix style)
-var $a06d5a398bbbfd36$var$NL = "NL"; // \n
+var $410e7a787f87a2b4$var$WS = "WS"; // New line (unix style)
+var $410e7a787f87a2b4$var$NL = "NL"; // \n
 // Opening/closing bracket classes
-var $a06d5a398bbbfd36$var$OPENBRACE = "OPENBRACE"; // {
-var $a06d5a398bbbfd36$var$OPENBRACKET = "OPENBRACKET"; // [
-var $a06d5a398bbbfd36$var$OPENANGLEBRACKET = "OPENANGLEBRACKET"; // <
-var $a06d5a398bbbfd36$var$OPENPAREN = "OPENPAREN"; // (
-var $a06d5a398bbbfd36$var$CLOSEBRACE = "CLOSEBRACE"; // }
-var $a06d5a398bbbfd36$var$CLOSEBRACKET = "CLOSEBRACKET"; // ]
-var $a06d5a398bbbfd36$var$CLOSEANGLEBRACKET = "CLOSEANGLEBRACKET"; // >
-var $a06d5a398bbbfd36$var$CLOSEPAREN = "CLOSEPAREN"; // )
+var $410e7a787f87a2b4$var$OPENBRACE = "OPENBRACE"; // {
+var $410e7a787f87a2b4$var$OPENBRACKET = "OPENBRACKET"; // [
+var $410e7a787f87a2b4$var$OPENANGLEBRACKET = "OPENANGLEBRACKET"; // <
+var $410e7a787f87a2b4$var$OPENPAREN = "OPENPAREN"; // (
+var $410e7a787f87a2b4$var$CLOSEBRACE = "CLOSEBRACE"; // }
+var $410e7a787f87a2b4$var$CLOSEBRACKET = "CLOSEBRACKET"; // ]
+var $410e7a787f87a2b4$var$CLOSEANGLEBRACKET = "CLOSEANGLEBRACKET"; // >
+var $410e7a787f87a2b4$var$CLOSEPAREN = "CLOSEPAREN"; // )
 // Various symbols
-var $a06d5a398bbbfd36$var$AMPERSAND = "AMPERSAND"; // &
-var $a06d5a398bbbfd36$var$APOSTROPHE = "APOSTROPHE"; // '
-var $a06d5a398bbbfd36$var$ASTERISK = "ASTERISK"; // *
-var $a06d5a398bbbfd36$var$AT = "AT"; // @
-var $a06d5a398bbbfd36$var$BACKSLASH = "BACKSLASH"; // \
-var $a06d5a398bbbfd36$var$BACKTICK = "BACKTICK"; // `
-var $a06d5a398bbbfd36$var$CARET = "CARET"; // ^
-var $a06d5a398bbbfd36$var$COLON = "COLON"; // :
-var $a06d5a398bbbfd36$var$COMMA = "COMMA"; // ,
-var $a06d5a398bbbfd36$var$DOLLAR = "DOLLAR"; // $
-var $a06d5a398bbbfd36$var$DOT = "DOT"; // .
-var $a06d5a398bbbfd36$var$EQUALS = "EQUALS"; // =
-var $a06d5a398bbbfd36$var$EXCLAMATION = "EXCLAMATION"; // !
-var $a06d5a398bbbfd36$var$HYPHEN = "HYPHEN"; // -
-var $a06d5a398bbbfd36$var$PERCENT = "PERCENT"; // %
-var $a06d5a398bbbfd36$var$PIPE = "PIPE"; // |
-var $a06d5a398bbbfd36$var$PLUS = "PLUS"; // +
-var $a06d5a398bbbfd36$var$POUND = "POUND"; // #
-var $a06d5a398bbbfd36$var$QUERY = "QUERY"; // ?
-var $a06d5a398bbbfd36$var$QUOTE = "QUOTE"; // "
-var $a06d5a398bbbfd36$var$SEMI = "SEMI"; // ;
-var $a06d5a398bbbfd36$var$SLASH = "SLASH"; // /
-var $a06d5a398bbbfd36$var$TILDE = "TILDE"; // ~
-var $a06d5a398bbbfd36$var$UNDERSCORE = "UNDERSCORE"; // _
+var $410e7a787f87a2b4$var$AMPERSAND = "AMPERSAND"; // &
+var $410e7a787f87a2b4$var$APOSTROPHE = "APOSTROPHE"; // '
+var $410e7a787f87a2b4$var$ASTERISK = "ASTERISK"; // *
+var $410e7a787f87a2b4$var$AT = "AT"; // @
+var $410e7a787f87a2b4$var$BACKSLASH = "BACKSLASH"; // \
+var $410e7a787f87a2b4$var$BACKTICK = "BACKTICK"; // `
+var $410e7a787f87a2b4$var$CARET = "CARET"; // ^
+var $410e7a787f87a2b4$var$COLON = "COLON"; // :
+var $410e7a787f87a2b4$var$COMMA = "COMMA"; // ,
+var $410e7a787f87a2b4$var$DOLLAR = "DOLLAR"; // $
+var $410e7a787f87a2b4$var$DOT = "DOT"; // .
+var $410e7a787f87a2b4$var$EQUALS = "EQUALS"; // =
+var $410e7a787f87a2b4$var$EXCLAMATION = "EXCLAMATION"; // !
+var $410e7a787f87a2b4$var$HYPHEN = "HYPHEN"; // -
+var $410e7a787f87a2b4$var$PERCENT = "PERCENT"; // %
+var $410e7a787f87a2b4$var$PIPE = "PIPE"; // |
+var $410e7a787f87a2b4$var$PLUS = "PLUS"; // +
+var $410e7a787f87a2b4$var$POUND = "POUND"; // #
+var $410e7a787f87a2b4$var$QUERY = "QUERY"; // ?
+var $410e7a787f87a2b4$var$QUOTE = "QUOTE"; // "
+var $410e7a787f87a2b4$var$SEMI = "SEMI"; // ;
+var $410e7a787f87a2b4$var$SLASH = "SLASH"; // /
+var $410e7a787f87a2b4$var$TILDE = "TILDE"; // ~
+var $410e7a787f87a2b4$var$UNDERSCORE = "UNDERSCORE"; // _
 // Default token - anything that is not one of the above
-var $a06d5a398bbbfd36$var$SYM = "SYM";
-var $a06d5a398bbbfd36$var$text = /*#__PURE__*/ Object.freeze({
+var $410e7a787f87a2b4$var$SYM = "SYM";
+var $410e7a787f87a2b4$var$text = /*#__PURE__*/ Object.freeze({
     __proto__: null,
-    DOMAIN: $a06d5a398bbbfd36$var$DOMAIN,
-    LOCALHOST: $a06d5a398bbbfd36$var$LOCALHOST,
-    TLD: $a06d5a398bbbfd36$var$TLD,
-    NUM: $a06d5a398bbbfd36$var$NUM,
-    PROTOCOL: $a06d5a398bbbfd36$var$PROTOCOL,
-    MAILTO: $a06d5a398bbbfd36$var$MAILTO,
-    WS: $a06d5a398bbbfd36$var$WS,
-    NL: $a06d5a398bbbfd36$var$NL,
-    OPENBRACE: $a06d5a398bbbfd36$var$OPENBRACE,
-    OPENBRACKET: $a06d5a398bbbfd36$var$OPENBRACKET,
-    OPENANGLEBRACKET: $a06d5a398bbbfd36$var$OPENANGLEBRACKET,
-    OPENPAREN: $a06d5a398bbbfd36$var$OPENPAREN,
-    CLOSEBRACE: $a06d5a398bbbfd36$var$CLOSEBRACE,
-    CLOSEBRACKET: $a06d5a398bbbfd36$var$CLOSEBRACKET,
-    CLOSEANGLEBRACKET: $a06d5a398bbbfd36$var$CLOSEANGLEBRACKET,
-    CLOSEPAREN: $a06d5a398bbbfd36$var$CLOSEPAREN,
-    AMPERSAND: $a06d5a398bbbfd36$var$AMPERSAND,
-    APOSTROPHE: $a06d5a398bbbfd36$var$APOSTROPHE,
-    ASTERISK: $a06d5a398bbbfd36$var$ASTERISK,
-    AT: $a06d5a398bbbfd36$var$AT,
-    BACKSLASH: $a06d5a398bbbfd36$var$BACKSLASH,
-    BACKTICK: $a06d5a398bbbfd36$var$BACKTICK,
-    CARET: $a06d5a398bbbfd36$var$CARET,
-    COLON: $a06d5a398bbbfd36$var$COLON,
-    COMMA: $a06d5a398bbbfd36$var$COMMA,
-    DOLLAR: $a06d5a398bbbfd36$var$DOLLAR,
-    DOT: $a06d5a398bbbfd36$var$DOT,
-    EQUALS: $a06d5a398bbbfd36$var$EQUALS,
-    EXCLAMATION: $a06d5a398bbbfd36$var$EXCLAMATION,
-    HYPHEN: $a06d5a398bbbfd36$var$HYPHEN,
-    PERCENT: $a06d5a398bbbfd36$var$PERCENT,
-    PIPE: $a06d5a398bbbfd36$var$PIPE,
-    PLUS: $a06d5a398bbbfd36$var$PLUS,
-    POUND: $a06d5a398bbbfd36$var$POUND,
-    QUERY: $a06d5a398bbbfd36$var$QUERY,
-    QUOTE: $a06d5a398bbbfd36$var$QUOTE,
-    SEMI: $a06d5a398bbbfd36$var$SEMI,
-    SLASH: $a06d5a398bbbfd36$var$SLASH,
-    TILDE: $a06d5a398bbbfd36$var$TILDE,
-    UNDERSCORE: $a06d5a398bbbfd36$var$UNDERSCORE,
-    SYM: $a06d5a398bbbfd36$var$SYM
+    DOMAIN: $410e7a787f87a2b4$var$DOMAIN,
+    LOCALHOST: $410e7a787f87a2b4$var$LOCALHOST,
+    TLD: $410e7a787f87a2b4$var$TLD,
+    NUM: $410e7a787f87a2b4$var$NUM,
+    PROTOCOL: $410e7a787f87a2b4$var$PROTOCOL,
+    MAILTO: $410e7a787f87a2b4$var$MAILTO,
+    WS: $410e7a787f87a2b4$var$WS,
+    NL: $410e7a787f87a2b4$var$NL,
+    OPENBRACE: $410e7a787f87a2b4$var$OPENBRACE,
+    OPENBRACKET: $410e7a787f87a2b4$var$OPENBRACKET,
+    OPENANGLEBRACKET: $410e7a787f87a2b4$var$OPENANGLEBRACKET,
+    OPENPAREN: $410e7a787f87a2b4$var$OPENPAREN,
+    CLOSEBRACE: $410e7a787f87a2b4$var$CLOSEBRACE,
+    CLOSEBRACKET: $410e7a787f87a2b4$var$CLOSEBRACKET,
+    CLOSEANGLEBRACKET: $410e7a787f87a2b4$var$CLOSEANGLEBRACKET,
+    CLOSEPAREN: $410e7a787f87a2b4$var$CLOSEPAREN,
+    AMPERSAND: $410e7a787f87a2b4$var$AMPERSAND,
+    APOSTROPHE: $410e7a787f87a2b4$var$APOSTROPHE,
+    ASTERISK: $410e7a787f87a2b4$var$ASTERISK,
+    AT: $410e7a787f87a2b4$var$AT,
+    BACKSLASH: $410e7a787f87a2b4$var$BACKSLASH,
+    BACKTICK: $410e7a787f87a2b4$var$BACKTICK,
+    CARET: $410e7a787f87a2b4$var$CARET,
+    COLON: $410e7a787f87a2b4$var$COLON,
+    COMMA: $410e7a787f87a2b4$var$COMMA,
+    DOLLAR: $410e7a787f87a2b4$var$DOLLAR,
+    DOT: $410e7a787f87a2b4$var$DOT,
+    EQUALS: $410e7a787f87a2b4$var$EQUALS,
+    EXCLAMATION: $410e7a787f87a2b4$var$EXCLAMATION,
+    HYPHEN: $410e7a787f87a2b4$var$HYPHEN,
+    PERCENT: $410e7a787f87a2b4$var$PERCENT,
+    PIPE: $410e7a787f87a2b4$var$PIPE,
+    PLUS: $410e7a787f87a2b4$var$PLUS,
+    POUND: $410e7a787f87a2b4$var$POUND,
+    QUERY: $410e7a787f87a2b4$var$QUERY,
+    QUOTE: $410e7a787f87a2b4$var$QUOTE,
+    SEMI: $410e7a787f87a2b4$var$SEMI,
+    SLASH: $410e7a787f87a2b4$var$SLASH,
+    TILDE: $410e7a787f87a2b4$var$TILDE,
+    UNDERSCORE: $410e7a787f87a2b4$var$UNDERSCORE,
+    SYM: $410e7a787f87a2b4$var$SYM
 });
 // NOTE: punycode versions of IDNs are not included here because these will not
 // be as commonly used without the http prefix anyway and linkify will already
@@ -16234,7 +16249,7 @@ var $a06d5a398bbbfd36$var$text = /*#__PURE__*/ Object.freeze({
 // To be updated with the values in this list
 // http://data.iana.org/TLD/tlds-alpha-by-domain.txt
 // Version 2021022800, Last Updated Sun Feb 28 07:07:01 2021 UTC
-var $a06d5a398bbbfd36$var$tlds = "aaa aarp abarth abb abbott abbvie abc able abogado abudhabi ac academy accenture accountant accountants aco actor ad adac ads adult ae aeg aero aetna af afamilycompany afl africa ag agakhan agency ai aig airbus airforce airtel akdn al alfaromeo alibaba alipay allfinanz allstate ally alsace alstom am amazon americanexpress americanfamily amex amfam amica amsterdam analytics android anquan anz ao aol apartments app apple aq aquarelle ar arab aramco archi army arpa art arte as asda asia associates at athleta attorney au auction audi audible audio auspost author auto autos avianca aw aws ax axa az azure ba baby baidu banamex bananarepublic band bank bar barcelona barclaycard barclays barefoot bargains baseball basketball bauhaus bayern bb bbc bbt bbva bcg bcn bd be beats beauty beer bentley berlin best bestbuy bet bf bg bh bharti bi bible bid bike bing bingo bio biz bj black blackfriday blockbuster blog bloomberg blue bm bms bmw bn bnpparibas bo boats boehringer bofa bom bond boo book booking bosch bostik boston bot boutique box br bradesco bridgestone broadway broker brother brussels bs bt budapest bugatti build builders business buy buzz bv bw by bz bzh ca cab cafe cal call calvinklein cam camera camp cancerresearch canon capetown capital capitalone car caravan cards care career careers cars casa case cash casino cat catering catholic cba cbn cbre cbs cc cd center ceo cern cf cfa cfd cg ch chanel channel charity chase chat cheap chintai christmas chrome church ci cipriani circle cisco citadel citi citic city cityeats ck cl claims cleaning click clinic clinique clothing cloud club clubmed cm cn co coach codes coffee college cologne com comcast commbank community company compare computer comsec condos construction consulting contact contractors cooking cookingchannel cool coop corsica country coupon coupons courses cpa cr credit creditcard creditunion cricket crown crs cruise cruises csc cu cuisinella cv cw cx cy cymru cyou cz dabur dad dance data date dating datsun day dclk dds de deal dealer deals degree delivery dell deloitte delta democrat dental dentist desi design dev dhl diamonds diet digital direct directory discount discover dish diy dj dk dm dnp do docs doctor dog domains dot download drive dtv dubai duck dunlop dupont durban dvag dvr dz earth eat ec eco edeka edu education ee eg email emerck energy engineer engineering enterprises epson equipment er ericsson erni es esq estate et etisalat eu eurovision eus events exchange expert exposed express extraspace fage fail fairwinds faith family fan fans farm farmers fashion fast fedex feedback ferrari ferrero fi fiat fidelity fido film final finance financial fire firestone firmdale fish fishing fit fitness fj fk flickr flights flir florist flowers fly fm fo foo food foodnetwork football ford forex forsale forum foundation fox fr free fresenius frl frogans frontdoor frontier ftr fujitsu fujixerox fun fund furniture futbol fyi ga gal gallery gallo gallup game games gap garden gay gb gbiz gd gdn ge gea gent genting george gf gg ggee gh gi gift gifts gives giving gl glade glass gle global globo gm gmail gmbh gmo gmx gn godaddy gold goldpoint golf goo goodyear goog google gop got gov gp gq gr grainger graphics gratis green gripe grocery group gs gt gu guardian gucci guge guide guitars guru gw gy hair hamburg hangout haus hbo hdfc hdfcbank health healthcare help helsinki here hermes hgtv hiphop hisamitsu hitachi hiv hk hkt hm hn hockey holdings holiday homedepot homegoods homes homesense honda horse hospital host hosting hot hoteles hotels hotmail house how hr hsbc ht hu hughes hyatt hyundai ibm icbc ice icu id ie ieee ifm ikano il im imamat imdb immo immobilien in inc industries infiniti info ing ink institute insurance insure int international intuit investments io ipiranga iq ir irish is ismaili ist istanbul it itau itv iveco jaguar java jcb je jeep jetzt jewelry jio jll jm jmp jnj jo jobs joburg jot joy jp jpmorgan jprs juegos juniper kaufen kddi ke kerryhotels kerrylogistics kerryproperties kfh kg kh ki kia kim kinder kindle kitchen kiwi km kn koeln komatsu kosher kp kpmg kpn kr krd kred kuokgroup kw ky kyoto kz la lacaixa lamborghini lamer lancaster lancia land landrover lanxess lasalle lat latino latrobe law lawyer lb lc lds lease leclerc lefrak legal lego lexus lgbt li lidl life lifeinsurance lifestyle lighting like lilly limited limo lincoln linde link lipsy live living lixil lk llc llp loan loans locker locus loft lol london lotte lotto love lpl lplfinancial lr ls lt ltd ltda lu lundbeck luxe luxury lv ly ma macys madrid maif maison makeup man management mango map market marketing markets marriott marshalls maserati mattel mba mc mckinsey md me med media meet melbourne meme memorial men menu merckmsd mg mh miami microsoft mil mini mint mit mitsubishi mk ml mlb mls mm mma mn mo mobi mobile moda moe moi mom monash money monster mormon mortgage moscow moto motorcycles mov movie mp mq mr ms msd mt mtn mtr mu museum mutual mv mw mx my mz na nab nagoya name nationwide natura navy nba nc ne nec net netbank netflix network neustar new news next nextdirect nexus nf nfl ng ngo nhk ni nico nike nikon ninja nissan nissay nl no nokia northwesternmutual norton now nowruz nowtv np nr nra nrw ntt nu nyc nz obi observer off office okinawa olayan olayangroup oldnavy ollo om omega one ong onl online onyourside ooo open oracle orange org organic origins osaka otsuka ott ovh pa page panasonic paris pars partners parts party passagens pay pccw pe pet pf pfizer pg ph pharmacy phd philips phone photo photography photos physio pics pictet pictures pid pin ping pink pioneer pizza pk pl place play playstation plumbing plus pm pn pnc pohl poker politie porn post pr pramerica praxi press prime pro prod productions prof progressive promo properties property protection pru prudential ps pt pub pw pwc py qa qpon quebec quest qvc racing radio raid re read realestate realtor realty recipes red redstone redumbrella rehab reise reisen reit reliance ren rent rentals repair report republican rest restaurant review reviews rexroth rich richardli ricoh ril rio rip rmit ro rocher rocks rodeo rogers room rs rsvp ru rugby ruhr run rw rwe ryukyu sa saarland safe safety sakura sale salon samsclub samsung sandvik sandvikcoromant sanofi sap sarl sas save saxo sb sbi sbs sc sca scb schaeffler schmidt scholarships school schule schwarz science scjohnson scot sd se search seat secure security seek select sener services ses seven sew sex sexy sfr sg sh shangrila sharp shaw shell shia shiksha shoes shop shopping shouji show showtime si silk sina singles site sj sk ski skin sky skype sl sling sm smart smile sn sncf so soccer social softbank software sohu solar solutions song sony soy spa space sport spot spreadbetting sr srl ss st stada staples star statebank statefarm stc stcgroup stockholm storage store stream studio study style su sucks supplies supply support surf surgery suzuki sv swatch swiftcover swiss sx sy sydney systems sz tab taipei talk taobao target tatamotors tatar tattoo tax taxi tc tci td tdk team tech technology tel temasek tennis teva tf tg th thd theater theatre tiaa tickets tienda tiffany tips tires tirol tj tjmaxx tjx tk tkmaxx tl tm tmall tn to today tokyo tools top toray toshiba total tours town toyota toys tr trade trading training travel travelchannel travelers travelersinsurance trust trv tt tube tui tunes tushu tv tvs tw tz ua ubank ubs ug uk unicom university uno uol ups us uy uz va vacations vana vanguard vc ve vegas ventures verisign versicherung vet vg vi viajes video vig viking villas vin vip virgin visa vision viva vivo vlaanderen vn vodka volkswagen volvo vote voting voto voyage vu vuelos wales walmart walter wang wanggou watch watches weather weatherchannel webcam weber website wed wedding weibo weir wf whoswho wien wiki williamhill win windows wine winners wme wolterskluwer woodside work works world wow ws wtc wtf xbox xerox xfinity xihuan xin xxx xyz yachts yahoo yamaxun yandex ye yodobashi yoga yokohama you youtube yt yun za zappos zara zero zip zm zone zuerich zw verm\xf6gensberater-ctb verm\xf6gensberatung-pwb \u03B5\u03BB \u03B5\u03C5 \u0431\u0433 \u0431\u0435\u043B \u0434\u0435\u0442\u0438 \u0435\u044E \u043A\u0430\u0442\u043E\u043B\u0438\u043A \u043A\u043E\u043C \u049B\u0430\u0437 \u043C\u043A\u0434 \u043C\u043E\u043D \u043C\u043E\u0441\u043A\u0432\u0430 \u043E\u043D\u043B\u0430\u0439\u043D \u043E\u0440\u0433 \u0440\u0443\u0441 \u0440\u0444 \u0441\u0430\u0439\u0442 \u0441\u0440\u0431 \u0443\u043A\u0440 \u10D2\u10D4 \u0570\u0561\u0575 \u05D9\u05E9\u05E8\u05D0\u05DC \u05E7\u05D5\u05DD \u0627\u0628\u0648\u0638\u0628\u064A \u0627\u062A\u0635\u0627\u0644\u0627\u062A \u0627\u0631\u0627\u0645\u0643\u0648 \u0627\u0644\u0627\u0631\u062F\u0646 \u0627\u0644\u0628\u062D\u0631\u064A\u0646 \u0627\u0644\u062C\u0632\u0627\u0626\u0631 \u0627\u0644\u0633\u0639\u0648\u062F\u064A\u0629 \u0627\u0644\u0639\u0644\u064A\u0627\u0646 \u0627\u0644\u0645\u063A\u0631\u0628 \u0627\u0645\u0627\u0631\u0627\u062A \u0627\u06CC\u0631\u0627\u0646 \u0628\u0627\u0631\u062A \u0628\u0627\u0632\u0627\u0631 \u0628\u06BE\u0627\u0631\u062A \u0628\u064A\u062A\u0643 \u067E\u0627\u06A9\u0633\u062A\u0627\u0646 \u0680\u0627\u0631\u062A \u062A\u0648\u0646\u0633 \u0633\u0648\u062F\u0627\u0646 \u0633\u0648\u0631\u064A\u0629 \u0634\u0628\u0643\u0629 \u0639\u0631\u0627\u0642 \u0639\u0631\u0628 \u0639\u0645\u0627\u0646 \u0641\u0644\u0633\u0637\u064A\u0646 \u0642\u0637\u0631 \u0643\u0627\u062B\u0648\u0644\u064A\u0643 \u0643\u0648\u0645 \u0645\u0635\u0631 \u0645\u0644\u064A\u0633\u064A\u0627 \u0645\u0648\u0631\u064A\u062A\u0627\u0646\u064A\u0627 \u0645\u0648\u0642\u0639 \u0647\u0645\u0631\u0627\u0647 \u0915\u0949\u092E \u0928\u0947\u091F \u092D\u093E\u0930\u0924 \u092D\u093E\u0930\u0924\u092E\u094D \u092D\u093E\u0930\u094B\u0924 \u0938\u0902\u0917\u0920\u0928 \u09AC\u09BE\u0982\u09B2\u09BE \u09AD\u09BE\u09B0\u09A4 \u09AD\u09BE\u09F0\u09A4 \u0A2D\u0A3E\u0A30\u0A24 \u0AAD\u0ABE\u0AB0\u0AA4 \u0B2D\u0B3E\u0B30\u0B24 \u0B87\u0BA8\u0BCD\u0BA4\u0BBF\u0BAF\u0BBE \u0B87\u0BB2\u0B99\u0BCD\u0B95\u0BC8 \u0B9A\u0BBF\u0B99\u0BCD\u0B95\u0BAA\u0BCD\u0BAA\u0BC2\u0BB0\u0BCD \u0C2D\u0C3E\u0C30\u0C24\u0C4D \u0CAD\u0CBE\u0CB0\u0CA4 \u0D2D\u0D3E\u0D30\u0D24\u0D02 \u0DBD\u0D82\u0D9A\u0DCF \u0E04\u0E2D\u0E21 \u0E44\u0E17\u0E22 \u0EA5\u0EB2\u0EA7 \uB2F7\uB137 \uB2F7\uCEF4 \uC0BC\uC131 \uD55C\uAD6D \u30A2\u30DE\u30BE\u30F3 \u30B0\u30FC\u30B0\u30EB \u30AF\u30E9\u30A6\u30C9 \u30B3\u30E0 \u30B9\u30C8\u30A2 \u30BB\u30FC\u30EB \u30D5\u30A1\u30C3\u30B7\u30E7\u30F3 \u30DD\u30A4\u30F3\u30C8 \u307F\u3093\u306A \u4E16\u754C \u4E2D\u4FE1 \u4E2D\u56FD \u4E2D\u570B \u4E2D\u6587\u7F51 \u4E9A\u9A6C\u900A \u4F01\u4E1A \u4F5B\u5C71 \u4FE1\u606F \u5065\u5EB7 \u516B\u5366 \u516C\u53F8 \u516C\u76CA \u53F0\u6E7E \u53F0\u7063 \u5546\u57CE \u5546\u5E97 \u5546\u6807 \u5609\u91CC \u5609\u91CC\u5927\u9152\u5E97 \u5728\u7EBF \u5927\u4F17\u6C7D\u8F66 \u5927\u62FF \u5929\u4E3B\u6559 \u5A31\u4E50 \u5BB6\u96FB \u5E7F\u4E1C \u5FAE\u535A \u6148\u5584 \u6211\u7231\u4F60 \u624B\u673A \u62DB\u8058 \u653F\u52A1 \u653F\u5E9C \u65B0\u52A0\u5761 \u65B0\u95FB \u65F6\u5C1A \u66F8\u7C4D \u673A\u6784 \u6DE1\u9A6C\u9521 \u6E38\u620F \u6FB3\u9580 \u70B9\u770B \u79FB\u52A8 \u7EC4\u7EC7\u673A\u6784 \u7F51\u5740 \u7F51\u5E97 \u7F51\u7AD9 \u7F51\u7EDC \u8054\u901A \u8BFA\u57FA\u4E9A \u8C37\u6B4C \u8D2D\u7269 \u901A\u8CA9 \u96C6\u56E2 \u96FB\u8A0A\u76C8\u79D1 \u98DE\u5229\u6D66 \u98DF\u54C1 \u9910\u5385 \u9999\u683C\u91CC\u62C9 \u9999\u6E2F".split(" ");
+var $410e7a787f87a2b4$var$tlds = "aaa aarp abarth abb abbott abbvie abc able abogado abudhabi ac academy accenture accountant accountants aco actor ad adac ads adult ae aeg aero aetna af afamilycompany afl africa ag agakhan agency ai aig airbus airforce airtel akdn al alfaromeo alibaba alipay allfinanz allstate ally alsace alstom am amazon americanexpress americanfamily amex amfam amica amsterdam analytics android anquan anz ao aol apartments app apple aq aquarelle ar arab aramco archi army arpa art arte as asda asia associates at athleta attorney au auction audi audible audio auspost author auto autos avianca aw aws ax axa az azure ba baby baidu banamex bananarepublic band bank bar barcelona barclaycard barclays barefoot bargains baseball basketball bauhaus bayern bb bbc bbt bbva bcg bcn bd be beats beauty beer bentley berlin best bestbuy bet bf bg bh bharti bi bible bid bike bing bingo bio biz bj black blackfriday blockbuster blog bloomberg blue bm bms bmw bn bnpparibas bo boats boehringer bofa bom bond boo book booking bosch bostik boston bot boutique box br bradesco bridgestone broadway broker brother brussels bs bt budapest bugatti build builders business buy buzz bv bw by bz bzh ca cab cafe cal call calvinklein cam camera camp cancerresearch canon capetown capital capitalone car caravan cards care career careers cars casa case cash casino cat catering catholic cba cbn cbre cbs cc cd center ceo cern cf cfa cfd cg ch chanel channel charity chase chat cheap chintai christmas chrome church ci cipriani circle cisco citadel citi citic city cityeats ck cl claims cleaning click clinic clinique clothing cloud club clubmed cm cn co coach codes coffee college cologne com comcast commbank community company compare computer comsec condos construction consulting contact contractors cooking cookingchannel cool coop corsica country coupon coupons courses cpa cr credit creditcard creditunion cricket crown crs cruise cruises csc cu cuisinella cv cw cx cy cymru cyou cz dabur dad dance data date dating datsun day dclk dds de deal dealer deals degree delivery dell deloitte delta democrat dental dentist desi design dev dhl diamonds diet digital direct directory discount discover dish diy dj dk dm dnp do docs doctor dog domains dot download drive dtv dubai duck dunlop dupont durban dvag dvr dz earth eat ec eco edeka edu education ee eg email emerck energy engineer engineering enterprises epson equipment er ericsson erni es esq estate et etisalat eu eurovision eus events exchange expert exposed express extraspace fage fail fairwinds faith family fan fans farm farmers fashion fast fedex feedback ferrari ferrero fi fiat fidelity fido film final finance financial fire firestone firmdale fish fishing fit fitness fj fk flickr flights flir florist flowers fly fm fo foo food foodnetwork football ford forex forsale forum foundation fox fr free fresenius frl frogans frontdoor frontier ftr fujitsu fujixerox fun fund furniture futbol fyi ga gal gallery gallo gallup game games gap garden gay gb gbiz gd gdn ge gea gent genting george gf gg ggee gh gi gift gifts gives giving gl glade glass gle global globo gm gmail gmbh gmo gmx gn godaddy gold goldpoint golf goo goodyear goog google gop got gov gp gq gr grainger graphics gratis green gripe grocery group gs gt gu guardian gucci guge guide guitars guru gw gy hair hamburg hangout haus hbo hdfc hdfcbank health healthcare help helsinki here hermes hgtv hiphop hisamitsu hitachi hiv hk hkt hm hn hockey holdings holiday homedepot homegoods homes homesense honda horse hospital host hosting hot hoteles hotels hotmail house how hr hsbc ht hu hughes hyatt hyundai ibm icbc ice icu id ie ieee ifm ikano il im imamat imdb immo immobilien in inc industries infiniti info ing ink institute insurance insure int international intuit investments io ipiranga iq ir irish is ismaili ist istanbul it itau itv iveco jaguar java jcb je jeep jetzt jewelry jio jll jm jmp jnj jo jobs joburg jot joy jp jpmorgan jprs juegos juniper kaufen kddi ke kerryhotels kerrylogistics kerryproperties kfh kg kh ki kia kim kinder kindle kitchen kiwi km kn koeln komatsu kosher kp kpmg kpn kr krd kred kuokgroup kw ky kyoto kz la lacaixa lamborghini lamer lancaster lancia land landrover lanxess lasalle lat latino latrobe law lawyer lb lc lds lease leclerc lefrak legal lego lexus lgbt li lidl life lifeinsurance lifestyle lighting like lilly limited limo lincoln linde link lipsy live living lixil lk llc llp loan loans locker locus loft lol london lotte lotto love lpl lplfinancial lr ls lt ltd ltda lu lundbeck luxe luxury lv ly ma macys madrid maif maison makeup man management mango map market marketing markets marriott marshalls maserati mattel mba mc mckinsey md me med media meet melbourne meme memorial men menu merckmsd mg mh miami microsoft mil mini mint mit mitsubishi mk ml mlb mls mm mma mn mo mobi mobile moda moe moi mom monash money monster mormon mortgage moscow moto motorcycles mov movie mp mq mr ms msd mt mtn mtr mu museum mutual mv mw mx my mz na nab nagoya name nationwide natura navy nba nc ne nec net netbank netflix network neustar new news next nextdirect nexus nf nfl ng ngo nhk ni nico nike nikon ninja nissan nissay nl no nokia northwesternmutual norton now nowruz nowtv np nr nra nrw ntt nu nyc nz obi observer off office okinawa olayan olayangroup oldnavy ollo om omega one ong onl online onyourside ooo open oracle orange org organic origins osaka otsuka ott ovh pa page panasonic paris pars partners parts party passagens pay pccw pe pet pf pfizer pg ph pharmacy phd philips phone photo photography photos physio pics pictet pictures pid pin ping pink pioneer pizza pk pl place play playstation plumbing plus pm pn pnc pohl poker politie porn post pr pramerica praxi press prime pro prod productions prof progressive promo properties property protection pru prudential ps pt pub pw pwc py qa qpon quebec quest qvc racing radio raid re read realestate realtor realty recipes red redstone redumbrella rehab reise reisen reit reliance ren rent rentals repair report republican rest restaurant review reviews rexroth rich richardli ricoh ril rio rip rmit ro rocher rocks rodeo rogers room rs rsvp ru rugby ruhr run rw rwe ryukyu sa saarland safe safety sakura sale salon samsclub samsung sandvik sandvikcoromant sanofi sap sarl sas save saxo sb sbi sbs sc sca scb schaeffler schmidt scholarships school schule schwarz science scjohnson scot sd se search seat secure security seek select sener services ses seven sew sex sexy sfr sg sh shangrila sharp shaw shell shia shiksha shoes shop shopping shouji show showtime si silk sina singles site sj sk ski skin sky skype sl sling sm smart smile sn sncf so soccer social softbank software sohu solar solutions song sony soy spa space sport spot spreadbetting sr srl ss st stada staples star statebank statefarm stc stcgroup stockholm storage store stream studio study style su sucks supplies supply support surf surgery suzuki sv swatch swiftcover swiss sx sy sydney systems sz tab taipei talk taobao target tatamotors tatar tattoo tax taxi tc tci td tdk team tech technology tel temasek tennis teva tf tg th thd theater theatre tiaa tickets tienda tiffany tips tires tirol tj tjmaxx tjx tk tkmaxx tl tm tmall tn to today tokyo tools top toray toshiba total tours town toyota toys tr trade trading training travel travelchannel travelers travelersinsurance trust trv tt tube tui tunes tushu tv tvs tw tz ua ubank ubs ug uk unicom university uno uol ups us uy uz va vacations vana vanguard vc ve vegas ventures verisign versicherung vet vg vi viajes video vig viking villas vin vip virgin visa vision viva vivo vlaanderen vn vodka volkswagen volvo vote voting voto voyage vu vuelos wales walmart walter wang wanggou watch watches weather weatherchannel webcam weber website wed wedding weibo weir wf whoswho wien wiki williamhill win windows wine winners wme wolterskluwer woodside work works world wow ws wtc wtf xbox xerox xfinity xihuan xin xxx xyz yachts yahoo yamaxun yandex ye yodobashi yoga yokohama you youtube yt yun za zappos zara zero zip zm zone zuerich zw verm\xf6gensberater-ctb verm\xf6gensberatung-pwb \u03B5\u03BB \u03B5\u03C5 \u0431\u0433 \u0431\u0435\u043B \u0434\u0435\u0442\u0438 \u0435\u044E \u043A\u0430\u0442\u043E\u043B\u0438\u043A \u043A\u043E\u043C \u049B\u0430\u0437 \u043C\u043A\u0434 \u043C\u043E\u043D \u043C\u043E\u0441\u043A\u0432\u0430 \u043E\u043D\u043B\u0430\u0439\u043D \u043E\u0440\u0433 \u0440\u0443\u0441 \u0440\u0444 \u0441\u0430\u0439\u0442 \u0441\u0440\u0431 \u0443\u043A\u0440 \u10D2\u10D4 \u0570\u0561\u0575 \u05D9\u05E9\u05E8\u05D0\u05DC \u05E7\u05D5\u05DD \u0627\u0628\u0648\u0638\u0628\u064A \u0627\u062A\u0635\u0627\u0644\u0627\u062A \u0627\u0631\u0627\u0645\u0643\u0648 \u0627\u0644\u0627\u0631\u062F\u0646 \u0627\u0644\u0628\u062D\u0631\u064A\u0646 \u0627\u0644\u062C\u0632\u0627\u0626\u0631 \u0627\u0644\u0633\u0639\u0648\u062F\u064A\u0629 \u0627\u0644\u0639\u0644\u064A\u0627\u0646 \u0627\u0644\u0645\u063A\u0631\u0628 \u0627\u0645\u0627\u0631\u0627\u062A \u0627\u06CC\u0631\u0627\u0646 \u0628\u0627\u0631\u062A \u0628\u0627\u0632\u0627\u0631 \u0628\u06BE\u0627\u0631\u062A \u0628\u064A\u062A\u0643 \u067E\u0627\u06A9\u0633\u062A\u0627\u0646 \u0680\u0627\u0631\u062A \u062A\u0648\u0646\u0633 \u0633\u0648\u062F\u0627\u0646 \u0633\u0648\u0631\u064A\u0629 \u0634\u0628\u0643\u0629 \u0639\u0631\u0627\u0642 \u0639\u0631\u0628 \u0639\u0645\u0627\u0646 \u0641\u0644\u0633\u0637\u064A\u0646 \u0642\u0637\u0631 \u0643\u0627\u062B\u0648\u0644\u064A\u0643 \u0643\u0648\u0645 \u0645\u0635\u0631 \u0645\u0644\u064A\u0633\u064A\u0627 \u0645\u0648\u0631\u064A\u062A\u0627\u0646\u064A\u0627 \u0645\u0648\u0642\u0639 \u0647\u0645\u0631\u0627\u0647 \u0915\u0949\u092E \u0928\u0947\u091F \u092D\u093E\u0930\u0924 \u092D\u093E\u0930\u0924\u092E\u094D \u092D\u093E\u0930\u094B\u0924 \u0938\u0902\u0917\u0920\u0928 \u09AC\u09BE\u0982\u09B2\u09BE \u09AD\u09BE\u09B0\u09A4 \u09AD\u09BE\u09F0\u09A4 \u0A2D\u0A3E\u0A30\u0A24 \u0AAD\u0ABE\u0AB0\u0AA4 \u0B2D\u0B3E\u0B30\u0B24 \u0B87\u0BA8\u0BCD\u0BA4\u0BBF\u0BAF\u0BBE \u0B87\u0BB2\u0B99\u0BCD\u0B95\u0BC8 \u0B9A\u0BBF\u0B99\u0BCD\u0B95\u0BAA\u0BCD\u0BAA\u0BC2\u0BB0\u0BCD \u0C2D\u0C3E\u0C30\u0C24\u0C4D \u0CAD\u0CBE\u0CB0\u0CA4 \u0D2D\u0D3E\u0D30\u0D24\u0D02 \u0DBD\u0D82\u0D9A\u0DCF \u0E04\u0E2D\u0E21 \u0E44\u0E17\u0E22 \u0EA5\u0EB2\u0EA7 \uB2F7\uB137 \uB2F7\uCEF4 \uC0BC\uC131 \uD55C\uAD6D \u30A2\u30DE\u30BE\u30F3 \u30B0\u30FC\u30B0\u30EB \u30AF\u30E9\u30A6\u30C9 \u30B3\u30E0 \u30B9\u30C8\u30A2 \u30BB\u30FC\u30EB \u30D5\u30A1\u30C3\u30B7\u30E7\u30F3 \u30DD\u30A4\u30F3\u30C8 \u307F\u3093\u306A \u4E16\u754C \u4E2D\u4FE1 \u4E2D\u56FD \u4E2D\u570B \u4E2D\u6587\u7F51 \u4E9A\u9A6C\u900A \u4F01\u4E1A \u4F5B\u5C71 \u4FE1\u606F \u5065\u5EB7 \u516B\u5366 \u516C\u53F8 \u516C\u76CA \u53F0\u6E7E \u53F0\u7063 \u5546\u57CE \u5546\u5E97 \u5546\u6807 \u5609\u91CC \u5609\u91CC\u5927\u9152\u5E97 \u5728\u7EBF \u5927\u4F17\u6C7D\u8F66 \u5927\u62FF \u5929\u4E3B\u6559 \u5A31\u4E50 \u5BB6\u96FB \u5E7F\u4E1C \u5FAE\u535A \u6148\u5584 \u6211\u7231\u4F60 \u624B\u673A \u62DB\u8058 \u653F\u52A1 \u653F\u5E9C \u65B0\u52A0\u5761 \u65B0\u95FB \u65F6\u5C1A \u66F8\u7C4D \u673A\u6784 \u6DE1\u9A6C\u9521 \u6E38\u620F \u6FB3\u9580 \u70B9\u770B \u79FB\u52A8 \u7EC4\u7EC7\u673A\u6784 \u7F51\u5740 \u7F51\u5E97 \u7F51\u7AD9 \u7F51\u7EDC \u8054\u901A \u8BFA\u57FA\u4E9A \u8C37\u6B4C \u8D2D\u7269 \u901A\u8CA9 \u96C6\u56E2 \u96FB\u8A0A\u76C8\u79D1 \u98DE\u5229\u6D66 \u98DF\u54C1 \u9910\u5385 \u9999\u683C\u91CC\u62C9 \u9999\u6E2F".split(" ");
 /**
 	The scanner provides an interface that takes a string of text as input, and
 	outputs an array of tokens instances that can be used for easy URL parsing.
@@ -16242,42 +16257,42 @@ var $a06d5a398bbbfd36$var$tlds = "aaa aarp abarth abb abbott abbvie abc able abo
 	@module linkify
 	@submodule scanner
 	@main scanner
-*/ var $a06d5a398bbbfd36$var$LETTER = /(?:[A-Za-z\xAA\xB5\xBA\xC0-\xD6\xD8-\xF6\xF8-\u02C1\u02C6-\u02D1\u02E0-\u02E4\u02EC\u02EE\u0370-\u0374\u0376\u0377\u037A-\u037D\u037F\u0386\u0388-\u038A\u038C\u038E-\u03A1\u03A3-\u03F5\u03F7-\u0481\u048A-\u052F\u0531-\u0556\u0559\u0560-\u0588\u05D0-\u05EA\u05EF-\u05F2\u0620-\u064A\u066E\u066F\u0671-\u06D3\u06D5\u06E5\u06E6\u06EE\u06EF\u06FA-\u06FC\u06FF\u0710\u0712-\u072F\u074D-\u07A5\u07B1\u07CA-\u07EA\u07F4\u07F5\u07FA\u0800-\u0815\u081A\u0824\u0828\u0840-\u0858\u0860-\u086A\u0870-\u0887\u0889-\u088E\u08A0-\u08C9\u0904-\u0939\u093D\u0950\u0958-\u0961\u0971-\u0980\u0985-\u098C\u098F\u0990\u0993-\u09A8\u09AA-\u09B0\u09B2\u09B6-\u09B9\u09BD\u09CE\u09DC\u09DD\u09DF-\u09E1\u09F0\u09F1\u09FC\u0A05-\u0A0A\u0A0F\u0A10\u0A13-\u0A28\u0A2A-\u0A30\u0A32\u0A33\u0A35\u0A36\u0A38\u0A39\u0A59-\u0A5C\u0A5E\u0A72-\u0A74\u0A85-\u0A8D\u0A8F-\u0A91\u0A93-\u0AA8\u0AAA-\u0AB0\u0AB2\u0AB3\u0AB5-\u0AB9\u0ABD\u0AD0\u0AE0\u0AE1\u0AF9\u0B05-\u0B0C\u0B0F\u0B10\u0B13-\u0B28\u0B2A-\u0B30\u0B32\u0B33\u0B35-\u0B39\u0B3D\u0B5C\u0B5D\u0B5F-\u0B61\u0B71\u0B83\u0B85-\u0B8A\u0B8E-\u0B90\u0B92-\u0B95\u0B99\u0B9A\u0B9C\u0B9E\u0B9F\u0BA3\u0BA4\u0BA8-\u0BAA\u0BAE-\u0BB9\u0BD0\u0C05-\u0C0C\u0C0E-\u0C10\u0C12-\u0C28\u0C2A-\u0C39\u0C3D\u0C58-\u0C5A\u0C5D\u0C60\u0C61\u0C80\u0C85-\u0C8C\u0C8E-\u0C90\u0C92-\u0CA8\u0CAA-\u0CB3\u0CB5-\u0CB9\u0CBD\u0CDD\u0CDE\u0CE0\u0CE1\u0CF1\u0CF2\u0D04-\u0D0C\u0D0E-\u0D10\u0D12-\u0D3A\u0D3D\u0D4E\u0D54-\u0D56\u0D5F-\u0D61\u0D7A-\u0D7F\u0D85-\u0D96\u0D9A-\u0DB1\u0DB3-\u0DBB\u0DBD\u0DC0-\u0DC6\u0E01-\u0E30\u0E32\u0E33\u0E40-\u0E46\u0E81\u0E82\u0E84\u0E86-\u0E8A\u0E8C-\u0EA3\u0EA5\u0EA7-\u0EB0\u0EB2\u0EB3\u0EBD\u0EC0-\u0EC4\u0EC6\u0EDC-\u0EDF\u0F00\u0F40-\u0F47\u0F49-\u0F6C\u0F88-\u0F8C\u1000-\u102A\u103F\u1050-\u1055\u105A-\u105D\u1061\u1065\u1066\u106E-\u1070\u1075-\u1081\u108E\u10A0-\u10C5\u10C7\u10CD\u10D0-\u10FA\u10FC-\u1248\u124A-\u124D\u1250-\u1256\u1258\u125A-\u125D\u1260-\u1288\u128A-\u128D\u1290-\u12B0\u12B2-\u12B5\u12B8-\u12BE\u12C0\u12C2-\u12C5\u12C8-\u12D6\u12D8-\u1310\u1312-\u1315\u1318-\u135A\u1380-\u138F\u13A0-\u13F5\u13F8-\u13FD\u1401-\u166C\u166F-\u167F\u1681-\u169A\u16A0-\u16EA\u16F1-\u16F8\u1700-\u1711\u171F-\u1731\u1740-\u1751\u1760-\u176C\u176E-\u1770\u1780-\u17B3\u17D7\u17DC\u1820-\u1878\u1880-\u1884\u1887-\u18A8\u18AA\u18B0-\u18F5\u1900-\u191E\u1950-\u196D\u1970-\u1974\u1980-\u19AB\u19B0-\u19C9\u1A00-\u1A16\u1A20-\u1A54\u1AA7\u1B05-\u1B33\u1B45-\u1B4C\u1B83-\u1BA0\u1BAE\u1BAF\u1BBA-\u1BE5\u1C00-\u1C23\u1C4D-\u1C4F\u1C5A-\u1C7D\u1C80-\u1C88\u1C90-\u1CBA\u1CBD-\u1CBF\u1CE9-\u1CEC\u1CEE-\u1CF3\u1CF5\u1CF6\u1CFA\u1D00-\u1DBF\u1E00-\u1F15\u1F18-\u1F1D\u1F20-\u1F45\u1F48-\u1F4D\u1F50-\u1F57\u1F59\u1F5B\u1F5D\u1F5F-\u1F7D\u1F80-\u1FB4\u1FB6-\u1FBC\u1FBE\u1FC2-\u1FC4\u1FC6-\u1FCC\u1FD0-\u1FD3\u1FD6-\u1FDB\u1FE0-\u1FEC\u1FF2-\u1FF4\u1FF6-\u1FFC\u2071\u207F\u2090-\u209C\u2102\u2107\u210A-\u2113\u2115\u2119-\u211D\u2124\u2126\u2128\u212A-\u212D\u212F-\u2139\u213C-\u213F\u2145-\u2149\u214E\u2183\u2184\u2C00-\u2CE4\u2CEB-\u2CEE\u2CF2\u2CF3\u2D00-\u2D25\u2D27\u2D2D\u2D30-\u2D67\u2D6F\u2D80-\u2D96\u2DA0-\u2DA6\u2DA8-\u2DAE\u2DB0-\u2DB6\u2DB8-\u2DBE\u2DC0-\u2DC6\u2DC8-\u2DCE\u2DD0-\u2DD6\u2DD8-\u2DDE\u2E2F\u3005\u3006\u3031-\u3035\u303B\u303C\u3041-\u3096\u309D-\u309F\u30A1-\u30FA\u30FC-\u30FF\u3105-\u312F\u3131-\u318E\u31A0-\u31BF\u31F0-\u31FF\u3400-\u4DBF\u4E00-\uA48C\uA4D0-\uA4FD\uA500-\uA60C\uA610-\uA61F\uA62A\uA62B\uA640-\uA66E\uA67F-\uA69D\uA6A0-\uA6E5\uA717-\uA71F\uA722-\uA788\uA78B-\uA7CA\uA7D0\uA7D1\uA7D3\uA7D5-\uA7D9\uA7F2-\uA801\uA803-\uA805\uA807-\uA80A\uA80C-\uA822\uA840-\uA873\uA882-\uA8B3\uA8F2-\uA8F7\uA8FB\uA8FD\uA8FE\uA90A-\uA925\uA930-\uA946\uA960-\uA97C\uA984-\uA9B2\uA9CF\uA9E0-\uA9E4\uA9E6-\uA9EF\uA9FA-\uA9FE\uAA00-\uAA28\uAA40-\uAA42\uAA44-\uAA4B\uAA60-\uAA76\uAA7A\uAA7E-\uAAAF\uAAB1\uAAB5\uAAB6\uAAB9-\uAABD\uAAC0\uAAC2\uAADB-\uAADD\uAAE0-\uAAEA\uAAF2-\uAAF4\uAB01-\uAB06\uAB09-\uAB0E\uAB11-\uAB16\uAB20-\uAB26\uAB28-\uAB2E\uAB30-\uAB5A\uAB5C-\uAB69\uAB70-\uABE2\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\uF900-\uFA6D\uFA70-\uFAD9\uFB00-\uFB06\uFB13-\uFB17\uFB1D\uFB1F-\uFB28\uFB2A-\uFB36\uFB38-\uFB3C\uFB3E\uFB40\uFB41\uFB43\uFB44\uFB46-\uFBB1\uFBD3-\uFD3D\uFD50-\uFD8F\uFD92-\uFDC7\uFDF0-\uFDFB\uFE70-\uFE74\uFE76-\uFEFC\uFF21-\uFF3A\uFF41-\uFF5A\uFF66-\uFFBE\uFFC2-\uFFC7\uFFCA-\uFFCF\uFFD2-\uFFD7\uFFDA-\uFFDC]|\uD800[\uDC00-\uDC0B\uDC0D-\uDC26\uDC28-\uDC3A\uDC3C\uDC3D\uDC3F-\uDC4D\uDC50-\uDC5D\uDC80-\uDCFA\uDE80-\uDE9C\uDEA0-\uDED0\uDF00-\uDF1F\uDF2D-\uDF40\uDF42-\uDF49\uDF50-\uDF75\uDF80-\uDF9D\uDFA0-\uDFC3\uDFC8-\uDFCF]|\uD801[\uDC00-\uDC9D\uDCB0-\uDCD3\uDCD8-\uDCFB\uDD00-\uDD27\uDD30-\uDD63\uDD70-\uDD7A\uDD7C-\uDD8A\uDD8C-\uDD92\uDD94\uDD95\uDD97-\uDDA1\uDDA3-\uDDB1\uDDB3-\uDDB9\uDDBB\uDDBC\uDE00-\uDF36\uDF40-\uDF55\uDF60-\uDF67\uDF80-\uDF85\uDF87-\uDFB0\uDFB2-\uDFBA]|\uD802[\uDC00-\uDC05\uDC08\uDC0A-\uDC35\uDC37\uDC38\uDC3C\uDC3F-\uDC55\uDC60-\uDC76\uDC80-\uDC9E\uDCE0-\uDCF2\uDCF4\uDCF5\uDD00-\uDD15\uDD20-\uDD39\uDD80-\uDDB7\uDDBE\uDDBF\uDE00\uDE10-\uDE13\uDE15-\uDE17\uDE19-\uDE35\uDE60-\uDE7C\uDE80-\uDE9C\uDEC0-\uDEC7\uDEC9-\uDEE4\uDF00-\uDF35\uDF40-\uDF55\uDF60-\uDF72\uDF80-\uDF91]|\uD803[\uDC00-\uDC48\uDC80-\uDCB2\uDCC0-\uDCF2\uDD00-\uDD23\uDE80-\uDEA9\uDEB0\uDEB1\uDF00-\uDF1C\uDF27\uDF30-\uDF45\uDF70-\uDF81\uDFB0-\uDFC4\uDFE0-\uDFF6]|\uD804[\uDC03-\uDC37\uDC71\uDC72\uDC75\uDC83-\uDCAF\uDCD0-\uDCE8\uDD03-\uDD26\uDD44\uDD47\uDD50-\uDD72\uDD76\uDD83-\uDDB2\uDDC1-\uDDC4\uDDDA\uDDDC\uDE00-\uDE11\uDE13-\uDE2B\uDE80-\uDE86\uDE88\uDE8A-\uDE8D\uDE8F-\uDE9D\uDE9F-\uDEA8\uDEB0-\uDEDE\uDF05-\uDF0C\uDF0F\uDF10\uDF13-\uDF28\uDF2A-\uDF30\uDF32\uDF33\uDF35-\uDF39\uDF3D\uDF50\uDF5D-\uDF61]|\uD805[\uDC00-\uDC34\uDC47-\uDC4A\uDC5F-\uDC61\uDC80-\uDCAF\uDCC4\uDCC5\uDCC7\uDD80-\uDDAE\uDDD8-\uDDDB\uDE00-\uDE2F\uDE44\uDE80-\uDEAA\uDEB8\uDF00-\uDF1A\uDF40-\uDF46]|\uD806[\uDC00-\uDC2B\uDCA0-\uDCDF\uDCFF-\uDD06\uDD09\uDD0C-\uDD13\uDD15\uDD16\uDD18-\uDD2F\uDD3F\uDD41\uDDA0-\uDDA7\uDDAA-\uDDD0\uDDE1\uDDE3\uDE00\uDE0B-\uDE32\uDE3A\uDE50\uDE5C-\uDE89\uDE9D\uDEB0-\uDEF8]|\uD807[\uDC00-\uDC08\uDC0A-\uDC2E\uDC40\uDC72-\uDC8F\uDD00-\uDD06\uDD08\uDD09\uDD0B-\uDD30\uDD46\uDD60-\uDD65\uDD67\uDD68\uDD6A-\uDD89\uDD98\uDEE0-\uDEF2\uDFB0]|\uD808[\uDC00-\uDF99]|\uD809[\uDC80-\uDD43]|\uD80B[\uDF90-\uDFF0]|[\uD80C\uD81C-\uD820\uD822\uD840-\uD868\uD86A-\uD86C\uD86F-\uD872\uD874-\uD879\uD880-\uD883][\uDC00-\uDFFF]|\uD80D[\uDC00-\uDC2E]|\uD811[\uDC00-\uDE46]|\uD81A[\uDC00-\uDE38\uDE40-\uDE5E\uDE70-\uDEBE\uDED0-\uDEED\uDF00-\uDF2F\uDF40-\uDF43\uDF63-\uDF77\uDF7D-\uDF8F]|\uD81B[\uDE40-\uDE7F\uDF00-\uDF4A\uDF50\uDF93-\uDF9F\uDFE0\uDFE1\uDFE3]|\uD821[\uDC00-\uDFF7]|\uD823[\uDC00-\uDCD5\uDD00-\uDD08]|\uD82B[\uDFF0-\uDFF3\uDFF5-\uDFFB\uDFFD\uDFFE]|\uD82C[\uDC00-\uDD22\uDD50-\uDD52\uDD64-\uDD67\uDD70-\uDEFB]|\uD82F[\uDC00-\uDC6A\uDC70-\uDC7C\uDC80-\uDC88\uDC90-\uDC99]|\uD835[\uDC00-\uDC54\uDC56-\uDC9C\uDC9E\uDC9F\uDCA2\uDCA5\uDCA6\uDCA9-\uDCAC\uDCAE-\uDCB9\uDCBB\uDCBD-\uDCC3\uDCC5-\uDD05\uDD07-\uDD0A\uDD0D-\uDD14\uDD16-\uDD1C\uDD1E-\uDD39\uDD3B-\uDD3E\uDD40-\uDD44\uDD46\uDD4A-\uDD50\uDD52-\uDEA5\uDEA8-\uDEC0\uDEC2-\uDEDA\uDEDC-\uDEFA\uDEFC-\uDF14\uDF16-\uDF34\uDF36-\uDF4E\uDF50-\uDF6E\uDF70-\uDF88\uDF8A-\uDFA8\uDFAA-\uDFC2\uDFC4-\uDFCB]|\uD837[\uDF00-\uDF1E]|\uD838[\uDD00-\uDD2C\uDD37-\uDD3D\uDD4E\uDE90-\uDEAD\uDEC0-\uDEEB]|\uD839[\uDFE0-\uDFE6\uDFE8-\uDFEB\uDFED\uDFEE\uDFF0-\uDFFE]|\uD83A[\uDC00-\uDCC4\uDD00-\uDD43\uDD4B]|\uD83B[\uDE00-\uDE03\uDE05-\uDE1F\uDE21\uDE22\uDE24\uDE27\uDE29-\uDE32\uDE34-\uDE37\uDE39\uDE3B\uDE42\uDE47\uDE49\uDE4B\uDE4D-\uDE4F\uDE51\uDE52\uDE54\uDE57\uDE59\uDE5B\uDE5D\uDE5F\uDE61\uDE62\uDE64\uDE67-\uDE6A\uDE6C-\uDE72\uDE74-\uDE77\uDE79-\uDE7C\uDE7E\uDE80-\uDE89\uDE8B-\uDE9B\uDEA1-\uDEA3\uDEA5-\uDEA9\uDEAB-\uDEBB]|\uD869[\uDC00-\uDEDF\uDF00-\uDFFF]|\uD86D[\uDC00-\uDF38\uDF40-\uDFFF]|\uD86E[\uDC00-\uDC1D\uDC20-\uDFFF]|\uD873[\uDC00-\uDEA1\uDEB0-\uDFFF]|\uD87A[\uDC00-\uDFE0]|\uD87E[\uDC00-\uDE1D]|\uD884[\uDC00-\uDF4A])/; // Any Unicode character with letter data type
-var $a06d5a398bbbfd36$var$EMOJI = /(?:[#\*0-9\xA9\xAE\u203C\u2049\u2122\u2139\u2194-\u2199\u21A9\u21AA\u231A\u231B\u2328\u23CF\u23E9-\u23F3\u23F8-\u23FA\u24C2\u25AA\u25AB\u25B6\u25C0\u25FB-\u25FE\u2600-\u2604\u260E\u2611\u2614\u2615\u2618\u261D\u2620\u2622\u2623\u2626\u262A\u262E\u262F\u2638-\u263A\u2640\u2642\u2648-\u2653\u265F\u2660\u2663\u2665\u2666\u2668\u267B\u267E\u267F\u2692-\u2697\u2699\u269B\u269C\u26A0\u26A1\u26A7\u26AA\u26AB\u26B0\u26B1\u26BD\u26BE\u26C4\u26C5\u26C8\u26CE\u26CF\u26D1\u26D3\u26D4\u26E9\u26EA\u26F0-\u26F5\u26F7-\u26FA\u26FD\u2702\u2705\u2708-\u270D\u270F\u2712\u2714\u2716\u271D\u2721\u2728\u2733\u2734\u2744\u2747\u274C\u274E\u2753-\u2755\u2757\u2763\u2764\u2795-\u2797\u27A1\u27B0\u27BF\u2934\u2935\u2B05-\u2B07\u2B1B\u2B1C\u2B50\u2B55\u3030\u303D\u3297\u3299]|\uD83C[\uDC04\uDCCF\uDD70\uDD71\uDD7E\uDD7F\uDD8E\uDD91-\uDD9A\uDDE6-\uDDFF\uDE01\uDE02\uDE1A\uDE2F\uDE32-\uDE3A\uDE50\uDE51\uDF00-\uDF21\uDF24-\uDF93\uDF96\uDF97\uDF99-\uDF9B\uDF9E-\uDFF0\uDFF3-\uDFF5\uDFF7-\uDFFF]|\uD83D[\uDC00-\uDCFD\uDCFF-\uDD3D\uDD49-\uDD4E\uDD50-\uDD67\uDD6F\uDD70\uDD73-\uDD7A\uDD87\uDD8A-\uDD8D\uDD90\uDD95\uDD96\uDDA4\uDDA5\uDDA8\uDDB1\uDDB2\uDDBC\uDDC2-\uDDC4\uDDD1-\uDDD3\uDDDC-\uDDDE\uDDE1\uDDE3\uDDE8\uDDEF\uDDF3\uDDFA-\uDE4F\uDE80-\uDEC5\uDECB-\uDED2\uDED5-\uDED7\uDEDD-\uDEE5\uDEE9\uDEEB\uDEEC\uDEF0\uDEF3-\uDEFC\uDFE0-\uDFEB\uDFF0]|\uD83E[\uDD0C-\uDD3A\uDD3C-\uDD45\uDD47-\uDDFF\uDE70-\uDE74\uDE78-\uDE7C\uDE80-\uDE86\uDE90-\uDEAC\uDEB0-\uDEBA\uDEC0-\uDEC5\uDED0-\uDED9\uDEE0-\uDEE7\uDEF0-\uDEF6])/; // Any Unicode emoji character
-var $a06d5a398bbbfd36$var$EMOJI_VARIATION = /\uFE0F/; // Variation selector, follows heart and others
-var $a06d5a398bbbfd36$var$DIGIT = /\d/;
-var $a06d5a398bbbfd36$var$SPACE = /\s/;
+*/ var $410e7a787f87a2b4$var$LETTER = /(?:[A-Za-z\xAA\xB5\xBA\xC0-\xD6\xD8-\xF6\xF8-\u02C1\u02C6-\u02D1\u02E0-\u02E4\u02EC\u02EE\u0370-\u0374\u0376\u0377\u037A-\u037D\u037F\u0386\u0388-\u038A\u038C\u038E-\u03A1\u03A3-\u03F5\u03F7-\u0481\u048A-\u052F\u0531-\u0556\u0559\u0560-\u0588\u05D0-\u05EA\u05EF-\u05F2\u0620-\u064A\u066E\u066F\u0671-\u06D3\u06D5\u06E5\u06E6\u06EE\u06EF\u06FA-\u06FC\u06FF\u0710\u0712-\u072F\u074D-\u07A5\u07B1\u07CA-\u07EA\u07F4\u07F5\u07FA\u0800-\u0815\u081A\u0824\u0828\u0840-\u0858\u0860-\u086A\u0870-\u0887\u0889-\u088E\u08A0-\u08C9\u0904-\u0939\u093D\u0950\u0958-\u0961\u0971-\u0980\u0985-\u098C\u098F\u0990\u0993-\u09A8\u09AA-\u09B0\u09B2\u09B6-\u09B9\u09BD\u09CE\u09DC\u09DD\u09DF-\u09E1\u09F0\u09F1\u09FC\u0A05-\u0A0A\u0A0F\u0A10\u0A13-\u0A28\u0A2A-\u0A30\u0A32\u0A33\u0A35\u0A36\u0A38\u0A39\u0A59-\u0A5C\u0A5E\u0A72-\u0A74\u0A85-\u0A8D\u0A8F-\u0A91\u0A93-\u0AA8\u0AAA-\u0AB0\u0AB2\u0AB3\u0AB5-\u0AB9\u0ABD\u0AD0\u0AE0\u0AE1\u0AF9\u0B05-\u0B0C\u0B0F\u0B10\u0B13-\u0B28\u0B2A-\u0B30\u0B32\u0B33\u0B35-\u0B39\u0B3D\u0B5C\u0B5D\u0B5F-\u0B61\u0B71\u0B83\u0B85-\u0B8A\u0B8E-\u0B90\u0B92-\u0B95\u0B99\u0B9A\u0B9C\u0B9E\u0B9F\u0BA3\u0BA4\u0BA8-\u0BAA\u0BAE-\u0BB9\u0BD0\u0C05-\u0C0C\u0C0E-\u0C10\u0C12-\u0C28\u0C2A-\u0C39\u0C3D\u0C58-\u0C5A\u0C5D\u0C60\u0C61\u0C80\u0C85-\u0C8C\u0C8E-\u0C90\u0C92-\u0CA8\u0CAA-\u0CB3\u0CB5-\u0CB9\u0CBD\u0CDD\u0CDE\u0CE0\u0CE1\u0CF1\u0CF2\u0D04-\u0D0C\u0D0E-\u0D10\u0D12-\u0D3A\u0D3D\u0D4E\u0D54-\u0D56\u0D5F-\u0D61\u0D7A-\u0D7F\u0D85-\u0D96\u0D9A-\u0DB1\u0DB3-\u0DBB\u0DBD\u0DC0-\u0DC6\u0E01-\u0E30\u0E32\u0E33\u0E40-\u0E46\u0E81\u0E82\u0E84\u0E86-\u0E8A\u0E8C-\u0EA3\u0EA5\u0EA7-\u0EB0\u0EB2\u0EB3\u0EBD\u0EC0-\u0EC4\u0EC6\u0EDC-\u0EDF\u0F00\u0F40-\u0F47\u0F49-\u0F6C\u0F88-\u0F8C\u1000-\u102A\u103F\u1050-\u1055\u105A-\u105D\u1061\u1065\u1066\u106E-\u1070\u1075-\u1081\u108E\u10A0-\u10C5\u10C7\u10CD\u10D0-\u10FA\u10FC-\u1248\u124A-\u124D\u1250-\u1256\u1258\u125A-\u125D\u1260-\u1288\u128A-\u128D\u1290-\u12B0\u12B2-\u12B5\u12B8-\u12BE\u12C0\u12C2-\u12C5\u12C8-\u12D6\u12D8-\u1310\u1312-\u1315\u1318-\u135A\u1380-\u138F\u13A0-\u13F5\u13F8-\u13FD\u1401-\u166C\u166F-\u167F\u1681-\u169A\u16A0-\u16EA\u16F1-\u16F8\u1700-\u1711\u171F-\u1731\u1740-\u1751\u1760-\u176C\u176E-\u1770\u1780-\u17B3\u17D7\u17DC\u1820-\u1878\u1880-\u1884\u1887-\u18A8\u18AA\u18B0-\u18F5\u1900-\u191E\u1950-\u196D\u1970-\u1974\u1980-\u19AB\u19B0-\u19C9\u1A00-\u1A16\u1A20-\u1A54\u1AA7\u1B05-\u1B33\u1B45-\u1B4C\u1B83-\u1BA0\u1BAE\u1BAF\u1BBA-\u1BE5\u1C00-\u1C23\u1C4D-\u1C4F\u1C5A-\u1C7D\u1C80-\u1C88\u1C90-\u1CBA\u1CBD-\u1CBF\u1CE9-\u1CEC\u1CEE-\u1CF3\u1CF5\u1CF6\u1CFA\u1D00-\u1DBF\u1E00-\u1F15\u1F18-\u1F1D\u1F20-\u1F45\u1F48-\u1F4D\u1F50-\u1F57\u1F59\u1F5B\u1F5D\u1F5F-\u1F7D\u1F80-\u1FB4\u1FB6-\u1FBC\u1FBE\u1FC2-\u1FC4\u1FC6-\u1FCC\u1FD0-\u1FD3\u1FD6-\u1FDB\u1FE0-\u1FEC\u1FF2-\u1FF4\u1FF6-\u1FFC\u2071\u207F\u2090-\u209C\u2102\u2107\u210A-\u2113\u2115\u2119-\u211D\u2124\u2126\u2128\u212A-\u212D\u212F-\u2139\u213C-\u213F\u2145-\u2149\u214E\u2183\u2184\u2C00-\u2CE4\u2CEB-\u2CEE\u2CF2\u2CF3\u2D00-\u2D25\u2D27\u2D2D\u2D30-\u2D67\u2D6F\u2D80-\u2D96\u2DA0-\u2DA6\u2DA8-\u2DAE\u2DB0-\u2DB6\u2DB8-\u2DBE\u2DC0-\u2DC6\u2DC8-\u2DCE\u2DD0-\u2DD6\u2DD8-\u2DDE\u2E2F\u3005\u3006\u3031-\u3035\u303B\u303C\u3041-\u3096\u309D-\u309F\u30A1-\u30FA\u30FC-\u30FF\u3105-\u312F\u3131-\u318E\u31A0-\u31BF\u31F0-\u31FF\u3400-\u4DBF\u4E00-\uA48C\uA4D0-\uA4FD\uA500-\uA60C\uA610-\uA61F\uA62A\uA62B\uA640-\uA66E\uA67F-\uA69D\uA6A0-\uA6E5\uA717-\uA71F\uA722-\uA788\uA78B-\uA7CA\uA7D0\uA7D1\uA7D3\uA7D5-\uA7D9\uA7F2-\uA801\uA803-\uA805\uA807-\uA80A\uA80C-\uA822\uA840-\uA873\uA882-\uA8B3\uA8F2-\uA8F7\uA8FB\uA8FD\uA8FE\uA90A-\uA925\uA930-\uA946\uA960-\uA97C\uA984-\uA9B2\uA9CF\uA9E0-\uA9E4\uA9E6-\uA9EF\uA9FA-\uA9FE\uAA00-\uAA28\uAA40-\uAA42\uAA44-\uAA4B\uAA60-\uAA76\uAA7A\uAA7E-\uAAAF\uAAB1\uAAB5\uAAB6\uAAB9-\uAABD\uAAC0\uAAC2\uAADB-\uAADD\uAAE0-\uAAEA\uAAF2-\uAAF4\uAB01-\uAB06\uAB09-\uAB0E\uAB11-\uAB16\uAB20-\uAB26\uAB28-\uAB2E\uAB30-\uAB5A\uAB5C-\uAB69\uAB70-\uABE2\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\uF900-\uFA6D\uFA70-\uFAD9\uFB00-\uFB06\uFB13-\uFB17\uFB1D\uFB1F-\uFB28\uFB2A-\uFB36\uFB38-\uFB3C\uFB3E\uFB40\uFB41\uFB43\uFB44\uFB46-\uFBB1\uFBD3-\uFD3D\uFD50-\uFD8F\uFD92-\uFDC7\uFDF0-\uFDFB\uFE70-\uFE74\uFE76-\uFEFC\uFF21-\uFF3A\uFF41-\uFF5A\uFF66-\uFFBE\uFFC2-\uFFC7\uFFCA-\uFFCF\uFFD2-\uFFD7\uFFDA-\uFFDC]|\uD800[\uDC00-\uDC0B\uDC0D-\uDC26\uDC28-\uDC3A\uDC3C\uDC3D\uDC3F-\uDC4D\uDC50-\uDC5D\uDC80-\uDCFA\uDE80-\uDE9C\uDEA0-\uDED0\uDF00-\uDF1F\uDF2D-\uDF40\uDF42-\uDF49\uDF50-\uDF75\uDF80-\uDF9D\uDFA0-\uDFC3\uDFC8-\uDFCF]|\uD801[\uDC00-\uDC9D\uDCB0-\uDCD3\uDCD8-\uDCFB\uDD00-\uDD27\uDD30-\uDD63\uDD70-\uDD7A\uDD7C-\uDD8A\uDD8C-\uDD92\uDD94\uDD95\uDD97-\uDDA1\uDDA3-\uDDB1\uDDB3-\uDDB9\uDDBB\uDDBC\uDE00-\uDF36\uDF40-\uDF55\uDF60-\uDF67\uDF80-\uDF85\uDF87-\uDFB0\uDFB2-\uDFBA]|\uD802[\uDC00-\uDC05\uDC08\uDC0A-\uDC35\uDC37\uDC38\uDC3C\uDC3F-\uDC55\uDC60-\uDC76\uDC80-\uDC9E\uDCE0-\uDCF2\uDCF4\uDCF5\uDD00-\uDD15\uDD20-\uDD39\uDD80-\uDDB7\uDDBE\uDDBF\uDE00\uDE10-\uDE13\uDE15-\uDE17\uDE19-\uDE35\uDE60-\uDE7C\uDE80-\uDE9C\uDEC0-\uDEC7\uDEC9-\uDEE4\uDF00-\uDF35\uDF40-\uDF55\uDF60-\uDF72\uDF80-\uDF91]|\uD803[\uDC00-\uDC48\uDC80-\uDCB2\uDCC0-\uDCF2\uDD00-\uDD23\uDE80-\uDEA9\uDEB0\uDEB1\uDF00-\uDF1C\uDF27\uDF30-\uDF45\uDF70-\uDF81\uDFB0-\uDFC4\uDFE0-\uDFF6]|\uD804[\uDC03-\uDC37\uDC71\uDC72\uDC75\uDC83-\uDCAF\uDCD0-\uDCE8\uDD03-\uDD26\uDD44\uDD47\uDD50-\uDD72\uDD76\uDD83-\uDDB2\uDDC1-\uDDC4\uDDDA\uDDDC\uDE00-\uDE11\uDE13-\uDE2B\uDE80-\uDE86\uDE88\uDE8A-\uDE8D\uDE8F-\uDE9D\uDE9F-\uDEA8\uDEB0-\uDEDE\uDF05-\uDF0C\uDF0F\uDF10\uDF13-\uDF28\uDF2A-\uDF30\uDF32\uDF33\uDF35-\uDF39\uDF3D\uDF50\uDF5D-\uDF61]|\uD805[\uDC00-\uDC34\uDC47-\uDC4A\uDC5F-\uDC61\uDC80-\uDCAF\uDCC4\uDCC5\uDCC7\uDD80-\uDDAE\uDDD8-\uDDDB\uDE00-\uDE2F\uDE44\uDE80-\uDEAA\uDEB8\uDF00-\uDF1A\uDF40-\uDF46]|\uD806[\uDC00-\uDC2B\uDCA0-\uDCDF\uDCFF-\uDD06\uDD09\uDD0C-\uDD13\uDD15\uDD16\uDD18-\uDD2F\uDD3F\uDD41\uDDA0-\uDDA7\uDDAA-\uDDD0\uDDE1\uDDE3\uDE00\uDE0B-\uDE32\uDE3A\uDE50\uDE5C-\uDE89\uDE9D\uDEB0-\uDEF8]|\uD807[\uDC00-\uDC08\uDC0A-\uDC2E\uDC40\uDC72-\uDC8F\uDD00-\uDD06\uDD08\uDD09\uDD0B-\uDD30\uDD46\uDD60-\uDD65\uDD67\uDD68\uDD6A-\uDD89\uDD98\uDEE0-\uDEF2\uDFB0]|\uD808[\uDC00-\uDF99]|\uD809[\uDC80-\uDD43]|\uD80B[\uDF90-\uDFF0]|[\uD80C\uD81C-\uD820\uD822\uD840-\uD868\uD86A-\uD86C\uD86F-\uD872\uD874-\uD879\uD880-\uD883][\uDC00-\uDFFF]|\uD80D[\uDC00-\uDC2E]|\uD811[\uDC00-\uDE46]|\uD81A[\uDC00-\uDE38\uDE40-\uDE5E\uDE70-\uDEBE\uDED0-\uDEED\uDF00-\uDF2F\uDF40-\uDF43\uDF63-\uDF77\uDF7D-\uDF8F]|\uD81B[\uDE40-\uDE7F\uDF00-\uDF4A\uDF50\uDF93-\uDF9F\uDFE0\uDFE1\uDFE3]|\uD821[\uDC00-\uDFF7]|\uD823[\uDC00-\uDCD5\uDD00-\uDD08]|\uD82B[\uDFF0-\uDFF3\uDFF5-\uDFFB\uDFFD\uDFFE]|\uD82C[\uDC00-\uDD22\uDD50-\uDD52\uDD64-\uDD67\uDD70-\uDEFB]|\uD82F[\uDC00-\uDC6A\uDC70-\uDC7C\uDC80-\uDC88\uDC90-\uDC99]|\uD835[\uDC00-\uDC54\uDC56-\uDC9C\uDC9E\uDC9F\uDCA2\uDCA5\uDCA6\uDCA9-\uDCAC\uDCAE-\uDCB9\uDCBB\uDCBD-\uDCC3\uDCC5-\uDD05\uDD07-\uDD0A\uDD0D-\uDD14\uDD16-\uDD1C\uDD1E-\uDD39\uDD3B-\uDD3E\uDD40-\uDD44\uDD46\uDD4A-\uDD50\uDD52-\uDEA5\uDEA8-\uDEC0\uDEC2-\uDEDA\uDEDC-\uDEFA\uDEFC-\uDF14\uDF16-\uDF34\uDF36-\uDF4E\uDF50-\uDF6E\uDF70-\uDF88\uDF8A-\uDFA8\uDFAA-\uDFC2\uDFC4-\uDFCB]|\uD837[\uDF00-\uDF1E]|\uD838[\uDD00-\uDD2C\uDD37-\uDD3D\uDD4E\uDE90-\uDEAD\uDEC0-\uDEEB]|\uD839[\uDFE0-\uDFE6\uDFE8-\uDFEB\uDFED\uDFEE\uDFF0-\uDFFE]|\uD83A[\uDC00-\uDCC4\uDD00-\uDD43\uDD4B]|\uD83B[\uDE00-\uDE03\uDE05-\uDE1F\uDE21\uDE22\uDE24\uDE27\uDE29-\uDE32\uDE34-\uDE37\uDE39\uDE3B\uDE42\uDE47\uDE49\uDE4B\uDE4D-\uDE4F\uDE51\uDE52\uDE54\uDE57\uDE59\uDE5B\uDE5D\uDE5F\uDE61\uDE62\uDE64\uDE67-\uDE6A\uDE6C-\uDE72\uDE74-\uDE77\uDE79-\uDE7C\uDE7E\uDE80-\uDE89\uDE8B-\uDE9B\uDEA1-\uDEA3\uDEA5-\uDEA9\uDEAB-\uDEBB]|\uD869[\uDC00-\uDEDF\uDF00-\uDFFF]|\uD86D[\uDC00-\uDF38\uDF40-\uDFFF]|\uD86E[\uDC00-\uDC1D\uDC20-\uDFFF]|\uD873[\uDC00-\uDEA1\uDEB0-\uDFFF]|\uD87A[\uDC00-\uDFE0]|\uD87E[\uDC00-\uDE1D]|\uD884[\uDC00-\uDF4A])/; // Any Unicode character with letter data type
+var $410e7a787f87a2b4$var$EMOJI = /(?:[#\*0-9\xA9\xAE\u203C\u2049\u2122\u2139\u2194-\u2199\u21A9\u21AA\u231A\u231B\u2328\u23CF\u23E9-\u23F3\u23F8-\u23FA\u24C2\u25AA\u25AB\u25B6\u25C0\u25FB-\u25FE\u2600-\u2604\u260E\u2611\u2614\u2615\u2618\u261D\u2620\u2622\u2623\u2626\u262A\u262E\u262F\u2638-\u263A\u2640\u2642\u2648-\u2653\u265F\u2660\u2663\u2665\u2666\u2668\u267B\u267E\u267F\u2692-\u2697\u2699\u269B\u269C\u26A0\u26A1\u26A7\u26AA\u26AB\u26B0\u26B1\u26BD\u26BE\u26C4\u26C5\u26C8\u26CE\u26CF\u26D1\u26D3\u26D4\u26E9\u26EA\u26F0-\u26F5\u26F7-\u26FA\u26FD\u2702\u2705\u2708-\u270D\u270F\u2712\u2714\u2716\u271D\u2721\u2728\u2733\u2734\u2744\u2747\u274C\u274E\u2753-\u2755\u2757\u2763\u2764\u2795-\u2797\u27A1\u27B0\u27BF\u2934\u2935\u2B05-\u2B07\u2B1B\u2B1C\u2B50\u2B55\u3030\u303D\u3297\u3299]|\uD83C[\uDC04\uDCCF\uDD70\uDD71\uDD7E\uDD7F\uDD8E\uDD91-\uDD9A\uDDE6-\uDDFF\uDE01\uDE02\uDE1A\uDE2F\uDE32-\uDE3A\uDE50\uDE51\uDF00-\uDF21\uDF24-\uDF93\uDF96\uDF97\uDF99-\uDF9B\uDF9E-\uDFF0\uDFF3-\uDFF5\uDFF7-\uDFFF]|\uD83D[\uDC00-\uDCFD\uDCFF-\uDD3D\uDD49-\uDD4E\uDD50-\uDD67\uDD6F\uDD70\uDD73-\uDD7A\uDD87\uDD8A-\uDD8D\uDD90\uDD95\uDD96\uDDA4\uDDA5\uDDA8\uDDB1\uDDB2\uDDBC\uDDC2-\uDDC4\uDDD1-\uDDD3\uDDDC-\uDDDE\uDDE1\uDDE3\uDDE8\uDDEF\uDDF3\uDDFA-\uDE4F\uDE80-\uDEC5\uDECB-\uDED2\uDED5-\uDED7\uDEDD-\uDEE5\uDEE9\uDEEB\uDEEC\uDEF0\uDEF3-\uDEFC\uDFE0-\uDFEB\uDFF0]|\uD83E[\uDD0C-\uDD3A\uDD3C-\uDD45\uDD47-\uDDFF\uDE70-\uDE74\uDE78-\uDE7C\uDE80-\uDE86\uDE90-\uDEAC\uDEB0-\uDEBA\uDEC0-\uDEC5\uDED0-\uDED9\uDEE0-\uDEE7\uDEF0-\uDEF6])/; // Any Unicode emoji character
+var $410e7a787f87a2b4$var$EMOJI_VARIATION = /\uFE0F/; // Variation selector, follows heart and others
+var $410e7a787f87a2b4$var$DIGIT = /\d/;
+var $410e7a787f87a2b4$var$SPACE = /\s/;
 /**
  * Initialize the scanner character-based state machine for the given start state
  * @return {State} scanner starting state
- */ function $a06d5a398bbbfd36$var$init$2() {
+ */ function $410e7a787f87a2b4$var$init$2() {
     var customProtocols = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     // Frequently used states
-    var S_START = $a06d5a398bbbfd36$var$makeState();
-    var S_NUM = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$NUM);
-    var S_DOMAIN = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$DOMAIN);
-    var S_DOMAIN_HYPHEN = $a06d5a398bbbfd36$var$makeState(); // domain followed by 1 or more hyphen characters
-    var S_WS = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$WS);
+    var S_START = $410e7a787f87a2b4$var$makeState();
+    var S_NUM = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$NUM);
+    var S_DOMAIN = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$DOMAIN);
+    var S_DOMAIN_HYPHEN = $410e7a787f87a2b4$var$makeState(); // domain followed by 1 or more hyphen characters
+    var S_WS = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$WS);
     var DOMAIN_REGEX_TRANSITIONS = [
         [
-            $a06d5a398bbbfd36$var$DIGIT,
+            $410e7a787f87a2b4$var$DIGIT,
             S_DOMAIN
         ],
         [
-            $a06d5a398bbbfd36$var$LETTER,
+            $410e7a787f87a2b4$var$LETTER,
             S_DOMAIN
         ],
         [
-            $a06d5a398bbbfd36$var$EMOJI,
+            $410e7a787f87a2b4$var$EMOJI,
             S_DOMAIN
         ],
         [
-            $a06d5a398bbbfd36$var$EMOJI_VARIATION,
+            $410e7a787f87a2b4$var$EMOJI_VARIATION,
             S_DOMAIN
         ]
     ]; // Create a state which emits a domain token
     var makeDomainState = function makeDomainState() {
-        var state = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$DOMAIN);
+        var state = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$DOMAIN);
         state.j = {
             "-": S_DOMAIN_HYPHEN
         };
@@ -16290,189 +16305,189 @@ var $a06d5a398bbbfd36$var$SPACE = /\s/;
         state.t = token;
         return state;
     }; // States for special URL symbols that accept immediately after start
-    $a06d5a398bbbfd36$var$makeBatchT(S_START, [
+    $410e7a787f87a2b4$var$makeBatchT(S_START, [
         [
             "'",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$APOSTROPHE)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$APOSTROPHE)
         ],
         [
             "{",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$OPENBRACE)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$OPENBRACE)
         ],
         [
             "[",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$OPENBRACKET)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$OPENBRACKET)
         ],
         [
             "<",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$OPENANGLEBRACKET)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$OPENANGLEBRACKET)
         ],
         [
             "(",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$OPENPAREN)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$OPENPAREN)
         ],
         [
             "}",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$CLOSEBRACE)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$CLOSEBRACE)
         ],
         [
             "]",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$CLOSEBRACKET)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$CLOSEBRACKET)
         ],
         [
             ">",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$CLOSEANGLEBRACKET)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$CLOSEANGLEBRACKET)
         ],
         [
             ")",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$CLOSEPAREN)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$CLOSEPAREN)
         ],
         [
             "&",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$AMPERSAND)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$AMPERSAND)
         ],
         [
             "*",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$ASTERISK)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$ASTERISK)
         ],
         [
             "@",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$AT)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$AT)
         ],
         [
             "`",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$BACKTICK)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$BACKTICK)
         ],
         [
             "^",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$CARET)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$CARET)
         ],
         [
             ":",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$COLON)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$COLON)
         ],
         [
             ",",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$COMMA)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$COMMA)
         ],
         [
             "$",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$DOLLAR)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$DOLLAR)
         ],
         [
             ".",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$DOT)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$DOT)
         ],
         [
             "=",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$EQUALS)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$EQUALS)
         ],
         [
             "!",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$EXCLAMATION)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$EXCLAMATION)
         ],
         [
             "-",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$HYPHEN)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$HYPHEN)
         ],
         [
             "%",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$PERCENT)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$PERCENT)
         ],
         [
             "|",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$PIPE)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$PIPE)
         ],
         [
             "+",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$PLUS)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$PLUS)
         ],
         [
             "#",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$POUND)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$POUND)
         ],
         [
             "?",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$QUERY)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$QUERY)
         ],
         [
             '"',
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$QUOTE)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$QUOTE)
         ],
         [
             "/",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$SLASH)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$SLASH)
         ],
         [
             ";",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$SEMI)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$SEMI)
         ],
         [
             "~",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$TILDE)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$TILDE)
         ],
         [
             "_",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$UNDERSCORE)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$UNDERSCORE)
         ],
         [
             "\\",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$BACKSLASH)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$BACKSLASH)
         ]
     ]); // Whitespace jumps
     // Tokens of only non-newline whitespace are arbitrarily long
-    $a06d5a398bbbfd36$var$makeT(S_START, "\n", $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$NL));
-    $a06d5a398bbbfd36$var$makeRegexT(S_START, $a06d5a398bbbfd36$var$SPACE, S_WS); // If any whitespace except newline, more whitespace!
-    $a06d5a398bbbfd36$var$makeT(S_WS, "\n", $a06d5a398bbbfd36$var$makeState()); // non-accepting state
-    $a06d5a398bbbfd36$var$makeRegexT(S_WS, $a06d5a398bbbfd36$var$SPACE, S_WS); // Generates states for top-level domains
+    $410e7a787f87a2b4$var$makeT(S_START, "\n", $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$NL));
+    $410e7a787f87a2b4$var$makeRegexT(S_START, $410e7a787f87a2b4$var$SPACE, S_WS); // If any whitespace except newline, more whitespace!
+    $410e7a787f87a2b4$var$makeT(S_WS, "\n", $410e7a787f87a2b4$var$makeState()); // non-accepting state
+    $410e7a787f87a2b4$var$makeRegexT(S_WS, $410e7a787f87a2b4$var$SPACE, S_WS); // Generates states for top-level domains
     // Note that this is most accurate when tlds are in alphabetical order
-    for(var i = 0; i < $a06d5a398bbbfd36$var$tlds.length; i++)$a06d5a398bbbfd36$var$makeChainT(S_START, $a06d5a398bbbfd36$var$tlds[i], makeNearDomainState($a06d5a398bbbfd36$var$TLD), makeDomainState);
+    for(var i = 0; i < $410e7a787f87a2b4$var$tlds.length; i++)$410e7a787f87a2b4$var$makeChainT(S_START, $410e7a787f87a2b4$var$tlds[i], makeNearDomainState($410e7a787f87a2b4$var$TLD), makeDomainState);
      // Collect the states generated by different protocls
     var S_PROTOCOL_FILE = makeDomainState();
     var S_PROTOCOL_FTP = makeDomainState();
     var S_PROTOCOL_HTTP = makeDomainState();
     var S_MAILTO = makeDomainState();
-    $a06d5a398bbbfd36$var$makeChainT(S_START, "file", S_PROTOCOL_FILE, makeDomainState);
-    $a06d5a398bbbfd36$var$makeChainT(S_START, "ftp", S_PROTOCOL_FTP, makeDomainState);
-    $a06d5a398bbbfd36$var$makeChainT(S_START, "http", S_PROTOCOL_HTTP, makeDomainState);
-    $a06d5a398bbbfd36$var$makeChainT(S_START, "mailto", S_MAILTO, makeDomainState); // Protocol states
+    $410e7a787f87a2b4$var$makeChainT(S_START, "file", S_PROTOCOL_FILE, makeDomainState);
+    $410e7a787f87a2b4$var$makeChainT(S_START, "ftp", S_PROTOCOL_FTP, makeDomainState);
+    $410e7a787f87a2b4$var$makeChainT(S_START, "http", S_PROTOCOL_HTTP, makeDomainState);
+    $410e7a787f87a2b4$var$makeChainT(S_START, "mailto", S_MAILTO, makeDomainState); // Protocol states
     var S_PROTOCOL_SECURE = makeDomainState();
-    var S_FULL_PROTOCOL = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$PROTOCOL); // Full protocol ends with COLON
-    var S_FULL_MAILTO = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$MAILTO); // Mailto ends with COLON
+    var S_FULL_PROTOCOL = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$PROTOCOL); // Full protocol ends with COLON
+    var S_FULL_MAILTO = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$MAILTO); // Mailto ends with COLON
     // Secure protocols (end with 's')
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_FTP, "s", S_PROTOCOL_SECURE);
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_FTP, ":", S_FULL_PROTOCOL);
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_HTTP, "s", S_PROTOCOL_SECURE);
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_HTTP, ":", S_FULL_PROTOCOL); // Become protocol tokens after a COLON
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_FILE, ":", S_FULL_PROTOCOL);
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_SECURE, ":", S_FULL_PROTOCOL);
-    $a06d5a398bbbfd36$var$makeT(S_MAILTO, ":", S_FULL_MAILTO); // Register custom protocols
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_FTP, "s", S_PROTOCOL_SECURE);
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_FTP, ":", S_FULL_PROTOCOL);
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_HTTP, "s", S_PROTOCOL_SECURE);
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_HTTP, ":", S_FULL_PROTOCOL); // Become protocol tokens after a COLON
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_FILE, ":", S_FULL_PROTOCOL);
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_SECURE, ":", S_FULL_PROTOCOL);
+    $410e7a787f87a2b4$var$makeT(S_MAILTO, ":", S_FULL_MAILTO); // Register custom protocols
     var S_CUSTOM_PROTOCOL = makeDomainState();
-    for(var _i = 0; _i < customProtocols.length; _i++)$a06d5a398bbbfd36$var$makeChainT(S_START, customProtocols[_i], S_CUSTOM_PROTOCOL, makeDomainState);
-    $a06d5a398bbbfd36$var$makeT(S_CUSTOM_PROTOCOL, ":", S_FULL_PROTOCOL); // Localhost
-    $a06d5a398bbbfd36$var$makeChainT(S_START, "localhost", makeNearDomainState($a06d5a398bbbfd36$var$LOCALHOST), makeDomainState); // Everything else
+    for(var _i = 0; _i < customProtocols.length; _i++)$410e7a787f87a2b4$var$makeChainT(S_START, customProtocols[_i], S_CUSTOM_PROTOCOL, makeDomainState);
+    $410e7a787f87a2b4$var$makeT(S_CUSTOM_PROTOCOL, ":", S_FULL_PROTOCOL); // Localhost
+    $410e7a787f87a2b4$var$makeChainT(S_START, "localhost", makeNearDomainState($410e7a787f87a2b4$var$LOCALHOST), makeDomainState); // Everything else
     // DOMAINs make more DOMAINs
     // Number and character transitions
-    $a06d5a398bbbfd36$var$makeRegexT(S_START, $a06d5a398bbbfd36$var$DIGIT, S_NUM);
-    $a06d5a398bbbfd36$var$makeRegexT(S_START, $a06d5a398bbbfd36$var$LETTER, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_START, $a06d5a398bbbfd36$var$EMOJI, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_START, $a06d5a398bbbfd36$var$EMOJI_VARIATION, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_NUM, $a06d5a398bbbfd36$var$DIGIT, S_NUM);
-    $a06d5a398bbbfd36$var$makeRegexT(S_NUM, $a06d5a398bbbfd36$var$LETTER, S_DOMAIN); // number becomes DOMAIN
-    $a06d5a398bbbfd36$var$makeRegexT(S_NUM, $a06d5a398bbbfd36$var$EMOJI, S_DOMAIN); // number becomes DOMAIN
-    $a06d5a398bbbfd36$var$makeRegexT(S_NUM, $a06d5a398bbbfd36$var$EMOJI_VARIATION, S_DOMAIN); // number becomes DOMAIN
-    $a06d5a398bbbfd36$var$makeT(S_NUM, "-", S_DOMAIN_HYPHEN); // Default domain transitions
-    $a06d5a398bbbfd36$var$makeT(S_DOMAIN, "-", S_DOMAIN_HYPHEN);
-    $a06d5a398bbbfd36$var$makeT(S_DOMAIN_HYPHEN, "-", S_DOMAIN_HYPHEN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_DOMAIN, $a06d5a398bbbfd36$var$DIGIT, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_DOMAIN, $a06d5a398bbbfd36$var$LETTER, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_DOMAIN, $a06d5a398bbbfd36$var$EMOJI, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_DOMAIN, $a06d5a398bbbfd36$var$EMOJI_VARIATION, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_DOMAIN_HYPHEN, $a06d5a398bbbfd36$var$DIGIT, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_DOMAIN_HYPHEN, $a06d5a398bbbfd36$var$LETTER, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_DOMAIN_HYPHEN, $a06d5a398bbbfd36$var$EMOJI, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_DOMAIN_HYPHEN, $a06d5a398bbbfd36$var$EMOJI_VARIATION, S_DOMAIN); // Set default transition for start state (some symbol)
-    S_START.jd = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$SYM);
+    $410e7a787f87a2b4$var$makeRegexT(S_START, $410e7a787f87a2b4$var$DIGIT, S_NUM);
+    $410e7a787f87a2b4$var$makeRegexT(S_START, $410e7a787f87a2b4$var$LETTER, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_START, $410e7a787f87a2b4$var$EMOJI, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_START, $410e7a787f87a2b4$var$EMOJI_VARIATION, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_NUM, $410e7a787f87a2b4$var$DIGIT, S_NUM);
+    $410e7a787f87a2b4$var$makeRegexT(S_NUM, $410e7a787f87a2b4$var$LETTER, S_DOMAIN); // number becomes DOMAIN
+    $410e7a787f87a2b4$var$makeRegexT(S_NUM, $410e7a787f87a2b4$var$EMOJI, S_DOMAIN); // number becomes DOMAIN
+    $410e7a787f87a2b4$var$makeRegexT(S_NUM, $410e7a787f87a2b4$var$EMOJI_VARIATION, S_DOMAIN); // number becomes DOMAIN
+    $410e7a787f87a2b4$var$makeT(S_NUM, "-", S_DOMAIN_HYPHEN); // Default domain transitions
+    $410e7a787f87a2b4$var$makeT(S_DOMAIN, "-", S_DOMAIN_HYPHEN);
+    $410e7a787f87a2b4$var$makeT(S_DOMAIN_HYPHEN, "-", S_DOMAIN_HYPHEN);
+    $410e7a787f87a2b4$var$makeRegexT(S_DOMAIN, $410e7a787f87a2b4$var$DIGIT, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_DOMAIN, $410e7a787f87a2b4$var$LETTER, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_DOMAIN, $410e7a787f87a2b4$var$EMOJI, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_DOMAIN, $410e7a787f87a2b4$var$EMOJI_VARIATION, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_DOMAIN_HYPHEN, $410e7a787f87a2b4$var$DIGIT, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_DOMAIN_HYPHEN, $410e7a787f87a2b4$var$LETTER, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_DOMAIN_HYPHEN, $410e7a787f87a2b4$var$EMOJI, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_DOMAIN_HYPHEN, $410e7a787f87a2b4$var$EMOJI_VARIATION, S_DOMAIN); // Set default transition for start state (some symbol)
+    S_START.jd = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$SYM);
     return S_START;
 }
 /**
@@ -16483,13 +16498,13 @@ var $a06d5a398bbbfd36$var$SPACE = /\s/;
 	@param {State} start scanner starting state
 	@param {string} str input string to scan
 	@return {{t: string, v: string, s: number, l: number}[]} list of tokens, each with a type and value
-*/ function $a06d5a398bbbfd36$var$run$1(start, str) {
+*/ function $410e7a787f87a2b4$var$run$1(start, str) {
     // State machine is not case sensitive, so input is tokenized in lowercased
     // form (still returns the regular case though) Uses selective `toLowerCase`
     // is used because lowercasing the entire string causes the length and
     // character position to vary in some non-English strings with V8-based
     // runtimes.
-    var iterable = $a06d5a398bbbfd36$var$stringToArray(str.replace(/[A-Z]/g, function(c) {
+    var iterable = $410e7a787f87a2b4$var$stringToArray(str.replace(/[A-Z]/g, function(c) {
         return c.toLowerCase();
     }));
     var charCount = iterable.length; // <= len if there are emojis, etc
@@ -16505,7 +16520,7 @@ var $a06d5a398bbbfd36$var$SPACE = /\s/;
         var latestAccepting = null;
         var sinceAccepts = -1;
         var charsSinceAccepts = -1;
-        while(charCursor < charCount && (nextState = $a06d5a398bbbfd36$var$takeT(state, iterable[charCursor]))){
+        while(charCursor < charCount && (nextState = $410e7a787f87a2b4$var$takeT(state, iterable[charCursor]))){
             state = nextState; // Keep track of the latest accepting state
             if (state.accepts()) {
                 sinceAccepts = 0;
@@ -16545,38 +16560,38 @@ var $a06d5a398bbbfd36$var$SPACE = /\s/;
  * @function stringToArray
  * @param {string} str
  * @returns {string[]}
- */ function $a06d5a398bbbfd36$var$stringToArray(str) {
+ */ function $410e7a787f87a2b4$var$stringToArray(str) {
     var result = [];
     var len = str.length;
     var index = 0;
     while(index < len){
         var first = str.charCodeAt(index);
         var second = void 0;
-        var _char = first < 0xd800 || first > 0xdbff || index + 1 === len || (second = str.charCodeAt(index + 1)) < 0xdc00 || second > 0xdfff ? str[index] // single character
+        var char = first < 0xd800 || first > 0xdbff || index + 1 === len || (second = str.charCodeAt(index + 1)) < 0xdc00 || second > 0xdfff ? str[index] // single character
          : str.slice(index, index + 2); // two-index characters
-        result.push(_char);
-        index += _char.length;
+        result.push(char);
+        index += char.length;
     }
     return result;
 }
-function $a06d5a398bbbfd36$var$_typeof(obj) {
+function $410e7a787f87a2b4$var$_typeof(obj) {
     "@babel/helpers - typeof";
-    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") $a06d5a398bbbfd36$var$_typeof = function _typeof(obj) {
+    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") $410e7a787f87a2b4$var$_typeof = function _typeof(obj) {
         return typeof obj;
     };
-    else $a06d5a398bbbfd36$var$_typeof = function _typeof(obj) {
+    else $410e7a787f87a2b4$var$_typeof = function _typeof(obj) {
         return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
     };
-    return $a06d5a398bbbfd36$var$_typeof(obj);
+    return $410e7a787f87a2b4$var$_typeof(obj);
 }
 /**
  * @property {string} defaultProtocol
  * @property {{[string]: (event) => void}]} [events]
- */ var $a06d5a398bbbfd36$var$defaults = {
+ */ var $410e7a787f87a2b4$var$defaults = {
     defaultProtocol: "http",
     events: null,
-    format: $a06d5a398bbbfd36$var$noop,
-    formatHref: $a06d5a398bbbfd36$var$noop,
+    format: $410e7a787f87a2b4$var$noop,
+    formatHref: $410e7a787f87a2b4$var$noop,
     nl2br: false,
     tagName: "a",
     target: null,
@@ -16590,25 +16605,25 @@ function $a06d5a398bbbfd36$var$_typeof(obj) {
 /**
  * @class Options
  * @param {Object} [opts] Set option properties besides the defaults
- */ function $a06d5a398bbbfd36$export$c019608e5b5bb4cb(opts) {
+ */ function $410e7a787f87a2b4$export$c019608e5b5bb4cb(opts) {
     opts = opts || {};
-    this.defaultProtocol = "defaultProtocol" in opts ? opts.defaultProtocol : $a06d5a398bbbfd36$var$defaults.defaultProtocol;
-    this.events = "events" in opts ? opts.events : $a06d5a398bbbfd36$var$defaults.events;
-    this.format = "format" in opts ? opts.format : $a06d5a398bbbfd36$var$defaults.format;
-    this.formatHref = "formatHref" in opts ? opts.formatHref : $a06d5a398bbbfd36$var$defaults.formatHref;
-    this.nl2br = "nl2br" in opts ? opts.nl2br : $a06d5a398bbbfd36$var$defaults.nl2br;
-    this.tagName = "tagName" in opts ? opts.tagName : $a06d5a398bbbfd36$var$defaults.tagName;
-    this.target = "target" in opts ? opts.target : $a06d5a398bbbfd36$var$defaults.target;
-    this.rel = "rel" in opts ? opts.rel : $a06d5a398bbbfd36$var$defaults.rel;
-    this.validate = "validate" in opts ? opts.validate : $a06d5a398bbbfd36$var$defaults.validate;
-    this.truncate = "truncate" in opts ? opts.truncate : $a06d5a398bbbfd36$var$defaults.truncate;
-    this.className = "className" in opts ? opts.className : $a06d5a398bbbfd36$var$defaults.className;
-    this.attributes = opts.attributes || $a06d5a398bbbfd36$var$defaults.attributes;
+    this.defaultProtocol = "defaultProtocol" in opts ? opts.defaultProtocol : $410e7a787f87a2b4$var$defaults.defaultProtocol;
+    this.events = "events" in opts ? opts.events : $410e7a787f87a2b4$var$defaults.events;
+    this.format = "format" in opts ? opts.format : $410e7a787f87a2b4$var$defaults.format;
+    this.formatHref = "formatHref" in opts ? opts.formatHref : $410e7a787f87a2b4$var$defaults.formatHref;
+    this.nl2br = "nl2br" in opts ? opts.nl2br : $410e7a787f87a2b4$var$defaults.nl2br;
+    this.tagName = "tagName" in opts ? opts.tagName : $410e7a787f87a2b4$var$defaults.tagName;
+    this.target = "target" in opts ? opts.target : $410e7a787f87a2b4$var$defaults.target;
+    this.rel = "rel" in opts ? opts.rel : $410e7a787f87a2b4$var$defaults.rel;
+    this.validate = "validate" in opts ? opts.validate : $410e7a787f87a2b4$var$defaults.validate;
+    this.truncate = "truncate" in opts ? opts.truncate : $410e7a787f87a2b4$var$defaults.truncate;
+    this.className = "className" in opts ? opts.className : $410e7a787f87a2b4$var$defaults.className;
+    this.attributes = opts.attributes || $410e7a787f87a2b4$var$defaults.attributes;
     this.ignoreTags = []; // Make all tags names upper case
-    var ignoredTags = "ignoreTags" in opts ? opts.ignoreTags : $a06d5a398bbbfd36$var$defaults.ignoreTags;
+    var ignoredTags = "ignoreTags" in opts ? opts.ignoreTags : $410e7a787f87a2b4$var$defaults.ignoreTags;
     for(var i = 0; i < ignoredTags.length; i++)this.ignoreTags.push(ignoredTags[i].toUpperCase());
 }
-$a06d5a398bbbfd36$export$c019608e5b5bb4cb.prototype = {
+$410e7a787f87a2b4$export$c019608e5b5bb4cb.prototype = {
     /**
    * Given the token, return all options for how it should be displayed
    */ resolve: function resolve(token) {
@@ -16642,11 +16657,11 @@ $a06d5a398bbbfd36$export$c019608e5b5bb4cb.prototype = {
         var option = this[key];
         if (!option) return option;
         var optionValue;
-        switch($a06d5a398bbbfd36$var$_typeof(option)){
+        switch($410e7a787f87a2b4$var$_typeof(option)){
             case "function":
                 return option(operator, token.t);
             case "object":
-                optionValue = token.t in option ? option[token.t] : $a06d5a398bbbfd36$var$defaults[key];
+                optionValue = token.t in option ? option[token.t] : $410e7a787f87a2b4$var$defaults[key];
                 return typeof optionValue === "function" ? optionValue(operator, token.t) : optionValue;
         }
         return option;
@@ -16656,18 +16671,18 @@ $a06d5a398bbbfd36$export$c019608e5b5bb4cb.prototype = {
         return typeof option === "function" ? option(operator, token.t) : option;
     }
 };
-function $a06d5a398bbbfd36$var$noop(val) {
+function $410e7a787f87a2b4$var$noop(val) {
     return val;
 }
-var $a06d5a398bbbfd36$export$41c562ebe57d11e2 = /*#__PURE__*/ Object.freeze({
+var $410e7a787f87a2b4$export$41c562ebe57d11e2 = /*#__PURE__*/ Object.freeze({
     __proto__: null,
-    defaults: $a06d5a398bbbfd36$var$defaults,
-    Options: $a06d5a398bbbfd36$export$c019608e5b5bb4cb
+    defaults: $410e7a787f87a2b4$var$defaults,
+    Options: $410e7a787f87a2b4$export$c019608e5b5bb4cb
 });
 /******************************************************************************
 	Multi-Tokens
 	Tokens composed of arrays of TextTokens
-******************************************************************************/ function $a06d5a398bbbfd36$var$inherits(parent, child) {
+******************************************************************************/ function $410e7a787f87a2b4$var$inherits(parent, child) {
     var props = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     var extended = Object.create(parent.prototype);
     for(var p in props)extended[p] = props[p];
@@ -16687,8 +16702,8 @@ var $a06d5a398bbbfd36$export$41c562ebe57d11e2 = /*#__PURE__*/ Object.freeze({
 	@param {string} value
 	@param {{t: string, v: string, s: number, e: number}[]} tokens
 	@abstract
-*/ function $a06d5a398bbbfd36$var$MultiToken() {}
-$a06d5a398bbbfd36$var$MultiToken.prototype = {
+*/ function $410e7a787f87a2b4$var$MultiToken() {}
+$410e7a787f87a2b4$var$MultiToken.prototype = {
     /**
   	String representing the type for this token
   	@property t
@@ -16736,7 +16751,7 @@ $a06d5a398bbbfd36$var$MultiToken.prototype = {
   		@method toObject
   	@param {string} [protocol] `'http'` by default
   */ toObject: function toObject() {
-        var protocol = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : $a06d5a398bbbfd36$var$defaults.defaultProtocol;
+        var protocol = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : $410e7a787f87a2b4$var$defaults.defaultProtocol;
         return {
             type: this.t,
             value: this.v,
@@ -16752,27 +16767,27 @@ $a06d5a398bbbfd36$var$MultiToken.prototype = {
  * @param {string} type readable type of the token
  * @param {object} props properties to assign or override, including isLink = true or false
  * @returns {(value: string, tokens: {t: string, v: string, s: number, e: number}) => MultiToken} new token class
- */ function $a06d5a398bbbfd36$var$createTokenClass(type, props) {
+ */ function $410e7a787f87a2b4$var$createTokenClass(type, props) {
     function Token(value, tokens) {
         this.t = type;
         this.v = value;
         this.tk = tokens;
     }
-    $a06d5a398bbbfd36$var$inherits($a06d5a398bbbfd36$var$MultiToken, Token, props);
+    $410e7a787f87a2b4$var$inherits($410e7a787f87a2b4$var$MultiToken, Token, props);
     return Token;
 }
 /**
 	Represents an arbitrarily mailto email address with the prefix included
 	@class MailtoEmail
 	@extends MultiToken
-*/ var $a06d5a398bbbfd36$var$MailtoEmail = $a06d5a398bbbfd36$var$createTokenClass("email", {
+*/ var $410e7a787f87a2b4$var$MailtoEmail = $410e7a787f87a2b4$var$createTokenClass("email", {
     isLink: true
 });
 /**
 	Represents a list of tokens making up a valid email address
 	@class Email
 	@extends MultiToken
-*/ var $a06d5a398bbbfd36$var$Email = $a06d5a398bbbfd36$var$createTokenClass("email", {
+*/ var $410e7a787f87a2b4$var$Email = $410e7a787f87a2b4$var$createTokenClass("email", {
     isLink: true,
     toHref: function toHref() {
         return "mailto:" + this.toString();
@@ -16782,17 +16797,17 @@ $a06d5a398bbbfd36$var$MultiToken.prototype = {
 	Represents some plain text
 	@class Text
 	@extends MultiToken
-*/ var $a06d5a398bbbfd36$var$Text = $a06d5a398bbbfd36$var$createTokenClass("text");
+*/ var $410e7a787f87a2b4$var$Text = $410e7a787f87a2b4$var$createTokenClass("text");
 /**
 	Multi-linebreak token - represents a line break
 	@class Nl
 	@extends MultiToken
-*/ var $a06d5a398bbbfd36$var$Nl = $a06d5a398bbbfd36$var$createTokenClass("nl");
+*/ var $410e7a787f87a2b4$var$Nl = $410e7a787f87a2b4$var$createTokenClass("nl");
 /**
 	Represents a list of text tokens making up a valid URL
 	@class Url
 	@extends MultiToken
-*/ var $a06d5a398bbbfd36$var$Url = $a06d5a398bbbfd36$var$createTokenClass("url", {
+*/ var $410e7a787f87a2b4$var$Url = $410e7a787f87a2b4$var$createTokenClass("url", {
     isLink: true,
     /**
   	Lowercases relevant parts of the domain and adds the protocol if
@@ -16802,19 +16817,19 @@ $a06d5a398bbbfd36$var$MultiToken.prototype = {
   	@param {string} protocol
   	@return {string}
   */ toHref: function toHref() {
-        var protocol = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : $a06d5a398bbbfd36$var$defaults.defaultProtocol;
+        var protocol = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : $410e7a787f87a2b4$var$defaults.defaultProtocol;
         var tokens = this.tk;
         var hasProtocol = false;
         var hasSlashSlash = false;
         var result = [];
         var i = 0; // Make the first part of the domain lowercase
         // Lowercase protocol
-        while(tokens[i].t === $a06d5a398bbbfd36$var$PROTOCOL){
+        while(tokens[i].t === $410e7a787f87a2b4$var$PROTOCOL){
             hasProtocol = true;
             result.push(tokens[i].v);
             i++;
         } // Skip slash-slash
-        while(tokens[i].t === $a06d5a398bbbfd36$var$SLASH){
+        while(tokens[i].t === $410e7a787f87a2b4$var$SLASH){
             hasSlashSlash = true;
             result.push(tokens[i].v);
             i++;
@@ -16825,19 +16840,19 @@ $a06d5a398bbbfd36$var$MultiToken.prototype = {
         return result;
     },
     hasProtocol: function hasProtocol() {
-        return this.tk[0].t === $a06d5a398bbbfd36$var$PROTOCOL;
+        return this.tk[0].t === $410e7a787f87a2b4$var$PROTOCOL;
     }
 });
-var $a06d5a398bbbfd36$var$multi = /*#__PURE__*/ Object.freeze({
+var $410e7a787f87a2b4$var$multi = /*#__PURE__*/ Object.freeze({
     __proto__: null,
-    MultiToken: $a06d5a398bbbfd36$var$MultiToken,
-    Base: $a06d5a398bbbfd36$var$MultiToken,
-    createTokenClass: $a06d5a398bbbfd36$var$createTokenClass,
-    MailtoEmail: $a06d5a398bbbfd36$var$MailtoEmail,
-    Email: $a06d5a398bbbfd36$var$Email,
-    Text: $a06d5a398bbbfd36$var$Text,
-    Nl: $a06d5a398bbbfd36$var$Nl,
-    Url: $a06d5a398bbbfd36$var$Url
+    MultiToken: $410e7a787f87a2b4$var$MultiToken,
+    Base: $410e7a787f87a2b4$var$MultiToken,
+    createTokenClass: $410e7a787f87a2b4$var$createTokenClass,
+    MailtoEmail: $410e7a787f87a2b4$var$MailtoEmail,
+    Email: $410e7a787f87a2b4$var$Email,
+    Text: $410e7a787f87a2b4$var$Text,
+    Nl: $410e7a787f87a2b4$var$Nl,
+    Url: $410e7a787f87a2b4$var$Url
 });
 /**
 	Not exactly parser, more like the second-stage scanner (although we can
@@ -16855,229 +16870,229 @@ var $a06d5a398bbbfd36$var$multi = /*#__PURE__*/ Object.freeze({
 */ /**
  * Generate the parser multi token-based state machine
  * @returns {State} the starting state
- */ function $a06d5a398bbbfd36$var$init$1() {
+ */ function $410e7a787f87a2b4$var$init$1() {
     // The universal starting state.
-    var S_START = $a06d5a398bbbfd36$var$makeState(); // Intermediate states for URLs. Note that domains that begin with a protocol
+    var S_START = $410e7a787f87a2b4$var$makeState(); // Intermediate states for URLs. Note that domains that begin with a protocol
     // are treated slighly differently from those that don't.
-    var S_PROTOCOL = $a06d5a398bbbfd36$var$makeState(); // e.g., 'http:'
-    var S_MAILTO = $a06d5a398bbbfd36$var$makeState(); // 'mailto:'
-    var S_PROTOCOL_SLASH = $a06d5a398bbbfd36$var$makeState(); // e.g., 'http:/''
-    var S_PROTOCOL_SLASH_SLASH = $a06d5a398bbbfd36$var$makeState(); // e.g.,'http://'
-    var S_DOMAIN = $a06d5a398bbbfd36$var$makeState(); // parsed string ends with a potential domain name (A)
-    var S_DOMAIN_DOT = $a06d5a398bbbfd36$var$makeState(); // (A) domain followed by DOT
-    var S_TLD = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Url); // (A) Simplest possible URL with no query string
-    var S_TLD_COLON = $a06d5a398bbbfd36$var$makeState(); // (A) URL followed by colon (potential port number here)
-    var S_TLD_PORT = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Url); // TLD followed by a port number
-    var S_URL = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Url); // Long URL with optional port and maybe query string
-    var S_URL_NON_ACCEPTING = $a06d5a398bbbfd36$var$makeState(); // URL followed by some symbols (will not be part of the final URL)
-    var S_URL_OPENBRACE = $a06d5a398bbbfd36$var$makeState(); // URL followed by {
-    var S_URL_OPENBRACKET = $a06d5a398bbbfd36$var$makeState(); // URL followed by [
-    var S_URL_OPENANGLEBRACKET = $a06d5a398bbbfd36$var$makeState(); // URL followed by <
-    var S_URL_OPENPAREN = $a06d5a398bbbfd36$var$makeState(); // URL followed by (
-    var S_URL_OPENBRACE_Q = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Url); // URL followed by { and some symbols that the URL can end it
-    var S_URL_OPENBRACKET_Q = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Url); // URL followed by [ and some symbols that the URL can end it
-    var S_URL_OPENANGLEBRACKET_Q = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Url); // URL followed by < and some symbols that the URL can end it
-    var S_URL_OPENPAREN_Q = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Url); // URL followed by ( and some symbols that the URL can end it
-    var S_URL_OPENBRACE_SYMS = $a06d5a398bbbfd36$var$makeState(); // S_URL_OPENBRACE_Q followed by some symbols it cannot end it
-    var S_URL_OPENBRACKET_SYMS = $a06d5a398bbbfd36$var$makeState(); // S_URL_OPENBRACKET_Q followed by some symbols it cannot end it
-    var S_URL_OPENANGLEBRACKET_SYMS = $a06d5a398bbbfd36$var$makeState(); // S_URL_OPENANGLEBRACKET_Q followed by some symbols it cannot end it
-    var S_URL_OPENPAREN_SYMS = $a06d5a398bbbfd36$var$makeState(); // S_URL_OPENPAREN_Q followed by some symbols it cannot end it
-    var S_EMAIL_DOMAIN = $a06d5a398bbbfd36$var$makeState(); // parsed string starts with local email info + @ with a potential domain name (C)
-    var S_EMAIL_DOMAIN_DOT = $a06d5a398bbbfd36$var$makeState(); // (C) domain followed by DOT
-    var S_EMAIL = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Email); // (C) Possible email address (could have more tlds)
-    var S_EMAIL_COLON = $a06d5a398bbbfd36$var$makeState(); // (C) URL followed by colon (potential port number here)
-    var S_EMAIL_PORT = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Email); // (C) Email address with a port
-    var S_MAILTO_EMAIL = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$MailtoEmail); // Email that begins with the mailto prefix (D)
-    var S_MAILTO_EMAIL_NON_ACCEPTING = $a06d5a398bbbfd36$var$makeState(); // (D) Followed by some non-query string chars
-    var S_LOCALPART = $a06d5a398bbbfd36$var$makeState(); // Local part of the email address
-    var S_LOCALPART_AT = $a06d5a398bbbfd36$var$makeState(); // Local part of the email address plus @
-    var S_LOCALPART_DOT = $a06d5a398bbbfd36$var$makeState(); // Local part of the email address plus '.' (localpart cannot end in .)
-    var S_NL = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Nl); // single new line
+    var S_PROTOCOL = $410e7a787f87a2b4$var$makeState(); // e.g., 'http:'
+    var S_MAILTO = $410e7a787f87a2b4$var$makeState(); // 'mailto:'
+    var S_PROTOCOL_SLASH = $410e7a787f87a2b4$var$makeState(); // e.g., 'http:/''
+    var S_PROTOCOL_SLASH_SLASH = $410e7a787f87a2b4$var$makeState(); // e.g.,'http://'
+    var S_DOMAIN = $410e7a787f87a2b4$var$makeState(); // parsed string ends with a potential domain name (A)
+    var S_DOMAIN_DOT = $410e7a787f87a2b4$var$makeState(); // (A) domain followed by DOT
+    var S_TLD = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Url); // (A) Simplest possible URL with no query string
+    var S_TLD_COLON = $410e7a787f87a2b4$var$makeState(); // (A) URL followed by colon (potential port number here)
+    var S_TLD_PORT = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Url); // TLD followed by a port number
+    var S_URL = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Url); // Long URL with optional port and maybe query string
+    var S_URL_NON_ACCEPTING = $410e7a787f87a2b4$var$makeState(); // URL followed by some symbols (will not be part of the final URL)
+    var S_URL_OPENBRACE = $410e7a787f87a2b4$var$makeState(); // URL followed by {
+    var S_URL_OPENBRACKET = $410e7a787f87a2b4$var$makeState(); // URL followed by [
+    var S_URL_OPENANGLEBRACKET = $410e7a787f87a2b4$var$makeState(); // URL followed by <
+    var S_URL_OPENPAREN = $410e7a787f87a2b4$var$makeState(); // URL followed by (
+    var S_URL_OPENBRACE_Q = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Url); // URL followed by { and some symbols that the URL can end it
+    var S_URL_OPENBRACKET_Q = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Url); // URL followed by [ and some symbols that the URL can end it
+    var S_URL_OPENANGLEBRACKET_Q = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Url); // URL followed by < and some symbols that the URL can end it
+    var S_URL_OPENPAREN_Q = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Url); // URL followed by ( and some symbols that the URL can end it
+    var S_URL_OPENBRACE_SYMS = $410e7a787f87a2b4$var$makeState(); // S_URL_OPENBRACE_Q followed by some symbols it cannot end it
+    var S_URL_OPENBRACKET_SYMS = $410e7a787f87a2b4$var$makeState(); // S_URL_OPENBRACKET_Q followed by some symbols it cannot end it
+    var S_URL_OPENANGLEBRACKET_SYMS = $410e7a787f87a2b4$var$makeState(); // S_URL_OPENANGLEBRACKET_Q followed by some symbols it cannot end it
+    var S_URL_OPENPAREN_SYMS = $410e7a787f87a2b4$var$makeState(); // S_URL_OPENPAREN_Q followed by some symbols it cannot end it
+    var S_EMAIL_DOMAIN = $410e7a787f87a2b4$var$makeState(); // parsed string starts with local email info + @ with a potential domain name (C)
+    var S_EMAIL_DOMAIN_DOT = $410e7a787f87a2b4$var$makeState(); // (C) domain followed by DOT
+    var S_EMAIL = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Email); // (C) Possible email address (could have more tlds)
+    var S_EMAIL_COLON = $410e7a787f87a2b4$var$makeState(); // (C) URL followed by colon (potential port number here)
+    var S_EMAIL_PORT = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Email); // (C) Email address with a port
+    var S_MAILTO_EMAIL = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$MailtoEmail); // Email that begins with the mailto prefix (D)
+    var S_MAILTO_EMAIL_NON_ACCEPTING = $410e7a787f87a2b4$var$makeState(); // (D) Followed by some non-query string chars
+    var S_LOCALPART = $410e7a787f87a2b4$var$makeState(); // Local part of the email address
+    var S_LOCALPART_AT = $410e7a787f87a2b4$var$makeState(); // Local part of the email address plus @
+    var S_LOCALPART_DOT = $410e7a787f87a2b4$var$makeState(); // Local part of the email address plus '.' (localpart cannot end in .)
+    var S_NL = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Nl); // single new line
     // Make path from start to protocol (with '//')
-    $a06d5a398bbbfd36$var$makeT(S_START, $a06d5a398bbbfd36$var$NL, S_NL);
-    $a06d5a398bbbfd36$var$makeT(S_START, $a06d5a398bbbfd36$var$PROTOCOL, S_PROTOCOL);
-    $a06d5a398bbbfd36$var$makeT(S_START, $a06d5a398bbbfd36$var$MAILTO, S_MAILTO);
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL, $a06d5a398bbbfd36$var$SLASH, S_PROTOCOL_SLASH);
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_SLASH, $a06d5a398bbbfd36$var$SLASH, S_PROTOCOL_SLASH_SLASH); // The very first potential domain name
-    $a06d5a398bbbfd36$var$makeT(S_START, $a06d5a398bbbfd36$var$TLD, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_START, $a06d5a398bbbfd36$var$DOMAIN, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_START, $a06d5a398bbbfd36$var$LOCALHOST, S_TLD);
-    $a06d5a398bbbfd36$var$makeT(S_START, $a06d5a398bbbfd36$var$NUM, S_DOMAIN); // Force URL for protocol followed by anything sane
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_SLASH_SLASH, $a06d5a398bbbfd36$var$TLD, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_SLASH_SLASH, $a06d5a398bbbfd36$var$DOMAIN, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_SLASH_SLASH, $a06d5a398bbbfd36$var$NUM, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_SLASH_SLASH, $a06d5a398bbbfd36$var$LOCALHOST, S_URL); // Account for dots and hyphens
+    $410e7a787f87a2b4$var$makeT(S_START, $410e7a787f87a2b4$var$NL, S_NL);
+    $410e7a787f87a2b4$var$makeT(S_START, $410e7a787f87a2b4$var$PROTOCOL, S_PROTOCOL);
+    $410e7a787f87a2b4$var$makeT(S_START, $410e7a787f87a2b4$var$MAILTO, S_MAILTO);
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL, $410e7a787f87a2b4$var$SLASH, S_PROTOCOL_SLASH);
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_SLASH, $410e7a787f87a2b4$var$SLASH, S_PROTOCOL_SLASH_SLASH); // The very first potential domain name
+    $410e7a787f87a2b4$var$makeT(S_START, $410e7a787f87a2b4$var$TLD, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_START, $410e7a787f87a2b4$var$DOMAIN, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_START, $410e7a787f87a2b4$var$LOCALHOST, S_TLD);
+    $410e7a787f87a2b4$var$makeT(S_START, $410e7a787f87a2b4$var$NUM, S_DOMAIN); // Force URL for protocol followed by anything sane
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_SLASH_SLASH, $410e7a787f87a2b4$var$TLD, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_SLASH_SLASH, $410e7a787f87a2b4$var$DOMAIN, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_SLASH_SLASH, $410e7a787f87a2b4$var$NUM, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_SLASH_SLASH, $410e7a787f87a2b4$var$LOCALHOST, S_URL); // Account for dots and hyphens
     // hyphens are usually parts of domain names
-    $a06d5a398bbbfd36$var$makeT(S_DOMAIN, $a06d5a398bbbfd36$var$DOT, S_DOMAIN_DOT);
-    $a06d5a398bbbfd36$var$makeT(S_EMAIL_DOMAIN, $a06d5a398bbbfd36$var$DOT, S_EMAIL_DOMAIN_DOT); // Hyphen can jump back to a domain name
+    $410e7a787f87a2b4$var$makeT(S_DOMAIN, $410e7a787f87a2b4$var$DOT, S_DOMAIN_DOT);
+    $410e7a787f87a2b4$var$makeT(S_EMAIL_DOMAIN, $410e7a787f87a2b4$var$DOT, S_EMAIL_DOMAIN_DOT); // Hyphen can jump back to a domain name
     // After the first domain and a dot, we can find either a URL or another domain
-    $a06d5a398bbbfd36$var$makeT(S_DOMAIN_DOT, $a06d5a398bbbfd36$var$TLD, S_TLD);
-    $a06d5a398bbbfd36$var$makeT(S_DOMAIN_DOT, $a06d5a398bbbfd36$var$DOMAIN, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_DOMAIN_DOT, $a06d5a398bbbfd36$var$NUM, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_DOMAIN_DOT, $a06d5a398bbbfd36$var$LOCALHOST, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_EMAIL_DOMAIN_DOT, $a06d5a398bbbfd36$var$TLD, S_EMAIL);
-    $a06d5a398bbbfd36$var$makeT(S_EMAIL_DOMAIN_DOT, $a06d5a398bbbfd36$var$DOMAIN, S_EMAIL_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_EMAIL_DOMAIN_DOT, $a06d5a398bbbfd36$var$NUM, S_EMAIL_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_EMAIL_DOMAIN_DOT, $a06d5a398bbbfd36$var$LOCALHOST, S_EMAIL_DOMAIN); // S_TLD accepts! But the URL could be longer, try to find a match greedily
+    $410e7a787f87a2b4$var$makeT(S_DOMAIN_DOT, $410e7a787f87a2b4$var$TLD, S_TLD);
+    $410e7a787f87a2b4$var$makeT(S_DOMAIN_DOT, $410e7a787f87a2b4$var$DOMAIN, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_DOMAIN_DOT, $410e7a787f87a2b4$var$NUM, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_DOMAIN_DOT, $410e7a787f87a2b4$var$LOCALHOST, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_EMAIL_DOMAIN_DOT, $410e7a787f87a2b4$var$TLD, S_EMAIL);
+    $410e7a787f87a2b4$var$makeT(S_EMAIL_DOMAIN_DOT, $410e7a787f87a2b4$var$DOMAIN, S_EMAIL_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_EMAIL_DOMAIN_DOT, $410e7a787f87a2b4$var$NUM, S_EMAIL_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_EMAIL_DOMAIN_DOT, $410e7a787f87a2b4$var$LOCALHOST, S_EMAIL_DOMAIN); // S_TLD accepts! But the URL could be longer, try to find a match greedily
     // The `run` function should be able to "rollback" to the accepting state
-    $a06d5a398bbbfd36$var$makeT(S_TLD, $a06d5a398bbbfd36$var$DOT, S_DOMAIN_DOT);
-    $a06d5a398bbbfd36$var$makeT(S_EMAIL, $a06d5a398bbbfd36$var$DOT, S_EMAIL_DOMAIN_DOT); // Become real URLs after `SLASH` or `COLON NUM SLASH`
+    $410e7a787f87a2b4$var$makeT(S_TLD, $410e7a787f87a2b4$var$DOT, S_DOMAIN_DOT);
+    $410e7a787f87a2b4$var$makeT(S_EMAIL, $410e7a787f87a2b4$var$DOT, S_EMAIL_DOMAIN_DOT); // Become real URLs after `SLASH` or `COLON NUM SLASH`
     // Here PSS and non-PSS converge
-    $a06d5a398bbbfd36$var$makeT(S_TLD, $a06d5a398bbbfd36$var$COLON, S_TLD_COLON);
-    $a06d5a398bbbfd36$var$makeT(S_TLD, $a06d5a398bbbfd36$var$SLASH, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_TLD_COLON, $a06d5a398bbbfd36$var$NUM, S_TLD_PORT);
-    $a06d5a398bbbfd36$var$makeT(S_TLD_PORT, $a06d5a398bbbfd36$var$SLASH, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_EMAIL, $a06d5a398bbbfd36$var$COLON, S_EMAIL_COLON);
-    $a06d5a398bbbfd36$var$makeT(S_EMAIL_COLON, $a06d5a398bbbfd36$var$NUM, S_EMAIL_PORT); // Types of characters the URL can definitely end in
+    $410e7a787f87a2b4$var$makeT(S_TLD, $410e7a787f87a2b4$var$COLON, S_TLD_COLON);
+    $410e7a787f87a2b4$var$makeT(S_TLD, $410e7a787f87a2b4$var$SLASH, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_TLD_COLON, $410e7a787f87a2b4$var$NUM, S_TLD_PORT);
+    $410e7a787f87a2b4$var$makeT(S_TLD_PORT, $410e7a787f87a2b4$var$SLASH, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_EMAIL, $410e7a787f87a2b4$var$COLON, S_EMAIL_COLON);
+    $410e7a787f87a2b4$var$makeT(S_EMAIL_COLON, $410e7a787f87a2b4$var$NUM, S_EMAIL_PORT); // Types of characters the URL can definitely end in
     var qsAccepting = [
-        $a06d5a398bbbfd36$var$AMPERSAND,
-        $a06d5a398bbbfd36$var$ASTERISK,
-        $a06d5a398bbbfd36$var$AT,
-        $a06d5a398bbbfd36$var$BACKSLASH,
-        $a06d5a398bbbfd36$var$BACKTICK,
-        $a06d5a398bbbfd36$var$CARET,
-        $a06d5a398bbbfd36$var$DOLLAR,
-        $a06d5a398bbbfd36$var$DOMAIN,
-        $a06d5a398bbbfd36$var$EQUALS,
-        $a06d5a398bbbfd36$var$HYPHEN,
-        $a06d5a398bbbfd36$var$LOCALHOST,
-        $a06d5a398bbbfd36$var$NUM,
-        $a06d5a398bbbfd36$var$PERCENT,
-        $a06d5a398bbbfd36$var$PIPE,
-        $a06d5a398bbbfd36$var$PLUS,
-        $a06d5a398bbbfd36$var$POUND,
-        $a06d5a398bbbfd36$var$PROTOCOL,
-        $a06d5a398bbbfd36$var$SLASH,
-        $a06d5a398bbbfd36$var$SYM,
-        $a06d5a398bbbfd36$var$TILDE,
-        $a06d5a398bbbfd36$var$TLD,
-        $a06d5a398bbbfd36$var$UNDERSCORE
+        $410e7a787f87a2b4$var$AMPERSAND,
+        $410e7a787f87a2b4$var$ASTERISK,
+        $410e7a787f87a2b4$var$AT,
+        $410e7a787f87a2b4$var$BACKSLASH,
+        $410e7a787f87a2b4$var$BACKTICK,
+        $410e7a787f87a2b4$var$CARET,
+        $410e7a787f87a2b4$var$DOLLAR,
+        $410e7a787f87a2b4$var$DOMAIN,
+        $410e7a787f87a2b4$var$EQUALS,
+        $410e7a787f87a2b4$var$HYPHEN,
+        $410e7a787f87a2b4$var$LOCALHOST,
+        $410e7a787f87a2b4$var$NUM,
+        $410e7a787f87a2b4$var$PERCENT,
+        $410e7a787f87a2b4$var$PIPE,
+        $410e7a787f87a2b4$var$PLUS,
+        $410e7a787f87a2b4$var$POUND,
+        $410e7a787f87a2b4$var$PROTOCOL,
+        $410e7a787f87a2b4$var$SLASH,
+        $410e7a787f87a2b4$var$SYM,
+        $410e7a787f87a2b4$var$TILDE,
+        $410e7a787f87a2b4$var$TLD,
+        $410e7a787f87a2b4$var$UNDERSCORE
     ]; // Types of tokens that can follow a URL and be part of the query string
     // but cannot be the very last characters
     // Characters that cannot appear in the URL at all should be excluded
     var qsNonAccepting = [
-        $a06d5a398bbbfd36$var$APOSTROPHE,
-        $a06d5a398bbbfd36$var$CLOSEANGLEBRACKET,
-        $a06d5a398bbbfd36$var$CLOSEBRACE,
-        $a06d5a398bbbfd36$var$CLOSEBRACKET,
-        $a06d5a398bbbfd36$var$CLOSEPAREN,
-        $a06d5a398bbbfd36$var$COLON,
-        $a06d5a398bbbfd36$var$COMMA,
-        $a06d5a398bbbfd36$var$DOT,
-        $a06d5a398bbbfd36$var$EXCLAMATION,
-        $a06d5a398bbbfd36$var$OPENANGLEBRACKET,
-        $a06d5a398bbbfd36$var$OPENBRACE,
-        $a06d5a398bbbfd36$var$OPENBRACKET,
-        $a06d5a398bbbfd36$var$OPENPAREN,
-        $a06d5a398bbbfd36$var$QUERY,
-        $a06d5a398bbbfd36$var$QUOTE,
-        $a06d5a398bbbfd36$var$SEMI
+        $410e7a787f87a2b4$var$APOSTROPHE,
+        $410e7a787f87a2b4$var$CLOSEANGLEBRACKET,
+        $410e7a787f87a2b4$var$CLOSEBRACE,
+        $410e7a787f87a2b4$var$CLOSEBRACKET,
+        $410e7a787f87a2b4$var$CLOSEPAREN,
+        $410e7a787f87a2b4$var$COLON,
+        $410e7a787f87a2b4$var$COMMA,
+        $410e7a787f87a2b4$var$DOT,
+        $410e7a787f87a2b4$var$EXCLAMATION,
+        $410e7a787f87a2b4$var$OPENANGLEBRACKET,
+        $410e7a787f87a2b4$var$OPENBRACE,
+        $410e7a787f87a2b4$var$OPENBRACKET,
+        $410e7a787f87a2b4$var$OPENPAREN,
+        $410e7a787f87a2b4$var$QUERY,
+        $410e7a787f87a2b4$var$QUOTE,
+        $410e7a787f87a2b4$var$SEMI
     ]; // These states are responsible primarily for determining whether or not to
     // include the final round bracket.
     // URL, followed by an opening bracket
-    $a06d5a398bbbfd36$var$makeT(S_URL, $a06d5a398bbbfd36$var$OPENBRACE, S_URL_OPENBRACE);
-    $a06d5a398bbbfd36$var$makeT(S_URL, $a06d5a398bbbfd36$var$OPENBRACKET, S_URL_OPENBRACKET);
-    $a06d5a398bbbfd36$var$makeT(S_URL, $a06d5a398bbbfd36$var$OPENANGLEBRACKET, S_URL_OPENANGLEBRACKET);
-    $a06d5a398bbbfd36$var$makeT(S_URL, $a06d5a398bbbfd36$var$OPENPAREN, S_URL_OPENPAREN); // URL with extra symbols at the end, followed by an opening bracket
-    $a06d5a398bbbfd36$var$makeT(S_URL_NON_ACCEPTING, $a06d5a398bbbfd36$var$OPENBRACE, S_URL_OPENBRACE);
-    $a06d5a398bbbfd36$var$makeT(S_URL_NON_ACCEPTING, $a06d5a398bbbfd36$var$OPENBRACKET, S_URL_OPENBRACKET);
-    $a06d5a398bbbfd36$var$makeT(S_URL_NON_ACCEPTING, $a06d5a398bbbfd36$var$OPENANGLEBRACKET, S_URL_OPENANGLEBRACKET);
-    $a06d5a398bbbfd36$var$makeT(S_URL_NON_ACCEPTING, $a06d5a398bbbfd36$var$OPENPAREN, S_URL_OPENPAREN); // Closing bracket component. This character WILL be included in the URL
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENBRACE, $a06d5a398bbbfd36$var$CLOSEBRACE, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENBRACKET, $a06d5a398bbbfd36$var$CLOSEBRACKET, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENANGLEBRACKET, $a06d5a398bbbfd36$var$CLOSEANGLEBRACKET, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENPAREN, $a06d5a398bbbfd36$var$CLOSEPAREN, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENBRACE_Q, $a06d5a398bbbfd36$var$CLOSEBRACE, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENBRACKET_Q, $a06d5a398bbbfd36$var$CLOSEBRACKET, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENANGLEBRACKET_Q, $a06d5a398bbbfd36$var$CLOSEANGLEBRACKET, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENPAREN_Q, $a06d5a398bbbfd36$var$CLOSEPAREN, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENBRACE_SYMS, $a06d5a398bbbfd36$var$CLOSEBRACE, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENBRACKET_SYMS, $a06d5a398bbbfd36$var$CLOSEBRACKET, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENANGLEBRACKET_SYMS, $a06d5a398bbbfd36$var$CLOSEANGLEBRACKET, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENPAREN_SYMS, $a06d5a398bbbfd36$var$CLOSEPAREN, S_URL); // URL that beings with an opening bracket, followed by a symbols.
+    $410e7a787f87a2b4$var$makeT(S_URL, $410e7a787f87a2b4$var$OPENBRACE, S_URL_OPENBRACE);
+    $410e7a787f87a2b4$var$makeT(S_URL, $410e7a787f87a2b4$var$OPENBRACKET, S_URL_OPENBRACKET);
+    $410e7a787f87a2b4$var$makeT(S_URL, $410e7a787f87a2b4$var$OPENANGLEBRACKET, S_URL_OPENANGLEBRACKET);
+    $410e7a787f87a2b4$var$makeT(S_URL, $410e7a787f87a2b4$var$OPENPAREN, S_URL_OPENPAREN); // URL with extra symbols at the end, followed by an opening bracket
+    $410e7a787f87a2b4$var$makeT(S_URL_NON_ACCEPTING, $410e7a787f87a2b4$var$OPENBRACE, S_URL_OPENBRACE);
+    $410e7a787f87a2b4$var$makeT(S_URL_NON_ACCEPTING, $410e7a787f87a2b4$var$OPENBRACKET, S_URL_OPENBRACKET);
+    $410e7a787f87a2b4$var$makeT(S_URL_NON_ACCEPTING, $410e7a787f87a2b4$var$OPENANGLEBRACKET, S_URL_OPENANGLEBRACKET);
+    $410e7a787f87a2b4$var$makeT(S_URL_NON_ACCEPTING, $410e7a787f87a2b4$var$OPENPAREN, S_URL_OPENPAREN); // Closing bracket component. This character WILL be included in the URL
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENBRACE, $410e7a787f87a2b4$var$CLOSEBRACE, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENBRACKET, $410e7a787f87a2b4$var$CLOSEBRACKET, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENANGLEBRACKET, $410e7a787f87a2b4$var$CLOSEANGLEBRACKET, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENPAREN, $410e7a787f87a2b4$var$CLOSEPAREN, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENBRACE_Q, $410e7a787f87a2b4$var$CLOSEBRACE, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENBRACKET_Q, $410e7a787f87a2b4$var$CLOSEBRACKET, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENANGLEBRACKET_Q, $410e7a787f87a2b4$var$CLOSEANGLEBRACKET, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENPAREN_Q, $410e7a787f87a2b4$var$CLOSEPAREN, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENBRACE_SYMS, $410e7a787f87a2b4$var$CLOSEBRACE, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENBRACKET_SYMS, $410e7a787f87a2b4$var$CLOSEBRACKET, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENANGLEBRACKET_SYMS, $410e7a787f87a2b4$var$CLOSEANGLEBRACKET, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENPAREN_SYMS, $410e7a787f87a2b4$var$CLOSEPAREN, S_URL); // URL that beings with an opening bracket, followed by a symbols.
     // Note that the final state can still be `S_URL_OPENBRACE_Q` (if the URL only
     // has a single opening bracket for some reason).
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACE, qsAccepting, S_URL_OPENBRACE_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACKET, qsAccepting, S_URL_OPENBRACKET_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENANGLEBRACKET, qsAccepting, S_URL_OPENANGLEBRACKET_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENPAREN, qsAccepting, S_URL_OPENPAREN_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACE, qsNonAccepting, S_URL_OPENBRACE_SYMS);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACKET, qsNonAccepting, S_URL_OPENBRACKET_SYMS);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENANGLEBRACKET, qsNonAccepting, S_URL_OPENANGLEBRACKET_SYMS);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENPAREN, qsNonAccepting, S_URL_OPENPAREN_SYMS); // URL that begins with an opening bracket, followed by some symbols
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACE_Q, qsAccepting, S_URL_OPENBRACE_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACKET_Q, qsAccepting, S_URL_OPENBRACKET_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENANGLEBRACKET_Q, qsAccepting, S_URL_OPENANGLEBRACKET_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENPAREN_Q, qsAccepting, S_URL_OPENPAREN_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACE_Q, qsNonAccepting, S_URL_OPENBRACE_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACKET_Q, qsNonAccepting, S_URL_OPENBRACKET_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENANGLEBRACKET_Q, qsNonAccepting, S_URL_OPENANGLEBRACKET_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENPAREN_Q, qsNonAccepting, S_URL_OPENPAREN_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACE_SYMS, qsAccepting, S_URL_OPENBRACE_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACKET_SYMS, qsAccepting, S_URL_OPENBRACKET_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENANGLEBRACKET_SYMS, qsAccepting, S_URL_OPENANGLEBRACKET_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENPAREN_SYMS, qsAccepting, S_URL_OPENPAREN_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACE_SYMS, qsNonAccepting, S_URL_OPENBRACE_SYMS);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACKET_SYMS, qsNonAccepting, S_URL_OPENBRACKET_SYMS);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENANGLEBRACKET_SYMS, qsNonAccepting, S_URL_OPENANGLEBRACKET_SYMS);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENPAREN_SYMS, qsNonAccepting, S_URL_OPENPAREN_SYMS); // Account for the query string
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL, qsAccepting, S_URL);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_NON_ACCEPTING, qsAccepting, S_URL);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL, qsNonAccepting, S_URL_NON_ACCEPTING);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_NON_ACCEPTING, qsNonAccepting, S_URL_NON_ACCEPTING); // Email address-specific state definitions
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACE, qsAccepting, S_URL_OPENBRACE_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACKET, qsAccepting, S_URL_OPENBRACKET_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENANGLEBRACKET, qsAccepting, S_URL_OPENANGLEBRACKET_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENPAREN, qsAccepting, S_URL_OPENPAREN_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACE, qsNonAccepting, S_URL_OPENBRACE_SYMS);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACKET, qsNonAccepting, S_URL_OPENBRACKET_SYMS);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENANGLEBRACKET, qsNonAccepting, S_URL_OPENANGLEBRACKET_SYMS);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENPAREN, qsNonAccepting, S_URL_OPENPAREN_SYMS); // URL that begins with an opening bracket, followed by some symbols
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACE_Q, qsAccepting, S_URL_OPENBRACE_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACKET_Q, qsAccepting, S_URL_OPENBRACKET_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENANGLEBRACKET_Q, qsAccepting, S_URL_OPENANGLEBRACKET_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENPAREN_Q, qsAccepting, S_URL_OPENPAREN_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACE_Q, qsNonAccepting, S_URL_OPENBRACE_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACKET_Q, qsNonAccepting, S_URL_OPENBRACKET_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENANGLEBRACKET_Q, qsNonAccepting, S_URL_OPENANGLEBRACKET_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENPAREN_Q, qsNonAccepting, S_URL_OPENPAREN_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACE_SYMS, qsAccepting, S_URL_OPENBRACE_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACKET_SYMS, qsAccepting, S_URL_OPENBRACKET_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENANGLEBRACKET_SYMS, qsAccepting, S_URL_OPENANGLEBRACKET_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENPAREN_SYMS, qsAccepting, S_URL_OPENPAREN_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACE_SYMS, qsNonAccepting, S_URL_OPENBRACE_SYMS);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACKET_SYMS, qsNonAccepting, S_URL_OPENBRACKET_SYMS);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENANGLEBRACKET_SYMS, qsNonAccepting, S_URL_OPENANGLEBRACKET_SYMS);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENPAREN_SYMS, qsNonAccepting, S_URL_OPENPAREN_SYMS); // Account for the query string
+    $410e7a787f87a2b4$var$makeMultiT(S_URL, qsAccepting, S_URL);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_NON_ACCEPTING, qsAccepting, S_URL);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL, qsNonAccepting, S_URL_NON_ACCEPTING);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_NON_ACCEPTING, qsNonAccepting, S_URL_NON_ACCEPTING); // Email address-specific state definitions
     // Note: We are not allowing '/' in email addresses since this would interfere
     // with real URLs
     // For addresses with the mailto prefix
     // 'mailto:' followed by anything sane is a valid email
-    $a06d5a398bbbfd36$var$makeT(S_MAILTO, $a06d5a398bbbfd36$var$TLD, S_MAILTO_EMAIL);
-    $a06d5a398bbbfd36$var$makeT(S_MAILTO, $a06d5a398bbbfd36$var$DOMAIN, S_MAILTO_EMAIL);
-    $a06d5a398bbbfd36$var$makeT(S_MAILTO, $a06d5a398bbbfd36$var$NUM, S_MAILTO_EMAIL);
-    $a06d5a398bbbfd36$var$makeT(S_MAILTO, $a06d5a398bbbfd36$var$LOCALHOST, S_MAILTO_EMAIL); // Greedily get more potential valid email values
-    $a06d5a398bbbfd36$var$makeMultiT(S_MAILTO_EMAIL, qsAccepting, S_MAILTO_EMAIL);
-    $a06d5a398bbbfd36$var$makeMultiT(S_MAILTO_EMAIL, qsNonAccepting, S_MAILTO_EMAIL_NON_ACCEPTING);
-    $a06d5a398bbbfd36$var$makeMultiT(S_MAILTO_EMAIL_NON_ACCEPTING, qsAccepting, S_MAILTO_EMAIL);
-    $a06d5a398bbbfd36$var$makeMultiT(S_MAILTO_EMAIL_NON_ACCEPTING, qsNonAccepting, S_MAILTO_EMAIL_NON_ACCEPTING); // For addresses without the mailto prefix
+    $410e7a787f87a2b4$var$makeT(S_MAILTO, $410e7a787f87a2b4$var$TLD, S_MAILTO_EMAIL);
+    $410e7a787f87a2b4$var$makeT(S_MAILTO, $410e7a787f87a2b4$var$DOMAIN, S_MAILTO_EMAIL);
+    $410e7a787f87a2b4$var$makeT(S_MAILTO, $410e7a787f87a2b4$var$NUM, S_MAILTO_EMAIL);
+    $410e7a787f87a2b4$var$makeT(S_MAILTO, $410e7a787f87a2b4$var$LOCALHOST, S_MAILTO_EMAIL); // Greedily get more potential valid email values
+    $410e7a787f87a2b4$var$makeMultiT(S_MAILTO_EMAIL, qsAccepting, S_MAILTO_EMAIL);
+    $410e7a787f87a2b4$var$makeMultiT(S_MAILTO_EMAIL, qsNonAccepting, S_MAILTO_EMAIL_NON_ACCEPTING);
+    $410e7a787f87a2b4$var$makeMultiT(S_MAILTO_EMAIL_NON_ACCEPTING, qsAccepting, S_MAILTO_EMAIL);
+    $410e7a787f87a2b4$var$makeMultiT(S_MAILTO_EMAIL_NON_ACCEPTING, qsNonAccepting, S_MAILTO_EMAIL_NON_ACCEPTING); // For addresses without the mailto prefix
     // Tokens allowed in the localpart of the email
     var localpartAccepting = [
-        $a06d5a398bbbfd36$var$AMPERSAND,
-        $a06d5a398bbbfd36$var$APOSTROPHE,
-        $a06d5a398bbbfd36$var$ASTERISK,
-        $a06d5a398bbbfd36$var$BACKSLASH,
-        $a06d5a398bbbfd36$var$BACKTICK,
-        $a06d5a398bbbfd36$var$CARET,
-        $a06d5a398bbbfd36$var$CLOSEBRACE,
-        $a06d5a398bbbfd36$var$DOLLAR,
-        $a06d5a398bbbfd36$var$DOMAIN,
-        $a06d5a398bbbfd36$var$EQUALS,
-        $a06d5a398bbbfd36$var$HYPHEN,
-        $a06d5a398bbbfd36$var$NUM,
-        $a06d5a398bbbfd36$var$OPENBRACE,
-        $a06d5a398bbbfd36$var$PERCENT,
-        $a06d5a398bbbfd36$var$PIPE,
-        $a06d5a398bbbfd36$var$PLUS,
-        $a06d5a398bbbfd36$var$POUND,
-        $a06d5a398bbbfd36$var$QUERY,
-        $a06d5a398bbbfd36$var$SLASH,
-        $a06d5a398bbbfd36$var$SYM,
-        $a06d5a398bbbfd36$var$TILDE,
-        $a06d5a398bbbfd36$var$TLD,
-        $a06d5a398bbbfd36$var$UNDERSCORE
+        $410e7a787f87a2b4$var$AMPERSAND,
+        $410e7a787f87a2b4$var$APOSTROPHE,
+        $410e7a787f87a2b4$var$ASTERISK,
+        $410e7a787f87a2b4$var$BACKSLASH,
+        $410e7a787f87a2b4$var$BACKTICK,
+        $410e7a787f87a2b4$var$CARET,
+        $410e7a787f87a2b4$var$CLOSEBRACE,
+        $410e7a787f87a2b4$var$DOLLAR,
+        $410e7a787f87a2b4$var$DOMAIN,
+        $410e7a787f87a2b4$var$EQUALS,
+        $410e7a787f87a2b4$var$HYPHEN,
+        $410e7a787f87a2b4$var$NUM,
+        $410e7a787f87a2b4$var$OPENBRACE,
+        $410e7a787f87a2b4$var$PERCENT,
+        $410e7a787f87a2b4$var$PIPE,
+        $410e7a787f87a2b4$var$PLUS,
+        $410e7a787f87a2b4$var$POUND,
+        $410e7a787f87a2b4$var$QUERY,
+        $410e7a787f87a2b4$var$SLASH,
+        $410e7a787f87a2b4$var$SYM,
+        $410e7a787f87a2b4$var$TILDE,
+        $410e7a787f87a2b4$var$TLD,
+        $410e7a787f87a2b4$var$UNDERSCORE
     ]; // Some of the tokens in `localpartAccepting` are already accounted for here and
     // will not be overwritten (don't worry)
-    $a06d5a398bbbfd36$var$makeMultiT(S_DOMAIN, localpartAccepting, S_LOCALPART);
-    $a06d5a398bbbfd36$var$makeT(S_DOMAIN, $a06d5a398bbbfd36$var$AT, S_LOCALPART_AT);
-    $a06d5a398bbbfd36$var$makeMultiT(S_TLD, localpartAccepting, S_LOCALPART);
-    $a06d5a398bbbfd36$var$makeT(S_TLD, $a06d5a398bbbfd36$var$AT, S_LOCALPART_AT);
-    $a06d5a398bbbfd36$var$makeMultiT(S_DOMAIN_DOT, localpartAccepting, S_LOCALPART); // Now in localpart of address
+    $410e7a787f87a2b4$var$makeMultiT(S_DOMAIN, localpartAccepting, S_LOCALPART);
+    $410e7a787f87a2b4$var$makeT(S_DOMAIN, $410e7a787f87a2b4$var$AT, S_LOCALPART_AT);
+    $410e7a787f87a2b4$var$makeMultiT(S_TLD, localpartAccepting, S_LOCALPART);
+    $410e7a787f87a2b4$var$makeT(S_TLD, $410e7a787f87a2b4$var$AT, S_LOCALPART_AT);
+    $410e7a787f87a2b4$var$makeMultiT(S_DOMAIN_DOT, localpartAccepting, S_LOCALPART); // Now in localpart of address
     // TODO: IP addresses and what if the email starts with numbers?
-    $a06d5a398bbbfd36$var$makeMultiT(S_LOCALPART, localpartAccepting, S_LOCALPART);
-    $a06d5a398bbbfd36$var$makeT(S_LOCALPART, $a06d5a398bbbfd36$var$AT, S_LOCALPART_AT); // close to an email address now
-    $a06d5a398bbbfd36$var$makeT(S_LOCALPART, $a06d5a398bbbfd36$var$DOT, S_LOCALPART_DOT);
-    $a06d5a398bbbfd36$var$makeMultiT(S_LOCALPART_DOT, localpartAccepting, S_LOCALPART);
-    $a06d5a398bbbfd36$var$makeT(S_LOCALPART_AT, $a06d5a398bbbfd36$var$TLD, S_EMAIL_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_LOCALPART_AT, $a06d5a398bbbfd36$var$DOMAIN, S_EMAIL_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_LOCALPART_AT, $a06d5a398bbbfd36$var$NUM, S_EMAIL_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_LOCALPART_AT, $a06d5a398bbbfd36$var$LOCALHOST, S_EMAIL); // States following `@` defined above
+    $410e7a787f87a2b4$var$makeMultiT(S_LOCALPART, localpartAccepting, S_LOCALPART);
+    $410e7a787f87a2b4$var$makeT(S_LOCALPART, $410e7a787f87a2b4$var$AT, S_LOCALPART_AT); // close to an email address now
+    $410e7a787f87a2b4$var$makeT(S_LOCALPART, $410e7a787f87a2b4$var$DOT, S_LOCALPART_DOT);
+    $410e7a787f87a2b4$var$makeMultiT(S_LOCALPART_DOT, localpartAccepting, S_LOCALPART);
+    $410e7a787f87a2b4$var$makeT(S_LOCALPART_AT, $410e7a787f87a2b4$var$TLD, S_EMAIL_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_LOCALPART_AT, $410e7a787f87a2b4$var$DOMAIN, S_EMAIL_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_LOCALPART_AT, $410e7a787f87a2b4$var$NUM, S_EMAIL_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_LOCALPART_AT, $410e7a787f87a2b4$var$LOCALHOST, S_EMAIL); // States following `@` defined above
     return S_START;
 }
 /**
@@ -17089,7 +17104,7 @@ var $a06d5a398bbbfd36$var$multi = /*#__PURE__*/ Object.freeze({
  * @param {string} input the original input used to generate the given tokens
  * @param {{t: string, v: string, s: number, e: number}[]} tokens list of scanned tokens
  * @returns {MultiToken[]}
- */ function $a06d5a398bbbfd36$var$run(start, input, tokens) {
+ */ function $410e7a787f87a2b4$var$run(start, input, tokens) {
     var len = tokens.length;
     var cursor = 0;
     var multis = [];
@@ -17101,10 +17116,10 @@ var $a06d5a398bbbfd36$var$multi = /*#__PURE__*/ Object.freeze({
         var multiLength = 0;
         var latestAccepting = null;
         var sinceAccepts = -1;
-        while(cursor < len && !(secondState = $a06d5a398bbbfd36$var$takeT(state, tokens[cursor].t)))// Starting tokens with nowhere to jump to.
+        while(cursor < len && !(secondState = $410e7a787f87a2b4$var$takeT(state, tokens[cursor].t)))// Starting tokens with nowhere to jump to.
         // Consider these to be just plain text
         textTokens.push(tokens[cursor++]);
-        while(cursor < len && (nextState = secondState || $a06d5a398bbbfd36$var$takeT(state, tokens[cursor].t))){
+        while(cursor < len && (nextState = secondState || $410e7a787f87a2b4$var$takeT(state, tokens[cursor].t))){
             // Get the next state
             secondState = null;
             state = nextState; // Keep track of the latest accepting state
@@ -17122,17 +17137,17 @@ var $a06d5a398bbbfd36$var$multi = /*#__PURE__*/ Object.freeze({
             // Accepting state!
             // First close off the textTokens (if available)
             if (textTokens.length > 0) {
-                multis.push($a06d5a398bbbfd36$var$parserCreateMultiToken($a06d5a398bbbfd36$var$Text, input, textTokens));
+                multis.push($410e7a787f87a2b4$var$parserCreateMultiToken($410e7a787f87a2b4$var$Text, input, textTokens));
                 textTokens = [];
             } // Roll back to the latest accepting state
             cursor -= sinceAccepts;
             multiLength -= sinceAccepts; // Create a new multitoken
             var Multi = latestAccepting.t;
             var subtokens = tokens.slice(cursor - multiLength, cursor);
-            multis.push($a06d5a398bbbfd36$var$parserCreateMultiToken(Multi, input, subtokens));
+            multis.push($410e7a787f87a2b4$var$parserCreateMultiToken(Multi, input, subtokens));
         }
     } // Finally close off the textTokens (if available)
-    if (textTokens.length > 0) multis.push($a06d5a398bbbfd36$var$parserCreateMultiToken($a06d5a398bbbfd36$var$Text, input, textTokens));
+    if (textTokens.length > 0) multis.push($410e7a787f87a2b4$var$parserCreateMultiToken($410e7a787f87a2b4$var$Text, input, textTokens));
     return multis;
 }
 /**
@@ -17142,14 +17157,14 @@ var $a06d5a398bbbfd36$var$multi = /*#__PURE__*/ Object.freeze({
  * @param {string} input original input string
  * @param {{t: string, v: string, s: number, e: number}[]} tokens consecutive tokens scanned from input string
  * @returns {MultiToken}
- */ function $a06d5a398bbbfd36$var$parserCreateMultiToken(Multi, input, tokens) {
+ */ function $410e7a787f87a2b4$var$parserCreateMultiToken(Multi, input, tokens) {
     var startIdx = tokens[0].s;
     var endIdx = tokens[tokens.length - 1].e;
     var value = input.substr(startIdx, endIdx - startIdx);
     return new Multi(value, tokens);
 }
-var $a06d5a398bbbfd36$var$warn = typeof console !== "undefined" && console && console.warn || function() {}; // Side-effect initialization state
-var $a06d5a398bbbfd36$var$INIT = {
+var $410e7a787f87a2b4$var$warn = typeof console !== "undefined" && console && console.warn || function() {}; // Side-effect initialization state
+var $410e7a787f87a2b4$var$INIT = {
     scanner: null,
     parser: null,
     pluginQueue: [],
@@ -17160,80 +17175,80 @@ var $a06d5a398bbbfd36$var$INIT = {
  * De-register all plugins and reset the internal state-machine. Used for
  * testing; not required in practice.
  * @private
- */ function $a06d5a398bbbfd36$export$aad8462122ac592b() {
-    $a06d5a398bbbfd36$var$INIT.scanner = null;
-    $a06d5a398bbbfd36$var$INIT.parser = null;
-    $a06d5a398bbbfd36$var$INIT.pluginQueue = [];
-    $a06d5a398bbbfd36$var$INIT.customProtocols = [];
-    $a06d5a398bbbfd36$var$INIT.initialized = false;
+ */ function $410e7a787f87a2b4$export$aad8462122ac592b() {
+    $410e7a787f87a2b4$var$INIT.scanner = null;
+    $410e7a787f87a2b4$var$INIT.parser = null;
+    $410e7a787f87a2b4$var$INIT.pluginQueue = [];
+    $410e7a787f87a2b4$var$INIT.customProtocols = [];
+    $410e7a787f87a2b4$var$INIT.initialized = false;
 }
 /**
  * Register a linkify extension plugin
  * @param {string} name of plugin to register
  * @param {Function} plugin function that accepts mutable linkify state
- */ function $a06d5a398bbbfd36$export$7612db19fb8beb1e(name, plugin) {
-    for(var i = 0; i < $a06d5a398bbbfd36$var$INIT.pluginQueue.length; i++)if (name === $a06d5a398bbbfd36$var$INIT.pluginQueue[i][0]) {
-        $a06d5a398bbbfd36$var$warn('linkifyjs: plugin "'.concat(name, '" already registered - will be overwritten'));
-        $a06d5a398bbbfd36$var$INIT.pluginQueue[i] = [
+ */ function $410e7a787f87a2b4$export$7612db19fb8beb1e(name, plugin) {
+    for(var i = 0; i < $410e7a787f87a2b4$var$INIT.pluginQueue.length; i++)if (name === $410e7a787f87a2b4$var$INIT.pluginQueue[i][0]) {
+        $410e7a787f87a2b4$var$warn('linkifyjs: plugin "'.concat(name, '" already registered - will be overwritten'));
+        $410e7a787f87a2b4$var$INIT.pluginQueue[i] = [
             name,
             plugin
         ];
         return;
     }
-    $a06d5a398bbbfd36$var$INIT.pluginQueue.push([
+    $410e7a787f87a2b4$var$INIT.pluginQueue.push([
         name,
         plugin
     ]);
-    if ($a06d5a398bbbfd36$var$INIT.initialized) $a06d5a398bbbfd36$var$warn('linkifyjs: already initialized - will not register plugin "'.concat(name, '" until you manually call linkify.init(). To avoid this warning, please register all plugins before invoking linkify the first time.'));
+    if ($410e7a787f87a2b4$var$INIT.initialized) $410e7a787f87a2b4$var$warn('linkifyjs: already initialized - will not register plugin "'.concat(name, '" until you manually call linkify.init(). To avoid this warning, please register all plugins before invoking linkify the first time.'));
 }
 /**
  * Detect URLs with the following additional protocol. Anything following
  * "protocol:" will be considered a link.
  * @param {string} protocol
- */ function $a06d5a398bbbfd36$export$821627edc2d26f5f(protocol) {
-    if ($a06d5a398bbbfd36$var$INIT.initialized) $a06d5a398bbbfd36$var$warn('linkifyjs: already initialized - will not register custom protocol "'.concat(protocol, '" until you manually call linkify.init(). To avoid this warning, please register all custom protocols before invoking linkify the first time.'));
+ */ function $410e7a787f87a2b4$export$821627edc2d26f5f(protocol) {
+    if ($410e7a787f87a2b4$var$INIT.initialized) $410e7a787f87a2b4$var$warn('linkifyjs: already initialized - will not register custom protocol "'.concat(protocol, '" until you manually call linkify.init(). To avoid this warning, please register all custom protocols before invoking linkify the first time.'));
     if (!/^[a-z-]+$/.test(protocol)) throw Error("linkifyjs: protocols containing characters other than a-z or - (hyphen) are not supported");
-    $a06d5a398bbbfd36$var$INIT.customProtocols.push(protocol);
+    $410e7a787f87a2b4$var$INIT.customProtocols.push(protocol);
 }
 /**
  * Initialize the linkify state machine. Called automatically the first time
  * linkify is called on a string, but may be called manually as well.
- */ function $a06d5a398bbbfd36$export$2cd8252107eb640b() {
+ */ function $410e7a787f87a2b4$export$2cd8252107eb640b() {
     // Initialize state machines
-    $a06d5a398bbbfd36$var$INIT.scanner = {
-        start: $a06d5a398bbbfd36$var$init$2($a06d5a398bbbfd36$var$INIT.customProtocols),
-        tokens: $a06d5a398bbbfd36$var$text
+    $410e7a787f87a2b4$var$INIT.scanner = {
+        start: $410e7a787f87a2b4$var$init$2($410e7a787f87a2b4$var$INIT.customProtocols),
+        tokens: $410e7a787f87a2b4$var$text
     };
-    $a06d5a398bbbfd36$var$INIT.parser = {
-        start: $a06d5a398bbbfd36$var$init$1(),
-        tokens: $a06d5a398bbbfd36$var$multi
+    $410e7a787f87a2b4$var$INIT.parser = {
+        start: $410e7a787f87a2b4$var$init$1(),
+        tokens: $410e7a787f87a2b4$var$multi
     };
     var utils = {
-        createTokenClass: $a06d5a398bbbfd36$var$createTokenClass
+        createTokenClass: $410e7a787f87a2b4$var$createTokenClass
     }; // Initialize plugins
-    for(var i = 0; i < $a06d5a398bbbfd36$var$INIT.pluginQueue.length; i++)$a06d5a398bbbfd36$var$INIT.pluginQueue[i][1]({
-        scanner: $a06d5a398bbbfd36$var$INIT.scanner,
-        parser: $a06d5a398bbbfd36$var$INIT.parser,
+    for(var i = 0; i < $410e7a787f87a2b4$var$INIT.pluginQueue.length; i++)$410e7a787f87a2b4$var$INIT.pluginQueue[i][1]({
+        scanner: $410e7a787f87a2b4$var$INIT.scanner,
+        parser: $410e7a787f87a2b4$var$INIT.parser,
         utils: utils
     });
-    $a06d5a398bbbfd36$var$INIT.initialized = true;
+    $410e7a787f87a2b4$var$INIT.initialized = true;
 }
 /**
 	Parse a string into tokens that represent linkable and non-linkable sub-components
 	@param {string} str
 	@return {MultiToken[]} tokens
-*/ function $a06d5a398bbbfd36$export$660b2ee2d4fb4eff(str) {
-    if (!$a06d5a398bbbfd36$var$INIT.initialized) $a06d5a398bbbfd36$export$2cd8252107eb640b();
-    return $a06d5a398bbbfd36$var$run($a06d5a398bbbfd36$var$INIT.parser.start, str, $a06d5a398bbbfd36$var$run$1($a06d5a398bbbfd36$var$INIT.scanner.start, str));
+*/ function $410e7a787f87a2b4$export$660b2ee2d4fb4eff(str) {
+    if (!$410e7a787f87a2b4$var$INIT.initialized) $410e7a787f87a2b4$export$2cd8252107eb640b();
+    return $410e7a787f87a2b4$var$run($410e7a787f87a2b4$var$INIT.parser.start, str, $410e7a787f87a2b4$var$run$1($410e7a787f87a2b4$var$INIT.scanner.start, str));
 }
 /**
 	Find a list of linkable items in the given string.
 	@param {string} str string to find links in
 	@param {string} [type] (optional) only find links of a specific type, e.g.,
 	'url' or 'email'
-*/ function $a06d5a398bbbfd36$export$71aa6c912b956294(str) {
+*/ function $410e7a787f87a2b4$export$71aa6c912b956294(str) {
     var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-    var tokens = $a06d5a398bbbfd36$export$660b2ee2d4fb4eff(str);
+    var tokens = $410e7a787f87a2b4$export$660b2ee2d4fb4eff(str);
     var filtered = [];
     for(var i = 0; i < tokens.length; i++){
         var token = tokens[i];
@@ -17256,71 +17271,71 @@ var $a06d5a398bbbfd36$var$INIT = {
  * @param {string} str string to test for links
  * @param {string} [type] optional specific link type to look for
  * @returns boolean true/false
- */ function $a06d5a398bbbfd36$export$e0969da9b8fb378d(str) {
+ */ function $410e7a787f87a2b4$export$e0969da9b8fb378d(str) {
     var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-    var tokens = $a06d5a398bbbfd36$export$660b2ee2d4fb4eff(str);
+    var tokens = $410e7a787f87a2b4$export$660b2ee2d4fb4eff(str);
     return tokens.length === 1 && tokens[0].isLink && (!type || tokens[0].t === type);
 }
 
 
-var $5648d4b0c5d9d32d$exports = {};
+var $fa8308bd2c5b6d7e$exports = {};
 "use strict";
-var $bd623089406672f6$exports = {};
-"use strict";
-
-var $7EpIm = parcelRequire("7EpIm");
-
-$7EpIm.trust = (parcelRequire("8K51h"));
-
-$7EpIm.fragment = (parcelRequire("df15h"));
-$bd623089406672f6$exports = $7EpIm;
-
-
-var $922559a60a60223e$exports = {};
+var $b51300f8ed8264b6$exports = {};
 "use strict";
 
-var $ebgA8 = parcelRequire("ebgA8");
+var $hPUTp = parcelRequire("hPUTp");
 
-var $2Mjqa = parcelRequire("2Mjqa");
+$hPUTp.trust = (parcelRequire("hc09f"));
 
-$922559a60a60223e$exports = (parcelRequire("dEYHd"))(typeof window !== "undefined" ? window : null, $ebgA8, $2Mjqa.redraw);
+$hPUTp.fragment = (parcelRequire("uUr9B"));
+$b51300f8ed8264b6$exports = $hPUTp;
+
+
+var $5eb9873530869c78$exports = {};
+"use strict";
+
+var $dXPdz = parcelRequire("dXPdz");
+
+var $fBKqb = parcelRequire("fBKqb");
+
+$5eb9873530869c78$exports = (parcelRequire("8ohAQ"))(typeof window !== "undefined" ? window : null, $dXPdz, $fBKqb.redraw);
 
 
 
-var $2Mjqa = parcelRequire("2Mjqa");
-var $5648d4b0c5d9d32d$var$m = function m() {
-    return $bd623089406672f6$exports.apply(this, arguments);
+var $fBKqb = parcelRequire("fBKqb");
+var $fa8308bd2c5b6d7e$var$m = function m() {
+    return $b51300f8ed8264b6$exports.apply(this, arguments);
 };
-$5648d4b0c5d9d32d$var$m.m = $bd623089406672f6$exports;
-$5648d4b0c5d9d32d$var$m.trust = $bd623089406672f6$exports.trust;
-$5648d4b0c5d9d32d$var$m.fragment = $bd623089406672f6$exports.fragment;
-$5648d4b0c5d9d32d$var$m.Fragment = "[";
-$5648d4b0c5d9d32d$var$m.mount = $2Mjqa.mount;
+$fa8308bd2c5b6d7e$var$m.m = $b51300f8ed8264b6$exports;
+$fa8308bd2c5b6d7e$var$m.trust = $b51300f8ed8264b6$exports.trust;
+$fa8308bd2c5b6d7e$var$m.fragment = $b51300f8ed8264b6$exports.fragment;
+$fa8308bd2c5b6d7e$var$m.Fragment = "[";
+$fa8308bd2c5b6d7e$var$m.mount = $fBKqb.mount;
 
-$5648d4b0c5d9d32d$var$m.route = (parcelRequire("7AzvW"));
+$fa8308bd2c5b6d7e$var$m.route = (parcelRequire("jFffZ"));
 
-$5648d4b0c5d9d32d$var$m.render = (parcelRequire("lI9DA"));
-$5648d4b0c5d9d32d$var$m.redraw = $2Mjqa.redraw;
-$5648d4b0c5d9d32d$var$m.request = $922559a60a60223e$exports.request;
-$5648d4b0c5d9d32d$var$m.jsonp = $922559a60a60223e$exports.jsonp;
+$fa8308bd2c5b6d7e$var$m.render = (parcelRequire("iHb4t"));
+$fa8308bd2c5b6d7e$var$m.redraw = $fBKqb.redraw;
+$fa8308bd2c5b6d7e$var$m.request = $5eb9873530869c78$exports.request;
+$fa8308bd2c5b6d7e$var$m.jsonp = $5eb9873530869c78$exports.jsonp;
 
-$5648d4b0c5d9d32d$var$m.parseQueryString = (parcelRequire("59vIi"));
+$fa8308bd2c5b6d7e$var$m.parseQueryString = (parcelRequire("iahK6"));
 
-$5648d4b0c5d9d32d$var$m.buildQueryString = (parcelRequire("2OUex"));
+$fa8308bd2c5b6d7e$var$m.buildQueryString = (parcelRequire("6KLd1"));
 
-$5648d4b0c5d9d32d$var$m.parsePathname = (parcelRequire("1h0el"));
+$fa8308bd2c5b6d7e$var$m.parsePathname = (parcelRequire("1bhZB"));
 
-$5648d4b0c5d9d32d$var$m.buildPathname = (parcelRequire("1dGiU"));
+$fa8308bd2c5b6d7e$var$m.buildPathname = (parcelRequire("bGJ5a"));
 
-$5648d4b0c5d9d32d$var$m.vnode = (parcelRequire("6eh63"));
+$fa8308bd2c5b6d7e$var$m.vnode = (parcelRequire("ahPL4"));
 
-$5648d4b0c5d9d32d$var$m.PromisePolyfill = (parcelRequire("cx1fz"));
+$fa8308bd2c5b6d7e$var$m.PromisePolyfill = (parcelRequire("4kqT7"));
 
-$5648d4b0c5d9d32d$var$m.censor = (parcelRequire("kU92C"));
-$5648d4b0c5d9d32d$exports = $5648d4b0c5d9d32d$var$m;
+$fa8308bd2c5b6d7e$var$m.censor = (parcelRequire("1Zud9"));
+$fa8308bd2c5b6d7e$exports = $fa8308bd2c5b6d7e$var$m;
 
 
-var $bd7c1575f3abb9eb$exports = {};
+var $fc3b5a28c7651bef$exports = {};
 /*
  * QRious v4.0.2
  * Copyright (C) 2017 Alasdair Mercer
@@ -17339,8 +17354,8 @@ var $bd7c1575f3abb9eb$exports = {};
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */ (function(global, factory) {
-    $bd7c1575f3abb9eb$exports = factory();
-})($bd7c1575f3abb9eb$exports, function() {
+    $fc3b5a28c7651bef$exports = factory();
+})($fc3b5a28c7651bef$exports, function() {
     "use strict";
     /*
    * Copyright (C) 2017 Alasdair Mercer, !ninja
@@ -20228,110 +20243,128 @@ var $bd7c1575f3abb9eb$exports = {};
 
 
 "use strict";
-var $78f2cb3ec8734e95$export$471f7ae5c4103ae1 = "";
-var $78f2cb3ec8734e95$export$a5a6e0b888b2c992 = {};
-var $78f2cb3ec8734e95$export$57fcf9ca838ce2c6 = "h";
-var $78f2cb3ec8734e95$var$links = "";
-var $78f2cb3ec8734e95$var$chat_data = [];
-var $78f2cb3ec8734e95$var$lastPeerId = null;
-var $78f2cb3ec8734e95$var$peer = null;
-var $78f2cb3ec8734e95$var$conn = null;
-var $78f2cb3ec8734e95$var$room_favorits = [];
-var $78f2cb3ec8734e95$var$debug = false;
-if ($78f2cb3ec8734e95$var$debug) window.onerror = function(msg, url, linenumber) {
+var $17d11d58618cc814$export$471f7ae5c4103ae1 = "";
+var $17d11d58618cc814$export$a5a6e0b888b2c992 = {};
+var $17d11d58618cc814$export$57fcf9ca838ce2c6 = "h";
+var $17d11d58618cc814$var$links = "";
+var $17d11d58618cc814$var$chat_data = [];
+var $17d11d58618cc814$var$lastPeerId = null;
+var $17d11d58618cc814$var$peer = null;
+var $17d11d58618cc814$var$conn = null;
+var $17d11d58618cc814$var$room_favorits = [];
+var $17d11d58618cc814$var$turn = {
+    "iceServers": [
+        {
+            urls: "stun:stun.relay.metered.ca:80"
+        },
+        {
+            urls: "turn:standard.relay.metered.ca:80",
+            username: "08e1abca107ec820e6cc4016",
+            credential: "+ar86RUM8zAyphzz"
+        },
+        {
+            urls: "turn:standard.relay.metered.ca:80?transport=tcp",
+            username: "08e1abca107ec820e6cc4016",
+            credential: "+ar86RUM8zAyphzz"
+        },
+        {
+            urls: "turn:standard.relay.metered.ca:443",
+            username: "08e1abca107ec820e6cc4016",
+            credential: "+ar86RUM8zAyphzz"
+        },
+        {
+            urls: "turns:standard.relay.metered.ca:443?transport=tcp",
+            username: "08e1abca107ec820e6cc4016",
+            credential: "+ar86RUM8zAyphzz"
+        }
+    ]
+};
+var $17d11d58618cc814$var$debug = false;
+if ($17d11d58618cc814$var$debug) window.onerror = function(msg, url, linenumber) {
     alert("Error message: " + msg + "\nURL: " + url + "\nLine Number: " + linenumber);
     return true;
 };
 //load settings
-(0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).getItem("settings").then(function(value) {
-    $78f2cb3ec8734e95$export$a5a6e0b888b2c992 = value;
-    if ($78f2cb3ec8734e95$export$a5a6e0b888b2c992 == null) $78f2cb3ec8734e95$export$a5a6e0b888b2c992 = {
-        nickname: "DEFAULT",
-        server_url: "-",
-        server_path: "-",
-        server_port: "-"
+(0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).getItem("settings").then(function(value) {
+    // If settings are not present, provide default values for each key
+    $17d11d58618cc814$export$a5a6e0b888b2c992 = value || {};
+    // Example: Generate a random string of length 10
+    var defaultValues = {
+        nickname: (0, $162001cafa2b40fd$export$9e15fb06e64c4810)(10),
+        server_url: "0.peerjs.com",
+        server_path: "/",
+        server_port: "443"
     };
-})["catch"](function(err) {
+    for(var key in defaultValues)if (!(key in $17d11d58618cc814$export$a5a6e0b888b2c992)) $17d11d58618cc814$export$a5a6e0b888b2c992[key] = defaultValues[key];
+}).catch(function(err) {
     console.log(err);
 });
 //load room favorits
-(0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).getItem("roomfavorits").then(function(value) {
-    if (value != null) $78f2cb3ec8734e95$var$room_favorits = value;
-})["catch"](function(err) {
+(0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).getItem("roomfavorits").then(function(value) {
+    if (value != null) $17d11d58618cc814$var$room_favorits = value;
+}).catch(function(err) {
     console.log(err);
 });
-var $78f2cb3ec8734e95$var$warning_leave_chat = function warning_leave_chat() {
-    $78f2cb3ec8734e95$export$471f7ae5c4103ae1 = "confirm";
+var $17d11d58618cc814$var$warning_leave_chat = function warning_leave_chat() {
+    $17d11d58618cc814$export$471f7ae5c4103ae1 = "confirm";
     if (confirm("Do you really want leave the room?")) {
-        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/start");
+        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/start");
         setTimeout(function() {
-            $78f2cb3ec8734e95$export$471f7ae5c4103ae1 = "";
+            $17d11d58618cc814$export$471f7ae5c4103ae1 = "";
+            $17d11d58618cc814$var$peer.destroy();
         }, 1000);
     } else setTimeout(function() {
-        $78f2cb3ec8734e95$export$471f7ae5c4103ae1 = "";
+        $17d11d58618cc814$export$471f7ae5c4103ae1 = "";
     }, 1000);
 };
-var $78f2cb3ec8734e95$var$addToFavorit = function addToFavorit() {
-    console.log(typeof $78f2cb3ec8734e95$var$room_favorits === "undefined" ? "undefined" : (0, $4cfdb3add9285597$export$5f0017c582d45a2d)($78f2cb3ec8734e95$var$room_favorits));
-    $78f2cb3ec8734e95$var$room_favorits.push($78f2cb3ec8734e95$export$57fcf9ca838ce2c6);
-    console.log("favorits: " + $78f2cb3ec8734e95$var$room_favorits);
-    (0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).setItem("roomfavorits", $78f2cb3ec8734e95$var$room_favorits).then(function(value) {
+var $17d11d58618cc814$var$write = function write() {
+    if ($17d11d58618cc814$export$471f7ae5c4103ae1 != "write") {
+        document.getElementById("message-input").style.display = "block";
+        document.querySelector("div#message-input input").focus();
+        $17d11d58618cc814$export$471f7ae5c4103ae1 = "write";
+    } else {
+        document.querySelector("div#message-input input").value = "";
+        document.getElementById("message-input").style.display = "none";
+        $17d11d58618cc814$var$focus_last_article();
+        $17d11d58618cc814$export$471f7ae5c4103ae1 = "";
+    }
+};
+var $17d11d58618cc814$var$addToFavorit = function addToFavorit() {
+    console.log(typeof $17d11d58618cc814$var$room_favorits === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$5f0017c582d45a2d)($17d11d58618cc814$var$room_favorits));
+    $17d11d58618cc814$var$room_favorits.push($17d11d58618cc814$export$57fcf9ca838ce2c6);
+    console.log("favorits: " + $17d11d58618cc814$var$room_favorits);
+    (0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).setItem("roomfavorits", $17d11d58618cc814$var$room_favorits).then(function(value) {
         // Do other things once the value has been saved.
-        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("favorit saved", 2000);
-        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat");
-    })["catch"](function(err) {
+        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("favorit saved", 2000);
+        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat");
+    }).catch(function(err) {
         // This code runs if there were any errors
         console.log(err);
     });
-    console.log($78f2cb3ec8734e95$var$room_favorits);
 };
-var $78f2cb3ec8734e95$var$server_config = {
-    iceServers: [
-        {
-            urls: "stun:stun.l.google.com:19302"
-        },
-        {
-            urls: "stun:iphone-stun.strato-iphone.de:3478"
-        },
-        {
-            urls: "stun:numb.viagenie.ca:3478"
-        },
-        {
-            urls: "stun:openrelay.metered.ca:80"
-        },
-        {
-            urls: "turn:openrelay.metered.ca:80",
-            username: "openrelayproject",
-            credential: "openrelayproject"
-        },
-        {
-            urls: "turn:openrelay.metered.ca:443",
-            username: "openrelayproject",
-            credential: "openrelayproject"
-        },
-        {
-            urls: "turn:openrelay.metered.ca:443?transport=tcp",
-            username: "openrelayproject",
-            credential: "openrelayproject"
-        }
-    ]
-};
-var $78f2cb3ec8734e95$var$focus_last_article = function focus_last_article() {
+var $17d11d58618cc814$var$focus_last_article = function focus_last_article() {
     setTimeout(function() {
         var a = document.querySelectorAll("div#app article");
         a[a.length - 1].focus();
+        var rect = document.activeElement.getBoundingClientRect();
+        var elY = rect.top - document.body.getBoundingClientRect().top + rect.height / 2;
+        document.activeElement.parentElement.parentElement.scrollBy({
+            left: 0,
+            top: elY - window.innerHeight / 2,
+            behavior: "smooth"
+        });
     }, 1000);
 };
-function $78f2cb3ec8734e95$var$sendMessage(msg, type) {
-    if ($78f2cb3ec8734e95$var$conn && $78f2cb3ec8734e95$var$conn.open) {
+function $17d11d58618cc814$var$sendMessage(msg, type) {
+    if ($17d11d58618cc814$var$conn && $17d11d58618cc814$var$conn.open) {
         if (type == "image") {
             // Encode the file using the FileReader API
             var reader = new FileReader();
             reader.onloadend = function() {
                 //add image to feed
                 var src = URL.createObjectURL(msg.blob);
-                $78f2cb3ec8734e95$var$chat_data.push({
-                    username: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
+                $17d11d58618cc814$var$chat_data.push({
+                    nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
                     content: "",
                     datetime: new Date(),
                     image: src
@@ -20339,224 +20372,225 @@ function $78f2cb3ec8734e95$var$sendMessage(msg, type) {
                 msg = {
                     file: reader.result,
                     filename: msg.filename,
-                    filetype: msg.type
+                    filetype: msg.type,
+                    nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname
                 };
-                $78f2cb3ec8734e95$var$conn.send(msg);
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
-                $78f2cb3ec8734e95$var$focus_last_article();
+                $17d11d58618cc814$var$conn.send(msg);
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
+                $17d11d58618cc814$var$focus_last_article();
             };
             reader.readAsDataURL(msg.blob);
         }
         if (type == "text") {
             if (msg == "") return false;
             msg = {
-                text: msg
+                text: msg,
+                nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname
             };
-            $78f2cb3ec8734e95$var$chat_data.push({
-                nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
+            $17d11d58618cc814$var$chat_data.push({
+                nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
                 content: msg.text,
                 datetime: new Date()
             });
-            $78f2cb3ec8734e95$var$conn.send(msg);
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
-            $78f2cb3ec8734e95$var$focus_last_article();
+            $17d11d58618cc814$var$conn.send(msg);
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
+            $17d11d58618cc814$var$focus_last_article();
+            $17d11d58618cc814$var$write();
         }
-        document.querySelector("div#message-input input").value = "";
-    } else (0, $6d3f4b507512327e$export$6593825dc0f3a767)("There is no one connected to the room, you cannot broadcast.", 10000);
-}
-var $78f2cb3ec8734e95$var$close_connection = function close_connection() {
-    $78f2cb3ec8734e95$var$conn.close();
-};
-var $78f2cb3ec8734e95$var$list_peers = function list_peers() {
-    try {
-        $78f2cb3ec8734e95$var$peer.listAllPeers(function(res) {
-            (0, $6d3f4b507512327e$export$6593825dc0f3a767)(res, 3000);
-        });
-    } catch (e) {
-        (0, $6d3f4b507512327e$export$6593825dc0f3a767)(e, 3000);
+    } else {
+        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("There is no one connected to the room, you cannot broadcast.", 10000);
+        $17d11d58618cc814$var$write();
     }
+}
+var $17d11d58618cc814$var$close_connection = function close_connection() {
+    $17d11d58618cc814$var$conn.close();
 };
-function $78f2cb3ec8734e95$var$ready() {
-    $78f2cb3ec8734e95$var$conn.on("data", function(data) {
-        if (data.file) $78f2cb3ec8734e95$var$chat_data.push({
-            nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
+function $17d11d58618cc814$var$ready() {
+    $17d11d58618cc814$var$conn.on("data", function(data) {
+        if (data.file) $17d11d58618cc814$var$chat_data.push({
+            nickname: data.nickname,
             content: "",
             datetime: new Date(),
             image: data.file
         });
-        if (data.text) $78f2cb3ec8734e95$var$chat_data.push({
-            nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
+        if (data.text) $17d11d58618cc814$var$chat_data.push({
+            nickname: data.nickname,
             content: data.text,
             datetime: new Date()
         });
-        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
-        $78f2cb3ec8734e95$var$focus_last_article();
+        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
+        $17d11d58618cc814$var$focus_last_article();
     });
-    $78f2cb3ec8734e95$var$conn.on("close", function() {
-        $78f2cb3ec8734e95$var$conn = null;
-        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("connection closed", 1000);
+    $17d11d58618cc814$var$conn.on("close", function() {
+        $17d11d58618cc814$var$conn = null;
+        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("connection closed", 1000);
     });
 }
-function $78f2cb3ec8734e95$var$initialize() {
-    // Create own peer object with connection to shared PeerJS server
-    $78f2cb3ec8734e95$var$peer = new Peer({
+function $17d11d58618cc814$var$initialize() {
+    // Create own peer object with connection to shared PeerJS server$
+    if ($17d11d58618cc814$var$peer) $17d11d58618cc814$var$peer.destroy();
+    $17d11d58618cc814$var$peer = new Peer({
         debug: 3,
-        referrerPolicy: "origin-when-cross-origin"
+        referrerPolicy: "origin-when-cross-origin",
+        config: $17d11d58618cc814$var$turn
     });
-    $78f2cb3ec8734e95$var$peer.on("open", function(id) {
-        if ($78f2cb3ec8734e95$var$peer.id === null) $78f2cb3ec8734e95$var$peer.id = $78f2cb3ec8734e95$var$lastPeerId;
-        else $78f2cb3ec8734e95$var$lastPeerId = $78f2cb3ec8734e95$var$peer.id;
-        $78f2cb3ec8734e95$export$57fcf9ca838ce2c6 = $78f2cb3ec8734e95$var$peer.id;
-        console.log("ccm" + $78f2cb3ec8734e95$export$57fcf9ca838ce2c6);
+    $17d11d58618cc814$var$peer.on("open", function() {
+        if ($17d11d58618cc814$var$peer.id === null) $17d11d58618cc814$var$peer.id = $17d11d58618cc814$var$lastPeerId;
+        else $17d11d58618cc814$var$lastPeerId = $17d11d58618cc814$var$peer.id;
+        $17d11d58618cc814$var$chat_data.push({
+            content: "open",
+            datetime: new Date()
+        });
+        $17d11d58618cc814$export$57fcf9ca838ce2c6 = $17d11d58618cc814$var$peer.id;
     });
-    $78f2cb3ec8734e95$var$peer.on("connection", function(c) {
-        $78f2cb3ec8734e95$var$ready();
+    $17d11d58618cc814$var$peer.on("connection", function(event) {
+        console.log(event);
+        $17d11d58618cc814$var$ready();
     });
-    $78f2cb3ec8734e95$var$peer.on("disconnected", function() {
+    $17d11d58618cc814$var$peer.on("disconnected", function() {
         // Workaround for peer.reconnect deleting previous id
-        $78f2cb3ec8734e95$var$peer.id = $78f2cb3ec8734e95$var$lastPeerId;
-        $78f2cb3ec8734e95$var$peer._lastServerId = $78f2cb3ec8734e95$var$lastPeerId;
-        $78f2cb3ec8734e95$var$peer.reconnect();
+        $17d11d58618cc814$var$peer.id = $17d11d58618cc814$var$lastPeerId;
+        $17d11d58618cc814$var$peer._lastServerId = $17d11d58618cc814$var$lastPeerId;
+        $17d11d58618cc814$var$peer.reconnect();
     });
-    $78f2cb3ec8734e95$var$peer.on("close", function() {
-        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("connection closed", 1000);
-        $78f2cb3ec8734e95$var$conn = null;
+    $17d11d58618cc814$var$peer.on("close", function() {
+        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("connection closed", 1000);
+        $17d11d58618cc814$var$conn = null;
     });
-    $78f2cb3ec8734e95$var$peer.on("error", function(err) {
+    $17d11d58618cc814$var$peer.on("error", function(err) {
         console.log(err);
     });
 }
-function $78f2cb3ec8734e95$var$join(id) {
-    // Close old connection
-    if ($78f2cb3ec8734e95$var$conn) $78f2cb3ec8734e95$var$conn.close();
+function $17d11d58618cc814$var$join(id) {
     // Create connection to destination peer
-    $78f2cb3ec8734e95$var$conn = $78f2cb3ec8734e95$var$peer.connect(id, {
+    $17d11d58618cc814$var$conn = $17d11d58618cc814$var$peer.connect(id, {
         reliable: true
     });
-    $78f2cb3ec8734e95$var$conn.on("open", function() {
-        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("Connected", 5000);
+    $17d11d58618cc814$var$conn.on("open", function() {
+        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("Connected", 5000);
+        $17d11d58618cc814$var$chat_data.push({
+            content: "connected",
+            datetime: new Date()
+        });
+    });
+    $17d11d58618cc814$var$conn.on("error", function(err) {
+        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("error: " + err.type, 5000);
+    });
+    $17d11d58618cc814$var$conn.on("close", function() {
+        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("Connection is closed", 5000);
     });
     // Handle incoming data (messages only since this is the signal sender)
-    $78f2cb3ec8734e95$var$conn.on("data", function(data) {
-        if (data.file) $78f2cb3ec8734e95$var$chat_data.push({
-            nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
+    $17d11d58618cc814$var$conn.on("data", function(data) {
+        if (data.file) $17d11d58618cc814$var$chat_data.push({
+            nickname: data.nickname,
             content: "",
             datetime: new Date(),
             image: data.file
         });
-        if (data.text) $78f2cb3ec8734e95$var$chat_data.push({
-            nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
+        if (data.text) $17d11d58618cc814$var$chat_data.push({
+            nickname: data.nickname,
             content: data.text,
             datetime: new Date()
         });
-        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
-        $78f2cb3ec8734e95$var$focus_last_article();
-    });
-    $78f2cb3ec8734e95$var$conn.on("close", function() {
-        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("Connection is closed", 10000);
+        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
+        if (activeElement.tagName != "INPUT") $17d11d58618cc814$var$focus_last_article();
     });
 }
 //create peer
-var $78f2cb3ec8734e95$var$create_peer = function create_peer() {
-    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat");
-    $78f2cb3ec8734e95$var$peer = new Peer({
+var $17d11d58618cc814$var$create_peer = function create_peer() {
+    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat");
+    $17d11d58618cc814$var$peer = new Peer({
         debug: 3,
         referrerPolicy: "origin-when-cross-origin"
     });
-    $78f2cb3ec8734e95$var$peer.on("open", function(id) {
+    $17d11d58618cc814$var$peer.on("open", function(id) {
         // Workaround for peer.reconnect deleting previous id
-        if ($78f2cb3ec8734e95$var$peer.id === null) $78f2cb3ec8734e95$var$peer.id = $78f2cb3ec8734e95$var$lastPeerId;
-        else $78f2cb3ec8734e95$var$lastPeerId = $78f2cb3ec8734e95$var$peer.id;
-        $78f2cb3ec8734e95$export$57fcf9ca838ce2c6 = $78f2cb3ec8734e95$var$peer.id;
+        if ($17d11d58618cc814$var$peer.id === null) $17d11d58618cc814$var$peer.id = $17d11d58618cc814$var$lastPeerId;
+        else $17d11d58618cc814$var$lastPeerId = $17d11d58618cc814$var$peer.id;
+        $17d11d58618cc814$export$57fcf9ca838ce2c6 = $17d11d58618cc814$var$peer.id;
         //make qr code
-        var qrs = new (0, (/*@__PURE__*/$parcel$interopDefault($bd7c1575f3abb9eb$exports)))();
+        var qrs = new (0, (/*@__PURE__*/$parcel$interopDefault($fc3b5a28c7651bef$exports)))();
         qrs.set({
             background: "white",
             foreground: "black",
             level: "H",
             padding: 5,
             size: 200,
-            value: $78f2cb3ec8734e95$var$lastPeerId
+            value: $17d11d58618cc814$var$lastPeerId
         });
-        $78f2cb3ec8734e95$var$chat_data.push({
-            nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
+        $17d11d58618cc814$var$chat_data.push({
+            nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
             content: "room created",
             datetime: new Date(),
             image: qrs.toDataURL()
         });
-        (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
-        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
+        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
+        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
     });
-    $78f2cb3ec8734e95$var$peer.on("connection", function(c) {
-        $78f2cb3ec8734e95$var$conn = c;
-        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("Connected");
-        $78f2cb3ec8734e95$var$ready();
+    $17d11d58618cc814$var$peer.on("connection", function(c) {
+        $17d11d58618cc814$var$conn = c;
+        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("Connected");
+        $17d11d58618cc814$var$ready();
     });
-    $78f2cb3ec8734e95$var$peer.on("disconnected", function() {
-        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("Connection lost. Please reconnect", 3000);
+    $17d11d58618cc814$var$peer.on("disconnected", function() {
+        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("Connection lost. Please reconnect", 3000);
         // Workaround for peer.reconnect deleting previous id
-        $78f2cb3ec8734e95$var$peer.id = $78f2cb3ec8734e95$var$lastPeerId;
-        $78f2cb3ec8734e95$var$peer._lastServerId = $78f2cb3ec8734e95$var$lastPeerId;
-        $78f2cb3ec8734e95$var$peer.reconnect();
+        $17d11d58618cc814$var$peer.id = $17d11d58618cc814$var$lastPeerId;
+        $17d11d58618cc814$var$peer._lastServerId = $17d11d58618cc814$var$lastPeerId;
+        $17d11d58618cc814$var$peer.reconnect();
     });
-    $78f2cb3ec8734e95$var$peer.on("close", function() {
-        $78f2cb3ec8734e95$var$conn = null;
-        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("Connection destroyed", 3000);
+    $17d11d58618cc814$var$peer.on("close", function() {
+        $17d11d58618cc814$var$conn = null;
+        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("Connection closed", 3000);
     });
-    $78f2cb3ec8734e95$var$peer.on("error", function(err) {
+    $17d11d58618cc814$var$peer.on("error", function(err) {
         console.log(err);
     });
 };
 //connect to peer
-var $78f2cb3ec8734e95$var$connect_to_peer = function connect_to_peer(_id) {
-    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat");
-    $78f2cb3ec8734e95$var$initialize();
+var $17d11d58618cc814$var$connect_to_peer = function connect_to_peer(_id) {
+    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat");
+    $17d11d58618cc814$var$initialize();
     setTimeout(function() {
-        $78f2cb3ec8734e95$var$join(_id);
+        $17d11d58618cc814$var$join(_id);
     }, 2000);
 };
-var $78f2cb3ec8734e95$var$handleImage = function handleImage(t) {
-    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat");
-    if (t != "") $78f2cb3ec8734e95$var$sendMessage(t, "image");
+var $17d11d58618cc814$var$handleImage = function handleImage(t) {
+    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat");
+    if (t != "") $17d11d58618cc814$var$sendMessage(t, "image");
     var a = document.querySelectorAll("div#app article");
     a[a.length - 1].focus();
-    $78f2cb3ec8734e95$export$471f7ae5c4103ae1 = "";
+    $17d11d58618cc814$export$471f7ae5c4103ae1 = "";
 };
-var $78f2cb3ec8734e95$var$time_parse = function time_parse(value) {
+var $17d11d58618cc814$var$time_parse = function time_parse(value) {
     var t = new Date(value);
-    return t.getDate() + " " + (0, $6d3f4b507512327e$export$af5de1609f06c8e6)[t.getMonth()] + " " + t.getFullYear() + ", " + t.getHours() + ":" + t.getMinutes();
+    return t.getDate() + " " + (0, $162001cafa2b40fd$export$af5de1609f06c8e6)[t.getMonth()] + " " + t.getFullYear() + ", " + t.getHours() + ":" + t.getMinutes();
 };
 //callback qr-code scan
-var $78f2cb3ec8734e95$var$scan_callback = function scan_callback(n) {
-    (0, $da5c51e5866985e6$export$55e6c60a43cc74e2)();
-    $78f2cb3ec8734e95$var$connect_to_peer(n);
-    $78f2cb3ec8734e95$var$chat_data.push({
-        content: "connected",
-        datetime: new Date()
-    });
-    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
+var $17d11d58618cc814$var$scan_callback = function scan_callback(n) {
+    $17d11d58618cc814$var$connect_to_peer(n);
 };
 //callback geolocation
-var $78f2cb3ec8734e95$var$geolocation_callback = function geolocation_callback(e) {
+var $17d11d58618cc814$var$geolocation_callback = function geolocation_callback(e) {
     console.log(e.coords.latitude);
     var link_url = "https://www.openstreetmap.org/#map=19/" + e.coords.latitude + "/" + e.coords.longitude;
-    $78f2cb3ec8734e95$var$chat_data.push({
+    $17d11d58618cc814$var$chat_data.push({
         content: link_url,
         datetime: new Date()
     });
-    $78f2cb3ec8734e95$var$sendMessage(link_url, "text");
-    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat");
+    $17d11d58618cc814$var$sendMessage(link_url, "text");
+    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat");
 };
-var $78f2cb3ec8734e95$var$root = document.getElementById("app");
-var $78f2cb3ec8734e95$var$settings_page = {
+var $17d11d58618cc814$var$root = document.getElementById("app");
+var $17d11d58618cc814$var$settings_page = {
     view: function view() {
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-            "class": "flex justify-content-spacearound",
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+            class: "flex justify-content-spacearound test",
             id: "settings_page"
         }, [
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 tabindex: 0,
-                "class": "item input-parent  flex width-100 justify-content-spacearound",
+                class: "item input-parent  flex width-100 justify-content-spacearound",
                 oncreate: function(param) {
                     var dom = param.dom;
                     return setTimeout(function() {
@@ -20564,69 +20598,69 @@ var $78f2cb3ec8734e95$var$settings_page = {
                     }, 500);
                 }
             }, [
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("label", {
-                    "for": "Nickname"
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("label", {
+                    for: "Nickname"
                 }, "Nickname"),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("input", {
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("input", {
                     id: "nickname",
                     placeholder: "nickname",
-                    value: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname
+                    value: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname
                 })
             ]),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("H2", {}, "Server Settings"),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("H2", {}, "Server Settings"),
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 tabindex: 1,
-                "class": "item input-parent  flex width-100 justify-content-spacearound"
+                class: "item input-parent  flex width-100 justify-content-spacearound"
             }, [
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("label", {
-                    "for": "server_url"
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("label", {
+                    for: "server_url"
                 }, "URL"),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("input", {
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("input", {
                     id: "server_url",
                     placeholder: "Server URL",
-                    value: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.server_url
+                    value: $17d11d58618cc814$export$a5a6e0b888b2c992.server_url
                 })
             ]),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 tabindex: 2,
-                "class": "item input-parent  flex width-100 justify-content-spacearound"
+                class: "item input-parent  flex width-100 justify-content-spacearound"
             }, [
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("label", {
-                    "for": "server_path"
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("label", {
+                    for: "server_path"
                 }, "Path"),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("input", {
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("input", {
                     id: "server_path",
                     placeholder: "Path",
-                    value: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.server_path
+                    value: $17d11d58618cc814$export$a5a6e0b888b2c992.server_path
                 })
             ]),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 tabindex: 3,
-                "class": "item input-parent  flex width-100 justify-content-spacearound"
+                class: "item input-parent  flex width-100 justify-content-spacearound"
             }, [
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("label", {
-                    "for": "server_port"
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("label", {
+                    for: "server_port"
                 }, "Port"),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("input", {
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("input", {
                     id: "server_port",
                     placeholder: "Port",
-                    value: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.server_port
+                    value: $17d11d58618cc814$export$a5a6e0b888b2c992.server_port
                 })
             ]),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
                 tabindex: 4,
-                "class": "item",
+                class: "item",
                 "data-function": "save-settings",
                 onclick: function onclick() {
-                    $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname = document.getElementById("nickname").value;
-                    $78f2cb3ec8734e95$export$a5a6e0b888b2c992.server_url = document.getElementById("server_url").value;
-                    $78f2cb3ec8734e95$export$a5a6e0b888b2c992.server_path = document.getElementById("server_path").value;
-                    $78f2cb3ec8734e95$export$a5a6e0b888b2c992.server_port = document.getElementById("server_port").value;
-                    (0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).setItem("settings", $78f2cb3ec8734e95$export$a5a6e0b888b2c992).then(function(value) {
+                    $17d11d58618cc814$export$a5a6e0b888b2c992.nickname = document.getElementById("nickname").value;
+                    $17d11d58618cc814$export$a5a6e0b888b2c992.server_url = document.getElementById("server_url").value;
+                    $17d11d58618cc814$export$a5a6e0b888b2c992.server_path = document.getElementById("server_path").value;
+                    $17d11d58618cc814$export$a5a6e0b888b2c992.server_port = document.getElementById("server_port").value;
+                    (0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).setItem("settings", $17d11d58618cc814$export$a5a6e0b888b2c992).then(function(value) {
                         // Do other things once the value has been saved.
-                        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("settings saved", 2000);
-                        window.location.replace("/start");
-                    })["catch"](function(err) {
+                        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("settings saved", 2000);
+                        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/start");
+                    }).catch(function(err) {
                         // This code runs if there were any errors
                         console.log(err);
                     });
@@ -20635,246 +20669,251 @@ var $78f2cb3ec8734e95$var$settings_page = {
         ]);
     }
 };
-var $78f2cb3ec8734e95$var$options = {
+var $17d11d58618cc814$var$options = {
     view: function view() {
-        (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "select", "");
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-            "class": "flex justify-content-spacearound",
+        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "select", "");
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+            class: "flex justify-content-spacearound",
             id: "login"
         }, [
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
                 oncreate: function(param) {
                     var dom = param.dom;
                     return setTimeout(function() {
                         dom.focus();
                     }, 500);
                 },
-                "class": "item",
+                class: "item",
                 tabindex: 0,
                 onclick: function onclick() {
-                    (0, $6d3f4b507512327e$export$6714d0f9237d35de)($78f2cb3ec8734e95$var$handleImage);
+                    (0, $162001cafa2b40fd$export$6714d0f9237d35de)($17d11d58618cc814$var$handleImage);
                 }
             }, "share image"),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
-                "class": "item",
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
+                class: "item",
                 tabindex: 1,
                 onclick: function onclick() {
-                    (0, $6d3f4b507512327e$export$33d904bed5c25b69)($78f2cb3ec8734e95$var$geolocation_callback);
+                    (0, $162001cafa2b40fd$export$33d904bed5c25b69)($17d11d58618cc814$var$geolocation_callback);
                 }
             }, "share location"),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
-                "class": "item",
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
+                class: "item",
                 tabindex: 2,
                 onclick: function onclick() {
-                    $78f2cb3ec8734e95$var$addToFavorit();
+                    $17d11d58618cc814$var$addToFavorit();
                 }
             }, "add room to favorits")
         ]);
     }
 };
-var $78f2cb3ec8734e95$var$login = {
+var $17d11d58618cc814$var$login = {
     view: function view() {
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-            "class": "flex justify-content-spacearound",
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+            class: "flex justify-content-spacearound",
             id: "login"
         }, [
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                "class": "item input-parent  flex width-100 justify-content-spacearound",
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                class: "item input-parent  flex width-100 justify-content-spacearound",
                 tabindex: 0
             }, [
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("input", {
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("input", {
                     id: "username",
                     placeholder: "username"
                 })
             ]),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 id: "login-icon-box"
             }),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
-                "class": "item",
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
+                class: "item",
                 "data-function": "login-check",
                 tabindex: 1,
                 onclick: function onclick() {
-                    $78f2cb3ec8734e95$export$a5a6e0b888b2c992.username = document.getElementById("username").value;
+                    $17d11d58618cc814$export$a5a6e0b888b2c992.username = document.getElementById("username").value;
                     window.location.replace("/start");
                 }
             }, "enter")
         ]);
     }
 };
-var $78f2cb3ec8734e95$var$start = {
+var $17d11d58618cc814$var$start = {
     view: function view() {
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-            "class": "flex justify-content-spacearound",
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+            class: "flex justify-content-spacearound",
             id: "start",
             oncreate: function() {
-                (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img src='assets/image/select.svg'>", "<img src='assets/image/option.svg'>");
+                (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img src='assets/image/select.svg'>", "<img src='assets/image/option.svg'>");
             }
         }, [
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
                 oncreate: function(param) {
                     var dom = param.dom;
                     return setTimeout(function() {
                         dom.focus();
                     }, 500);
                 },
-                "class": "item",
+                class: "item",
                 tabindex: 0,
                 onclick: function onclick() {
-                    (0, $da5c51e5866985e6$export$be96fe42679d1b7e)($78f2cb3ec8734e95$var$scan_callback);
+                    (0, $2b0cc46421a6d3fe$export$be96fe42679d1b7e)($17d11d58618cc814$var$scan_callback);
                 },
                 onfocus: function() {
-                    (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img src='assets/image/select.svg'>", "");
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img src='assets/image/select.svg'>", "");
                 }
             }, "connect to room by QR-Code"),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
-                "class": "item",
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
+                class: "item",
                 "data-function": "create-peer",
                 tabindex: 1,
                 onclick: function onclick() {
-                    $78f2cb3ec8734e95$var$create_peer();
+                    $17d11d58618cc814$var$create_peer();
                 },
                 onfocus: function() {
-                    (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img src='assets/image/select.svg'>", "");
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img src='assets/image/select.svg'>", "");
                 }
             }, "create room"),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
-                "class": "item",
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
+                class: "item",
                 "data-function": "create-peer",
                 tabindex: 2,
                 onclick: function onclick() {
-                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/favorits_page");
+                    if ($17d11d58618cc814$var$room_favorits != "") (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/favorits_page");
+                    else (0, $162001cafa2b40fd$export$6593825dc0f3a767)("no favorits set", 2000);
                 },
                 onfocus: function() {
-                    (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img src='assets/image/select.svg'>", "");
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img src='assets/image/select.svg'>", "");
                 }
             }, "favorits"),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
-                "class": "item",
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
+                class: "item",
                 "data-function": "settings",
                 tabindex: 3,
                 onclick: function onclick() {
-                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/settings_page");
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/settings_page");
                 },
                 onfocus: function() {
-                    (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img src='assets/image/select.svg'>", "");
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img src='assets/image/select.svg'>", "");
                 }
             }, "settings")
         ]);
     }
 };
-var $78f2cb3ec8734e95$var$links_page = {
+var $17d11d58618cc814$var$links_page = {
     view: function view(vnode) {
-        return $78f2cb3ec8734e95$var$links.map(function(item, index) {
-            return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
+        return $17d11d58618cc814$var$links.map(function(item, index) {
+            return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
                 tabindex: index,
-                "class": "item",
+                class: "item",
                 onclick: function onclick() {
                     window.open(item.href);
-                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat");
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat");
+                },
+                oncreate: function() {
+                    var _ref;
+                    (_ref = index == 1) !== null && _ref !== void 0 ? _ref : item.focus();
                 }
             }, item.href);
         });
     }
 };
-var $78f2cb3ec8734e95$var$favorits_page = {
+var $17d11d58618cc814$var$favorits_page = {
     view: function view(vnode) {
-        return $78f2cb3ec8734e95$var$room_favorits.map(function(item, index) {
-            (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "select", "");
-            console.log(item);
-            return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
-                "class": "item",
+        return $17d11d58618cc814$var$room_favorits.map(function(item, index) {
+            (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "select", "");
+            return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
+                class: "item",
                 tabindex: index,
                 onclick: function onclick() {
-                    $78f2cb3ec8734e95$var$connect_to_peer(item);
+                    $17d11d58618cc814$var$connect_to_peer(item);
                 }
             }, item);
         });
     }
 };
-var $78f2cb3ec8734e95$var$chat = {
+var $17d11d58618cc814$var$chat = {
     view: function view() {
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
             oncreate: function() {
-                (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
+                (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
             }
-        }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+        }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
             id: "message-input",
             type: "text"
         }, [
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("input", {
-                type: "text"
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("input", {
+                type: "text",
+                onblur: function() {
+                    $17d11d58618cc814$export$471f7ae5c4103ae1 = "write";
+                    $17d11d58618cc814$var$write();
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
+                },
+                onfocus: function() {
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "", "<img src='assets/image/option.svg'>");
+                }
             })
-        ]), $78f2cb3ec8734e95$var$chat_data.map(function(item, index) {
-            return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("article", {
-                "class": "item",
-                tabindex: index
+        ]), $17d11d58618cc814$var$chat_data.map(function(item, index) {
+            var nickname = "me";
+            if (item.nickname != $17d11d58618cc814$export$a5a6e0b888b2c992.nickname) nickname = item.nickname;
+            return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("article", {
+                class: "item " + nickname,
+                tabindex: index,
+                onfocus: function() {
+                    $17d11d58618cc814$var$links = $410e7a787f87a2b4$export$71aa6c912b956294(document.activeElement.textContent);
+                    if ($17d11d58618cc814$var$links.length > 0) (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "<img src='assets/image/link.svg'>", "<img src='assets/image/option.svg'>");
+                    else (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "", "<img src='assets/image/option.svg'>");
+                }
             }, [
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                    "class": "flex message-head"
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "flex message-head"
                 }, [
-                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", $78f2cb3ec8734e95$var$time_parse(item.datetime)),
-                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                        "class": "nickname"
-                    }, item.nickname)
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", $17d11d58618cc814$var$time_parse(item.datetime)),
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                        class: "nickname"
+                    }, nickname)
                 ]),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                    "class": "message-main"
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "message-main"
                 }, item.content),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("img", {
-                    "class": "message-media",
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("img", {
+                    class: "message-media",
                     src: item.image
                 })
             ]);
         }));
     }
 };
-var $78f2cb3ec8734e95$var$intro = {
+var $17d11d58618cc814$var$intro = {
     view: function view() {
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-            "class": "width-100 height-100",
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+            class: "width-100 height-100",
             id: "intro"
         }, [
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("img", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("img", {
                 src: "./assets/icons/intro.svg",
                 oncreate: function() {
                     setTimeout(function() {
-                        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/start");
+                        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/start");
                     }, 3000);
                 }
             }),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                "class": "width-100",
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                class: "width-100",
                 id: "version"
             })
         ]);
     }
 };
-(0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route($78f2cb3ec8734e95$var$root, "/intro", {
-    "/intro": $78f2cb3ec8734e95$var$intro,
-    "/login": $78f2cb3ec8734e95$var$login,
-    "/start": $78f2cb3ec8734e95$var$start,
-    "/links_page": $78f2cb3ec8734e95$var$links_page,
-    "/chat": $78f2cb3ec8734e95$var$chat,
-    "/options": $78f2cb3ec8734e95$var$options,
-    "/settings_page": $78f2cb3ec8734e95$var$settings_page,
-    "/favorits_page": $78f2cb3ec8734e95$var$favorits_page
+(0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route($17d11d58618cc814$var$root, "/intro", {
+    "/intro": $17d11d58618cc814$var$intro,
+    "/login": $17d11d58618cc814$var$login,
+    "/start": $17d11d58618cc814$var$start,
+    "/links_page": $17d11d58618cc814$var$links_page,
+    "/chat": $17d11d58618cc814$var$chat,
+    "/options": $17d11d58618cc814$var$options,
+    "/settings_page": $17d11d58618cc814$var$settings_page,
+    "/favorits_page": $17d11d58618cc814$var$favorits_page
 });
 document.addEventListener("DOMContentLoaded", function(e) {
-    (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "", "");
-    var write = function write() {
-        if (document.getElementById("message-input").style.display == "none") {
-            document.getElementById("message-input").style.display = "block";
-            document.querySelector("div#message-input input").focus();
-            $78f2cb3ec8734e95$export$471f7ae5c4103ae1 = "write";
-            (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "", "<img src='assets/image/option.svg'>");
-        } else {
-            document.querySelector("div#message-input input").value = "";
-            document.getElementById("message-input").style.display = "none";
-            $78f2cb3ec8734e95$var$focus_last_article();
-            $78f2cb3ec8734e95$export$471f7ae5c4103ae1 = "";
-        }
-    };
     /////////////////
     ///NAVIGATION
     /////////////////
@@ -20900,7 +20939,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
         }
         var rect = document.activeElement.getBoundingClientRect();
         var elY = rect.top - document.body.getBoundingClientRect().top + rect.height / 2;
-        document.activeElement.parentNode.scrollBy({
+        document.activeElement.parentElement.parentElement.scrollBy({
             left: 0,
             top: elY - window.innerHeight / 2,
             behavior: "smooth"
@@ -20933,24 +20972,14 @@ document.addEventListener("DOMContentLoaded", function(e) {
     // //SHORTPRESS
     // ////////////
     function shortpress_action(param) {
-        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1 == "confirm") return false;
-        var route = (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get();
-        //user avatar
-        if (route == "/login") {
-            var refresh = function refresh() {
-                document.getElementById("login-icon-box").innerHTML = "<identicon-svg username='hasard' saturation='95' lightness='60'>";
-            };
-            //avatar
-            var usernameInput = document.querySelector("#username");
-            usernameInput.addEventListener("input", function() {
-                refresh();
-            });
-        }
-        if (route == "/start") $78f2cb3ec8734e95$var$chat_data = [];
+        if ($17d11d58618cc814$export$471f7ae5c4103ae1 == "confirm") return false;
+        var route = (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get();
+        if (route == "/start") $17d11d58618cc814$var$chat_data = [];
         switch(param.key){
             case "*":
                 break;
             case "ArrowUp":
+                if (route == "/chat" && document.activeElement.tagName === "INPUT") $17d11d58618cc814$var$write();
                 nav(-1);
                 break;
             case "ArrowDown":
@@ -20962,23 +20991,23 @@ document.addEventListener("DOMContentLoaded", function(e) {
                 break;
             case "SoftRight":
             case "Alt":
-                if (route == "/chat") (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/options");
+                if (route == "/chat") (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/options");
                 break;
             case "SoftLeft":
             case "Control":
-                if (route == "/chat" && $78f2cb3ec8734e95$export$471f7ae5c4103ae1 !== "write") {
-                    write();
+                if (route == "/chat" && $17d11d58618cc814$export$471f7ae5c4103ae1 !== "write") {
+                    $17d11d58618cc814$var$write();
                     break;
                 }
-                if (route == "/chat" && $78f2cb3ec8734e95$export$471f7ae5c4103ae1 === "write") $78f2cb3ec8734e95$var$sendMessage(document.getElementsByTagName("input")[0].value, "text");
+                if (route == "/chat" && $17d11d58618cc814$export$471f7ae5c4103ae1 === "write") $17d11d58618cc814$var$sendMessage(document.getElementsByTagName("input")[0].value, "text");
                 break;
             case "Enter":
                 if (document.activeElement.classList.contains("input-parent")) document.activeElement.children[0].focus();
                 if (route == "/chat") {
                     if (document.activeElement.tagName == "ARTICLE") {
-                        $78f2cb3ec8734e95$var$links = $a06d5a398bbbfd36$export$71aa6c912b956294(document.activeElement.textContent);
-                        if ($78f2cb3ec8734e95$var$links.length >= 0) (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/links_page");
-                        $78f2cb3ec8734e95$var$links.forEach(function(e) {
+                        $17d11d58618cc814$var$links = $410e7a787f87a2b4$export$71aa6c912b956294(document.activeElement.textContent);
+                        if ($17d11d58618cc814$var$links.length >= 0) (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/links_page");
+                        $17d11d58618cc814$var$links.forEach(function(e) {
                             console.log(e);
                         });
                     }
@@ -20986,7 +21015,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
                 }
                 break;
             case "Backspace":
-                (0, $da5c51e5866985e6$export$55e6c60a43cc74e2)();
+                (0, $2b0cc46421a6d3fe$export$55e6c60a43cc74e2)();
                 break;
         }
     }
@@ -20994,17 +21023,17 @@ document.addEventListener("DOMContentLoaded", function(e) {
     // //shortpress / longpress logic
     // //////////////////////////////
     function handleKeyDown(evt) {
-        if (evt.key === "Backspace" && (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() != "/start") evt.preventDefault();
+        if (evt.key === "Backspace" && (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() != "/start") evt.preventDefault();
         if (evt.key === "Backspace") {
-            if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() === "/chat") {
-                $78f2cb3ec8734e95$var$warning_leave_chat();
+            if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() === "/chat") {
+                $17d11d58618cc814$var$warning_leave_chat();
                 return false;
             }
-            if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/chat" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/settings_page" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/favorits_page") {
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/start");
-                if ($78f2cb3ec8734e95$var$conn) $78f2cb3ec8734e95$var$close_connection();
+            if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/chat" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/settings_page" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/favorits_page") {
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/start");
+                if ($17d11d58618cc814$var$conn) $17d11d58618cc814$var$close_connection();
             }
-            if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/options" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/links_page") (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat");
+            if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/options" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/links_page") (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat");
         }
         if (evt.key === "EndCall") {
             evt.preventDefault();
@@ -21023,7 +21052,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
         }
     }
     function handleKeyUp(evt) {
-        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.visible === false) return false;
+        if ($17d11d58618cc814$export$471f7ae5c4103ae1.visible === false) return false;
         evt.key == "Backspace" && document.activeElement.tagName;
         clearTimeout(timeout);
         if (!longpress) shortpress_action(evt);
@@ -21035,4 +21064,4 @@ document.addEventListener("DOMContentLoaded", function(e) {
     document.addEventListener("visibilitychange", handleVisibilityChange, false);
 });
 
-
+})();

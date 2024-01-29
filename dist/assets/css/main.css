@@ -26,6 +26,7 @@
   /* Careful, this breaks the word wherever it is without a hyphen */
   overflow-wrap: break-word;
   word-wrap: break-word;
+  scroll-behavior: smooth;
 
   /* Adds a hyphen where the word breaks */
   -webkit-hyphens: auto;
@@ -64,11 +65,8 @@ body {
   background: white;
 }
 
-div#wrapper {
-}
-
 div#app {
-  padding: 5px;
+  padding: 5px 5px 50px 0;
   max-height: 88vh;
   overflow: hidden;
   position: relative;
@@ -320,14 +318,6 @@ div#side-toast img {
   margin: 0 0 10px 0;
 }
 
-identicon-svg {
-  width: 100px;
-  height: 100px;
-  border-radius: 5%;
-  background-color: #eef;
-  display: block;
-}
-
 div.nickname {
   font-weight: bold;
 }
@@ -516,7 +506,6 @@ div#settings {
   width: 100%;
   padding: 0px 0 50px 0;
   overflow: hidden;
-  position: absolute;
   top: 0px;
   z-index: 3;
   background: rgb(231, 231, 231);
@@ -539,6 +528,14 @@ article {
   padding: 10px;
 }
 
+article.me {
+  background: rgba(141, 158, 129, 0.288);
+}
+
+article.nickname {
+  color: blue;
+}
+
 article div.message-head {
   font-size: 0.7rem;
   color: gray;
@@ -555,6 +552,8 @@ div#message-input {
   height: 40px;
   padding: 5px;
   bottom: 35px;
+  max-width: 99vw !important;
+  min-width: 99vw !important;
   display: none;
 }
 

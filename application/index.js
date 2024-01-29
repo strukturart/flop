@@ -5,6 +5,7 @@ import {
   side_toaster,
   pick_image,
   month,
+  generateRandomString,
 } from "./assets/js/helper.js";
 import { start_scan } from "./assets/js/scan.js";
 import { stop_scan } from "./assets/js/scan.js";
@@ -26,6 +27,9 @@ let peer = null;
 let conn = null;
 let room_favorits = [];
 
+//.env turn server
+const turn = JSON.parse(process.env.TURN);
+console.log(turn);
 let debug = false;
 
 if (debug) {
@@ -41,14 +45,21 @@ if (debug) {
 localforage
   .getItem("settings")
   .then(function (value) {
-    settings = value;
-    if (settings == null) {
-      settings = {
-        nickname: "DEFAULT",
-        server_url: "-",
-        server_path: "-",
-        server_port: "-",
-      };
+    // If settings are not present, provide default values for each key
+    settings = value || {};
+    // Example: Generate a random string of length 10
+
+    const defaultValues = {
+      nickname: generateRandomString(10),
+      server_url: "0.peerjs.com",
+      server_path: "/",
+      server_port: "443",
+    };
+
+    for (const key in defaultValues) {
+      if (!(key in settings)) {
+        settings[key] = defaultValues[key];
+      }
     }
   })
   .catch(function (err) {
@@ -72,11 +83,25 @@ let warning_leave_chat = function () {
     m.route.set("/start");
     setTimeout(function () {
       status = "";
+      peer.destroy();
     }, 1000);
   } else {
     setTimeout(function () {
       status = "";
     }, 1000);
+  }
+};
+
+let write = function () {
+  if (status != "write") {
+    document.getElementById("message-input").style.display = "block";
+    document.querySelector("div#message-input input").focus();
+    status = "write";
+  } else {
+    document.querySelector("div#message-input input").value = "";
+    document.getElementById("message-input").style.display = "none";
+    focus_last_article();
+    status = "";
   }
 };
 
@@ -96,46 +121,22 @@ let addToFavorit = function () {
       // This code runs if there were any errors
       console.log(err);
     });
-
-  console.log(room_favorits);
-};
-
-const server_config = {
-  iceServers: [
-    {
-      urls: "stun:stun.l.google.com:19302",
-    },
-    {
-      urls: "stun:iphone-stun.strato-iphone.de:3478",
-    },
-    {
-      urls: "stun:numb.viagenie.ca:3478",
-    },
-    {
-      urls: "stun:openrelay.metered.ca:80",
-    },
-    {
-      urls: "turn:openrelay.metered.ca:80",
-      username: "openrelayproject",
-      credential: "openrelayproject",
-    },
-    {
-      urls: "turn:openrelay.metered.ca:443",
-      username: "openrelayproject",
-      credential: "openrelayproject",
-    },
-    {
-      urls: "turn:openrelay.metered.ca:443?transport=tcp",
-      username: "openrelayproject",
-      credential: "openrelayproject",
-    },
-  ],
 };
 
 const focus_last_article = function () {
   setTimeout(function () {
     let a = document.querySelectorAll("div#app article");
     a[a.length - 1].focus();
+
+    const rect = document.activeElement.getBoundingClientRect();
+    const elY =
+      rect.top - document.body.getBoundingClientRect().top + rect.height / 2;
+
+    document.activeElement.parentElement.parentElement.scrollBy({
+      left: 0,
+      top: elY - window.innerHeight / 2,
+      behavior: "smooth",
+    });
   }, 1000);
 };
 
@@ -149,7 +150,7 @@ function sendMessage(msg, type) {
         let src = URL.createObjectURL(msg.blob);
 
         chat_data.push({
-          username: settings.nickname,
+          nickname: settings.nickname,
           content: "",
           datetime: new Date(),
           image: src,
@@ -159,6 +160,7 @@ function sendMessage(msg, type) {
           file: reader.result,
           filename: msg.filename,
           filetype: msg.type,
+          nickname: settings.nickname,
         };
 
         conn.send(msg);
@@ -171,24 +173,25 @@ function sendMessage(msg, type) {
       if (msg == "") return false;
       msg = {
         text: msg,
+        nickname: settings.nickname,
       };
       chat_data.push({
         nickname: settings.nickname,
         content: msg.text,
         datetime: new Date(),
       });
-
       conn.send(msg);
 
       m.redraw();
       focus_last_article();
+      write();
     }
-    document.querySelector("div#message-input input").value = "";
   } else {
     side_toaster(
       "There is no one connected to the room, you cannot broadcast.",
       10000
     );
+    write();
   }
 }
 
@@ -196,21 +199,11 @@ let close_connection = function () {
   conn.close();
 };
 
-let list_peers = function () {
-  try {
-    peer.listAllPeers(function (res) {
-      side_toaster(res, 3000);
-    });
-  } catch (e) {
-    side_toaster(e, 3000);
-  }
-};
-
 function ready() {
   conn.on("data", function (data) {
     if (data.file) {
       chat_data.push({
-        nickname: settings.nickname,
+        nickname: data.nickname,
         content: "",
         datetime: new Date(),
         image: data.file,
@@ -219,8 +212,7 @@ function ready() {
 
     if (data.text) {
       chat_data.push({
-        nickname: settings.nickname,
-
+        nickname: data.nickname,
         content: data.text,
         datetime: new Date(),
       });
@@ -236,23 +228,34 @@ function ready() {
 }
 
 function initialize() {
-  // Create own peer object with connection to shared PeerJS server
-  peer = new Peer({
-    debug: 3,
-    referrerPolicy: "origin-when-cross-origin",
-  });
+  // Create own peer object with connection to shared PeerJS server$
+  if (peer) peer.destroy();
 
-  peer.on("open", function (id) {
+  if (typeof turn == "object") {
+    peer = new Peer({
+      debug: 3,
+      referrerPolicy: "origin-when-cross-origin",
+      config: turn,
+    });
+  } else {
+    peer = new Peer({
+      debug: 3,
+      referrerPolicy: "origin-when-cross-origin",
+    });
+  }
+
+  peer.on("open", function () {
     if (peer.id === null) {
       peer.id = lastPeerId;
     } else {
       lastPeerId = peer.id;
     }
-
+    chat_data.push({ content: "open", datetime: new Date() });
     current_room = peer.id;
-    console.log("ccm" + current_room);
   });
-  peer.on("connection", function (c) {
+  peer.on("connection", function (event) {
+    console.log(event);
+
     ready();
   });
   peer.on("disconnected", function () {
@@ -271,11 +274,6 @@ function initialize() {
 }
 
 function join(id) {
-  // Close old connection
-  if (conn) {
-    conn.close();
-  }
-
   // Create connection to destination peer
   conn = peer.connect(id, {
     reliable: true,
@@ -283,12 +281,21 @@ function join(id) {
 
   conn.on("open", function () {
     side_toaster("Connected", 5000);
+    chat_data.push({ content: "connected", datetime: new Date() });
+  });
+
+  conn.on("error", function (err) {
+    side_toaster("error: " + err.type, 5000);
+  });
+
+  conn.on("close", function () {
+    side_toaster("Connection is closed", 5000);
   });
   // Handle incoming data (messages only since this is the signal sender)
   conn.on("data", function (data) {
     if (data.file) {
       chat_data.push({
-        nickname: settings.nickname,
+        nickname: data.nickname,
         content: "",
         datetime: new Date(),
         image: data.file,
@@ -297,17 +304,14 @@ function join(id) {
 
     if (data.text) {
       chat_data.push({
-        nickname: settings.nickname,
+        nickname: data.nickname,
         content: data.text,
         datetime: new Date(),
       });
     }
 
     m.redraw();
-    focus_last_article();
-  });
-  conn.on("close", function () {
-    side_toaster("Connection is closed", 10000);
+    if (activeElement.tagName != "INPUT") focus_last_article();
   });
 }
 
@@ -318,7 +322,6 @@ let create_peer = function () {
   peer = new Peer({
     debug: 3,
     referrerPolicy: "origin-when-cross-origin",
-    // config: server_config,
   });
 
   peer.on("open", function (id) {
@@ -372,7 +375,7 @@ let create_peer = function () {
   });
   peer.on("close", function () {
     conn = null;
-    side_toaster("Connection destroyed", 3000);
+    side_toaster("Connection closed", 3000);
   });
   peer.on("error", function (err) {
     console.log(err);
@@ -415,10 +418,7 @@ let time_parse = function (value) {
 
 //callback qr-code scan
 let scan_callback = function (n) {
-  stop_scan();
   connect_to_peer(n);
-  chat_data.push({ content: "connected", datetime: new Date() });
-  m.redraw();
 };
 
 //callback geolocation
@@ -443,7 +443,7 @@ var settings_page = {
   view: function () {
     return m(
       "div",
-      { class: "flex justify-content-spacearound", id: "settings_page" },
+      { class: "flex justify-content-spacearound test", id: "settings_page" },
       [
         m(
           "div",
@@ -567,7 +567,7 @@ var settings_page = {
                 .then(function (value) {
                   // Do other things once the value has been saved.
                   side_toaster("settings saved", 2000);
-                  window.location.replace("/start");
+                  m.route.set("/start");
                 })
                 .catch(function (err) {
                   // This code runs if there were any errors
@@ -729,7 +729,11 @@ var start = {
             "data-function": "create-peer",
             tabindex: 2,
             onclick: function () {
-              m.route.set("/favorits_page");
+              if (room_favorits != "") {
+                m.route.set("/favorits_page");
+              } else {
+                side_toaster("no favorits set", 2000);
+              }
             },
             onfocus: () => {
               bottom_bar("", "<img src='assets/image/select.svg'>", "");
@@ -770,6 +774,9 @@ var links_page = {
             window.open(item.href);
             m.route.set("/chat");
           },
+          oncreate: () => {
+            index == 1 ?? item.focus();
+          },
         },
         item.href
       );
@@ -781,7 +788,6 @@ var favorits_page = {
   view: function (vnode) {
     return room_favorits.map(function (item, index) {
       bottom_bar("", "select", "");
-      console.log(item);
       return m(
         "button",
         {
@@ -812,21 +818,65 @@ var chat = {
       },
 
       m("div", { id: "message-input", type: "text" }, [
-        m("input", { type: "text" }),
+        m("input", {
+          type: "text",
+          onblur: () => {
+            status = "write";
+            write();
+            bottom_bar(
+              "<img src='assets/image/pencil.svg'>",
+              "",
+              "<img src='assets/image/option.svg'>"
+            );
+          },
+          onfocus: () => {
+            bottom_bar(
+              "<img src='assets/image/send.svg'>",
+              "",
+              "<img src='assets/image/option.svg'>"
+            );
+          },
+        }),
       ]),
       chat_data.map(function (item, index) {
+        let nickname = "me";
+        if (item.nickname != settings.nickname) {
+          nickname = item.nickname;
+        }
         return m(
           "article",
           {
-            class: "item",
+            class: "item " + nickname,
             tabindex: index,
+            onfocus: () => {
+              links = linkify.find(document.activeElement.textContent);
+              if (links.length > 0) {
+                bottom_bar(
+                  "<img src='assets/image/send.svg'>",
+                  "<img src='assets/image/link.svg'>",
+                  "<img src='assets/image/option.svg'>"
+                );
+              } else {
+                bottom_bar(
+                  "<img src='assets/image/send.svg'>",
+                  "",
+                  "<img src='assets/image/option.svg'>"
+                );
+              }
+            },
           },
           [
             m("div", { class: "flex message-head" }, [
               m("div", time_parse(item.datetime)),
-              m("div", { class: "nickname" }, item.nickname),
+              m("div", { class: "nickname" }, nickname),
             ]),
-            m("div", { class: "message-main" }, item.content),
+            m(
+              "div",
+              {
+                class: "message-main",
+              },
+              item.content
+            ),
             m("img", { class: "message-media", src: item.image }),
           ]
         );
@@ -867,26 +917,6 @@ m.route(root, "/intro", {
 });
 
 document.addEventListener("DOMContentLoaded", function (e) {
-  bottom_bar("", "", "");
-
-  let write = function () {
-    if (document.getElementById("message-input").style.display == "none") {
-      document.getElementById("message-input").style.display = "block";
-      document.querySelector("div#message-input input").focus();
-      status = "write";
-      bottom_bar(
-        "<img src='assets/image/send.svg'>",
-        "",
-        "<img src='assets/image/option.svg'>"
-      );
-    } else {
-      document.querySelector("div#message-input input").value = "";
-      document.getElementById("message-input").style.display = "none";
-      focus_last_article();
-      status = "";
-    }
-  };
-
   /////////////////
   ///NAVIGATION
   /////////////////
@@ -926,7 +956,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
     const elY =
       rect.top - document.body.getBoundingClientRect().top + rect.height / 2;
 
-    document.activeElement.parentNode.scrollBy({
+    document.activeElement.parentElement.parentElement.scrollBy({
       left: 0,
       top: elY - window.innerHeight / 2,
       behavior: "smooth",
@@ -974,19 +1004,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
     if (status == "confirm") return false;
     let route = m.route.get();
 
-    //user avatar
-    if (route == "/login") {
-      //avatar
-      const usernameInput = document.querySelector("#username");
-      function refresh() {
-        document.getElementById("login-icon-box").innerHTML =
-          "<identicon-svg username='hasard' saturation='95' lightness='60'>";
-      }
-      usernameInput.addEventListener("input", function () {
-        refresh();
-      });
-    }
-
     if (route == "/start") {
       chat_data = [];
     }
@@ -995,6 +1012,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
         break;
 
       case "ArrowUp":
+        if (route == "/chat" && document.activeElement.tagName === "INPUT") {
+          write();
+        }
         nav(-1);
 
         break;
