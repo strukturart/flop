@@ -6,17 +6,13 @@ import {
   pick_image,
   month,
 } from "./assets/js/helper.js";
-import { dummy_data } from "./assets/js/dummy-data.js";
-import { Peer } from "peerjs";
 import { start_scan } from "./assets/js/scan.js";
 import { stop_scan } from "./assets/js/scan.js";
-import { identiconSvg } from "minidenticons";
-import { qrious } from "qrious";
 import localforage from "localforage";
-import { set } from "mithril/route";
 import * as linkify from "linkifyjs";
-
 import { geolocation } from "./assets/js/helper.js";
+import m from "mithril";
+import qrious from "qrious";
 
 //github.com/laurentpayot/minidenticons#usage
 export let status = "";
@@ -29,6 +25,17 @@ let lastPeerId = null;
 let peer = null;
 let conn = null;
 let room_favorits = [];
+
+let debug = false;
+
+if (debug) {
+  window.onerror = function (msg, url, linenumber) {
+    alert(
+      "Error message: " + msg + "\nURL: " + url + "\nLine Number: " + linenumber
+    );
+    return true;
+  };
+}
 
 //load settings
 localforage
@@ -62,7 +69,7 @@ localforage
 let warning_leave_chat = function () {
   status = "confirm";
   if (confirm("Do you really want leave the room?")) {
-    window.location.replace("#/start");
+    m.route.set("/start");
     setTimeout(function () {
       status = "";
     }, 1000);
@@ -83,7 +90,7 @@ let addToFavorit = function () {
     .then(function (value) {
       // Do other things once the value has been saved.
       side_toaster("favorit saved", 2000);
-      window.location.replace("#/chat");
+      m.route.set("/chat");
     })
     .catch(function (err) {
       // This code runs if there were any errors
@@ -93,40 +100,34 @@ let addToFavorit = function () {
   console.log(room_favorits);
 };
 
-let hide_input = function () {
-  document.querySelector("div#message-input input").value = "";
-  document.getElementById("message-input").style.display = "none";
-  focus_last_article();
-  status = "";
-};
 const server_config = {
-  "iceServers": [
+  iceServers: [
     {
-      "urls": "stun:stun.l.google.com:19302",
+      urls: "stun:stun.l.google.com:19302",
     },
     {
-      "urls": "stun:iphone-stun.strato-iphone.de:3478",
+      urls: "stun:iphone-stun.strato-iphone.de:3478",
     },
     {
-      "urls": "stun:numb.viagenie.ca:3478",
+      urls: "stun:numb.viagenie.ca:3478",
     },
     {
-      "urls": "stun:openrelay.metered.ca:80",
+      urls: "stun:openrelay.metered.ca:80",
     },
     {
-      "urls": "turn:openrelay.metered.ca:80",
-      "username": "openrelayproject",
-      "credential": "openrelayproject",
+      urls: "turn:openrelay.metered.ca:80",
+      username: "openrelayproject",
+      credential: "openrelayproject",
     },
     {
-      "urls": "turn:openrelay.metered.ca:443",
-      "username": "openrelayproject",
-      "credential": "openrelayproject",
+      urls: "turn:openrelay.metered.ca:443",
+      username: "openrelayproject",
+      credential: "openrelayproject",
     },
     {
-      "urls": "turn:openrelay.metered.ca:443?transport=tcp",
-      "username": "openrelayproject",
-      "credential": "openrelayproject",
+      urls: "turn:openrelay.metered.ca:443?transport=tcp",
+      username: "openrelayproject",
+      credential: "openrelayproject",
     },
   ],
 };
@@ -139,7 +140,6 @@ const focus_last_article = function () {
 };
 
 function sendMessage(msg, type) {
-  console.log(msg);
   if (conn && conn.open) {
     if (type == "image") {
       // Encode the file using the FileReader API
@@ -149,10 +149,10 @@ function sendMessage(msg, type) {
         let src = URL.createObjectURL(msg.blob);
 
         chat_data.push({
-          "username": settings.nickname,
-          "content": "",
-          "datetime": new Date(),
-          "image": src,
+          username: settings.nickname,
+          content: "",
+          datetime: new Date(),
+          image: src,
         });
 
         msg = {
@@ -162,28 +162,28 @@ function sendMessage(msg, type) {
         };
 
         conn.send(msg);
-        console.log("Sent: " + msg);
         m.redraw();
         focus_last_article();
       };
       reader.readAsDataURL(msg.blob);
     }
     if (type == "text") {
+      if (msg == "") return false;
       msg = {
         text: msg,
       };
       chat_data.push({
-        "nickname": settings.nickname,
-        "content": msg.text,
-        "datetime": new Date(),
+        nickname: settings.nickname,
+        content: msg.text,
+        datetime: new Date(),
       });
 
       conn.send(msg);
-      console.log("Sent: " + msg);
 
       m.redraw();
       focus_last_article();
     }
+    document.querySelector("div#message-input input").value = "";
   } else {
     side_toaster(
       "There is no one connected to the room, you cannot broadcast.",
@@ -210,19 +210,19 @@ function ready() {
   conn.on("data", function (data) {
     if (data.file) {
       chat_data.push({
-        "nickname": settings.nickname,
-        "content": "",
-        "datetime": new Date(),
-        "image": data.file,
+        nickname: settings.nickname,
+        content: "",
+        datetime: new Date(),
+        image: data.file,
       });
     }
 
     if (data.text) {
       chat_data.push({
-        "nickname": settings.nickname,
+        nickname: settings.nickname,
 
-        "content": data.text,
-        "datetime": new Date(),
+        content: data.text,
+        datetime: new Date(),
       });
     }
 
@@ -240,7 +240,6 @@ function initialize() {
   peer = new Peer({
     debug: 3,
     referrerPolicy: "origin-when-cross-origin",
-    //config: server_config,
   });
 
   peer.on("open", function (id) {
@@ -289,18 +288,18 @@ function join(id) {
   conn.on("data", function (data) {
     if (data.file) {
       chat_data.push({
-        "nickname": settings.nickname,
-        "content": "",
-        "datetime": new Date(),
-        "image": data.file,
+        nickname: settings.nickname,
+        content: "",
+        datetime: new Date(),
+        image: data.file,
       });
     }
 
     if (data.text) {
       chat_data.push({
-        "nickname": settings.nickname,
-        "content": data.text,
-        "datetime": new Date(),
+        nickname: settings.nickname,
+        content: data.text,
+        datetime: new Date(),
       });
     }
 
@@ -314,7 +313,7 @@ function join(id) {
 
 //create peer
 let create_peer = function () {
-  window.location.replace("#/chat");
+  m.route.set("/chat");
 
   peer = new Peer({
     debug: 3,
@@ -332,10 +331,8 @@ let create_peer = function () {
 
     current_room = peer.id;
 
-    console.log("ccm" + current_room);
-
     //make qr code
-    var qrs = new QRious();
+    var qrs = new qrious();
     qrs.set({
       background: "white",
       foreground: "black",
@@ -346,11 +343,17 @@ let create_peer = function () {
     });
 
     chat_data.push({
-      "nickname": settings.nickname,
-      "content": "room created",
-      "datetime": new Date(),
-      "image": qrs.toDataURL(),
+      nickname: settings.nickname,
+      content: "room created",
+      datetime: new Date(),
+      image: qrs.toDataURL(),
     });
+
+    bottom_bar(
+      "<img src='assets/image/pencil.svg'>",
+      "",
+      "<img src='assets/image/option.svg'>"
+    );
 
     m.redraw();
   });
@@ -378,7 +381,7 @@ let create_peer = function () {
 
 //connect to peer
 let connect_to_peer = function (_id) {
-  window.location.replace("#/chat");
+  m.route.set("/chat");
   initialize();
   setTimeout(function () {
     join(_id);
@@ -386,12 +389,11 @@ let connect_to_peer = function (_id) {
 };
 
 let handleImage = function (t) {
-  window.location.replace("#/chat");
+  m.route.set("/chat");
   if (t != "") sendMessage(t, "image");
 
   let a = document.querySelectorAll("div#app article");
   a[a.length - 1].focus();
-  bottom_bar("write", "select", "options");
   status = "";
 };
 
@@ -415,7 +417,7 @@ let time_parse = function (value) {
 let scan_callback = function (n) {
   stop_scan();
   connect_to_peer(n);
-  chat_data.push({ "content": "connected", "datetime": new Date() });
+  chat_data.push({ content: "connected", datetime: new Date() });
   m.redraw();
 };
 
@@ -429,10 +431,10 @@ let geolocation_callback = function (e) {
     "/" +
     e.coords.longitude;
 
-  chat_data.push({ "content": link_url, "datetime": new Date() });
+  chat_data.push({ content: link_url, datetime: new Date() });
 
   sendMessage(link_url, "text");
-  window.location.replace("#/chat");
+  m.route.set("/chat");
 };
 
 var root = document.getElementById("app");
@@ -565,7 +567,7 @@ var settings_page = {
                 .then(function (value) {
                   // Do other things once the value has been saved.
                   side_toaster("settings saved", 2000);
-                  window.location.replace("#/start");
+                  window.location.replace("/start");
                 })
                 .catch(function (err) {
                   // This code runs if there were any errors
@@ -583,7 +585,6 @@ var settings_page = {
 var options = {
   view: function () {
     bottom_bar("", "select", "");
-    hide_input();
     return m(
       "div",
       { class: "flex justify-content-spacearound", id: "login" },
@@ -660,7 +661,7 @@ var login = {
             tabindex: 1,
             onclick: function () {
               settings.username = document.getElementById("username").value;
-              window.location.replace("#/start");
+              window.location.replace("/start");
             },
           },
           "enter"
@@ -674,7 +675,17 @@ var start = {
   view: function () {
     return m(
       "div",
-      { class: "flex justify-content-spacearound", id: "start" },
+      {
+        class: "flex justify-content-spacearound",
+        id: "start",
+        oncreate: () => {
+          bottom_bar(
+            "",
+            "<img src='assets/image/select.svg'>",
+            "<img src='assets/image/option.svg'>"
+          );
+        },
+      },
       [
         m(
           "button",
@@ -687,6 +698,9 @@ var start = {
             tabindex: 0,
             onclick: function () {
               start_scan(scan_callback);
+            },
+            onfocus: () => {
+              bottom_bar("", "<img src='assets/image/select.svg'>", "");
             },
           },
           "connect to room by QR-Code"
@@ -701,6 +715,9 @@ var start = {
             onclick: function () {
               create_peer();
             },
+            onfocus: () => {
+              bottom_bar("", "<img src='assets/image/select.svg'>", "");
+            },
           },
           "create room"
         ),
@@ -712,7 +729,10 @@ var start = {
             "data-function": "create-peer",
             tabindex: 2,
             onclick: function () {
-              window.location.replace("#/favorits_page");
+              m.route.set("/favorits_page");
+            },
+            onfocus: () => {
+              bottom_bar("", "<img src='assets/image/select.svg'>", "");
             },
           },
           "favorits"
@@ -725,7 +745,10 @@ var start = {
             "data-function": "settings",
             tabindex: 3,
             onclick: function () {
-              window.location.replace("#/settings_page");
+              m.route.set("/settings_page");
+            },
+            onfocus: () => {
+              bottom_bar("", "<img src='assets/image/select.svg'>", "");
             },
           },
           "settings"
@@ -735,7 +758,6 @@ var start = {
   },
 };
 
-let t;
 var links_page = {
   view: function (vnode) {
     return links.map(function (item, index) {
@@ -746,7 +768,7 @@ var links_page = {
           class: "item",
           onclick: function () {
             window.open(item.href);
-            window.location.replace("#/chat");
+            m.route.set("/chat");
           },
         },
         item.href
@@ -776,18 +798,40 @@ var favorits_page = {
 };
 
 var chat = {
-  view: function (vnode) {
-    return chat_data.map(function (item, index) {
-      bottom_bar("write", "select", "options");
-      return m("article", { class: "item", tabindex: index }, [
-        m("div", { class: "flex message-head" }, [
-          m("div", time_parse(item.datetime)),
-          m("div", { class: "nickname" }, item.nickname),
-        ]),
-        m("div", { class: "message-main" }, item.content),
-        m("img", { class: "message-media", src: item.image }),
-      ]);
-    });
+  view: function () {
+    return m(
+      "div",
+      {
+        oncreate: () => {
+          bottom_bar(
+            "<img src='assets/image/pencil.svg'>",
+            "",
+            "<img src='assets/image/option.svg'>"
+          );
+        },
+      },
+
+      m("div", { id: "message-input", type: "text" }, [
+        m("input", { type: "text" }),
+      ]),
+      chat_data.map(function (item, index) {
+        return m(
+          "article",
+          {
+            class: "item",
+            tabindex: index,
+          },
+          [
+            m("div", { class: "flex message-head" }, [
+              m("div", time_parse(item.datetime)),
+              m("div", { class: "nickname" }, item.nickname),
+            ]),
+            m("div", { class: "message-main" }, item.content),
+            m("img", { class: "message-media", src: item.image }),
+          ]
+        );
+      })
+    );
   },
 };
 
@@ -796,6 +840,11 @@ var intro = {
     return m("div", { class: "width-100 height-100", id: "intro" }, [
       m("img", {
         src: "./assets/icons/intro.svg",
+        oncreate: () => {
+          setTimeout(function () {
+            m.route.set("/start");
+          }, 3000);
+        },
       }),
 
       m("div", {
@@ -805,10 +854,6 @@ var intro = {
     ]);
   },
 };
-
-setTimeout(function () {
-  window.location.replace("#/start");
-}, 3000);
 
 m.route(root, "/intro", {
   "/intro": intro,
@@ -820,7 +865,6 @@ m.route(root, "/intro", {
   "/settings_page": settings_page,
   "/favorits_page": favorits_page,
 });
-m.route.prefix = "#";
 
 document.addEventListener("DOMContentLoaded", function (e) {
   bottom_bar("", "", "");
@@ -829,13 +873,16 @@ document.addEventListener("DOMContentLoaded", function (e) {
     if (document.getElementById("message-input").style.display == "none") {
       document.getElementById("message-input").style.display = "block";
       document.querySelector("div#message-input input").focus();
-      bottom_bar("cancel", "send", "options");
       status = "write";
+      bottom_bar(
+        "<img src='assets/image/send.svg'>",
+        "",
+        "<img src='assets/image/option.svg'>"
+      );
     } else {
       document.querySelector("div#message-input input").value = "";
       document.getElementById("message-input").style.display = "none";
       focus_last_article();
-      bottom_bar("write", "select", "options");
       status = "";
     }
   };
@@ -941,9 +988,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
     }
 
     if (route == "/start") {
-      //delete input and data
-      document.querySelector("div#message-input input").value = "";
-      document.getElementById("message-input").style.display = "none";
       chat_data = [];
     }
     switch (param.key) {
@@ -963,30 +1007,20 @@ document.addEventListener("DOMContentLoaded", function (e) {
       case "ArrowLeft":
         break;
 
-      case "1":
-        break;
-      case "3":
-        break;
-
-      case "2":
-        break;
-
-      case "#":
-        break;
-
-      case "7":
-        break;
-
       case "SoftRight":
       case "Alt":
-        window.location.replace("#/options");
+        if (route == "/chat") m.route.set("/options");
         break;
 
       case "SoftLeft":
       case "Control":
-        if (route == "/chat") {
+        if (route == "/chat" && status !== "write") {
           write();
           break;
+        }
+
+        if (route == "/chat" && status === "write") {
+          sendMessage(document.getElementsByTagName("input")[0].value, "text");
         }
 
         break;
@@ -998,25 +1032,15 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
         if (route == "/chat") {
           if (document.activeElement.tagName == "ARTICLE") {
-            console.log(linkify.find(document.activeElement.textContent));
-
             links = linkify.find(document.activeElement.textContent);
-            console.log(links);
 
             if (links.length >= 0) {
-              window.location.replace("#/links_page");
+              m.route.set("/links_page");
             }
 
             links.forEach(function (e) {
               console.log(e);
             });
-          }
-          if (document.getElementsByTagName("input")[0].value != "") {
-            sendMessage(
-              document.getElementsByTagName("input")[0].value,
-              "text"
-            );
-            write();
           }
 
           break;
@@ -1040,7 +1064,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
     }
 
     if (evt.key === "Backspace") {
-      if (m.route.get() == "/chat") {
+      if (m.route.get() === "/chat") {
         warning_leave_chat();
         return false;
       }
@@ -1049,16 +1073,14 @@ document.addEventListener("DOMContentLoaded", function (e) {
         m.route.get() == "/settings_page" ||
         m.route.get() == "/favorits_page"
       ) {
-        window.location.replace("#/start");
+        m.route.set("/start");
         if (conn) {
           close_connection();
         }
-        bottom_bar("", "select", "");
       }
 
       if (m.route.get() == "/options" || m.route.get() == "/links_page") {
-        window.location.replace("#/chat");
-        bottom_bar("write", "select", "options");
+        m.route.set("/chat");
       }
     }
 

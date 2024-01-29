@@ -17,7 +17,6 @@
   box-sizing: border-box;
   overflow-wrap: break-word;
   word-wrap: break-word;
-  -webkit-hyphens: auto;
   hyphens: auto;
   border: 0;
   margin: 0;
@@ -38,12 +37,11 @@
 }
 
 html, body {
-  max-height: 100%;
-  max-width: 100%;
-  height: 100%;
+  background: #fff;
   width: 100%;
   max-width: 100vw;
-  background: #fff;
+  height: 100%;
+  max-height: 100%;
   margin: 0;
   padding: 0;
   font-family: Lato-Regular;
@@ -55,8 +53,8 @@ html, body {
 }
 
 div#app {
-  max-height: 88vh;
   width: 100%;
+  max-height: 88vh;
   padding: 5px;
   position: relative;
   top: 0;
@@ -90,11 +88,11 @@ img[src=""], img[src=" "] {
 }
 
 button {
-  width: 90vw;
   color: #000;
   background: #fff;
   border: 3px solid gray;
   border-radius: 10px;
+  width: 90vw;
   margin: 0 0 15px 0;
   padding: 7px;
   font-size: 1rem;
@@ -106,7 +104,6 @@ button:focus {
 }
 
 select {
-  width: 90%;
   font: inherit;
   text-align: center;
   box-sizing: border-box;
@@ -115,28 +112,22 @@ select {
   background-color: #fff;
   border: thin solid #383842;
   border-radius: 4px;
+  width: 90%;
   margin: 10px 5% 0;
   padding: 10px;
   line-height: 1.5em;
 }
 
-textarea {
-  height: 30px;
-  width: 95%;
+textarea, input {
   border: 1px solid silver;
-  padding: 3px;
-}
-
-input {
   width: 95%;
   height: 30px;
-  border: 1px solid silver;
   padding: 3px;
 }
 
 label {
-  width: 100%;
   text-align: center;
+  width: 100%;
   margin: 0 0 10px;
   display: block;
 }
@@ -152,9 +143,9 @@ label {
 
 div#intro {
   z-index: 100000;
+  background: #000;
   min-width: 100vw;
   height: 100%;
-  background: #000;
   animation-name: intro;
   animation-duration: 1s;
   animation-iteration-count: 1;
@@ -193,7 +184,7 @@ div#login {
   }
 
   40% {
-    transform: rotate(0deg);
+    transform: rotate(0);
   }
 
   60% {
@@ -201,7 +192,7 @@ div#login {
   }
 
   100% {
-    transform: rotate(0deg);
+    transform: rotate(0);
   }
 }
 
@@ -220,8 +211,8 @@ div#login {
 }
 
 #KaiOsAd {
-  height: 200px;
   width: 240px;
+  height: 200px;
 }
 
 #KaiOsAds-Wrapper {
@@ -233,8 +224,8 @@ div#login {
 }
 
 ul#keys li span {
-  min-width: 60px;
   width: 60px;
+  min-width: 60px;
   font-weight: bold;
   display: inline-block;
 }
@@ -249,13 +240,13 @@ ul#keys {
 }
 
 div#toast {
-  height: auto;
   overflow: none;
   color: #fff;
   z-index: 10;
-  min-width: 100%;
   transform-origin: 0 0;
   background: #000;
+  min-width: 100%;
+  height: auto;
   padding: 5px;
   transition: all .5s ease-in-out;
   position: fixed;
@@ -264,7 +255,6 @@ div#toast {
 }
 
 div#side-toast {
-  height: auto;
   overflow: none;
   color: #fff;
   z-index: 10;
@@ -272,6 +262,7 @@ div#side-toast {
   background: orange;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
+  height: auto;
   padding: 8px;
   transition: all .5s ease-in-out;
   position: fixed;
@@ -280,22 +271,21 @@ div#side-toast {
 }
 
 div#side-toast img {
-  width: 30px;
   width: 60px;
 }
 
 #login-icon-box {
+  outline: 0 solid red;
   width: 100px;
   height: 100px;
-  outline: 0 solid red;
   margin: 0 0 10px;
 }
 
 identicon-svg {
-  width: 100px;
-  height: 100px;
   background-color: #eef;
   border-radius: 5%;
+  width: 100px;
+  height: 100px;
   display: block;
 }
 
@@ -323,10 +313,10 @@ div#options div#import-text {
 
 div#bottom-bar {
   z-index: 2000;
-  height: 18px;
   z-index: 6;
+  background: none;
   min-width: 100vw;
-  background: #000;
+  height: 18px;
   position: fixed;
   bottom: 10px;
   left: 0;
@@ -339,41 +329,61 @@ div#bottom-bar div#inner {
 div#bottom-bar div {
   color: #fff;
   text-align: center;
-  background: #000;
+  background: none;
   padding: 2px;
   font-size: .8rem;
 }
 
 div#bottom-bar div#button-center {
   color: #fff;
-  width: 32%;
   text-align: center;
-  background: #000;
+  background: none;
+  width: 32%;
   padding: 2px;
+}
+
+div#bottom-bar div#button-center img {
+  width: 30px;
+  position: fixed;
+  bottom: 5px;
+  left: 46%;
 }
 
 div#bottom-bar div#button-left {
   color: #fff;
-  width: 32%;
   text-align: left;
+  background: none;
   width: 32%;
-  background: #000;
   padding: 2px;
+}
+
+div#bottom-bar div#button-left img {
+  width: 30px;
+  position: fixed;
+  bottom: 5px;
+  left: 10px;
+}
+
+div#bottom-bar div#button-right img {
+  width: 30px;
+  position: fixed;
+  bottom: 5px;
+  right: 10px;
 }
 
 div#bottom-bar div#button-right {
   color: #fff;
-  width: 32%;
   text-align: right;
-  background: #000;
+  background: none;
+  width: 32%;
   padding: 2px;
 }
 
 div#top-bar {
-  height: 18px;
   z-index: 4;
-  min-width: 100vw;
   background: #000;
+  min-width: 100vw;
+  height: 18px;
   display: none;
   position: fixed;
   top: 0;
@@ -381,8 +391,8 @@ div#top-bar {
 }
 
 div#top-bar img {
-  max-height: 15px;
   color: #fff;
+  max-height: 15px;
   margin: 3px 0 0 5px;
 }
 
@@ -398,26 +408,25 @@ div#top-bar div {
 
 div#top-bar div#button-center {
   color: #fff;
-  width: 30%;
   text-align: center;
   background: #000;
+  width: 30%;
   padding: 2px;
 }
 
 div#top-bar div#button-left {
   color: #fff;
-  width: 20px;
   text-align: left;
-  width: 30%;
   background: #000;
+  width: 30%;
   padding: 2px;
 }
 
 div#top-bar div#button-right {
   color: #fff;
-  width: 30%;
   text-align: right;
   background: #000;
+  width: 30%;
   padding: 2px;
 }
 
@@ -445,10 +454,10 @@ div#top {
 }
 
 div#settings {
-  height: 92vh;
-  width: 100%;
   z-index: 3;
   background: #e7e7e7;
+  width: 100%;
+  height: 92vh;
   padding: 0 0 50px;
   display: none;
   position: absolute;
@@ -485,15 +494,18 @@ article div.message-head div:nth-child(2) {
 
 div#message-input {
   z-index: 5;
+  background: none;
   height: 40px;
-  background: gray;
   padding: 5px;
   display: none;
   position: fixed;
-  bottom: 28px;
+  bottom: 35px;
 }
 
 div#message-input input {
+  border: 2px solid silver;
+  border-radius: 10px;
+  width: 100%;
   margin: 0 auto;
 }
 

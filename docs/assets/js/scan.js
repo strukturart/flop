@@ -1,5 +1,4 @@
 import jsQR from "jsqr";
-import { status } from "../../index.js";
 
 let video;
 let intv;

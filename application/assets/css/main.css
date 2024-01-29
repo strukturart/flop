@@ -365,7 +365,7 @@ div#bottom-bar {
   left: 0px;
   height: 18px;
   z-index: 6;
-  background: black;
+  background: none;
   min-width: 100vw;
 }
 
@@ -374,7 +374,7 @@ div#bottom-bar div#inner {
 }
 
 div#bottom-bar div {
-  background: black;
+  background: none;
   color: white;
   padding: 2px;
   font-size: 0.8rem;
@@ -382,15 +382,23 @@ div#bottom-bar div {
 }
 
 div#bottom-bar div#button-center {
-  background: black;
+  background: none;
   color: white;
   padding: 2px;
   width: 32%;
   text-align: center;
 }
 
+div#bottom-bar div#button-center img {
+  position: fixed;
+  bottom: 5px;
+
+  left: 46%;
+  width: 30px;
+}
+
 div#bottom-bar div#button-left {
-  background: black;
+  background: none;
   color: white;
   padding: 2px;
   width: 32%;
@@ -398,8 +406,22 @@ div#bottom-bar div#button-left {
   width: 32%;
 }
 
+div#bottom-bar div#button-left img {
+  position: fixed;
+  bottom: 5px;
+  left: 10px;
+  width: 30px;
+}
+
+div#bottom-bar div#button-right img {
+  position: fixed;
+  bottom: 5px;
+  right: 10px;
+  width: 30px;
+}
+
 div#bottom-bar div#button-right {
-  background: black;
+  background: none;
   color: white;
   padding: 2px;
   width: 32%;
@@ -529,13 +551,16 @@ article div.message-head div:nth-child(2) {
 div#message-input {
   position: fixed;
   z-index: 5;
-  background: gray;
+  background: none;
   height: 40px;
   padding: 5px;
-  bottom: 28px;
+  bottom: 35px;
   display: none;
 }
 
 div#message-input input {
   margin: 0 auto;
+  border: 2px solid silver;
+  border-radius: 10px;
+  width: 100%;
 }

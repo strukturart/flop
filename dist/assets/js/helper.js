@@ -329,10 +329,9 @@ let toast_qq = function (text, time) {
 
 //bottom bar
 export let bottom_bar = function (left, center, right) {
-  document.querySelector("div#bottom-bar div#button-left").textContent = left;
-  document.querySelector("div#bottom-bar div#button-center").textContent =
-    center;
-  document.querySelector("div#bottom-bar div#button-right").textContent = right;
+  document.querySelector("div#bottom-bar div#button-left").innerHTML = left;
+  document.querySelector("div#bottom-bar div#button-center").innerHTML = center;
+  document.querySelector("div#bottom-bar div#button-right").innerHTML = right;
 
   if (left == "" && center == "" && right == "") {
     document.querySelector("div#bottom-bar").style.display = "none";

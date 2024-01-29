@@ -1,41 +1,32 @@
 {
-   "source": "application/index.html",
-   "browserslist": "Firefox <= 48",
-   "targets": {
-      "default": {
-         "distDir": "./dist",
-         "publicUrl": "./"
-      }
-   },
-   "scripts": {
-      "start": "parcel --no-source-maps ./application/index.html",
-      "build": "parcel build ./application/index.html --no-source-maps --log-level error"
-   },
-   "devDependencies": {
-      "parcel": "^2.5.0",
-      "parcel-plugin-static-files-copy": "^2.6.0"
-   },
-   "dependencies": {
-      "jsqr": "^1.4.0",
-      "kaios-lib": "^1.6.0",
-      "linkifyjs": "^3.0.5",
-      "localforage": "^1.10.0",
-      "minidenticons": "^1.0.3",
-      "mithril": "^2.0.4",
-      "peer": "0.6.1",
-      "peerjs": "^1.4.5-rc.1",
-      "qrious": "^4.0.2"
-   },
-   "staticFiles": {
-      "staticPath": [
-         {
-            "staticPath": "./application/assets/",
-            "staticOutDir": "assets/"
-         },
-         {
-            "staticPath": "./application/manifest.webapp",
-            "staticOutDir": "./"
-         }
-      ]
-   }
+  "name": "watermelon",
+  "version": "1.0.0",
+  "source": "application/index.html",
+  "browserslist": "Firefox <= 48",
+  "scripts": {
+    "start": "rm -rf dist/* && parcel --no-source-maps application/index.html && cp application/manifest.webapp dist && cp -r application/assets/icons dist",
+    "build": "rm -rf dist/* && parcel build --no-source-maps --no-optimize application/index.html && cp application/manifest.webapp dist && mkdir dist/assets && cp -r application/assets/icons dist/assets/"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.18.10",
+    "@babel/core": "^7.19.1",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-transform-named-capturing-groups-regex": "^7.17.12",
+    "@babel/plugin-transform-runtime": "^7.18.5",
+    "@babel/preset-env": "^7.19.1",
+    "@parcel/transformer-html": "^2.6.2",
+    "core-js": "^3.22.5",
+    "parcel": "^2.5.0",
+    "process": "^0.11.10"
+  },
+  "dependencies": {
+    "@parcel/service-worker": "^2.8.0",
+    "jsqr": "^1.4.0",
+    "kaios-lib": "^1.6.0",
+    "linkifyjs": "^3.0.5",
+    "localforage": "^1.10.0",
+    "minidenticons": "^1.0.3",
+    "mithril": "^2.0.4",
+    "qrious": "^4.0.2"
+  }
 }
