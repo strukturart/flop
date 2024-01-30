@@ -233,13 +233,13 @@ function initialize() {
 
   if (typeof turn == "object") {
     peer = new Peer({
-      debug: 3,
+      debug: 0,
       referrerPolicy: "origin-when-cross-origin",
       config: turn,
     });
   } else {
     peer = new Peer({
-      debug: 3,
+      debug: 0,
       referrerPolicy: "origin-when-cross-origin",
     });
   }
@@ -254,8 +254,13 @@ function initialize() {
     current_room = peer.id;
   });
   peer.on("connection", function (event) {
-    console.log(event);
-
+    //console.log(event);
+    if (peer.connections) {
+      for (const key in peer.connections) {
+        const connection = peer.connections[key][0];
+        console.log("Connection status:", connection.open);
+      }
+    }
     ready();
   });
   peer.on("disconnected", function () {
@@ -319,10 +324,18 @@ function join(id) {
 let create_peer = function () {
   m.route.set("/chat");
 
-  peer = new Peer({
-    debug: 3,
-    referrerPolicy: "origin-when-cross-origin",
-  });
+  if (typeof turn == "object") {
+    peer = new Peer({
+      debug: 0,
+      referrerPolicy: "origin-when-cross-origin",
+      config: turn,
+    });
+  } else {
+    peer = new Peer({
+      debug: 0,
+      referrerPolicy: "origin-when-cross-origin",
+    });
+  }
 
   peer.on("open", function (id) {
     // Workaround for peer.reconnect deleting previous id

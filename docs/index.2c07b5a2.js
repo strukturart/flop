@@ -20251,33 +20251,9 @@ var $78f2cb3ec8734e95$var$lastPeerId = null;
 var $78f2cb3ec8734e95$var$peer = null;
 var $78f2cb3ec8734e95$var$conn = null;
 var $78f2cb3ec8734e95$var$room_favorits = [];
-var $78f2cb3ec8734e95$var$turn = {
-    iceServers: [
-        {
-            urls: "stun:stun.relay.metered.ca:80"
-        },
-        {
-            urls: "turn:standard.relay.metered.ca:80",
-            username: "08e1abca107ec820e6cc4016",
-            credential: "+ar86RUM8zAyphzz"
-        },
-        {
-            urls: "turn:standard.relay.metered.ca:80?transport=tcp",
-            username: "08e1abca107ec820e6cc4016",
-            credential: "+ar86RUM8zAyphzz"
-        },
-        {
-            urls: "turn:standard.relay.metered.ca:443",
-            username: "08e1abca107ec820e6cc4016",
-            credential: "+ar86RUM8zAyphzz"
-        },
-        {
-            urls: "turns:standard.relay.metered.ca:443?transport=tcp",
-            username: "08e1abca107ec820e6cc4016",
-            credential: "+ar86RUM8zAyphzz"
-        }
-    ]
-};
+//.env turn server
+var $78f2cb3ec8734e95$var$turn = JSON.parse('{"iceServers":[{"urls":"stun:stun.relay.metered.ca:80"},{"urls":"turn:standard.relay.metered.ca:80","username":"08e1abca107ec820e6cc4016","credential":"+ar86RUM8zAyphzz"},{"urls":"turn:standard.relay.metered.ca:80?transport=tcp","username":"08e1abca107ec820e6cc4016","credential":"+ar86RUM8zAyphzz"},{"urls":"turn:standard.relay.metered.ca:443","username":"08e1abca107ec820e6cc4016","credential":"+ar86RUM8zAyphzz"},{"urls":"turns:standard.relay.metered.ca:443?transport=tcp","username":"08e1abca107ec820e6cc4016","credential":"+ar86RUM8zAyphzz"}]}');
+console.log($78f2cb3ec8734e95$var$turn);
 var $78f2cb3ec8734e95$var$debug = false;
 if ($78f2cb3ec8734e95$var$debug) window.onerror = function(msg, url, linenumber) {
     alert("Error message: " + msg + "\nURL: " + url + "\nLine Number: " + linenumber);
@@ -20428,10 +20404,14 @@ function $78f2cb3ec8734e95$var$ready() {
 function $78f2cb3ec8734e95$var$initialize() {
     // Create own peer object with connection to shared PeerJS server$
     if ($78f2cb3ec8734e95$var$peer) $78f2cb3ec8734e95$var$peer.destroy();
-    $78f2cb3ec8734e95$var$peer = new Peer({
-        debug: 3,
+    if (typeof $78f2cb3ec8734e95$var$turn == "object") $78f2cb3ec8734e95$var$peer = new Peer({
+        debug: 0,
         referrerPolicy: "origin-when-cross-origin",
         config: $78f2cb3ec8734e95$var$turn
+    });
+    else $78f2cb3ec8734e95$var$peer = new Peer({
+        debug: 0,
+        referrerPolicy: "origin-when-cross-origin"
     });
     $78f2cb3ec8734e95$var$peer.on("open", function() {
         if ($78f2cb3ec8734e95$var$peer.id === null) $78f2cb3ec8734e95$var$peer.id = $78f2cb3ec8734e95$var$lastPeerId;
@@ -20443,7 +20423,11 @@ function $78f2cb3ec8734e95$var$initialize() {
         $78f2cb3ec8734e95$export$57fcf9ca838ce2c6 = $78f2cb3ec8734e95$var$peer.id;
     });
     $78f2cb3ec8734e95$var$peer.on("connection", function(event) {
-        console.log(event);
+        //console.log(event);
+        if ($78f2cb3ec8734e95$var$peer.connections) for(var key in $78f2cb3ec8734e95$var$peer.connections){
+            var connection = $78f2cb3ec8734e95$var$peer.connections[key][0];
+            console.log("Connection status:", connection.open);
+        }
         $78f2cb3ec8734e95$var$ready();
     });
     $78f2cb3ec8734e95$var$peer.on("disconnected", function() {
@@ -20498,8 +20482,13 @@ function $78f2cb3ec8734e95$var$join(id) {
 //create peer
 var $78f2cb3ec8734e95$var$create_peer = function create_peer() {
     (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat");
-    $78f2cb3ec8734e95$var$peer = new Peer({
-        debug: 3,
+    if (typeof $78f2cb3ec8734e95$var$turn == "object") $78f2cb3ec8734e95$var$peer = new Peer({
+        debug: 0,
+        referrerPolicy: "origin-when-cross-origin",
+        config: $78f2cb3ec8734e95$var$turn
+    });
+    else $78f2cb3ec8734e95$var$peer = new Peer({
+        debug: 0,
         referrerPolicy: "origin-when-cross-origin"
     });
     $78f2cb3ec8734e95$var$peer.on("open", function(id) {

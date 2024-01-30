@@ -28,9 +28,18 @@ Currently you can exchange text messages and pictures with each other. You can c
 - KaiOs Store(coming soon)
 - Sideloading <a href="https://www.martinkaptein.com/blog/sideloading-and-deploying-apps-to-kai-os/">step-by-step article</a> by martinkaptein
 
+### known problems
+
+In certain cases a connection between two peers cannot be established. The solution should be a separate TURN server, which can be specified when establishing the connection. The connection data to the TURN server must be saved in an .env
+
+`TURN={"iceServers":[{"urls":"stun:stun.relay.metered.ca:80"},{"urls":"turn:standard.relay.metered.ca:80","username":"","credential":""},{"urls":"turn:standard.relay.metered.ca:80?transport=tcp","username":"","credential":""},{"urls":"turn:standard.relay.metered.ca:443","username":"","credential":""},{"urls":"turns:standard.relay.metered.ca:443?transport=tcp","username":"","credential":""}]}`
+
+https://www.metered.ca/tools/openrelay/
+
 ### LICENSES
 
 - peerJS MIT License
+- mithril
 
 ## Donation
 
