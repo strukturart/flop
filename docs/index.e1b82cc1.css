@@ -482,17 +482,37 @@ article {
   padding: 10px;
 }
 
-article.me {
-  background: rgba(141, 158, 129, .286);
-}
-
 article.nickname {
   color: #00f;
 }
 
 article div.message-head {
   color: gray;
+  background: none;
+  padding: 3px;
   font-size: .7rem;
+}
+
+article div.message-main {
+  background: pink;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+  padding: 5px;
+}
+
+article.me div.message-main {
+  background: rgba(147, 223, 92, .286);
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+  padding: 5px;
+}
+
+#chat article:focus {
+  background: none;
+}
+
+#chat article:focus div.message-main {
+  background: rgba(148, 161, 138, .286);
 }
 
 article div.message-head div:nth-child(2) {

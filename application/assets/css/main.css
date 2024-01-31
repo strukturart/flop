@@ -528,10 +528,6 @@ article {
   padding: 10px;
 }
 
-article.me {
-  background: rgba(141, 158, 129, 0.288);
-}
-
 article.nickname {
   color: blue;
 }
@@ -539,6 +535,28 @@ article.nickname {
 article div.message-head {
   font-size: 0.7rem;
   color: gray;
+  background: none;
+  padding: 3px;
+}
+
+article div.message-main {
+  background: pink;
+  border-radius: 7px;
+  padding: 5px 5px 5px 5px;
+}
+
+article.me div.message-main {
+  background: rgba(147, 223, 92, 0.288);
+  border-radius: 7px;
+  padding: 5px 5px 5px 5px;
+}
+
+#chat article:focus {
+  background: none;
+}
+
+#chat article:focus div.message-main {
+  background: rgba(148, 161, 138, 0.288);
 }
 
 article div.message-head div:nth-child(2) {

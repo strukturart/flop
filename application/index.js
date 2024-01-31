@@ -6,6 +6,7 @@ import {
   pick_image,
   month,
   generateRandomString,
+  load_ads,
 } from "./assets/js/helper.js";
 import { start_scan } from "./assets/js/scan.js";
 import { stop_scan } from "./assets/js/scan.js";
@@ -28,8 +29,6 @@ let conn = null;
 let room_favorits = [];
 
 //.env turn server
-const turn = JSON.parse(process.env.TURN);
-console.log(turn);
 let debug = false;
 
 if (debug) {
@@ -40,6 +39,720 @@ if (debug) {
     return true;
   };
 }
+
+let peerConfiguration = {};
+
+let test = [
+  {
+    "STUNAddress": "iphone-stun.strato-iphone.de:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "numb.viagenie.ca:3478",
+    "ipv6Supported": true,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.12connect.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.12voip.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.1und1.de:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.3cx.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.acrobits.cz:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.actionvoip.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.advfn.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.altar.com.pl:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.antisip.com:3478",
+    "ipv6Supported": true,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.avigora.fr:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.bluesip.net:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.cablenet-as.net:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.callromania.ro:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.callwithus.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.cheapvoip.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.cloopen.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.commpeak.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.cope.es:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.counterpath.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.counterpath.net:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.dcalling.de:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.demos.ru:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.dus.net:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.easycall.pl:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.easyvoip.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.ekiga.net:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.epygi.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.etoilediese.fr:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.faktortel.com.au:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.freecall.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.freeswitch.org:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.freevoipdeal.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.gmx.de:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.gmx.net:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.halonet.pl:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.hoiio.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.hosteurope.de:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.infra.net:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.internetcalls.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.intervoip.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.ipfire.org:3478",
+    "ipv6Supported": true,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.ippi.fr:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.ipshka.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.it1.hr:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.ivao.aero:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.jumblo.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.justvoip.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.l.google.com:19302",
+    "ipv6Supported": true,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.linphone.org:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.liveo.fr:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.lowratevoip.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.lundimatin.fr:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.mit.de:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.miwifi.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.modulus.gr:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.myvoiptraffic.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.netappel.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.netgsm.com.tr:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.nfon.net:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.nonoh.net:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.nottingham.ac.uk:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.ooma.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.ozekiphone.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.pjsip.org:3478",
+    "ipv6Supported": true,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.poivy.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.powervoip.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.ppdi.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.qq.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.rackco.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.rockenstein.de:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.rolmail.net:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.rynga.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.schlund.de:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.sigmavoip.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.sip.us:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.sipdiscount.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.sipgate.net:10000",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.sipgate.net:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.siplogin.de:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.sipnet.net:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.sipnet.ru:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.sippeer.dk:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.siptraffic.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.sma.de:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.smartvoip.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.smsdiscount.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.solcon.nl:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.solnet.ch:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.sonetel.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.sonetel.net:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.sovtest.ru:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.srce.hr:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.stunprotocol.org:3478",
+    "ipv6Supported": true,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.t-online.de:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.tel.lu:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.telbo.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.tng.de:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.twt.it:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.uls.co.za:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.unseen.is:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.usfamily.net:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.viva.gr:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.vivox.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.vo.lu:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voicetrading.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voip.aebc.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voip.blackberry.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voip.eutelia.it:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voipblast.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voipbuster.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voipbusterpro.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voipcheap.co.uk:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voipcheap.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voipgain.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voipgate.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voipinfocenter.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voipplanet.nl:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voippro.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voipraider.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voipstunt.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voipwise.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voipzoom.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voys.nl:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.voztele.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.webcalldirect.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.wifirst.net:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.xtratelecom.es:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun.zadarma.com:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun1.faktortel.com.au:3478",
+    "ipv6Supported": false,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun1.l.google.com:19302",
+    "ipv6Supported": true,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun2.l.google.com:19302",
+    "ipv6Supported": true,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun3.l.google.com:19302",
+    "ipv6Supported": true,
+    "lastTest": "Thu Jul 01 2021",
+  },
+  {
+    "STUNAddress": "stun4.l.google.com:19302",
+    "ipv6Supported": true,
+    "lastTest": "Thu Jul 01 2021",
+  },
+];
+
+async function getIceServers() {
+  try {
+    const response = await fetch(
+      "https://" +
+        process.env.TURN_APP_NAME +
+        ".metered.live/api/v1/turn/credentials?apiKey=" +
+        process.env.TURN_APP_KEY
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch ice servers. Status: ${response.status}`
+      );
+    }
+
+    const iceServers = await response.json();
+    peerConfiguration.iceServers = iceServers;
+
+    test.forEach((e) => {
+      peerConfiguration.iceServers.push({ "urls": e.STUNAddress });
+    });
+
+    console.log(iceServers);
+
+    console.log(peerConfiguration);
+  } catch (error) {
+    console.error("Error fetching ice servers:", error.message);
+    // Handle the error or return it as needed
+  }
+}
+
+// Call the function
+getIceServers();
 
 //load settings
 localforage
@@ -222,45 +935,45 @@ function ready() {
     focus_last_article();
   });
   conn.on("close", function () {
-    conn = null;
+    // conn = null;
     side_toaster("connection closed", 1000);
   });
 }
 
 function initialize() {
-  // Create own peer object with connection to shared PeerJS server$
   if (peer) peer.destroy();
 
-  if (typeof turn == "object") {
+  if (typeof peerConfiguration == "object") {
+    console.log("with turn");
+
     peer = new Peer({
-      debug: 0,
+      //secure: true,
+      debug: 3,
+      config: peerConfiguration.iceServers,
       referrerPolicy: "origin-when-cross-origin",
-      config: turn,
     });
   } else {
+    console.log("without turn");
+
     peer = new Peer({
-      debug: 0,
-      referrerPolicy: "origin-when-cross-origin",
+      debug: 3,
+      referrerPolicy: "no-referrer",
     });
   }
 
   peer.on("open", function () {
     if (peer.id === null) {
       peer.id = lastPeerId;
+      console.log("id" + peer.id);
     } else {
       lastPeerId = peer.id;
     }
     chat_data.push({ content: "open", datetime: new Date() });
     current_room = peer.id;
   });
-  peer.on("connection", function (event) {
-    //console.log(event);
-    if (peer.connections) {
-      for (const key in peer.connections) {
-        const connection = peer.connections[key][0];
-        console.log("Connection status:", connection.open);
-      }
-    }
+  peer.on("connection", function (c) {
+    conn = c;
+
     ready();
   });
   peer.on("disconnected", function () {
@@ -274,65 +987,96 @@ function initialize() {
     conn = null;
   });
   peer.on("error", function (err) {
-    console.log(err);
+    side_toaster("int connection error " + err, 2000);
   });
 }
 
-function join(id) {
-  // Create connection to destination peer
-  conn = peer.connect(id, {
-    reliable: true,
-  });
+function join(id, maxRetries = 3, retryDelay = 3000) {
+  let retries = 0;
 
-  conn.on("open", function () {
-    side_toaster("Connected", 5000);
-    chat_data.push({ content: "connected", datetime: new Date() });
-  });
+  function connect() {
+    // Create connection to destination peer
+    conn = peer.connect(id, {
+      reliable: true,
+    });
 
-  conn.on("error", function (err) {
-    side_toaster("error: " + err.type, 5000);
-  });
+    conn.on("open", function () {
+      side_toaster("Connected", 5000);
+      chat_data.push({ content: "connected", datetime: new Date() });
+    });
 
-  conn.on("close", function () {
-    side_toaster("Connection is closed", 5000);
-  });
-  // Handle incoming data (messages only since this is the signal sender)
-  conn.on("data", function (data) {
-    if (data.file) {
-      chat_data.push({
-        nickname: data.nickname,
-        content: "",
-        datetime: new Date(),
-        image: data.file,
-      });
-    }
+    conn.on("error", function (err) {
+      side_toaster("Error: " + err.type, 5000);
+      console.log(err);
+      retries++;
+      if (retries < maxRetries) {
+        setTimeout(connect, retryDelay); // Retry connection after delay
+      } else {
+        side_toaster("Max retries exceeded", 5000);
+      }
+    });
 
-    if (data.text) {
-      chat_data.push({
-        nickname: data.nickname,
-        content: data.text,
-        datetime: new Date(),
-      });
-    }
+    conn.on("close", function () {
+      side_toaster("Connection is closed", 5000);
+    });
 
-    m.redraw();
-    if (activeElement.tagName != "INPUT") focus_last_article();
-  });
+    // Handle incoming data (messages only since this is the signal sender)
+    conn.on("data", function (data) {
+      if (data.file) {
+        chat_data.push({
+          nickname: data.nickname,
+          content: "",
+          datetime: new Date(),
+          image: data.file,
+        });
+      }
+
+      if (data.text) {
+        chat_data.push({
+          nickname: data.nickname,
+          content: data.text,
+          datetime: new Date(),
+        });
+      }
+
+      m.redraw();
+      if (activeElement.tagName != "INPUT") focus_last_article();
+    });
+  }
+
+  // Start initial connection attempt
+  connect();
 }
+
+//connect to peer
+let connect_to_peer = function (_id) {
+  console.log(_id);
+
+  initialize();
+
+  setTimeout(function () {
+    join(_id);
+  }, 4000);
+
+  m.route.set("/chat");
+};
 
 //create peer
 let create_peer = function () {
   m.route.set("/chat");
 
-  if (typeof turn == "object") {
+  if (typeof peerConfiguration == "object") {
+    console.log("with turn");
     peer = new Peer({
-      debug: 0,
+      debug: 3,
+      config: peerConfiguration.iceServers,
       referrerPolicy: "origin-when-cross-origin",
-      config: turn,
     });
   } else {
+    console.log("without turn");
+
     peer = new Peer({
-      debug: 0,
+      debug: 3,
       referrerPolicy: "origin-when-cross-origin",
     });
   }
@@ -358,12 +1102,24 @@ let create_peer = function () {
       value: lastPeerId,
     });
 
-    chat_data.push({
-      nickname: settings.nickname,
-      content: "room created",
-      datetime: new Date(),
-      image: qrs.toDataURL(),
-    });
+    chat_data.push(
+      {
+        nickname: settings.nickname,
+        content: "room created",
+        datetime: new Date(),
+        image: qrs.toDataURL(),
+      },
+      {
+        nickname: settings.nickname,
+        content: "test",
+        datetime: new Date(),
+      },
+      {
+        nickname: settings.nickname,
+        content: "test",
+        datetime: new Date(),
+      }
+    );
 
     bottom_bar(
       "<img src='assets/image/pencil.svg'>",
@@ -378,6 +1134,7 @@ let create_peer = function () {
     side_toaster("Connected");
     ready();
   });
+
   peer.on("disconnected", function () {
     side_toaster("Connection lost. Please reconnect", 3000);
 
@@ -392,16 +1149,9 @@ let create_peer = function () {
   });
   peer.on("error", function (err) {
     console.log(err);
-  });
-};
 
-//connect to peer
-let connect_to_peer = function (_id) {
-  m.route.set("/chat");
-  initialize();
-  setTimeout(function () {
-    join(_id);
-  }, 2000);
+    side_toaster("Connection error " + err, 3000);
+  });
 };
 
 let handleImage = function (t) {
@@ -590,6 +1340,15 @@ var settings_page = {
           },
           "save settings"
         ),
+        m("div", {
+          id: "KaiOsAds-Wrapper",
+          tabindex: 5,
+
+          class: "item",
+          oncreate: () => {
+            load_ads();
+          },
+        }),
       ]
     );
   },
@@ -821,6 +1580,7 @@ var chat = {
     return m(
       "div",
       {
+        id: "chat",
         oncreate: () => {
           bottom_bar(
             "<img src='assets/image/pencil.svg'>",
@@ -879,10 +1639,6 @@ var chat = {
             },
           },
           [
-            m("div", { class: "flex message-head" }, [
-              m("div", time_parse(item.datetime)),
-              m("div", { class: "nickname" }, nickname),
-            ]),
             m(
               "div",
               {
@@ -891,6 +1647,10 @@ var chat = {
               item.content
             ),
             m("img", { class: "message-media", src: item.image }),
+            m("div", { class: "flex message-head" }, [
+              m("div", time_parse(item.datetime)),
+              m("div", { class: "nickname" }, nickname),
+            ]),
           ]
         );
       })

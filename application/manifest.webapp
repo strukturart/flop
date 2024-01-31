@@ -1,5 +1,5 @@
 {
-	"version": "0.0.2",
+	"version": "0.0.8",
 	"name": "mimamo",
 	"id":"mimamo",
 	"description": "mimamo",
@@ -15,7 +15,7 @@
 
 
 
-	"userAgentInfo": "watermelons / 1.9.755  written by strukturart@gmail.com",
+	"userAgentInfo": "mimamo / 1.9.755  written by strukturart@gmail.com",
 
 	"icons": {
 		"56": "/assets/icons/icon-56-56.svg",
