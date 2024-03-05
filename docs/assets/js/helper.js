@@ -23,13 +23,13 @@ export let load_ads = function () {
   js.onload = function () {
     getKaiAd({
       publisher: "4408b6fa-4e1d-438f-af4d-f3be2fa97208",
-      app: "mimamo",
-      slot: "mimamo",
+      app: "flop",
+      slot: "flop",
       test: 0,
       timeout: 10000,
       h: 120,
       w: 200,
-      container: document.getElementById("KaiOsAds-Wrapper"),
+      container: document.getElementById("KaiOSads-Wrapper"),
       onerror: (err) => console.error("Error:", err),
       onready: (ad) => {
         // user clicked the ad
@@ -44,7 +44,7 @@ export let load_ads = function () {
         // Ad is ready to be displayed
         // calling 'display' will display the ad
         ad.call("display", {
-          navClass: "item",
+          navClass: "iitem",
           tabIndex: 0,
           display: "block",
         });

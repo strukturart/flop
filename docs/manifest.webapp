@@ -1,8 +1,8 @@
 {
-	"version": "0.0.8",
-	"name": "mimamo",
-	"id":"mimamo",
-	"description": "mimamo",
+	"version": "0.0.9",
+	"name": "flop",
+	"id":"flop",
+	"description": "flop",
 	"launch_path": "/index.html",
 	"categories": ["social"],
 	"subtitle": "chat app",
@@ -15,24 +15,24 @@
 
 
 
-	"userAgentInfo": "mimamo / 1.9.755  written by strukturart@gmail.com",
+	"userAgentInfo": "flop / 1.9.755  written by strukturart@gmail.com",
 
 	"icons": {
-		"56": "/assets/icons/icon-56-56.svg",
-		"112": "/assets/icons/icon-112-112.svg"
+		"56": "/assets/icons/icon-56-56.png",
+		"112": "/assets/icons/icon-112-112.png"
 	},
 	"developer": {
 		"name": "strukturart",
-		"url": "https://github.com/strukturart/mimamo"
+		"url": "https://github.com/strukturart/flop"
 	},
 	"dependencies": {
 		"ads-sdk": "1.5.0"
 	},
 	"locales": {
 		"en-US": {
-			"name": "mimamo",
-			"subtitle": "mimamo",
-			"description": "mimamo"
+			"name": "flop",
+			"subtitle": "flop",
+			"description": "flop"
 		}
 	},
 	"default_locale": "en-US",
@@ -47,6 +47,27 @@
 
 
 	],
+
+
+	"deeplinks": {
+	"regex": "^(app://flop.app)",
+	"action": "open-deeplink"
+	},
+	"activities": {
+	"open-deeplink": {
+		"href": "./index.html",
+		"disposition": "window",
+		"filters": {
+			"type": "url",
+			"url": {
+				"required": true,
+				"pattern": "(app|rtsp|data):.{1,16384}"
+			}
+		},
+		"returnValue": true
+	}
+	},
+
 
 
  "serviceworker": {

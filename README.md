@@ -1,6 +1,6 @@
 <img src="/images/logo.svg" width="228"/>
 
-# watermelon
+# flop
 
 ![badge-release](https://img.shields.io/github/v/release/strukturart/fwatermelon?include_prereleases&style=plastic)
 [![badge-bhackers](https://img.shields.io/badge/bHackers-bHackerStore-orange)](https://store.bananahackers.net/#watermelon)
@@ -20,7 +20,6 @@ Currently you can exchange text messages and pictures with each other. You can c
 ![image-1](/images/image-1.png)
 ![image-2](/images/image-2.png)
 ![image-2](/images/image-3.png)
-![image-4](/images/image-4.png)
 
 ## How to install
 
