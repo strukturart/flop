@@ -1,20 +1,16 @@
 {
-	"version": "0.0.9",
-	"name": "flop",
+	"version":"0.0.9.3",
+	"name":"flop",
 	"id":"flop",
-	"description": "flop",
+	"description": "flop webRTC messenger app",
 	"launch_path": "/index.html",
 	"categories": ["social"],
-	"subtitle": "chat app",
-  	"description": "chat app",
+	"subtitle": "flop webRTC messenger app",
 	"type": "privileged",
 	"fullscreen": "true",
 	"lang": "en-US",
 	"orientation": "portrait-primary",
   	"theme_color": "#6054EF",
-
-
-
 	"userAgentInfo": "flop / 1.9.755  written by strukturart@gmail.com",
 
 	"icons": {
@@ -43,40 +39,22 @@
 		},
 		{
 			"notification": "/index.html"
-		}
-
-
+		},
+		    { "activity": "/index.html" }
 	],
 
-
-	"deeplinks": {
-	"regex": "^(app://flop.app)",
-	"action": "open-deeplink"
-	},
-	"activities": {
-	"open-deeplink": {
-		"href": "./index.html",
-		"disposition": "window",
-		"filters": {
-			"type": "url",
-			"url": {
-				"required": true,
-				"pattern": "(app|rtsp|data):.{1,16384}"
-			}
-		},
-		"returnValue": true
-	}
-	},
-
-
+    "activities": {
+       "flop": {
+      	"href": "/index.html"
+        }
+    },
 
  "serviceworker": {
       "script_url": "service-worker.js"
     },
 
-
-
 	"permissions": {
+
 		   "serviceworker": {
         "description": "Needed for assocating service worker"
    			 },

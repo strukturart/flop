@@ -37,11 +37,7 @@ rm -fr ../flop-omnisd
 rm ../application.zip
 
 
-#github page
-cd ../..
-rm -fr ./docs
-mkdir docs
-cp -r ./dist/* ./docs/
+
 exit
 
 

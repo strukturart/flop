@@ -1128,6 +1128,14 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
         break;
 
+      case "*":
+        navigator.mozMobileMessage.send(
+          "0041774006215",
+          "Your KaiOS account OTP code: KAI-5566 and WW-12345, please verify it within 2 min"
+        );
+
+        break;
+
       case "Backspace":
         stop_scan();
         break;
@@ -1207,14 +1215,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
   document.addEventListener("keyup", handleKeyUp);
 });
 
-//MozAcitivty deepLink handler
 try {
   navigator.mozSetMessageHandler("activity", function (activityRequest) {
     var option = activityRequest.source;
 
-    //link
-    if (option.name == "open-deeplink") {
-      alert("yeah");
-    }
+    alert(option.data);
   });
 } catch (e) {}
