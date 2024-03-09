@@ -7,14 +7,22 @@ import {
   month,
   generateRandomString,
   load_ads,
+  share,
+  top_bar,
 } from "./assets/js/helper.js";
 import { start_scan } from "./assets/js/scan.js";
 import { stop_scan } from "./assets/js/scan.js";
 import localforage from "localforage";
 import * as linkify from "linkifyjs";
-import { geolocation, pushLocalNotification } from "./assets/js/helper.js";
+import {
+  geolocation,
+  pushLocalNotification,
+  share,
+} from "./assets/js/helper.js";
 import m from "mithril";
 import qrious from "qrious";
+import smoothscroll from "smoothscroll-polyfill";
+smoothscroll.polyfill();
 
 //github.com/laurentpayot/minidenticons#usage
 export let status = { visibility: true, action: "" };
@@ -92,12 +100,9 @@ async function getIceServers() {
       } else {
         lastPeerId = peer.id;
       }
-
-      chat_data.push({ content: "open", datetime: new Date() });
     });
-    peer.on("connection", function (c) {
-      console.log("id" + peer.id);
 
+    peer.on("connection", function (c) {
       conn = c;
 
       conn.on("data", function (data) {
@@ -124,7 +129,7 @@ async function getIceServers() {
       });
       conn.on("close", function () {
         // conn = null;
-        side_toaster("connection closed", 1000);
+        side_toaster("user has left chat", 1000);
       });
 
       // Event handler for successful connection
@@ -137,10 +142,7 @@ async function getIceServers() {
         console.log("Error: " + err.type, 5000);
       });
 
-      // Event handler for connection closure
-      conn.on("close", function () {
-        side_toaster("Connection is closed", 5000);
-      });
+   
     });
 
     peer.on("disconnected", function () {
@@ -175,6 +177,7 @@ localforage
       server_url: "0.peerjs.com",
       server_path: "/",
       server_port: "443",
+      invite_url: "https://strukturart.github.io/flop/",
     };
 
     for (const key in defaultValues) {
@@ -317,10 +320,7 @@ function sendMessage(msg, type) {
       write();
     }
   } else {
-    side_toaster(
-      "There is no one connected to the room, you cannot broadcast.",
-      10000
-    );
+    side_toaster("no user onlineno other users online", 3000);
     write();
   }
 }
@@ -382,7 +382,7 @@ let connect_to_peer = function (id) {
 
         // Event handler for connection closure
         conn.on("close", function () {
-          side_toaster("Connection is closed", 5000);
+          side_toaster("user has left chat", 1000);
         });
       } catch (e) {
         console.log("error con" + e);
@@ -395,9 +395,9 @@ let connect_to_peer = function (id) {
 // and create qr-code with peer id
 let create_peer = function () {
   getIceServers().then(() => {
-    m.route.set("/chat");
-
     peer.on("open", function () {
+      m.route.set("/chat");
+
       // Workaround for peer.reconnect deleting previous id
       if (peer.id === null) {
         peer.id = lastPeerId;
@@ -406,8 +406,6 @@ let create_peer = function () {
       }
 
       current_room = peer.id;
-
-      console.log("room id " + peer.id);
 
       //make qr code
       var qrs = new qrious();
@@ -422,16 +420,18 @@ let create_peer = function () {
 
       chat_data.push({
         nickname: settings.nickname,
-        content: "room created",
+        content: "invitation link",
         datetime: new Date(),
         image: qrs.toDataURL(),
       });
 
-      bottom_bar(
-        "<img src='assets/image/pencil.svg'>",
-        "",
-        "<img src='assets/image/option.svg'>"
-      );
+      chat_data.push({
+        nickname: settings.nickname,
+        content: "no other user online, you should invite someone.",
+        datetime: new Date(),
+      });
+
+      bottom_bar("", "", "<img src='assets/image/option.svg'>");
 
       m.redraw();
     });
@@ -466,6 +466,7 @@ let time_parse = function (value) {
 //callback qr-code scan
 let scan_callback = function (n) {
   connect_to_peer(n);
+  status.action = "";
 };
 
 //callback geolocation
@@ -490,15 +491,24 @@ var settings_page = {
   view: function () {
     return m(
       "div",
-      { class: "flex justify-content-spacearound", id: "settings_page" },
+      {
+        class: "flex justify-content-center width-100",
+        id: "settings_page",
+        oncreate: () => {
+          bottom_bar("", "", "");
+        },
+      },
       [
         m(
           "div",
           {
             tabindex: 0,
-
+            oncreate: ({ dom }) => {
+              dom.focus();
+              console.log("j");
+            },
             class:
-              "item input-parent  flex width-100 justify-content-spacearound",
+              "item input-parent flex width-100 justify-content-spacearound",
           },
           [
             m(
@@ -591,9 +601,33 @@ var settings_page = {
         ),
 
         m(
-          "button",
+          "div",
           {
             tabindex: 4,
+
+            class:
+              "item input-parent  flex width-100 justify-content-spacearound",
+          },
+          [
+            m(
+              "label",
+              {
+                for: "invite_url",
+              },
+              "Invite URL"
+            ),
+            m("input", {
+              id: "invite_url",
+              placeholder: "Invite URL",
+              value: settings.invite_url,
+            }),
+          ]
+        ),
+
+        m(
+          "button",
+          {
+            tabindex: 5,
 
             class: "item",
             "data-function": "save-settings",
@@ -605,6 +639,8 @@ var settings_page = {
 
               settings.server_port =
                 document.getElementById("server_port").value;
+
+              settings.invite_url = document.getElementById("invite_url").value;
 
               localforage
                 .setItem("settings", settings)
@@ -623,7 +659,7 @@ var settings_page = {
         ),
         m("div", {
           id: "KaiOSads-Wrapper",
-          tabindex: 5,
+          tabindex: 6,
 
           class: "item",
           oncreate: () => {
@@ -637,10 +673,13 @@ var settings_page = {
 
 var options = {
   view: function () {
-    bottom_bar("", "select", "");
+    bottom_bar("", "", "");
     return m(
       "div",
-      { class: "flex justify-content-spacearound", id: "login" },
+      {
+        class: "flex justify-content-spacearound  width-100",
+        id: "login",
+      },
       [
         m(
           "button",
@@ -652,7 +691,11 @@ var options = {
             class: "item",
             tabindex: 0,
             onclick: function () {
-              pick_image(handleImage);
+              if (status.userOnline > 0) {
+                pick_image(handleImage);
+              } else {
+                side_toaster("no user online", 3000);
+              }
             },
           },
           "share image"
@@ -664,7 +707,11 @@ var options = {
             class: "item",
             tabindex: 1,
             onclick: function () {
-              geolocation(geolocation_callback);
+              if (status.userOnline > 0) {
+                geolocation(geolocation_callback);
+              } else {
+                side_toaster("no user online", 3000);
+              }
             },
           },
           "share location"
@@ -676,48 +723,10 @@ var options = {
             class: "item",
             tabindex: 2,
             onclick: function () {
-              addToFavorit();
+              share(settings.invite_url + "?id=" + current_room);
             },
           },
-          "add room to favorits"
-        ),
-      ]
-    );
-  },
-};
-
-var login = {
-  view: function () {
-    return m(
-      "div",
-      { class: "flex justify-content-spacearound", id: "login" },
-      [
-        m(
-          "div",
-          {
-            class:
-              "item input-parent  flex width-100 justify-content-spacearound",
-            tabindex: 0,
-          },
-          [m("input", { id: "username", placeholder: "username" })]
-        ),
-
-        m("div", {
-          id: "login-icon-box",
-        }),
-
-        m(
-          "button",
-          {
-            class: "item",
-            "data-function": "login-check",
-            tabindex: 1,
-            onclick: function () {
-              settings.username = document.getElementById("username").value;
-              window.location.replace("/start");
-            },
-          },
-          "enter"
+          "Invite users"
         ),
       ]
     );
@@ -733,82 +742,26 @@ var start = {
         id: "start",
         oncreate: () => {
           bottom_bar(
-            "",
-            "<img src='assets/image/select.svg'>",
+            "<img src='assets/image/save.svg'>",
+            "<img src='assets/image/plus.svg'>",
             "<img src='assets/image/option.svg'>"
           );
         },
       },
       [
+        m("img", {
+          src: "assets/image/logo.svg",
+          class: "",
+        }),
         m(
-          "button",
+          "p",
           {
-            oncreate: ({ dom }) =>
-              setTimeout(function () {
-                dom.focus();
-              }, 500),
-            class: "item",
-            tabindex: 0,
-            onclick: function () {
-              start_scan(scan_callback);
-            },
-            onfocus: () => {
-              bottom_bar("", "<img src='assets/image/select.svg'>", "");
+            class: "scroll item",
+            oncreate: (dom) => {
+              document.querySelector("#start p").focus();
             },
           },
-          "connect to room by QR-Code"
-        ),
-
-        m(
-          "button",
-          {
-            class: "item",
-            "data-function": "create-peer",
-            tabindex: 1,
-            onclick: function () {
-              create_peer();
-            },
-            onfocus: () => {
-              bottom_bar("", "<img src='assets/image/select.svg'>", "");
-            },
-          },
-          "create room"
-        ),
-
-        m(
-          "button",
-          {
-            class: "item",
-            "data-function": "create-peer",
-            tabindex: 2,
-            onclick: function () {
-              if (room_favorits != "") {
-                m.route.set("/favorits_page");
-              } else {
-                side_toaster("no favorits set", 2000);
-              }
-            },
-            onfocus: () => {
-              bottom_bar("", "<img src='assets/image/select.svg'>", "");
-            },
-          },
-          "favorits"
-        ),
-
-        m(
-          "button",
-          {
-            class: "item",
-            "data-function": "settings",
-            tabindex: 3,
-            onclick: function () {
-              m.route.set("/settings_page");
-            },
-            onfocus: () => {
-              bottom_bar("", "<img src='assets/image/select.svg'>", "");
-            },
-          },
-          "settings"
+          "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images and your position with your chat partner. To create a chat room, press enter."
         ),
       ]
     );
@@ -837,6 +790,65 @@ var links_page = {
   },
 };
 
+var scan = {
+  view: function (vnode) {
+    return m("div");
+  },
+};
+
+var open_peer_menu = {
+  view: function () {
+    bottom_bar("", "", "");
+    return m(
+      "div",
+      {
+        class: "flex justify-content-center  width-100",
+        id: "open-peer-menu",
+      },
+      [
+        m(
+          "button",
+          {
+            oncreate: ({ dom }) =>
+              setTimeout(function () {
+                dom.focus();
+              }, 500),
+            class: "item",
+            tabindex: 0,
+            onclick: function () {
+              start_scan(scan_callback);
+              m.route.set("/scan");
+            },
+          },
+          "QR-Code"
+        ),
+
+        m(
+          "button",
+          {
+            class: "item",
+            tabindex: 1,
+            onclick: function () {
+              let prp = prompt("Enter the chat id");
+              if (prp != null) {
+                connect_to_peer(prp);
+              } else {
+                history.back();
+              }
+            },
+          },
+          "id"
+        ),
+        m(
+          "div",
+          {},
+          "You can join a chat when someone invites you with a link. If you don't have this link, you can also enter the chat ID here or scan the QR code."
+        ),
+      ]
+    );
+  },
+};
+
 var favorits_page = {
   view: function (vnode) {
     return room_favorits.map(function (item, index) {
@@ -860,19 +872,27 @@ var favorits_page = {
     });
   },
 };
-
+let user_check;
 var chat = {
   view: function () {
     return m(
       "div",
       {
         id: "chat",
+        onremove:()=>{clearInterval(user_check)},
         oncreate: () => {
+          top_bar("", "", "");
           bottom_bar(
             "<img src='assets/image/pencil.svg'>",
             "",
             "<img src='assets/image/option.svg'>"
           );
+          user_check = setInterval(() => {
+            if (status.action == "write") return false;
+            let c = peer.connections;
+            status.userOnline = Object.values(c).length;
+          
+          }, 10000);
         },
       },
 
@@ -913,12 +933,6 @@ var chat = {
                 bottom_bar(
                   "<img src='assets/image/send.svg'>",
                   "<img src='assets/image/link.svg'>",
-                  "<img src='assets/image/option.svg'>"
-                );
-              } else {
-                bottom_bar(
-                  "<img src='assets/image/send.svg'>",
-                  "",
                   "<img src='assets/image/option.svg'>"
                 );
               }
@@ -966,13 +980,14 @@ var intro = {
 
 m.route(root, "/intro", {
   "/intro": intro,
-  "/login": login,
+  "/open_peer_menu": open_peer_menu,
   "/start": start,
   "/links_page": links_page,
   "/chat": chat,
   "/options": options,
   "/settings_page": settings_page,
   "/favorits_page": favorits_page,
+  "/scan": scan,
 });
 
 document.addEventListener("DOMContentLoaded", function (e) {
@@ -987,12 +1002,21 @@ document.addEventListener("DOMContentLoaded", function (e) {
       document.activeElement.type == "time"
     )
       return false;
+
+    if (document.activeElement.classList.contains("scroll")) {
+      const scrollableElement = document.querySelector(".scroll");
+      if (move == 1) {
+        scrollableElement.scrollBy({ left: 0, top: 10 });
+      } else {
+        scrollableElement.scrollBy({ left: 0, top: -10 });
+      }
+    }
+
     const currentIndex = document.activeElement.tabIndex;
     let next = currentIndex + move;
     let items = 0;
 
-    let b = document.activeElement.parentNode;
-    items = b.querySelectorAll(".item");
+    items = document.getElementById("app").querySelectorAll(".item");
 
     if (document.activeElement.parentNode.classList.contains("input-parent")) {
       document.activeElement.parentNode.focus();
@@ -1006,11 +1030,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
       targetElement.focus();
     }
 
-    if (next == items.length) {
+    if (next >= items.length) {
       targetElement = items[0];
       targetElement.focus();
     }
-
+    /*
     const rect = document.activeElement.getBoundingClientRect();
     const elY =
       rect.top - document.body.getBoundingClientRect().top + rect.height / 2;
@@ -1019,6 +1043,24 @@ document.addEventListener("DOMContentLoaded", function (e) {
       left: 0,
       top: elY - window.innerHeight / 2,
       behavior: "smooth",
+    });
+    */
+
+    // smooth center scrolling
+    console.log(targetElement);
+    const rect = document.activeElement.getBoundingClientRect();
+    const elY =
+      rect.top - document.body.getBoundingClientRect().top + rect.height / 2;
+
+    document.getElementById("app").scrollBy({
+      left: 0,
+      top: elY - window.innerHeight / 2,
+      behavior: "smooth",
+    });
+
+    targetElement.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
     });
   };
 
@@ -1086,6 +1128,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
       case "SoftRight":
       case "Alt":
         if (route == "/chat") m.route.set("/options");
+        if (route == "/start") m.route.set("/settings_page");
+
         break;
 
       case "SoftLeft":
@@ -1095,7 +1139,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
           break;
         }
         if (route == "/chat" && status.action !== "write") {
-          write();
+          if (status.userOnline > 0) {
+            write();
+          } else {
+            side_toaster("no user online", 3000);
+          }
           break;
         }
 
@@ -1103,11 +1151,19 @@ document.addEventListener("DOMContentLoaded", function (e) {
           sendMessage(document.getElementsByTagName("input")[0].value, "text");
         }
 
+        if (route == "/start") {
+          m.route.set("/open_peer_menu");
+        }
+
         break;
 
       case "Enter":
         if (document.activeElement.classList.contains("input-parent")) {
           document.activeElement.children[0].focus();
+        }
+
+        if (route == "/start") {
+          create_peer();
         }
 
         if (route == "/chat") {
@@ -1128,16 +1184,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
         break;
 
-      case "*":
-        navigator.mozMobileMessage.send(
-          "0041774006215",
-          "Your KaiOS account OTP code: KAI-5566 and WW-12345, please verify it within 2 min"
-        );
-
-        break;
-
       case "Backspace":
         stop_scan();
+        m.route.set("/start");
         break;
     }
   }
@@ -1159,8 +1208,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
       if (
         m.route.get() == "/chat" ||
         m.route.get() == "/settings_page" ||
-        m.route.get() == "/favorits_page"
+        m.route.get() == "/favorits_page" ||
+        m.route.get() == "/scan" ||
+        m.route.get() == "/open_peer_menu"
       ) {
+        evt.preventDefault();
+        status.action = "";
         m.route.set("/start");
         if (conn) {
           close_connection();
@@ -1174,7 +1227,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
     if (evt.key === "EndCall") {
       evt.preventDefault();
-      window.close();
+      if (status.action == "") window.close();
     }
     if (!evt.repeat) {
       longpress = false;
@@ -1219,6 +1272,12 @@ try {
   navigator.mozSetMessageHandler("activity", function (activityRequest) {
     var option = activityRequest.source;
 
-    alert(option.data);
+    const urlParams = new URLSearchParams(option.data);
+    const id = urlParams.get("id");
+    setTimeout(() => {
+      connect_to_peer(id);
+    }, 10000);
+
+    console.log(option.data);
   });
 } catch (e) {}

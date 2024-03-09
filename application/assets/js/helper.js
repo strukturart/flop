@@ -28,7 +28,7 @@ export let load_ads = function () {
       test: 0,
       timeout: 10000,
       h: 120,
-      w: 200,
+      w: 240,
       container: document.getElementById("KaiOSads-Wrapper"),
       onerror: (err) => console.error("Error:", err),
       onready: (ad) => {
@@ -44,8 +44,8 @@ export let load_ads = function () {
         // Ad is ready to be displayed
         // calling 'display' will display the ad
         ad.call("display", {
-          navClass: "iitem",
-          tabIndex: 0,
+          navClass: "item",
+          tabindex: 7,
           display: "block",
         });
       },
@@ -146,7 +146,7 @@ function getRandomInteger(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function share(url) {
+export function share(url) {
   var activity = new MozActivity({
     name: "share",
     data: {
@@ -398,9 +398,9 @@ let toast_qq = function (text, time) {
 
 //bottom bar
 export let bottom_bar = function (left, center, right) {
-  document.querySelector("div#bottom-bar div#button-left").innerHTML = left;
-  document.querySelector("div#bottom-bar div#button-center").innerHTML = center;
-  document.querySelector("div#bottom-bar div#button-right").innerHTML = right;
+  document.querySelector("div#bottom-bar div.button-left").innerHTML = left;
+  document.querySelector("div#bottom-bar div.button-center").innerHTML = center;
+  document.querySelector("div#bottom-bar div.button-right").innerHTML = right;
 
   if (left == "" && center == "" && right == "") {
     document.querySelector("div#bottom-bar").style.display = "none";
@@ -411,19 +411,15 @@ export let bottom_bar = function (left, center, right) {
 
 //top bar
 export let top_bar = function (left, center, right) {
-  document.querySelector("div#top-bar div.button-left").innerHTML = left;
-  document.querySelector("div#top-bar div.button-center").textContent = center;
-  document.querySelector("div#top-bar div.button-right").textContent = right;
+  document.querySelector("div#top-bar div.top-left").innerHTML = left;
+  document.querySelector("div#top-bar div.top-center").innerHTML = center;
+  document.querySelector("div#top-bar div.top-right").innerHTML = right;
 
   if (left == "" && center == "" && right == "") {
     document.querySelector("div#top-bar").style.display = "none";
   } else {
     document.querySelector("div#top-bar").style.display = "block";
   }
-};
-
-let add_script = function (script) {
-  document.body.appendChild(document.createElement("script")).src = script;
 };
 
 let lock;

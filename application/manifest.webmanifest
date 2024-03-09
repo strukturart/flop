@@ -1,0 +1,80 @@
+{
+  "name": "flop",
+  "id": "flop",
+  "description": "flop <-> p2p messenger app",
+  "lang": "en-US",
+  "start_url": "/index.html",
+  "short_name": "flop",
+  "categories": ["utilities"],
+  "theme_color": "#ffffff",
+  "orientation": "natural",
+  "userAgentInfo": "flop written by strukturart@gmail.com",
+
+  "icons": [
+    {
+      "src": "/assets/icons/icon-56-56.png",
+      "type": "image/png",
+      "sizes": "56x56"
+    },
+    {
+      "src": "/assets/icons/icon-112-112.png",
+      "type": "image/png",
+      "sizes": "112x112"
+    }
+  ],
+
+  "b2g_features": {
+    "version": "0.2",
+    "id": "flop",
+    "subtitle": "flop <-> p2p messenger app",
+    "core": true,
+    "type": "privileged",
+    "display": "fullscreen",
+
+    "developer": {
+      "name": "strukturart",
+      "url": "https://github.com/strukturart/greg"
+    },
+
+    "dependencies": {
+      "ads-sdk": "1.5.8"
+    },
+    "messages": [{ "serviceworker-notification": "index.html" }, "alarm"],
+
+    "activities": {
+      "greg-oauth": {}
+    },
+
+    "serviceworker": {
+      "script_url": "sw.js"
+    },
+
+    "permissions": {
+      "desktop-notification": {
+        "description": "Needed to fire system notifications"
+      },
+      "alarms": {
+        "description": "Required to schedule alarms"
+      },
+      "mobiledata": {},
+      "wifidata": {},
+      "calllog": {},
+      "device-storage:sdcard": {
+        "description": "Read/Write from/to sd-card",
+        "access": "readwrite"
+      },
+      "video-capture": {
+        "description": "Reading Codes using the Camera"
+      },
+      "spatialnavigation-app-manage": {
+        "navigator.spatialNavigationEnabled": false
+      },
+      "systemXHR": {
+        "description": "Required to load remote content"
+      },
+      "feature-detection": {
+        "description": "query which keys are available"
+      }
+    }
+  }
+}

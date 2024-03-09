@@ -11,8 +11,8 @@
 }
 
 @font-face {
-  font-family: "Lato-Regular";
-  src: url("../fonts/Lato-Regular.ttf");
+  font-family: "Roboto-Medium";
+  src: url("../fonts/Roboto-Medium.ttf");
 }
 
 *,
@@ -27,12 +27,15 @@
   overflow-wrap: break-word;
   word-wrap: break-word;
   scroll-behavior: smooth;
-
   /* Adds a hyphen where the word breaks */
   -webkit-hyphens: auto;
   -ms-hyphens: auto;
   -moz-hyphens: auto;
   hyphens: auto;
+}
+
+::-webkit-scrollbar {
+  display: none !important;
 }
 
 :focus {
@@ -49,8 +52,8 @@
 }
 html,
 body {
-  font-family: "Lato-Regular";
-  font-weight: 100;
+  font-family: "Roboto" !important;
+  font-weight: 400;
   position: relative;
   margin: 0px;
   padding: 0px;
@@ -65,13 +68,12 @@ body {
   background: white;
 }
 
-div#app {
-  padding: 5px 5px 50px 5px;
-  max-height: 88vh;
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-  top: 0px;
+#app {
+  max-width: 100vw;
+}
+
+#wrapper {
+  padding: 0px;
 }
 
 h1 {
@@ -108,14 +110,16 @@ img[src=" "] {
 button {
   font-size: 1rem;
   background: rgb(255, 255, 255);
-  padding: 7px;
-  width: 90vw;
-  margin: 0 0 15px 0vw;
+  width: 85vw;
+  padding: 5px;
+  margin: 0 0 15px 0px;
   color: black;
-  border-radius: 10px;
-  border: 3px solid gray;
+  border-radius: 1px;
+  border: 2px solid gray;
+  font-weight: 700;
+  min-height: 40px;
+  font-family: "Roboto" !important;
 }
-
 button:focus {
   background: orange;
   border: 0px solid gray;
@@ -151,10 +155,12 @@ textarea {
 }
 
 input {
-  width: 95%;
+  width: 90%;
   height: 30px;
   padding: 3px;
-  border: 1px solid silver;
+  border: 2px solid silver;
+  border-radius: 10px;
+  margin: 0 0 0 10px;
 }
 
 label {
@@ -201,7 +207,7 @@ div#intro img {
 }
 
 div#login {
-  padding: 30px 0 0 0;
+  padding: 10px;
 }
 
 @keyframes intro_img {
@@ -242,28 +248,11 @@ div#login {
 }
 
 #KaiOSAds-Wrapper {
-  padding: 10px;
+  padding: 0px;
 }
 
 #KaiOSAds-Wrapper iframe {
-  width: 220px;
-}
-
-ul#keys li span {
-  display: inline-block;
-
-  min-width: 60px;
-  width: 60px;
-  font-weight: bold;
-}
-
-ul#keys li {
-  margin: 0 0 10px 0;
-  padding: 5px 0 0 10px;
-}
-
-ul#keys {
-  margin: 0 0 20px 0;
+  width: 240px;
 }
 
 /*///////////////////////////
@@ -370,7 +359,7 @@ div#bottom-bar div {
   text-align: center;
 }
 
-div#bottom-bar div#button-center {
+div#bottom-bar div.button-center {
   background: none;
   color: white;
   padding: 2px;
@@ -378,15 +367,14 @@ div#bottom-bar div#button-center {
   text-align: center;
 }
 
-div#bottom-bar div#button-center img {
+div#bottom-bar div.button-center img {
   position: fixed;
   bottom: 5px;
-
   left: 46%;
   width: 30px;
 }
 
-div#bottom-bar div#button-left {
+div#bottom-bar div.button-left {
   background: none;
   color: white;
   padding: 2px;
@@ -395,21 +383,21 @@ div#bottom-bar div#button-left {
   width: 32%;
 }
 
-div#bottom-bar div#button-left img {
+div#bottom-bar div.button-left img {
   position: fixed;
   bottom: 5px;
   left: 10px;
   width: 30px;
 }
 
-div#bottom-bar div#button-right img {
+div#bottom-bar div.button-right img {
   position: fixed;
   bottom: 5px;
   right: 10px;
   width: 30px;
 }
 
-div#bottom-bar div#button-right {
+div#bottom-bar div.button-right {
   background: none;
   color: white;
   padding: 2px;
@@ -426,9 +414,8 @@ div#top-bar {
   left: 0px;
   height: 18px;
   z-index: 4;
-  background: black;
+  background: none;
   min-width: 100vw;
-  display: none;
 }
 
 div#top-bar img {
@@ -442,31 +429,31 @@ div#top-bar div#inner {
 }
 
 div#top-bar div {
-  background: black;
-  color: white;
+  background: none;
+  color: rgb(14, 13, 13);
   padding: 2px;
 }
 
-div#top-bar div#button-center {
-  background: black;
-  color: white;
+div#top-bar div.top-center {
+  background: none;
+  color: black;
   padding: 2px;
   width: 30%;
   text-align: center;
 }
 
-div#top-bar div#button-left {
-  background: black;
-  color: white;
+div#top-bar div.top-left {
+  background: none;
+  color: black;
   padding: 2px;
   width: 20px;
   text-align: left;
   width: 30%;
 }
 
-div#top-bar div#button-right {
-  background: black;
-  color: white;
+div#top-bar div.top-right {
+  background: none;
+  color: black;
   padding: 2px;
   width: 30%;
   text-align: right;
@@ -493,38 +480,17 @@ article div.user-date span {
 /*
  SETTINGS
  */
-
+#settings_page {
+  padding: 0px;
+}
 div#top {
   position: fixed;
   top: 0;
 }
 
-div#settings {
-  display: none;
-  height: 92vh;
-  width: 100%;
-  padding: 0px 0 50px 0;
-  overflow: hidden;
-  top: 0px;
-  z-index: 3;
-  background: rgb(231, 231, 231);
-}
-
-div#settings div#text {
-  margin: 0 0 20px 0;
-}
-div#settings h2 {
-  padding: 0 10px 0 10px;
-}
-
-div#settings label {
-  min-width: 80%;
-  height: 30px;
-  margin: 5px 5px 0 0;
-}
-
 article {
   padding: 10px;
+  max-width: 90vw;
 }
 
 article.nickname {
@@ -579,4 +545,30 @@ div#message-input input {
   border: 2px solid silver;
   border-radius: 10px;
   width: 100%;
+}
+
+#start {
+  max-width: 700px;
+  padding: 10px;
+}
+
+#start p {
+  height: 70vh;
+  overflow-y: auto;
+  max-width: 700px;
+}
+
+#start p:focus {
+  background: none;
+}
+
+#start img {
+  width: 40%;
+  display: block;
+  margin: 10px 0 0px 0;
+  padding: 0 0 20px 0;
+}
+
+#open-peer-menu {
+  padding: 10px;
 }
