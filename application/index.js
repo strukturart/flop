@@ -7,12 +7,17 @@ import {
   month,
   generateRandomString,
   load_ads,
+  share,
 } from "./assets/js/helper.js";
 import { start_scan } from "./assets/js/scan.js";
 import { stop_scan } from "./assets/js/scan.js";
 import localforage from "localforage";
 import * as linkify from "linkifyjs";
-import { geolocation, pushLocalNotification } from "./assets/js/helper.js";
+import {
+  geolocation,
+  pushLocalNotification,
+  share,
+} from "./assets/js/helper.js";
 import m from "mithril";
 import qrious from "qrious";
 
@@ -92,8 +97,6 @@ async function getIceServers() {
       } else {
         lastPeerId = peer.id;
       }
-
-      chat_data.push({ content: "open", datetime: new Date() });
     });
     peer.on("connection", function (c) {
       console.log("id" + peer.id);
@@ -175,6 +178,7 @@ localforage
       server_url: "0.peerjs.com",
       server_path: "/",
       server_port: "443",
+      invite_url: "https://https://strukturart.github.io/flop/",
     };
 
     for (const key in defaultValues) {
@@ -407,8 +411,6 @@ let create_peer = function () {
 
       current_room = peer.id;
 
-      console.log("room id " + peer.id);
-
       //make qr code
       var qrs = new qrious();
       qrs.set({
@@ -490,7 +492,13 @@ var settings_page = {
   view: function () {
     return m(
       "div",
-      { class: "flex justify-content-spacearound", id: "settings_page" },
+      {
+        class: "flex justify-content-spacearound width-100",
+        id: "settings_page",
+        oncreate: () => {
+          bottom_bar("", "", "");
+        },
+      },
       [
         m(
           "div",
@@ -591,9 +599,33 @@ var settings_page = {
         ),
 
         m(
-          "button",
+          "div",
           {
             tabindex: 4,
+
+            class:
+              "item input-parent  flex width-100 justify-content-spacearound",
+          },
+          [
+            m(
+              "label",
+              {
+                for: "invite_url",
+              },
+              "Invite URL"
+            ),
+            m("input", {
+              id: "invite_url",
+              placeholder: "Invite URL",
+              value: settings.invite_url,
+            }),
+          ]
+        ),
+
+        m(
+          "button",
+          {
+            tabindex: 5,
 
             class: "item",
             "data-function": "save-settings",
@@ -605,6 +637,8 @@ var settings_page = {
 
               settings.server_port =
                 document.getElementById("server_port").value;
+
+              settings.invite_url = document.getElementById("invite_url").value;
 
               localforage
                 .setItem("settings", settings)
@@ -623,7 +657,7 @@ var settings_page = {
         ),
         m("div", {
           id: "KaiOSads-Wrapper",
-          tabindex: 5,
+          tabindex: 6,
 
           class: "item",
           oncreate: () => {
@@ -637,10 +671,13 @@ var settings_page = {
 
 var options = {
   view: function () {
-    bottom_bar("", "select", "");
+    bottom_bar("", "", "");
     return m(
       "div",
-      { class: "flex justify-content-spacearound", id: "login" },
+      {
+        class: "flex justify-content-spacearound debug width-100",
+        id: "login",
+      },
       [
         m(
           "button",
@@ -676,10 +713,10 @@ var options = {
             class: "item",
             tabindex: 2,
             onclick: function () {
-              addToFavorit();
+              share(settings.invite_url + "?id=" + current_room);
             },
           },
-          "add room to favorits"
+          "Invite users"
         ),
       ]
     );
@@ -733,82 +770,26 @@ var start = {
         id: "start",
         oncreate: () => {
           bottom_bar(
-            "",
-            "<img src='assets/image/select.svg'>",
+            "<img src='assets/image/qr.svg'>",
+            "<img src='assets/image/plus.svg'>",
             "<img src='assets/image/option.svg'>"
           );
         },
       },
       [
+        m("img", {
+          src: "assets/image/logo.svg",
+          class: "",
+        }),
         m(
-          "button",
+          "p",
           {
-            oncreate: ({ dom }) =>
-              setTimeout(function () {
-                dom.focus();
-              }, 500),
-            class: "item",
-            tabindex: 0,
-            onclick: function () {
-              start_scan(scan_callback);
-            },
-            onfocus: () => {
-              bottom_bar("", "<img src='assets/image/select.svg'>", "");
+            class: "scroll item",
+            oncreate: (dom) => {
+              document.querySelector("#start div").focus();
             },
           },
-          "connect to room by QR-Code"
-        ),
-
-        m(
-          "button",
-          {
-            class: "item",
-            "data-function": "create-peer",
-            tabindex: 1,
-            onclick: function () {
-              create_peer();
-            },
-            onfocus: () => {
-              bottom_bar("", "<img src='assets/image/select.svg'>", "");
-            },
-          },
-          "create room"
-        ),
-
-        m(
-          "button",
-          {
-            class: "item",
-            "data-function": "create-peer",
-            tabindex: 2,
-            onclick: function () {
-              if (room_favorits != "") {
-                m.route.set("/favorits_page");
-              } else {
-                side_toaster("no favorits set", 2000);
-              }
-            },
-            onfocus: () => {
-              bottom_bar("", "<img src='assets/image/select.svg'>", "");
-            },
-          },
-          "favorits"
-        ),
-
-        m(
-          "button",
-          {
-            class: "item",
-            "data-function": "settings",
-            tabindex: 3,
-            onclick: function () {
-              m.route.set("/settings_page");
-            },
-            onfocus: () => {
-              bottom_bar("", "<img src='assets/image/select.svg'>", "");
-            },
-          },
-          "settings"
+          "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images and your position with your chat partner. To create a chat room, click on the plus sign. Once you have created a room, you can invite someone to it. With QR code characters you can join a chat room if you have the QR code."
         ),
       ]
     );
@@ -987,6 +968,16 @@ document.addEventListener("DOMContentLoaded", function (e) {
       document.activeElement.type == "time"
     )
       return false;
+
+    if (document.activeElement.classList.contains("scroll")) {
+      const scrollableElement = document.querySelector(".scroll");
+      if (move == 1) {
+        scrollableElement.scrollBy({ left: 0, top: 10 });
+      } else {
+        scrollableElement.scrollBy({ left: 0, top: -10 });
+      }
+    }
+
     const currentIndex = document.activeElement.tabIndex;
     let next = currentIndex + move;
     let items = 0;
@@ -1086,6 +1077,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
       case "SoftRight":
       case "Alt":
         if (route == "/chat") m.route.set("/options");
+        if (route == "/start") m.route.set("/settings_page");
+
         break;
 
       case "SoftLeft":
@@ -1103,11 +1096,19 @@ document.addEventListener("DOMContentLoaded", function (e) {
           sendMessage(document.getElementsByTagName("input")[0].value, "text");
         }
 
+        if (route == "/start") {
+          start_scan();
+        }
+
         break;
 
       case "Enter":
         if (document.activeElement.classList.contains("input-parent")) {
           document.activeElement.children[0].focus();
+        }
+
+        if (route == "/start") {
+          create_peer();
         }
 
         if (route == "/chat") {
@@ -1219,6 +1220,12 @@ try {
   navigator.mozSetMessageHandler("activity", function (activityRequest) {
     var option = activityRequest.source;
 
-    alert(option.data);
+    const urlParams = new URLSearchParams(option.data);
+    const id = urlParams.get("id");
+    setTimeout(() => {
+      connect_to_peer(id);
+    }, 10000);
+
+    console.log(option.data);
   });
 } catch (e) {}

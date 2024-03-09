@@ -146,7 +146,7 @@ function getRandomInteger(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function share(url) {
+export function share(url) {
   var activity = new MozActivity({
     name: "share",
     data: {

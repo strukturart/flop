@@ -1,5 +1,5 @@
 {
-	"version":"0.0.9.3",
+	"version":"0.0.9.71",
 	"name":"flop",
 	"id":"flop",
 	"description": "flop webRTC messenger app",
@@ -27,8 +27,8 @@
 	"locales": {
 		"en-US": {
 			"name": "flop",
-			"subtitle": "flop",
-			"description": "flop"
+			"subtitle": "flop webRTC messenger app",
+			"description": "flop webRTC messenger app"
 		}
 	},
 	"default_locale": "en-US",
