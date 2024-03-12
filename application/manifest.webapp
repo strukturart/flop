@@ -1,5 +1,5 @@
 {
-	"version":"0.0.9.80",
+	"version":"0.0.9.82",
 	"name":"flop",
 	"id":"flop",
 	"description": "flop <-> p2p messenger app",
@@ -34,9 +34,7 @@
 	"default_locale": "en-US",
 	"messages": [
 
-		{
-			"alarm": "/index.html"
-		},
+	
 		{
 			"notification": "/index.html"
 		},
@@ -61,9 +59,7 @@
 		"desktop-notification": {
 			"description": "Needed to fire system notifications"
 		},
-		"alarms": {
-			"description": "Required to schedule alarms"
-		},
+		
 		  "geolocation": {
       "description": "Required to show user's location on map"
     },

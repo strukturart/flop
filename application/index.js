@@ -9,25 +9,22 @@ import {
   load_ads,
   share,
   top_bar,
+  getManifest,
 } from "./assets/js/helper.js";
 import { start_scan } from "./assets/js/scan.js";
 import { stop_scan } from "./assets/js/scan.js";
 import localforage from "localforage";
 import * as linkify from "linkifyjs";
-import {
-  geolocation,
-  pushLocalNotification,
-  share,
-} from "./assets/js/helper.js";
+import { geolocation, pushLocalNotification } from "./assets/js/helper.js";
 import m from "mithril";
 import qrious from "qrious";
-import smoothscroll from "smoothscroll-polyfill";
-smoothscroll.polyfill();
 
 //github.com/laurentpayot/minidenticons#usage
 export let status = { visibility: true, action: "" };
 export let settings = {};
 export let current_room = "";
+
+const channel = new BroadcastChannel("sw-messages");
 
 let links = "";
 let chat_data = [];
@@ -51,6 +48,23 @@ if (debug) {
 let ice_servers = {
   "iceServers": [],
 };
+
+let get_manifest_callback = (e) => {
+  let version;
+  try {
+    console.log(e.manifest.version);
+    version = e.manifest.version;
+  } catch (e) {}
+  if ("b2bg" in navigator) {
+    try {
+      alert(e.b2g_features);
+      version = e.b2g_features.version;
+    } catch (e) {}
+  }
+
+  status.version = version;
+};
+getManifest(get_manifest_callback);
 
 async function getIceServers() {
   try {
@@ -141,8 +155,6 @@ async function getIceServers() {
       conn.on("error", function (err) {
         console.log("Error: " + err.type, 5000);
       });
-
-   
     });
 
     peer.on("disconnected", function () {
@@ -332,7 +344,6 @@ let close_connection = function () {
 //connect to peer
 let connect_to_peer = function (id) {
   current_room = id;
-  console.log(id);
   getIceServers().then(() => {
     m.route.set("/chat");
     setTimeout(() => {
@@ -434,6 +445,7 @@ let create_peer = function () {
       bottom_bar("", "", "<img src='assets/image/option.svg'>");
 
       m.redraw();
+      focus_last_article();
     });
   });
 };
@@ -879,7 +891,9 @@ var chat = {
       "div",
       {
         id: "chat",
-        onremove:()=>{clearInterval(user_check)},
+        onremove: () => {
+          clearInterval(user_check);
+        },
         oncreate: () => {
           top_bar("", "", "");
           bottom_bar(
@@ -891,7 +905,6 @@ var chat = {
             if (status.action == "write") return false;
             let c = peer.connections;
             status.userOnline = Object.values(c).length;
-          
           }, 10000);
         },
       },
@@ -970,10 +983,13 @@ var intro = {
         },
       }),
 
-      m("div", {
-        class: "width-100",
-        id: "version",
-      }),
+      m(
+        "kbd",
+        {
+          id: "version",
+        },
+        status.version
+      ),
     ]);
   },
 };
@@ -1034,34 +1050,41 @@ document.addEventListener("DOMContentLoaded", function (e) {
       targetElement = items[0];
       targetElement.focus();
     }
-    /*
-    const rect = document.activeElement.getBoundingClientRect();
-    const elY =
-      rect.top - document.body.getBoundingClientRect().top + rect.height / 2;
-
-    document.activeElement.parentElement.parentElement.scrollBy({
-      left: 0,
-      top: elY - window.innerHeight / 2,
-      behavior: "smooth",
-    });
-    */
 
     // smooth center scrolling
     console.log(targetElement);
+
     const rect = document.activeElement.getBoundingClientRect();
     const elY =
       rect.top - document.body.getBoundingClientRect().top + rect.height / 2;
 
-    document.getElementById("app").scrollBy({
-      left: 0,
-      top: elY - window.innerHeight / 2,
-      behavior: "smooth",
-    });
+    let scrollContainer = document.activeElement.parentNode;
 
-    targetElement.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-    });
+    // Find the first scrollable parent
+    while (scrollContainer) {
+      if (
+        scrollContainer.scrollHeight > scrollContainer.clientHeight ||
+        scrollContainer.scrollWidth > scrollContainer.clientWidth
+      ) {
+        break;
+      }
+      scrollContainer = scrollContainer.parentNode;
+    }
+
+    if (scrollContainer) {
+      scrollContainer.scrollBy({
+        left: 0,
+        top: elY - window.innerHeight / 2,
+        behavior: "smooth",
+      });
+    } else {
+      // If no scrollable parent is found, scroll the document body
+      document.body.scrollBy({
+        left: 0,
+        top: elY - window.innerHeight / 2,
+        behavior: "smooth",
+      });
+    }
   };
 
   // ////////////////////////////
@@ -1281,3 +1304,36 @@ try {
     console.log(option.data);
   });
 } catch (e) {}
+
+//webActivity KaiOS 3
+
+try {
+  navigator.serviceWorker
+    .register(new URL("sw.js", import.meta.url), {
+      type: "module",
+    })
+    .then((registration) => {
+      if (registration.waiting) {
+        // There's a new service worker waiting to activate
+        // You can prompt the user to reload the page to apply the update
+        // For example: show a message to the user
+      } else {
+        // No waiting service worker, registration was successful
+      }
+
+      registration.systemMessageManager.subscribe("activity").then(
+        (rv) => {
+          alert(rv);
+        },
+        (error) => {
+          alert(error);
+        }
+      );
+    });
+} catch (e) {
+  alert(e);
+}
+
+channel.addEventListener("message", (event) => {
+  window.open("", "_blank");
+});

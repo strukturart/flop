@@ -206,6 +206,24 @@ div#intro img {
   animation-fill-mode: forwards;
 }
 
+#intro kbd {
+  border: 2px solid pink;
+  box-shadow: 2px 2px pink;
+  font-size: 0.6em;
+  line-height: 0.85em;
+  display: block;
+  position: absolute;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 3px 5px;
+  white-space: nowrap;
+  color: white;
+  width: fit-content;
+  height: 20px;
+  bottom: 50px;
+  left: 37%;
+}
+
 div#login {
   padding: 10px;
 }
@@ -521,7 +539,11 @@ article.me div.message-main {
 }
 
 #chat article:focus div.message-main {
-  background: rgba(148, 161, 138, 0.288);
+  background: rgba(148, 161, 138, 0.288) !important;
+}
+
+#chat article:focus {
+  background: rgba(148, 161, 138, 0.288) !important;
 }
 
 article div.message-head div:nth-child(2) {

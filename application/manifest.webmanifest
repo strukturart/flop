@@ -24,7 +24,7 @@
   ],
 
   "b2g_features": {
-    "version": "0.2",
+    "version": "0.294",
     "id": "flop",
     "subtitle": "flop <-> p2p messenger app",
     "core": true,
@@ -39,10 +39,14 @@
     "dependencies": {
       "ads-sdk": "1.5.8"
     },
-    "messages": [{ "serviceworker-notification": "index.html" }, "alarm"],
+
+    "messages": [
+      { "serviceworker-notification": "/index.html" },
+      { "activity": "/index.html" }
+    ],
 
     "activities": {
-      "greg-oauth": {}
+      "flop": {}
     },
 
     "serviceworker": {
@@ -53,9 +57,7 @@
       "desktop-notification": {
         "description": "Needed to fire system notifications"
       },
-      "alarms": {
-        "description": "Required to schedule alarms"
-      },
+
       "mobiledata": {},
       "wifidata": {},
       "calllog": {},

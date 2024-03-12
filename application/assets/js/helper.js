@@ -54,18 +54,6 @@ export let load_ads = function () {
   document.head.appendChild(js);
 };
 
-//KaiOs store true||false
-let manifest = function (a) {
-  self = a.origin;
-  document.getElementById("version").innerText =
-    "Version: " + a.manifest.version;
-  if (a.installOrigin == "app://kaios-plus.kaiostech.com") {
-    settings.ads = true;
-  } else {
-    settings.ads = true;
-  }
-};
-
 export function generateRandomString(length) {
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -140,26 +128,40 @@ function intToRGB(i) {
   return "00000".substring(0, 6 - c.length) + c;
 }
 
-function getRandomInteger(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min;
-}
-
 export function share(url) {
-  var activity = new MozActivity({
-    name: "share",
-    data: {
-      type: "url",
-      url: url,
-    },
-  });
+  try {
+    var activity = new MozActivity({
+      name: "share",
+      data: {
+        type: "url",
+        url: url,
+      },
+    });
 
-  activity.onsuccess = function () {};
+    activity.onsuccess = function () {};
 
-  activity.onerror = function () {
-    console.log("The activity encounter en error: " + this.error);
-  };
+    activity.onerror = function () {
+      console.log("The activity encounter en error: " + this.error);
+    };
+  } catch (e) {}
+
+  if ("b2g" in navigator) {
+    let activity = new WebActivity("share", {
+      data: {
+        type: "url",
+        url: url,
+      },
+    });
+    activity.start().then(
+      (rv) => {
+        console.log("Results passed back from activity handler:");
+        console.log(rv);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
 }
 
 //check if internet connection
@@ -329,17 +331,39 @@ export function validate(url) {
 }
 
 export let getManifest = function (callback) {
-  if (!navigator.mozApps) {
-    //let t = document.getElementById("kaisos-ads");
-    //t.remove();
-    return false;
+  if (navigator.mozApps) {
+    let self = navigator.mozApps.getSelf();
+    self.onsuccess = function () {
+      callback(self.result);
+    };
+    self.onerror = function () {};
   }
-  let self = navigator.mozApps.getSelf();
-  self.onsuccess = function () {
-    callback(self.result);
-  };
-  self.onerror = function () {};
+
+  if ("b2g" in navigator) {
+    fetch("/manifest.webmanifest")
+      .then((r) => r.json())
+      .then((r) => callback(r));
+  }
 };
+
+//KaiOs store true||false
+export function manifest(a) {
+  if (navigator.mozApps) {
+    self = a.origin;
+    document.querySelector("#version kbd").innerText = a.manifest.version;
+
+    if (a.installOrigin == "app://kaios-plus.kaiostech.com") {
+      settings.ads = true;
+    } else {
+      settings.ads = false;
+    }
+  }
+  if ("b2g" in navigator) {
+    document.querySelector("#version kbd").innerText = a.version;
+
+    settings.ads = true;
+  }
+}
 
 //top toaster
 let queue = [];
