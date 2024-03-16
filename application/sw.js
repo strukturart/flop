@@ -1,26 +1,20 @@
+import localforage from "localforage";
+
 const channel = new BroadcastChannel("sw-messages");
 
 self.onsystemmessage = (evt) => {
-  channel.postMessage({
-    "url": "test",
-  });
+  const serviceHandler = () => {
+    if (evt.name === "activity") {
+      handler = evt.data.webActivityRequestHandler();
 
-  try {
-    const serviceHandler = () => {
-      if (evt.name === "activity") {
-        handler = evt.data.webActivityRequestHandler();
-        const { name: activityName, data: activityData } = handler.source;
-        if (activityName == "flop") {
-          let code = activityData;
+      if (handler.source.name == "flop") {
+        self.clients.openWindow("index.html");
 
-          channel.postMessage({
-            "url": code,
-          });
-        }
+        localforage
+          .setItem("connect_to_id", handler.source.data.data.href)
+          .then((e) => {});
       }
-    };
-    evt.waitUntil(serviceHandler());
-  } catch (e) {
-    channel.postMessage({ "error": e });
-  }
+    }
+  };
+  evt.waitUntil(serviceHandler());
 };

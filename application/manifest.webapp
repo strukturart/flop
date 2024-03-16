@@ -1,11 +1,11 @@
 {
-	"version":"0.0.9.82",
+	"version":"0.0.9.89",
 	"name":"flop",
 	"id":"flop",
-	"description": "flop <-> p2p messenger app",
+	"description": "flop p2p messenger app",
 	"launch_path": "/index.html",
 	"categories": ["social"],
-	"subtitle": "flop <-> p2p messenger app",
+	"subtitle": "flop  p2p messenger app",
 	"type": "privileged",
 	"fullscreen": "true",
 	"lang": "en-US",
@@ -27,8 +27,8 @@
 	"locales": {
 		"en-US": {
 			"name": "flop",
-			"subtitle": "flop <-> p2p messenger app",
-			"description": "flop <-> p2p messenger app"
+			"subtitle": "flop  p2p messenger app",
+			"description": "flop  p2p messenger app"
 		}
 	},
 	"default_locale": "en-US",

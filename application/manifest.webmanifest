@@ -1,7 +1,7 @@
 {
   "name": "flop",
   "id": "flop",
-  "description": "flop <-> p2p messenger app",
+  "description": "flop p2p messenger app",
   "lang": "en-US",
   "start_url": "/index.html",
   "short_name": "flop",
@@ -24,16 +24,16 @@
   ],
 
   "b2g_features": {
-    "version": "0.294",
+    "version": "0.3026",
     "id": "flop",
-    "subtitle": "flop <-> p2p messenger app",
+    "subtitle": "flop p2p messenger app",
     "core": true,
     "type": "privileged",
     "display": "fullscreen",
 
     "developer": {
       "name": "strukturart",
-      "url": "https://github.com/strukturart/greg"
+      "url": "https://github.com/strukturart/flop"
     },
 
     "dependencies": {

@@ -20,7 +20,7 @@ import m from "mithril";
 import qrious from "qrious";
 
 //github.com/laurentpayot/minidenticons#usage
-export let status = { visibility: true, action: "" };
+export let status = { visibility: true, action: "", version: "0.0" };
 export let settings = {};
 export let current_room = "";
 
@@ -49,25 +49,10 @@ let ice_servers = {
   "iceServers": [],
 };
 
-let get_manifest_callback = (e) => {
-  let version;
-  try {
-    console.log(e.manifest.version);
-    version = e.manifest.version;
-  } catch (e) {}
-  if ("b2bg" in navigator) {
-    try {
-      alert(e.b2g_features);
-      version = e.b2g_features.version;
-    } catch (e) {}
-  }
-
-  status.version = version;
-};
-getManifest(get_manifest_callback);
-
 async function getIceServers() {
   try {
+    if (peer) peer.destroy();
+
     const response = await fetch(
       "https://" +
         process.env.TURN_APP_NAME +
@@ -76,19 +61,26 @@ async function getIceServers() {
     );
 
     if (!response.ok) {
+      console.log("without turn");
+
+      peer = new Peer({
+        debug: 1,
+        secure: false,
+        referrerPolicy: "no-referrer",
+      });
+
       throw new Error(
         `Failed to fetch ice servers. Status: ${response.status}`
       );
     }
 
-    const a = await response.json();
+    if (response.ok) {
+      const a = await response.json();
 
-    a.forEach((e) => {
-      ice_servers.iceServers.push(e);
-    });
+      a.forEach((e) => {
+        ice_servers.iceServers.push(e);
+      });
 
-    if (peer) peer.destroy();
-    if (typeof peerConfiguration == "object") {
       console.log("with turn");
 
       peer = new Peer({
@@ -97,83 +89,73 @@ async function getIceServers() {
         secure: false,
         referrerPolicy: "origin-when-cross-origin",
       });
-    } else {
-      console.log("without turn");
 
-      peer = new Peer({
-        debug: 1,
-        secure: false,
-        config: ice_servers,
-        referrerPolicy: "no-referrer",
+      peer.on("connection", function (c) {
+        conn = c;
+
+        conn.on("data", function (data) {
+          if (!status.visibility) pushLocalNotification("flop", "new message");
+
+          if (data.file) {
+            chat_data.push({
+              nickname: data.nickname,
+              content: "",
+              datetime: new Date(),
+              image: data.file,
+              class: "image",
+            });
+          }
+
+          if (data.text) {
+            chat_data.push({
+              nickname: data.nickname,
+              content: data.text,
+              datetime: new Date(),
+              class: "text",
+            });
+          }
+          chat_data = chat_data.filter((e) => {
+            return e.id !== "no-other-user-online";
+          });
+
+          m.redraw();
+          focus_last_article();
+        });
+        conn.on("close", function () {
+          // conn = null;
+          side_toaster("user has left chat", 1000);
+        });
+
+        // Event handler for successful connection
+        conn.on("open", function () {
+          side_toaster("Connected with " + peer.id, 5000);
+        });
+
+        // Event handler for connection errors
+        conn.on("error", function (err) {
+          console.log("Error: " + err.type, 5000);
+          peer.reconnect();
+        });
+      });
+
+      peer.on("disconnected", function () {
+        // Workaround for peer.reconnect deleting previous id
+        peer.id = lastPeerId;
+        peer._lastServerId = lastPeerId;
+        peer.reconnect();
+      });
+
+      peer.on("close", function () {
+        side_toaster("connection closed", 1000);
+        // conn = null;
+      });
+
+      peer.on("error", function (err) {
+        side_toaster("error " + err, 2000);
       });
     }
-
-    peer.on("open", function () {
-      if (peer.id === null) {
-        peer.id = lastPeerId;
-      } else {
-        lastPeerId = peer.id;
-      }
-    });
-
-    peer.on("connection", function (c) {
-      conn = c;
-
-      conn.on("data", function (data) {
-        if (!status.visibility) pushLocalNotification("flop", "new message");
-        if (data.file) {
-          chat_data.push({
-            nickname: data.nickname,
-            content: "",
-            datetime: new Date(),
-            image: data.file,
-          });
-        }
-
-        if (data.text) {
-          chat_data.push({
-            nickname: data.nickname,
-            content: data.text,
-            datetime: new Date(),
-          });
-        }
-
-        m.redraw();
-        focus_last_article();
-      });
-      conn.on("close", function () {
-        // conn = null;
-        side_toaster("user has left chat", 1000);
-      });
-
-      // Event handler for successful connection
-      conn.on("open", function () {
-        side_toaster("Connected with " + peer.id, 5000);
-      });
-
-      // Event handler for connection errors
-      conn.on("error", function (err) {
-        console.log("Error: " + err.type, 5000);
-      });
-    });
-
-    peer.on("disconnected", function () {
-      // Workaround for peer.reconnect deleting previous id
-      peer.id = lastPeerId;
-      peer._lastServerId = lastPeerId;
-      peer.reconnect();
-    });
-
-    peer.on("close", function () {
-      side_toaster("connection closed", 1000);
-      // conn = null;
-    });
-
-    peer.on("error", function (err) {
-      side_toaster("int connection error " + err, 2000);
-    });
   } catch (error) {
-    console.error("Error fetching ice servers:", error.message);
+    alert("Error fetching ice servers:", error.message);
   }
 }
 
@@ -299,6 +281,7 @@ function sendMessage(msg, type) {
           content: "",
           datetime: new Date(),
           image: src,
+          class: "image",
         });
 
         msg = {
@@ -324,6 +307,7 @@ function sendMessage(msg, type) {
         nickname: settings.nickname,
         content: msg.text,
         datetime: new Date(),
+        class: "text",
       });
       conn.send(msg);
 
@@ -332,7 +316,7 @@ function sendMessage(msg, type) {
       write();
     }
   } else {
-    side_toaster("no user onlineno other users online", 3000);
+    side_toaster("no other users online", 3000);
     write();
   }
 }
@@ -343,11 +327,10 @@ let close_connection = function () {
 
 //connect to peer
 let connect_to_peer = function (id) {
-  current_room = id;
   getIceServers().then(() => {
     m.route.set("/chat");
     setTimeout(() => {
-      if (peer == null) console.log("no peer instance");
+      current_room = id;
 
       // Establish connection with the destination peer
       try {
@@ -383,7 +366,6 @@ let connect_to_peer = function (id) {
         // Event handler for successful connection
         conn.on("open", function () {
           side_toaster("Connected with " + peer.id, 5000);
-          chat_data.push({ content: "connected", datetime: new Date() });
         });
 
         // Event handler for connection errors
@@ -393,10 +375,10 @@ let connect_to_peer = function (id) {
 
         // Event handler for connection closure
         conn.on("close", function () {
-          side_toaster("user has left chat", 1000);
+          side_toaster("user has left chat", 2000);
         });
       } catch (e) {
-        console.log("error con" + e);
+        console.log("error conn " + e);
       }
     }, 4000);
   });
@@ -409,7 +391,6 @@ let create_peer = function () {
     peer.on("open", function () {
       m.route.set("/chat");
 
-      // Workaround for peer.reconnect deleting previous id
       if (peer.id === null) {
         peer.id = lastPeerId;
       } else {
@@ -437,8 +418,15 @@ let create_peer = function () {
       });
 
       chat_data.push({
+        id: "no-other-user-online",
         nickname: settings.nickname,
         content: "no other user online, you should invite someone.",
+        datetime: new Date(),
+      });
+
+      chat_data.push({
+        nickname: settings.nickname,
+        content: current_room,
         datetime: new Date(),
       });
 
@@ -773,7 +761,7 @@ var start = {
               document.querySelector("#start p").focus();
             },
           },
-          "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images and your position with your chat partner. To create a chat room, press enter."
+          "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images and your position with your chat partner. To create a peer, press enter."
         ),
       ]
     );
@@ -891,8 +879,13 @@ var chat = {
       "div",
       {
         id: "chat",
+        class: "flex justify-content-center  width-100",
         onremove: () => {
           clearInterval(user_check);
+
+          try {
+            localforage.removeItem("connect_to_id");
+          } catch (e) {}
         },
         oncreate: () => {
           top_bar("", "", "");
@@ -938,7 +931,7 @@ var chat = {
         return m(
           "article",
           {
-            class: "item " + nickname,
+            class: "width-100 item " + nickname + "" + item.class,
             tabindex: index,
             onfocus: () => {
               links = linkify.find(document.activeElement.textContent);
@@ -976,10 +969,29 @@ var intro = {
     return m("div", { class: "width-100 height-100", id: "intro" }, [
       m("img", {
         src: "./assets/icons/intro.svg",
+
         oncreate: () => {
+          let get_manifest_callback = (e) => {
+            try {
+              status.version = e.manifest.version;
+              document.querySelector("#version").textContent =
+                e.manifest.version;
+            } catch (e) {}
+
+            if ("b2g" in navigator) {
+              fetch("/manifest.webmanifest")
+                .then((r) => r.json())
+                .then((parsedResponse) => {
+                  status.version = parsedResponse.b2g_features.version;
+                  document.querySelector("#version").textContent =
+                    parsedResponse.b2g_features.version;
+                });
+            }
+          };
+          getManifest(get_manifest_callback);
           setTimeout(function () {
             m.route.set("/start");
-          }, 4000);
+          }, 5000);
         },
       }),
 
@@ -1052,7 +1064,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
     }
 
     // smooth center scrolling
-    console.log(targetElement);
 
     const rect = document.activeElement.getBoundingClientRect();
     const elY =
@@ -1211,6 +1222,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
         stop_scan();
         m.route.set("/start");
         break;
+      case "0":
+        localforage.getItem("connect_to_id").then((e) => {
+          alert(e);
+        });
+        break;
     }
   }
 
@@ -1290,50 +1306,54 @@ document.addEventListener("DOMContentLoaded", function (e) {
   document.addEventListener("keydown", handleKeyDown);
   document.addEventListener("keyup", handleKeyUp);
 });
-
+//KaiOS 2 mozActivity
 try {
   navigator.mozSetMessageHandler("activity", function (activityRequest) {
     var option = activityRequest.source;
-
     const urlParams = new URLSearchParams(option.data);
     const id = urlParams.get("id");
     setTimeout(() => {
       connect_to_peer(id);
-    }, 10000);
-
-    console.log(option.data);
+    }, 5000);
   });
 } catch (e) {}
 
-//webActivity KaiOS 3
+//KaiOS 3 webActivity
+if ("b2g" in navigator) {
+  setTimeout(() => {
+    localforage.getItem("connect_to_id").then((e) => {
+      if (e == null || e == "") return false;
+      const id = e.split("?id=");
 
-try {
-  navigator.serviceWorker
-    .register(new URL("sw.js", import.meta.url), {
-      type: "module",
-    })
-    .then((registration) => {
-      if (registration.waiting) {
-        // There's a new service worker waiting to activate
-        // You can prompt the user to reload the page to apply the update
-        // For example: show a message to the user
-      } else {
-        // No waiting service worker, registration was successful
-      }
-
-      registration.systemMessageManager.subscribe("activity").then(
-        (rv) => {
-          alert(rv);
-        },
-        (error) => {
-          alert(error);
-        }
-      );
+      setTimeout(() => {
+        connect_to_peer(id[1]);
+      }, 5000);
     });
-} catch (e) {
-  alert(e);
+  }, 3000);
 }
 
-channel.addEventListener("message", (event) => {
-  window.open("", "_blank");
-});
+//webActivity KaiOS 3
+if ("b2g" in navigator) {
+  try {
+    navigator.serviceWorker
+      .register(new URL("sw.js", import.meta.url), {
+        type: "module",
+      })
+      .then((registration) => {
+        if (registration.waiting) {
+          // There's a new service worker waiting to activate
+          // You can prompt the user to reload the page to apply the update
+          // For example: show a message to the user
+        } else {
+          // No waiting service worker, registration was successful
+        }
+
+        registration.systemMessageManager.subscribe("activity").then(
+          (rv) => {},
+          (error) => {}
+        );
+      });
+  } catch (e) {}
+}
+
+channel.addEventListener("message", (event) => {});

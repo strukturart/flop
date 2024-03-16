@@ -16,6 +16,7 @@ setTimeout(() => {
   if ("b2g" in navigator) {
     try {
       let activity = new WebActivity("flop", {
+        name: "flop",
         type: "url",
         data: window.location,
       });
@@ -26,11 +27,8 @@ setTimeout(() => {
         },
         (err) => {
           console.log(err);
-          alert(err);
         }
       );
-    } catch (e) {
-      alert(e);
-    }
+    } catch (e) {}
   }
 }, 4000);

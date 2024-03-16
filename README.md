@@ -7,24 +7,28 @@
 ![badge-downloads](https://img.shields.io/github/downloads/strukturart/watermelon/total)
 
 Is a <a href="https://en.wikipedia.org/wiki/WebRTC">WebRTC</a> chat-client, for the KaiOs.
-Currently you can exchange text messages and pictures with each other. You can create new rooms and join rooms.
+Currently you can exchange text messages, pictures and your location with each other. You can create new chats and join chats.
 
 ### Features
 
-- create room
-- join room
-- room favorits
+- create chat
+- join chat
 - share location
 - share image
+- invite users
 
 ![image-1](/images/image-1.png)
 ![image-2](/images/image-2.png)
 ![image-2](/images/image-3.png)
 
+## yes, but
+
+In order to establish a connection between 2 peers, you have to know the id of the peers. To do this, I use the API: mozActivity / webActivity, which enables the exchange via a URL (sharing by SMS or EMAIL). In KaiOS there is also the option of deep linking, which I don't use because KaiOS 3 is not very widespread.
+
 ## How to install
 
 - bHaCkerStore
-- KaiOs Store(coming soon)
+- KaiOS Store(coming soon)
 - Sideloading <a href="https://www.martinkaptein.com/blog/sideloading-and-deploying-apps-to-kai-os/">step-by-step article</a> by martinkaptein
 
 ### known problems

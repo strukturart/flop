@@ -147,10 +147,8 @@ export function share(url) {
 
   if ("b2g" in navigator) {
     let activity = new WebActivity("share", {
-      data: {
-        type: "url",
-        url: url,
-      },
+      type: "url",
+      url: url,
     });
     activity.start().then(
       (rv) => {
@@ -163,6 +161,32 @@ export function share(url) {
     );
   }
 }
+
+export var sms = (n) => {
+  const smsLink = document.createElement("a");
+
+  smsLink.href = "sms:" + n;
+  smsLink.textContent = "";
+  document.body.appendChild(smsLink);
+  smsLink.addEventListener("click", function () {});
+  smsLink.click();
+  document.body.removeChild(smsLink);
+};
+
+export var email = (n) => {
+  var email = "";
+  var subject = "";
+  var emailBody = n;
+
+  const smsLink = document.createElement("a");
+  smsLink.href =
+    "mailto:" + email + "?subject=" + subject + "&body=" + emailBody;
+  smsLink.textContent = "";
+  document.body.appendChild(smsLink);
+  smsLink.addEventListener("click", function () {});
+  smsLink.click();
+  document.body.removeChild(smsLink);
+};
 
 //check if internet connection
 function check_iconnection() {
@@ -342,28 +366,9 @@ export let getManifest = function (callback) {
   if ("b2g" in navigator) {
     fetch("/manifest.webmanifest")
       .then((r) => r.json())
-      .then((r) => callback(r));
+      .then((parsedResponse) => callback(parsedResponse));
   }
 };
-
-//KaiOs store true||false
-export function manifest(a) {
-  if (navigator.mozApps) {
-    self = a.origin;
-    document.querySelector("#version kbd").innerText = a.manifest.version;
-
-    if (a.installOrigin == "app://kaios-plus.kaiostech.com") {
-      settings.ads = true;
-    } else {
-      settings.ads = false;
-    }
-  }
-  if ("b2g" in navigator) {
-    document.querySelector("#version kbd").innerText = a.version;
-
-    settings.ads = true;
-  }
-}
 
 //top toaster
 let queue = [];
@@ -479,22 +484,45 @@ function formatFileSize(bytes, decimalPoint) {
 
 //pick image
 export let pick_image = function (cb) {
-  var activity = new MozActivity({
-    name: "pick",
-    data: {
-      type: ["image/png", "image/jpg", "image/jpeg"],
-    },
-  });
+  try {
+    let pick = new MozActivity({
+      name: "pick",
+      data: {
+        type: ["image/png", "image/jpg", "image/jpeg"],
+      },
+    });
 
-  activity.onsuccess = function () {
-    console.log("success");
-    let p = this.result;
-    cb(p);
-  };
+    pick.onsuccess = function (e) {
+      callback(pick, "k2");
+    };
 
-  activity.onerror = function () {
-    console.log("The activity encouter en error: " + this.error);
-  };
+    pick.onerror = function () {
+      general.blocker = false;
+      console.log("The activity encounter en error: " + this.error);
+    };
+  } catch (e) {
+    console.log(e);
+  }
+
+  if ("b2g" in navigator) {
+    let pick = new WebActivity("pick", {
+      data: {
+        type: ["image/png", "image/jpg", "image/jpeg"],
+      },
+    });
+
+    pick.start().then(
+      (rv) => {
+        general.blocker = false;
+        callback(rv, "k3");
+      },
+      (err) => {
+        general.blocker = false;
+
+        console.log(err);
+      }
+    );
+  }
 };
 
 //delete file

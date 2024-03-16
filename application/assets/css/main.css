@@ -69,11 +69,13 @@ body {
 }
 
 #app {
-  max-width: 100vw;
+  max-width: 400px;
 }
 
 #wrapper {
   padding: 0px;
+  display: flex;
+  justify-content: center;
 }
 
 h1 {
@@ -498,6 +500,7 @@ article div.user-date span {
 /*
  SETTINGS
  */
+
 #settings_page {
   padding: 0px;
 }
@@ -506,9 +509,12 @@ div#top {
   top: 0;
 }
 
+#chat {
+  background: white;
+}
 article {
   padding: 10px;
-  max-width: 90vw;
+  max-width: 100vw;
 }
 
 article.nickname {
@@ -529,21 +535,17 @@ article div.message-main {
 }
 
 article.me div.message-main {
-  background: rgba(147, 223, 92, 0.288);
+  background: rgba(167, 172, 164, 0.288);
   border-radius: 7px;
   padding: 5px 5px 5px 5px;
 }
 
-#chat article:focus {
-  background: none;
+article.image {
+  background-color: none;
 }
 
-#chat article:focus div.message-main {
-  background: rgba(148, 161, 138, 0.288) !important;
-}
-
-#chat article:focus {
-  background: rgba(148, 161, 138, 0.288) !important;
+article:focus {
+  background: rgba(180, 199, 168, 0.34) !important;
 }
 
 article div.message-head div:nth-child(2) {
