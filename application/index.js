@@ -89,71 +89,73 @@ async function getIceServers() {
         secure: false,
         referrerPolicy: "origin-when-cross-origin",
       });
+    }
 
-      peer.on("connection", function (c) {
-        conn = c;
+    peer.on("connection", function (c) {
+      conn = c;
 
-        conn.on("data", function (data) {
-          if (!status.visibility) pushLocalNotification("flop", "new message");
+      console.log(conn);
 
-          if (data.file) {
-            chat_data.push({
-              nickname: data.nickname,
-              content: "",
-              datetime: new Date(),
-              image: data.file,
-              class: "image",
-            });
-          }
+      conn.on("data", function (data) {
+        if (!status.visibility) pushLocalNotification("flop", "new message");
 
-          if (data.text) {
-            chat_data.push({
-              nickname: data.nickname,
-              content: data.text,
-              datetime: new Date(),
-              class: "text",
-            });
-          }
-          chat_data = chat_data.filter((e) => {
-            return e.id !== "no-other-user-online";
+        if (data.file) {
+          chat_data.push({
+            nickname: data.nickname,
+            content: "",
+            datetime: new Date(),
+            image: data.file,
+            class: "image",
           });
+        }
 
-          m.redraw();
-          focus_last_article();
-        });
-        conn.on("close", function () {
-          // conn = null;
-          side_toaster("user has left chat", 1000);
+        if (data.text) {
+          chat_data.push({
+            nickname: data.nickname,
+            content: data.text,
+            datetime: new Date(),
+            class: "text",
+          });
+        }
+        chat_data = chat_data.filter((e) => {
+          return e.id !== "no-other-user-online";
         });
 
-        // Event handler for successful connection
-        conn.on("open", function () {
-          side_toaster("Connected with " + peer.id, 5000);
-        });
-
-        // Event handler for connection errors
-        conn.on("error", function (err) {
-          console.log("Error: " + err.type, 5000);
-          peer.reconnect();
-        });
+        m.redraw();
+        focus_last_article();
+      });
+      conn.on("close", function () {
+        // conn = null;
+        side_toaster("user has left chat", 1000);
       });
 
-      peer.on("disconnected", function () {
-        // Workaround for peer.reconnect deleting previous id
-        peer.id = lastPeerId;
-        peer._lastServerId = lastPeerId;
+      // Event handler for successful connection
+      conn.on("open", function () {
+        side_toaster("Connected with " + peer.id, 5000);
+      });
+
+      // Event handler for connection errors
+      conn.on("error", function (err) {
+        console.log("Error: " + err.type, 5000);
         peer.reconnect();
       });
+    });
 
-      peer.on("close", function () {
-        side_toaster("connection closed", 1000);
-        // conn = null;
-      });
+    peer.on("disconnected", function () {
+      // Workaround for peer.reconnect deleting previous id
+      peer.id = lastPeerId;
+      peer._lastServerId = lastPeerId;
+      peer.reconnect();
+    });
 
-      peer.on("error", function (err) {
-        side_toaster("error " + err, 2000);
-      });
-    }
+    peer.on("close", function () {
+      side_toaster("connection closed", 1000);
+      conn = null;
+    });
+
+    peer.on("error", function (err) {
+      side_toaster("error " + err, 2000);
+    });
   } catch (error) {
     alert("Error fetching ice servers:", error.message);
   }
@@ -326,18 +328,25 @@ let close_connection = function () {
 };
 
 //connect to peer
+
 let connect_to_peer = function (id) {
+  //document.querySelector(".loading-spinner").style.display = "block";
+
+  current_room = id;
   getIceServers().then(() => {
     m.route.set("/chat");
     setTimeout(() => {
-      current_room = id;
+      if (peer == null) console.log("no peer instance");
 
       // Establish connection with the destination peer
       try {
         conn = peer.connect(id, {
           label: "chat",
+          metadata: "flop chat",
           reliable: true,
         });
+
+        console.log(conn);
 
         conn.on("data", function (data) {
           if (!status.visibility) pushLocalNotification("flop", "new message");
@@ -365,12 +374,23 @@ let connect_to_peer = function (id) {
 
         // Event handler for successful connection
         conn.on("open", function () {
+          // document.querySelector(".loading-spinner").style.display = "none";
+
+          chat_data.push({
+            nickname: data.nickname,
+            content: "connected",
+            datetime: new Date(),
+          });
+          m.redraw();
+          focus_last_article();
+
           side_toaster("Connected with " + peer.id, 5000);
         });
 
         // Event handler for connection errors
         conn.on("error", function (err) {
           console.log("Error: " + err.type, 5000);
+          document.querySelector(".loading-spinner").style.display = "none";
         });
 
         // Event handler for connection closure
@@ -379,17 +399,21 @@ let connect_to_peer = function (id) {
         });
       } catch (e) {
         console.log("error conn " + e);
+        document.querySelector(".loading-spinner").style.display = "none";
       }
-    }, 4000);
-  });
+    });
+  }, 4000);
 };
 
 //create room
 // and create qr-code with peer id
 let create_peer = function () {
+  document.querySelector(".loading-spinner").style.display = "block";
+
   getIceServers().then(() => {
     peer.on("open", function () {
       m.route.set("/chat");
+      document.querySelector(".loading-spinner").style.display = "none";
 
       if (peer.id === null) {
         peer.id = lastPeerId;
@@ -421,12 +445,6 @@ let create_peer = function () {
         id: "no-other-user-online",
         nickname: settings.nickname,
         content: "no other user online, you should invite someone.",
-        datetime: new Date(),
-      });
-
-      chat_data.push({
-        nickname: settings.nickname,
-        content: current_room,
         datetime: new Date(),
       });
 
@@ -466,6 +484,8 @@ let time_parse = function (value) {
 //callback qr-code scan
 let scan_callback = function (n) {
   connect_to_peer(n);
+  document.querySelector(".loading-spinner").style.display = "block";
+
   status.action = "";
 };
 
@@ -492,7 +512,7 @@ var settings_page = {
     return m(
       "div",
       {
-        class: "flex justify-content-center width-100",
+        class: "flex justify-content-center",
         id: "settings_page",
         oncreate: () => {
           bottom_bar("", "", "");
@@ -505,10 +525,8 @@ var settings_page = {
             tabindex: 0,
             oncreate: ({ dom }) => {
               dom.focus();
-              console.log("j");
             },
-            class:
-              "item input-parent flex width-100 justify-content-spacearound",
+            class: "item input-parent flex justify-content-spacearound",
           },
           [
             m(
@@ -526,15 +544,14 @@ var settings_page = {
           ]
         ),
 
-        m("H2", { class: "widt-100 text-center" }, "Server Settings"),
+        m("H2", { class: "  text-center" }, "Server Settings"),
 
         m(
           "div",
           {
             tabindex: 1,
 
-            class:
-              "item input-parent  flex width-100 justify-content-spacearound",
+            class: "item input-parent  flex justify-content-spacearound",
           },
           [
             m(
@@ -557,8 +574,7 @@ var settings_page = {
           {
             tabindex: 2,
 
-            class:
-              "item input-parent  flex width-100 justify-content-spacearound",
+            class: "item input-parent  flex  justify-content-spacearound",
           },
           [
             m(
@@ -581,8 +597,7 @@ var settings_page = {
           {
             tabindex: 3,
 
-            class:
-              "item input-parent  flex width-100 justify-content-spacearound",
+            class: "item input-parent  flex justify-content-spacearound",
           },
           [
             m(
@@ -605,8 +620,7 @@ var settings_page = {
           {
             tabindex: 4,
 
-            class:
-              "item input-parent  flex width-100 justify-content-spacearound",
+            class: "item input-parent  flex justify-content-spacearound",
           },
           [
             m(
@@ -677,7 +691,7 @@ var options = {
     return m(
       "div",
       {
-        class: "flex justify-content-spacearound  width-100",
+        class: "flex justify-content-center",
         id: "login",
       },
       [
@@ -879,7 +893,7 @@ var chat = {
       "div",
       {
         id: "chat",
-        class: "flex justify-content-center  width-100",
+        class: "flex justify-content-center",
         onremove: () => {
           clearInterval(user_check);
 
@@ -902,7 +916,7 @@ var chat = {
         },
       },
 
-      m("div", { id: "message-input", type: "text" }, [
+      m("div", { id: "message-input", type: "text", class: "width-100" }, [
         m("input", {
           type: "text",
           onblur: () => {
@@ -931,7 +945,7 @@ var chat = {
         return m(
           "article",
           {
-            class: "width-100 item " + nickname + "" + item.class,
+            class: " item " + nickname + " " + item.class,
             tabindex: index,
             onfocus: () => {
               links = linkify.find(document.activeElement.textContent);
@@ -994,13 +1008,19 @@ var intro = {
           }, 5000);
         },
       }),
-
       m(
-        "kbd",
-        {
-          id: "version",
-        },
-        status.version
+        "div",
+        { class: "flex width-100  justify-content-center ", id: "version-box" },
+        [
+          m(
+            "kbd",
+            {
+              id: "version",
+              class: "debug",
+            },
+            status.version
+          ),
+        ]
       ),
     ]);
   },

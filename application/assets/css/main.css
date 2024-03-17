@@ -69,7 +69,7 @@ body {
 }
 
 #app {
-  max-width: 400px;
+  position: relative;
 }
 
 #wrapper {
@@ -112,7 +112,7 @@ img[src=" "] {
 button {
   font-size: 1rem;
   background: rgb(255, 255, 255);
-  width: 85vw;
+  width: 95%;
   padding: 5px;
   margin: 0 0 15px 0px;
   color: black;
@@ -128,7 +128,7 @@ button:focus {
 }
 
 select {
-  width: 90%;
+  width: 95%;
   padding: 10px;
   margin: 10px 5% 0px 5%;
 
@@ -157,7 +157,7 @@ textarea {
 }
 
 input {
-  width: 90%;
+  width: 95%;
   height: 30px;
   padding: 3px;
   border: 2px solid silver;
@@ -172,6 +172,7 @@ label {
   text-align: center;
 }
 .input-parent {
+  width: 100%;
   padding: 10px;
   margin: 0 0 20px 0;
 }
@@ -208,13 +209,18 @@ div#intro img {
   animation-fill-mode: forwards;
 }
 
-#intro kbd {
+#intro #version-box {
+  position: absolute;
+  bottom: 50px;
+  height: 40px;
+}
+
+#intro #version-box kbd {
   border: 2px solid pink;
   box-shadow: 2px 2px pink;
   font-size: 0.6em;
   line-height: 0.85em;
   display: block;
-  position: absolute;
   font-weight: 600;
   letter-spacing: 0.05em;
   padding: 3px 5px;
@@ -222,8 +228,6 @@ div#intro img {
   color: white;
   width: fit-content;
   height: 20px;
-  bottom: 50px;
-  left: 37%;
 }
 
 div#login {
@@ -482,6 +486,7 @@ div#top-bar div.top-right {
 article {
   margin: 0 0 10px 0;
   padding: 3px;
+  width: 100%;
 }
 
 article div.user-date {
@@ -493,8 +498,55 @@ article div.user-date span {
   font-weight: bold;
 }
 
+article img {
+  min-width: 100%;
+}
+
 [id*="page-"] {
   padding: 5px;
+}
+
+.loading-spinner {
+  display: none;
+  position: fixed;
+  width: 80px;
+  height: 80px;
+  top: 50%;
+  left: 50%;
+  margin-left: -40px;
+  margin-top: -40px;
+
+  z-index: 5000000000000;
+}
+.loading-spinner div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid rgb(126, 11, 11);
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: rgb(238, 27, 27) transparent transparent transparent;
+}
+.loading-spinner div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.loading-spinner div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.loading-spinner div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /*
@@ -514,7 +566,6 @@ div#top {
 }
 article {
   padding: 10px;
-  max-width: 100vw;
 }
 
 article.nickname {
@@ -534,10 +585,18 @@ article div.message-main {
   padding: 5px 5px 5px 5px;
 }
 
+article div.message-main:empty {
+  display: none;
+}
+
 article.me div.message-main {
   background: rgba(167, 172, 164, 0.288);
   border-radius: 7px;
   padding: 5px 5px 5px 5px;
+}
+
+article div.message-main:empty {
+  display: none;
 }
 
 article.image {
@@ -595,4 +654,22 @@ div#message-input input {
 
 #open-peer-menu {
   padding: 10px;
+}
+
+@media screen and (min-width: 500px) and (max-width: 2000px) {
+  #app {
+    min-width: 400px;
+    max-width: 400px;
+  }
+
+  article {
+    min-width: 400px;
+    max-width: 400px !important;
+  }
+
+  #wrapper {
+    min-width: 100vw;
+    display: flex;
+    justify-content: center;
+  }
 }

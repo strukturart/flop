@@ -483,7 +483,7 @@ function formatFileSize(bytes, decimalPoint) {
 }
 
 //pick image
-export let pick_image = function (cb) {
+export let pick_image = function (callback) {
   try {
     let pick = new MozActivity({
       name: "pick",
@@ -493,11 +493,11 @@ export let pick_image = function (cb) {
     });
 
     pick.onsuccess = function (e) {
-      callback(pick, "k2");
+      console.log("success" + this.result);
+      callback(this.result);
     };
 
     pick.onerror = function () {
-      general.blocker = false;
       console.log("The activity encounter en error: " + this.error);
     };
   } catch (e) {
@@ -513,12 +513,9 @@ export let pick_image = function (cb) {
 
     pick.start().then(
       (rv) => {
-        general.blocker = false;
-        callback(rv, "k3");
+        callback(rv);
       },
       (err) => {
-        general.blocker = false;
-
         console.log(err);
       }
     );
