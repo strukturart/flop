@@ -20,7 +20,7 @@ import m from "mithril";
 import qrious from "qrious";
 
 //github.com/laurentpayot/minidenticons#usage
-export let status = { visibility: true, action: "", version: "0.0" };
+export let status = { visibility: true, action: "" };
 export let settings = {};
 export let current_room = "";
 
@@ -49,10 +49,27 @@ let ice_servers = {
   "iceServers": [],
 };
 
-async function getIceServers() {
+let get_manifest_callback = (e) => {
+  let version;
   try {
-    if (peer) peer.destroy();
+    console.log(e.manifest.version);
+    version = e.manifest.version;
+  } catch (e) {}
+  if ("b2bg" in navigator) {
+    try {
+      alert(e.b2g_features);
+      version = e.b2g_features.version;
+    } catch (e) {}
+  }
 
+  status.version = version;
+};
+getManifest(get_manifest_callback);
+
+async function getIceServers() {
+  document.querySelector(".loading-spinner").style.display = "block";
+
+  try {
     const response = await fetch(
       "https://" +
         process.env.TURN_APP_NAME +
@@ -61,26 +78,21 @@ async function getIceServers() {
     );
 
     if (!response.ok) {
-      console.log("without turn");
-
-      peer = new Peer({
-        debug: 1,
-        secure: false,
-        referrerPolicy: "no-referrer",
-      });
+      document.querySelector(".loading-spinner").style.display = "none";
 
       throw new Error(
         `Failed to fetch ice servers. Status: ${response.status}`
       );
     }
 
-    if (response.ok) {
-      const a = await response.json();
+    const a = await response.json();
 
-      a.forEach((e) => {
-        ice_servers.iceServers.push(e);
-      });
+    a.forEach((e) => {
+      ice_servers.iceServers.push(e);
+    });
 
+    if (peer) peer.destroy();
+    if (typeof peerConfiguration == "object") {
       console.log("with turn");
 
       peer = new Peer({
@@ -89,23 +101,37 @@ async function getIceServers() {
         secure: false,
         referrerPolicy: "origin-when-cross-origin",
       });
+    } else {
+      console.log("without turn");
+
+      peer = new Peer({
+        debug: 1,
+        secure: false,
+        config: ice_servers,
+        referrerPolicy: "no-referrer",
+      });
     }
+
+    peer.on("open", function () {
+      if (peer.id === null) {
+        peer.id = lastPeerId;
+      } else {
+        lastPeerId = peer.id;
+      }
+      document.querySelector(".loading-spinner").style.display = "none";
+    });
 
     peer.on("connection", function (c) {
       conn = c;
 
-      console.log(conn);
-
       conn.on("data", function (data) {
         if (!status.visibility) pushLocalNotification("flop", "new message");
-
         if (data.file) {
           chat_data.push({
             nickname: data.nickname,
             content: "",
             datetime: new Date(),
             image: data.file,
-            class: "image",
           });
         }
 
@@ -114,12 +140,8 @@ async function getIceServers() {
             nickname: data.nickname,
             content: data.text,
             datetime: new Date(),
-            class: "text",
           });
         }
-        chat_data = chat_data.filter((e) => {
-          return e.id !== "no-other-user-online";
-        });
 
         m.redraw();
         focus_last_article();
@@ -132,12 +154,12 @@ async function getIceServers() {
       // Event handler for successful connection
       conn.on("open", function () {
         side_toaster("Connected with " + peer.id, 5000);
+        document.querySelector(".loading-spinner").style.display = "none";
       });
 
       // Event handler for connection errors
       conn.on("error", function (err) {
         console.log("Error: " + err.type, 5000);
-        peer.reconnect();
       });
     });
 
@@ -150,14 +172,17 @@ async function getIceServers() {
 
     peer.on("close", function () {
       side_toaster("connection closed", 1000);
-      conn = null;
+      // conn = null;
+      document.querySelector(".loading-spinner").style.display = "none";
     });
 
     peer.on("error", function (err) {
-      side_toaster("error " + err, 2000);
+      side_toaster("int connection error " + err, 2000);
+      document.querySelector(".loading-spinner").style.display = "none";
     });
   } catch (error) {
-    alert("Error fetching ice servers:", error.message);
+    console.error("Error fetching ice servers:", error.message);
+    document.querySelector(".loading-spinner").style.display = "none";
   }
 }
 
@@ -283,7 +308,6 @@ function sendMessage(msg, type) {
           content: "",
           datetime: new Date(),
           image: src,
-          class: "image",
         });
 
         msg = {
@@ -309,7 +333,6 @@ function sendMessage(msg, type) {
         nickname: settings.nickname,
         content: msg.text,
         datetime: new Date(),
-        class: "text",
       });
       conn.send(msg);
 
@@ -318,7 +341,7 @@ function sendMessage(msg, type) {
       write();
     }
   } else {
-    side_toaster("no other users online", 3000);
+    side_toaster("no user onlineno other users online", 3000);
     write();
   }
 }
@@ -328,13 +351,14 @@ let close_connection = function () {
 };
 
 //connect to peer
-
 let connect_to_peer = function (id) {
-  //document.querySelector(".loading-spinner").style.display = "block";
-
   current_room = id;
   getIceServers().then(() => {
     m.route.set("/chat");
+    setTimeout(() => {
+      document.querySelector(".loading-spinner").style.display = "block";
+    }, 2000);
+
     setTimeout(() => {
       if (peer == null) console.log("no peer instance");
 
@@ -342,11 +366,8 @@ let connect_to_peer = function (id) {
       try {
         conn = peer.connect(id, {
           label: "chat",
-          metadata: "flop chat",
           reliable: true,
         });
-
-        console.log(conn);
 
         conn.on("data", function (data) {
           if (!status.visibility) pushLocalNotification("flop", "new message");
@@ -368,23 +389,19 @@ let connect_to_peer = function (id) {
             });
           }
 
+          chat_data = chat_data.filter((e) => {
+            return e.id !== "no-other-user-online";
+          });
+
           m.redraw();
           focus_last_article();
         });
 
         // Event handler for successful connection
         conn.on("open", function () {
-          // document.querySelector(".loading-spinner").style.display = "none";
-
-          chat_data.push({
-            nickname: data.nickname,
-            content: "connected",
-            datetime: new Date(),
-          });
-          m.redraw();
-          focus_last_article();
-
           side_toaster("Connected with " + peer.id, 5000);
+          chat_data.push({ content: "connected", datetime: new Date() });
+          document.querySelector(".loading-spinner").style.display = "none";
         });
 
         // Event handler for connection errors
@@ -395,14 +412,14 @@ let connect_to_peer = function (id) {
 
         // Event handler for connection closure
         conn.on("close", function () {
-          side_toaster("user has left chat", 2000);
+          side_toaster("user has left chat", 1000);
         });
       } catch (e) {
-        console.log("error conn " + e);
+        console.log("error con" + e);
         document.querySelector(".loading-spinner").style.display = "none";
       }
-    });
-  }, 4000);
+    }, 4000);
+  });
 };
 
 //create room
@@ -413,8 +430,8 @@ let create_peer = function () {
   getIceServers().then(() => {
     peer.on("open", function () {
       m.route.set("/chat");
-      document.querySelector(".loading-spinner").style.display = "none";
 
+      // Workaround for peer.reconnect deleting previous id
       if (peer.id === null) {
         peer.id = lastPeerId;
       } else {
@@ -452,6 +469,7 @@ let create_peer = function () {
 
       m.redraw();
       focus_last_article();
+      document.querySelector(".loading-spinner").style.display = "none";
     });
   });
 };
@@ -484,8 +502,6 @@ let time_parse = function (value) {
 //callback qr-code scan
 let scan_callback = function (n) {
   connect_to_peer(n);
-  document.querySelector(".loading-spinner").style.display = "block";
-
   status.action = "";
 };
 
@@ -1084,6 +1100,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
     }
 
     // smooth center scrolling
+    console.log(targetElement);
 
     const rect = document.activeElement.getBoundingClientRect();
     const elY =
@@ -1242,11 +1259,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
         stop_scan();
         m.route.set("/start");
         break;
-      case "0":
-        localforage.getItem("connect_to_id").then((e) => {
-          alert(e);
-        });
-        break;
     }
   }
 
@@ -1326,54 +1338,50 @@ document.addEventListener("DOMContentLoaded", function (e) {
   document.addEventListener("keydown", handleKeyDown);
   document.addEventListener("keyup", handleKeyUp);
 });
-//KaiOS 2 mozActivity
+
 try {
   navigator.mozSetMessageHandler("activity", function (activityRequest) {
     var option = activityRequest.source;
+
     const urlParams = new URLSearchParams(option.data);
     const id = urlParams.get("id");
     setTimeout(() => {
       connect_to_peer(id);
-    }, 5000);
+    }, 10000);
+
+    console.log(option.data);
   });
 } catch (e) {}
 
-//KaiOS 3 webActivity
-if ("b2g" in navigator) {
-  setTimeout(() => {
-    localforage.getItem("connect_to_id").then((e) => {
-      if (e == null || e == "") return false;
-      const id = e.split("?id=");
-
-      setTimeout(() => {
-        connect_to_peer(id[1]);
-      }, 5000);
-    });
-  }, 3000);
-}
-
 //webActivity KaiOS 3
-if ("b2g" in navigator) {
-  try {
-    navigator.serviceWorker
-      .register(new URL("sw.js", import.meta.url), {
-        type: "module",
-      })
-      .then((registration) => {
-        if (registration.waiting) {
-          // There's a new service worker waiting to activate
-          // You can prompt the user to reload the page to apply the update
-          // For example: show a message to the user
-        } else {
-          // No waiting service worker, registration was successful
-        }
 
-        registration.systemMessageManager.subscribe("activity").then(
-          (rv) => {},
-          (error) => {}
-        );
-      });
-  } catch (e) {}
+try {
+  navigator.serviceWorker
+    .register(new URL("sw.js", import.meta.url), {
+      type: "module",
+    })
+    .then((registration) => {
+      if (registration.waiting) {
+        // There's a new service worker waiting to activate
+        // You can prompt the user to reload the page to apply the update
+        // For example: show a message to the user
+      } else {
+        // No waiting service worker, registration was successful
+      }
+
+      registration.systemMessageManager.subscribe("activity").then(
+        (rv) => {
+          alert(rv);
+        },
+        (error) => {
+          alert(error);
+        }
+      );
+    });
+} catch (e) {
+  alert(e);
 }
 
-channel.addEventListener("message", (event) => {});
+channel.addEventListener("message", (event) => {
+  window.open("", "_blank");
+});

@@ -17,9 +17,7 @@ Currently you can exchange text messages, pictures and your location with each o
 - share image
 - invite users
 
-![image-1](/images/image-1.png)
-![image-2](/images/image-2.png)
-![image-2](/images/image-3.png)
+![image-4](/images/mockup.png)
 
 ## yes, but
 
