@@ -45,7 +45,7 @@ export let load_ads = function () {
         // calling 'display' will display the ad
         ad.call("display", {
           navClass: "item",
-          tabindex: 7,
+          tabindex: 3,
           display: "block",
         });
       },
@@ -147,6 +147,40 @@ export function share(url) {
 
   if ("b2g" in navigator) {
     let activity = new WebActivity("share", {
+      type: "url",
+      url: url,
+    });
+    activity.start().then(
+      (rv) => {
+        console.log("Results passed back from activity handler:");
+        console.log(rv);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+}
+
+export function open(url) {
+  try {
+    var activity = new MozActivity({
+      name: "view",
+      data: {
+        type: "url",
+        url: url,
+      },
+    });
+
+    activity.onsuccess = function () {};
+
+    activity.onerror = function () {
+      console.log("The activity encounter en error: " + this.error);
+    };
+  } catch (e) {}
+
+  if ("b2g" in navigator) {
+    let activity = new WebActivity("view", {
       type: "url",
       url: url,
     });

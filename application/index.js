@@ -4,6 +4,7 @@ import {
   bottom_bar,
   side_toaster,
   pick_image,
+  open,
   month,
   generateRandomString,
   load_ads,
@@ -20,7 +21,7 @@ import m from "mithril";
 import qrious from "qrious";
 
 //github.com/laurentpayot/minidenticons#usage
-export let status = { visibility: true, action: "" };
+export let status = { visibility: true, action: "", deviceOnline: true };
 export let settings = {};
 export let current_room = "";
 
@@ -44,6 +45,13 @@ if (debug) {
     return true;
   };
 }
+
+window.addEventListener("online", () => {
+  status.deviceOnline = true;
+});
+window.addEventListener("offline", () => {
+  status.deviceOnline = false;
+});
 
 let ice_servers = {
   "iceServers": [],
@@ -352,6 +360,10 @@ let close_connection = function () {
 
 //connect to peer
 let connect_to_peer = function (id) {
+  if (!status.deviceOnline) {
+    alert("Device is offline");
+    return false;
+  }
   current_room = id;
   getIceServers().then(() => {
     m.route.set("/chat");
@@ -425,6 +437,10 @@ let connect_to_peer = function (id) {
 //create room
 // and create qr-code with peer id
 let create_peer = function () {
+  if (!status.deviceOnline) {
+    alert("Device is offline");
+    return false;
+  }
   document.querySelector(".loading-spinner").style.display = "block";
 
   getIceServers().then(() => {
@@ -522,6 +538,117 @@ let geolocation_callback = function (e) {
 };
 
 var root = document.getElementById("app");
+
+var about = {
+  view: function () {
+    return m(
+      "div",
+      {
+        class: "width-100 flex justify-content-center page",
+        oncreate: () => {
+          bottom_bar("", "<img src='assets/image/select.svg'>", "");
+        },
+      },
+      [
+        m(
+          "button",
+          {
+            tabindex: 0,
+
+            class: "item",
+            onclick: () => {
+              m.route.set("/settings_page");
+            },
+          },
+          "Settings"
+        ),
+
+        m(
+          "button",
+          {
+            tabindex: 1,
+
+            class: "item",
+            onclick: () => {
+              m.route.set("/privacy_policy");
+            },
+          },
+          "Privacy Policy"
+        ),
+        m("div", {
+          id: "KaiOSads-Wrapper",
+          tabindex: 6,
+
+          class: "item",
+          oncreate: () => {
+            load_ads();
+          },
+        }),
+      ]
+    );
+  },
+};
+
+var privacy_policy = {
+  view: function () {
+    return m("div", { class: "width-100 flex justify-content-center" }, [
+      m(
+        "div",
+        {
+          class: "width-100 page",
+
+          oncreate: ({ dom }) => {
+            dom.focus();
+          },
+          oninit: () => {
+            bottom_bar("", "<img src='assets/image/select.svg'>", "");
+          },
+          onfocus: () => {
+            bottom_bar("", "", "");
+          },
+        },
+        [
+          m.trust(
+            "<div> <h2 class='item' tabindex=0>flop</h2> uses 2 different servers to connect two chat partners: <strong>0.peerjs.com</strong> and <strong>metered.ca</strong>, both of which are freely available. If you want to change that, you can store your own servers in the settings.<br> The app itself does not store any data, but be careful when exchanging sensitive data as no end-to-end encryption is implemented.</div>"
+          ),
+          m.trust(
+            "<div><h2 class='item' tabindex=1>PeerJS</h2>We do not collect or store any information. While you are connected to a PeerJS server, your IP address, randomly-generated client ID, and signalling data are kept in the server's memory. With default settings, the server will remove this information from memory 60 seconds after you stop communicating with the service.</div>"
+          ),
+
+          m(
+            "button",
+            {
+              class: "item button-style",
+              tabindex: 2,
+              onclick: function () {
+                open(
+                  "https://www.metered.ca/tools/openrelay/#%EF%B8%8Fsecurity"
+                );
+              },
+              onfocus: () => {
+                bottom_bar("", "<img src='assets/image/select.svg'>", "");
+              },
+            },
+            "Privacy Policy Metered"
+          ),
+          m(
+            "div",
+            {
+              class: "item",
+              tabindex: 3,
+              onfocus: () => {
+                bottom_bar("", "<img src='assets/image/select.svg'>", "");
+              },
+            },
+            m.trust(
+              "<h2>KaiAds</h2> This is a third party service that may collect information used to identify you.<br><br><br>"
+            )
+          ),
+        ]
+      ),
+    ]);
+  },
+};
 
 var settings_page = {
   view: function () {
@@ -687,15 +814,6 @@ var settings_page = {
           },
           "save settings"
         ),
-        m("div", {
-          id: "KaiOSads-Wrapper",
-          tabindex: 6,
-
-          class: "item",
-          oncreate: () => {
-            load_ads();
-          },
-        }),
       ]
     );
   },
@@ -703,7 +821,6 @@ var settings_page = {
 
 var options = {
   view: function () {
-    bottom_bar("", "", "");
     return m(
       "div",
       {
@@ -720,6 +837,9 @@ var options = {
               }, 500),
             class: "item",
             tabindex: 0,
+            onfocus: () => {
+              bottom_bar("", "<img src='assets/image/select.svg'>", "");
+            },
             onclick: function () {
               if (status.userOnline > 0) {
                 pick_image(handleImage);
@@ -736,6 +856,9 @@ var options = {
           {
             class: "item",
             tabindex: 1,
+            onfocus: () => {
+              bottom_bar("", "<img src='assets/image/select.svg'>", "");
+            },
             onclick: function () {
               if (status.userOnline > 0) {
                 geolocation(geolocation_callback);
@@ -754,6 +877,9 @@ var options = {
             tabindex: 2,
             onclick: function () {
               share(settings.invite_url + "?id=" + current_room);
+            },
+            onfocus: () => {
+              bottom_bar("", "<img src='assets/image/select.svg'>", "");
             },
           },
           "Invite users"
@@ -809,6 +935,9 @@ var links_page = {
           onclick: function () {
             window.open(item.href);
             m.route.set("/chat");
+          },
+          onfocus: () => {
+            bottom_bar("", "<img src='assets/image/select.svg'>", "");
           },
           oncreate: () => {
             index == 1 ?? item.focus();
@@ -1052,6 +1181,8 @@ m.route(root, "/intro", {
   "/settings_page": settings_page,
   "/favorits_page": favorits_page,
   "/scan": scan,
+  "/about": about,
+  "/privacy_policy": privacy_policy,
 });
 
 document.addEventListener("DOMContentLoaded", function (e) {
@@ -1199,7 +1330,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
       case "SoftRight":
       case "Alt":
         if (route == "/chat") m.route.set("/options");
-        if (route == "/start") m.route.set("/settings_page");
+        if (route == "/start") m.route.set("/about");
 
         break;
 
@@ -1240,14 +1371,13 @@ document.addEventListener("DOMContentLoaded", function (e) {
         if (route == "/chat") {
           if (document.activeElement.tagName == "ARTICLE") {
             links = linkify.find(document.activeElement.textContent);
+            console.log(links);
 
-            if (links.length >= 0) {
+            if (links.length > 0) {
               m.route.set("/links_page");
+            } else {
+              return false;
             }
-
-            links.forEach(function (e) {
-              console.log(e);
-            });
           }
 
           break;
@@ -1281,7 +1411,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
         m.route.get() == "/settings_page" ||
         m.route.get() == "/favorits_page" ||
         m.route.get() == "/scan" ||
-        m.route.get() == "/open_peer_menu"
+        m.route.get() == "/open_peer_menu" ||
+        m.route.get() == "/about"
       ) {
         evt.preventDefault();
         status.action = "";
@@ -1289,6 +1420,18 @@ document.addEventListener("DOMContentLoaded", function (e) {
         if (conn) {
           close_connection();
         }
+      }
+
+      if (m.route.get() == "/settings") {
+        evt.preventDefault();
+        status.action = "";
+        m.route.set("/about");
+      }
+
+      if (m.route.get() == "/privacy_policy") {
+        evt.preventDefault();
+        status.action = "";
+        m.route.set("/about");
       }
 
       if (m.route.get() == "/options" || m.route.get() == "/links_page") {

@@ -14,6 +14,7 @@
     "@babel/plugin-transform-named-capturing-groups-regex": "^7.17.12",
     "@babel/plugin-transform-runtime": "^7.18.5",
     "@babel/preset-env": "^7.19.1",
+    "@parcel/resolver-default": "^2.12.0",
     "@parcel/transformer-html": "^2.6.2",
     "babel-plugin-transform-async-to-promises": "^0.8.18",
     "buffer": "^6.0.3",
