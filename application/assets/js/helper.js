@@ -45,7 +45,7 @@ export let load_ads = function () {
         // calling 'display' will display the ad
         ad.call("display", {
           navClass: "item",
-          tabindex: 3,
+          tabindex: 2,
           display: "block",
         });
       },
@@ -395,9 +395,7 @@ export let getManifest = function (callback) {
       callback(self.result);
     };
     self.onerror = function () {};
-  }
-
-  if ("b2g" in navigator) {
+  } else {
     fetch("/manifest.webmanifest")
       .then((r) => r.json())
       .then((parsedResponse) => callback(parsedResponse));

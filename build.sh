@@ -11,7 +11,7 @@ mkdir ./build
 
 
 
-npm run  build --no-source-maps  --public-url ./ application/index.html 
+npm run build
 
 
 cp ./application/manifest.webapp ./dist/
@@ -42,14 +42,17 @@ zip -r ../flop-omnisd.zip ./*
 rm -fr ../flop-omnisd
 rm ../application.zip
 
-
+#create KaiOS3 zip
 cd ../../
 cd dist/
 mv manifest.webapp ../
 zip -r ../build/flop-kaios3.zip ./*
 mv  ../manifest.webapp ./
+
+#create public web version
+#todo
 exit
-exit
+
 
 
 

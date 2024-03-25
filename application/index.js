@@ -59,15 +59,11 @@ let ice_servers = {
 
 let get_manifest_callback = (e) => {
   let version;
-  try {
-    console.log(e.manifest.version);
+
+  if (navigator.mozApps) {
     version = e.manifest.version;
-  } catch (e) {}
-  if ("b2bg" in navigator) {
-    try {
-      alert(e.b2g_features);
-      version = e.b2g_features.version;
-    } catch (e) {}
+  } else {
+    version = e.b2g_features.version;
   }
 
   status.version = version;
@@ -104,7 +100,7 @@ async function getIceServers() {
       console.log("with turn");
 
       peer = new Peer({
-        debug: 1,
+        debug: 0,
         config: ice_servers,
         secure: false,
         referrerPolicy: "origin-when-cross-origin",
@@ -113,7 +109,7 @@ async function getIceServers() {
       console.log("without turn");
 
       peer = new Peer({
-        debug: 1,
+        debug: 0,
         secure: false,
         config: ice_servers,
         referrerPolicy: "no-referrer",
@@ -554,7 +550,9 @@ var about = {
           "button",
           {
             tabindex: 0,
-
+            oncreate: ({ dom }) => {
+              dom.focus();
+            },
             class: "item",
             onclick: () => {
               m.route.set("/settings_page");
@@ -577,9 +575,9 @@ var about = {
         ),
         m("div", {
           id: "KaiOSads-Wrapper",
-          tabindex: 2,
+          //tabindex: 2,
 
-          class: "item",
+          // class: "item",
           oncreate: () => {
             load_ads();
           },
@@ -963,6 +961,9 @@ var open_peer_menu = {
       {
         class: "flex justify-content-center  width-100",
         id: "open-peer-menu",
+        oncreate: () => {
+          bottom_bar("", "<img src='assets/image/select.svg'>", "");
+        },
       },
       [
         m(
@@ -1161,7 +1162,6 @@ var intro = {
             "kbd",
             {
               id: "version",
-              class: "debug",
             },
             status.version
           ),
@@ -1231,7 +1231,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
     }
 
     // smooth center scrolling
-    console.log(targetElement);
 
     const rect = document.activeElement.getBoundingClientRect();
     const elY =
@@ -1514,17 +1513,13 @@ try {
 
       registration.systemMessageManager.subscribe("activity").then(
         (rv) => {
-          alert(rv);
+          console.log(rv);
         },
         (error) => {
-          alert(error);
+          console.log(error);
         }
       );
     });
 } catch (e) {
-  alert(e);
+  console.log(e);
 }
-
-channel.addEventListener("message", (event) => {
-  window.open("", "_blank");
-});
