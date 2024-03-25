@@ -577,7 +577,7 @@ var about = {
         ),
         m("div", {
           id: "KaiOSads-Wrapper",
-          tabindex: 6,
+          tabindex: 2,
 
           class: "item",
           oncreate: () => {

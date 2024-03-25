@@ -45,7 +45,7 @@ export let load_ads = function () {
         // calling 'display' will display the ad
         ad.call("display", {
           navClass: "item",
-          tabindex: 7,
+          tabindex: 3,
           display: "block",
         });
       },
