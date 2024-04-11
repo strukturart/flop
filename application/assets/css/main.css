@@ -111,7 +111,9 @@ img[src=" "] {
 button {
   font-size: 1rem;
   background: rgb(255, 255, 255);
-  width: 95%;
+  min-width: 95%;
+  max-width: 95%;
+
   padding: 5px;
   margin: 5px 0 15px 0px;
   color: black;
@@ -340,7 +342,8 @@ div#side-toast {
 
   transition: all 0.5s ease-in-out;
   transform-origin: left top;
-  transform: translate(-100vw, 0px);
+  opacity: 0;
+  max-width: 100vw;
 }
 
 div#side-toast img {

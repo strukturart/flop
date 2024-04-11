@@ -24,7 +24,7 @@
   ],
 
   "b2g_features": {
-    "version": "0.3040",
+    "version": "0.3055",
     "id": "flop",
     "subtitle": "flop p2p messenger app",
     "core": true,

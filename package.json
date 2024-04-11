@@ -36,6 +36,7 @@
     "localforage": "^1.10.0",
     "minidenticons": "^1.0.3",
     "mithril": "^2.0.4",
-    "qrious": "^4.0.2"
+    "qrious": "^4.0.2",
+    "url-search-params-polyfill": "^8.1.1"
   }
 }

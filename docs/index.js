@@ -2,7 +2,7 @@ setTimeout(() => {
   try {
     const activity = new MozActivity({
       name: "flop",
-      data: window.location,
+      data: window.location.href,
     });
     activity.onsuccess = function () {
       console.log("Activity successfuly handled");
@@ -18,7 +18,7 @@ setTimeout(() => {
       let activity = new WebActivity("flop", {
         name: "flop",
         type: "url",
-        data: window.location,
+        data: window.location.href,
       });
       activity.start().then(
         (rv) => {
@@ -26,7 +26,7 @@ setTimeout(() => {
           console.log(rv);
         },
         (err) => {
-          console.log(err);
+          alert(err);
         }
       );
     } catch (e) {}

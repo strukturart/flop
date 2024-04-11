@@ -15,6 +15,20 @@ export const month = [
   "December",
 ];
 
+export let setTabindex = () => {
+  let visibleElements = document.querySelectorAll(
+    '.item:not([style*="display: none"])'
+  );
+
+  visibleElements.forEach((element, index) => {
+    if (getComputedStyle(element).display !== "none") {
+      element.setAttribute("tabindex", index);
+    } else {
+      element.removeAttribute("tabindex");
+    }
+  });
+};
+
 export let load_ads = function () {
   var js = document.createElement("script");
   js.type = "text/javascript";
@@ -39,7 +53,9 @@ export let load_ads = function () {
         ad.on("close", () => console.log("close event"));
 
         // the ad succesfully displayed
-        ad.on("display", () => console.log("display event"));
+        ad.on("display", () => {
+          setTabindex();
+        });
 
         // Ad is ready to be displayed
         // calling 'display' will display the ad
@@ -442,9 +458,10 @@ export let side_toaster = function (text, time) {
 
 let toast_qq = function (text, time) {
   var x = document.querySelector("div#side-toast");
+  x.style.opacity = "100";
   x.innerHTML = queue_st[0].text;
 
-  x.style.transform = "translate(0vh, 0px)";
+  x.style.transform = "translate(0vh, 0vw)";
 
   timeout = setTimeout(function () {
     x.style.transform = "translate(-100vw,0px)";
