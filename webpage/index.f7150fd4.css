@@ -1,37 +1,28 @@
-/*GENERAL*/
-
 :root {
   --color-one: black;
   --color-two: yellow;
   --color-three: silver;
-  --color-four: rgb(190, 185, 185);
-  --color-five: rgba(214, 225, 228, 0.322);
-  --color-seven: rgba(101, 216, 24, 0.288);
-  --color-eight: rgba(47, 82, 196, 0.188);
+  --color-four: #beb9b9;
+  --color-five: #d6e1e452;
+  --color-seven: #65d81849;
+  --color-eight: #2f52c430;
 }
 
 @font-face {
-  font-family: "Roboto";
-  src: url("../fonts/Roboto-Regular.ttf");
+  font-family: Roboto;
+  src: url("Roboto-Regular.ca197847.ttf");
 }
 
-*,
-*:before,
-*:after {
-  border: 0px;
-  padding: 0px;
-  margin: 0px;
+*, :before, :after {
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
-
-  /* Careful, this breaks the word wherever it is without a hyphen */
   overflow-wrap: break-word;
   word-wrap: break-word;
   scroll-behavior: smooth;
-  /* Adds a hyphen where the word breaks */
-  -webkit-hyphens: auto;
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
   hyphens: auto;
+  border: 0;
+  margin: 0;
+  padding: 0;
 }
 
 ::-webkit-scrollbar {
@@ -50,22 +41,20 @@
   outline: 1px solid red;
 }
 
-html,
-body {
-  font-family: "Roboto" !important;
-  font-weight: 400;
-  position: relative;
-  margin: 0px;
-  padding: 0px;
-  font-size: 1rem;
-  line-height: 1.4rem;
-  max-height: 100%;
-  max-width: 100%;
-  height: 100%;
+html, body {
+  background: #fff;
   width: 100%;
   max-width: 100vw;
+  height: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4rem;
+  position: relative;
   overflow: hidden;
-  background: white;
+  font-family: Roboto !important;
 }
 
 #app {
@@ -73,9 +62,9 @@ body {
 }
 
 #wrapper {
-  padding: 0px;
-  display: flex;
   justify-content: center;
+  padding: 0;
+  display: flex;
 }
 
 h1 {
@@ -83,8 +72,8 @@ h1 {
 }
 
 h2 {
-  font-size: 1.1rem;
   width: 100%;
+  font-size: 1.1rem;
 }
 
 h3 {
@@ -101,52 +90,51 @@ img {
   display: block;
 }
 
-img[src=""] {
-  display: none;
-}
-
-img[src=" "] {
+img[src=""], img[src=" "] {
   display: none;
 }
 
 button {
-  font-size: 1rem;
-  background: rgb(255, 255, 255);
+  color: #000;
+  background: #fff;
+  border: 2px solid gray;
+  -moz-border-radius: 1px;
+  border-radius: 1px;
   min-width: 100%;
   max-width: 100%;
-
-  padding: 5px;
-  margin: 5px 0 15px 0px;
-  color: black;
-  border-radius: 1px;
-  border: 2px solid gray;
-  font-weight: 700;
   min-height: 40px;
-  font-family: "Roboto" !important;
+  margin: 5px 0 15px;
+  padding: 5px;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: Roboto !important;
 }
+
 button:focus {
   background: orange;
-  border: 0px solid gray;
+  border: 0 solid gray;
 }
 
 a.button-style {
-  font-size: 1rem;
-  background: rgb(255, 255, 255);
-  width: 100%;
-  padding: 5px;
-  margin: 10px 0 15px 0px;
-  color: black;
-  border-radius: 1px;
-  border: 2px solid gray;
-  font-weight: 700;
-  min-height: 40px;
-  font-family: "Roboto" !important;
-  display: block;
+  color: #000;
   text-align: center;
+  background: #fff;
+  border: 2px solid gray;
+  -moz-border-radius: 1px;
+  border-radius: 1px;
+  width: 100%;
+  min-height: 40px;
+  margin: 10px 0 15px;
+  padding: 5px;
+  font-size: 1rem;
+  font-weight: 700;
+  display: block;
+  font-family: Roboto !important;
 }
+
 a.button-style:focus {
   background: orange;
-  border: 0px solid gray;
+  border: 0 solid gray;
 }
 
 a {
@@ -154,106 +142,104 @@ a {
 }
 
 select {
-  width: 95%;
-  padding: 10px;
-  margin: 10px 5% 0px 5%;
-
-  /* styling */
-  background-color: white;
-  border: thin solid rgb(56, 56, 66);
-  border-radius: 4px;
   font: inherit;
-  line-height: 1.5em;
   text-align: center;
-
-  /* reset */
-
-  -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -webkit-appearance: none;
   -moz-appearance: none;
+  background-color: #fff;
+  border: thin solid #383842;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  width: 95%;
+  margin: 10px 5% 0;
+  padding: 10px;
+  line-height: 1.5em;
 }
 
 textarea {
-  height: 30px;
-  width: 95%;
-  padding: 3px;
   border: 1px solid silver;
+  width: 95%;
+  height: 30px;
+  padding: 3px;
 }
 
 input {
+  border: 2px solid silver;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
   width: 95%;
   height: 30px;
-  padding: 3px;
-  border: 2px solid silver;
-  border-radius: 10px;
   margin: 0 0 0 10px;
+  padding: 3px;
 }
 
 label {
-  display: block;
-  min-width: 100%;
-  margin: 0 0 10px 0;
   text-align: center;
+  min-width: 100%;
+  margin: 0 0 10px;
+  display: block;
 }
+
 .input-parent {
   min-width: 100%;
+  margin: 0 0 20px;
   padding: 10px;
-  margin: 0 0 20px 0;
 }
 
 .input-parent:focus {
   background: orange;
 }
+
 div#intro {
-  position: fixed;
-  background: black;
   z-index: 100000;
+  background: #000;
   min-width: 100vw;
   height: 100%;
-  left: 0;
-  top: 0;
   animation-name: intro;
   animation-duration: 1s;
-  animation-delay: 8s;
   animation-iteration-count: 1;
+  animation-delay: 8s;
   animation-fill-mode: forwards;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 div#intro img {
   width: 120px;
   height: auto;
-  position: absolute;
-  top: 150px;
-  left: 50%;
   margin-left: -60px;
   animation-name: intro_img;
   animation-duration: 4s;
-  animation-delay: 0s;
   animation-iteration-count: 1;
+  animation-delay: 0s;
   animation-fill-mode: forwards;
+  position: absolute;
+  top: 150px;
+  left: 50%;
 }
 
 #intro #version-box {
+  height: 40px;
   position: absolute;
   bottom: 50px;
-  height: 40px;
 }
 
 #intro #version-box kbd {
-  border: 2px solid pink;
-  box-shadow: 2px 2px pink;
-  font-size: 0.6em;
-  line-height: 0.85em;
-  display: block;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  padding: 3px 5px;
+  letter-spacing: .05em;
   white-space: nowrap;
-  color: white;
+  color: #fff;
+  border: 2px solid pink;
   width: fit-content;
   height: 20px;
+  padding: 3px 5px;
+  font-size: .6em;
+  font-weight: 600;
+  line-height: .85em;
+  display: block;
+  box-shadow: 2px 2px pink;
 }
 
 div#login {
@@ -262,18 +248,19 @@ div#login {
 
 @keyframes intro_img {
   0% {
-    filter: hue-rotate(-0.25turn);
+    filter: hue-rotate(-.25turn);
   }
+
   20% {
     filter: hue-rotate(-2.25turn);
   }
 
   40% {
-    filter: hue-rotate(-0.65turn);
+    filter: hue-rotate(-.65turn);
   }
 
   60% {
-    filter: hue-rotate(-0.35turn);
+    filter: hue-rotate(-.35turn);
   }
 
   100% {
@@ -283,22 +270,23 @@ div#login {
 
 @keyframes intro {
   from {
-    display: block;
     opacity: 100;
+    display: block;
   }
+
   to {
-    display: none;
     opacity: 0;
+    display: none;
   }
 }
 
 #KaiOSAd {
-  height: 200px;
   width: 240px;
+  height: 200px;
 }
 
 #KaiOSAds-Wrapper {
-  padding: 0px;
+  padding: 0;
 }
 
 #KaiOSAds-Wrapper iframe {
@@ -306,49 +294,42 @@ div#login {
 }
 
 .page {
-  padding: 10px;
   max-width: 100vw;
+  padding: 10px;
 }
 
-/*///////////////////////////
-///TOAST////////////////*/
-
 div#toast {
-  position: fixed;
-  height: auto;
   overflow: none;
-  background: black;
-  color: white;
+  color: #fff;
   z-index: 10;
+  transform-origin: 0 0;
+  background: #000;
   min-width: 100%;
+  height: auto;
   padding: 5px;
-  top: 0px;
-
-  transition: all 0.5s ease-in-out;
-  transform-origin: left top;
-  transform: translate(0px, -100px);
+  transition: all .5s ease-in-out;
+  position: fixed;
+  top: 0;
+  transform: translate(0, -100px);
 }
 
 div#side-toast {
-  position: fixed;
-  height: auto;
   overflow: none;
-  background: orange;
-  color: white;
+  color: #fff;
   z-index: 10;
-  padding: 8px;
-  top: 70vh;
-  border-bottom-right-radius: 15px;
-  border-top-right-radius: 15px;
-
-  transition: all 0.5s ease-in-out;
-  transform-origin: left top;
+  transform-origin: 0 0;
   opacity: 0;
+  background: orange;
+  -moz-border-top-right-radius: 15px;
+  border-top-right-radius: 15px;
+  -moz-border-bottom-right-radius: 15px;
+  border-bottom-right-radius: 15px;
   max-width: 100vw;
-}
-
-div#side-toast img {
-  width: 30px;
+  height: auto;
+  padding: 8px;
+  transition: all .5s ease-in-out;
+  position: fixed;
+  top: 70vh;
 }
 
 div#side-toast img {
@@ -358,52 +339,43 @@ div#side-toast img {
 #login-icon-box {
   width: 100px;
   height: 100px;
-  margin: 0 0 10px 0;
+  margin: 0 0 10px;
 }
 
 div.nickname {
   font-weight: bold;
 }
-/*/ //////////////////////////
-///VIEWS////////////////*/
 
 div#options {
+  z-index: 4;
+  height: 92vh;
+  padding: 10px 0 0;
   display: none;
   position: absolute;
-  z-index: 4;
   top: 0;
-  display: none;
-  padding: 5px;
-  height: 92vh;
   overflow: hidden;
-  padding: 10px 0 0 0;
 }
 
 div#options div#import-text {
+  text-align: center;
+  margin: 0 0 20px;
   padding: 10px;
   font-weight: bold;
-  margin: 0 0 20px 0;
-  text-align: center;
   display: none;
 }
 
-/*/////////////////
-///BOTTOM BAR////
-////////////////*/
-
 div#bottom-bar {
-  position: fixed;
   z-index: 2000;
-  bottom: 30px;
-  left: 0px;
-  height: 18px;
   z-index: 6;
   background: none;
+  justify-content: center;
+  align-items: center;
   min-width: 100vw;
-
+  height: 18px;
   display: flex;
-  justify-content: center; /* Horizontally center all child elements */
-  align-items: center; /* Vertically center all child elements */
+  position: fixed;
+  bottom: 30px;
+  left: 0;
 }
 
 div#bottom-bar div#inner {
@@ -411,44 +383,36 @@ div#bottom-bar div#inner {
 }
 
 div#bottom-bar div {
+  color: #fff;
   background: none;
-  color: white;
   padding: 2px;
-  font-size: 0.8rem;
-}
-
-div#bottom-bar div.button-center img {
-  width: 30px;
+  font-size: .8rem;
 }
 
 div#bottom-bar div.button-left {
+  color: #fff;
   background: none;
-  color: white;
-  padding: 2px;
-  width: 32%;
-  display: flex;
   justify-content: flex-start;
+  width: 32%;
+  padding: 2px;
+  display: flex;
 }
 
 div#bottom-bar div.button-left:hover img {
   background: pink;
 }
 
-div#bottom-bar div.button-left img {
-  width: 30px;
-}
-
-div#bottom-bar div.button-right img {
+div#bottom-bar div.button-left img, div#bottom-bar div.button-right img {
   width: 30px;
 }
 
 div#bottom-bar div.button-right {
+  color: #fff;
   background: none;
-  color: white;
-  padding: 2px;
-  width: 32%;
-  display: flex;
   justify-content: flex-end;
+  width: 32%;
+  padding: 2px;
+  display: flex;
 }
 
 div#bottom-bar div.button-right:hover img {
@@ -456,13 +420,13 @@ div#bottom-bar div.button-right:hover img {
 }
 
 div#bottom-bar div.button-center {
-  display: flex; /* Enable flexbox for the button-center div */
-  justify-content: center; /* Horizontally center the image */
-  align-items: center; /* Vertically center the image */
+  color: #fff;
   background: none;
-  color: white;
-  padding: 2px;
+  justify-content: center;
+  align-items: center;
   width: 32%;
+  padding: 2px;
+  display: flex;
 }
 
 div#bottom-bar div.button-center img {
@@ -473,23 +437,20 @@ div#bottom-bar div.button-center:hover img {
   background: pink;
 }
 
-/*/ ////////////////
-///TOP-BAR///////*/
-
 div#top-bar {
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  height: 18px;
   z-index: 4;
   background: none;
   min-width: 100vw;
+  height: 18px;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 div#top-bar img {
-  margin: 3px 0 0 5px;
+  color: #fff;
   max-height: 15px;
-  color: white;
+  margin: 3px 0 0 5px;
 }
 
 div#top-bar div#inner {
@@ -497,45 +458,44 @@ div#top-bar div#inner {
 }
 
 div#top-bar div {
+  color: #0e0d0d;
   background: none;
-  color: rgb(14, 13, 13);
   padding: 2px;
 }
 
 div#top-bar div.top-center {
-  background: none;
-  color: black;
-  padding: 2px;
-  width: 30%;
+  color: #000;
   text-align: center;
+  background: none;
+  width: 30%;
+  padding: 2px;
 }
 
 div#top-bar div.top-left {
-  background: none;
-  color: black;
-  padding: 2px;
-  width: 20px;
+  color: #000;
   text-align: left;
+  background: none;
   width: 30%;
+  padding: 2px;
 }
 
 div#top-bar div.top-right {
-  background: none;
-  color: black;
-  padding: 2px;
-  width: 30%;
+  color: #000;
   text-align: right;
+  background: none;
+  width: 30%;
+  padding: 2px;
 }
 
 article {
-  margin: 0 0 10px 0;
-  padding: 3px;
   width: 100%;
+  margin: 0 0 10px;
+  padding: 3px;
 }
 
 article div.user-date {
-  font-size: 0.8rem;
-  margin: 0 0 5px 0;
+  margin: 0 0 5px;
+  font-size: .8rem;
 }
 
 article div.user-date span {
@@ -551,51 +511,53 @@ article img {
 }
 
 .loading-spinner {
-  display: none;
-  position: fixed;
+  z-index: 2147483647;
   width: 80px;
   height: 80px;
+  margin-top: -40px;
+  margin-left: -40px;
+  display: none;
+  position: fixed;
   top: 50%;
   left: 50%;
-  margin-left: -40px;
-  margin-top: -40px;
-
-  z-index: 5000000000000;
 }
+
 .loading-spinner div {
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
-  display: block;
-  position: absolute;
+  border: 8px solid #0000;
+  border-top-color: #ee1b1b;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
   width: 64px;
   height: 64px;
   margin: 8px;
-  border: 8px solid rgb(126, 11, 11);
-  border-radius: 50%;
-  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: rgb(238, 27, 27) transparent transparent transparent;
+  animation: 1.2s cubic-bezier(.5, 0, .5, 1) infinite lds-ring;
+  display: block;
+  position: absolute;
 }
-.loading-spinner div:nth-child(1) {
-  animation-delay: -0.45s;
+
+.loading-spinner div:first-child {
+  animation-delay: -.45s;
 }
+
 .loading-spinner div:nth-child(2) {
-  animation-delay: -0.3s;
+  animation-delay: -.3s;
 }
+
 .loading-spinner div:nth-child(3) {
-  animation-delay: -0.15s;
+  animation-delay: -.15s;
 }
 
 @keyframes lds-ring {
   0% {
-    transform: rotate(0deg);
+    transform: rotate(0);
   }
+
   100% {
     transform: rotate(360deg);
   }
 }
-
-/*
- SETTINGS
- */
 
 div#top {
   position: fixed;
@@ -603,37 +565,36 @@ div#top {
 }
 
 #chat {
-  background: white;
+  background: #fff;
 }
+
 article {
   padding: 10px;
 }
 
 article.nickname {
-  color: blue;
+  color: #00f;
 }
 
 article div.message-head {
-  font-size: 0.7rem;
   color: gray;
   background: none;
   padding: 3px;
+  font-size: .7rem;
 }
 
 article div.message-main {
   background: pink;
+  -moz-border-radius: 7px;
   border-radius: 7px;
-  padding: 5px 5px 5px 5px;
-}
-
-article div.message-main:empty {
-  display: none;
+  padding: 5px;
 }
 
 article.me div.message-main {
-  background: rgba(167, 172, 164, 0.288);
+  background: #a7aca449;
+  -moz-border-radius: 7px;
   border-radius: 7px;
-  padding: 5px 5px 5px 5px;
+  padding: 5px;
 }
 
 article div.message-main:empty {
@@ -645,7 +606,7 @@ article.image {
 }
 
 article:focus {
-  background: rgba(180, 199, 168, 0.34) !important;
+  background: #b4c7a857 !important;
 }
 
 article div.message-head div:nth-child(2) {
@@ -653,22 +614,23 @@ article div.message-head div:nth-child(2) {
 }
 
 div#message-input {
-  position: fixed;
   z-index: 5;
   background: none;
   height: 40px;
   padding: 5px;
-  bottom: 35px;
-  max-width: 99vw !important;
-  min-width: 99vw !important;
   display: none;
+  position: fixed;
+  bottom: 35px;
+  min-width: 99vw !important;
+  max-width: 99vw !important;
 }
 
 div#message-input input {
-  margin: 0 auto;
   border: 2px solid silver;
+  -moz-border-radius: 10px;
   border-radius: 10px;
   width: 100%;
+  margin: 0 auto;
 }
 
 #start {
@@ -677,9 +639,9 @@ div#message-input input {
 }
 
 #start p {
+  max-width: 700px;
   height: 70vh;
   overflow-y: auto;
-  max-width: 700px;
 }
 
 #start p:focus {
@@ -688,16 +650,16 @@ div#message-input input {
 
 #start img {
   width: 40%;
+  margin: 10px 0 0;
+  padding: 0 0 20px;
   display: block;
-  margin: 10px 0 0px 0;
-  padding: 0 0 20px 0;
 }
 
 #open-peer-menu {
   padding: 10px;
 }
 
-@media screen and (min-width: 500px) and (max-width: 2000px) {
+@media screen and (width >= 500px) and (width <= 2000px) {
   #app {
     min-width: 500px;
     max-width: 500px;
@@ -709,50 +671,41 @@ div#message-input input {
   }
 
   #wrapper {
+    justify-content: center;
     min-width: 100vw;
     display: flex;
-    justify-content: center;
   }
 
   .page {
     min-width: 500px;
     max-width: 500px !important;
   }
+
   .not-desktop {
     display: none !important;
   }
 
   div#bottom-bar {
-    margin: 0 0 20px 0;
+    margin: 0 0 20px;
   }
 
-  div#bottom-bar div.button-left img {
+  div#bottom-bar div.button-left img, div#bottom-bar div.button-right img, div#bottom-bar div.button-center img {
     width: 50px;
   }
 
-  div#bottom-bar div.button-right img {
-    width: 50px;
-  }
-
-  div#bottom-bar div.button-center img {
-    width: 50px;
-  }
-
-  html,
-  body {
-    font-family: "Roboto" !important;
-    font-weight: 400;
-    position: relative;
-    margin: 0px;
-    padding: 0px;
-    font-size: 1.2rem;
-    line-height: 1.4rem;
-    max-height: 100%;
-    max-width: 100%;
-    height: 100%;
+  html, body {
+    background: #fff;
     width: 100%;
     max-width: 100vw;
+    height: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 1.4rem;
+    position: relative;
     overflow: hidden;
-    background: white;
+    font-family: Roboto !important;
   }
 }

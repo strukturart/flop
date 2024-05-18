@@ -29,6 +29,10 @@ In order to establish a connection between 2 peers, you have to know the id of t
 - KaiOS Store(coming soon)
 - Sideloading <a href="https://www.martinkaptein.com/blog/sideloading-and-deploying-apps-to-kai-os/">step-by-step article</a> by martinkaptein
 
+## Test Version
+
+<a href="https://flop.bhackers.uber.space/">https://flop.bhackers.uber.space/</a>
+
 ### known problems
 
 In certain cases a connection between two peers cannot be established. The solution should be a separate TURN server, which can be specified when establishing the connection. The connection data to the TURN server must be saved in an .env

@@ -50,6 +50,13 @@ zip -r ../build/flop-kaios3.zip ./*
 mv  ../manifest.webapp ./
 
 #create public web version
+cd ../
+
+
+
+cp ./application/manifest.webapp ./webpage/
+cp ./application/manifest.webmanifest ./webpage/
+cp -r ./application/assets/ ./webpage/assets/
 #todo
 exit
 

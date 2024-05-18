@@ -27,6 +27,7 @@ export let status = {
   action: "",
   deviceOnline: true,
   userOnline: 0,
+  notKaios: window.innerWidth > 400 ? true : false,
 };
 export let settings = {};
 export let current_room = "";
@@ -379,7 +380,7 @@ function sendMessage(msg, type) {
       write();
     }
   } else {
-    side_toaster("no user onlineno other users online", 3000);
+    side_toaster("no user online", 3000);
     write();
   }
 }
@@ -412,6 +413,13 @@ let connect_to_peer = function (id) {
         conn = peer.connect(id, {
           label: "chat",
           reliable: true,
+        });
+
+        chat_data.push({
+          id: "no-other-user-online",
+          nickname: settings.nickname,
+          content: "no other user online",
+          datetime: new Date(),
         });
 
         conn.on("data", function (data) {
@@ -582,9 +590,13 @@ var about = {
     return m(
       "div",
       {
-        class: "width-100 flex justify-content-center page",
+        class: "page",
         oncreate: () => {
-          bottom_bar("", "<img src='assets/image/select.svg'>", "");
+          bottom_bar(
+            "",
+            "<img class='not-desktop' src='assets/image/select.svg'>",
+            ""
+          );
         },
       },
       [
@@ -631,17 +643,19 @@ var about = {
 
 var privacy_policy = {
   view: function () {
-    return m("div", { class: "width-100 flex justify-content-center" }, [
+    return m("div", { class: "page" }, [
       m(
         "div",
         {
-          class: "width-100 page",
-
           oncreate: ({ dom }) => {
             dom.focus();
           },
           oninit: () => {
-            bottom_bar("", "<img src='assets/image/select.svg'>", "");
+            bottom_bar(
+              "",
+              "<img class='not-desktop' src='assets/image/select.svg'>",
+              ""
+            );
           },
           onfocus: () => {
             bottom_bar("", "", "");
@@ -666,7 +680,11 @@ var privacy_policy = {
                 );
               },
               onfocus: () => {
-                bottom_bar("", "<img src='assets/image/select.svg'>", "");
+                bottom_bar(
+                  "",
+                  "<img class='not-desktop' src='assets/image/select.svg'>",
+                  ""
+                );
               },
             },
             "Privacy Policy Metered"
@@ -695,7 +713,7 @@ var settings_page = {
     return m(
       "div",
       {
-        class: "flex justify-content-center",
+        class: "page",
         id: "settings_page",
         oncreate: () => {
           bottom_bar("", "", "");
@@ -864,7 +882,7 @@ var options = {
     return m(
       "div",
       {
-        class: "flex justify-content-center width-100",
+        class: "flex justify-content-center page",
         id: "login",
       },
       [
@@ -882,7 +900,11 @@ var options = {
             style: { display: status.userOnline ? "" : "none" },
 
             onfocus: () => {
-              bottom_bar("", "<img src='assets/image/select.svg'>", "");
+              bottom_bar(
+                "",
+                "<img class='not-desktop' src='./assets/image/select.svg'>",
+                ""
+              );
             },
             onclick: function () {
               if (status.userOnline > 0) {
@@ -900,7 +922,11 @@ var options = {
           {
             class: "item",
             onfocus: () => {
-              bottom_bar("", "<img src='assets/image/select.svg'>", "");
+              bottom_bar(
+                "",
+                "<img class='not-desktop' src='assets/image/select.svg'>",
+                ""
+              );
             },
             style: { display: status.userOnline ? "" : "none" },
 
@@ -933,7 +959,11 @@ var options = {
               share(settings.invite_url + "?id=" + current_room);
             },
             onfocus: () => {
-              bottom_bar("", "<img src='assets/image/select.svg'>", "");
+              bottom_bar(
+                "",
+                "<img class='not-desktop' src='assets/image/select.svg'>",
+                ""
+              );
             },
           },
           "Invite users"
@@ -1000,7 +1030,11 @@ var links_page = {
             m.route.set("/chat");
           },
           onfocus: () => {
-            bottom_bar("", "<img src='assets/image/select.svg'>", "");
+            bottom_bar(
+              "",
+              "<img class='not-desktop' src='assets/image/select.svg'>",
+              ""
+            );
           },
           oncreate: () => {
             index == 1 ?? item.focus();
@@ -1024,10 +1058,14 @@ var open_peer_menu = {
     return m(
       "div",
       {
-        class: "flex justify-content-center  width-100",
+        class: "flex justify-content-center",
         id: "open-peer-menu",
         oncreate: () => {
-          bottom_bar("", "<img src='assets/image/select.svg'>", "");
+          bottom_bar(
+            "",
+            "<img class='not-desktop' src='assets/image/select.svg'>",
+            ""
+          );
         },
       },
       [
@@ -1079,7 +1117,7 @@ var favorits_page = {
     return room_favorits.map(function (item, index) {
       bottom_bar(
         "<img src='assets/image/delete.svg'>",
-        "<img src='assets/image/select.svg'>",
+        "<img class='not-desktop' src='assets/image/select.svg'>",
         ""
       );
       return m(
@@ -1212,6 +1250,16 @@ var intro = {
                     parsedResponse.b2g_features.version;
                 });
             }
+
+            if (status.notKaios) {
+              fetch("/manifest.webmanifest")
+                .then((r) => r.json())
+                .then((parsedResponse) => {
+                  status.version = parsedResponse.b2g_features.version;
+                  document.querySelector("#version").textContent =
+                    parsedResponse.b2g_features.version;
+                });
+            }
           };
           getManifest(get_manifest_callback);
           setTimeout(function () {
@@ -1330,6 +1378,50 @@ document.addEventListener("DOMContentLoaded", function (e) {
     }
   };
 
+  document
+    .querySelector("div.button-left")
+    .addEventListener("click", function (event) {
+      // Simulate a key press
+      let simulatedKeyEvent = new KeyboardEvent("keyup", {
+        key: "SoftLeft",
+        bubbles: true,
+        cancelable: true,
+      });
+
+      document.dispatchEvent(simulatedKeyEvent);
+    });
+
+  document
+    .querySelector("div.button-right")
+    .addEventListener("click", function (event) {
+      // Simulate a key press
+      let simulatedKeyEvent = new KeyboardEvent("keyup", {
+        key: "SoftRight",
+        bubbles: true,
+        cancelable: true,
+      });
+
+      document.dispatchEvent(simulatedKeyEvent);
+    });
+
+  document
+    .querySelector("div.button-center")
+    .addEventListener("click", function (event) {
+      // Simulate a key press
+      let simulatedKeyEvent = new KeyboardEvent("keyup", {
+        key: "Enter",
+        bubbles: true,
+        cancelable: true,
+      });
+
+      document.dispatchEvent(simulatedKeyEvent);
+    });
+
+  // Add an event listener for keyup events
+  document.addEventListener("keyup", function (event) {
+    shortpress_action({ key: event.key });
+  });
+
   // ////////////////////////////
   // //KEYPAD HANDLER////////////
   // ////////////////////////////
@@ -1385,13 +1477,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
       case "ArrowDown":
         nav(+1);
 
-        break;
-      case "ArrowRight":
-        break;
-      case "ArrowLeft":
-        break;
-
-      case "3":
         break;
 
       case "SoftRight":
