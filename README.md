@@ -56,6 +56,11 @@ If you use the app often, please donate an amount to me.
   <tr class="border-0" >
     <td valign="top" class="border-0">
         <div>
+            <noscript><a href="https://liberapay.com/perry_______/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a></noscript>
+        </div>
+    </td>
+    <td valign="top" class="border-0">
+        <div>
             <a href="https://paypal.me/strukturart?locale.x=de_DE" target="_blank">
                 <img src="/images/paypal.png" width="120px">
             </a>
@@ -67,5 +72,6 @@ If you use the app often, please donate an amount to me.
             <img src="/images/bitcoin_rcv.png" width="120px">
         </div>
     </td>
+
   </tr>
  </table>

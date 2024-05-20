@@ -12,12 +12,17 @@ import {
   top_bar,
   getManifest,
   setTabindex,
+  clipboard,
 } from "./assets/js/helper.js";
 import { start_scan } from "./assets/js/scan.js";
 import { stop_scan } from "./assets/js/scan.js";
 import localforage from "localforage";
 import * as linkify from "linkifyjs";
-import { geolocation, pushLocalNotification } from "./assets/js/helper.js";
+import {
+  geolocation,
+  pushLocalNotification,
+  detectMobileOS,
+} from "./assets/js/helper.js";
 import m from "mithril";
 import qrious from "qrious";
 
@@ -28,7 +33,9 @@ export let status = {
   deviceOnline: true,
   userOnline: 0,
   notKaios: window.innerWidth > 400 ? true : false,
+  os: detectMobileOS(),
 };
+
 export let settings = {};
 export let current_room = "";
 
@@ -284,6 +291,7 @@ let write = function () {
   } else {
     document.querySelector("div#message-input input").value = "";
     document.getElementById("message-input").style.display = "none";
+
     focus_last_article();
     status.action = "";
   }
@@ -359,6 +367,7 @@ function sendMessage(msg, type) {
         conn.send(msg);
         m.redraw();
         focus_last_article();
+        console.log(msg);
       };
       reader.readAsDataURL(msg.blob);
     }
@@ -396,7 +405,7 @@ let connect_to_peer = function (id) {
   }
   current_room = id;
   getIceServers().then(() => {
-    m.route.set("/chat");
+    m.route.set("/chat?id=" + id);
     setTimeout(() => {
       document.querySelector(".loading-spinner").style.display = "block";
     }, 2000);
@@ -446,6 +455,7 @@ let connect_to_peer = function (id) {
 
           remove_no_user_online();
           focus_last_article();
+          stop_scan();
         });
 
         // Event handler for successful connection
@@ -455,6 +465,7 @@ let connect_to_peer = function (id) {
           side_toaster("Connected with " + peer.id, 5000);
           chat_data.push({ content: "connected", datetime: new Date() });
           m.redraw();
+          stop_scan();
 
           remove_no_user_online();
         });
@@ -480,6 +491,8 @@ let connect_to_peer = function (id) {
 //create room
 // and create qr-code with peer id
 let create_peer = function () {
+  console.log("create peer");
+
   if (!status.deviceOnline) {
     alert("Device is offline");
     return false;
@@ -488,8 +501,6 @@ let create_peer = function () {
 
   getIceServers().then(() => {
     peer.on("open", function () {
-      m.route.set("/chat");
-
       // Workaround for peer.reconnect deleting previous id
       if (peer.id === null) {
         peer.id = lastPeerId;
@@ -498,6 +509,9 @@ let create_peer = function () {
       }
 
       current_room = peer.id;
+      status.current_room = peer.id;
+
+      m.route.set("/chat?id=" + current_room);
 
       //change_url("id=" + current_room);
       console.log(current_room);
@@ -956,7 +970,16 @@ var options = {
             },
 
             onclick: function () {
-              share(settings.invite_url + "?id=" + current_room);
+              share(settings.invite_url + "?id=" + current_room).then(
+                (success) => {
+                  if (success) {
+                    console.log("Sharing was successful.");
+                    m.route.set("/chat?id=" + status.current_room);
+                  } else {
+                    console.log("Sharing failed.");
+                  }
+                }
+              );
             },
             onfocus: () => {
               bottom_bar(
@@ -982,6 +1005,7 @@ var start = {
         id: "start",
         oncreate: () => {
           localforage.getItem("connect_to_id").then((e) => {
+            console.log("id" + e);
             let params = e.data.split("?id=");
             let id = params[1];
             setTimeout(() => {
@@ -1170,12 +1194,14 @@ var chat = {
           type: "text",
           onblur: () => {
             status.action = "write";
+            /*
             write();
             bottom_bar(
               "<img src='assets/image/pencil.svg'>",
               "",
               "<img src='assets/image/option.svg'>"
             );
+            */
           },
           onfocus: () => {
             bottom_bar(
@@ -1229,58 +1255,85 @@ var chat = {
 
 var intro = {
   view: function () {
-    return m("div", { class: "width-100 height-100", id: "intro" }, [
-      m("img", {
-        src: "./assets/icons/intro.svg",
+    return m(
+      "div",
+      {
+        class: "width-100 height-100",
+        id: "intro",
+        oninit: function () {
+          const protocol = window.location.protocol;
+          const host = window.location.host;
+          const pathname = window.location.pathname;
+          const search = window.location.search;
+          const hash = window.location.hash;
 
-        oncreate: () => {
-          let get_manifest_callback = (e) => {
-            try {
-              status.version = e.manifest.version;
-              document.querySelector("#version").textContent =
-                e.manifest.version;
-            } catch (e) {}
+          const fullUrl = `${protocol}//${host}${pathname}${search}${hash}`;
+          console.log(fullUrl);
 
-            if ("b2g" in navigator) {
-              fetch("/manifest.webmanifest")
-                .then((r) => r.json())
-                .then((parsedResponse) => {
-                  status.version = parsedResponse.b2g_features.version;
-                  document.querySelector("#version").textContent =
-                    parsedResponse.b2g_features.version;
-                });
-            }
-
-            if (status.notKaios) {
-              fetch("/manifest.webmanifest")
-                .then((r) => r.json())
-                .then((parsedResponse) => {
-                  status.version = parsedResponse.b2g_features.version;
-                  document.querySelector("#version").textContent =
-                    parsedResponse.b2g_features.version;
-                });
-            }
-          };
-          getManifest(get_manifest_callback);
-          setTimeout(function () {
-            m.route.set("/start");
-          }, 5000);
+          // Get the current hash
+          if (hash.includes("?id=")) {
+            localforage.setItem("connect_to_id", { data: fullUrl });
+          } else {
+            console.log("no id");
+          }
         },
-      }),
-      m(
-        "div",
-        { class: "flex width-100  justify-content-center ", id: "version-box" },
-        [
-          m(
-            "kbd",
-            {
-              id: "version",
-            },
-            status.version
-          ),
-        ]
-      ),
-    ]);
+      },
+      [
+        m("img", {
+          src: "./assets/icons/intro.svg",
+
+          oncreate: () => {
+            let get_manifest_callback = (e) => {
+              try {
+                status.version = e.manifest.version;
+                document.querySelector("#version").textContent =
+                  e.manifest.version;
+              } catch (e) {}
+
+              if ("b2g" in navigator) {
+                fetch("/manifest.webmanifest")
+                  .then((r) => r.json())
+                  .then((parsedResponse) => {
+                    status.version = parsedResponse.b2g_features.version;
+                    document.querySelector("#version").textContent =
+                      parsedResponse.b2g_features.version;
+                  });
+              }
+
+              if (status.notKaios) {
+                fetch("/manifest.webmanifest")
+                  .then((r) => r.json())
+                  .then((parsedResponse) => {
+                    status.version = parsedResponse.b2g_features.version;
+                    document.querySelector("#version").textContent =
+                      parsedResponse.b2g_features.version;
+                  });
+              }
+            };
+            getManifest(get_manifest_callback);
+            setTimeout(function () {
+              m.route.set("/start");
+            }, 5000);
+          },
+        }),
+        m(
+          "div",
+          {
+            class: "flex width-100  justify-content-center ",
+            id: "version-box",
+          },
+          [
+            m(
+              "kbd",
+              {
+                id: "version",
+              },
+              status.version
+            ),
+          ]
+        ),
+      ]
+    );
   },
 };
 
@@ -1378,48 +1431,38 @@ document.addEventListener("DOMContentLoaded", function (e) {
     }
   };
 
+  // Add click listeners to simulate key events
   document
     .querySelector("div.button-left")
     .addEventListener("click", function (event) {
-      // Simulate a key press
-      let simulatedKeyEvent = new KeyboardEvent("keyup", {
-        key: "SoftLeft",
-        bubbles: true,
-        cancelable: true,
-      });
-
-      document.dispatchEvent(simulatedKeyEvent);
+      simulateKeyPress("SoftLeft");
     });
 
   document
     .querySelector("div.button-right")
     .addEventListener("click", function (event) {
-      // Simulate a key press
-      let simulatedKeyEvent = new KeyboardEvent("keyup", {
-        key: "SoftRight",
-        bubbles: true,
-        cancelable: true,
-      });
-
-      document.dispatchEvent(simulatedKeyEvent);
+      simulateKeyPress("SoftRight");
     });
 
   document
     .querySelector("div.button-center")
     .addEventListener("click", function (event) {
-      // Simulate a key press
-      let simulatedKeyEvent = new KeyboardEvent("keyup", {
-        key: "Enter",
-        bubbles: true,
-        cancelable: true,
-      });
-
-      document.dispatchEvent(simulatedKeyEvent);
+      simulateKeyPress("Enter");
     });
 
-  // Add an event listener for keyup events
+  // Function to simulate key press events
+  function simulateKeyPress(k) {
+    shortpress_action({ key: k });
+  }
+
+  // Add an event listener for keydown events
+  document.addEventListener("keydown", function (event) {
+    handleKeyDown(event);
+  });
+
+  // Add an event listener for keydown events
   document.addEventListener("keyup", function (event) {
-    shortpress_action({ key: event.key });
+    handleKeyUp(event);
   });
 
   // ////////////////////////////
@@ -1432,14 +1475,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
   function repeat_action(param) {
     switch (param.key) {
-      case "0":
-        break;
     }
   }
 
-  // ////////////
-  // //LONGPRESS
-  // ///////////
+  //////////////
+  ////LONGPRESS
+  /////////////
 
   function longpress_action(param) {
     switch (param.key) {
@@ -1448,9 +1489,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
       case "Backspace":
         window.close();
-        break;
-
-      case "ArrowLeft":
         break;
     }
   }
@@ -1468,7 +1506,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
     }
     switch (param.key) {
       case "ArrowUp":
-        if (route == "/chat" && document.activeElement.tagName === "INPUT") {
+        if (
+          route.startsWith("/chat") &&
+          document.activeElement.tagName === "INPUT"
+        ) {
           write();
         }
         nav(-1);
@@ -1480,29 +1521,23 @@ document.addEventListener("DOMContentLoaded", function (e) {
         break;
 
       case "SoftRight":
-      case "Alt":
-        if (route == "/chat") m.route.set("/options");
+        if (route.startsWith("/chat")) m.route.set("/options");
         if (route == "/start") m.route.set("/about");
 
         break;
 
       case "SoftLeft":
-      case "Control":
-        if (route == "/favorits_page") {
-          deleteFavorit();
-          break;
+      case "Alt":
+        if (route.startsWith("/chat") && status.action == "write") {
+          sendMessage(document.getElementsByTagName("input")[0].value, "text");
+          write();
         }
-        if (route == "/chat" && status.action !== "write") {
+        if (route.startsWith("/chat") && status.action !== "write") {
           if (status.userOnline > 0) {
             write();
           } else {
             side_toaster("no user online", 3000);
           }
-          break;
-        }
-
-        if (route == "/chat" && status.action === "write") {
-          sendMessage(document.getElementsByTagName("input")[0].value, "text");
         }
 
         if (route == "/start") {
@@ -1520,10 +1555,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
           create_peer();
         }
 
-        if (route == "/chat") {
+        if (route.startsWith("/chat")) {
           if (document.activeElement.tagName == "ARTICLE") {
             links = linkify.find(document.activeElement.textContent);
-            console.log(links);
 
             if (links.length > 0) {
               m.route.set("/links_page");
@@ -1549,17 +1583,19 @@ document.addEventListener("DOMContentLoaded", function (e) {
   // //////////////////////////////
 
   function handleKeyDown(evt) {
+    let route = m.route.get();
+
     if (evt.key === "Backspace" && m.route.get() != "/start") {
       evt.preventDefault();
     }
 
     if (evt.key === "Backspace") {
-      if (m.route.get() === "/chat") {
+      if (route.startsWith("/chat")) {
         warning_leave_chat();
         return false;
       }
       if (
-        m.route.get() == "/chat" ||
+        route.startsWith("/chat") ||
         m.route.get() == "/settings_page" ||
         m.route.get() == "/favorits_page" ||
         m.route.get() == "/scan" ||
@@ -1587,7 +1623,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
       }
 
       if (m.route.get() == "/options" || m.route.get() == "/links_page") {
-        m.route.set("/chat");
+        m.route.set("/chat?id=") + status.current_room;
       }
     }
 
@@ -1613,9 +1649,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
   function handleKeyUp(evt) {
     if (status.visibility === false) return false;
 
-    if (evt.key == "Backspace" && document.activeElement.tagName == "INPUT") {
-    }
-
     clearTimeout(timeout);
     if (!longpress) {
       shortpress_action(evt);
@@ -1629,9 +1662,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
       status.visibility = false;
     }
   });
-
-  document.addEventListener("keydown", handleKeyDown);
-  document.addEventListener("keyup", handleKeyUp);
 });
 
 try {

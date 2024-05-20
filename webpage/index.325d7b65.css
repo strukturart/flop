@@ -1,8 +1,8 @@
 div#qr-screen {
   z-index: 200000;
   z-index: 2147483647;
-  min-width: 100vw;
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
   display: none;
   position: fixed;
   top: 0;
@@ -10,29 +10,12 @@ div#qr-screen {
 }
 
 #video {
-  width: auto;
-  min-width: 100%;
-  height: auto;
-  min-height: 100%;
-  position: fixed;
-  bottom: 0;
-  right: 0;
-}
-
-#startDecoding {
-  color: #fff;
-  text-align: center;
-  background: #0095dd;
-  -moz-border-radius: 40px;
-  border-radius: 40px;
-  width: 150px;
-  margin: -30px 0 0 -95px;
-  padding: 20px;
-  font-family: Arial, sans;
-  font-size: 20px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 #corner-nw, #corner-no, #corner-so, #corner-sw {

@@ -68,6 +68,11 @@ body {
   background: white;
 }
 
+video {
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
 #app {
   position: relative;
 }
@@ -431,7 +436,7 @@ div#bottom-bar div.button-left {
 }
 
 div#bottom-bar div.button-left:hover img {
-  background: pink;
+  width: 35px;
 }
 
 div#bottom-bar div.button-left img {
@@ -452,7 +457,7 @@ div#bottom-bar div.button-right {
 }
 
 div#bottom-bar div.button-right:hover img {
-  background: pink;
+  width: 35px;
 }
 
 div#bottom-bar div.button-center {
@@ -470,7 +475,7 @@ div#bottom-bar div.button-center img {
 }
 
 div#bottom-bar div.button-center:hover img {
-  background: pink;
+  width: 35px;
 }
 
 /*/ ////////////////
@@ -697,10 +702,11 @@ div#message-input input {
   padding: 10px;
 }
 
-@media screen and (min-width: 500px) and (max-width: 2000px) {
+@media screen and (min-width: 400px) and (max-width: 1000px) {
   #app {
-    min-width: 500px;
-    max-width: 500px;
+    min-width: 100%;
+    max-width: 100%;
+    overflow: scroll;
   }
 
   article {
@@ -708,15 +714,21 @@ div#message-input input {
     max-width: 400px !important;
   }
 
+  article img {
+    width: 100%;
+  }
+
   #wrapper {
-    min-width: 100vw;
+    min-width: 100%;
     display: flex;
     justify-content: center;
+    overflow: scroll;
   }
 
   .page {
-    min-width: 500px;
-    max-width: 500px !important;
+    min-width: 100%;
+    max-width: 100%;
+    overflow: scroll;
   }
   .not-desktop {
     display: none !important;
@@ -752,7 +764,110 @@ div#message-input input {
     height: 100%;
     width: 100%;
     max-width: 100vw;
-    overflow: hidden;
+    overflow: scroll;
     background: white;
+  }
+
+  div#message-input {
+    position: fixed;
+    z-index: 5;
+    background: none;
+    height: 40px;
+    padding: 5px;
+    bottom: 65px;
+    max-width: 99vw !important;
+    min-width: 99vw !important;
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1001px) and (max-width: 3000px) {
+  #app {
+    min-width: 100%;
+    max-width: 100%;
+    overflow: scroll;
+  }
+
+  article {
+    min-width: 400px;
+    max-width: 400px !important;
+  }
+
+  article img {
+    width: 100%;
+  }
+
+  #wrapper {
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: scroll;
+  }
+
+  .page {
+    min-width: 50%;
+    max-width: 50%;
+    overflow: scroll;
+  }
+  .not-desktop {
+    display: none !important;
+  }
+
+  div#bottom-bar {
+    margin: 0 0 20px 0;
+  }
+
+  div#bottom-bar div.button-left img {
+    width: 50px;
+  }
+
+  div#bottom-bar div.button-right img {
+    width: 50px;
+  }
+
+  div#bottom-bar div.button-center img {
+    width: 50px;
+  }
+
+  div#bottom-bar div.button-left:hover img {
+    width: 55px;
+  }
+
+  div#bottom-bar div.button-right:hover img {
+    width: 55px;
+  }
+
+  div#bottom-bar div.button-center:hover img {
+    width: 55px;
+  }
+
+  html,
+  body {
+    font-family: "Roboto" !important;
+    font-weight: 400;
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    font-size: 1.2rem;
+    line-height: 1.4rem;
+    max-height: 100%;
+    max-width: 100%;
+    height: 100%;
+    width: 100%;
+    max-width: 100vw;
+    overflow: scroll;
+    background: white;
+  }
+
+  div#message-input {
+    position: fixed;
+    z-index: 5;
+    background: none;
+    height: 40px;
+    padding: 5px;
+    bottom: 65px;
+    max-width: 99vw !important;
+    min-width: 99vw !important;
+    display: none;
   }
 }

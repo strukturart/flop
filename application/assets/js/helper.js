@@ -1,5 +1,7 @@
 "use strict";
 
+import { status } from "../../index.js";
+
 export const month = [
   "January",
   "February",
@@ -144,38 +146,118 @@ function intToRGB(i) {
   return "00000".substring(0, 6 - c.length) + c;
 }
 
-export function share(url) {
+export let clipboard = function () {
   try {
-    var activity = new MozActivity({
-      name: "share",
-      data: {
+    let text = window.location.origin + "/#!/intro?id=" + status.current_room;
+
+    let input = document.createElement("input");
+    input.setAttribute("value", text);
+    document.body.appendChild(input);
+    input.select();
+    let result = document.execCommand("copy");
+    document.body.removeChild(input);
+    side_toaster(
+      "You can now open an app of your choice and invite a person to chat, the address that leads to the chat room is in your clipboard",
+      3000
+    );
+
+    return result; // Returns true if the copy was successful, false otherwise
+  } catch (error) {
+    console.error("Failed to copy text: ", error);
+    return false; // Returns false if an error occurred
+  }
+};
+
+export function share(url) {
+  return new Promise((resolve) => {
+    try {
+      var activity = new MozActivity({
+        name: "share",
+        data: {
+          type: "url",
+          url: url,
+        },
+      });
+
+      activity.onsuccess = function () {
+        resolve(true);
+      };
+
+      activity.onerror = function () {
+        console.log("The activity encountered an error: " + this.error);
+        resolve(false);
+      };
+    } catch (e) {
+      // Handle the case where MozActivity is not available
+    }
+
+    if ("b2g" in navigator) {
+      let activity = new WebActivity("share", {
         type: "url",
         url: url,
-      },
-    });
+      });
+      activity.start().then(
+        () => {
+          console.log("WebActivity successful");
+          resolve(true);
+        },
+        (err) => {
+          console.log(err);
+          resolve(false);
+        }
+      );
+    }
 
-    activity.onsuccess = function () {};
-
-    activity.onerror = function () {
-      console.log("The activity encounter en error: " + this.error);
-    };
-  } catch (e) {}
-
-  if ("b2g" in navigator) {
-    let activity = new WebActivity("share", {
-      type: "url",
-      url: url,
-    });
-    activity.start().then(
-      (rv) => {
-        console.log("Results passed back from activity handler:");
-        console.log(rv);
-      },
-      (err) => {
-        console.log(err);
+    if (status.notKaios) {
+      let success = clipboard();
+      if (success) {
+        console.log("Text copied to clipboard successfully.");
+        resolve(true);
+      } else {
+        console.log("Failed to copy text to clipboard.");
+        resolve(false);
       }
-    );
+    }
+
+    if (status.os !== "unknow") {
+      if (navigator.share) {
+        navigator
+          .share({
+            title: "Flop P2P-Messenger",
+            text: "Flop P2P-Messenger",
+            url: url,
+          })
+          .then(() => {
+            console.log("Successful share");
+            resolve(true);
+          })
+          .catch((error) => {
+            console.log("Error sharing", error);
+            resolve(false);
+          });
+      } else {
+        console.log("Share not supported on this browser, do it the old way.");
+        resolve(false);
+      }
+    }
+  });
+}
+
+export function detectMobileOS() {
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+  // iOS detection
+  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+    return "iOS";
   }
+
+  // Android detection
+  if (/android/i.test(userAgent)) {
+    return "Android";
+  }
+
+  // Other mobile OS or not a mobile device
+  return "unknown";
 }
 
 export function open(url) {
