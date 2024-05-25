@@ -342,56 +342,64 @@ const focus_last_article = function () {
 };
 
 function sendMessage(msg, type) {
-  if (conn && conn.open) {
-    if (type == "image") {
-      // Encode the file using the FileReader API
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        //add image to feed
-        let src = URL.createObjectURL(msg.blob);
+  // if (conn && conn.open) {
+  if (type == "image") {
+    // Encode the file using the FileReader API
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      //add image to feed
+      let src = URL.createObjectURL(msg.blob);
+      // alert(reader.result);
 
-        chat_data.push({
-          nickname: settings.nickname,
-          content: "",
-          datetime: new Date(),
-          image: src,
-        });
-
-        msg = {
-          file: reader.result,
-          filename: msg.filename,
-          filetype: msg.type,
-          nickname: settings.nickname,
-        };
-
-        conn.send(msg);
-        m.redraw();
-        focus_last_article();
-        console.log(msg);
-      };
-      reader.readAsDataURL(msg.blob);
-    }
-    if (type == "text") {
-      if (msg == "") return false;
-      msg = {
-        text: msg,
-        nickname: settings.nickname,
-      };
       chat_data.push({
         nickname: settings.nickname,
-        content: msg.text,
+        content: "",
         datetime: new Date(),
+        image: src,
       });
-      conn.send(msg);
 
+      msg = {
+        file: reader.result,
+        filename: msg.filename,
+        filetype: msg.type,
+        nickname: settings.nickname,
+      };
+
+      conn.send(msg);
       m.redraw();
       focus_last_article();
-      write();
-    }
+    };
+    reader.onerror = (e) => {
+      alert("error");
+
+      console.log(e);
+    };
+    reader.readAsDataURL(msg.blob);
+  }
+  if (type == "text") {
+    if (msg == "") return false;
+    msg = {
+      text: msg,
+      nickname: settings.nickname,
+    };
+    chat_data.push({
+      nickname: settings.nickname,
+      content: msg.text,
+      datetime: new Date(),
+    });
+    conn.send(msg);
+
+    m.redraw();
+    focus_last_article();
+    write();
+  }
+
+  /*
   } else {
     side_toaster("no user online", 3000);
     write();
   }
+  */
 }
 
 let close_connection = function () {
@@ -906,12 +914,9 @@ var options = {
             oncreate: ({ dom }) =>
               setTimeout(function () {
                 setTabindex();
-
-                if (status.userOnline > 0) {
-                }
               }, 500),
             class: "item",
-            style: { display: status.userOnline ? "" : "none" },
+            // style: { display: status.userOnline ? "" : "none" },
 
             onfocus: () => {
               bottom_bar(
@@ -921,6 +926,8 @@ var options = {
               );
             },
             onclick: function () {
+              pick_image(handleImage);
+
               if (status.userOnline > 0) {
                 pick_image(handleImage);
               } else {

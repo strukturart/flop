@@ -651,6 +651,27 @@ export let pick_image = function (callback) {
       }
     );
   }
+  if (status.notKaios || status.os) {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/*";
+    fileInput.style.display = "none";
+    document.body.appendChild(fileInput);
+
+    fileInput.click();
+
+    fileInput.addEventListener("change", function (event) {
+      const file = event.target.files[0];
+
+      if (file) {
+        callback({
+          blob: file,
+          filename: file.name,
+          filetype: file.type,
+        });
+      }
+    });
+  }
 };
 
 //delete file

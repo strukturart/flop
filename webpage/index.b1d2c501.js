@@ -3043,6 +3043,22 @@ var $162001cafa2b40fd$export$6714d0f9237d35de = function pick_image(callback) {
             console.log(err);
         });
     }
+    if ((0, $17d11d58618cc814$export$471f7ae5c4103ae1).notKaios || (0, $17d11d58618cc814$export$471f7ae5c4103ae1).os) {
+        var fileInput = document.createElement("input");
+        fileInput.type = "file";
+        fileInput.accept = "image/*";
+        fileInput.style.display = "none";
+        document.body.appendChild(fileInput);
+        fileInput.click();
+        fileInput.addEventListener("change", function(event) {
+            var file = event.target.files[0];
+            if (file) callback({
+                blob: file,
+                filename: file.name,
+                filetype: file.type
+            });
+        });
+    }
 };
 function $162001cafa2b40fd$export$dccb98b97a3cb8be(storage, path, notification) {
     var sdcard = navigator.getDeviceStorages("sdcard");
@@ -21241,53 +21257,58 @@ var $17d11d58618cc814$var$focus_last_article = function focus_last_article() {
     }, 1000);
 };
 function $17d11d58618cc814$var$sendMessage(msg, type) {
-    if ($17d11d58618cc814$var$conn && $17d11d58618cc814$var$conn.open) {
-        if (type == "image") {
-            // Encode the file using the FileReader API
-            var reader = new FileReader();
-            reader.onloadend = function() {
-                //add image to feed
-                var src = URL.createObjectURL(msg.blob);
-                $17d11d58618cc814$var$chat_data.push({
-                    nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
-                    content: "",
-                    datetime: new Date(),
-                    image: src
-                });
-                msg = {
-                    file: reader.result,
-                    filename: msg.filename,
-                    filetype: msg.type,
-                    nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname
-                };
-                $17d11d58618cc814$var$conn.send(msg);
-                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
-                $17d11d58618cc814$var$focus_last_article();
-                console.log(msg);
-            };
-            reader.readAsDataURL(msg.blob);
-        }
-        if (type == "text") {
-            if (msg == "") return false;
-            msg = {
-                text: msg,
-                nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname
-            };
+    // if (conn && conn.open) {
+    if (type == "image") {
+        // Encode the file using the FileReader API
+        var reader = new FileReader();
+        reader.onloadend = function() {
+            //add image to feed
+            var src = URL.createObjectURL(msg.blob);
+            // alert(reader.result);
             $17d11d58618cc814$var$chat_data.push({
                 nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
-                content: msg.text,
-                datetime: new Date()
+                content: "",
+                datetime: new Date(),
+                image: src
             });
+            msg = {
+                file: reader.result,
+                filename: msg.filename,
+                filetype: msg.type,
+                nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname
+            };
             $17d11d58618cc814$var$conn.send(msg);
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
             $17d11d58618cc814$var$focus_last_article();
-            $17d11d58618cc814$var$write();
-        }
-    } else {
-        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("no user online", 3000);
+        };
+        reader.onerror = function(e) {
+            alert("error");
+            console.log(e);
+        };
+        reader.readAsDataURL(msg.blob);
+    }
+    if (type == "text") {
+        if (msg == "") return false;
+        msg = {
+            text: msg,
+            nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname
+        };
+        $17d11d58618cc814$var$chat_data.push({
+            nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
+            content: msg.text,
+            datetime: new Date()
+        });
+        $17d11d58618cc814$var$conn.send(msg);
+        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
+        $17d11d58618cc814$var$focus_last_article();
         $17d11d58618cc814$var$write();
     }
-}
+/*
+  } else {
+    side_toaster("no user online", 3000);
+    write();
+  }
+  */ }
 var $17d11d58618cc814$var$close_connection = function close_connection() {
     $17d11d58618cc814$var$conn.close();
 };
@@ -21634,17 +21655,15 @@ var $17d11d58618cc814$var$options = {
                     var dom = param.dom;
                     return setTimeout(function() {
                         (0, $162001cafa2b40fd$export$6c04b58eee2a9a32)();
-                        $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline;
                     }, 500);
                 },
                 class: "item",
-                style: {
-                    display: $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline ? "" : "none"
-                },
+                // style: { display: status.userOnline ? "" : "none" },
                 onfocus: function() {
                     (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='./assets/image/select.svg'>", "");
                 },
                 onclick: function onclick() {
+                    (0, $162001cafa2b40fd$export$6714d0f9237d35de)($17d11d58618cc814$var$handleImage);
                     if ($17d11d58618cc814$export$471f7ae5c4103ae1.userOnline > 0) (0, $162001cafa2b40fd$export$6714d0f9237d35de)($17d11d58618cc814$var$handleImage);
                     else (0, $162001cafa2b40fd$export$6593825dc0f3a767)("no user online", 3000);
                 }
