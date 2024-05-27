@@ -46,7 +46,6 @@ let chat_data = [];
 let lastPeerId = null;
 let peer = null;
 let conn = null;
-let room_favorits = [];
 
 //.env turn server
 let debug = false;
@@ -60,19 +59,75 @@ if (debug) {
   };
 }
 
-let change_url = (param) => {
-  // Get the current URL
-  var currentURL = window.location.href;
+//history
+let chat_history = [];
 
-  // Add a new parameter
-  var newParam = "newParam=exampleValue";
+// Retrieve chat history from local storage
+localforage
+  .getItem("chat_history")
+  .then((e) => {
+    console.log(e);
+    if (e) {
+      chat_history = e; // directly assign the retrieved array to chat_history
+    }
+  })
+  .catch((e) => {
+    console.log(e);
+  });
 
-  // Construct the new URL with the added parameter
-  var newURL =
-    currentURL + (currentURL.indexOf("?") !== -1 ? "&" : "?") + param;
+let store_history = (id) => {
+  chat_history.push({ id: id, date: new Date(), data: chat_data }); // push new entry directly to the array
+  localforage
+    .setItem("chat_history", chat_history) // store the array directly
+    .then((e) => {
+      console.log(e);
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
 
-  // Push the new URL to the history stack without reloading the page
-  window.history.pushState({ path: newURL }, "", newURL);
+//open KaiOS app
+let app_launcher = () => {
+  var currentUrl = window.location.href;
+
+  // Check if the URL includes 'id='
+  if (!currentUrl.includes("id=")) return false;
+
+  setTimeout(() => {
+    try {
+      const activity = new MozActivity({
+        name: "flop",
+        data: window.location.href,
+      });
+      activity.onsuccess = function () {
+        console.log("Activity successfuly handled");
+      };
+
+      activity.onerror = function () {
+        console.log("The activity encouter en error: " + this.error);
+        alert(this.error);
+      };
+    } catch (e) {}
+    if ("b2g" in navigator) {
+      try {
+        let activity = new WebActivity("flop", {
+          name: "flop",
+          type: "url",
+          data: window.location.href,
+        });
+        activity.start().then(
+          (rv) => {
+            console.log("Results passed back from activity handler:");
+            console.log(rv);
+          },
+          (err) => {
+            alert(err);
+          }
+        );
+      } catch (e) {}
+    }
+  }, 4000);
 };
 
 window.addEventListener("online", () => {
@@ -244,7 +299,7 @@ localforage
       server_url: "0.peerjs.com",
       server_path: "/",
       server_port: "443",
-      invite_url: "https://strukturart.github.io/flop/",
+      invite_url: "https://flop.bhackers.uber.space/",
     };
 
     for (const key in defaultValues) {
@@ -252,17 +307,6 @@ localforage
         settings[key] = defaultValues[key];
       }
     }
-  })
-  .catch(function (err) {
-    console.log(err);
-  });
-
-//load room favorits
-
-localforage
-  .getItem("roomfavorits")
-  .then(function (value) {
-    if (value != null) room_favorits = value;
   })
   .catch(function (err) {
     console.log(err);
@@ -285,43 +329,20 @@ let warning_leave_chat = function () {
 
 let write = function () {
   if (status.action != "write") {
-    document.getElementById("message-input").style.display = "block";
-    document.querySelector("div#message-input input").focus();
+    if (document.getElementById("message-input") != null) {
+      document.getElementById("message-input").style.display = "block";
+      document.querySelector("div#message-input input").focus();
+    }
     status.action = "write";
   } else {
-    document.querySelector("div#message-input input").value = "";
-    document.getElementById("message-input").style.display = "none";
+    if (document.getElementById("message-input") != null) {
+      document.querySelector("div#message-input input").value = "";
+      document.getElementById("message-input").style.display = "none";
+    }
 
     focus_last_article();
     status.action = "";
   }
-};
-
-let deleteFavorit = () => {
-  room_favorits = room_favorits.filter((e) => {
-    return e !== document.activeElement.getAttribute("data-id");
-  });
-
-  localforage.setItem("roomfavorits", room_favorits).then(() => {
-    side_toaster("deleted", 4000);
-    m.redraw();
-  });
-};
-
-let addToFavorit = function () {
-  room_favorits.push(current_room);
-
-  localforage
-    .setItem("roomfavorits", room_favorits)
-    .then(function (value) {
-      // Do other things once the value has been saved.
-      side_toaster("favorit saved", 2000);
-      m.route.set("/chat");
-    })
-    .catch(function (err) {
-      // This code runs if there were any errors
-      console.log(err);
-    });
 };
 
 const focus_last_article = function () {
@@ -364,15 +385,13 @@ function sendMessage(msg, type) {
         filetype: msg.type,
         nickname: settings.nickname,
       };
-
       conn.send(msg);
+
       m.redraw();
       focus_last_article();
     };
     reader.onerror = (e) => {
       alert("error");
-
-      console.log(e);
     };
     reader.readAsDataURL(msg.blob);
   }
@@ -440,6 +459,7 @@ let connect_to_peer = function (id) {
         });
 
         conn.on("data", function (data) {
+          console.log("data" + data);
           if (!status.visibility) pushLocalNotification("flop", "new message");
 
           document.querySelector(".loading-spinner").style.display = "none";
@@ -500,6 +520,7 @@ let connect_to_peer = function (id) {
 // and create qr-code with peer id
 let create_peer = function () {
   console.log("create peer");
+  chat_data = "";
 
   if (!status.deviceOnline) {
     alert("Device is offline");
@@ -519,9 +540,10 @@ let create_peer = function () {
       current_room = peer.id;
       status.current_room = peer.id;
 
+      store_history(peer.id);
+
       m.route.set("/chat?id=" + current_room);
 
-      //change_url("id=" + current_room);
       console.log(current_room);
 
       //make qr code
@@ -591,8 +613,6 @@ let scan_callback = function (n) {
 
 //callback geolocation
 let geolocation_callback = function (e) {
-  console.log(e.coords.latitude);
-
   let link_url =
     "https://www.openstreetmap.org/#map=19/" +
     e.coords.latitude +
@@ -916,7 +936,7 @@ var options = {
                 setTabindex();
               }, 500),
             class: "item",
-            // style: { display: status.userOnline ? "" : "none" },
+            style: { display: status.userOnline ? "" : "none" },
 
             onfocus: () => {
               bottom_bar(
@@ -1011,8 +1031,8 @@ var start = {
         class: "flex justify-content-center",
         id: "start",
         oncreate: () => {
+          //auto connect if id is given
           localforage.getItem("connect_to_id").then((e) => {
-            console.log("id" + e);
             let params = e.data.split("?id=");
             let id = params[1];
             setTimeout(() => {
@@ -1030,7 +1050,7 @@ var start = {
       },
       [
         m("img", {
-          src: "assets/image/logo.svg",
+          src: "assets/icons/intro.svg",
           class: "",
         }),
         m(
@@ -1042,6 +1062,22 @@ var start = {
             },
           },
           "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images and your position with your chat partner. To create a peer, press enter."
+        ),
+        m(
+          "button",
+          {
+            class: "item",
+            "data-id": 123,
+            oncreate: (vnode) => {
+              if (!chat_history) {
+                vnode.dom.style.display = "none";
+              }
+            },
+            onclick: (e) => {
+              connect_to_peer(e.target.getAttribute("data-id"));
+            },
+          },
+          "try to reconnect the last chat you left"
         ),
       ]
     );
@@ -1143,29 +1179,6 @@ var open_peer_menu = {
   },
 };
 
-var favorits_page = {
-  view: function (vnode) {
-    return room_favorits.map(function (item, index) {
-      bottom_bar(
-        "<img src='assets/image/delete.svg'>",
-        "<img class='not-desktop' src='assets/image/select.svg'>",
-        ""
-      );
-      return m(
-        "button",
-        {
-          class: "item",
-          tabindex: index,
-          "data-id": item,
-          onclick: function () {
-            connect_to_peer(item);
-          },
-        },
-        item
-      );
-    });
-  },
-};
 let user_check;
 var chat = {
   view: function () {
@@ -1200,17 +1213,18 @@ var chat = {
         m("input", {
           type: "text",
           onblur: () => {
-            status.action = "write";
-            /*
-            write();
-            bottom_bar(
-              "<img src='assets/image/pencil.svg'>",
-              "",
-              "<img src='assets/image/option.svg'>"
-            );
-            */
+            setTimeout(() => {
+              bottom_bar(
+                "<img src='assets/image/pencil.svg'>",
+                "",
+                "<img src='assets/image/option.svg'>"
+              );
+              write();
+            }, 1000);
           },
           onfocus: () => {
+            status.action = "write";
+
             bottom_bar(
               "<img src='assets/image/send.svg'>",
               "",
@@ -1275,13 +1289,24 @@ var intro = {
           const hash = window.location.hash;
 
           const fullUrl = `${protocol}//${host}${pathname}${search}${hash}`;
-          console.log(fullUrl);
 
           // Get the current hash
           if (hash.includes("?id=")) {
             localforage.setItem("connect_to_id", { data: fullUrl });
+            status.launching = true;
+            if (status.os == "KaiOS") {
+              app_launcher();
+            } else {
+              setTimeout(function () {
+                m.route.set("/start");
+              }, 5000);
+            }
           } else {
             console.log("no id");
+
+            setTimeout(function () {
+              m.route.set("/start");
+            }, 5000);
           }
         },
       },
@@ -1318,9 +1343,6 @@ var intro = {
               }
             };
             getManifest(get_manifest_callback);
-            setTimeout(function () {
-              m.route.set("/start");
-            }, 5000);
           },
         }),
         m(
@@ -1352,7 +1374,6 @@ m.route(root, "/intro", {
   "/chat": chat,
   "/options": options,
   "/settings_page": settings_page,
-  "/favorits_page": favorits_page,
   "/scan": scan,
   "/about": about,
   "/privacy_policy": privacy_policy,
@@ -1509,7 +1530,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
     let route = m.route.get();
 
     if (route == "/start") {
-      chat_data = [];
+      //chat_data = [];
     }
     switch (param.key) {
       case "ArrowUp":
@@ -1598,13 +1619,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
     if (evt.key === "Backspace") {
       if (route.startsWith("/chat")) {
-        warning_leave_chat();
-        return false;
+        //warning_leave_chat();
+        // return false;
       }
       if (
         route.startsWith("/chat") ||
         m.route.get() == "/settings_page" ||
-        m.route.get() == "/favorits_page" ||
         m.route.get() == "/scan" ||
         m.route.get() == "/open_peer_menu" ||
         m.route.get() == "/about"
@@ -1613,7 +1633,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         status.action = "";
         m.route.set("/start");
         if (conn) {
-          close_connection();
+          // close_connection();
         }
       }
 

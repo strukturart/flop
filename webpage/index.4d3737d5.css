@@ -222,7 +222,7 @@ div#intro img {
   animation-delay: 0s;
   animation-fill-mode: forwards;
   position: absolute;
-  top: 150px;
+  top: 50px;
   left: 50%;
 }
 
@@ -732,6 +732,10 @@ div#message-input input {
     min-width: 99vw !important;
     max-width: 99vw !important;
   }
+
+  div#intro img {
+    top: 150px;
+  }
 }
 
 @media screen and (width >= 1001px) and (width <= 3000px) {
@@ -805,5 +809,9 @@ div#message-input input {
     bottom: 65px;
     min-width: 99vw !important;
     max-width: 99vw !important;
+  }
+
+  div#intro img {
+    top: 150px;
   }
 }

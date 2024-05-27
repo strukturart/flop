@@ -1,5 +1,5 @@
 {
-	"version":"0.1.0.14",
+	"version":"0.1.0.21",
 	"name":"flop",
 	"id":"flop",
 	"description": "flop p2p messenger app",
@@ -17,6 +17,8 @@
 		"56": "/assets/icons/icon-56-56.png",
 		"112": "/assets/icons/icon-112-112.png"
 	},
+
+	
 	"developer": {
 		"name": "strukturart",
 		"url": "https://github.com/strukturart/flop"

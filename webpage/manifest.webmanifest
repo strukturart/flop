@@ -8,23 +8,52 @@
   "categories": ["utilities"],
   "theme_color": "#ffffff",
   "orientation": "natural",
+  "display": "standalone",
   "userAgentInfo": "flop written by strukturart@gmail.com",
 
   "icons": [
     {
-      "src": "/assets/icons/icon-56-56.png",
+      "src": "assets/icons/icon-56-56.png",
       "type": "image/png",
       "sizes": "56x56"
     },
     {
-      "src": "/assets/icons/icon-112-112.png",
+      "src": "assets/icons/icon-112-112.png",
       "type": "image/png",
       "sizes": "112x112"
+    },
+
+    {
+      "src": "assets/icons/favicon.ico",
+      "type": "image/x-icon",
+      "sizes": "16x16 32x32"
+    },
+    {
+      "src": "assets/icons/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "assets/icons/icon-192-maskable.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/icons/icon-512-maskable.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
     }
   ],
 
   "b2g_features": {
-    "version": "0.3056",
+    "version": "0.3059",
     "id": "flop",
     "subtitle": "flop p2p messenger app",
     "core": true,
