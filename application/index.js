@@ -76,7 +76,7 @@ localforage
   });
 
 let store_history = (id) => {
-  chat_history.push({ id: id, date: new Date(), data: chat_data }); // push new entry directly to the array
+  chat_history.push({ id: id, date: new Date(), data: "" }); // push new entry directly to the array
   localforage
     .setItem("chat_history", chat_history) // store the array directly
     .then((e) => {
@@ -520,7 +520,6 @@ let connect_to_peer = function (id) {
 // and create qr-code with peer id
 let create_peer = function () {
   console.log("create peer");
-  chat_data = "";
 
   if (!status.deviceOnline) {
     alert("Device is offline");
@@ -1067,17 +1066,20 @@ var start = {
           "button",
           {
             class: "item",
-            "data-id": 123,
+            "data-id": chat_history[chat_history.length - 1].id,
             oncreate: (vnode) => {
-              if (!chat_history) {
+              if (!status.current_room) {
                 vnode.dom.style.display = "none";
               }
             },
             onclick: (e) => {
-              connect_to_peer(e.target.getAttribute("data-id"));
+              // connect_to_peer(e.target.getAttribute("data-id"));
+              m.route.set(
+                "/chat?id=" + chat_history[chat_history.length - 1].id
+              );
             },
           },
-          "try to reconnect the last chat you left"
+          "reopen chat"
         ),
       ]
     );
@@ -1580,6 +1582,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         }
 
         if (route == "/start") {
+          chat_data = [];
           create_peer();
         }
 

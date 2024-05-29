@@ -20992,6 +20992,28 @@ if ($78f2cb3ec8734e95$var$debug) window.onerror = function(msg, url, linenumber)
     alert("Error message: " + msg + "\nURL: " + url + "\nLine Number: " + linenumber);
     return true;
 };
+//history
+var $78f2cb3ec8734e95$var$chat_history = [];
+// Retrieve chat history from local storage
+(0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).getItem("chat_history").then(function(e) {
+    console.log(e);
+    if (e) $78f2cb3ec8734e95$var$chat_history = e; // directly assign the retrieved array to chat_history
+})["catch"](function(e) {
+    console.log(e);
+});
+var $78f2cb3ec8734e95$var$store_history = function(id) {
+    $78f2cb3ec8734e95$var$chat_history.push({
+        id: id,
+        date: new Date(),
+        data: ""
+    }); // push new entry directly to the array
+    (0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).setItem("chat_history", $78f2cb3ec8734e95$var$chat_history) // store the array directly
+    .then(function(e) {
+        console.log(e);
+    })["catch"](function(e) {
+        console.log(e);
+    });
+};
 //open KaiOS app
 var $78f2cb3ec8734e95$var$app_launcher = function() {
     var currentUrl = window.location.href;
@@ -21385,6 +21407,7 @@ var $78f2cb3ec8734e95$var$create_peer = function create_peer() {
             else $78f2cb3ec8734e95$var$lastPeerId = $78f2cb3ec8734e95$var$peer.id;
             $78f2cb3ec8734e95$export$57fcf9ca838ce2c6 = $78f2cb3ec8734e95$var$peer.id;
             $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_room = $78f2cb3ec8734e95$var$peer.id;
+            $78f2cb3ec8734e95$var$store_history($78f2cb3ec8734e95$var$peer.id);
             (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id=" + $78f2cb3ec8734e95$export$57fcf9ca838ce2c6);
             console.log($78f2cb3ec8734e95$export$57fcf9ca838ce2c6);
             //make qr code
@@ -21693,6 +21716,7 @@ var $78f2cb3ec8734e95$var$start = {
             "class": "flex justify-content-center",
             id: "start",
             oncreate: function() {
+                //auto connect if id is given
                 (0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).getItem("connect_to_id").then(function(e) {
                     var params = e.data.split("?id=");
                     var id = params[1];
@@ -21713,7 +21737,18 @@ var $78f2cb3ec8734e95$var$start = {
                 oncreate: function(dom) {
                     document.querySelector("#start p").focus();
                 }
-            }, "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images and your position with your chat partner. To create a peer, press enter.")
+            }, "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images and your position with your chat partner. To create a peer, press enter."),
+            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
+                "class": "item",
+                "data-id": $78f2cb3ec8734e95$var$chat_history[$78f2cb3ec8734e95$var$chat_history.length - 1].id,
+                oncreate: function(vnode) {
+                    if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_room) vnode.dom.style.display = "none";
+                },
+                onclick: function(e) {
+                    // connect_to_peer(e.target.getAttribute("data-id"));
+                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id=" + $78f2cb3ec8734e95$var$chat_history[$78f2cb3ec8734e95$var$chat_history.length - 1].id);
+                }
+            }, "reopen chat")
         ]);
     }
 };
@@ -22032,7 +22067,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
     function shortpress_action(param) {
         if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.action == "confirm") return false;
         var route = (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get();
-        if (route == "/start") $78f2cb3ec8734e95$var$chat_data = [];
+        route;
         switch(param.key){
             case "ArrowUp":
                 if (route.startsWith("/chat") && document.activeElement.tagName === "INPUT") $78f2cb3ec8734e95$var$write();
@@ -22059,7 +22094,10 @@ document.addEventListener("DOMContentLoaded", function(e) {
                 break;
             case "Enter":
                 if (document.activeElement.classList.contains("input-parent")) document.activeElement.children[0].focus();
-                if (route == "/start") $78f2cb3ec8734e95$var$create_peer();
+                if (route == "/start") {
+                    $78f2cb3ec8734e95$var$chat_data = [];
+                    $78f2cb3ec8734e95$var$create_peer();
+                }
                 if (route.startsWith("/chat")) {
                     if (document.activeElement.tagName == "ARTICLE") {
                         $78f2cb3ec8734e95$var$links = $a06d5a398bbbfd36$export$71aa6c912b956294(document.activeElement.textContent);
@@ -22082,15 +22120,12 @@ document.addEventListener("DOMContentLoaded", function(e) {
         var route = (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get();
         if (evt.key === "Backspace" && (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() != "/start") evt.preventDefault();
         if (evt.key === "Backspace") {
-            if (route.startsWith("/chat")) {
-                $78f2cb3ec8734e95$var$warning_leave_chat();
-                return false;
-            }
+            route.startsWith("/chat");
             if (route.startsWith("/chat") || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/settings_page" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/scan" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/open_peer_menu" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/about") {
                 evt.preventDefault();
                 $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
                 (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/start");
-                if ($78f2cb3ec8734e95$var$conn) $78f2cb3ec8734e95$var$close_connection();
+                $78f2cb3ec8734e95$var$conn;
             }
             if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/settings") {
                 evt.preventDefault();
