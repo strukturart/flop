@@ -45,7 +45,9 @@ let links = "";
 let chat_data = [];
 let lastPeerId = null;
 let peer = null;
-let conn = null;
+let conn = "";
+
+const connectedPeers = [];
 
 //.env turn server
 let debug = false;
@@ -61,7 +63,7 @@ if (debug) {
 
 //history
 let chat_history = [];
-
+/*
 // Retrieve chat history from local storage
 localforage
   .getItem("chat_history")
@@ -86,6 +88,7 @@ let store_history = (id) => {
       console.log(e);
     });
 };
+*/
 
 //open KaiOS app
 let app_launcher = () => {
@@ -218,6 +221,9 @@ async function getIceServers() {
     });
 
     peer.on("connection", function (c) {
+      connectedPeers.push(conn);
+      console.log(connectedPeers);
+
       conn = c;
 
       conn.on("data", function (data) {
@@ -243,7 +249,6 @@ async function getIceServers() {
         focus_last_article();
       });
       conn.on("close", function () {
-        // conn = null;
         side_toaster("user has left chat", 1000);
       });
 
@@ -273,7 +278,6 @@ async function getIceServers() {
 
     peer.on("close", function () {
       side_toaster("connection closed", 1000);
-      // conn = null;
       document.querySelector(".loading-spinner").style.display = "none";
     });
 
@@ -284,6 +288,7 @@ async function getIceServers() {
   } catch (error) {
     console.error("Error fetching ice servers:", error.message);
     document.querySelector(".loading-spinner").style.display = "none";
+    side_toaster("please retry to connect", 2000);
   }
 }
 
@@ -363,7 +368,6 @@ const focus_last_article = function () {
 };
 
 function sendMessage(msg, type) {
-  // if (conn && conn.open) {
   if (type == "image") {
     // Encode the file using the FileReader API
     const reader = new FileReader();
@@ -385,7 +389,8 @@ function sendMessage(msg, type) {
         filetype: msg.type,
         nickname: settings.nickname,
       };
-      conn.send(msg);
+      //conn.send(msg);
+      sendMessageToAll(msg);
 
       m.redraw();
       focus_last_article();
@@ -406,19 +411,26 @@ function sendMessage(msg, type) {
       content: msg.text,
       datetime: new Date(),
     });
-    conn.send(msg);
+    //conn.send(msg);
+
+    sendMessageToAll(msg);
 
     m.redraw();
     focus_last_article();
     write();
   }
-
-  /*
-  } else {
-    side_toaster("no user online", 3000);
-    write();
-  }
-  */
+}
+//send to all connections
+function sendMessageToAll(message) {
+  Object.keys(peer.connections).forEach((peerId) => {
+    peer.connections[peerId].forEach((conn) => {
+      if (conn.open) {
+        conn.send(message);
+      } else {
+        console.log(conn + "not open");
+      }
+    });
+  });
 }
 
 let close_connection = function () {
@@ -519,7 +531,15 @@ let connect_to_peer = function (id) {
 //create room
 // and create qr-code with peer id
 let create_peer = function () {
-  console.log("create peer");
+  //close connection before create peer
+  chat_data = [];
+  try {
+    if (conn) {
+      close_connection();
+    }
+  } catch (e) {
+    console.log(e);
+  }
 
   if (!status.deviceOnline) {
     alert("Device is offline");
@@ -539,11 +559,9 @@ let create_peer = function () {
       current_room = peer.id;
       status.current_room = peer.id;
 
-      store_history(peer.id);
+      //store_history(peer.id);
 
       m.route.set("/chat?id=" + current_room);
-
-      console.log(current_room);
 
       //make qr code
       var qrs = new qrious();
@@ -1027,7 +1045,7 @@ var start = {
     return m(
       "div",
       {
-        class: "flex justify-content-center",
+        class: "flex justify-content-spacearound",
         id: "start",
         oncreate: () => {
           //auto connect if id is given
@@ -1055,9 +1073,11 @@ var start = {
         m(
           "p",
           {
-            class: "scroll item",
-            oncreate: (dom) => {
+            class: "item scroll",
+            tabIndex: 0,
+            oncreate: (vnode) => {
               document.querySelector("#start p").focus();
+              vnode.dom.focus();
             },
           },
           "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images and your position with your chat partner. To create a peer, press enter."
@@ -1065,21 +1085,37 @@ var start = {
         m(
           "button",
           {
+            tabIndex: 1,
+
             class: "item",
-            "data-id": chat_history[chat_history.length - 1].id,
             oncreate: (vnode) => {
-              if (!status.current_room) {
+              if (status.current_room == null || status.current_room == "") {
                 vnode.dom.style.display = "none";
               }
             },
             onclick: (e) => {
-              // connect_to_peer(e.target.getAttribute("data-id"));
-              m.route.set(
-                "/chat?id=" + chat_history[chat_history.length - 1].id
-              );
+              m.route.set("/chat?id=" + status.current_room);
             },
           },
           "reopen chat"
+        ),
+
+        m(
+          "button",
+          {
+            tabIndex: 2,
+
+            class: "item button-create-peer",
+            oncreate: (vnode) => {
+              if (status.current_room == null || status.current_room == "") {
+                vnode.dom.style.display = "none";
+              }
+            },
+            onclick: (e) => {
+              create_peer();
+            },
+          },
+          "create chat"
         ),
       ]
     );
@@ -1205,8 +1241,10 @@ var chat = {
           );
           user_check = setInterval(() => {
             if (status.action == "write") return false;
-            let c = peer.connections;
-            status.userOnline = Object.values(c).length;
+            if (peer.connections) {
+              let c = peer.connections;
+              status.userOnline = Object.values(c).length;
+            }
           }, 10000);
         },
       },
@@ -1604,7 +1642,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
       case "Backspace":
         stop_scan();
-        m.route.set("/start");
         break;
     }
   }
@@ -1621,10 +1658,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
     }
 
     if (evt.key === "Backspace") {
-      if (route.startsWith("/chat")) {
-        //warning_leave_chat();
-        // return false;
-      }
       if (
         route.startsWith("/chat") ||
         m.route.get() == "/settings_page" ||
@@ -1635,9 +1668,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
         evt.preventDefault();
         status.action = "";
         m.route.set("/start");
-        if (conn) {
-          // close_connection();
-        }
       }
 
       if (m.route.get() == "/settings") {

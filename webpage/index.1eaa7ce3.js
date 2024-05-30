@@ -20986,7 +20986,8 @@ var $17d11d58618cc814$var$links = "";
 var $17d11d58618cc814$var$chat_data = [];
 var $17d11d58618cc814$var$lastPeerId = null;
 var $17d11d58618cc814$var$peer = null;
-var $17d11d58618cc814$var$conn = null;
+var $17d11d58618cc814$var$conn = "";
+var $17d11d58618cc814$var$connectedPeers = [];
 //.env turn server
 var $17d11d58618cc814$var$debug = false;
 if ($17d11d58618cc814$var$debug) window.onerror = function(msg, url, linenumber) {
@@ -20995,27 +20996,32 @@ if ($17d11d58618cc814$var$debug) window.onerror = function(msg, url, linenumber)
 };
 //history
 var $17d11d58618cc814$var$chat_history = [];
+/*
 // Retrieve chat history from local storage
-(0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).getItem("chat_history").then(function(e) {
+localforage
+  .getItem("chat_history")
+  .then((e) => {
     console.log(e);
-    if (e) $17d11d58618cc814$var$chat_history = e; // directly assign the retrieved array to chat_history
-}).catch(function(e) {
+    if (e) {
+      chat_history = e; // directly assign the retrieved array to chat_history
+    }
+  })
+  .catch((e) => {
     console.log(e);
-});
-var $17d11d58618cc814$var$store_history = function(id) {
-    $17d11d58618cc814$var$chat_history.push({
-        id: id,
-        date: new Date(),
-        data: ""
-    }); // push new entry directly to the array
-    (0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).setItem("chat_history", $17d11d58618cc814$var$chat_history) // store the array directly
-    .then(function(e) {
-        console.log(e);
-    }).catch(function(e) {
-        console.log(e);
+  });
+
+let store_history = (id) => {
+  chat_history.push({ id: id, date: new Date(), data: "" }); // push new entry directly to the array
+  localforage
+    .setItem("chat_history", chat_history) // store the array directly
+    .then((e) => {
+      console.log(e);
+    })
+    .catch((e) => {
+      console.log(e);
     });
 };
-//open KaiOS app
+*/ //open KaiOS app
 var $17d11d58618cc814$var$app_launcher = function() {
     var currentUrl = window.location.href;
     // Check if the URL includes 'id='
@@ -21132,6 +21138,8 @@ function $17d11d58618cc814$var$_getIceServers() {
                         document.querySelector(".loading-spinner").style.display = "none";
                     });
                     $17d11d58618cc814$var$peer.on("connection", function(c) {
+                        $17d11d58618cc814$var$connectedPeers.push($17d11d58618cc814$var$conn);
+                        console.log($17d11d58618cc814$var$connectedPeers);
                         $17d11d58618cc814$var$conn = c;
                         $17d11d58618cc814$var$conn.on("data", function(data) {
                             if (!$17d11d58618cc814$export$471f7ae5c4103ae1.visibility) (0, $162001cafa2b40fd$export$75525525b38ea7b3)("flop", "new message");
@@ -21150,7 +21158,6 @@ function $17d11d58618cc814$var$_getIceServers() {
                             $17d11d58618cc814$var$focus_last_article();
                         });
                         $17d11d58618cc814$var$conn.on("close", function() {
-                            // conn = null;
                             (0, $162001cafa2b40fd$export$6593825dc0f3a767)("user has left chat", 1000);
                         });
                         // Event handler for successful connection
@@ -21177,7 +21184,6 @@ function $17d11d58618cc814$var$_getIceServers() {
                     });
                     $17d11d58618cc814$var$peer.on("close", function() {
                         (0, $162001cafa2b40fd$export$6593825dc0f3a767)("connection closed", 1000);
-                        // conn = null;
                         document.querySelector(".loading-spinner").style.display = "none";
                     });
                     $17d11d58618cc814$var$peer.on("error", function(err) {
@@ -21192,6 +21198,7 @@ function $17d11d58618cc814$var$_getIceServers() {
                     error = _state.sent();
                     console.error("Error fetching ice servers:", error.message);
                     document.querySelector(".loading-spinner").style.display = "none";
+                    (0, $162001cafa2b40fd$export$6593825dc0f3a767)("please retry to connect", 2000);
                     return [
                         3,
                         5
@@ -21262,7 +21269,6 @@ var $17d11d58618cc814$var$focus_last_article = function focus_last_article() {
     }, 1000);
 };
 function $17d11d58618cc814$var$sendMessage(msg, type) {
-    // if (conn && conn.open) {
     if (type == "image") {
         // Encode the file using the FileReader API
         var reader = new FileReader();
@@ -21282,7 +21288,8 @@ function $17d11d58618cc814$var$sendMessage(msg, type) {
                 filetype: msg.type,
                 nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname
             };
-            $17d11d58618cc814$var$conn.send(msg);
+            //conn.send(msg);
+            $17d11d58618cc814$var$sendMessageToAll(msg);
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
             $17d11d58618cc814$var$focus_last_article();
         };
@@ -21302,17 +21309,22 @@ function $17d11d58618cc814$var$sendMessage(msg, type) {
             content: msg.text,
             datetime: new Date()
         });
-        $17d11d58618cc814$var$conn.send(msg);
+        //conn.send(msg);
+        $17d11d58618cc814$var$sendMessageToAll(msg);
         (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
         $17d11d58618cc814$var$focus_last_article();
         $17d11d58618cc814$var$write();
     }
-/*
-  } else {
-    side_toaster("no user online", 3000);
-    write();
-  }
-  */ }
+}
+//send to all connections
+function $17d11d58618cc814$var$sendMessageToAll(message) {
+    Object.keys($17d11d58618cc814$var$peer.connections).forEach(function(peerId) {
+        $17d11d58618cc814$var$peer.connections[peerId].forEach(function(conn) {
+            if (conn.open) conn.send(message);
+            else console.log(conn + "not open");
+        });
+    });
+}
 var $17d11d58618cc814$var$close_connection = function close_connection() {
     $17d11d58618cc814$var$conn.close();
 };
@@ -21395,7 +21407,13 @@ var $17d11d58618cc814$var$connect_to_peer = function connect_to_peer(id) {
 //create room
 // and create qr-code with peer id
 var $17d11d58618cc814$var$create_peer = function create_peer() {
-    console.log("create peer");
+    //close connection before create peer
+    $17d11d58618cc814$var$chat_data = [];
+    try {
+        if ($17d11d58618cc814$var$conn) $17d11d58618cc814$var$close_connection();
+    } catch (e) {
+        console.log(e);
+    }
     if (!$17d11d58618cc814$export$471f7ae5c4103ae1.deviceOnline) {
         alert("Device is offline");
         return false;
@@ -21408,9 +21426,8 @@ var $17d11d58618cc814$var$create_peer = function create_peer() {
             else $17d11d58618cc814$var$lastPeerId = $17d11d58618cc814$var$peer.id;
             $17d11d58618cc814$export$57fcf9ca838ce2c6 = $17d11d58618cc814$var$peer.id;
             $17d11d58618cc814$export$471f7ae5c4103ae1.current_room = $17d11d58618cc814$var$peer.id;
-            $17d11d58618cc814$var$store_history($17d11d58618cc814$var$peer.id);
+            //store_history(peer.id);
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat?id=" + $17d11d58618cc814$export$57fcf9ca838ce2c6);
-            console.log($17d11d58618cc814$export$57fcf9ca838ce2c6);
             //make qr code
             var qrs = new (0, (/*@__PURE__*/$parcel$interopDefault($fc3b5a28c7651bef$exports)))();
             qrs.set({
@@ -21714,7 +21731,7 @@ var $17d11d58618cc814$var$options = {
 var $17d11d58618cc814$var$start = {
     view: function view() {
         return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
-            class: "flex justify-content-center",
+            class: "flex justify-content-spacearound",
             id: "start",
             oncreate: function() {
                 //auto connect if id is given
@@ -21734,22 +21751,33 @@ var $17d11d58618cc814$var$start = {
                 class: ""
             }),
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("p", {
-                class: "scroll item",
-                oncreate: function(dom) {
+                class: "item scroll",
+                tabIndex: 0,
+                oncreate: function(vnode) {
                     document.querySelector("#start p").focus();
+                    vnode.dom.focus();
                 }
             }, "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images and your position with your chat partner. To create a peer, press enter."),
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
+                tabIndex: 1,
                 class: "item",
-                "data-id": $17d11d58618cc814$var$chat_history[$17d11d58618cc814$var$chat_history.length - 1].id,
                 oncreate: function(vnode) {
-                    if (!$17d11d58618cc814$export$471f7ae5c4103ae1.current_room) vnode.dom.style.display = "none";
+                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_room == null || $17d11d58618cc814$export$471f7ae5c4103ae1.current_room == "") vnode.dom.style.display = "none";
                 },
                 onclick: function(e) {
-                    // connect_to_peer(e.target.getAttribute("data-id"));
-                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat?id=" + $17d11d58618cc814$var$chat_history[$17d11d58618cc814$var$chat_history.length - 1].id);
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat?id=" + $17d11d58618cc814$export$471f7ae5c4103ae1.current_room);
                 }
-            }, "reopen chat")
+            }, "reopen chat"),
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
+                tabIndex: 2,
+                class: "item button-create-peer",
+                oncreate: function(vnode) {
+                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_room == null || $17d11d58618cc814$export$471f7ae5c4103ae1.current_room == "") vnode.dom.style.display = "none";
+                },
+                onclick: function(e) {
+                    $17d11d58618cc814$var$create_peer();
+                }
+            }, "create chat")
         ]);
     }
 };
@@ -21833,8 +21861,10 @@ var $17d11d58618cc814$var$chat = {
                 (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
                 $17d11d58618cc814$var$user_check = setInterval(function() {
                     if ($17d11d58618cc814$export$471f7ae5c4103ae1.action == "write") return false;
-                    var c = $17d11d58618cc814$var$peer.connections;
-                    $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline = Object.values(c).length;
+                    if ($17d11d58618cc814$var$peer.connections) {
+                        var c = $17d11d58618cc814$var$peer.connections;
+                        $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline = Object.values(c).length;
+                    }
                 }, 10000);
             }
         }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
@@ -22110,7 +22140,6 @@ document.addEventListener("DOMContentLoaded", function(e) {
                 break;
             case "Backspace":
                 (0, $2b0cc46421a6d3fe$export$55e6c60a43cc74e2)();
-                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/start");
                 break;
         }
     }
@@ -22121,12 +22150,10 @@ document.addEventListener("DOMContentLoaded", function(e) {
         var route = (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get();
         if (evt.key === "Backspace" && (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() != "/start") evt.preventDefault();
         if (evt.key === "Backspace") {
-            route.startsWith("/chat");
             if (route.startsWith("/chat") || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/settings_page" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/scan" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/open_peer_menu" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/about") {
                 evt.preventDefault();
                 $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
                 (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/start");
-                $17d11d58618cc814$var$conn;
             }
             if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/settings") {
                 evt.preventDefault();
