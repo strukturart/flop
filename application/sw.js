@@ -1,5 +1,8 @@
 import localforage from "localforage";
 
+const channel = new BroadcastChannel("sw-messages");
+
+//KaiOS 3 open app
 self.onsystemmessage = (evt) => {
   const serviceHandler = () => {
     if (evt.name === "activity") {
@@ -16,3 +19,19 @@ self.onsystemmessage = (evt) => {
   };
   evt.waitUntil(serviceHandler());
 };
+
+//background sync
+
+let intervalId;
+
+channel.addEventListener("message", (event) => {
+  if (event.data === "startInterval") {
+    console.log("Received startInterval message from main script");
+
+    // Start the interval
+    intervalId = setInterval(() => {
+      // Send a message to the main script
+      channel.postMessage("intervalTriggered");
+    }, 10000); // Adjust the interval duration as needed
+  }
+});

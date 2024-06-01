@@ -2227,6 +2227,8 @@ function $a4759881d837f160$export$5f0017c582d45a2d(obj) {
 });
 
 
+var $251eca785eba5f41$var$channel = new BroadcastChannel("sw-messages");
+//KaiOS 3 open app
 self.onsystemmessage = function(evt) {
     var serviceHandler = function() {
         if (evt.name === "activity") {
@@ -2239,5 +2241,17 @@ self.onsystemmessage = function(evt) {
     };
     evt.waitUntil(serviceHandler());
 };
+//background sync
+var $251eca785eba5f41$var$intervalId;
+$251eca785eba5f41$var$channel.addEventListener("message", function(event) {
+    if (event.data === "startInterval") {
+        console.log("Received startInterval message from main script");
+        // Start the interval
+        $251eca785eba5f41$var$intervalId = setInterval(function() {
+            // Send a message to the main script
+            $251eca785eba5f41$var$channel.postMessage("intervalTriggered");
+        }, 10000); // Adjust the interval duration as needed
+    }
+});
 
 })();

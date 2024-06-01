@@ -2697,7 +2697,7 @@ function $6d3f4b507512327e$export$ed80d9de1d9df928(url) {
                 resolve(false);
             });
         }
-        if ((0, $78f2cb3ec8734e95$export$471f7ae5c4103ae1).notKaios) {
+        if ((0, $78f2cb3ec8734e95$export$471f7ae5c4103ae1).notKaiOS) {
             var success = $6d3f4b507512327e$export$113cec1d2aba8489();
             if (success) {
                 console.log("Text copied to clipboard successfully.");
@@ -2968,9 +2968,9 @@ var $6d3f4b507512327e$export$247be4ede8e3a24a = function bottom_bar(left, center
     else document.querySelector("div#bottom-bar").style.display = "block";
 };
 var $6d3f4b507512327e$export$7ce2ea7c45ae9a07 = function top_bar(left, center, right) {
-    document.querySelector("div#top-bar div.top-left").innerHTML = left;
-    document.querySelector("div#top-bar div.top-center").innerHTML = center;
-    document.querySelector("div#top-bar div.top-right").innerHTML = right;
+    document.querySelector("div#top-bar div.button-left").innerHTML = left;
+    document.querySelector("div#top-bar div.button-center").innerHTML = center;
+    document.querySelector("div#top-bar div.button-right").innerHTML = right;
     if (left == "" && center == "" && right == "") document.querySelector("div#top-bar").style.display = "none";
     else document.querySelector("div#top-bar").style.display = "block";
 };
@@ -3026,7 +3026,7 @@ var $6d3f4b507512327e$export$6714d0f9237d35de = function pick_image(callback) {
             console.log(err);
         });
     }
-    if ((0, $78f2cb3ec8734e95$export$471f7ae5c4103ae1).notKaios || (0, $78f2cb3ec8734e95$export$471f7ae5c4103ae1).os) {
+    if ((0, $78f2cb3ec8734e95$export$471f7ae5c4103ae1).notKaiOS || (0, $78f2cb3ec8734e95$export$471f7ae5c4103ae1).os) {
         var fileInput = document.createElement("input");
         fileInput.type = "file";
         fileInput.accept = "image/*";
@@ -20975,9 +20975,10 @@ var $78f2cb3ec8734e95$export$471f7ae5c4103ae1 = {
     action: "",
     deviceOnline: true,
     userOnline: 0,
-    notKaios: window.innerWidth > 400 ? true : false,
+    notKaiOS: window.innerWidth > 300 ? true : false,
     os: (0, $6d3f4b507512327e$export$ad64e00ff47c1b17)()
 };
+if ("b2g" in navigator || "navigator.mozApps" in navigator) $78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS = false;
 var $78f2cb3ec8734e95$export$a5a6e0b888b2c992 = {};
 var $78f2cb3ec8734e95$export$57fcf9ca838ce2c6 = "";
 var $78f2cb3ec8734e95$var$channel = new BroadcastChannel("sw-messages");
@@ -21060,8 +21061,61 @@ window.addEventListener("online", function() {
 window.addEventListener("offline", function() {
     $78f2cb3ec8734e95$export$471f7ae5c4103ae1.deviceOnline = false;
 });
+//track single connections
+//to update connections list
+function $78f2cb3ec8734e95$var$setupConnectionEvents(conn) {
+    var userId = conn.peer;
+    var pc = conn.peerConnection;
+    if (pc) pc.addEventListener("iceconnectionstatechange", function() {
+        console.log("ICE connection state changed to:", pc.iceConnectionState);
+        if (pc.iceConnectionState === "disconnected") {
+            (0, $6d3f4b507512327e$export$6593825dc0f3a767)("User has left the chat", 1000);
+            $78f2cb3ec8734e95$var$connectedPeers = $78f2cb3ec8734e95$var$connectedPeers.filter(function(c) {
+                return c.peer !== userId;
+            });
+            $78f2cb3ec8734e95$var$updateConnections();
+        }
+        if (pc.iceConnectionState === "connected") {
+            (0, $6d3f4b507512327e$export$6593825dc0f3a767)("User has entered", 1000);
+            if (!$78f2cb3ec8734e95$var$connectedPeers.includes(conn.peer)) $78f2cb3ec8734e95$var$connectedPeers.push(conn.peer);
+            $78f2cb3ec8734e95$var$updateConnections();
+        }
+    });
+    conn.on("close", function() {
+        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("User has left the chat", 1000);
+        $78f2cb3ec8734e95$var$connectedPeers = $78f2cb3ec8734e95$var$connectedPeers.filter(function(c) {
+            return c.peer !== userId;
+        });
+        $78f2cb3ec8734e95$var$updateConnections();
+    });
+    conn.on("disconnected", function() {
+        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("User has been disconnected", 1000);
+        $78f2cb3ec8734e95$var$connectedPeers = $78f2cb3ec8734e95$var$connectedPeers.filter(function(c) {
+            return c.peer !== userId;
+        });
+        $78f2cb3ec8734e95$var$updateConnections();
+    });
+    conn.on("error", function() {
+        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("User has been disconnected", 1000);
+        $78f2cb3ec8734e95$var$connectedPeers = $78f2cb3ec8734e95$var$connectedPeers.filter(function(c) {
+            return c.peer !== userId;
+        });
+        $78f2cb3ec8734e95$var$updateConnections();
+    });
+}
+function $78f2cb3ec8734e95$var$updateConnections() {
+    $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline = $78f2cb3ec8734e95$var$connectedPeers.length;
+    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS == true && $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline > 0 && (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "chat") {
+        document.querySelector("img.users").setAttribute("title", $78f2cb3ec8734e95$export$471f7ae5c4103ae1.online);
+        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("<img class='users' title='0' src='assets/image/monster.svg'>", "", "<img src='assets/image/back.svg'>");
+    }
+}
 var $78f2cb3ec8734e95$var$ice_servers = {
-    iceServers: []
+    iceServers: [
+        {
+            urls: "stun:stun.l.google.com:19302"
+        }
+    ]
 };
 var $78f2cb3ec8734e95$var$remove_no_user_online = function() {
     $78f2cb3ec8734e95$var$chat_data = $78f2cb3ec8734e95$var$chat_data.filter(function(e) {
@@ -21070,17 +21124,20 @@ var $78f2cb3ec8734e95$var$remove_no_user_online = function() {
     (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
 };
 var $78f2cb3ec8734e95$var$get_manifest_callback = function(e) {
+    console.log(e);
     var version;
     if (navigator.mozApps) version = e.manifest.version;
     else version = e.b2g_features.version;
     $78f2cb3ec8734e95$export$471f7ae5c4103ae1.version = version;
+    localStorage.setItem("version", version);
 };
 (0, $6d3f4b507512327e$export$39e873de56f329d8)($78f2cb3ec8734e95$var$get_manifest_callback);
 function $78f2cb3ec8734e95$var$getIceServers() {
     return $78f2cb3ec8734e95$var$_getIceServers.apply(this, arguments);
 }
 function $78f2cb3ec8734e95$var$_getIceServers() {
-    $78f2cb3ec8734e95$var$_getIceServers = (0, $bdca4d8f0452b8e7$export$7c398597f8905a1)(function() {
+    $78f2cb3ec8734e95$var$_getIceServers = //load ICE Server
+    (0, $bdca4d8f0452b8e7$export$7c398597f8905a1)(function() {
         var response, a, error;
         return (0, $95fedd77f81839f7$export$67ebef60e6f28a6)(this, function(_state) {
             switch(_state.label){
@@ -21102,7 +21159,7 @@ function $78f2cb3ec8734e95$var$_getIceServers() {
                     response = _state.sent();
                     if (!response.ok) {
                         document.querySelector(".loading-spinner").style.display = "none";
-                        throw new Error("Failed to fetch ice servers. Status: ".concat(response.status));
+                        alert("can't load turn");
                     }
                     return [
                         4,
@@ -21113,59 +21170,62 @@ function $78f2cb3ec8734e95$var$_getIceServers() {
                     a.forEach(function(e) {
                         $78f2cb3ec8734e95$var$ice_servers.iceServers.push(e);
                     });
-                    if ($78f2cb3ec8734e95$var$peer) $78f2cb3ec8734e95$var$peer.destroy();
-                    if (typeof peerConfiguration == "object") {
-                        console.log("with turn");
-                        $78f2cb3ec8734e95$var$peer = new Peer({
-                            debug: 0,
-                            config: $78f2cb3ec8734e95$var$ice_servers,
-                            secure: false,
-                            referrerPolicy: "origin-when-cross-origin"
-                        });
-                    } else {
-                        console.log("without turn");
-                        $78f2cb3ec8734e95$var$peer = new Peer({
-                            debug: 0,
-                            secure: false,
-                            config: $78f2cb3ec8734e95$var$ice_servers,
-                            referrerPolicy: "no-referrer"
-                        });
+                    if ($78f2cb3ec8734e95$var$peer) {
+                        try {
+                            $78f2cb3ec8734e95$var$closeAllConnections();
+                        } catch (e) {
+                            console.log(e);
+                        }
+                        $78f2cb3ec8734e95$var$peer.destroy();
                     }
+                    $78f2cb3ec8734e95$var$peer = new Peer({
+                        debug: 0,
+                        secure: false,
+                        config: $78f2cb3ec8734e95$var$ice_servers,
+                        referrerPolicy: "no-referrer"
+                    });
                     $78f2cb3ec8734e95$var$peer.on("open", function() {
                         if ($78f2cb3ec8734e95$var$peer.id === null) $78f2cb3ec8734e95$var$peer.id = $78f2cb3ec8734e95$var$lastPeerId;
                         else $78f2cb3ec8734e95$var$lastPeerId = $78f2cb3ec8734e95$var$peer.id;
                         document.querySelector(".loading-spinner").style.display = "none";
                     });
                     $78f2cb3ec8734e95$var$peer.on("connection", function(c) {
-                        $78f2cb3ec8734e95$var$connectedPeers.push($78f2cb3ec8734e95$var$conn);
-                        console.log($78f2cb3ec8734e95$var$connectedPeers);
+                        //store all connections
+                        $78f2cb3ec8734e95$var$connectedPeers.push(c.peer);
+                        $78f2cb3ec8734e95$var$setupConnectionEvents(c);
                         $78f2cb3ec8734e95$var$conn = c;
                         $78f2cb3ec8734e95$var$conn.on("data", function(data) {
-                            if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.visibility) (0, $6d3f4b507512327e$export$75525525b38ea7b3)("flop", "new message");
-                            if (data.file) $78f2cb3ec8734e95$var$chat_data.push({
-                                nickname: data.nickname,
-                                content: "",
-                                datetime: new Date(),
-                                image: data.file
-                            });
-                            if (data.text) $78f2cb3ec8734e95$var$chat_data.push({
-                                nickname: data.nickname,
-                                content: data.text,
-                                datetime: new Date()
-                            });
-                            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
-                            $78f2cb3ec8734e95$var$focus_last_article();
+                            if (data.file || data.text) {
+                                if (data.file) {
+                                    if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.visibility) (0, $6d3f4b507512327e$export$75525525b38ea7b3)("flop", "new message");
+                                    $78f2cb3ec8734e95$var$chat_data.push({
+                                        nickname: data.nickname,
+                                        content: "",
+                                        datetime: new Date(),
+                                        image: data.file
+                                    });
+                                }
+                                if (data.text) {
+                                    if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.visibility) (0, $6d3f4b507512327e$export$75525525b38ea7b3)("flop", "new message");
+                                    $78f2cb3ec8734e95$var$chat_data.push({
+                                        nickname: data.nickname,
+                                        content: data.text,
+                                        datetime: new Date()
+                                    });
+                                }
+                                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
+                                $78f2cb3ec8734e95$var$focus_last_article();
+                            } else console.log("ping" + JSON.stringify(data));
                         });
-                        $78f2cb3ec8734e95$var$conn.on("close", function() {
+                        $78f2cb3ec8734e95$var$conn.on("close", function(user) {
                             (0, $6d3f4b507512327e$export$6593825dc0f3a767)("user has left chat", 1000);
+                            $78f2cb3ec8734e95$var$connectedPeers = $78f2cb3ec8734e95$var$connectedPeers.filter(function(c) {
+                                return c.peer !== $78f2cb3ec8734e95$var$conn.peer;
+                            });
                         });
                         // Event handler for successful connection
                         $78f2cb3ec8734e95$var$conn.on("open", function() {
-                            (0, $6d3f4b507512327e$export$6593825dc0f3a767)("Connected with " + $78f2cb3ec8734e95$var$peer.id, 5000);
-                            $78f2cb3ec8734e95$var$chat_data.push({
-                                content: "connected",
-                                datetime: new Date()
-                            });
+                            (0, $6d3f4b507512327e$export$6593825dc0f3a767)("Connected", 5000);
                             (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
                             $78f2cb3ec8734e95$var$remove_no_user_online();
                             document.querySelector(".loading-spinner").style.display = "none";
@@ -21176,18 +21236,24 @@ function $78f2cb3ec8734e95$var$_getIceServers() {
                         });
                     });
                     $78f2cb3ec8734e95$var$peer.on("disconnected", function() {
-                        // Workaround for peer.reconnect deleting previous id
-                        $78f2cb3ec8734e95$var$peer.id = $78f2cb3ec8734e95$var$lastPeerId;
-                        $78f2cb3ec8734e95$var$peer._lastServerId = $78f2cb3ec8734e95$var$lastPeerId;
-                        $78f2cb3ec8734e95$var$peer.reconnect();
+                        try {
+                            $78f2cb3ec8734e95$var$peer.reconnect();
+                        } catch (e) {
+                            console.log("reconnect error: " + e);
+                        }
                     });
                     $78f2cb3ec8734e95$var$peer.on("close", function() {
                         (0, $6d3f4b507512327e$export$6593825dc0f3a767)("connection closed", 1000);
                         document.querySelector(".loading-spinner").style.display = "none";
                     });
                     $78f2cb3ec8734e95$var$peer.on("error", function(err) {
-                        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("int connection error " + err, 2000);
+                        //side_toaster("connection error " + err.type, 8000);
                         document.querySelector(".loading-spinner").style.display = "none";
+                        try {
+                            $78f2cb3ec8734e95$var$peer.reconnect();
+                        } catch (e) {
+                            console.log("reconnect error: " + e);
+                        }
                     });
                     return [
                         3,
@@ -21195,7 +21261,7 @@ function $78f2cb3ec8734e95$var$_getIceServers() {
                     ];
                 case 4:
                     error = _state.sent();
-                    console.error("Error fetching ice servers:", error.message);
+                    alert("Error fetching ice servers:", error.message);
                     document.querySelector(".loading-spinner").style.display = "none";
                     (0, $6d3f4b507512327e$export$6593825dc0f3a767)("please retry to connect", 2000);
                     return [
@@ -21274,7 +21340,6 @@ function $78f2cb3ec8734e95$var$sendMessage(msg, type) {
         reader.onloadend = function() {
             //add image to feed
             var src = URL.createObjectURL(msg.blob);
-            // alert(reader.result);
             $78f2cb3ec8734e95$var$chat_data.push({
                 nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
                 content: "",
@@ -21308,7 +21373,6 @@ function $78f2cb3ec8734e95$var$sendMessage(msg, type) {
             content: msg.text,
             datetime: new Date()
         });
-        //conn.send(msg);
         $78f2cb3ec8734e95$var$sendMessageToAll(msg);
         (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
         $78f2cb3ec8734e95$var$focus_last_article();
@@ -21324,9 +21388,15 @@ function $78f2cb3ec8734e95$var$sendMessageToAll(message) {
         });
     });
 }
-var $78f2cb3ec8734e95$var$close_connection = function close_connection() {
-    $78f2cb3ec8734e95$var$conn.close();
-};
+//close all connections
+function $78f2cb3ec8734e95$var$closeAllConnections() {
+    if ($78f2cb3ec8734e95$var$peer.connections == null) return;
+    Object.keys($78f2cb3ec8734e95$var$peer.connections).forEach(function(peerId) {
+        $78f2cb3ec8734e95$var$peer.connections[peerId].forEach(function(conn) {
+            conn.close();
+        });
+    });
+}
 //connect to peer
 var $78f2cb3ec8734e95$var$connect_to_peer = function connect_to_peer(id) {
     if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.deviceOnline) {
@@ -21334,58 +21404,55 @@ var $78f2cb3ec8734e95$var$connect_to_peer = function connect_to_peer(id) {
         return false;
     }
     $78f2cb3ec8734e95$export$57fcf9ca838ce2c6 = id;
+    $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_room = id;
     $78f2cb3ec8734e95$var$getIceServers().then(function() {
         (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id=" + id);
         setTimeout(function() {
             document.querySelector(".loading-spinner").style.display = "block";
         }, 2000);
         setTimeout(function() {
-            if ($78f2cb3ec8734e95$var$peer == null) {
-                document.querySelector(".loading-spinner").style.display = "none";
-                console.log("no peer instance");
-            }
+            if ($78f2cb3ec8734e95$var$peer == null) document.querySelector(".loading-spinner").style.display = "none";
             // Establish connection with the destination peer
             try {
                 $78f2cb3ec8734e95$var$conn = $78f2cb3ec8734e95$var$peer.connect(id, {
                     label: "chat",
                     reliable: true
                 });
-                $78f2cb3ec8734e95$var$chat_data.push({
-                    id: "no-other-user-online",
-                    nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
-                    content: "no other user online",
-                    datetime: new Date()
-                });
                 $78f2cb3ec8734e95$var$conn.on("data", function(data) {
-                    console.log("data" + data);
-                    if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.visibility) (0, $6d3f4b507512327e$export$75525525b38ea7b3)("flop", "new message");
                     document.querySelector(".loading-spinner").style.display = "none";
-                    if (data.file) $78f2cb3ec8734e95$var$chat_data.push({
-                        nickname: data.nickname,
-                        content: "",
-                        datetime: new Date(),
-                        image: data.file
-                    });
-                    if (data.text) $78f2cb3ec8734e95$var$chat_data.push({
-                        nickname: data.nickname,
-                        content: data.text,
-                        datetime: new Date()
-                    });
-                    $78f2cb3ec8734e95$var$remove_no_user_online();
-                    $78f2cb3ec8734e95$var$focus_last_article();
-                    (0, $da5c51e5866985e6$export$55e6c60a43cc74e2)();
+                    if (data.file || data.text) {
+                        if (data.file) {
+                            if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.visibility) (0, $6d3f4b507512327e$export$75525525b38ea7b3)("flop", "new message");
+                            $78f2cb3ec8734e95$var$chat_data.push({
+                                nickname: data.nickname,
+                                content: "",
+                                datetime: new Date(),
+                                image: data.file
+                            });
+                        }
+                        if (data.text) {
+                            if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.visibility) (0, $6d3f4b507512327e$export$75525525b38ea7b3)("flop", "new message");
+                            $78f2cb3ec8734e95$var$chat_data.push({
+                                nickname: data.nickname,
+                                content: data.text,
+                                datetime: new Date()
+                            });
+                        }
+                        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
+                        $78f2cb3ec8734e95$var$focus_last_article();
+                        (0, $da5c51e5866985e6$export$55e6c60a43cc74e2)();
+                    } else console.log("ping" + JSON.stringify(data));
                 });
                 // Event handler for successful connection
                 $78f2cb3ec8734e95$var$conn.on("open", function() {
                     document.querySelector(".loading-spinner").style.display = "none";
-                    (0, $6d3f4b507512327e$export$6593825dc0f3a767)("Connected with " + $78f2cb3ec8734e95$var$peer.id, 5000);
-                    $78f2cb3ec8734e95$var$chat_data.push({
-                        content: "connected",
-                        datetime: new Date()
-                    });
+                    (0, $6d3f4b507512327e$export$6593825dc0f3a767)("Connected", 5000);
+                    //chat_data.push({ content: "connected", datetime: new Date() });
                     (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
                     (0, $da5c51e5866985e6$export$55e6c60a43cc74e2)();
                     $78f2cb3ec8734e95$var$remove_no_user_online();
+                    $78f2cb3ec8734e95$var$setupConnectionEvents($78f2cb3ec8734e95$var$conn);
+                    $78f2cb3ec8734e95$var$connectedPeers.push($78f2cb3ec8734e95$var$conn.peer);
                 });
                 // Event handler for connection errors
                 $78f2cb3ec8734e95$var$conn.on("error", function(err) {
@@ -21395,9 +21462,12 @@ var $78f2cb3ec8734e95$var$connect_to_peer = function connect_to_peer(id) {
                 // Event handler for connection closure
                 $78f2cb3ec8734e95$var$conn.on("close", function() {
                     (0, $6d3f4b507512327e$export$6593825dc0f3a767)("user has left chat", 1000);
+                    $78f2cb3ec8734e95$var$connectedPeers = $78f2cb3ec8734e95$var$connectedPeers.filter(function(c) {
+                        return c.peer !== $78f2cb3ec8734e95$var$conn.peer;
+                    });
                 });
             } catch (e) {
-                console.log("error con" + e);
+                alert("error con" + e);
                 document.querySelector(".loading-spinner").style.display = "none";
             }
         }, 4000);
@@ -21408,11 +21478,6 @@ var $78f2cb3ec8734e95$var$connect_to_peer = function connect_to_peer(id) {
 var $78f2cb3ec8734e95$var$create_peer = function create_peer() {
     //close connection before create peer
     $78f2cb3ec8734e95$var$chat_data = [];
-    try {
-        if ($78f2cb3ec8734e95$var$conn) $78f2cb3ec8734e95$var$close_connection();
-    } catch (e) {
-        console.log(e);
-    }
     if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.deviceOnline) {
         alert("Device is offline");
         return false;
@@ -21425,7 +21490,6 @@ var $78f2cb3ec8734e95$var$create_peer = function create_peer() {
             else $78f2cb3ec8734e95$var$lastPeerId = $78f2cb3ec8734e95$var$peer.id;
             $78f2cb3ec8734e95$export$57fcf9ca838ce2c6 = $78f2cb3ec8734e95$var$peer.id;
             $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_room = $78f2cb3ec8734e95$var$peer.id;
-            //store_history(peer.id);
             (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id=" + $78f2cb3ec8734e95$export$57fcf9ca838ce2c6);
             //make qr code
             var qrs = new (0, (/*@__PURE__*/$parcel$interopDefault($bd7c1575f3abb9eb$exports)))();
@@ -21488,6 +21552,8 @@ var $78f2cb3ec8734e95$var$about = {
         return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
             "class": "page",
             oncreate: function() {
+                (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "");
+                if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
                 (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='assets/image/select.svg'>", "");
             }
         }, [
@@ -21529,6 +21595,8 @@ var $78f2cb3ec8734e95$var$privacy_policy = {
                 oncreate: function(param) {
                     var dom = param.dom;
                     dom.focus();
+                    (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "");
+                    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
                 },
                 oninit: function() {
                     (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='assets/image/select.svg'>", "");
@@ -21567,6 +21635,8 @@ var $78f2cb3ec8734e95$var$settings_page = {
             id: "settings_page",
             oncreate: function() {
                 (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "", "");
+                (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "");
+                if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
             }
         }, [
             (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
@@ -21668,7 +21738,11 @@ var $78f2cb3ec8734e95$var$options = {
     view: function view() {
         return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
             "class": "flex justify-content-center page",
-            id: "login"
+            id: "login",
+            oncreate: function() {
+                (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "");
+                if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
+            }
         }, [
             (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
                 oncreate: function(param) {
@@ -21733,6 +21807,7 @@ var $78f2cb3ec8734e95$var$start = {
             "class": "flex justify-content-spacearound",
             id: "start",
             oncreate: function() {
+                (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "");
                 //auto connect if id is given
                 (0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).getItem("connect_to_id").then(function(e) {
                     var params = e.data.split("?id=");
@@ -21796,6 +21871,7 @@ var $78f2cb3ec8734e95$var$links_page = {
                 oncreate: function() {
                     var _ref;
                     (_ref = index == 1) !== null && _ref !== void 0 ? _ref : item.focus();
+                    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS == true) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
                 }
             }, item.href);
         });
@@ -21808,11 +21884,11 @@ var $78f2cb3ec8734e95$var$scan = {
 };
 var $78f2cb3ec8734e95$var$open_peer_menu = {
     view: function view() {
-        (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "", "");
         return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
             "class": "flex justify-content-center",
             id: "open-peer-menu",
             oncreate: function() {
+                if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS == true) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
                 (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='assets/image/select.svg'>", "");
             }
         }, [
@@ -21857,14 +21933,20 @@ var $78f2cb3ec8734e95$var$chat = {
             },
             oncreate: function() {
                 (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "");
+                if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS == true) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
                 (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
                 $78f2cb3ec8734e95$var$user_check = setInterval(function() {
-                    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.action == "write") return false;
-                    if ($78f2cb3ec8734e95$var$peer.connections) {
-                        var c = $78f2cb3ec8734e95$var$peer.connections;
-                        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline = Object.values(c).length;
+                    //side_toaster(connectedPeers.length, 2000);
+                    console.log($78f2cb3ec8734e95$var$connectedPeers);
+                    if ($78f2cb3ec8734e95$var$connectedPeers) {
+                        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline = $78f2cb3ec8734e95$var$connectedPeers.length;
+                        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS == true && $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline > 0) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("<img class='users' title='" + $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline + "' src='assets/image/monster.svg'>", "", "<img src='assets/image/back.svg'>");
+                        else if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
+                    } else {
+                        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline = 0;
+                        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
                     }
-                }, 10000);
+                }, 5000);
             }
         }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
             id: "message-input",
@@ -21927,7 +22009,7 @@ var $78f2cb3ec8734e95$var$intro = {
                 var hash = window.location.hash;
                 var fullUrl = "".concat(protocol, "//").concat(host).concat(pathname).concat(search).concat(hash);
                 // Get the current hash
-                if (hash.includes("?id=")) {
+                if (fullUrl.includes("?id=")) {
                     (0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).setItem("connect_to_id", {
                         data: fullUrl
                     });
@@ -21935,13 +22017,10 @@ var $78f2cb3ec8734e95$var$intro = {
                     if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.os == "KaiOS") $78f2cb3ec8734e95$var$app_launcher();
                     else setTimeout(function() {
                         (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/start");
-                    }, 5000);
-                } else {
-                    console.log("no id");
-                    setTimeout(function() {
-                        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/start");
-                    }, 5000);
-                }
+                    }, 1000);
+                } else setTimeout(function() {
+                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/start");
+                }, 5000);
             }
         }, [
             (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("img", {
@@ -21958,7 +22037,7 @@ var $78f2cb3ec8734e95$var$intro = {
                             $78f2cb3ec8734e95$export$471f7ae5c4103ae1.version = parsedResponse.b2g_features.version;
                             document.querySelector("#version").textContent = parsedResponse.b2g_features.version;
                         });
-                        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaios) fetch("/manifest.webmanifest").then(function(r) {
+                        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) fetch("/manifest.webmanifest").then(function(r) {
                             return r.json();
                         }).then(function(parsedResponse) {
                             $78f2cb3ec8734e95$export$471f7ae5c4103ae1.version = parsedResponse.b2g_features.version;
@@ -22056,6 +22135,23 @@ document.addEventListener("DOMContentLoaded", function(e) {
     document.querySelector("div.button-center").addEventListener("click", function(event) {
         simulateKeyPress("Enter");
     });
+    //top bar
+    document.querySelector("#top-bar div div.button-right").addEventListener("click", function(event) {
+        var route = (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get();
+        if (route.startsWith("/chat") || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/settings_page" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/scan" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/open_peer_menu" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/about") {
+            $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
+            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/start");
+        }
+        if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/settings") {
+            $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
+            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/about");
+        }
+        if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/privacy_policy") {
+            $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
+            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/about");
+        }
+        if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/options" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/links_page") (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id="), $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_room;
+    });
     // Function to simulate key press events
     function simulateKeyPress(k) {
         shortpress_action({
@@ -22087,6 +22183,8 @@ document.addEventListener("DOMContentLoaded", function(e) {
             case "0":
                 break;
             case "Backspace":
+                $78f2cb3ec8734e95$var$closeAllConnections();
+                $78f2cb3ec8734e95$var$peer.destroy();
                 window.close();
                 break;
         }
@@ -22097,7 +22195,6 @@ document.addEventListener("DOMContentLoaded", function(e) {
     function shortpress_action(param) {
         if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.action == "confirm") return false;
         var route = (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get();
-        route;
         switch(param.key){
             case "ArrowUp":
                 if (route.startsWith("/chat") && document.activeElement.tagName === "INPUT") $78f2cb3ec8734e95$var$write();
@@ -22118,7 +22215,8 @@ document.addEventListener("DOMContentLoaded", function(e) {
                 }
                 if (route.startsWith("/chat") && $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action !== "write") {
                     if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline > 0) $78f2cb3ec8734e95$var$write();
-                    else (0, $6d3f4b507512327e$export$6593825dc0f3a767)("no user online", 3000);
+                    else //connect_to_peer(status.current_room);
+                    (0, $6d3f4b507512327e$export$6593825dc0f3a767)("no user online", 3000);
                 }
                 if (route == "/start") (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/open_peer_menu");
                 break;
@@ -22168,7 +22266,11 @@ document.addEventListener("DOMContentLoaded", function(e) {
         }
         if (evt.key === "EndCall") {
             evt.preventDefault();
-            if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.action == "") window.close();
+            if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.action == "") {
+                $78f2cb3ec8734e95$var$closeAllConnections();
+                $78f2cb3ec8734e95$var$peer.destroy();
+                window.close();
+            }
         }
         if (!evt.repeat) {
             longpress = false;
@@ -22220,5 +22322,23 @@ try {
 } catch (e) {
     console.log(e);
 }
+window.addEventListener("beforeunload", function(e) {
+    $78f2cb3ec8734e95$var$closeAllConnections();
+    $78f2cb3ec8734e95$var$peer.destroy();
+});
+window.addEventListener("unload", function() {
+    $78f2cb3ec8734e95$var$closeAllConnections();
+    $78f2cb3ec8734e95$var$peer.destroy();
+});
+window.addEventListener("pagehide", function(event) {
+    console.log("Page is being hidden or unloaded.");
+    $78f2cb3ec8734e95$var$closeAllConnections();
+    $78f2cb3ec8734e95$var$peer.destroy();
+});
+//start ping interval in service worker
+$78f2cb3ec8734e95$var$channel.postMessage("startInterval");
+$78f2cb3ec8734e95$var$channel.addEventListener("message", function(event) {
+    event.data;
+});
 
 

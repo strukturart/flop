@@ -443,19 +443,17 @@ div#bottom-bar div.button-center:hover img {
 }
 
 div#top-bar {
-  z-index: 4;
+  z-index: 2000;
+  z-index: 6;
   background: none;
+  justify-content: center;
+  align-items: center;
   min-width: 100vw;
   height: 18px;
+  display: flex;
   position: fixed;
   top: 0;
   left: 0;
-}
-
-div#top-bar img {
-  color: #fff;
-  max-height: 15px;
-  margin: 3px 0 0 5px;
 }
 
 div#top-bar div#inner {
@@ -463,33 +461,58 @@ div#top-bar div#inner {
 }
 
 div#top-bar div {
-  color: #0e0d0d;
+  color: #fff;
   background: none;
   padding: 2px;
+  font-size: .8rem;
 }
 
-div#top-bar div.top-center {
-  color: #000;
-  text-align: center;
+div#top-bar div.button-left {
+  color: #fff;
   background: none;
-  width: 30%;
+  justify-content: flex-start;
+  width: 32%;
   padding: 2px;
+  display: flex;
 }
 
-div#top-bar div.top-left {
-  color: #000;
-  text-align: left;
-  background: none;
-  width: 30%;
-  padding: 2px;
+div#top-bar div.button-left:hover img {
+  width: 35px;
 }
 
-div#top-bar div.top-right {
-  color: #000;
-  text-align: right;
+div#top-bar div.button-left img, div#top-bar div.button-right img {
+  width: 30px;
+}
+
+div#top-bar div.button-right {
+  color: #fff;
   background: none;
-  width: 30%;
+  justify-content: flex-end;
+  width: 32%;
   padding: 2px;
+  display: flex;
+}
+
+div#top-bar div.button-right:hover img {
+  max-width: 35px;
+}
+
+div#top-bar div.button-center {
+  color: #fff;
+  background: none;
+  justify-content: center;
+  align-items: center;
+  width: 32%;
+  padding: 2px;
+  display: flex;
+}
+
+div#top-bar div.button-center img {
+  width: 30px;
+}
+
+div#top-bar div.button-center:hover img {
+  width: 35px;
 }
 
 article {
@@ -672,6 +695,7 @@ div#message-input input {
   #app {
     min-width: 100%;
     max-width: 100%;
+    padding: 50px 0 0;
     overflow: scroll;
   }
 
@@ -706,6 +730,14 @@ div#message-input input {
   }
 
   div#bottom-bar div.button-left img, div#bottom-bar div.button-right img, div#bottom-bar div.button-center img {
+    width: 50px;
+  }
+
+  div#top-bar {
+    margin: 0 0 20px;
+  }
+
+  div#top-bar div.button-left img, div#top-bar div.button-right img, div#top-bar div.button-center img {
     width: 50px;
   }
 
@@ -746,6 +778,7 @@ div#message-input input {
   #app {
     min-width: 100%;
     max-width: 100%;
+    padding: 50px 0 0;
     overflow: scroll;
   }
 
@@ -779,12 +812,8 @@ div#message-input input {
     margin: 0 0 20px;
   }
 
-  div#bottom-bar div.button-left img, div#bottom-bar div.button-right img, div#bottom-bar div.button-center img {
+  div#bottom-bar div.button-left img, div#bottom-bar div.button-right img, div#bottom-bar div.button-center img, div#bottom-bar div.button-left:hover img, div#bottom-bar div.button-right:hover img, div#bottom-bar div.button-center:hover img, div#top-bar div.button-left img, div#top-bar div.button-right img, div#top-bar div.button-center img, div#top-bar div.button-left:hover img, div#top-bar div.button-right:hover img, div#top-bar div.button-center:hover img {
     width: 50px;
-  }
-
-  div#bottom-bar div.button-left:hover img, div#bottom-bar div.button-right:hover img, div#bottom-bar div.button-center:hover img {
-    width: 55px;
   }
 
   html, body {

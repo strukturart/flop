@@ -12,7 +12,6 @@ import {
   top_bar,
   getManifest,
   setTabindex,
-  clipboard,
 } from "./assets/js/helper.js";
 import { start_scan } from "./assets/js/scan.js";
 import { stop_scan } from "./assets/js/scan.js";
@@ -32,9 +31,12 @@ export let status = {
   action: "",
   deviceOnline: true,
   userOnline: 0,
-  notKaios: window.innerWidth > 400 ? true : false,
+  notKaiOS: window.innerWidth > 300 ? true : false,
   os: detectMobileOS(),
 };
+
+if ("b2g" in navigator || "navigator.mozApps" in navigator)
+  status.notKaiOS = false;
 
 export let settings = {};
 export let current_room = "";
@@ -140,8 +142,73 @@ window.addEventListener("offline", () => {
   status.deviceOnline = false;
 });
 
+//track single connections
+//to update connections list
+function setupConnectionEvents(conn) {
+  const userId = conn.peer;
+
+  let pc = conn.peerConnection;
+
+  if (pc) {
+    pc.addEventListener("iceconnectionstatechange", () => {
+      console.log("ICE connection state changed to:", pc.iceConnectionState);
+
+      if (pc.iceConnectionState === "disconnected") {
+        side_toaster(`User has left the chat`, 1000);
+
+        connectedPeers = connectedPeers.filter((c) => c.peer !== userId);
+        updateConnections();
+      }
+
+      if (pc.iceConnectionState === "connected") {
+        side_toaster(`User has entered`, 1000);
+        if (!connectedPeers.includes(conn.peer)) {
+          connectedPeers.push(conn.peer);
+        }
+
+        updateConnections();
+      }
+    });
+  }
+
+  conn.on("close", () => {
+    side_toaster(`User has left the chat`, 1000);
+    connectedPeers = connectedPeers.filter((c) => c.peer !== userId);
+    updateConnections();
+  });
+
+  conn.on("disconnected", () => {
+    side_toaster(`User has been disconnected`, 1000);
+    connectedPeers = connectedPeers.filter((c) => c.peer !== userId);
+    updateConnections();
+  });
+
+  conn.on("error", () => {
+    side_toaster(`User has been disconnected`, 1000);
+    connectedPeers = connectedPeers.filter((c) => c.peer !== userId);
+    updateConnections();
+  });
+}
+
+function updateConnections() {
+  status.userOnline = connectedPeers.length;
+  if (
+    status.notKaiOS == true &&
+    status.userOnline > 0 &&
+    m.route.get() == "chat"
+  ) {
+    document.querySelector("img.users").setAttribute("title", status.online);
+    if (status.notKaiOS)
+      top_bar(
+        "<img class='users' title='0' src='assets/image/monster.svg'>",
+        "",
+        "<img src='assets/image/back.svg'>"
+      );
+  }
+}
+
 let ice_servers = {
-  "iceServers": [],
+  "iceServers": [{ urls: "stun:stun.l.google.com:19302" }],
 };
 
 const remove_no_user_online = () => {
@@ -153,6 +220,7 @@ const remove_no_user_online = () => {
 };
 
 let get_manifest_callback = (e) => {
+  console.log(e);
   let version;
 
   if (navigator.mozApps) {
@@ -162,9 +230,11 @@ let get_manifest_callback = (e) => {
   }
 
   status.version = version;
+  localStorage.setItem("version", version);
 };
 getManifest(get_manifest_callback);
 
+//load ICE Server
 async function getIceServers() {
   document.querySelector(".loading-spinner").style.display = "block";
 
@@ -178,10 +248,7 @@ async function getIceServers() {
 
     if (!response.ok) {
       document.querySelector(".loading-spinner").style.display = "none";
-
-      throw new Error(
-        `Failed to fetch ice servers. Status: ${response.status}`
-      );
+      alert("can't load turn");
     }
 
     const a = await response.json();
@@ -190,26 +257,22 @@ async function getIceServers() {
       ice_servers.iceServers.push(e);
     });
 
-    if (peer) peer.destroy();
-    if (typeof peerConfiguration == "object") {
-      console.log("with turn");
+    if (peer) {
+      try {
+        closeAllConnections();
+      } catch (e) {
+        console.log(e);
+      }
 
-      peer = new Peer({
-        debug: 0,
-        config: ice_servers,
-        secure: false,
-        referrerPolicy: "origin-when-cross-origin",
-      });
-    } else {
-      console.log("without turn");
-
-      peer = new Peer({
-        debug: 0,
-        secure: false,
-        config: ice_servers,
-        referrerPolicy: "no-referrer",
-      });
+      peer.destroy();
     }
+
+    peer = new Peer({
+      debug: 0,
+      secure: false,
+      config: ice_servers,
+      referrerPolicy: "no-referrer",
+    });
 
     peer.on("open", function () {
       if (peer.id === null) {
@@ -221,41 +284,52 @@ async function getIceServers() {
     });
 
     peer.on("connection", function (c) {
-      connectedPeers.push(conn);
-      console.log(connectedPeers);
+      //store all connections
+      connectedPeers.push(c.peer);
+      setupConnectionEvents(c);
 
       conn = c;
 
       conn.on("data", function (data) {
-        if (!status.visibility) pushLocalNotification("flop", "new message");
-        if (data.file) {
-          chat_data.push({
-            nickname: data.nickname,
-            content: "",
-            datetime: new Date(),
-            image: data.file,
-          });
-        }
+        if (data.file || data.text) {
+          if (data.file) {
+            if (!status.visibility)
+              pushLocalNotification("flop", "new message");
 
-        if (data.text) {
-          chat_data.push({
-            nickname: data.nickname,
-            content: data.text,
-            datetime: new Date(),
-          });
-        }
+            chat_data.push({
+              nickname: data.nickname,
+              content: "",
+              datetime: new Date(),
+              image: data.file,
+            });
+          }
 
-        m.redraw();
-        focus_last_article();
+          if (data.text) {
+            if (!status.visibility)
+              pushLocalNotification("flop", "new message");
+
+            chat_data.push({
+              nickname: data.nickname,
+              content: data.text,
+              datetime: new Date(),
+            });
+          }
+
+          m.redraw();
+          focus_last_article();
+        } else {
+          console.log("ping" + JSON.stringify(data));
+        }
       });
-      conn.on("close", function () {
+      conn.on("close", function (user) {
         side_toaster("user has left chat", 1000);
+        connectedPeers = connectedPeers.filter((c) => c.peer !== conn.peer);
       });
 
       // Event handler for successful connection
       conn.on("open", function () {
-        side_toaster("Connected with " + peer.id, 5000);
-        chat_data.push({ content: "connected", datetime: new Date() });
+        side_toaster("Connected", 5000);
+
         m.redraw();
 
         remove_no_user_online();
@@ -270,10 +344,11 @@ async function getIceServers() {
     });
 
     peer.on("disconnected", function () {
-      // Workaround for peer.reconnect deleting previous id
-      peer.id = lastPeerId;
-      peer._lastServerId = lastPeerId;
-      peer.reconnect();
+      try {
+        peer.reconnect();
+      } catch (e) {
+        console.log("reconnect error: " + e);
+      }
     });
 
     peer.on("close", function () {
@@ -282,11 +357,16 @@ async function getIceServers() {
     });
 
     peer.on("error", function (err) {
-      side_toaster("int connection error " + err, 2000);
+      //side_toaster("connection error " + err.type, 8000);
       document.querySelector(".loading-spinner").style.display = "none";
+      try {
+        peer.reconnect();
+      } catch (e) {
+        console.log("reconnect error: " + e);
+      }
     });
   } catch (error) {
-    console.error("Error fetching ice servers:", error.message);
+    alert("Error fetching ice servers:", error.message);
     document.querySelector(".loading-spinner").style.display = "none";
     side_toaster("please retry to connect", 2000);
   }
@@ -374,7 +454,6 @@ function sendMessage(msg, type) {
     reader.onloadend = () => {
       //add image to feed
       let src = URL.createObjectURL(msg.blob);
-      // alert(reader.result);
 
       chat_data.push({
         nickname: settings.nickname,
@@ -411,7 +490,6 @@ function sendMessage(msg, type) {
       content: msg.text,
       datetime: new Date(),
     });
-    //conn.send(msg);
 
     sendMessageToAll(msg);
 
@@ -432,10 +510,17 @@ function sendMessageToAll(message) {
     });
   });
 }
+//close all connections
 
-let close_connection = function () {
-  conn.close();
-};
+function closeAllConnections() {
+  if (peer.connections == null) return;
+  Object.keys(peer.connections).forEach((peerId) => {
+    peer.connections[peerId].forEach((conn) => {
+      conn.close();
+    });
+  });
+}
+
 //connect to peer
 let connect_to_peer = function (id) {
   if (!status.deviceOnline) {
@@ -443,6 +528,7 @@ let connect_to_peer = function (id) {
     return false;
   }
   current_room = id;
+  status.current_room = id;
   getIceServers().then(() => {
     m.route.set("/chat?id=" + id);
     setTimeout(() => {
@@ -452,8 +538,6 @@ let connect_to_peer = function (id) {
     setTimeout(() => {
       if (peer == null) {
         document.querySelector(".loading-spinner").style.display = "none";
-
-        console.log("no peer instance");
       }
 
       // Establish connection with the destination peer
@@ -463,51 +547,52 @@ let connect_to_peer = function (id) {
           reliable: true,
         });
 
-        chat_data.push({
-          id: "no-other-user-online",
-          nickname: settings.nickname,
-          content: "no other user online",
-          datetime: new Date(),
-        });
-
         conn.on("data", function (data) {
-          console.log("data" + data);
-          if (!status.visibility) pushLocalNotification("flop", "new message");
-
           document.querySelector(".loading-spinner").style.display = "none";
 
-          if (data.file) {
-            chat_data.push({
-              nickname: data.nickname,
-              content: "",
-              datetime: new Date(),
-              image: data.file,
-            });
-          }
+          if (data.file || data.text) {
+            if (data.file) {
+              if (!status.visibility)
+                pushLocalNotification("flop", "new message");
 
-          if (data.text) {
-            chat_data.push({
-              nickname: data.nickname,
-              content: data.text,
-              datetime: new Date(),
-            });
-          }
+              chat_data.push({
+                nickname: data.nickname,
+                content: "",
+                datetime: new Date(),
+                image: data.file,
+              });
+            }
 
-          remove_no_user_online();
-          focus_last_article();
-          stop_scan();
+            if (data.text) {
+              if (!status.visibility)
+                pushLocalNotification("flop", "new message");
+
+              chat_data.push({
+                nickname: data.nickname,
+                content: data.text,
+                datetime: new Date(),
+              });
+            }
+
+            m.redraw();
+            focus_last_article();
+            stop_scan();
+          } else {
+            console.log("ping" + JSON.stringify(data));
+          }
         });
 
         // Event handler for successful connection
         conn.on("open", function () {
           document.querySelector(".loading-spinner").style.display = "none";
 
-          side_toaster("Connected with " + peer.id, 5000);
-          chat_data.push({ content: "connected", datetime: new Date() });
+          side_toaster("Connected", 5000);
+          //chat_data.push({ content: "connected", datetime: new Date() });
           m.redraw();
           stop_scan();
-
           remove_no_user_online();
+          setupConnectionEvents(conn);
+          connectedPeers.push(conn.peer);
         });
 
         // Event handler for connection errors
@@ -519,9 +604,10 @@ let connect_to_peer = function (id) {
         // Event handler for connection closure
         conn.on("close", function () {
           side_toaster("user has left chat", 1000);
+          connectedPeers = connectedPeers.filter((c) => c.peer !== conn.peer);
         });
       } catch (e) {
-        console.log("error con" + e);
+        alert("error con" + e);
         document.querySelector(".loading-spinner").style.display = "none";
       }
     }, 4000);
@@ -533,13 +619,6 @@ let connect_to_peer = function (id) {
 let create_peer = function () {
   //close connection before create peer
   chat_data = [];
-  try {
-    if (conn) {
-      close_connection();
-    }
-  } catch (e) {
-    console.log(e);
-  }
 
   if (!status.deviceOnline) {
     alert("Device is offline");
@@ -558,8 +637,6 @@ let create_peer = function () {
 
       current_room = peer.id;
       status.current_room = peer.id;
-
-      //store_history(peer.id);
 
       m.route.set("/chat?id=" + current_room);
 
@@ -651,6 +728,11 @@ var about = {
       {
         class: "page",
         oncreate: () => {
+          top_bar("", "", "");
+
+          if (status.notKaiOS)
+            top_bar("", "", "<img src='assets/image/back.svg'>");
+
           bottom_bar(
             "",
             "<img class='not-desktop' src='assets/image/select.svg'>",
@@ -708,6 +790,10 @@ var privacy_policy = {
         {
           oncreate: ({ dom }) => {
             dom.focus();
+            top_bar("", "", "");
+
+            if (status.notKaiOS)
+              top_bar("", "", "<img src='assets/image/back.svg'>");
           },
           oninit: () => {
             bottom_bar(
@@ -776,6 +862,10 @@ var settings_page = {
         id: "settings_page",
         oncreate: () => {
           bottom_bar("", "", "");
+          top_bar("", "", "");
+
+          if (status.notKaiOS)
+            top_bar("", "", "<img src='assets/image/back.svg'>");
         },
       },
       [
@@ -943,6 +1033,12 @@ var options = {
       {
         class: "flex justify-content-center page",
         id: "login",
+        oncreate: () => {
+          top_bar("", "", "");
+
+          if (status.notKaiOS)
+            top_bar("", "", "<img src='assets/image/back.svg'>");
+        },
       },
       [
         m(
@@ -1048,7 +1144,10 @@ var start = {
         class: "flex justify-content-spacearound",
         id: "start",
         oncreate: () => {
+          top_bar("", "", "");
+
           //auto connect if id is given
+
           localforage.getItem("connect_to_id").then((e) => {
             let params = e.data.split("?id=");
             let id = params[1];
@@ -1143,6 +1242,8 @@ var links_page = {
           },
           oncreate: () => {
             index == 1 ?? item.focus();
+            if (status.notKaiOS == true)
+              top_bar("", "", "<img src='assets/image/back.svg'>");
           },
         },
         item.href
@@ -1159,13 +1260,15 @@ var scan = {
 
 var open_peer_menu = {
   view: function () {
-    bottom_bar("", "", "");
     return m(
       "div",
       {
         class: "flex justify-content-center",
         id: "open-peer-menu",
         oncreate: () => {
+          if (status.notKaiOS == true)
+            top_bar("", "", "<img src='assets/image/back.svg'>");
+
           bottom_bar(
             "",
             "<img class='not-desktop' src='assets/image/select.svg'>",
@@ -1234,18 +1337,38 @@ var chat = {
         },
         oncreate: () => {
           top_bar("", "", "");
+          if (status.notKaiOS == true)
+            top_bar("", "", "<img src='assets/image/back.svg'>");
+
           bottom_bar(
             "<img src='assets/image/pencil.svg'>",
             "",
             "<img src='assets/image/option.svg'>"
           );
           user_check = setInterval(() => {
-            if (status.action == "write") return false;
-            if (peer.connections) {
-              let c = peer.connections;
-              status.userOnline = Object.values(c).length;
+            //side_toaster(connectedPeers.length, 2000);
+            console.log(connectedPeers);
+            if (connectedPeers) {
+              status.userOnline = connectedPeers.length;
+
+              if (status.notKaiOS == true && status.userOnline > 0) {
+                top_bar(
+                  "<img class='users' title='" +
+                    status.userOnline +
+                    "' src='assets/image/monster.svg'>",
+                  "",
+                  "<img src='assets/image/back.svg'>"
+                );
+              } else {
+                if (status.notKaiOS)
+                  top_bar("", "", "<img src='assets/image/back.svg'>");
+              }
+            } else {
+              status.userOnline = 0;
+              if (status.notKaiOS)
+                top_bar("", "", "<img src='assets/image/back.svg'>");
             }
-          }, 10000);
+          }, 5000);
         },
       },
 
@@ -1331,7 +1454,7 @@ var intro = {
           const fullUrl = `${protocol}//${host}${pathname}${search}${hash}`;
 
           // Get the current hash
-          if (hash.includes("?id=")) {
+          if (fullUrl.includes("?id=")) {
             localforage.setItem("connect_to_id", { data: fullUrl });
             status.launching = true;
             if (status.os == "KaiOS") {
@@ -1339,11 +1462,9 @@ var intro = {
             } else {
               setTimeout(function () {
                 m.route.set("/start");
-              }, 5000);
+              }, 1000);
             }
           } else {
-            console.log("no id");
-
             setTimeout(function () {
               m.route.set("/start");
             }, 5000);
@@ -1372,7 +1493,7 @@ var intro = {
                   });
               }
 
-              if (status.notKaios) {
+              if (status.notKaiOS) {
                 fetch("/manifest.webmanifest")
                   .then((r) => r.json())
                   .then((parsedResponse) => {
@@ -1518,6 +1639,39 @@ document.addEventListener("DOMContentLoaded", function (e) {
       simulateKeyPress("Enter");
     });
 
+  //top bar
+
+  document
+    .querySelector("#top-bar div div.button-right")
+    .addEventListener("click", function (event) {
+      let route = m.route.get();
+
+      if (
+        route.startsWith("/chat") ||
+        m.route.get() == "/settings_page" ||
+        m.route.get() == "/scan" ||
+        m.route.get() == "/open_peer_menu" ||
+        m.route.get() == "/about"
+      ) {
+        status.action = "";
+        m.route.set("/start");
+      }
+
+      if (m.route.get() == "/settings") {
+        status.action = "";
+        m.route.set("/about");
+      }
+
+      if (m.route.get() == "/privacy_policy") {
+        status.action = "";
+        m.route.set("/about");
+      }
+
+      if (m.route.get() == "/options" || m.route.get() == "/links_page") {
+        m.route.set("/chat?id=") + status.current_room;
+      }
+    });
+
   // Function to simulate key press events
   function simulateKeyPress(k) {
     shortpress_action({ key: k });
@@ -1556,6 +1710,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
         break;
 
       case "Backspace":
+        closeAllConnections();
+        peer.destroy();
         window.close();
         break;
     }
@@ -1569,9 +1725,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
     if (status.action == "confirm") return false;
     let route = m.route.get();
 
-    if (route == "/start") {
-      //chat_data = [];
-    }
     switch (param.key) {
       case "ArrowUp":
         if (
@@ -1604,6 +1757,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
           if (status.userOnline > 0) {
             write();
           } else {
+            //connect_to_peer(status.current_room);
             side_toaster("no user online", 3000);
           }
         }
@@ -1642,6 +1796,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
       case "Backspace":
         stop_scan();
+
         break;
     }
   }
@@ -1689,7 +1844,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
     if (evt.key === "EndCall") {
       evt.preventDefault();
-      if (status.action == "") window.close();
+      if (status.action == "") {
+        closeAllConnections();
+        peer.destroy();
+        window.close();
+      }
     }
     if (!evt.repeat) {
       longpress = false;
@@ -1717,6 +1876,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") {
+      try {
+        // connect_to_peer(status.current_room);
+      } catch (e) {}
       status.visibility = true;
     } else {
       status.visibility = false;
@@ -1765,3 +1927,32 @@ try {
 } catch (e) {
   console.log(e);
 }
+
+window.addEventListener("beforeunload", function (e) {
+  closeAllConnections();
+  peer.destroy();
+});
+
+window.addEventListener("unload", function () {
+  closeAllConnections();
+  peer.destroy();
+});
+
+window.addEventListener("pagehide", function (event) {
+  console.log("Page is being hidden or unloaded.");
+  closeAllConnections();
+  peer.destroy();
+});
+
+//start ping interval in service worker
+channel.postMessage("startInterval");
+channel.addEventListener("message", (event) => {
+  if (event.data === "intervalTriggered") {
+    // console.log("Ping received from Service Worker");
+    /*
+    sendMessageToAll({
+      ping: "ping from " + peer.id,
+      nickname: settings.nickname,
+    });*/
+  }
+});

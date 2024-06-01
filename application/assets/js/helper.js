@@ -208,7 +208,7 @@ export function share(url) {
       );
     }
 
-    if (status.notKaios) {
+    if (status.notKaiOS) {
       let success = clipboard();
       if (success) {
         console.log("Text copied to clipboard successfully.");
@@ -575,10 +575,9 @@ export let bottom_bar = function (left, center, right) {
 
 //top bar
 export let top_bar = function (left, center, right) {
-  document.querySelector("div#top-bar div.top-left").innerHTML = left;
-  document.querySelector("div#top-bar div.top-center").innerHTML = center;
-  document.querySelector("div#top-bar div.top-right").innerHTML = right;
-
+  document.querySelector("div#top-bar div.button-left").innerHTML = left;
+  document.querySelector("div#top-bar div.button-center").innerHTML = center;
+  document.querySelector("div#top-bar div.button-right").innerHTML = right;
   if (left == "" && center == "" && right == "") {
     document.querySelector("div#top-bar").style.display = "none";
   } else {
@@ -644,7 +643,7 @@ export let pick_image = function (callback) {
       }
     );
   }
-  if (status.notKaios || status.os) {
+  if (status.notKaiOS || status.os) {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
     fileInput.accept = "image/*";
