@@ -21062,44 +21062,103 @@ window.addEventListener("online", function() {
 window.addEventListener("offline", function() {
     $17d11d58618cc814$export$471f7ae5c4103ae1.deviceOnline = false;
 });
+var $17d11d58618cc814$var$compareUserList = function(userlist) {
+    var filteredUserList = userlist.filter(function(userId) {
+        return userId !== $17d11d58618cc814$var$peer.id;
+    });
+    userlist = filteredUserList;
+    userlist.forEach(function(user) {
+        console.log(user);
+        if (!$17d11d58618cc814$var$connectedPeers.includes(user)) try {
+            $17d11d58618cc814$var$conn = $17d11d58618cc814$var$peer.connect(user, {
+                label: "chat",
+                reliable: true
+            });
+            $17d11d58618cc814$var$conn.on("open", function() {
+                $17d11d58618cc814$var$setupConnectionEvents($17d11d58618cc814$var$conn);
+            });
+        } catch (e) {
+            console.log("try to connect failed" + e);
+        }
+        else console.log(user, "already connected");
+    });
+};
 //track single connections
 //to update connections list
 function $17d11d58618cc814$var$setupConnectionEvents(conn) {
+    if ($17d11d58618cc814$var$connectedPeers.includes(conn.peer)) return false;
+    $17d11d58618cc814$var$connectedPeers.push(conn.peer);
     var userId = conn.peer;
     var pc = conn.peerConnection;
     if (pc) pc.addEventListener("iceconnectionstatechange", function() {
-        console.log("ICE connection state changed to:", pc.iceConnectionState);
+        // console.log("ICE connection state changed to:", pc.iceConnectionState);
         if (pc.iceConnectionState === "disconnected") {
             (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User has left the chat", 1000);
             $17d11d58618cc814$var$connectedPeers = $17d11d58618cc814$var$connectedPeers.filter(function(c) {
-                return c.peer !== userId;
+                return c !== userId;
             });
             $17d11d58618cc814$var$updateConnections();
         }
         if (pc.iceConnectionState === "connected") {
             (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User has entered", 1000);
-            if (!$17d11d58618cc814$var$connectedPeers.includes(conn.peer)) $17d11d58618cc814$var$connectedPeers.push(conn.peer);
             $17d11d58618cc814$var$updateConnections();
         }
     });
+    conn.on("data", function(data) {
+        document.querySelector(".loading-spinner").style.display = "none";
+        if (data.file || data.text) {
+            console.log(data);
+            if (data.file) {
+                if (!$17d11d58618cc814$export$471f7ae5c4103ae1.visibility) (0, $162001cafa2b40fd$export$75525525b38ea7b3)("flop", "new message");
+                $17d11d58618cc814$var$chat_data.push({
+                    nickname: data.nickname,
+                    content: "",
+                    datetime: new Date(),
+                    image: data.file
+                });
+            }
+            if (data.text) {
+                if (!$17d11d58618cc814$export$471f7ae5c4103ae1.visibility) (0, $162001cafa2b40fd$export$75525525b38ea7b3)("flop", "new message");
+                $17d11d58618cc814$var$chat_data.push({
+                    nickname: data.nickname,
+                    content: data.text,
+                    datetime: new Date()
+                });
+            }
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
+            $17d11d58618cc814$var$focus_last_article();
+            (0, $2b0cc46421a6d3fe$export$55e6c60a43cc74e2)();
+        } else if (data.userlist) $17d11d58618cc814$var$compareUserList(data.userlist);
+    });
+    // Event handler for successful connection
+    conn.on("open", function() {
+        document.querySelector(".loading-spinner").style.display = "none";
+        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("Connected", 5000);
+        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
+        (0, $2b0cc46421a6d3fe$export$55e6c60a43cc74e2)();
+        $17d11d58618cc814$var$remove_no_user_online();
+    });
+    // Event handler for connection closure
     conn.on("close", function() {
         (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User has left the chat", 1000);
+        console.log(conn.peer);
         $17d11d58618cc814$var$connectedPeers = $17d11d58618cc814$var$connectedPeers.filter(function(c) {
-            return c.peer !== userId;
+            return c !== conn.peer;
         });
         $17d11d58618cc814$var$updateConnections();
     });
     conn.on("disconnected", function() {
         (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User has been disconnected", 1000);
         $17d11d58618cc814$var$connectedPeers = $17d11d58618cc814$var$connectedPeers.filter(function(c) {
-            return c.peer !== userId;
+            return c !== userId;
         });
         $17d11d58618cc814$var$updateConnections();
     });
+    // Event handler for connection errors
     conn.on("error", function() {
         (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User has been disconnected", 1000);
         $17d11d58618cc814$var$connectedPeers = $17d11d58618cc814$var$connectedPeers.filter(function(c) {
-            return c.peer !== userId;
+            return c !== userId;
         });
         $17d11d58618cc814$var$updateConnections();
     });
@@ -21189,60 +21248,68 @@ function $17d11d58618cc814$var$_getIceServers() {
                         if ($17d11d58618cc814$var$peer.id === null) $17d11d58618cc814$var$peer.id = $17d11d58618cc814$var$lastPeerId;
                         else $17d11d58618cc814$var$lastPeerId = $17d11d58618cc814$var$peer.id;
                         document.querySelector(".loading-spinner").style.display = "none";
+                        $17d11d58618cc814$export$471f7ae5c4103ae1.ownPeerId = $17d11d58618cc814$var$peer.id;
                     });
                     $17d11d58618cc814$var$peer.on("connection", function(c) {
                         //store all connections
-                        $17d11d58618cc814$var$connectedPeers.push(c.peer);
                         $17d11d58618cc814$var$setupConnectionEvents(c);
-                        $17d11d58618cc814$var$conn = c;
-                        $17d11d58618cc814$var$conn.on("data", function(data) {
-                            if (data.file || data.text) {
-                                if (data.file) {
-                                    if (!$17d11d58618cc814$export$471f7ae5c4103ae1.visibility) (0, $162001cafa2b40fd$export$75525525b38ea7b3)("flop", "new message");
-                                    $17d11d58618cc814$var$chat_data.push({
-                                        nickname: data.nickname,
-                                        content: "",
-                                        datetime: new Date(),
-                                        image: data.file
-                                    });
-                                }
-                                if (data.text) {
-                                    if (!$17d11d58618cc814$export$471f7ae5c4103ae1.visibility) (0, $162001cafa2b40fd$export$75525525b38ea7b3)("flop", "new message");
-                                    $17d11d58618cc814$var$chat_data.push({
-                                        nickname: data.nickname,
-                                        content: data.text,
-                                        datetime: new Date()
-                                    });
-                                }
-                                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
-                                $17d11d58618cc814$var$focus_last_article();
-                            } else console.log("ping" + JSON.stringify(data));
-                        });
-                        $17d11d58618cc814$var$conn.on("close", function(user) {
-                            (0, $162001cafa2b40fd$export$6593825dc0f3a767)("user has left chat", 1000);
-                            $17d11d58618cc814$var$connectedPeers = $17d11d58618cc814$var$connectedPeers.filter(function(c) {
-                                return c.peer !== $17d11d58618cc814$var$conn.peer;
-                            });
-                        });
-                        // Event handler for successful connection
-                        $17d11d58618cc814$var$conn.on("open", function() {
-                            (0, $162001cafa2b40fd$export$6593825dc0f3a767)("Connected", 5000);
-                            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
-                            $17d11d58618cc814$var$remove_no_user_online();
-                            document.querySelector(".loading-spinner").style.display = "none";
-                        });
-                        // Event handler for connection errors
-                        $17d11d58618cc814$var$conn.on("error", function(err) {
-                            console.log("Error: " + err.type, 5000);
-                        });
-                    });
-                    $17d11d58618cc814$var$peer.on("disconnected", function() {
-                        try {
-                            $17d11d58618cc814$var$peer.reconnect();
-                        } catch (e) {
-                            console.log("reconnect error: " + e);
-                        }
-                    });
+                    /*
+      conn = c;
+      
+      conn.on("data", function (data) {
+        if (data.file || data.text) {
+          if (data.file) {
+            if (!status.visibility) pushLocalNotification("flop", "new image");
+
+            chat_data.push({
+              nickname: data.nickname,
+              content: "",
+              datetime: new Date(),
+              image: data.file,
+            });
+          }
+
+          if (data.text) {
+            if (!status.visibility) pushLocalNotification("flop", "new text");
+
+            chat_data.push({
+              nickname: data.nickname,
+              content: data.text,
+              datetime: new Date(),
+            });
+          }
+
+          m.redraw();
+          focus_last_article();
+        } else {
+          if (data.userlist) {
+            compareUserList(data.userlist);
+          }
+          // console.log("ping" + JSON.stringify(data));
+        }
+      });
+      conn.on("close", function () {
+        side_toaster("user has left chat", 1000);
+        connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
+      });
+
+      // Event handler for successful connection
+      conn.on("open", function () {
+        side_toaster("Connected", 5000);
+
+        m.redraw();
+
+        remove_no_user_online();
+
+        document.querySelector(".loading-spinner").style.display = "none";
+      });
+
+      // Event handler for connection errors
+      conn.on("error", function (err) {
+        console.log("Error: " + err.type, 5000);
+      });
+      */ });
+                    $17d11d58618cc814$var$peer.on("disconnected", function() {});
                     $17d11d58618cc814$var$peer.on("close", function() {
                         (0, $162001cafa2b40fd$export$6593825dc0f3a767)("connection closed", 1000);
                         document.querySelector(".loading-spinner").style.display = "none";
@@ -21250,11 +21317,6 @@ function $17d11d58618cc814$var$_getIceServers() {
                     $17d11d58618cc814$var$peer.on("error", function(err) {
                         //side_toaster("connection error " + err.type, 8000);
                         document.querySelector(".loading-spinner").style.display = "none";
-                        try {
-                            $17d11d58618cc814$var$peer.reconnect();
-                        } catch (e) {
-                            console.log("reconnect error: " + e);
-                        }
                     });
                     return [
                         3,
@@ -21353,7 +21415,6 @@ function $17d11d58618cc814$var$sendMessage(msg, type) {
                 filetype: msg.type,
                 nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname
             };
-            //conn.send(msg);
             $17d11d58618cc814$var$sendMessageToAll(msg);
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
             $17d11d58618cc814$var$focus_last_article();
@@ -21385,7 +21446,7 @@ function $17d11d58618cc814$var$sendMessageToAll(message) {
     Object.keys($17d11d58618cc814$var$peer.connections).forEach(function(peerId) {
         $17d11d58618cc814$var$peer.connections[peerId].forEach(function(conn) {
             if (conn.open) conn.send(message);
-            else console.log(conn + "not open");
+            else console.log("sending" + conn + "not open ");
         });
     });
 }
@@ -21398,6 +21459,9 @@ function $17d11d58618cc814$var$closeAllConnections() {
         });
     });
 }
+$17d11d58618cc814$var$getIceServers().then(function() {
+    console.log("succesfull downloaded ice servers");
+});
 //connect to peer
 var $17d11d58618cc814$var$connect_to_peer = function connect_to_peer(id) {
     if (!$17d11d58618cc814$export$471f7ae5c4103ae1.deviceOnline) {
@@ -21406,79 +21470,34 @@ var $17d11d58618cc814$var$connect_to_peer = function connect_to_peer(id) {
     }
     $17d11d58618cc814$export$57fcf9ca838ce2c6 = id;
     $17d11d58618cc814$export$471f7ae5c4103ae1.current_room = id;
-    $17d11d58618cc814$var$getIceServers().then(function() {
-        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat?id=" + id);
-        setTimeout(function() {
-            document.querySelector(".loading-spinner").style.display = "block";
-        }, 2000);
-        setTimeout(function() {
-            if ($17d11d58618cc814$var$peer == null) document.querySelector(".loading-spinner").style.display = "none";
-            // Establish connection with the destination peer
-            try {
-                $17d11d58618cc814$var$conn = $17d11d58618cc814$var$peer.connect(id, {
-                    label: "chat",
-                    reliable: true
-                });
-                $17d11d58618cc814$var$conn.on("data", function(data) {
-                    document.querySelector(".loading-spinner").style.display = "none";
-                    if (data.file || data.text) {
-                        if (data.file) {
-                            if (!$17d11d58618cc814$export$471f7ae5c4103ae1.visibility) (0, $162001cafa2b40fd$export$75525525b38ea7b3)("flop", "new message");
-                            $17d11d58618cc814$var$chat_data.push({
-                                nickname: data.nickname,
-                                content: "",
-                                datetime: new Date(),
-                                image: data.file
-                            });
-                        }
-                        if (data.text) {
-                            if (!$17d11d58618cc814$export$471f7ae5c4103ae1.visibility) (0, $162001cafa2b40fd$export$75525525b38ea7b3)("flop", "new message");
-                            $17d11d58618cc814$var$chat_data.push({
-                                nickname: data.nickname,
-                                content: data.text,
-                                datetime: new Date()
-                            });
-                        }
-                        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
-                        $17d11d58618cc814$var$focus_last_article();
-                        (0, $2b0cc46421a6d3fe$export$55e6c60a43cc74e2)();
-                    } else console.log("ping" + JSON.stringify(data));
-                });
-                // Event handler for successful connection
-                $17d11d58618cc814$var$conn.on("open", function() {
-                    document.querySelector(".loading-spinner").style.display = "none";
-                    (0, $162001cafa2b40fd$export$6593825dc0f3a767)("Connected", 5000);
-                    //chat_data.push({ content: "connected", datetime: new Date() });
-                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
-                    (0, $2b0cc46421a6d3fe$export$55e6c60a43cc74e2)();
-                    $17d11d58618cc814$var$remove_no_user_online();
-                    $17d11d58618cc814$var$setupConnectionEvents($17d11d58618cc814$var$conn);
-                    $17d11d58618cc814$var$connectedPeers.push($17d11d58618cc814$var$conn.peer);
-                });
-                // Event handler for connection errors
-                $17d11d58618cc814$var$conn.on("error", function(err) {
-                    console.log("Error: " + err.type, 5000);
-                    document.querySelector(".loading-spinner").style.display = "none";
-                });
-                // Event handler for connection closure
-                $17d11d58618cc814$var$conn.on("close", function() {
-                    (0, $162001cafa2b40fd$export$6593825dc0f3a767)("user has left chat", 1000);
-                    $17d11d58618cc814$var$connectedPeers = $17d11d58618cc814$var$connectedPeers.filter(function(c) {
-                        return c.peer !== $17d11d58618cc814$var$conn.peer;
-                    });
-                });
-            } catch (e) {
-                alert("error con" + e);
-                document.querySelector(".loading-spinner").style.display = "none";
-            }
-        }, 4000);
-    });
+    //getIceServers().then(() => {
+    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat?id=" + id);
+    setTimeout(function() {
+        document.querySelector(".loading-spinner").style.display = "block";
+    }, 2000);
+    setTimeout(function() {
+        if ($17d11d58618cc814$var$peer == null) document.querySelector(".loading-spinner").style.display = "none";
+        // Establish connection with the destination peer
+        try {
+            $17d11d58618cc814$var$conn = $17d11d58618cc814$var$peer.connect(id, {
+                label: "chat",
+                reliable: true
+            });
+            $17d11d58618cc814$var$conn.on("open", function() {
+                $17d11d58618cc814$var$setupConnectionEvents($17d11d58618cc814$var$conn);
+            });
+        } catch (e) {
+            document.querySelector(".loading-spinner").style.display = "none";
+        }
+    }, 4000);
+//});
 };
 //create room
 // and create qr-code with peer id
 var $17d11d58618cc814$var$create_peer = function create_peer() {
     //close connection before create peer
     $17d11d58618cc814$var$chat_data = [];
+    $17d11d58618cc814$var$connectedPeers = [];
     if (!$17d11d58618cc814$export$471f7ae5c4103ae1.deviceOnline) {
         alert("Device is offline");
         return false;
@@ -21816,7 +21835,7 @@ var $17d11d58618cc814$var$start = {
                     setTimeout(function() {
                         $17d11d58618cc814$var$connect_to_peer(id);
                         (0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).removeItem("connect_to_id");
-                    }, 5000);
+                    }, 1000);
                 });
                 (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/save.svg'>", "<img src='assets/image/plus.svg'>", "<img src='assets/image/option.svg'>");
             }
@@ -21937,17 +21956,20 @@ var $17d11d58618cc814$var$chat = {
                 if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS == true) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
                 (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
                 $17d11d58618cc814$var$user_check = setInterval(function() {
-                    //side_toaster(connectedPeers.length, 2000);
-                    console.log($17d11d58618cc814$var$connectedPeers);
                     if ($17d11d58618cc814$var$connectedPeers) {
                         $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline = $17d11d58618cc814$var$connectedPeers.length;
+                        console.log($17d11d58618cc814$var$connectedPeers);
+                        $17d11d58618cc814$var$sendMessageToAll({
+                            userlist: $17d11d58618cc814$var$connectedPeers,
+                            nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname
+                        });
                         if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS == true && $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline > 0) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img class='users' title='" + $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline + "' src='assets/image/monster.svg'>", "", "<img src='assets/image/back.svg'>");
                         else if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
                     } else {
                         $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline = 0;
                         if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
                     }
-                }, 5000);
+                }, 10000);
             }
         }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
             id: "message-input",
@@ -22015,7 +22037,7 @@ var $17d11d58618cc814$var$intro = {
                         data: fullUrl
                     });
                     $17d11d58618cc814$export$471f7ae5c4103ae1.launching = true;
-                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.os == "KaiOS") $17d11d58618cc814$var$app_launcher();
+                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS == false) $17d11d58618cc814$var$app_launcher();
                     else setTimeout(function() {
                         (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/start");
                     }, 1000);
@@ -22337,9 +22359,15 @@ window.addEventListener("pagehide", function(event) {
     $17d11d58618cc814$var$peer.destroy();
 });
 //start ping interval in service worker
-$17d11d58618cc814$var$channel.postMessage("startInterval");
+//channel.postMessage("startInterval");
 $17d11d58618cc814$var$channel.addEventListener("message", function(event) {
-    event.data;
+    alert(event.data);
+    if (event.data === "intervalTriggered") {
+        if ($17d11d58618cc814$var$connectedPeers > 0) $17d11d58618cc814$var$sendMessageToAll({
+            userlist: $17d11d58618cc814$var$connectedPeers,
+            nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname
+        });
+    }
 });
 
 })();

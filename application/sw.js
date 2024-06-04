@@ -26,8 +26,6 @@ let intervalId;
 
 channel.addEventListener("message", (event) => {
   if (event.data === "startInterval") {
-    console.log("Received startInterval message from main script");
-
     // Start the interval
     intervalId = setInterval(() => {
       // Send a message to the main script

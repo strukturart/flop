@@ -633,6 +633,10 @@ article img {
  SETTINGS
  */
 
+#about-text {
+  margin: 15px 0 0 0;
+}
+
 div#top {
   position: fixed;
   top: 0;

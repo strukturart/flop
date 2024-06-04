@@ -2244,14 +2244,11 @@ self.onsystemmessage = function(evt) {
 //background sync
 var $251eca785eba5f41$var$intervalId;
 $251eca785eba5f41$var$channel.addEventListener("message", function(event) {
-    if (event.data === "startInterval") {
-        console.log("Received startInterval message from main script");
-        // Start the interval
-        $251eca785eba5f41$var$intervalId = setInterval(function() {
-            // Send a message to the main script
-            $251eca785eba5f41$var$channel.postMessage("intervalTriggered");
-        }, 10000); // Adjust the interval duration as needed
-    }
+    if (event.data === "startInterval") // Start the interval
+    $251eca785eba5f41$var$intervalId = setInterval(function() {
+        // Send a message to the main script
+        $251eca785eba5f41$var$channel.postMessage("intervalTriggered");
+    }, 10000); // Adjust the interval duration as needed
 });
 
 })();
