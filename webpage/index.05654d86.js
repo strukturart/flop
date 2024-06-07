@@ -14,6 +14,10 @@ function $parcel$interopDefault(a) {
   return a && a.__esModule ? a.default : a;
 }
 
+function $parcel$export(e, n, v, s) {
+  Object.defineProperty(e, n, {get: v, set: s, enumerable: true, configurable: true});
+}
+
 var $parcel$modules = {};
 var $parcel$inits = {};
 
@@ -20969,6 +20973,2739 @@ var $bd7c1575f3abb9eb$exports = {};
 });
 
 
+var $e7c2b5109ce8b55f$var$randomUUID = typeof crypto !== "undefined" && crypto.randomUUID && crypto.randomUUID.bind(crypto);
+var $e7c2b5109ce8b55f$export$2e2bcd8739ae039 = {
+    randomUUID: $e7c2b5109ce8b55f$var$randomUUID
+};
+
+
+// Unique ID creation requires a high quality random # generator. In the browser we therefore
+// require the crypto API and do not support built-in fallback to lower quality random number
+// generators (like Math.random()).
+var $1ad827f4e717086f$var$getRandomValues;
+var $1ad827f4e717086f$var$rnds8 = new Uint8Array(16);
+function $1ad827f4e717086f$export$2e2bcd8739ae039() {
+    // lazy load so that environments that need to polyfill have a chance to do so
+    if (!$1ad827f4e717086f$var$getRandomValues) {
+        // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation.
+        $1ad827f4e717086f$var$getRandomValues = typeof crypto !== "undefined" && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
+        if (!$1ad827f4e717086f$var$getRandomValues) throw new Error("crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported");
+    }
+    return $1ad827f4e717086f$var$getRandomValues($1ad827f4e717086f$var$rnds8);
+}
+
+
+var $f7bc72ea7060480b$export$2e2bcd8739ae039 = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
+
+
+function $db45a83d45d0fc80$var$validate(uuid) {
+    return typeof uuid === "string" && (0, $f7bc72ea7060480b$export$2e2bcd8739ae039).test(uuid);
+}
+var $db45a83d45d0fc80$export$2e2bcd8739ae039 = $db45a83d45d0fc80$var$validate;
+
+
+/**
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ */ var $4b2cf53490eb0cf7$var$byteToHex = [];
+for(var $4b2cf53490eb0cf7$var$i = 0; $4b2cf53490eb0cf7$var$i < 256; ++$4b2cf53490eb0cf7$var$i)$4b2cf53490eb0cf7$var$byteToHex.push(($4b2cf53490eb0cf7$var$i + 0x100).toString(16).slice(1));
+function $4b2cf53490eb0cf7$export$8fb373d660548968(arr) {
+    var offset = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
+    // Note: Be careful editing this code!  It's been tuned for performance
+    // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
+    return $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 0]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 1]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 2]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 3]] + "-" + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 4]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 5]] + "-" + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 6]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 7]] + "-" + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 8]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 9]] + "-" + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 10]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 11]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 12]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 13]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 14]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 15]];
+}
+function $4b2cf53490eb0cf7$var$stringify(arr) {
+    var offset = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
+    var uuid = $4b2cf53490eb0cf7$export$8fb373d660548968(arr, offset); // Consistency check for valid UUID.  If this throws, it's likely due to one
+    // of the following:
+    // - One or more input array values don't map to a hex octet (leading to
+    // "undefined" in the uuid)
+    // - Invalid input values for the RFC `version` or `variant` fields
+    if (!(0, $db45a83d45d0fc80$export$2e2bcd8739ae039)(uuid)) throw TypeError("Stringified UUID is invalid");
+    return uuid;
+}
+var $4b2cf53490eb0cf7$export$2e2bcd8739ae039 = $4b2cf53490eb0cf7$var$stringify;
+
+
+function $194554b49bf11e1e$var$v4(options, buf, offset) {
+    if ((0, $e7c2b5109ce8b55f$export$2e2bcd8739ae039).randomUUID && !buf && !options) return (0, $e7c2b5109ce8b55f$export$2e2bcd8739ae039).randomUUID();
+    options = options || {};
+    var rnds = options.random || (options.rng || (0, $1ad827f4e717086f$export$2e2bcd8739ae039))(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+    rnds[6] = rnds[6] & 0x0f | 0x40;
+    rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
+    if (buf) {
+        offset = offset || 0;
+        for(var i = 0; i < 16; ++i)buf[offset + i] = rnds[i];
+        return buf;
+    }
+    return (0, $4b2cf53490eb0cf7$export$8fb373d660548968)(rnds);
+}
+var $194554b49bf11e1e$export$2e2bcd8739ae039 = $194554b49bf11e1e$var$v4;
+
+
+/*
+ *  Copyright (c) 2016 The WebRTC project authors. All Rights Reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+ */ /* eslint-env node */ /*
+ *  Copyright (c) 2016 The WebRTC project authors. All Rights Reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+ */ /*
+ *  Copyright (c) 2016 The WebRTC project authors. All Rights Reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+ */ /* eslint-env node */ function $c96c38d675a75115$export$1e71eb4bef00f6b0(obj, key, value) {
+    if (key in obj) Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+    });
+    else obj[key] = value;
+    return obj;
+}
+
+
+
+"use strict";
+var $ecbc82f8e2fc2f44$var$logDisabled_ = true;
+var $ecbc82f8e2fc2f44$var$deprecationWarnings_ = true;
+function $ecbc82f8e2fc2f44$export$e3c02be309be1f23(uastring, expr, pos) {
+    var match = uastring.match(expr);
+    return match && match.length >= pos && parseInt(match[pos], 10);
+}
+function $ecbc82f8e2fc2f44$export$1f48841962b828b1(window1, eventNameToWrap, wrapper) {
+    if (!window1.RTCPeerConnection) return;
+    var proto = window1.RTCPeerConnection.prototype;
+    var nativeAddEventListener = proto.addEventListener;
+    proto.addEventListener = function(nativeEventName, cb) {
+        if (nativeEventName !== eventNameToWrap) return nativeAddEventListener.apply(this, arguments);
+        var wrappedCallback = function(e) {
+            var modifiedEvent = wrapper(e);
+            if (modifiedEvent) {
+                if (cb.handleEvent) cb.handleEvent(modifiedEvent);
+                else cb(modifiedEvent);
+            }
+        };
+        this._eventMap = this._eventMap || {};
+        if (!this._eventMap[eventNameToWrap]) this._eventMap[eventNameToWrap] = new Map();
+        this._eventMap[eventNameToWrap].set(cb, wrappedCallback);
+        return nativeAddEventListener.apply(this, [
+            nativeEventName,
+            wrappedCallback
+        ]);
+    };
+    var nativeRemoveEventListener = proto.removeEventListener;
+    proto.removeEventListener = function(nativeEventName, cb) {
+        if (nativeEventName !== eventNameToWrap || !this._eventMap || !this._eventMap[eventNameToWrap]) return nativeRemoveEventListener.apply(this, arguments);
+        if (!this._eventMap[eventNameToWrap].has(cb)) return nativeRemoveEventListener.apply(this, arguments);
+        var unwrappedCb = this._eventMap[eventNameToWrap].get(cb);
+        this._eventMap[eventNameToWrap]["delete"](cb);
+        if (this._eventMap[eventNameToWrap].size === 0) delete this._eventMap[eventNameToWrap];
+        if (Object.keys(this._eventMap).length === 0) delete this._eventMap;
+        return nativeRemoveEventListener.apply(this, [
+            nativeEventName,
+            unwrappedCb
+        ]);
+    };
+    Object.defineProperty(proto, "on" + eventNameToWrap, {
+        get: function() {
+            return this["_on" + eventNameToWrap];
+        },
+        set: function(cb) {
+            if (this["_on" + eventNameToWrap]) {
+                this.removeEventListener(eventNameToWrap, this["_on" + eventNameToWrap]);
+                delete this["_on" + eventNameToWrap];
+            }
+            if (cb) this.addEventListener(eventNameToWrap, this["_on" + eventNameToWrap] = cb);
+        },
+        enumerable: true,
+        configurable: true
+    });
+}
+function $ecbc82f8e2fc2f44$export$afbfee8cc06fd3e4(bool) {
+    if (typeof bool !== "boolean") return new Error("Argument type: " + (typeof bool === "undefined" ? "undefined" : (0, $4cfdb3add9285597$export$5f0017c582d45a2d)(bool)) + ". Please use a boolean.");
+    $ecbc82f8e2fc2f44$var$logDisabled_ = bool;
+    return bool ? "adapter.js logging disabled" : "adapter.js logging enabled";
+}
+function $ecbc82f8e2fc2f44$export$51516be4b019e41e(bool) {
+    if (typeof bool !== "boolean") return new Error("Argument type: " + (typeof bool === "undefined" ? "undefined" : (0, $4cfdb3add9285597$export$5f0017c582d45a2d)(bool)) + ". Please use a boolean.");
+    $ecbc82f8e2fc2f44$var$deprecationWarnings_ = !bool;
+    return "adapter.js deprecation warnings " + (bool ? "disabled" : "enabled");
+}
+function $ecbc82f8e2fc2f44$export$bef1f36f5486a6a3() {
+    if (typeof window === "object") {
+        if ($ecbc82f8e2fc2f44$var$logDisabled_) return;
+        if (typeof console !== "undefined" && typeof console.log === "function") console.log.apply(console, arguments);
+    }
+}
+function $ecbc82f8e2fc2f44$export$cdd73fc4100a6ef4(oldMethod, newMethod) {
+    if (!$ecbc82f8e2fc2f44$var$deprecationWarnings_) return;
+    console.warn(oldMethod + " is deprecated, please use " + newMethod + " instead.");
+}
+function $ecbc82f8e2fc2f44$export$2d31490a0c05f094(window1) {
+    // Returned result object.
+    var result = {
+        browser: null,
+        version: null
+    };
+    // Fail early if it's not a browser
+    if (typeof window1 === "undefined" || !window1.navigator || !window1.navigator.userAgent) {
+        result.browser = "Not a browser.";
+        return result;
+    }
+    var navigator = window1.navigator;
+    // Prefer navigator.userAgentData.
+    if (navigator.userAgentData && navigator.userAgentData.brands) {
+        var chromium = navigator.userAgentData.brands.find(function(brand) {
+            return brand.brand === "Chromium";
+        });
+        if (chromium) return {
+            browser: "chrome",
+            version: parseInt(chromium.version, 10)
+        };
+    }
+    if (navigator.mozGetUserMedia) {
+        result.browser = "firefox";
+        result.version = $ecbc82f8e2fc2f44$export$e3c02be309be1f23(navigator.userAgent, /Firefox\/(\d+)\./, 1);
+    } else if (navigator.webkitGetUserMedia || window1.isSecureContext === false && window1.webkitRTCPeerConnection) {
+        // Chrome, Chromium, Webview, Opera.
+        // Version matches Chrome/WebRTC version.
+        // Chrome 74 removed webkitGetUserMedia on http as well so we need the
+        // more complicated fallback to webkitRTCPeerConnection.
+        result.browser = "chrome";
+        result.version = $ecbc82f8e2fc2f44$export$e3c02be309be1f23(navigator.userAgent, /Chrom(e|ium)\/(\d+)\./, 2);
+    } else if (window1.RTCPeerConnection && navigator.userAgent.match(/AppleWebKit\/(\d+)\./)) {
+        result.browser = "safari";
+        result.version = $ecbc82f8e2fc2f44$export$e3c02be309be1f23(navigator.userAgent, /AppleWebKit\/(\d+)\./, 1);
+        result.supportsUnifiedPlan = window1.RTCRtpTransceiver && "currentDirection" in window1.RTCRtpTransceiver.prototype;
+    } else {
+        result.browser = "Not a supported browser.";
+        return result;
+    }
+    return result;
+}
+/**
+ * Checks if something is an object.
+ *
+ * @param {*} val The something you want to check.
+ * @return true if val is an object, false otherwise.
+ */ function $ecbc82f8e2fc2f44$var$isObject(val) {
+    return Object.prototype.toString.call(val) === "[object Object]";
+}
+function $ecbc82f8e2fc2f44$export$15384eac40dc88c8(data) {
+    if (!$ecbc82f8e2fc2f44$var$isObject(data)) return data;
+    return Object.keys(data).reduce(function(accumulator, key) {
+        var isObj = $ecbc82f8e2fc2f44$var$isObject(data[key]);
+        var value = isObj ? $ecbc82f8e2fc2f44$export$15384eac40dc88c8(data[key]) : data[key];
+        var isEmptyObject = isObj && !Object.keys(value).length;
+        if (value === undefined || isEmptyObject) return accumulator;
+        return Object.assign(accumulator, (0, $c96c38d675a75115$export$1e71eb4bef00f6b0)({}, key, value));
+    }, {});
+}
+function $ecbc82f8e2fc2f44$export$571b373e75babb58(stats, base, resultSet) {
+    if (!base || resultSet.has(base.id)) return;
+    resultSet.set(base.id, base);
+    Object.keys(base).forEach(function(name) {
+        if (name.endsWith("Id")) $ecbc82f8e2fc2f44$export$571b373e75babb58(stats, stats.get(base[name]), resultSet);
+        else if (name.endsWith("Ids")) base[name].forEach(function(id) {
+            $ecbc82f8e2fc2f44$export$571b373e75babb58(stats, stats.get(id), resultSet);
+        });
+    });
+}
+function $ecbc82f8e2fc2f44$export$93439ffc3f787d51(result, track, outbound) {
+    var streamStatsType = outbound ? "outbound-rtp" : "inbound-rtp";
+    var filteredResult = new Map();
+    if (track === null) return filteredResult;
+    var trackStats = [];
+    result.forEach(function(value) {
+        if (value.type === "track" && value.trackIdentifier === track.id) trackStats.push(value);
+    });
+    trackStats.forEach(function(trackStat) {
+        result.forEach(function(stats) {
+            if (stats.type === streamStatsType && stats.trackId === trackStat.id) $ecbc82f8e2fc2f44$export$571b373e75babb58(result, stats, filteredResult);
+        });
+    });
+    return filteredResult;
+}
+
+
+var $c83c9d2c0bca1d6e$exports = {};
+
+$parcel$export($c83c9d2c0bca1d6e$exports, "shimMediaStream", function () { return $c83c9d2c0bca1d6e$export$33ee24e7a300bcd1; });
+$parcel$export($c83c9d2c0bca1d6e$exports, "shimOnTrack", function () { return $c83c9d2c0bca1d6e$export$f358708f68ab068; });
+$parcel$export($c83c9d2c0bca1d6e$exports, "shimGetSendersWithDtmf", function () { return $c83c9d2c0bca1d6e$export$a41a030a2842f5d6; });
+$parcel$export($c83c9d2c0bca1d6e$exports, "shimSenderReceiverGetStats", function () { return $c83c9d2c0bca1d6e$export$f2f0f2338114eb4b; });
+$parcel$export($c83c9d2c0bca1d6e$exports, "shimAddTrackRemoveTrackWithNative", function () { return $c83c9d2c0bca1d6e$export$30e3cdd46f8d5100; });
+$parcel$export($c83c9d2c0bca1d6e$exports, "shimAddTrackRemoveTrack", function () { return $c83c9d2c0bca1d6e$export$9588259fcf4ebc91; });
+$parcel$export($c83c9d2c0bca1d6e$exports, "shimPeerConnection", function () { return $c83c9d2c0bca1d6e$export$852a08dda9a55ea7; });
+$parcel$export($c83c9d2c0bca1d6e$exports, "fixNegotiationNeeded", function () { return $c83c9d2c0bca1d6e$export$341293bbeaae37cb; });
+$parcel$export($c83c9d2c0bca1d6e$exports, "shimGetUserMedia", function () { return $21705115f518b830$export$1ed4910f4d37dc5e; });
+/*
+ *  Copyright (c) 2016 The WebRTC project authors. All Rights Reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+ */ /* eslint-env node */ 
+
+/*
+ *  Copyright (c) 2016 The WebRTC project authors. All Rights Reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+ */ /* eslint-env node */ 
+"use strict";
+var $21705115f518b830$var$logging = $ecbc82f8e2fc2f44$export$bef1f36f5486a6a3;
+function $21705115f518b830$export$1ed4910f4d37dc5e(window, browserDetails) {
+    var navigator = window && window.navigator;
+    if (!navigator.mediaDevices) return;
+    var constraintsToChrome_ = function constraintsToChrome_(c) {
+        if (typeof c !== "object" || c.mandatory || c.optional) return c;
+        var cc = {};
+        Object.keys(c).forEach(function(key) {
+            if (key === "require" || key === "advanced" || key === "mediaSource") return;
+            var r = typeof c[key] === "object" ? c[key] : {
+                ideal: c[key]
+            };
+            if (r.exact !== undefined && typeof r.exact === "number") r.min = r.max = r.exact;
+            var oldname_ = function oldname_(prefix, name) {
+                if (prefix) return prefix + name.charAt(0).toUpperCase() + name.slice(1);
+                return name === "deviceId" ? "sourceId" : name;
+            };
+            if (r.ideal !== undefined) {
+                cc.optional = cc.optional || [];
+                var oc = {};
+                if (typeof r.ideal === "number") {
+                    oc[oldname_("min", key)] = r.ideal;
+                    cc.optional.push(oc);
+                    oc = {};
+                    oc[oldname_("max", key)] = r.ideal;
+                    cc.optional.push(oc);
+                } else {
+                    oc[oldname_("", key)] = r.ideal;
+                    cc.optional.push(oc);
+                }
+            }
+            if (r.exact !== undefined && typeof r.exact !== "number") {
+                cc.mandatory = cc.mandatory || {};
+                cc.mandatory[oldname_("", key)] = r.exact;
+            } else [
+                "min",
+                "max"
+            ].forEach(function(mix) {
+                if (r[mix] !== undefined) {
+                    cc.mandatory = cc.mandatory || {};
+                    cc.mandatory[oldname_(mix, key)] = r[mix];
+                }
+            });
+        });
+        if (c.advanced) cc.optional = (cc.optional || []).concat(c.advanced);
+        return cc;
+    };
+    var shimConstraints_ = function shimConstraints_(constraints, func) {
+        if (browserDetails.version >= 61) return func(constraints);
+        constraints = JSON.parse(JSON.stringify(constraints));
+        if (constraints && typeof constraints.audio === "object") {
+            var remap = function remap(obj, a, b) {
+                if (a in obj && !(b in obj)) {
+                    obj[b] = obj[a];
+                    delete obj[a];
+                }
+            };
+            constraints = JSON.parse(JSON.stringify(constraints));
+            remap(constraints.audio, "autoGainControl", "googAutoGainControl");
+            remap(constraints.audio, "noiseSuppression", "googNoiseSuppression");
+            constraints.audio = constraintsToChrome_(constraints.audio);
+        }
+        if (constraints && typeof constraints.video === "object") {
+            // Shim facingMode for mobile & surface pro.
+            var face = constraints.video.facingMode;
+            face = face && (typeof face === "object" ? face : {
+                ideal: face
+            });
+            var getSupportedFacingModeLies = browserDetails.version < 66;
+            if (face && (face.exact === "user" || face.exact === "environment" || face.ideal === "user" || face.ideal === "environment") && !(navigator.mediaDevices.getSupportedConstraints && navigator.mediaDevices.getSupportedConstraints().facingMode && !getSupportedFacingModeLies)) {
+                delete constraints.video.facingMode;
+                var matches;
+                if (face.exact === "environment" || face.ideal === "environment") matches = [
+                    "back",
+                    "rear"
+                ];
+                else if (face.exact === "user" || face.ideal === "user") matches = [
+                    "front"
+                ];
+                if (matches) // Look for matches in label, or use last cam for back (typical).
+                return navigator.mediaDevices.enumerateDevices().then(function(devices) {
+                    devices = devices.filter(function(d) {
+                        return d.kind === "videoinput";
+                    });
+                    var dev = devices.find(function(d) {
+                        return matches.some(function(match) {
+                            return d.label.toLowerCase().includes(match);
+                        });
+                    });
+                    if (!dev && devices.length && matches.includes("back")) dev = devices[devices.length - 1]; // more likely the back cam
+                    if (dev) constraints.video.deviceId = face.exact ? {
+                        exact: dev.deviceId
+                    } : {
+                        ideal: dev.deviceId
+                    };
+                    constraints.video = constraintsToChrome_(constraints.video);
+                    $21705115f518b830$var$logging("chrome: " + JSON.stringify(constraints));
+                    return func(constraints);
+                });
+            }
+            constraints.video = constraintsToChrome_(constraints.video);
+        }
+        $21705115f518b830$var$logging("chrome: " + JSON.stringify(constraints));
+        return func(constraints);
+    };
+    var shimError_ = function shimError_(e) {
+        if (browserDetails.version >= 64) return e;
+        return {
+            name: ({
+                PermissionDeniedError: "NotAllowedError",
+                PermissionDismissedError: "NotAllowedError",
+                InvalidStateError: "NotAllowedError",
+                DevicesNotFoundError: "NotFoundError",
+                ConstraintNotSatisfiedError: "OverconstrainedError",
+                TrackStartError: "NotReadableError",
+                MediaDeviceFailedDueToShutdown: "NotAllowedError",
+                MediaDeviceKillSwitchOn: "NotAllowedError",
+                TabCaptureError: "AbortError",
+                ScreenCaptureError: "AbortError",
+                DeviceCaptureError: "AbortError"
+            })[e.name] || e.name,
+            message: e.message,
+            constraint: e.constraint || e.constraintName,
+            toString: function() {
+                return this.name + (this.message && ": ") + this.message;
+            }
+        };
+    };
+    var getUserMedia_ = function getUserMedia_(constraints, onSuccess, onError) {
+        shimConstraints_(constraints, function(c) {
+            navigator.webkitGetUserMedia(c, onSuccess, function(e) {
+                if (onError) onError(shimError_(e));
+            });
+        });
+    };
+    navigator.getUserMedia = getUserMedia_.bind(navigator);
+    // Even though Chrome 45 has navigator.mediaDevices and a getUserMedia
+    // function which returns a Promise, it does not accept spec-style
+    // constraints.
+    if (navigator.mediaDevices.getUserMedia) {
+        var origGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+        navigator.mediaDevices.getUserMedia = function(cs) {
+            return shimConstraints_(cs, function(c) {
+                return origGetUserMedia(c).then(function(stream) {
+                    if (c.audio && !stream.getAudioTracks().length || c.video && !stream.getVideoTracks().length) {
+                        stream.getTracks().forEach(function(track) {
+                            track.stop();
+                        });
+                        throw new DOMException("", "NotFoundError");
+                    }
+                    return stream;
+                }, function(e) {
+                    return Promise.reject(shimError_(e));
+                });
+            });
+        };
+    }
+}
+
+
+"use strict";
+function $c83c9d2c0bca1d6e$export$33ee24e7a300bcd1(window) {
+    window.MediaStream = window.MediaStream || window.webkitMediaStream;
+}
+function $c83c9d2c0bca1d6e$export$f358708f68ab068(window) {
+    if (typeof window === "object" && window.RTCPeerConnection && !("ontrack" in window.RTCPeerConnection.prototype)) {
+        Object.defineProperty(window.RTCPeerConnection.prototype, "ontrack", {
+            get: function() {
+                return this._ontrack;
+            },
+            set: function(f) {
+                if (this._ontrack) this.removeEventListener("track", this._ontrack);
+                this.addEventListener("track", this._ontrack = f);
+            },
+            enumerable: true,
+            configurable: true
+        });
+        var origSetRemoteDescription = window.RTCPeerConnection.prototype.setRemoteDescription;
+        window.RTCPeerConnection.prototype.setRemoteDescription = function setRemoteDescription() {
+            var _this = this;
+            if (!this._ontrackpoly) {
+                this._ontrackpoly = function(e) {
+                    // onaddstream does not fire when a track is added to an existing
+                    // stream. But stream.onaddtrack is implemented so we use that.
+                    e.stream.addEventListener("addtrack", function(te) {
+                        var receiver;
+                        if (window.RTCPeerConnection.prototype.getReceivers) receiver = _this.getReceivers().find(function(r) {
+                            return r.track && r.track.id === te.track.id;
+                        });
+                        else receiver = {
+                            track: te.track
+                        };
+                        var event = new Event("track");
+                        event.track = te.track;
+                        event.receiver = receiver;
+                        event.transceiver = {
+                            receiver: receiver
+                        };
+                        event.streams = [
+                            e.stream
+                        ];
+                        _this.dispatchEvent(event);
+                    });
+                    e.stream.getTracks().forEach(function(track) {
+                        var receiver;
+                        if (window.RTCPeerConnection.prototype.getReceivers) receiver = _this.getReceivers().find(function(r) {
+                            return r.track && r.track.id === track.id;
+                        });
+                        else receiver = {
+                            track: track
+                        };
+                        var event = new Event("track");
+                        event.track = track;
+                        event.receiver = receiver;
+                        event.transceiver = {
+                            receiver: receiver
+                        };
+                        event.streams = [
+                            e.stream
+                        ];
+                        _this.dispatchEvent(event);
+                    });
+                };
+                this.addEventListener("addstream", this._ontrackpoly);
+            }
+            return origSetRemoteDescription.apply(this, arguments);
+        };
+    } else // even if RTCRtpTransceiver is in window, it is only used and
+    // emitted in unified-plan. Unfortunately this means we need
+    // to unconditionally wrap the event.
+    $ecbc82f8e2fc2f44$export$1f48841962b828b1(window, "track", function(e) {
+        if (!e.transceiver) Object.defineProperty(e, "transceiver", {
+            value: {
+                receiver: e.receiver
+            }
+        });
+        return e;
+    });
+}
+function $c83c9d2c0bca1d6e$export$a41a030a2842f5d6(window) {
+    // Overrides addTrack/removeTrack, depends on shimAddTrackRemoveTrack.
+    if (typeof window === "object" && window.RTCPeerConnection && !("getSenders" in window.RTCPeerConnection.prototype) && "createDTMFSender" in window.RTCPeerConnection.prototype) {
+        var shimSenderWithDtmf = function shimSenderWithDtmf(pc, track) {
+            return {
+                track: track,
+                get dtmf () {
+                    if (this._dtmf === undefined) {
+                        if (track.kind === "audio") this._dtmf = pc.createDTMFSender(track);
+                        else this._dtmf = null;
+                    }
+                    return this._dtmf;
+                },
+                _pc: pc
+            };
+        };
+        // augment addTrack when getSenders is not available.
+        if (!window.RTCPeerConnection.prototype.getSenders) {
+            window.RTCPeerConnection.prototype.getSenders = function getSenders() {
+                this._senders = this._senders || [];
+                return this._senders.slice(); // return a copy of the internal state.
+            };
+            var origAddTrack = window.RTCPeerConnection.prototype.addTrack;
+            window.RTCPeerConnection.prototype.addTrack = function addTrack(track, stream) {
+                var sender = origAddTrack.apply(this, arguments);
+                if (!sender) {
+                    sender = shimSenderWithDtmf(this, track);
+                    this._senders.push(sender);
+                }
+                return sender;
+            };
+            var origRemoveTrack = window.RTCPeerConnection.prototype.removeTrack;
+            window.RTCPeerConnection.prototype.removeTrack = function removeTrack(sender) {
+                origRemoveTrack.apply(this, arguments);
+                var idx = this._senders.indexOf(sender);
+                if (idx !== -1) this._senders.splice(idx, 1);
+            };
+        }
+        var origAddStream = window.RTCPeerConnection.prototype.addStream;
+        window.RTCPeerConnection.prototype.addStream = function addStream(stream) {
+            var _this = this;
+            this._senders = this._senders || [];
+            origAddStream.apply(this, [
+                stream
+            ]);
+            stream.getTracks().forEach(function(track) {
+                _this._senders.push(shimSenderWithDtmf(_this, track));
+            });
+        };
+        var origRemoveStream = window.RTCPeerConnection.prototype.removeStream;
+        window.RTCPeerConnection.prototype.removeStream = function removeStream(stream) {
+            var _this = this;
+            this._senders = this._senders || [];
+            origRemoveStream.apply(this, [
+                stream
+            ]);
+            stream.getTracks().forEach(function(track) {
+                var sender = _this._senders.find(function(s) {
+                    return s.track === track;
+                });
+                if (sender) _this._senders.splice(_this._senders.indexOf(sender), 1);
+            });
+        };
+    } else if (typeof window === "object" && window.RTCPeerConnection && "getSenders" in window.RTCPeerConnection.prototype && "createDTMFSender" in window.RTCPeerConnection.prototype && window.RTCRtpSender && !("dtmf" in window.RTCRtpSender.prototype)) {
+        var origGetSenders = window.RTCPeerConnection.prototype.getSenders;
+        window.RTCPeerConnection.prototype.getSenders = function getSenders() {
+            var _this = this;
+            var senders = origGetSenders.apply(this, []);
+            senders.forEach(function(sender) {
+                return sender._pc = _this;
+            });
+            return senders;
+        };
+        Object.defineProperty(window.RTCRtpSender.prototype, "dtmf", {
+            get: function() {
+                if (this._dtmf === undefined) {
+                    if (this.track.kind === "audio") this._dtmf = this._pc.createDTMFSender(this.track);
+                    else this._dtmf = null;
+                }
+                return this._dtmf;
+            }
+        });
+    }
+}
+function $c83c9d2c0bca1d6e$export$f2f0f2338114eb4b(window) {
+    if (!(typeof window === "object" && window.RTCPeerConnection && window.RTCRtpSender && window.RTCRtpReceiver)) return;
+    // shim sender stats.
+    if (!("getStats" in window.RTCRtpSender.prototype)) {
+        var origGetSenders = window.RTCPeerConnection.prototype.getSenders;
+        if (origGetSenders) window.RTCPeerConnection.prototype.getSenders = function getSenders() {
+            var _this = this;
+            var senders = origGetSenders.apply(this, []);
+            senders.forEach(function(sender) {
+                return sender._pc = _this;
+            });
+            return senders;
+        };
+        var origAddTrack = window.RTCPeerConnection.prototype.addTrack;
+        if (origAddTrack) window.RTCPeerConnection.prototype.addTrack = function addTrack() {
+            var sender = origAddTrack.apply(this, arguments);
+            sender._pc = this;
+            return sender;
+        };
+        window.RTCRtpSender.prototype.getStats = function getStats() {
+            var sender = this;
+            return this._pc.getStats().then(function(result) {
+                return(/* Note: this will include stats of all senders that
+         *   send a track with the same id as sender.track as
+         *   it is not possible to identify the RTCRtpSender.
+         */ $ecbc82f8e2fc2f44$export$93439ffc3f787d51(result, sender.track, true));
+            });
+        };
+    }
+    // shim receiver stats.
+    if (!("getStats" in window.RTCRtpReceiver.prototype)) {
+        var origGetReceivers = window.RTCPeerConnection.prototype.getReceivers;
+        if (origGetReceivers) window.RTCPeerConnection.prototype.getReceivers = function getReceivers() {
+            var _this = this;
+            var receivers = origGetReceivers.apply(this, []);
+            receivers.forEach(function(receiver) {
+                return receiver._pc = _this;
+            });
+            return receivers;
+        };
+        $ecbc82f8e2fc2f44$export$1f48841962b828b1(window, "track", function(e) {
+            e.receiver._pc = e.srcElement;
+            return e;
+        });
+        window.RTCRtpReceiver.prototype.getStats = function getStats() {
+            var receiver = this;
+            return this._pc.getStats().then(function(result) {
+                return $ecbc82f8e2fc2f44$export$93439ffc3f787d51(result, receiver.track, false);
+            });
+        };
+    }
+    if (!("getStats" in window.RTCRtpSender.prototype && "getStats" in window.RTCRtpReceiver.prototype)) return;
+    // shim RTCPeerConnection.getStats(track).
+    var origGetStats = window.RTCPeerConnection.prototype.getStats;
+    window.RTCPeerConnection.prototype.getStats = function getStats() {
+        if (arguments.length > 0 && arguments[0] instanceof window.MediaStreamTrack) {
+            var track = arguments[0];
+            var sender;
+            var receiver;
+            var err;
+            this.getSenders().forEach(function(s) {
+                if (s.track === track) {
+                    if (sender) err = true;
+                    else sender = s;
+                }
+            });
+            this.getReceivers().forEach(function(r) {
+                if (r.track === track) {
+                    if (receiver) err = true;
+                    else receiver = r;
+                }
+                return r.track === track;
+            });
+            if (err || sender && receiver) return Promise.reject(new DOMException("There are more than one sender or receiver for the track.", "InvalidAccessError"));
+            else if (sender) return sender.getStats();
+            else if (receiver) return receiver.getStats();
+            return Promise.reject(new DOMException("There is no sender or receiver for the track.", "InvalidAccessError"));
+        }
+        return origGetStats.apply(this, arguments);
+    };
+}
+function $c83c9d2c0bca1d6e$export$30e3cdd46f8d5100(window) {
+    // shim addTrack/removeTrack with native variants in order to make
+    // the interactions with legacy getLocalStreams behave as in other browsers.
+    // Keeps a mapping stream.id => [stream, rtpsenders...]
+    window.RTCPeerConnection.prototype.getLocalStreams = function getLocalStreams() {
+        var _this = this;
+        this._shimmedLocalStreams = this._shimmedLocalStreams || {};
+        return Object.keys(this._shimmedLocalStreams).map(function(streamId) {
+            return _this._shimmedLocalStreams[streamId][0];
+        });
+    };
+    var origAddTrack = window.RTCPeerConnection.prototype.addTrack;
+    window.RTCPeerConnection.prototype.addTrack = function addTrack(track, stream) {
+        if (!stream) return origAddTrack.apply(this, arguments);
+        this._shimmedLocalStreams = this._shimmedLocalStreams || {};
+        var sender = origAddTrack.apply(this, arguments);
+        if (!this._shimmedLocalStreams[stream.id]) this._shimmedLocalStreams[stream.id] = [
+            stream,
+            sender
+        ];
+        else if (this._shimmedLocalStreams[stream.id].indexOf(sender) === -1) this._shimmedLocalStreams[stream.id].push(sender);
+        return sender;
+    };
+    var origAddStream = window.RTCPeerConnection.prototype.addStream;
+    window.RTCPeerConnection.prototype.addStream = function addStream(stream) {
+        var _this = this;
+        this._shimmedLocalStreams = this._shimmedLocalStreams || {};
+        stream.getTracks().forEach(function(track) {
+            var alreadyExists = _this.getSenders().find(function(s) {
+                return s.track === track;
+            });
+            if (alreadyExists) throw new DOMException("Track already exists.", "InvalidAccessError");
+        });
+        var existingSenders = this.getSenders();
+        origAddStream.apply(this, arguments);
+        var newSenders = this.getSenders().filter(function(newSender) {
+            return existingSenders.indexOf(newSender) === -1;
+        });
+        this._shimmedLocalStreams[stream.id] = [
+            stream
+        ].concat(newSenders);
+    };
+    var origRemoveStream = window.RTCPeerConnection.prototype.removeStream;
+    window.RTCPeerConnection.prototype.removeStream = function removeStream(stream) {
+        this._shimmedLocalStreams = this._shimmedLocalStreams || {};
+        delete this._shimmedLocalStreams[stream.id];
+        return origRemoveStream.apply(this, arguments);
+    };
+    var origRemoveTrack = window.RTCPeerConnection.prototype.removeTrack;
+    window.RTCPeerConnection.prototype.removeTrack = function removeTrack(sender) {
+        var _this = this;
+        this._shimmedLocalStreams = this._shimmedLocalStreams || {};
+        if (sender) Object.keys(this._shimmedLocalStreams).forEach(function(streamId) {
+            var idx = _this._shimmedLocalStreams[streamId].indexOf(sender);
+            if (idx !== -1) _this._shimmedLocalStreams[streamId].splice(idx, 1);
+            if (_this._shimmedLocalStreams[streamId].length === 1) delete _this._shimmedLocalStreams[streamId];
+        });
+        return origRemoveTrack.apply(this, arguments);
+    };
+}
+function $c83c9d2c0bca1d6e$export$9588259fcf4ebc91(window, browserDetails) {
+    if (!window.RTCPeerConnection) return;
+    // shim addTrack and removeTrack.
+    if (window.RTCPeerConnection.prototype.addTrack && browserDetails.version >= 65) return $c83c9d2c0bca1d6e$export$30e3cdd46f8d5100(window);
+    // also shim pc.getLocalStreams when addTrack is shimmed
+    // to return the original streams.
+    var origGetLocalStreams = window.RTCPeerConnection.prototype.getLocalStreams;
+    window.RTCPeerConnection.prototype.getLocalStreams = function getLocalStreams() {
+        var _this = this;
+        var nativeStreams = origGetLocalStreams.apply(this);
+        this._reverseStreams = this._reverseStreams || {};
+        return nativeStreams.map(function(stream) {
+            return _this._reverseStreams[stream.id];
+        });
+    };
+    var origAddStream = window.RTCPeerConnection.prototype.addStream;
+    window.RTCPeerConnection.prototype.addStream = function addStream(stream) {
+        var _this = this;
+        this._streams = this._streams || {};
+        this._reverseStreams = this._reverseStreams || {};
+        stream.getTracks().forEach(function(track) {
+            var alreadyExists = _this.getSenders().find(function(s) {
+                return s.track === track;
+            });
+            if (alreadyExists) throw new DOMException("Track already exists.", "InvalidAccessError");
+        });
+        // Add identity mapping for consistency with addTrack.
+        // Unless this is being used with a stream from addTrack.
+        if (!this._reverseStreams[stream.id]) {
+            var newStream = new window.MediaStream(stream.getTracks());
+            this._streams[stream.id] = newStream;
+            this._reverseStreams[newStream.id] = stream;
+            stream = newStream;
+        }
+        origAddStream.apply(this, [
+            stream
+        ]);
+    };
+    var origRemoveStream = window.RTCPeerConnection.prototype.removeStream;
+    window.RTCPeerConnection.prototype.removeStream = function removeStream(stream) {
+        this._streams = this._streams || {};
+        this._reverseStreams = this._reverseStreams || {};
+        origRemoveStream.apply(this, [
+            this._streams[stream.id] || stream
+        ]);
+        delete this._reverseStreams[this._streams[stream.id] ? this._streams[stream.id].id : stream.id];
+        delete this._streams[stream.id];
+    };
+    window.RTCPeerConnection.prototype.addTrack = function addTrack(track, stream) {
+        var _this = this;
+        if (this.signalingState === "closed") throw new DOMException("The RTCPeerConnection's signalingState is 'closed'.", "InvalidStateError");
+        var streams = [].slice.call(arguments, 1);
+        if (streams.length !== 1 || !streams[0].getTracks().find(function(t) {
+            return t === track;
+        })) // this is not fully correct but all we can manage without
+        // [[associated MediaStreams]] internal slot.
+        throw new DOMException("The adapter.js addTrack polyfill only supports a single  stream which is associated with the specified track.", "NotSupportedError");
+        var alreadyExists = this.getSenders().find(function(s) {
+            return s.track === track;
+        });
+        if (alreadyExists) throw new DOMException("Track already exists.", "InvalidAccessError");
+        this._streams = this._streams || {};
+        this._reverseStreams = this._reverseStreams || {};
+        var oldStream = this._streams[stream.id];
+        if (oldStream) {
+            // this is using odd Chrome behaviour, use with caution:
+            // https://bugs.chromium.org/p/webrtc/issues/detail?id=7815
+            // Note: we rely on the high-level addTrack/dtmf shim to
+            // create the sender with a dtmf sender.
+            oldStream.addTrack(track);
+            // Trigger ONN async.
+            Promise.resolve().then(function() {
+                _this.dispatchEvent(new Event("negotiationneeded"));
+            });
+        } else {
+            var newStream = new window.MediaStream([
+                track
+            ]);
+            this._streams[stream.id] = newStream;
+            this._reverseStreams[newStream.id] = stream;
+            this.addStream(newStream);
+        }
+        return this.getSenders().find(function(s) {
+            return s.track === track;
+        });
+    };
+    // replace the internal stream id with the external one and
+    // vice versa.
+    function replaceInternalStreamId(pc, description) {
+        var sdp = description.sdp;
+        Object.keys(pc._reverseStreams || []).forEach(function(internalId) {
+            var externalStream = pc._reverseStreams[internalId];
+            var internalStream = pc._streams[externalStream.id];
+            sdp = sdp.replace(new RegExp(internalStream.id, "g"), externalStream.id);
+        });
+        return new RTCSessionDescription({
+            type: description.type,
+            sdp: sdp
+        });
+    }
+    function replaceExternalStreamId(pc, description) {
+        var sdp = description.sdp;
+        Object.keys(pc._reverseStreams || []).forEach(function(internalId) {
+            var externalStream = pc._reverseStreams[internalId];
+            var internalStream = pc._streams[externalStream.id];
+            sdp = sdp.replace(new RegExp(externalStream.id, "g"), internalStream.id);
+        });
+        return new RTCSessionDescription({
+            type: description.type,
+            sdp: sdp
+        });
+    }
+    [
+        "createOffer",
+        "createAnswer"
+    ].forEach(function(method) {
+        var nativeMethod = window.RTCPeerConnection.prototype[method];
+        var methodObj = (0, $c96c38d675a75115$export$1e71eb4bef00f6b0)({}, method, function() {
+            var _this = this;
+            var args = arguments;
+            var isLegacyCall = arguments.length && typeof arguments[0] === "function";
+            if (isLegacyCall) return nativeMethod.apply(this, [
+                function(description) {
+                    var desc = replaceInternalStreamId(_this, description);
+                    args[0].apply(null, [
+                        desc
+                    ]);
+                },
+                function(err) {
+                    if (args[1]) args[1].apply(null, err);
+                },
+                arguments[2]
+            ]);
+            return nativeMethod.apply(this, arguments).then(function(description) {
+                return replaceInternalStreamId(_this, description);
+            });
+        });
+        window.RTCPeerConnection.prototype[method] = methodObj[method];
+    });
+    var origSetLocalDescription = window.RTCPeerConnection.prototype.setLocalDescription;
+    window.RTCPeerConnection.prototype.setLocalDescription = function setLocalDescription() {
+        if (!arguments.length || !arguments[0].type) return origSetLocalDescription.apply(this, arguments);
+        arguments[0] = replaceExternalStreamId(this, arguments[0]);
+        return origSetLocalDescription.apply(this, arguments);
+    };
+    // TODO: mangle getStats: https://w3c.github.io/webrtc-stats/#dom-rtcmediastreamstats-streamidentifier
+    var origLocalDescription = Object.getOwnPropertyDescriptor(window.RTCPeerConnection.prototype, "localDescription");
+    Object.defineProperty(window.RTCPeerConnection.prototype, "localDescription", {
+        get: function() {
+            var description = origLocalDescription.get.apply(this);
+            if (description.type === "") return description;
+            return replaceInternalStreamId(this, description);
+        }
+    });
+    window.RTCPeerConnection.prototype.removeTrack = function removeTrack(sender) {
+        var _this = this;
+        if (this.signalingState === "closed") throw new DOMException("The RTCPeerConnection's signalingState is 'closed'.", "InvalidStateError");
+        // We can not yet check for sender instanceof RTCRtpSender
+        // since we shim RTPSender. So we check if sender._pc is set.
+        if (!sender._pc) throw new DOMException("Argument 1 of RTCPeerConnection.removeTrack does not implement interface RTCRtpSender.", "TypeError");
+        var isLocal = sender._pc === this;
+        if (!isLocal) throw new DOMException("Sender was not created by this connection.", "InvalidAccessError");
+        // Search for the native stream the senders track belongs to.
+        this._streams = this._streams || {};
+        var stream;
+        Object.keys(this._streams).forEach(function(streamid) {
+            var hasTrack = _this._streams[streamid].getTracks().find(function(track) {
+                return sender.track === track;
+            });
+            if (hasTrack) stream = _this._streams[streamid];
+        });
+        if (stream) {
+            if (stream.getTracks().length === 1) // if this is the last track of the stream, remove the stream. This
+            // takes care of any shimmed _senders.
+            this.removeStream(this._reverseStreams[stream.id]);
+            else // relying on the same odd chrome behaviour as above.
+            stream.removeTrack(sender.track);
+            this.dispatchEvent(new Event("negotiationneeded"));
+        }
+    };
+}
+function $c83c9d2c0bca1d6e$export$852a08dda9a55ea7(window, browserDetails) {
+    if (!window.RTCPeerConnection && window.webkitRTCPeerConnection) // very basic support for old versions.
+    window.RTCPeerConnection = window.webkitRTCPeerConnection;
+    if (!window.RTCPeerConnection) return;
+    // shim implicit creation of RTCSessionDescription/RTCIceCandidate
+    if (browserDetails.version < 53) [
+        "setLocalDescription",
+        "setRemoteDescription",
+        "addIceCandidate"
+    ].forEach(function(method) {
+        var nativeMethod = window.RTCPeerConnection.prototype[method];
+        var methodObj = (0, $c96c38d675a75115$export$1e71eb4bef00f6b0)({}, method, function() {
+            arguments[0] = new (method === "addIceCandidate" ? window.RTCIceCandidate : window.RTCSessionDescription)(arguments[0]);
+            return nativeMethod.apply(this, arguments);
+        });
+        window.RTCPeerConnection.prototype[method] = methodObj[method];
+    });
+}
+function $c83c9d2c0bca1d6e$export$341293bbeaae37cb(window, browserDetails) {
+    $ecbc82f8e2fc2f44$export$1f48841962b828b1(window, "negotiationneeded", function(e) {
+        var pc = e.target;
+        if (browserDetails.version < 72 || pc.getConfiguration && pc.getConfiguration().sdpSemantics === "plan-b") {
+            if (pc.signalingState !== "stable") return;
+        }
+        return e;
+    });
+}
+
+
+var $69fa72c68315eefd$exports = {};
+
+$parcel$export($69fa72c68315eefd$exports, "shimOnTrack", function () { return $69fa72c68315eefd$export$f358708f68ab068; });
+$parcel$export($69fa72c68315eefd$exports, "shimPeerConnection", function () { return $69fa72c68315eefd$export$852a08dda9a55ea7; });
+$parcel$export($69fa72c68315eefd$exports, "shimSenderGetStats", function () { return $69fa72c68315eefd$export$f0525502095c04ef; });
+$parcel$export($69fa72c68315eefd$exports, "shimReceiverGetStats", function () { return $69fa72c68315eefd$export$83d69126527b1171; });
+$parcel$export($69fa72c68315eefd$exports, "shimRemoveStream", function () { return $69fa72c68315eefd$export$825e523ef749bd8c; });
+$parcel$export($69fa72c68315eefd$exports, "shimRTCDataChannel", function () { return $69fa72c68315eefd$export$ff9cb3bc8990e8f7; });
+$parcel$export($69fa72c68315eefd$exports, "shimAddTransceiver", function () { return $69fa72c68315eefd$export$70c77533b6e9908d; });
+$parcel$export($69fa72c68315eefd$exports, "shimGetParameters", function () { return $69fa72c68315eefd$export$66238223c298fbaa; });
+$parcel$export($69fa72c68315eefd$exports, "shimCreateOffer", function () { return $69fa72c68315eefd$export$51beccf0e777b843; });
+$parcel$export($69fa72c68315eefd$exports, "shimCreateAnswer", function () { return $69fa72c68315eefd$export$df0b46e7cef08150; });
+$parcel$export($69fa72c68315eefd$exports, "shimGetUserMedia", function () { return $5e3a1eb03a6ad947$export$1ed4910f4d37dc5e; });
+$parcel$export($69fa72c68315eefd$exports, "shimGetDisplayMedia", function () { return $1852db07731944b1$export$97270b87351d9c04; });
+/*
+ *  Copyright (c) 2016 The WebRTC project authors. All Rights Reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+ */ /* eslint-env node */ 
+function $f76c296ed2fab950$export$e6256bf45c68d561(arr) {
+    if (Array.isArray(arr)) return arr;
+}
+
+
+function $d4d0fa0b930ea205$export$2fd15edff6687200(arr, i) {
+    var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
+    if (_i == null) return;
+    var _arr = [];
+    var _n = true;
+    var _d = false;
+    var _s, _e;
+    try {
+        for(_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true){
+            _arr.push(_s.value);
+            if (i && _arr.length === i) break;
+        }
+    } catch (err) {
+        _d = true;
+        _e = err;
+    } finally{
+        try {
+            if (!_n && _i["return"] != null) _i["return"]();
+        } finally{
+            if (_d) throw _e;
+        }
+    }
+    return _arr;
+}
+
+
+function $a857e8ed28e4994b$export$60dbc22abd7da546() {
+    throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+
+function $67440b47eae652c8$export$79e617b1955a2616(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+    for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
+    return arr2;
+}
+
+
+function $3899c414e8c0a384$export$a5be06335b3a083c(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return (0, $67440b47eae652c8$export$79e617b1955a2616)(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(n);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return (0, $67440b47eae652c8$export$79e617b1955a2616)(o, minLen);
+}
+
+
+function $13b9422e3d1c1523$export$fdf2a89c76341bbf(arr, i) {
+    return (0, $f76c296ed2fab950$export$e6256bf45c68d561)(arr) || (0, $d4d0fa0b930ea205$export$2fd15edff6687200)(arr, i) || (0, $3899c414e8c0a384$export$a5be06335b3a083c)(arr, i) || (0, $a857e8ed28e4994b$export$60dbc22abd7da546)();
+}
+
+
+
+function $3d26cc3e6f094fde$export$7e0947b5ad3404e2(arr) {
+    if (Array.isArray(arr)) return (0, $67440b47eae652c8$export$79e617b1955a2616)(arr);
+}
+
+
+function $682837897e59553e$export$1eb58a6e75231000(iter) {
+    if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
+}
+
+
+function $56c83c6767c8811f$export$e6f3c4780d19eb2b() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+
+
+function $4c7c66606cd92a42$export$1b5e630bc3aea29f(arr) {
+    return (0, $3d26cc3e6f094fde$export$7e0947b5ad3404e2)(arr) || (0, $682837897e59553e$export$1eb58a6e75231000)(arr) || (0, $3899c414e8c0a384$export$a5be06335b3a083c)(arr) || (0, $56c83c6767c8811f$export$e6f3c4780d19eb2b)();
+}
+
+
+
+/*
+ *  Copyright (c) 2016 The WebRTC project authors. All Rights Reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+ */ /* eslint-env node */ 
+"use strict";
+function $5e3a1eb03a6ad947$export$1ed4910f4d37dc5e(window, browserDetails) {
+    var navigator = window && window.navigator;
+    var MediaStreamTrack = window && window.MediaStreamTrack;
+    navigator.getUserMedia = function(constraints, onSuccess, onError) {
+        // Replace Firefox 44+'s deprecation warning with unprefixed version.
+        $ecbc82f8e2fc2f44$export$cdd73fc4100a6ef4("navigator.getUserMedia", "navigator.mediaDevices.getUserMedia");
+        navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
+    };
+    if (!(browserDetails.version > 55 && "autoGainControl" in navigator.mediaDevices.getSupportedConstraints())) {
+        var remap = function remap(obj, a, b) {
+            if (a in obj && !(b in obj)) {
+                obj[b] = obj[a];
+                delete obj[a];
+            }
+        };
+        var nativeGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+        navigator.mediaDevices.getUserMedia = function(c) {
+            if (typeof c === "object" && typeof c.audio === "object") {
+                c = JSON.parse(JSON.stringify(c));
+                remap(c.audio, "autoGainControl", "mozAutoGainControl");
+                remap(c.audio, "noiseSuppression", "mozNoiseSuppression");
+            }
+            return nativeGetUserMedia(c);
+        };
+        if (MediaStreamTrack && MediaStreamTrack.prototype.getSettings) {
+            var nativeGetSettings = MediaStreamTrack.prototype.getSettings;
+            MediaStreamTrack.prototype.getSettings = function() {
+                var obj = nativeGetSettings.apply(this, arguments);
+                remap(obj, "mozAutoGainControl", "autoGainControl");
+                remap(obj, "mozNoiseSuppression", "noiseSuppression");
+                return obj;
+            };
+        }
+        if (MediaStreamTrack && MediaStreamTrack.prototype.applyConstraints) {
+            var nativeApplyConstraints = MediaStreamTrack.prototype.applyConstraints;
+            MediaStreamTrack.prototype.applyConstraints = function(c) {
+                if (this.kind === "audio" && typeof c === "object") {
+                    c = JSON.parse(JSON.stringify(c));
+                    remap(c, "autoGainControl", "mozAutoGainControl");
+                    remap(c, "noiseSuppression", "mozNoiseSuppression");
+                }
+                return nativeApplyConstraints.apply(this, [
+                    c
+                ]);
+            };
+        }
+    }
+}
+
+
+/*
+ *  Copyright (c) 2018 The adapter.js project authors. All Rights Reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+ */ /* eslint-env node */ "use strict";
+function $1852db07731944b1$export$97270b87351d9c04(window, preferredMediaSource) {
+    if (window.navigator.mediaDevices && "getDisplayMedia" in window.navigator.mediaDevices) return;
+    if (!window.navigator.mediaDevices) return;
+    window.navigator.mediaDevices.getDisplayMedia = function getDisplayMedia(constraints) {
+        if (!(constraints && constraints.video)) {
+            var err = new DOMException("getDisplayMedia without video constraints is undefined");
+            err.name = "NotFoundError";
+            // from https://heycam.github.io/webidl/#idl-DOMException-error-names
+            err.code = 8;
+            return Promise.reject(err);
+        }
+        if (constraints.video === true) constraints.video = {
+            mediaSource: preferredMediaSource
+        };
+        else constraints.video.mediaSource = preferredMediaSource;
+        return window.navigator.mediaDevices.getUserMedia(constraints);
+    };
+}
+
+
+"use strict";
+function $69fa72c68315eefd$export$f358708f68ab068(window) {
+    if (typeof window === "object" && window.RTCTrackEvent && "receiver" in window.RTCTrackEvent.prototype && !("transceiver" in window.RTCTrackEvent.prototype)) Object.defineProperty(window.RTCTrackEvent.prototype, "transceiver", {
+        get: function() {
+            return {
+                receiver: this.receiver
+            };
+        }
+    });
+}
+function $69fa72c68315eefd$export$852a08dda9a55ea7(window, browserDetails) {
+    if (typeof window !== "object" || !(window.RTCPeerConnection || window.mozRTCPeerConnection)) return; // probably media.peerconnection.enabled=false in about:config
+    if (!window.RTCPeerConnection && window.mozRTCPeerConnection) // very basic support for old versions.
+    window.RTCPeerConnection = window.mozRTCPeerConnection;
+    if (browserDetails.version < 53) // shim away need for obsolete RTCIceCandidate/RTCSessionDescription.
+    [
+        "setLocalDescription",
+        "setRemoteDescription",
+        "addIceCandidate"
+    ].forEach(function(method) {
+        var nativeMethod = window.RTCPeerConnection.prototype[method];
+        var methodObj = (0, $c96c38d675a75115$export$1e71eb4bef00f6b0)({}, method, function() {
+            arguments[0] = new (method === "addIceCandidate" ? window.RTCIceCandidate : window.RTCSessionDescription)(arguments[0]);
+            return nativeMethod.apply(this, arguments);
+        });
+        window.RTCPeerConnection.prototype[method] = methodObj[method];
+    });
+    var modernStatsTypes = {
+        inboundrtp: "inbound-rtp",
+        outboundrtp: "outbound-rtp",
+        candidatepair: "candidate-pair",
+        localcandidate: "local-candidate",
+        remotecandidate: "remote-candidate"
+    };
+    var nativeGetStats = window.RTCPeerConnection.prototype.getStats;
+    window.RTCPeerConnection.prototype.getStats = function getStats() {
+        var _arguments = (0, $13b9422e3d1c1523$export$fdf2a89c76341bbf)(arguments, 3), selector = _arguments[0], onSucc = _arguments[1], onErr = _arguments[2];
+        return nativeGetStats.apply(this, [
+            selector || null
+        ]).then(function(stats) {
+            if (browserDetails.version < 53 && !onSucc) // Shim only promise getStats with spec-hyphens in type names
+            // Leave callback version alone; misc old uses of forEach before Map
+            try {
+                stats.forEach(function(stat) {
+                    stat.type = modernStatsTypes[stat.type] || stat.type;
+                });
+            } catch (e) {
+                if (e.name !== "TypeError") throw e;
+                // Avoid TypeError: "type" is read-only, in old versions. 34-43ish
+                stats.forEach(function(stat, i) {
+                    stats.set(i, Object.assign({}, stat, {
+                        type: modernStatsTypes[stat.type] || stat.type
+                    }));
+                });
+            }
+            return stats;
+        }).then(onSucc, onErr);
+    };
+}
+function $69fa72c68315eefd$export$f0525502095c04ef(window) {
+    if (!(typeof window === "object" && window.RTCPeerConnection && window.RTCRtpSender)) return;
+    if (window.RTCRtpSender && "getStats" in window.RTCRtpSender.prototype) return;
+    var origGetSenders = window.RTCPeerConnection.prototype.getSenders;
+    if (origGetSenders) window.RTCPeerConnection.prototype.getSenders = function getSenders() {
+        var _this = this;
+        var senders = origGetSenders.apply(this, []);
+        senders.forEach(function(sender) {
+            return sender._pc = _this;
+        });
+        return senders;
+    };
+    var origAddTrack = window.RTCPeerConnection.prototype.addTrack;
+    if (origAddTrack) window.RTCPeerConnection.prototype.addTrack = function addTrack() {
+        var sender = origAddTrack.apply(this, arguments);
+        sender._pc = this;
+        return sender;
+    };
+    window.RTCRtpSender.prototype.getStats = function getStats() {
+        return this.track ? this._pc.getStats(this.track) : Promise.resolve(new Map());
+    };
+}
+function $69fa72c68315eefd$export$83d69126527b1171(window) {
+    if (!(typeof window === "object" && window.RTCPeerConnection && window.RTCRtpSender)) return;
+    if (window.RTCRtpSender && "getStats" in window.RTCRtpReceiver.prototype) return;
+    var origGetReceivers = window.RTCPeerConnection.prototype.getReceivers;
+    if (origGetReceivers) window.RTCPeerConnection.prototype.getReceivers = function getReceivers() {
+        var _this = this;
+        var receivers = origGetReceivers.apply(this, []);
+        receivers.forEach(function(receiver) {
+            return receiver._pc = _this;
+        });
+        return receivers;
+    };
+    $ecbc82f8e2fc2f44$export$1f48841962b828b1(window, "track", function(e) {
+        e.receiver._pc = e.srcElement;
+        return e;
+    });
+    window.RTCRtpReceiver.prototype.getStats = function getStats() {
+        return this._pc.getStats(this.track);
+    };
+}
+function $69fa72c68315eefd$export$825e523ef749bd8c(window) {
+    if (!window.RTCPeerConnection || "removeStream" in window.RTCPeerConnection.prototype) return;
+    window.RTCPeerConnection.prototype.removeStream = function removeStream(stream) {
+        var _this = this;
+        $ecbc82f8e2fc2f44$export$cdd73fc4100a6ef4("removeStream", "removeTrack");
+        this.getSenders().forEach(function(sender) {
+            if (sender.track && stream.getTracks().includes(sender.track)) _this.removeTrack(sender);
+        });
+    };
+}
+function $69fa72c68315eefd$export$ff9cb3bc8990e8f7(window) {
+    // rename DataChannel to RTCDataChannel (native fix in FF60):
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1173851
+    if (window.DataChannel && !window.RTCDataChannel) window.RTCDataChannel = window.DataChannel;
+}
+function $69fa72c68315eefd$export$70c77533b6e9908d(window) {
+    // https://github.com/webrtcHacks/adapter/issues/998#issuecomment-516921647
+    // Firefox ignores the init sendEncodings options passed to addTransceiver
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1396918
+    if (!(typeof window === "object" && window.RTCPeerConnection)) return;
+    var origAddTransceiver = window.RTCPeerConnection.prototype.addTransceiver;
+    if (origAddTransceiver) window.RTCPeerConnection.prototype.addTransceiver = function addTransceiver() {
+        this.setParametersPromises = [];
+        // WebIDL input coercion and validation
+        var sendEncodings = arguments[1] && arguments[1].sendEncodings;
+        if (sendEncodings === undefined) sendEncodings = [];
+        sendEncodings = (0, $4c7c66606cd92a42$export$1b5e630bc3aea29f)(sendEncodings);
+        var shouldPerformCheck = sendEncodings.length > 0;
+        if (shouldPerformCheck) // If sendEncodings params are provided, validate grammar
+        sendEncodings.forEach(function(encodingParam) {
+            if ("rid" in encodingParam) {
+                var ridRegex = /^[a-z0-9]{0,16}$/i;
+                if (!ridRegex.test(encodingParam.rid)) throw new TypeError("Invalid RID value provided.");
+            }
+            if ("scaleResolutionDownBy" in encodingParam) {
+                if (!(parseFloat(encodingParam.scaleResolutionDownBy) >= 1.0)) throw new RangeError("scale_resolution_down_by must be >= 1.0");
+            }
+            if ("maxFramerate" in encodingParam) {
+                if (!(parseFloat(encodingParam.maxFramerate) >= 0)) throw new RangeError("max_framerate must be >= 0.0");
+            }
+        });
+        var transceiver = origAddTransceiver.apply(this, arguments);
+        if (shouldPerformCheck) {
+            // Check if the init options were applied. If not we do this in an
+            // asynchronous way and save the promise reference in a global object.
+            // This is an ugly hack, but at the same time is way more robust than
+            // checking the sender parameters before and after the createOffer
+            // Also note that after the createoffer we are not 100% sure that
+            // the params were asynchronously applied so we might miss the
+            // opportunity to recreate offer.
+            var sender = transceiver.sender;
+            var params = sender.getParameters();
+            if (!("encodings" in params) || // Avoid being fooled by patched getParameters() below.
+            params.encodings.length === 1 && Object.keys(params.encodings[0]).length === 0) {
+                params.encodings = sendEncodings;
+                sender.sendEncodings = sendEncodings;
+                this.setParametersPromises.push(sender.setParameters(params).then(function() {
+                    delete sender.sendEncodings;
+                })["catch"](function() {
+                    delete sender.sendEncodings;
+                }));
+            }
+        }
+        return transceiver;
+    };
+}
+function $69fa72c68315eefd$export$66238223c298fbaa(window) {
+    if (!(typeof window === "object" && window.RTCRtpSender)) return;
+    var origGetParameters = window.RTCRtpSender.prototype.getParameters;
+    if (origGetParameters) window.RTCRtpSender.prototype.getParameters = function getParameters() {
+        var params = origGetParameters.apply(this, arguments);
+        if (!("encodings" in params)) params.encodings = [].concat(this.sendEncodings || [
+            {}
+        ]);
+        return params;
+    };
+}
+function $69fa72c68315eefd$export$51beccf0e777b843(window) {
+    // https://github.com/webrtcHacks/adapter/issues/998#issuecomment-516921647
+    // Firefox ignores the init sendEncodings options passed to addTransceiver
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1396918
+    if (!(typeof window === "object" && window.RTCPeerConnection)) return;
+    var origCreateOffer = window.RTCPeerConnection.prototype.createOffer;
+    window.RTCPeerConnection.prototype.createOffer = function createOffer() {
+        var _this = this, _arguments = arguments;
+        if (this.setParametersPromises && this.setParametersPromises.length) return Promise.all(this.setParametersPromises).then(function() {
+            return origCreateOffer.apply(_this, _arguments);
+        })["finally"](function() {
+            _this.setParametersPromises = [];
+        });
+        return origCreateOffer.apply(this, arguments);
+    };
+}
+function $69fa72c68315eefd$export$df0b46e7cef08150(window) {
+    // https://github.com/webrtcHacks/adapter/issues/998#issuecomment-516921647
+    // Firefox ignores the init sendEncodings options passed to addTransceiver
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1396918
+    if (!(typeof window === "object" && window.RTCPeerConnection)) return;
+    var origCreateAnswer = window.RTCPeerConnection.prototype.createAnswer;
+    window.RTCPeerConnection.prototype.createAnswer = function createAnswer() {
+        var _this = this, _arguments = arguments;
+        if (this.setParametersPromises && this.setParametersPromises.length) return Promise.all(this.setParametersPromises).then(function() {
+            return origCreateAnswer.apply(_this, _arguments);
+        })["finally"](function() {
+            _this.setParametersPromises = [];
+        });
+        return origCreateAnswer.apply(this, arguments);
+    };
+}
+
+
+var $30149506f5b6e50a$exports = {};
+
+$parcel$export($30149506f5b6e50a$exports, "shimLocalStreamsAPI", function () { return $30149506f5b6e50a$export$8df41282f4fdcea2; });
+$parcel$export($30149506f5b6e50a$exports, "shimRemoteStreamsAPI", function () { return $30149506f5b6e50a$export$762aa4cbb4f2f857; });
+$parcel$export($30149506f5b6e50a$exports, "shimCallbacksAPI", function () { return $30149506f5b6e50a$export$da31df245debdd3; });
+$parcel$export($30149506f5b6e50a$exports, "shimGetUserMedia", function () { return $30149506f5b6e50a$export$1ed4910f4d37dc5e; });
+$parcel$export($30149506f5b6e50a$exports, "shimConstraints", function () { return $30149506f5b6e50a$export$494a01ac68ba81ac; });
+$parcel$export($30149506f5b6e50a$exports, "shimRTCIceServerUrls", function () { return $30149506f5b6e50a$export$671a8b47b41b6f41; });
+$parcel$export($30149506f5b6e50a$exports, "shimTrackEventTransceiver", function () { return $30149506f5b6e50a$export$85d53da088cb1b14; });
+$parcel$export($30149506f5b6e50a$exports, "shimCreateOfferLegacy", function () { return $30149506f5b6e50a$export$d444266503fdd2d4; });
+$parcel$export($30149506f5b6e50a$exports, "shimAudioContext", function () { return $30149506f5b6e50a$export$857cd739a7b795d2; });
+/*
+ *  Copyright (c) 2016 The WebRTC project authors. All Rights Reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+ */ 
+"use strict";
+function $30149506f5b6e50a$export$8df41282f4fdcea2(window) {
+    if (typeof window !== "object" || !window.RTCPeerConnection) return;
+    if (!("getLocalStreams" in window.RTCPeerConnection.prototype)) window.RTCPeerConnection.prototype.getLocalStreams = function getLocalStreams() {
+        if (!this._localStreams) this._localStreams = [];
+        return this._localStreams;
+    };
+    if (!("addStream" in window.RTCPeerConnection.prototype)) {
+        var _addTrack = window.RTCPeerConnection.prototype.addTrack;
+        window.RTCPeerConnection.prototype.addStream = function addStream(stream) {
+            var _this = this;
+            if (!this._localStreams) this._localStreams = [];
+            if (!this._localStreams.includes(stream)) this._localStreams.push(stream);
+            // Try to emulate Chrome's behaviour of adding in audio-video order.
+            // Safari orders by track id.
+            stream.getAudioTracks().forEach(function(track) {
+                return _addTrack.call(_this, track, stream);
+            });
+            stream.getVideoTracks().forEach(function(track) {
+                return _addTrack.call(_this, track, stream);
+            });
+        };
+        window.RTCPeerConnection.prototype.addTrack = function addTrack(track) {
+            var _this = this;
+            for(var _len = arguments.length, streams = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++){
+                streams[_key - 1] = arguments[_key];
+            }
+            if (streams) streams.forEach(function(stream) {
+                if (!_this._localStreams) _this._localStreams = [
+                    stream
+                ];
+                else if (!_this._localStreams.includes(stream)) _this._localStreams.push(stream);
+            });
+            return _addTrack.apply(this, arguments);
+        };
+    }
+    if (!("removeStream" in window.RTCPeerConnection.prototype)) window.RTCPeerConnection.prototype.removeStream = function removeStream(stream) {
+        var _this = this;
+        if (!this._localStreams) this._localStreams = [];
+        var index = this._localStreams.indexOf(stream);
+        if (index === -1) return;
+        this._localStreams.splice(index, 1);
+        var tracks = stream.getTracks();
+        this.getSenders().forEach(function(sender) {
+            if (tracks.includes(sender.track)) _this.removeTrack(sender);
+        });
+    };
+}
+function $30149506f5b6e50a$export$762aa4cbb4f2f857(window) {
+    if (typeof window !== "object" || !window.RTCPeerConnection) return;
+    if (!("getRemoteStreams" in window.RTCPeerConnection.prototype)) window.RTCPeerConnection.prototype.getRemoteStreams = function getRemoteStreams() {
+        return this._remoteStreams ? this._remoteStreams : [];
+    };
+    if (!("onaddstream" in window.RTCPeerConnection.prototype)) {
+        Object.defineProperty(window.RTCPeerConnection.prototype, "onaddstream", {
+            get: function() {
+                return this._onaddstream;
+            },
+            set: function(f) {
+                var _this = this;
+                if (this._onaddstream) {
+                    this.removeEventListener("addstream", this._onaddstream);
+                    this.removeEventListener("track", this._onaddstreampoly);
+                }
+                this.addEventListener("addstream", this._onaddstream = f);
+                this.addEventListener("track", this._onaddstreampoly = function(e) {
+                    e.streams.forEach(function(stream) {
+                        if (!_this._remoteStreams) _this._remoteStreams = [];
+                        if (_this._remoteStreams.includes(stream)) return;
+                        _this._remoteStreams.push(stream);
+                        var event = new Event("addstream");
+                        event.stream = stream;
+                        _this.dispatchEvent(event);
+                    });
+                });
+            }
+        });
+        var origSetRemoteDescription = window.RTCPeerConnection.prototype.setRemoteDescription;
+        window.RTCPeerConnection.prototype.setRemoteDescription = function setRemoteDescription() {
+            var pc = this;
+            if (!this._onaddstreampoly) this.addEventListener("track", this._onaddstreampoly = function(e) {
+                e.streams.forEach(function(stream) {
+                    if (!pc._remoteStreams) pc._remoteStreams = [];
+                    if (pc._remoteStreams.indexOf(stream) >= 0) return;
+                    pc._remoteStreams.push(stream);
+                    var event = new Event("addstream");
+                    event.stream = stream;
+                    pc.dispatchEvent(event);
+                });
+            });
+            return origSetRemoteDescription.apply(pc, arguments);
+        };
+    }
+}
+function $30149506f5b6e50a$export$da31df245debdd3(window) {
+    if (typeof window !== "object" || !window.RTCPeerConnection) return;
+    var prototype = window.RTCPeerConnection.prototype;
+    var origCreateOffer = prototype.createOffer;
+    var origCreateAnswer = prototype.createAnswer;
+    var setLocalDescription = prototype.setLocalDescription;
+    var setRemoteDescription = prototype.setRemoteDescription;
+    var addIceCandidate = prototype.addIceCandidate;
+    prototype.createOffer = function createOffer(successCallback, failureCallback) {
+        var options = arguments.length >= 2 ? arguments[2] : arguments[0];
+        var promise = origCreateOffer.apply(this, [
+            options
+        ]);
+        if (!failureCallback) return promise;
+        promise.then(successCallback, failureCallback);
+        return Promise.resolve();
+    };
+    prototype.createAnswer = function createAnswer(successCallback, failureCallback) {
+        var options = arguments.length >= 2 ? arguments[2] : arguments[0];
+        var promise = origCreateAnswer.apply(this, [
+            options
+        ]);
+        if (!failureCallback) return promise;
+        promise.then(successCallback, failureCallback);
+        return Promise.resolve();
+    };
+    var withCallback = function withCallback(description, successCallback, failureCallback) {
+        var promise = setLocalDescription.apply(this, [
+            description
+        ]);
+        if (!failureCallback) return promise;
+        promise.then(successCallback, failureCallback);
+        return Promise.resolve();
+    };
+    prototype.setLocalDescription = withCallback;
+    withCallback = function withCallback(description, successCallback, failureCallback) {
+        var promise = setRemoteDescription.apply(this, [
+            description
+        ]);
+        if (!failureCallback) return promise;
+        promise.then(successCallback, failureCallback);
+        return Promise.resolve();
+    };
+    prototype.setRemoteDescription = withCallback;
+    withCallback = function withCallback(candidate, successCallback, failureCallback) {
+        var promise = addIceCandidate.apply(this, [
+            candidate
+        ]);
+        if (!failureCallback) return promise;
+        promise.then(successCallback, failureCallback);
+        return Promise.resolve();
+    };
+    prototype.addIceCandidate = withCallback;
+}
+function $30149506f5b6e50a$export$1ed4910f4d37dc5e(window) {
+    var navigator = window && window.navigator;
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // shim not needed in Safari 12.1
+        var mediaDevices = navigator.mediaDevices;
+        var _getUserMedia = mediaDevices.getUserMedia.bind(mediaDevices);
+        navigator.mediaDevices.getUserMedia = function(constraints) {
+            return _getUserMedia($30149506f5b6e50a$export$494a01ac68ba81ac(constraints));
+        };
+    }
+    if (!navigator.getUserMedia && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) navigator.getUserMedia = (function getUserMedia(constraints, cb, errcb) {
+        navigator.mediaDevices.getUserMedia(constraints).then(cb, errcb);
+    }).bind(navigator);
+}
+function $30149506f5b6e50a$export$494a01ac68ba81ac(constraints) {
+    if (constraints && constraints.video !== undefined) return Object.assign({}, constraints, {
+        video: $ecbc82f8e2fc2f44$export$15384eac40dc88c8(constraints.video)
+    });
+    return constraints;
+}
+function $30149506f5b6e50a$export$671a8b47b41b6f41(window) {
+    if (!window.RTCPeerConnection) return;
+    // migrate from non-spec RTCIceServer.url to RTCIceServer.urls
+    var OrigPeerConnection = window.RTCPeerConnection;
+    window.RTCPeerConnection = function RTCPeerConnection(pcConfig, pcConstraints) {
+        if (pcConfig && pcConfig.iceServers) {
+            var newIceServers = [];
+            for(var i = 0; i < pcConfig.iceServers.length; i++){
+                var server = pcConfig.iceServers[i];
+                if (server.urls === undefined && server.url) {
+                    $ecbc82f8e2fc2f44$export$cdd73fc4100a6ef4("RTCIceServer.url", "RTCIceServer.urls");
+                    server = JSON.parse(JSON.stringify(server));
+                    server.urls = server.url;
+                    delete server.url;
+                    newIceServers.push(server);
+                } else newIceServers.push(pcConfig.iceServers[i]);
+            }
+            pcConfig.iceServers = newIceServers;
+        }
+        return new OrigPeerConnection(pcConfig, pcConstraints);
+    };
+    window.RTCPeerConnection.prototype = OrigPeerConnection.prototype;
+    // wrap static methods. Currently just generateCertificate.
+    if ("generateCertificate" in OrigPeerConnection) Object.defineProperty(window.RTCPeerConnection, "generateCertificate", {
+        get: function() {
+            return OrigPeerConnection.generateCertificate;
+        }
+    });
+}
+function $30149506f5b6e50a$export$85d53da088cb1b14(window) {
+    // Add event.transceiver member over deprecated event.receiver
+    if (typeof window === "object" && window.RTCTrackEvent && "receiver" in window.RTCTrackEvent.prototype && !("transceiver" in window.RTCTrackEvent.prototype)) Object.defineProperty(window.RTCTrackEvent.prototype, "transceiver", {
+        get: function() {
+            return {
+                receiver: this.receiver
+            };
+        }
+    });
+}
+function $30149506f5b6e50a$export$d444266503fdd2d4(window) {
+    var origCreateOffer = window.RTCPeerConnection.prototype.createOffer;
+    window.RTCPeerConnection.prototype.createOffer = function createOffer(offerOptions) {
+        if (offerOptions) {
+            if (typeof offerOptions.offerToReceiveAudio !== "undefined") // support bit values
+            offerOptions.offerToReceiveAudio = !!offerOptions.offerToReceiveAudio;
+            var audioTransceiver = this.getTransceivers().find(function(transceiver) {
+                return transceiver.receiver.track.kind === "audio";
+            });
+            if (offerOptions.offerToReceiveAudio === false && audioTransceiver) {
+                if (audioTransceiver.direction === "sendrecv") {
+                    if (audioTransceiver.setDirection) audioTransceiver.setDirection("sendonly");
+                    else audioTransceiver.direction = "sendonly";
+                } else if (audioTransceiver.direction === "recvonly") {
+                    if (audioTransceiver.setDirection) audioTransceiver.setDirection("inactive");
+                    else audioTransceiver.direction = "inactive";
+                }
+            } else if (offerOptions.offerToReceiveAudio === true && !audioTransceiver) this.addTransceiver("audio", {
+                direction: "recvonly"
+            });
+            if (typeof offerOptions.offerToReceiveVideo !== "undefined") // support bit values
+            offerOptions.offerToReceiveVideo = !!offerOptions.offerToReceiveVideo;
+            var videoTransceiver = this.getTransceivers().find(function(transceiver) {
+                return transceiver.receiver.track.kind === "video";
+            });
+            if (offerOptions.offerToReceiveVideo === false && videoTransceiver) {
+                if (videoTransceiver.direction === "sendrecv") {
+                    if (videoTransceiver.setDirection) videoTransceiver.setDirection("sendonly");
+                    else videoTransceiver.direction = "sendonly";
+                } else if (videoTransceiver.direction === "recvonly") {
+                    if (videoTransceiver.setDirection) videoTransceiver.setDirection("inactive");
+                    else videoTransceiver.direction = "inactive";
+                }
+            } else if (offerOptions.offerToReceiveVideo === true && !videoTransceiver) this.addTransceiver("video", {
+                direction: "recvonly"
+            });
+        }
+        return origCreateOffer.apply(this, arguments);
+    };
+}
+function $30149506f5b6e50a$export$857cd739a7b795d2(window) {
+    if (typeof window !== "object" || window.AudioContext) return;
+    window.AudioContext = window.webkitAudioContext;
+}
+
+
+var $ad8f8a0faac16970$exports = {};
+
+$parcel$export($ad8f8a0faac16970$exports, "shimRTCIceCandidate", function () { return $ad8f8a0faac16970$export$cf133661e444ccfe; });
+$parcel$export($ad8f8a0faac16970$exports, "shimRTCIceCandidateRelayProtocol", function () { return $ad8f8a0faac16970$export$fdafb8d8280e29b5; });
+$parcel$export($ad8f8a0faac16970$exports, "shimMaxMessageSize", function () { return $ad8f8a0faac16970$export$a99147c78a56edc4; });
+$parcel$export($ad8f8a0faac16970$exports, "shimSendThrowTypeError", function () { return $ad8f8a0faac16970$export$d461c8d5c5db5da7; });
+$parcel$export($ad8f8a0faac16970$exports, "shimConnectionState", function () { return $ad8f8a0faac16970$export$63bb816cc75460; });
+$parcel$export($ad8f8a0faac16970$exports, "removeExtmapAllowMixed", function () { return $ad8f8a0faac16970$export$a57d114344295149; });
+$parcel$export($ad8f8a0faac16970$exports, "shimAddIceCandidateNullOrEmpty", function () { return $ad8f8a0faac16970$export$51d5e40b48c771c7; });
+$parcel$export($ad8f8a0faac16970$exports, "shimParameterlessSetLocalDescription", function () { return $ad8f8a0faac16970$export$7170d04e59f9d553; });
+/*
+ *  Copyright (c) 2017 The WebRTC project authors. All Rights Reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+ */ /* eslint-env node */ var $6ef33e7fea041b5b$exports = {};
+/* eslint-env node */ "use strict";
+// SDP helpers.
+var $6ef33e7fea041b5b$var$SDPUtils = {};
+// Generate an alphanumeric identifier for cname or mids.
+// TODO: use UUIDs instead? https://gist.github.com/jed/982883
+$6ef33e7fea041b5b$var$SDPUtils.generateIdentifier = function() {
+    return Math.random().toString(36).substring(2, 12);
+};
+// The RTCP CNAME used by all peerconnections from the same JS.
+$6ef33e7fea041b5b$var$SDPUtils.localCName = $6ef33e7fea041b5b$var$SDPUtils.generateIdentifier();
+// Splits SDP into lines, dealing with both CRLF and LF.
+$6ef33e7fea041b5b$var$SDPUtils.splitLines = function(blob) {
+    return blob.trim().split("\n").map(function(line) {
+        return line.trim();
+    });
+};
+// Splits SDP into sessionpart and mediasections. Ensures CRLF.
+$6ef33e7fea041b5b$var$SDPUtils.splitSections = function(blob) {
+    var parts = blob.split("\nm=");
+    return parts.map(function(part, index) {
+        return (index > 0 ? "m=" + part : part).trim() + "\r\n";
+    });
+};
+// Returns the session description.
+$6ef33e7fea041b5b$var$SDPUtils.getDescription = function(blob) {
+    var sections = $6ef33e7fea041b5b$var$SDPUtils.splitSections(blob);
+    return sections && sections[0];
+};
+// Returns the individual media sections.
+$6ef33e7fea041b5b$var$SDPUtils.getMediaSections = function(blob) {
+    var sections = $6ef33e7fea041b5b$var$SDPUtils.splitSections(blob);
+    sections.shift();
+    return sections;
+};
+// Returns lines that start with a certain prefix.
+$6ef33e7fea041b5b$var$SDPUtils.matchPrefix = function(blob, prefix) {
+    return $6ef33e7fea041b5b$var$SDPUtils.splitLines(blob).filter(function(line) {
+        return line.indexOf(prefix) === 0;
+    });
+};
+// Parses an ICE candidate line. Sample input:
+// candidate:702786350 2 udp 41819902 8.8.8.8 60769 typ relay raddr 8.8.8.8
+// rport 55996"
+// Input can be prefixed with a=.
+$6ef33e7fea041b5b$var$SDPUtils.parseCandidate = function(line) {
+    var parts;
+    // Parse both variants.
+    if (line.indexOf("a=candidate:") === 0) parts = line.substring(12).split(" ");
+    else parts = line.substring(10).split(" ");
+    var candidate = {
+        foundation: parts[0],
+        component: {
+            1: "rtp",
+            2: "rtcp"
+        }[parts[1]] || parts[1],
+        protocol: parts[2].toLowerCase(),
+        priority: parseInt(parts[3], 10),
+        ip: parts[4],
+        address: parts[4],
+        port: parseInt(parts[5], 10),
+        // skip parts[6] == 'typ'
+        type: parts[7]
+    };
+    for(var i = 8; i < parts.length; i += 2)switch(parts[i]){
+        case "raddr":
+            candidate.relatedAddress = parts[i + 1];
+            break;
+        case "rport":
+            candidate.relatedPort = parseInt(parts[i + 1], 10);
+            break;
+        case "tcptype":
+            candidate.tcpType = parts[i + 1];
+            break;
+        case "ufrag":
+            candidate.ufrag = parts[i + 1]; // for backward compatibility.
+            candidate.usernameFragment = parts[i + 1];
+            break;
+        default:
+            if (candidate[parts[i]] === undefined) candidate[parts[i]] = parts[i + 1];
+            break;
+    }
+    return candidate;
+};
+// Translates a candidate object into SDP candidate attribute.
+// This does not include the a= prefix!
+$6ef33e7fea041b5b$var$SDPUtils.writeCandidate = function(candidate) {
+    var sdp = [];
+    sdp.push(candidate.foundation);
+    var component = candidate.component;
+    if (component === "rtp") sdp.push(1);
+    else if (component === "rtcp") sdp.push(2);
+    else sdp.push(component);
+    sdp.push(candidate.protocol.toUpperCase());
+    sdp.push(candidate.priority);
+    sdp.push(candidate.address || candidate.ip);
+    sdp.push(candidate.port);
+    var type = candidate.type;
+    sdp.push("typ");
+    sdp.push(type);
+    if (type !== "host" && candidate.relatedAddress && candidate.relatedPort) {
+        sdp.push("raddr");
+        sdp.push(candidate.relatedAddress);
+        sdp.push("rport");
+        sdp.push(candidate.relatedPort);
+    }
+    if (candidate.tcpType && candidate.protocol.toLowerCase() === "tcp") {
+        sdp.push("tcptype");
+        sdp.push(candidate.tcpType);
+    }
+    if (candidate.usernameFragment || candidate.ufrag) {
+        sdp.push("ufrag");
+        sdp.push(candidate.usernameFragment || candidate.ufrag);
+    }
+    return "candidate:" + sdp.join(" ");
+};
+// Parses an ice-options line, returns an array of option tags.
+// Sample input:
+// a=ice-options:foo bar
+$6ef33e7fea041b5b$var$SDPUtils.parseIceOptions = function(line) {
+    return line.substring(14).split(" ");
+};
+// Parses a rtpmap line, returns RTCRtpCoddecParameters. Sample input:
+// a=rtpmap:111 opus/48000/2
+$6ef33e7fea041b5b$var$SDPUtils.parseRtpMap = function(line) {
+    var parts = line.substring(9).split(" ");
+    var parsed = {
+        payloadType: parseInt(parts.shift(), 10)
+    };
+    parts = parts[0].split("/");
+    parsed.name = parts[0];
+    parsed.clockRate = parseInt(parts[1], 10); // was: clockrate
+    parsed.channels = parts.length === 3 ? parseInt(parts[2], 10) : 1;
+    // legacy alias, got renamed back to channels in ORTC.
+    parsed.numChannels = parsed.channels;
+    return parsed;
+};
+// Generates a rtpmap line from RTCRtpCodecCapability or
+// RTCRtpCodecParameters.
+$6ef33e7fea041b5b$var$SDPUtils.writeRtpMap = function(codec) {
+    var pt = codec.payloadType;
+    if (codec.preferredPayloadType !== undefined) pt = codec.preferredPayloadType;
+    var channels = codec.channels || codec.numChannels || 1;
+    return "a=rtpmap:" + pt + " " + codec.name + "/" + codec.clockRate + (channels !== 1 ? "/" + channels : "") + "\r\n";
+};
+// Parses a extmap line (headerextension from RFC 5285). Sample input:
+// a=extmap:2 urn:ietf:params:rtp-hdrext:toffset
+// a=extmap:2/sendonly urn:ietf:params:rtp-hdrext:toffset
+$6ef33e7fea041b5b$var$SDPUtils.parseExtmap = function(line) {
+    var parts = line.substring(9).split(" ");
+    return {
+        id: parseInt(parts[0], 10),
+        direction: parts[0].indexOf("/") > 0 ? parts[0].split("/")[1] : "sendrecv",
+        uri: parts[1],
+        attributes: parts.slice(2).join(" ")
+    };
+};
+// Generates an extmap line from RTCRtpHeaderExtensionParameters or
+// RTCRtpHeaderExtension.
+$6ef33e7fea041b5b$var$SDPUtils.writeExtmap = function(headerExtension) {
+    return "a=extmap:" + (headerExtension.id || headerExtension.preferredId) + (headerExtension.direction && headerExtension.direction !== "sendrecv" ? "/" + headerExtension.direction : "") + " " + headerExtension.uri + (headerExtension.attributes ? " " + headerExtension.attributes : "") + "\r\n";
+};
+// Parses a fmtp line, returns dictionary. Sample input:
+// a=fmtp:96 vbr=on;cng=on
+// Also deals with vbr=on; cng=on
+$6ef33e7fea041b5b$var$SDPUtils.parseFmtp = function(line) {
+    var parsed = {};
+    var kv;
+    var parts = line.substring(line.indexOf(" ") + 1).split(";");
+    for(var j = 0; j < parts.length; j++){
+        kv = parts[j].trim().split("=");
+        parsed[kv[0].trim()] = kv[1];
+    }
+    return parsed;
+};
+// Generates a fmtp line from RTCRtpCodecCapability or RTCRtpCodecParameters.
+$6ef33e7fea041b5b$var$SDPUtils.writeFmtp = function(codec) {
+    var line = "";
+    var pt = codec.payloadType;
+    if (codec.preferredPayloadType !== undefined) pt = codec.preferredPayloadType;
+    if (codec.parameters && Object.keys(codec.parameters).length) {
+        var params = [];
+        Object.keys(codec.parameters).forEach(function(param) {
+            if (codec.parameters[param] !== undefined) params.push(param + "=" + codec.parameters[param]);
+            else params.push(param);
+        });
+        line += "a=fmtp:" + pt + " " + params.join(";") + "\r\n";
+    }
+    return line;
+};
+// Parses a rtcp-fb line, returns RTCPRtcpFeedback object. Sample input:
+// a=rtcp-fb:98 nack rpsi
+$6ef33e7fea041b5b$var$SDPUtils.parseRtcpFb = function(line) {
+    var parts = line.substring(line.indexOf(" ") + 1).split(" ");
+    return {
+        type: parts.shift(),
+        parameter: parts.join(" ")
+    };
+};
+// Generate a=rtcp-fb lines from RTCRtpCodecCapability or RTCRtpCodecParameters.
+$6ef33e7fea041b5b$var$SDPUtils.writeRtcpFb = function(codec) {
+    var lines = "";
+    var pt = codec.payloadType;
+    if (codec.preferredPayloadType !== undefined) pt = codec.preferredPayloadType;
+    if (codec.rtcpFeedback && codec.rtcpFeedback.length) // FIXME: special handling for trr-int?
+    codec.rtcpFeedback.forEach(function(fb) {
+        lines += "a=rtcp-fb:" + pt + " " + fb.type + (fb.parameter && fb.parameter.length ? " " + fb.parameter : "") + "\r\n";
+    });
+    return lines;
+};
+// Parses a RFC 5576 ssrc media attribute. Sample input:
+// a=ssrc:3735928559 cname:something
+$6ef33e7fea041b5b$var$SDPUtils.parseSsrcMedia = function(line) {
+    var sp = line.indexOf(" ");
+    var parts = {
+        ssrc: parseInt(line.substring(7, sp), 10)
+    };
+    var colon = line.indexOf(":", sp);
+    if (colon > -1) {
+        parts.attribute = line.substring(sp + 1, colon);
+        parts.value = line.substring(colon + 1);
+    } else parts.attribute = line.substring(sp + 1);
+    return parts;
+};
+// Parse a ssrc-group line (see RFC 5576). Sample input:
+// a=ssrc-group:semantics 12 34
+$6ef33e7fea041b5b$var$SDPUtils.parseSsrcGroup = function(line) {
+    var parts = line.substring(13).split(" ");
+    return {
+        semantics: parts.shift(),
+        ssrcs: parts.map(function(ssrc) {
+            return parseInt(ssrc, 10);
+        })
+    };
+};
+// Extracts the MID (RFC 5888) from a media section.
+// Returns the MID or undefined if no mid line was found.
+$6ef33e7fea041b5b$var$SDPUtils.getMid = function(mediaSection) {
+    var mid = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=mid:")[0];
+    if (mid) return mid.substring(6);
+};
+// Parses a fingerprint line for DTLS-SRTP.
+$6ef33e7fea041b5b$var$SDPUtils.parseFingerprint = function(line) {
+    var parts = line.substring(14).split(" ");
+    return {
+        algorithm: parts[0].toLowerCase(),
+        value: parts[1].toUpperCase()
+    };
+};
+// Extracts DTLS parameters from SDP media section or sessionpart.
+// FIXME: for consistency with other functions this should only
+//   get the fingerprint line as input. See also getIceParameters.
+$6ef33e7fea041b5b$var$SDPUtils.getDtlsParameters = function(mediaSection, sessionpart) {
+    var lines = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection + sessionpart, "a=fingerprint:");
+    // Note: a=setup line is ignored since we use the 'auto' role in Edge.
+    return {
+        role: "auto",
+        fingerprints: lines.map($6ef33e7fea041b5b$var$SDPUtils.parseFingerprint)
+    };
+};
+// Serializes DTLS parameters to SDP.
+$6ef33e7fea041b5b$var$SDPUtils.writeDtlsParameters = function(params, setupType) {
+    var sdp = "a=setup:" + setupType + "\r\n";
+    params.fingerprints.forEach(function(fp) {
+        sdp += "a=fingerprint:" + fp.algorithm + " " + fp.value + "\r\n";
+    });
+    return sdp;
+};
+// Parses a=crypto lines into
+//   https://rawgit.com/aboba/edgertc/master/msortc-rs4.html#dictionary-rtcsrtpsdesparameters-members
+$6ef33e7fea041b5b$var$SDPUtils.parseCryptoLine = function(line) {
+    var parts = line.substring(9).split(" ");
+    return {
+        tag: parseInt(parts[0], 10),
+        cryptoSuite: parts[1],
+        keyParams: parts[2],
+        sessionParams: parts.slice(3)
+    };
+};
+$6ef33e7fea041b5b$var$SDPUtils.writeCryptoLine = function(parameters) {
+    return "a=crypto:" + parameters.tag + " " + parameters.cryptoSuite + " " + (typeof parameters.keyParams === "object" ? $6ef33e7fea041b5b$var$SDPUtils.writeCryptoKeyParams(parameters.keyParams) : parameters.keyParams) + (parameters.sessionParams ? " " + parameters.sessionParams.join(" ") : "") + "\r\n";
+};
+// Parses the crypto key parameters into
+//   https://rawgit.com/aboba/edgertc/master/msortc-rs4.html#rtcsrtpkeyparam*
+$6ef33e7fea041b5b$var$SDPUtils.parseCryptoKeyParams = function(keyParams) {
+    if (keyParams.indexOf("inline:") !== 0) return null;
+    var parts = keyParams.substring(7).split("|");
+    return {
+        keyMethod: "inline",
+        keySalt: parts[0],
+        lifeTime: parts[1],
+        mkiValue: parts[2] ? parts[2].split(":")[0] : undefined,
+        mkiLength: parts[2] ? parts[2].split(":")[1] : undefined
+    };
+};
+$6ef33e7fea041b5b$var$SDPUtils.writeCryptoKeyParams = function(keyParams) {
+    return keyParams.keyMethod + ":" + keyParams.keySalt + (keyParams.lifeTime ? "|" + keyParams.lifeTime : "") + (keyParams.mkiValue && keyParams.mkiLength ? "|" + keyParams.mkiValue + ":" + keyParams.mkiLength : "");
+};
+// Extracts all SDES parameters.
+$6ef33e7fea041b5b$var$SDPUtils.getCryptoParameters = function(mediaSection, sessionpart) {
+    var lines = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection + sessionpart, "a=crypto:");
+    return lines.map($6ef33e7fea041b5b$var$SDPUtils.parseCryptoLine);
+};
+// Parses ICE information from SDP media section or sessionpart.
+// FIXME: for consistency with other functions this should only
+//   get the ice-ufrag and ice-pwd lines as input.
+$6ef33e7fea041b5b$var$SDPUtils.getIceParameters = function(mediaSection, sessionpart) {
+    var ufrag = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection + sessionpart, "a=ice-ufrag:")[0];
+    var pwd = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection + sessionpart, "a=ice-pwd:")[0];
+    if (!(ufrag && pwd)) return null;
+    return {
+        usernameFragment: ufrag.substring(12),
+        password: pwd.substring(10)
+    };
+};
+// Serializes ICE parameters to SDP.
+$6ef33e7fea041b5b$var$SDPUtils.writeIceParameters = function(params) {
+    var sdp = "a=ice-ufrag:" + params.usernameFragment + "\r\n" + "a=ice-pwd:" + params.password + "\r\n";
+    if (params.iceLite) sdp += "a=ice-lite\r\n";
+    return sdp;
+};
+// Parses the SDP media section and returns RTCRtpParameters.
+$6ef33e7fea041b5b$var$SDPUtils.parseRtpParameters = function(mediaSection) {
+    var description = {
+        codecs: [],
+        headerExtensions: [],
+        fecMechanisms: [],
+        rtcp: []
+    };
+    var lines = $6ef33e7fea041b5b$var$SDPUtils.splitLines(mediaSection);
+    var mline = lines[0].split(" ");
+    description.profile = mline[2];
+    for(var i = 3; i < mline.length; i++){
+        var pt = mline[i];
+        var rtpmapline = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=rtpmap:" + pt + " ")[0];
+        if (rtpmapline) {
+            var codec = $6ef33e7fea041b5b$var$SDPUtils.parseRtpMap(rtpmapline);
+            var fmtps = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=fmtp:" + pt + " ");
+            // Only the first a=fmtp:<pt> is considered.
+            codec.parameters = fmtps.length ? $6ef33e7fea041b5b$var$SDPUtils.parseFmtp(fmtps[0]) : {};
+            codec.rtcpFeedback = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=rtcp-fb:" + pt + " ").map($6ef33e7fea041b5b$var$SDPUtils.parseRtcpFb);
+            description.codecs.push(codec);
+            // parse FEC mechanisms from rtpmap lines.
+            switch(codec.name.toUpperCase()){
+                case "RED":
+                case "ULPFEC":
+                    description.fecMechanisms.push(codec.name.toUpperCase());
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=extmap:").forEach(function(line) {
+        description.headerExtensions.push($6ef33e7fea041b5b$var$SDPUtils.parseExtmap(line));
+    });
+    var wildcardRtcpFb = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=rtcp-fb:* ").map($6ef33e7fea041b5b$var$SDPUtils.parseRtcpFb);
+    description.codecs.forEach(function(codec) {
+        wildcardRtcpFb.forEach(function(fb) {
+            var duplicate = codec.rtcpFeedback.find(function(existingFeedback) {
+                return existingFeedback.type === fb.type && existingFeedback.parameter === fb.parameter;
+            });
+            if (!duplicate) codec.rtcpFeedback.push(fb);
+        });
+    });
+    // FIXME: parse rtcp.
+    return description;
+};
+// Generates parts of the SDP media section describing the capabilities /
+// parameters.
+$6ef33e7fea041b5b$var$SDPUtils.writeRtpDescription = function(kind, caps) {
+    var sdp = "";
+    // Build the mline.
+    sdp += "m=" + kind + " ";
+    sdp += caps.codecs.length > 0 ? "9" : "0"; // reject if no codecs.
+    sdp += " " + (caps.profile || "UDP/TLS/RTP/SAVPF") + " ";
+    sdp += caps.codecs.map(function(codec) {
+        if (codec.preferredPayloadType !== undefined) return codec.preferredPayloadType;
+        return codec.payloadType;
+    }).join(" ") + "\r\n";
+    sdp += "c=IN IP4 0.0.0.0\r\n";
+    sdp += "a=rtcp:9 IN IP4 0.0.0.0\r\n";
+    // Add a=rtpmap lines for each codec. Also fmtp and rtcp-fb.
+    caps.codecs.forEach(function(codec) {
+        sdp += $6ef33e7fea041b5b$var$SDPUtils.writeRtpMap(codec);
+        sdp += $6ef33e7fea041b5b$var$SDPUtils.writeFmtp(codec);
+        sdp += $6ef33e7fea041b5b$var$SDPUtils.writeRtcpFb(codec);
+    });
+    var maxptime = 0;
+    caps.codecs.forEach(function(codec) {
+        if (codec.maxptime > maxptime) maxptime = codec.maxptime;
+    });
+    if (maxptime > 0) sdp += "a=maxptime:" + maxptime + "\r\n";
+    if (caps.headerExtensions) caps.headerExtensions.forEach(function(extension) {
+        sdp += $6ef33e7fea041b5b$var$SDPUtils.writeExtmap(extension);
+    });
+    // FIXME: write fecMechanisms.
+    return sdp;
+};
+// Parses the SDP media section and returns an array of
+// RTCRtpEncodingParameters.
+$6ef33e7fea041b5b$var$SDPUtils.parseRtpEncodingParameters = function(mediaSection) {
+    var encodingParameters = [];
+    var description = $6ef33e7fea041b5b$var$SDPUtils.parseRtpParameters(mediaSection);
+    var hasRed = description.fecMechanisms.indexOf("RED") !== -1;
+    var hasUlpfec = description.fecMechanisms.indexOf("ULPFEC") !== -1;
+    // filter a=ssrc:... cname:, ignore PlanB-msid
+    var ssrcs = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=ssrc:").map(function(line) {
+        return $6ef33e7fea041b5b$var$SDPUtils.parseSsrcMedia(line);
+    }).filter(function(parts) {
+        return parts.attribute === "cname";
+    });
+    var primarySsrc = ssrcs.length > 0 && ssrcs[0].ssrc;
+    var secondarySsrc;
+    var flows = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=ssrc-group:FID").map(function(line) {
+        var parts = line.substring(17).split(" ");
+        return parts.map(function(part) {
+            return parseInt(part, 10);
+        });
+    });
+    if (flows.length > 0 && flows[0].length > 1 && flows[0][0] === primarySsrc) secondarySsrc = flows[0][1];
+    description.codecs.forEach(function(codec) {
+        if (codec.name.toUpperCase() === "RTX" && codec.parameters.apt) {
+            var encParam = {
+                ssrc: primarySsrc,
+                codecPayloadType: parseInt(codec.parameters.apt, 10)
+            };
+            if (primarySsrc && secondarySsrc) encParam.rtx = {
+                ssrc: secondarySsrc
+            };
+            encodingParameters.push(encParam);
+            if (hasRed) {
+                encParam = JSON.parse(JSON.stringify(encParam));
+                encParam.fec = {
+                    ssrc: primarySsrc,
+                    mechanism: hasUlpfec ? "red+ulpfec" : "red"
+                };
+                encodingParameters.push(encParam);
+            }
+        }
+    });
+    if (encodingParameters.length === 0 && primarySsrc) encodingParameters.push({
+        ssrc: primarySsrc
+    });
+    // we support both b=AS and b=TIAS but interpret AS as TIAS.
+    var bandwidth = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "b=");
+    if (bandwidth.length) {
+        if (bandwidth[0].indexOf("b=TIAS:") === 0) bandwidth = parseInt(bandwidth[0].substring(7), 10);
+        else if (bandwidth[0].indexOf("b=AS:") === 0) // use formula from JSEP to convert b=AS to TIAS value.
+        bandwidth = parseInt(bandwidth[0].substring(5), 10) * 950 - 16000;
+        else bandwidth = undefined;
+        encodingParameters.forEach(function(params) {
+            params.maxBitrate = bandwidth;
+        });
+    }
+    return encodingParameters;
+};
+// parses http://draft.ortc.org/#rtcrtcpparameters*
+$6ef33e7fea041b5b$var$SDPUtils.parseRtcpParameters = function(mediaSection) {
+    var rtcpParameters = {};
+    // Gets the first SSRC. Note that with RTX there might be multiple
+    // SSRCs.
+    var remoteSsrc = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=ssrc:").map(function(line) {
+        return $6ef33e7fea041b5b$var$SDPUtils.parseSsrcMedia(line);
+    }).filter(function(obj) {
+        return obj.attribute === "cname";
+    })[0];
+    if (remoteSsrc) {
+        rtcpParameters.cname = remoteSsrc.value;
+        rtcpParameters.ssrc = remoteSsrc.ssrc;
+    }
+    // Edge uses the compound attribute instead of reducedSize
+    // compound is !reducedSize
+    var rsize = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=rtcp-rsize");
+    rtcpParameters.reducedSize = rsize.length > 0;
+    rtcpParameters.compound = rsize.length === 0;
+    // parses the rtcp-mux attrіbute.
+    // Note that Edge does not support unmuxed RTCP.
+    var mux = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=rtcp-mux");
+    rtcpParameters.mux = mux.length > 0;
+    return rtcpParameters;
+};
+$6ef33e7fea041b5b$var$SDPUtils.writeRtcpParameters = function(rtcpParameters) {
+    var sdp = "";
+    if (rtcpParameters.reducedSize) sdp += "a=rtcp-rsize\r\n";
+    if (rtcpParameters.mux) sdp += "a=rtcp-mux\r\n";
+    if (rtcpParameters.ssrc !== undefined && rtcpParameters.cname) sdp += "a=ssrc:" + rtcpParameters.ssrc + " cname:" + rtcpParameters.cname + "\r\n";
+    return sdp;
+};
+// parses either a=msid: or a=ssrc:... msid lines and returns
+// the id of the MediaStream and MediaStreamTrack.
+$6ef33e7fea041b5b$var$SDPUtils.parseMsid = function(mediaSection) {
+    var parts;
+    var spec = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=msid:");
+    if (spec.length === 1) {
+        parts = spec[0].substring(7).split(" ");
+        return {
+            stream: parts[0],
+            track: parts[1]
+        };
+    }
+    var planB = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=ssrc:").map(function(line) {
+        return $6ef33e7fea041b5b$var$SDPUtils.parseSsrcMedia(line);
+    }).filter(function(msidParts) {
+        return msidParts.attribute === "msid";
+    });
+    if (planB.length > 0) {
+        parts = planB[0].value.split(" ");
+        return {
+            stream: parts[0],
+            track: parts[1]
+        };
+    }
+};
+// SCTP
+// parses draft-ietf-mmusic-sctp-sdp-26 first and falls back
+// to draft-ietf-mmusic-sctp-sdp-05
+$6ef33e7fea041b5b$var$SDPUtils.parseSctpDescription = function(mediaSection) {
+    var mline = $6ef33e7fea041b5b$var$SDPUtils.parseMLine(mediaSection);
+    var maxSizeLine = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=max-message-size:");
+    var maxMessageSize;
+    if (maxSizeLine.length > 0) maxMessageSize = parseInt(maxSizeLine[0].substring(19), 10);
+    if (isNaN(maxMessageSize)) maxMessageSize = 65536;
+    var sctpPort = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=sctp-port:");
+    if (sctpPort.length > 0) return {
+        port: parseInt(sctpPort[0].substring(12), 10),
+        protocol: mline.fmt,
+        maxMessageSize: maxMessageSize
+    };
+    var sctpMapLines = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=sctpmap:");
+    if (sctpMapLines.length > 0) {
+        var parts = sctpMapLines[0].substring(10).split(" ");
+        return {
+            port: parseInt(parts[0], 10),
+            protocol: parts[1],
+            maxMessageSize: maxMessageSize
+        };
+    }
+};
+// SCTP
+// outputs the draft-ietf-mmusic-sctp-sdp-26 version that all browsers
+// support by now receiving in this format, unless we originally parsed
+// as the draft-ietf-mmusic-sctp-sdp-05 format (indicated by the m-line
+// protocol of DTLS/SCTP -- without UDP/ or TCP/)
+$6ef33e7fea041b5b$var$SDPUtils.writeSctpDescription = function(media, sctp) {
+    var output = [];
+    if (media.protocol !== "DTLS/SCTP") output = [
+        "m=" + media.kind + " 9 " + media.protocol + " " + sctp.protocol + "\r\n",
+        "c=IN IP4 0.0.0.0\r\n",
+        "a=sctp-port:" + sctp.port + "\r\n"
+    ];
+    else output = [
+        "m=" + media.kind + " 9 " + media.protocol + " " + sctp.port + "\r\n",
+        "c=IN IP4 0.0.0.0\r\n",
+        "a=sctpmap:" + sctp.port + " " + sctp.protocol + " 65535\r\n"
+    ];
+    if (sctp.maxMessageSize !== undefined) output.push("a=max-message-size:" + sctp.maxMessageSize + "\r\n");
+    return output.join("");
+};
+// Generate a session ID for SDP.
+// https://tools.ietf.org/html/draft-ietf-rtcweb-jsep-20#section-5.2.1
+// recommends using a cryptographically random +ve 64-bit value
+// but right now this should be acceptable and within the right range
+$6ef33e7fea041b5b$var$SDPUtils.generateSessionId = function() {
+    return Math.random().toString().substr(2, 22);
+};
+// Write boiler plate for start of SDP
+// sessId argument is optional - if not supplied it will
+// be generated randomly
+// sessVersion is optional and defaults to 2
+// sessUser is optional and defaults to 'thisisadapterortc'
+$6ef33e7fea041b5b$var$SDPUtils.writeSessionBoilerplate = function(sessId, sessVer, sessUser) {
+    var sessionId;
+    var version = sessVer !== undefined ? sessVer : 2;
+    if (sessId) sessionId = sessId;
+    else sessionId = $6ef33e7fea041b5b$var$SDPUtils.generateSessionId();
+    var user = sessUser || "thisisadapterortc";
+    // FIXME: sess-id should be an NTP timestamp.
+    return "v=0\r\no=" + user + " " + sessionId + " " + version + " IN IP4 127.0.0.1\r\n" + "s=-\r\n" + "t=0 0\r\n";
+};
+// Gets the direction from the mediaSection or the sessionpart.
+$6ef33e7fea041b5b$var$SDPUtils.getDirection = function(mediaSection, sessionpart) {
+    // Look for sendrecv, sendonly, recvonly, inactive, default to sendrecv.
+    var lines = $6ef33e7fea041b5b$var$SDPUtils.splitLines(mediaSection);
+    for(var i = 0; i < lines.length; i++)switch(lines[i]){
+        case "a=sendrecv":
+        case "a=sendonly":
+        case "a=recvonly":
+        case "a=inactive":
+            return lines[i].substring(2);
+        default:
+    }
+    if (sessionpart) return $6ef33e7fea041b5b$var$SDPUtils.getDirection(sessionpart);
+    return "sendrecv";
+};
+$6ef33e7fea041b5b$var$SDPUtils.getKind = function(mediaSection) {
+    var lines = $6ef33e7fea041b5b$var$SDPUtils.splitLines(mediaSection);
+    var mline = lines[0].split(" ");
+    return mline[0].substring(2);
+};
+$6ef33e7fea041b5b$var$SDPUtils.isRejected = function(mediaSection) {
+    return mediaSection.split(" ", 2)[1] === "0";
+};
+$6ef33e7fea041b5b$var$SDPUtils.parseMLine = function(mediaSection) {
+    var lines = $6ef33e7fea041b5b$var$SDPUtils.splitLines(mediaSection);
+    var parts = lines[0].substring(2).split(" ");
+    return {
+        kind: parts[0],
+        port: parseInt(parts[1], 10),
+        protocol: parts[2],
+        fmt: parts.slice(3).join(" ")
+    };
+};
+$6ef33e7fea041b5b$var$SDPUtils.parseOLine = function(mediaSection) {
+    var line = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "o=")[0];
+    var parts = line.substring(2).split(" ");
+    return {
+        username: parts[0],
+        sessionId: parts[1],
+        sessionVersion: parseInt(parts[2], 10),
+        netType: parts[3],
+        addressType: parts[4],
+        address: parts[5]
+    };
+};
+// a very naive interpretation of a valid SDP.
+$6ef33e7fea041b5b$var$SDPUtils.isValidSDP = function(blob) {
+    if (typeof blob !== "string" || blob.length === 0) return false;
+    var lines = $6ef33e7fea041b5b$var$SDPUtils.splitLines(blob);
+    for(var i = 0; i < lines.length; i++){
+        if (lines[i].length < 2 || lines[i].charAt(1) !== "=") return false;
+    // TODO: check the modifier a bit more.
+    }
+    return true;
+};
+$6ef33e7fea041b5b$exports = $6ef33e7fea041b5b$var$SDPUtils;
+
+
+
+"use strict";
+function $ad8f8a0faac16970$export$cf133661e444ccfe(window) {
+    // foundation is arbitrarily chosen as an indicator for full support for
+    // https://w3c.github.io/webrtc-pc/#rtcicecandidate-interface
+    if (!window.RTCIceCandidate || window.RTCIceCandidate && "foundation" in window.RTCIceCandidate.prototype) return;
+    var NativeRTCIceCandidate = window.RTCIceCandidate;
+    window.RTCIceCandidate = function RTCIceCandidate(args) {
+        // Remove the a= which shouldn't be part of the candidate string.
+        if (typeof args === "object" && args.candidate && args.candidate.indexOf("a=") === 0) {
+            args = JSON.parse(JSON.stringify(args));
+            args.candidate = args.candidate.substring(2);
+        }
+        if (args.candidate && args.candidate.length) {
+            // Augment the native candidate with the parsed fields.
+            var nativeCandidate = new NativeRTCIceCandidate(args);
+            var parsedCandidate = (0, (/*@__PURE__*/$parcel$interopDefault($6ef33e7fea041b5b$exports))).parseCandidate(args.candidate);
+            for(var key in parsedCandidate)if (!(key in nativeCandidate)) Object.defineProperty(nativeCandidate, key, {
+                value: parsedCandidate[key]
+            });
+            // Override serializer to not serialize the extra attributes.
+            nativeCandidate.toJSON = function toJSON() {
+                return {
+                    candidate: nativeCandidate.candidate,
+                    sdpMid: nativeCandidate.sdpMid,
+                    sdpMLineIndex: nativeCandidate.sdpMLineIndex,
+                    usernameFragment: nativeCandidate.usernameFragment
+                };
+            };
+            return nativeCandidate;
+        }
+        return new NativeRTCIceCandidate(args);
+    };
+    window.RTCIceCandidate.prototype = NativeRTCIceCandidate.prototype;
+    // Hook up the augmented candidate in onicecandidate and
+    // addEventListener('icecandidate', ...)
+    $ecbc82f8e2fc2f44$export$1f48841962b828b1(window, "icecandidate", function(e) {
+        if (e.candidate) Object.defineProperty(e, "candidate", {
+            value: new window.RTCIceCandidate(e.candidate),
+            writable: "false"
+        });
+        return e;
+    });
+}
+function $ad8f8a0faac16970$export$fdafb8d8280e29b5(window) {
+    if (!window.RTCIceCandidate || window.RTCIceCandidate && "relayProtocol" in window.RTCIceCandidate.prototype) return;
+    // Hook up the augmented candidate in onicecandidate and
+    // addEventListener('icecandidate', ...)
+    $ecbc82f8e2fc2f44$export$1f48841962b828b1(window, "icecandidate", function(e) {
+        if (e.candidate) {
+            var parsedCandidate = (0, (/*@__PURE__*/$parcel$interopDefault($6ef33e7fea041b5b$exports))).parseCandidate(e.candidate.candidate);
+            if (parsedCandidate.type === "relay") // This is a libwebrtc-specific mapping of local type preference
+            // to relayProtocol.
+            e.candidate.relayProtocol = ({
+                0: "tls",
+                1: "tcp",
+                2: "udp"
+            })[parsedCandidate.priority >> 24];
+        }
+        return e;
+    });
+}
+function $ad8f8a0faac16970$export$a99147c78a56edc4(window, browserDetails) {
+    if (!window.RTCPeerConnection) return;
+    if (!("sctp" in window.RTCPeerConnection.prototype)) Object.defineProperty(window.RTCPeerConnection.prototype, "sctp", {
+        get: function() {
+            return typeof this._sctp === "undefined" ? null : this._sctp;
+        }
+    });
+    var sctpInDescription = function sctpInDescription(description) {
+        if (!description || !description.sdp) return false;
+        var sections = (0, (/*@__PURE__*/$parcel$interopDefault($6ef33e7fea041b5b$exports))).splitSections(description.sdp);
+        sections.shift();
+        return sections.some(function(mediaSection) {
+            var mLine = (0, (/*@__PURE__*/$parcel$interopDefault($6ef33e7fea041b5b$exports))).parseMLine(mediaSection);
+            return mLine && mLine.kind === "application" && mLine.protocol.indexOf("SCTP") !== -1;
+        });
+    };
+    var getRemoteFirefoxVersion = function getRemoteFirefoxVersion(description) {
+        // TODO: Is there a better solution for detecting Firefox?
+        var match = description.sdp.match(/mozilla...THIS_IS_SDPARTA-(\d+)/);
+        if (match === null || match.length < 2) return -1;
+        var version = parseInt(match[1], 10);
+        // Test for NaN (yes, this is ugly)
+        return version !== version ? -1 : version;
+    };
+    var getCanSendMaxMessageSize = function getCanSendMaxMessageSize(remoteIsFirefox) {
+        // Every implementation we know can send at least 64 KiB.
+        // Note: Although Chrome is technically able to send up to 256 KiB, the
+        //       data does not reach the other peer reliably.
+        //       See: https://bugs.chromium.org/p/webrtc/issues/detail?id=8419
+        var canSendMaxMessageSize = 65536;
+        if (browserDetails.browser === "firefox") {
+            if (browserDetails.version < 57) {
+                if (remoteIsFirefox === -1) // FF < 57 will send in 16 KiB chunks using the deprecated PPID
+                // fragmentation.
+                canSendMaxMessageSize = 16384;
+                else // However, other FF (and RAWRTC) can reassemble PPID-fragmented
+                // messages. Thus, supporting ~2 GiB when sending.
+                canSendMaxMessageSize = 2147483637;
+            } else if (browserDetails.version < 60) // Currently, all FF >= 57 will reset the remote maximum message size
+            // to the default value when a data channel is created at a later
+            // stage. :(
+            // See: https://bugzilla.mozilla.org/show_bug.cgi?id=1426831
+            canSendMaxMessageSize = browserDetails.version === 57 ? 65535 : 65536;
+            else // FF >= 60 supports sending ~2 GiB
+            canSendMaxMessageSize = 2147483637;
+        }
+        return canSendMaxMessageSize;
+    };
+    var getMaxMessageSize = function getMaxMessageSize(description, remoteIsFirefox) {
+        // Note: 65536 bytes is the default value from the SDP spec. Also,
+        //       every implementation we know supports receiving 65536 bytes.
+        var maxMessageSize = 65536;
+        // FF 57 has a slightly incorrect default remote max message size, so
+        // we need to adjust it here to avoid a failure when sending.
+        // See: https://bugzilla.mozilla.org/show_bug.cgi?id=1425697
+        if (browserDetails.browser === "firefox" && browserDetails.version === 57) maxMessageSize = 65535;
+        var match = (0, (/*@__PURE__*/$parcel$interopDefault($6ef33e7fea041b5b$exports))).matchPrefix(description.sdp, "a=max-message-size:");
+        if (match.length > 0) maxMessageSize = parseInt(match[0].substring(19), 10);
+        else if (browserDetails.browser === "firefox" && remoteIsFirefox !== -1) // If the maximum message size is not present in the remote SDP and
+        // both local and remote are Firefox, the remote peer can receive
+        // ~2 GiB.
+        maxMessageSize = 2147483637;
+        return maxMessageSize;
+    };
+    var origSetRemoteDescription = window.RTCPeerConnection.prototype.setRemoteDescription;
+    window.RTCPeerConnection.prototype.setRemoteDescription = function setRemoteDescription() {
+        this._sctp = null;
+        // Chrome decided to not expose .sctp in plan-b mode.
+        // As usual, adapter.js has to do an 'ugly worakaround'
+        // to cover up the mess.
+        if (browserDetails.browser === "chrome" && browserDetails.version >= 76) {
+            var sdpSemantics = this.getConfiguration().sdpSemantics;
+            if (sdpSemantics === "plan-b") Object.defineProperty(this, "sctp", {
+                get: function() {
+                    return typeof this._sctp === "undefined" ? null : this._sctp;
+                },
+                enumerable: true,
+                configurable: true
+            });
+        }
+        if (sctpInDescription(arguments[0])) {
+            // Check if the remote is FF.
+            var isFirefox = getRemoteFirefoxVersion(arguments[0]);
+            // Get the maximum message size the local peer is capable of sending
+            var canSendMMS = getCanSendMaxMessageSize(isFirefox);
+            // Get the maximum message size of the remote peer.
+            var remoteMMS = getMaxMessageSize(arguments[0], isFirefox);
+            // Determine final maximum message size
+            var maxMessageSize;
+            if (canSendMMS === 0 && remoteMMS === 0) maxMessageSize = Number.POSITIVE_INFINITY;
+            else if (canSendMMS === 0 || remoteMMS === 0) maxMessageSize = Math.max(canSendMMS, remoteMMS);
+            else maxMessageSize = Math.min(canSendMMS, remoteMMS);
+            // Create a dummy RTCSctpTransport object and the 'maxMessageSize'
+            // attribute.
+            var sctp = {};
+            Object.defineProperty(sctp, "maxMessageSize", {
+                get: function() {
+                    return maxMessageSize;
+                }
+            });
+            this._sctp = sctp;
+        }
+        return origSetRemoteDescription.apply(this, arguments);
+    };
+}
+function $ad8f8a0faac16970$export$d461c8d5c5db5da7(window) {
+    if (!(window.RTCPeerConnection && "createDataChannel" in window.RTCPeerConnection.prototype)) return;
+    // Note: Although Firefox >= 57 has a native implementation, the maximum
+    //       message size can be reset for all data channels at a later stage.
+    //       See: https://bugzilla.mozilla.org/show_bug.cgi?id=1426831
+    function wrapDcSend(dc, pc) {
+        var origDataChannelSend = dc.send;
+        dc.send = function send() {
+            var data = arguments[0];
+            var length = data.length || data.size || data.byteLength;
+            if (dc.readyState === "open" && pc.sctp && length > pc.sctp.maxMessageSize) throw new TypeError("Message too large (can send a maximum of " + pc.sctp.maxMessageSize + " bytes)");
+            return origDataChannelSend.apply(dc, arguments);
+        };
+    }
+    var origCreateDataChannel = window.RTCPeerConnection.prototype.createDataChannel;
+    window.RTCPeerConnection.prototype.createDataChannel = function createDataChannel() {
+        var dataChannel = origCreateDataChannel.apply(this, arguments);
+        wrapDcSend(dataChannel, this);
+        return dataChannel;
+    };
+    $ecbc82f8e2fc2f44$export$1f48841962b828b1(window, "datachannel", function(e) {
+        wrapDcSend(e.channel, e.target);
+        return e;
+    });
+}
+function $ad8f8a0faac16970$export$63bb816cc75460(window) {
+    if (!window.RTCPeerConnection || "connectionState" in window.RTCPeerConnection.prototype) return;
+    var proto = window.RTCPeerConnection.prototype;
+    Object.defineProperty(proto, "connectionState", {
+        get: function() {
+            return ({
+                completed: "connected",
+                checking: "connecting"
+            })[this.iceConnectionState] || this.iceConnectionState;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(proto, "onconnectionstatechange", {
+        get: function() {
+            return this._onconnectionstatechange || null;
+        },
+        set: function(cb) {
+            if (this._onconnectionstatechange) {
+                this.removeEventListener("connectionstatechange", this._onconnectionstatechange);
+                delete this._onconnectionstatechange;
+            }
+            if (cb) this.addEventListener("connectionstatechange", this._onconnectionstatechange = cb);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    [
+        "setLocalDescription",
+        "setRemoteDescription"
+    ].forEach(function(method) {
+        var origMethod = proto[method];
+        proto[method] = function() {
+            if (!this._connectionstatechangepoly) {
+                this._connectionstatechangepoly = function(e) {
+                    var pc = e.target;
+                    if (pc._lastConnectionState !== pc.connectionState) {
+                        pc._lastConnectionState = pc.connectionState;
+                        var newEvent = new Event("connectionstatechange", e);
+                        pc.dispatchEvent(newEvent);
+                    }
+                    return e;
+                };
+                this.addEventListener("iceconnectionstatechange", this._connectionstatechangepoly);
+            }
+            return origMethod.apply(this, arguments);
+        };
+    });
+}
+function $ad8f8a0faac16970$export$a57d114344295149(window, browserDetails) {
+    /* remove a=extmap-allow-mixed for webrtc.org < M71 */ if (!window.RTCPeerConnection) return;
+    if (browserDetails.browser === "chrome" && browserDetails.version >= 71) return;
+    if (browserDetails.browser === "safari" && browserDetails.version >= 605) return;
+    var nativeSRD = window.RTCPeerConnection.prototype.setRemoteDescription;
+    window.RTCPeerConnection.prototype.setRemoteDescription = function setRemoteDescription(desc) {
+        if (desc && desc.sdp && desc.sdp.indexOf("\na=extmap-allow-mixed") !== -1) {
+            var sdp = desc.sdp.split("\n").filter(function(line) {
+                return line.trim() !== "a=extmap-allow-mixed";
+            }).join("\n");
+            // Safari enforces read-only-ness of RTCSessionDescription fields.
+            if (window.RTCSessionDescription && desc instanceof window.RTCSessionDescription) arguments[0] = new window.RTCSessionDescription({
+                type: desc.type,
+                sdp: sdp
+            });
+            else desc.sdp = sdp;
+        }
+        return nativeSRD.apply(this, arguments);
+    };
+}
+function $ad8f8a0faac16970$export$51d5e40b48c771c7(window, browserDetails) {
+    // Support for addIceCandidate(null or undefined)
+    // as well as addIceCandidate({candidate: "", ...})
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=978582
+    // Note: must be called before other polyfills which change the signature.
+    if (!(window.RTCPeerConnection && window.RTCPeerConnection.prototype)) return;
+    var nativeAddIceCandidate = window.RTCPeerConnection.prototype.addIceCandidate;
+    if (!nativeAddIceCandidate || nativeAddIceCandidate.length === 0) return;
+    window.RTCPeerConnection.prototype.addIceCandidate = function addIceCandidate() {
+        if (!arguments[0]) {
+            if (arguments[1]) arguments[1].apply(null);
+            return Promise.resolve();
+        }
+        // Firefox 68+ emits and processes {candidate: "", ...}, ignore
+        // in older versions.
+        // Native support for ignoring exists for Chrome M77+.
+        // Safari ignores as well, exact version unknown but works in the same
+        // version that also ignores addIceCandidate(null).
+        if ((browserDetails.browser === "chrome" && browserDetails.version < 78 || browserDetails.browser === "firefox" && browserDetails.version < 68 || browserDetails.browser === "safari") && arguments[0] && arguments[0].candidate === "") return Promise.resolve();
+        return nativeAddIceCandidate.apply(this, arguments);
+    };
+}
+function $ad8f8a0faac16970$export$7170d04e59f9d553(window, browserDetails) {
+    if (!(window.RTCPeerConnection && window.RTCPeerConnection.prototype)) return;
+    var nativeSetLocalDescription = window.RTCPeerConnection.prototype.setLocalDescription;
+    if (!nativeSetLocalDescription || nativeSetLocalDescription.length === 0) return;
+    window.RTCPeerConnection.prototype.setLocalDescription = function setLocalDescription() {
+        var _this = this;
+        var desc = arguments[0] || {};
+        if (typeof desc !== "object" || desc.type && desc.sdp) return nativeSetLocalDescription.apply(this, arguments);
+        // The remaining steps should technically happen when SLD comes off the
+        // RTCPeerConnection's operations chain (not ahead of going on it), but
+        // this is too difficult to shim. Instead, this shim only covers the
+        // common case where the operations chain is empty. This is imperfect, but
+        // should cover many cases. Rationale: Even if we can't reduce the glare
+        // window to zero on imperfect implementations, there's value in tapping
+        // into the perfect negotiation pattern that several browsers support.
+        desc = {
+            type: desc.type,
+            sdp: desc.sdp
+        };
+        if (!desc.type) switch(this.signalingState){
+            case "stable":
+            case "have-local-offer":
+            case "have-remote-pranswer":
+                desc.type = "offer";
+                break;
+            default:
+                desc.type = "answer";
+                break;
+        }
+        if (desc.sdp || desc.type !== "offer" && desc.type !== "answer") return nativeSetLocalDescription.apply(this, [
+            desc
+        ]);
+        var func = desc.type === "offer" ? this.createOffer : this.createAnswer;
+        return func.apply(this).then(function(d) {
+            return nativeSetLocalDescription.apply(_this, [
+                d
+            ]);
+        });
+    };
+}
+
+
+
+function $8cca9dedcd8a8f9f$export$e77bf46c04ac7d12() {
+    var window = (arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {}).window, options = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {
+        shimChrome: true,
+        shimFirefox: true,
+        shimSafari: true
+    };
+    // Utils.
+    var logging = $ecbc82f8e2fc2f44$export$bef1f36f5486a6a3;
+    var browserDetails = $ecbc82f8e2fc2f44$export$2d31490a0c05f094(window);
+    var adapter = {
+        browserDetails: browserDetails,
+        commonShim: $ad8f8a0faac16970$exports,
+        extractVersion: $ecbc82f8e2fc2f44$export$e3c02be309be1f23,
+        disableLog: $ecbc82f8e2fc2f44$export$afbfee8cc06fd3e4,
+        disableWarnings: $ecbc82f8e2fc2f44$export$51516be4b019e41e,
+        // Expose sdp as a convenience. For production apps include directly.
+        sdp: $6ef33e7fea041b5b$exports
+    };
+    // Shim browser if found.
+    switch(browserDetails.browser){
+        case "chrome":
+            if (!$c83c9d2c0bca1d6e$exports || !$c83c9d2c0bca1d6e$exports.shimPeerConnection || !options.shimChrome) {
+                logging("Chrome shim is not included in this adapter release.");
+                return adapter;
+            }
+            if (browserDetails.version === null) {
+                logging("Chrome shim can not determine version, not shimming.");
+                return adapter;
+            }
+            logging("adapter.js shimming chrome.");
+            // Export to the adapter global object visible in the browser.
+            adapter.browserShim = $c83c9d2c0bca1d6e$exports;
+            // Must be called before shimPeerConnection.
+            $ad8f8a0faac16970$exports.shimAddIceCandidateNullOrEmpty(window, browserDetails);
+            $ad8f8a0faac16970$exports.shimParameterlessSetLocalDescription(window, browserDetails);
+            $c83c9d2c0bca1d6e$exports.shimGetUserMedia(window, browserDetails);
+            $c83c9d2c0bca1d6e$exports.shimMediaStream(window, browserDetails);
+            $c83c9d2c0bca1d6e$exports.shimPeerConnection(window, browserDetails);
+            $c83c9d2c0bca1d6e$exports.shimOnTrack(window, browserDetails);
+            $c83c9d2c0bca1d6e$exports.shimAddTrackRemoveTrack(window, browserDetails);
+            $c83c9d2c0bca1d6e$exports.shimGetSendersWithDtmf(window, browserDetails);
+            $c83c9d2c0bca1d6e$exports.shimSenderReceiverGetStats(window, browserDetails);
+            $c83c9d2c0bca1d6e$exports.fixNegotiationNeeded(window, browserDetails);
+            $ad8f8a0faac16970$exports.shimRTCIceCandidate(window, browserDetails);
+            $ad8f8a0faac16970$exports.shimRTCIceCandidateRelayProtocol(window, browserDetails);
+            $ad8f8a0faac16970$exports.shimConnectionState(window, browserDetails);
+            $ad8f8a0faac16970$exports.shimMaxMessageSize(window, browserDetails);
+            $ad8f8a0faac16970$exports.shimSendThrowTypeError(window, browserDetails);
+            $ad8f8a0faac16970$exports.removeExtmapAllowMixed(window, browserDetails);
+            break;
+        case "firefox":
+            if (!$69fa72c68315eefd$exports || !$69fa72c68315eefd$exports.shimPeerConnection || !options.shimFirefox) {
+                logging("Firefox shim is not included in this adapter release.");
+                return adapter;
+            }
+            logging("adapter.js shimming firefox.");
+            // Export to the adapter global object visible in the browser.
+            adapter.browserShim = $69fa72c68315eefd$exports;
+            // Must be called before shimPeerConnection.
+            $ad8f8a0faac16970$exports.shimAddIceCandidateNullOrEmpty(window, browserDetails);
+            $ad8f8a0faac16970$exports.shimParameterlessSetLocalDescription(window, browserDetails);
+            $69fa72c68315eefd$exports.shimGetUserMedia(window, browserDetails);
+            $69fa72c68315eefd$exports.shimPeerConnection(window, browserDetails);
+            $69fa72c68315eefd$exports.shimOnTrack(window, browserDetails);
+            $69fa72c68315eefd$exports.shimRemoveStream(window, browserDetails);
+            $69fa72c68315eefd$exports.shimSenderGetStats(window, browserDetails);
+            $69fa72c68315eefd$exports.shimReceiverGetStats(window, browserDetails);
+            $69fa72c68315eefd$exports.shimRTCDataChannel(window, browserDetails);
+            $69fa72c68315eefd$exports.shimAddTransceiver(window, browserDetails);
+            $69fa72c68315eefd$exports.shimGetParameters(window, browserDetails);
+            $69fa72c68315eefd$exports.shimCreateOffer(window, browserDetails);
+            $69fa72c68315eefd$exports.shimCreateAnswer(window, browserDetails);
+            $ad8f8a0faac16970$exports.shimRTCIceCandidate(window, browserDetails);
+            $ad8f8a0faac16970$exports.shimConnectionState(window, browserDetails);
+            $ad8f8a0faac16970$exports.shimMaxMessageSize(window, browserDetails);
+            $ad8f8a0faac16970$exports.shimSendThrowTypeError(window, browserDetails);
+            break;
+        case "safari":
+            if (!$30149506f5b6e50a$exports || !options.shimSafari) {
+                logging("Safari shim is not included in this adapter release.");
+                return adapter;
+            }
+            logging("adapter.js shimming safari.");
+            // Export to the adapter global object visible in the browser.
+            adapter.browserShim = $30149506f5b6e50a$exports;
+            // Must be called before shimCallbackAPI.
+            $ad8f8a0faac16970$exports.shimAddIceCandidateNullOrEmpty(window, browserDetails);
+            $ad8f8a0faac16970$exports.shimParameterlessSetLocalDescription(window, browserDetails);
+            $30149506f5b6e50a$exports.shimRTCIceServerUrls(window, browserDetails);
+            $30149506f5b6e50a$exports.shimCreateOfferLegacy(window, browserDetails);
+            $30149506f5b6e50a$exports.shimCallbacksAPI(window, browserDetails);
+            $30149506f5b6e50a$exports.shimLocalStreamsAPI(window, browserDetails);
+            $30149506f5b6e50a$exports.shimRemoteStreamsAPI(window, browserDetails);
+            $30149506f5b6e50a$exports.shimTrackEventTransceiver(window, browserDetails);
+            $30149506f5b6e50a$exports.shimGetUserMedia(window, browserDetails);
+            $30149506f5b6e50a$exports.shimAudioContext(window, browserDetails);
+            $ad8f8a0faac16970$exports.shimRTCIceCandidate(window, browserDetails);
+            $ad8f8a0faac16970$exports.shimRTCIceCandidateRelayProtocol(window, browserDetails);
+            $ad8f8a0faac16970$exports.shimMaxMessageSize(window, browserDetails);
+            $ad8f8a0faac16970$exports.shimSendThrowTypeError(window, browserDetails);
+            $ad8f8a0faac16970$exports.removeExtmapAllowMixed(window, browserDetails);
+            break;
+        default:
+            logging("Unsupported browser!");
+            break;
+    }
+    return adapter;
+}
+
+
+"use strict";
+var $80abb24278d5ec27$var$adapter = (0, $8cca9dedcd8a8f9f$export$e77bf46c04ac7d12)({
+    window: typeof window === "undefined" ? undefined : window
+});
+var $80abb24278d5ec27$export$2e2bcd8739ae039 = $80abb24278d5ec27$var$adapter;
+
+
 "use strict";
 var $78f2cb3ec8734e95$export$471f7ae5c4103ae1 = {
     visibility: true,
@@ -20976,7 +23713,8 @@ var $78f2cb3ec8734e95$export$471f7ae5c4103ae1 = {
     deviceOnline: true,
     userOnline: 0,
     notKaiOS: window.innerWidth > 300 ? true : false,
-    os: (0, $6d3f4b507512327e$export$ad64e00ff47c1b17)()
+    os: (0, $6d3f4b507512327e$export$ad64e00ff47c1b17)(),
+    ownPeerId: ""
 };
 if ("b2g" in navigator || "navigator.mozApps" in navigator) $78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS = false;
 var $78f2cb3ec8734e95$export$a5a6e0b888b2c992 = {};
@@ -21089,24 +23827,29 @@ function $78f2cb3ec8734e95$var$setupConnectionEvents(conn) {
     $78f2cb3ec8734e95$var$connectedPeers.push(conn.peer);
     var userId = conn.peer;
     var pc = conn.peerConnection;
-    if (pc) pc.addEventListener("iceconnectionstatechange", function() {
-        // console.log("ICE connection state changed to:", pc.iceConnectionState);
-        if (pc.iceConnectionState === "disconnected") {
-            (0, $6d3f4b507512327e$export$6593825dc0f3a767)("User has left the chat", 1000);
-            $78f2cb3ec8734e95$var$connectedPeers = $78f2cb3ec8734e95$var$connectedPeers.filter(function(c) {
-                return c !== userId;
-            });
-            $78f2cb3ec8734e95$var$updateConnections();
-        }
-        if (pc.iceConnectionState === "connected") {
-            (0, $6d3f4b507512327e$export$6593825dc0f3a767)("User has entered", 1000);
-            $78f2cb3ec8734e95$var$updateConnections();
-        }
-    });
+    if (pc) {
+        pc.addEventListener("icecandidateerror", function(event) {
+            (0, $6d3f4b507512327e$export$6593825dc0f3a767)(event.errorText, 5000);
+        });
+        pc.addEventListener("iceconnectionstatechange", function() {
+            if (pc.iceConnectionState === "disconnected") {
+                (0, $6d3f4b507512327e$export$6593825dc0f3a767)("User has left the chat", 1000);
+                $78f2cb3ec8734e95$var$connectedPeers = $78f2cb3ec8734e95$var$connectedPeers.filter(function(c) {
+                    return c !== userId;
+                });
+                $78f2cb3ec8734e95$var$updateConnections();
+            }
+            if (pc.iceConnectionState === "connected") {
+                (0, $6d3f4b507512327e$export$6593825dc0f3a767)("User has entered", 1000);
+                $78f2cb3ec8734e95$var$remove_no_user_online();
+                $78f2cb3ec8734e95$var$updateConnections();
+            }
+        });
+    }
     conn.on("data", function(data) {
         document.querySelector(".loading-spinner").style.display = "none";
+        $78f2cb3ec8734e95$var$remove_no_user_online();
         if (data.file || data.text) {
-            console.log(data);
             if (data.file) {
                 if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.visibility) (0, $6d3f4b507512327e$export$75525525b38ea7b3)("flop", "new message");
                 $78f2cb3ec8734e95$var$chat_data.push({
@@ -21135,7 +23878,6 @@ function $78f2cb3ec8734e95$var$setupConnectionEvents(conn) {
         (0, $6d3f4b507512327e$export$6593825dc0f3a767)("Connected", 5000);
         (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
         (0, $da5c51e5866985e6$export$55e6c60a43cc74e2)();
-        $78f2cb3ec8734e95$var$remove_no_user_online();
     });
     // Event handler for connection closure
     conn.on("close", function() {
@@ -21237,7 +23979,7 @@ function $78f2cb3ec8734e95$var$_getIceServers() {
                         }
                         $78f2cb3ec8734e95$var$peer.destroy();
                     }
-                    $78f2cb3ec8734e95$var$peer = new Peer({
+                    $78f2cb3ec8734e95$var$peer = new Peer($78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id, {
                         debug: 0,
                         secure: false,
                         config: $78f2cb3ec8734e95$var$ice_servers,
@@ -21251,66 +23993,12 @@ function $78f2cb3ec8734e95$var$_getIceServers() {
                     });
                     $78f2cb3ec8734e95$var$peer.on("connection", function(c) {
                         //store all connections
+                        document.querySelector(".loading-spinner").style.display = "none";
                         $78f2cb3ec8734e95$var$setupConnectionEvents(c);
-                    /*
-      conn = c;
-      
-      conn.on("data", function (data) {
-        if (data.file || data.text) {
-          if (data.file) {
-            if (!status.visibility) pushLocalNotification("flop", "new image");
-
-            chat_data.push({
-              nickname: data.nickname,
-              content: "",
-              datetime: new Date(),
-              image: data.file,
-            });
-          }
-
-          if (data.text) {
-            if (!status.visibility) pushLocalNotification("flop", "new text");
-
-            chat_data.push({
-              nickname: data.nickname,
-              content: data.text,
-              datetime: new Date(),
-            });
-          }
-
-          m.redraw();
-          focus_last_article();
-        } else {
-          if (data.userlist) {
-            compareUserList(data.userlist);
-          }
-          // console.log("ping" + JSON.stringify(data));
-        }
-      });
-      conn.on("close", function () {
-        side_toaster("user has left chat", 1000);
-        connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
-      });
-
-      // Event handler for successful connection
-      conn.on("open", function () {
-        side_toaster("Connected", 5000);
-
-        m.redraw();
-
-        remove_no_user_online();
-
-        document.querySelector(".loading-spinner").style.display = "none";
-      });
-
-      // Event handler for connection errors
-      conn.on("error", function (err) {
-        console.log("Error: " + err.type, 5000);
-      });
-      */ });
+                    });
                     $78f2cb3ec8734e95$var$peer.on("disconnected", function() {});
                     $78f2cb3ec8734e95$var$peer.on("close", function() {
-                        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("connection closed", 1000);
+                        //side_toaster("connection closed", 1000);
                         document.querySelector(".loading-spinner").style.display = "none";
                     });
                     $78f2cb3ec8734e95$var$peer.on("error", function(err) {
@@ -21348,7 +24036,8 @@ function $78f2cb3ec8734e95$var$_getIceServers() {
         server_url: "0.peerjs.com",
         server_path: "/",
         server_port: "443",
-        invite_url: "https://flop.bhackers.uber.space/"
+        invite_url: "https://flop.bhackers.uber.space/",
+        custom_peer_id: "flop-" + (0, $194554b49bf11e1e$export$2e2bcd8739ae039)(16)
     };
     for(var key in defaultValues)if (!(key in $78f2cb3ec8734e95$export$a5a6e0b888b2c992)) $78f2cb3ec8734e95$export$a5a6e0b888b2c992[key] = defaultValues[key];
 })["catch"](function(err) {
@@ -21467,29 +24156,43 @@ var $78f2cb3ec8734e95$var$connect_to_peer = function connect_to_peer(id) {
         alert("Device is offline");
         return false;
     }
-    $78f2cb3ec8734e95$export$57fcf9ca838ce2c6 = id;
-    $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_room = id;
-    //getIceServers().then(() => {
-    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id=" + id);
-    setTimeout(function() {
-        document.querySelector(".loading-spinner").style.display = "block";
-    }, 2000);
-    setTimeout(function() {
-        if ($78f2cb3ec8734e95$var$peer == null) document.querySelector(".loading-spinner").style.display = "none";
-        // Establish connection with the destination peer
-        try {
-            $78f2cb3ec8734e95$var$conn = $78f2cb3ec8734e95$var$peer.connect(id, {
-                label: "chat",
-                reliable: true
-            });
-            $78f2cb3ec8734e95$var$conn.on("open", function() {
-                $78f2cb3ec8734e95$var$setupConnectionEvents($78f2cb3ec8734e95$var$conn);
-            });
-        } catch (e) {
-            document.querySelector(".loading-spinner").style.display = "none";
-        }
-    }, 4000);
-//});
+    $78f2cb3ec8734e95$var$getIceServers().then(function() {
+        //clear chat data
+        $78f2cb3ec8734e95$var$chat_data = [];
+        $78f2cb3ec8734e95$export$57fcf9ca838ce2c6 = id;
+        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_room = id;
+        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id=" + id);
+        setTimeout(function() {
+            document.querySelector(".loading-spinner").style.display = "block";
+        }, 2000);
+        setTimeout(function() {
+            if ($78f2cb3ec8734e95$var$peer == null) document.querySelector(".loading-spinner").style.display = "none";
+            // Establish connection with the destination peer
+            try {
+                $78f2cb3ec8734e95$var$conn = $78f2cb3ec8734e95$var$peer.connect(id, {
+                    label: "chat",
+                    reliable: true
+                });
+                $78f2cb3ec8734e95$var$conn.on("open", function() {
+                    $78f2cb3ec8734e95$var$setupConnectionEvents($78f2cb3ec8734e95$var$conn);
+                });
+                $78f2cb3ec8734e95$var$conn.on("error", function(e) {
+                    (0, $6d3f4b507512327e$export$6593825dc0f3a767)("connection could not be established", 4000);
+                    document.querySelector(".loading-spinner").style.display = "none";
+                });
+                $78f2cb3ec8734e95$var$chat_data.push({
+                    id: "no-other-user-online",
+                    nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
+                    content: "no other user online",
+                    datetime: new Date()
+                });
+                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
+            } catch (e) {
+                alert(e);
+                document.querySelector(".loading-spinner").style.display = "none";
+            }
+        }, 4000);
+    })["catch"](function(e) {});
 };
 //create room
 // and create qr-code with peer id
@@ -21509,7 +24212,7 @@ var $78f2cb3ec8734e95$var$create_peer = function create_peer() {
             else $78f2cb3ec8734e95$var$lastPeerId = $78f2cb3ec8734e95$var$peer.id;
             $78f2cb3ec8734e95$export$57fcf9ca838ce2c6 = $78f2cb3ec8734e95$var$peer.id;
             $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_room = $78f2cb3ec8734e95$var$peer.id;
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id=" + $78f2cb3ec8734e95$export$57fcf9ca838ce2c6);
+            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id=" + $78f2cb3ec8734e95$export$471f7ae5c4103ae1.ownPeerId);
             //make qr code
             var qrs = new (0, (/*@__PURE__*/$parcel$interopDefault($bd7c1575f3abb9eb$exports)))();
             qrs.set({
@@ -21518,7 +24221,7 @@ var $78f2cb3ec8734e95$var$create_peer = function create_peer() {
                 level: "H",
                 padding: 5,
                 size: 200,
-                value: $78f2cb3ec8734e95$export$57fcf9ca838ce2c6
+                value: $78f2cb3ec8734e95$export$471f7ae5c4103ae1.ownPeerId
             });
             $78f2cb3ec8734e95$var$chat_data.push({
                 nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
@@ -21578,17 +24281,24 @@ var $78f2cb3ec8734e95$var$about = {
         }, [
             (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
                 tabindex: 0,
+                "class": "item",
                 oncreate: function(param) {
                     var dom = param.dom;
                     dom.focus();
                 },
+                onclick: function() {
+                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/about_page");
+                }
+            }, "About"),
+            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
+                tabindex: 1,
                 "class": "item",
                 onclick: function() {
                     (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/settings_page");
                 }
             }, "Settings"),
             (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
-                tabindex: 1,
+                tabindex: 2,
                 "class": "item",
                 onclick: function() {
                     (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/privacy_policy");
@@ -21596,12 +24306,38 @@ var $78f2cb3ec8734e95$var$about = {
             }, "Privacy Policy"),
             (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
                 id: "KaiOSads-Wrapper",
-                //tabindex: 2,
-                // class: "item",
+                "class": "width-100",
                 oncreate: function() {
-                    (0, $6d3f4b507512327e$export$4f9f22e5a1695548)();
+                    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS == false) (0, $6d3f4b507512327e$export$4f9f22e5a1695548)();
                 }
             })
+        ]);
+    }
+};
+var $78f2cb3ec8734e95$var$about_page = {
+    view: function view() {
+        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+            "class": "page",
+            oncreate: function() {
+                (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "");
+                if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
+            }
+        }, [
+            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+                "class": "item scroll",
+                id: "about-text",
+                tabindex: 0
+            }, "With flop you can communicate directly with another person/machine (p2p). To do this you need a stable internet connection and you must know the other person's ID. When you start a chat you can share your ID via the options menu. Multiple people can also join the chat, the IDs of the other participants are automatically shared."),
+            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+                "class": "item scroll",
+                id: "about-text",
+                tabindex: 1
+            }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("The code of the software is freely available: <a href='https://github.com/strukturart/flop'>gitHub</a>")),
+            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+                "class": "item scroll",
+                id: "about-text",
+                tabindex: 2
+            }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<strong>License</strong><br><br>mithrilJS MIT<br>peerJS MIT<br>flop MIT"))
         ]);
     }
 };
@@ -21630,7 +24366,7 @@ var $78f2cb3ec8734e95$var$privacy_policy = {
                     "class": "item button-style",
                     tabindex: 2,
                     onclick: function onclick() {
-                        (0, $6d3f4b507512327e$export$3ce6949f20cea765)("https://www.metered.ca/tools/openrelay/#%EF%B8%8Fsecurity");
+                        window.open("https://www.metered.ca/tools/openrelay/#%EF%B8%8Fsecurity");
                     },
                     onfocus: function() {
                         (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='assets/image/select.svg'>", "");
@@ -21642,7 +24378,7 @@ var $78f2cb3ec8734e95$var$privacy_policy = {
                     onfocus: function() {
                         (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img src='assets/image/select.svg'>", "");
                     }
-                }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<h2>KaiAds</h2> This is a third party service that may collect information used to identify you.<br><br><br>"))
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<h2>KaiOSAds</h2> This is a third party service that may collect information used to identify you.<br><br><br>"))
             ])
         ]);
     }
@@ -21650,7 +24386,7 @@ var $78f2cb3ec8734e95$var$privacy_policy = {
 var $78f2cb3ec8734e95$var$settings_page = {
     view: function view() {
         return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-            "class": "page",
+            "class": "page flex justify-content-spacearound",
             id: "settings_page",
             oncreate: function() {
                 (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "", "");
@@ -21672,14 +24408,48 @@ var $78f2cb3ec8734e95$var$settings_page = {
                 (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("input", {
                     id: "nickname",
                     placeholder: "nickname",
-                    value: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname
+                    value: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
+                    oninput: function(vnode) {
+                        $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname = vnode.target.value;
+                    }
                 })
             ]),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("H2", {
-                "class": "  text-center"
-            }, "Server Settings"),
             (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
                 tabindex: 1,
+                "class": "item input-parent  flex justify-content-spacearound"
+            }, [
+                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("label", {
+                    "for": "custom-peer-id"
+                }, "Custom ID"),
+                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("input", {
+                    id: "custom-peer-id",
+                    placeholder: "ID",
+                    value: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id
+                })
+            ]),
+            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
+                "class": "item",
+                tabindex: 2,
+                onclick: function() {
+                    $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id = "flop-" + (0, $194554b49bf11e1e$export$2e2bcd8739ae039)(16);
+                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
+                }
+            }, "generate new ID"),
+            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
+                "class": "item",
+                tabindex: 3,
+                onclick: function() {
+                    (0, $6d3f4b507512327e$export$ed80d9de1d9df928)($78f2cb3ec8734e95$export$a5a6e0b888b2c992.invite_url + "?id=" + $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id).then(function(success) {
+                        if (success) console.log("Sharing was successful.");
+                        else console.log("Sharing failed.");
+                    });
+                }
+            }, "share"),
+            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("H2", {
+                "class": "text-center"
+            }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<br>Server Settings")),
+            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+                tabindex: 4,
                 "class": "item input-parent  flex justify-content-spacearound"
             }, [
                 (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("label", {
@@ -21692,7 +24462,7 @@ var $78f2cb3ec8734e95$var$settings_page = {
                 })
             ]),
             (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                tabindex: 2,
+                tabindex: 5,
                 "class": "item input-parent  flex  justify-content-spacearound"
             }, [
                 (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("label", {
@@ -21705,7 +24475,7 @@ var $78f2cb3ec8734e95$var$settings_page = {
                 })
             ]),
             (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                tabindex: 3,
+                tabindex: 6,
                 "class": "item input-parent  flex justify-content-spacearound"
             }, [
                 (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("label", {
@@ -21718,7 +24488,7 @@ var $78f2cb3ec8734e95$var$settings_page = {
                 })
             ]),
             (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                tabindex: 4,
+                tabindex: 7,
                 "class": "item input-parent  flex justify-content-spacearound"
             }, [
                 (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("label", {
@@ -21731,7 +24501,7 @@ var $78f2cb3ec8734e95$var$settings_page = {
                 })
             ]),
             (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
-                tabindex: 5,
+                tabindex: 8,
                 "class": "item",
                 "data-function": "save-settings",
                 onclick: function onclick() {
@@ -21743,7 +24513,6 @@ var $78f2cb3ec8734e95$var$settings_page = {
                     (0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).setItem("settings", $78f2cb3ec8734e95$export$a5a6e0b888b2c992).then(function(value) {
                         // Do other things once the value has been saved.
                         (0, $6d3f4b507512327e$export$6593825dc0f3a767)("settings saved", 2000);
-                        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/start");
                     })["catch"](function(err) {
                         // This code runs if there were any errors
                         console.log(err);
@@ -21806,10 +24575,10 @@ var $78f2cb3ec8734e95$var$options = {
                     }, 500);
                 },
                 onclick: function onclick() {
-                    (0, $6d3f4b507512327e$export$ed80d9de1d9df928)($78f2cb3ec8734e95$export$a5a6e0b888b2c992.invite_url + "?id=" + $78f2cb3ec8734e95$export$57fcf9ca838ce2c6).then(function(success) {
+                    (0, $6d3f4b507512327e$export$ed80d9de1d9df928)($78f2cb3ec8734e95$export$a5a6e0b888b2c992.invite_url + "?id=" + $78f2cb3ec8734e95$export$471f7ae5c4103ae1.ownPeerId).then(function(success) {
                         if (success) {
                             console.log("Sharing was successful.");
-                            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id=" + $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_room);
+                            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id=" + $78f2cb3ec8734e95$export$471f7ae5c4103ae1.ownPeerId);
                         } else console.log("Sharing failed.");
                     });
                 },
@@ -21850,7 +24619,7 @@ var $78f2cb3ec8734e95$var$start = {
                     document.querySelector("#start p").focus();
                     vnode.dom.focus();
                 }
-            }, "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images and your position with your chat partner. To create a peer, press enter."),
+            }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images and your position with your chat partner. To create a peer, press enter.<br><br>")),
             (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
                 tabIndex: 1,
                 "class": "item",
@@ -21858,7 +24627,7 @@ var $78f2cb3ec8734e95$var$start = {
                     if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_room == null || $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_room == "") vnode.dom.style.display = "none";
                 },
                 onclick: function(e) {
-                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id=" + $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_room);
+                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id=" + $78f2cb3ec8734e95$export$471f7ae5c4103ae1.ownPeerId);
                 }
             }, "reopen chat"),
             (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
@@ -22090,6 +24859,7 @@ var $78f2cb3ec8734e95$var$intro = {
     "/settings_page": $78f2cb3ec8734e95$var$settings_page,
     "/scan": $78f2cb3ec8734e95$var$scan,
     "/about": $78f2cb3ec8734e95$var$about,
+    "/about_page": $78f2cb3ec8734e95$var$about_page,
     "/privacy_policy": $78f2cb3ec8734e95$var$privacy_policy
 });
 document.addEventListener("DOMContentLoaded", function(e) {
@@ -22172,7 +24942,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
             $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
             (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/about");
         }
-        if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/options" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/links_page") (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id="), $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_room;
+        if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/options" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/links_page") (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id="), $78f2cb3ec8734e95$export$471f7ae5c4103ae1.ownPeerId;
     });
     // Function to simulate key press events
     function simulateKeyPress(k) {
@@ -22237,8 +25007,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
                 }
                 if (route.startsWith("/chat") && $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action !== "write") {
                     if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline > 0) $78f2cb3ec8734e95$var$write();
-                    else //connect_to_peer(status.current_room);
-                    (0, $6d3f4b507512327e$export$6593825dc0f3a767)("no user online", 3000);
+                    else (0, $6d3f4b507512327e$export$6593825dc0f3a767)("no user online", 3000);
                 }
                 if (route == "/start") (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/open_peer_menu");
                 break;
@@ -22284,7 +25053,12 @@ document.addEventListener("DOMContentLoaded", function(e) {
                 $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
                 (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/about");
             }
-            if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/options" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/links_page") (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id="), $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_room;
+            if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/about_page") {
+                evt.preventDefault();
+                $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
+                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/about");
+            }
+            if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/options" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/links_page") (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id="), $78f2cb3ec8734e95$export$471f7ae5c4103ae1.ownPeerId;
         }
         if (evt.key === "EndCall") {
             evt.preventDefault();

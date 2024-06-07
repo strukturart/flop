@@ -105,10 +105,10 @@ button {
   border: 2px solid gray;
   -moz-border-radius: 1px;
   border-radius: 1px;
-  min-width: 100%;
-  max-width: 100%;
+  min-width: 93%;
+  max-width: 90%;
   min-height: 40px;
-  margin: 5px 0 15px;
+  margin: 0 0 15px 5px;
   padding: 5px;
   font-size: 1rem;
   font-weight: 700;
@@ -127,7 +127,7 @@ a.button-style {
   border: 2px solid gray;
   -moz-border-radius: 1px;
   border-radius: 1px;
-  width: 100%;
+  width: 95%;
   min-height: 40px;
   margin: 10px 0 15px;
   padding: 5px;
@@ -172,8 +172,8 @@ textarea {
 
 input {
   border: 2px solid silver;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
   width: 95%;
   height: 30px;
   margin: 0 0 0 10px;
@@ -585,6 +585,10 @@ article img {
   100% {
     transform: rotate(360deg);
   }
+}
+
+#about-text {
+  margin: 15px 0 0;
 }
 
 div#top {

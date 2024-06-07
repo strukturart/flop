@@ -117,11 +117,11 @@ img[src=" "] {
 button {
   font-size: 1rem;
   background: rgb(255, 255, 255);
-  min-width: 100%;
-  max-width: 100%;
+  min-width: 93%;
+  max-width: 90%;
 
   padding: 5px;
-  margin: 5px 0 15px 0px;
+  margin: 0px 0 15px 5px;
   color: black;
   border-radius: 1px;
   border: 2px solid gray;
@@ -137,7 +137,7 @@ button:focus {
 a.button-style {
   font-size: 1rem;
   background: rgb(255, 255, 255);
-  width: 100%;
+  width: 95%;
   padding: 5px;
   margin: 10px 0 15px 0px;
   color: black;
@@ -192,7 +192,7 @@ input {
   height: 30px;
   padding: 3px;
   border: 2px solid silver;
-  border-radius: 10px;
+  border-radius: 4px;
   margin: 0 0 0 10px;
 }
 

@@ -24,6 +24,8 @@ import {
 } from "./assets/js/helper.js";
 import m from "mithril";
 import qrious from "qrious";
+import { v4 as uuidv4 } from "uuid";
+import "webrtc-adapter";
 
 //github.com/laurentpayot/minidenticons#usage
 export let status = {
@@ -179,9 +181,11 @@ function setupConnectionEvents(conn) {
   let pc = conn.peerConnection;
 
   if (pc) {
-    pc.addEventListener("iceconnectionstatechange", () => {
-      // console.log("ICE connection state changed to:", pc.iceConnectionState);
+    pc.addEventListener("icecandidateerror", (event) => {
+      side_toaster(event.errorText, 5000);
+    });
 
+    pc.addEventListener("iceconnectionstatechange", () => {
       if (pc.iceConnectionState === "disconnected") {
         side_toaster(`User has left the chat`, 1000);
         connectedPeers = connectedPeers.filter((c) => c !== userId);
@@ -190,6 +194,8 @@ function setupConnectionEvents(conn) {
 
       if (pc.iceConnectionState === "connected") {
         side_toaster(`User has entered`, 1000);
+        remove_no_user_online();
+
         updateConnections();
       }
     });
@@ -197,10 +203,9 @@ function setupConnectionEvents(conn) {
 
   conn.on("data", function (data) {
     document.querySelector(".loading-spinner").style.display = "none";
+    remove_no_user_online();
 
     if (data.file || data.text) {
-      console.log(data);
-
       if (data.file) {
         if (!status.visibility) pushLocalNotification("flop", "new message");
 
@@ -238,7 +243,6 @@ function setupConnectionEvents(conn) {
     side_toaster("Connected", 5000);
     m.redraw();
     stop_scan();
-    remove_no_user_online();
   });
 
   // Event handler for connection closure
@@ -341,7 +345,7 @@ async function getIceServers() {
       peer.destroy();
     }
 
-    peer = new Peer({
+    peer = new Peer(settings.custom_peer_id, {
       debug: 0,
       secure: false,
       config: ice_servers,
@@ -361,63 +365,9 @@ async function getIceServers() {
 
     peer.on("connection", function (c) {
       //store all connections
+      document.querySelector(".loading-spinner").style.display = "none";
+
       setupConnectionEvents(c);
-      /*
-      conn = c;
-      
-      conn.on("data", function (data) {
-        if (data.file || data.text) {
-          if (data.file) {
-            if (!status.visibility) pushLocalNotification("flop", "new image");
-
-            chat_data.push({
-              nickname: data.nickname,
-              content: "",
-              datetime: new Date(),
-              image: data.file,
-            });
-          }
-
-          if (data.text) {
-            if (!status.visibility) pushLocalNotification("flop", "new text");
-
-            chat_data.push({
-              nickname: data.nickname,
-              content: data.text,
-              datetime: new Date(),
-            });
-          }
-
-          m.redraw();
-          focus_last_article();
-        } else {
-          if (data.userlist) {
-            compareUserList(data.userlist);
-          }
-          // console.log("ping" + JSON.stringify(data));
-        }
-      });
-      conn.on("close", function () {
-        side_toaster("user has left chat", 1000);
-        connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
-      });
-
-      // Event handler for successful connection
-      conn.on("open", function () {
-        side_toaster("Connected", 5000);
-
-        m.redraw();
-
-        remove_no_user_online();
-
-        document.querySelector(".loading-spinner").style.display = "none";
-      });
-
-      // Event handler for connection errors
-      conn.on("error", function (err) {
-        console.log("Error: " + err.type, 5000);
-      });
-      */
     });
 
     peer.on("disconnected", function () {
@@ -429,7 +379,7 @@ async function getIceServers() {
     });
 
     peer.on("close", function () {
-      side_toaster("connection closed", 1000);
+      //side_toaster("connection closed", 1000);
       document.querySelector(".loading-spinner").style.display = "none";
     });
 
@@ -457,6 +407,7 @@ localforage
       server_path: "/",
       server_port: "443",
       invite_url: "https://flop.bhackers.uber.space/",
+      custom_peer_id: "flop-" + uuidv4(16),
     };
 
     for (const key in defaultValues) {
@@ -602,33 +553,52 @@ let connect_to_peer = function (id) {
     alert("Device is offline");
     return false;
   }
-  current_room = id;
-  status.current_room = id;
-  //getIceServers().then(() => {
-  m.route.set("/chat?id=" + id);
-  setTimeout(() => {
-    document.querySelector(".loading-spinner").style.display = "block";
-  }, 2000);
+  getIceServers()
+    .then(() => {
+      //clear chat data
+      chat_data = [];
 
-  setTimeout(() => {
-    if (peer == null) {
-      document.querySelector(".loading-spinner").style.display = "none";
-    }
+      current_room = id;
+      status.current_room = id;
+      m.route.set("/chat?id=" + id);
+      setTimeout(() => {
+        document.querySelector(".loading-spinner").style.display = "block";
+      }, 2000);
 
-    // Establish connection with the destination peer
-    try {
-      conn = peer.connect(id, {
-        label: "chat",
-        reliable: true,
-      });
-      conn.on("open", () => {
-        setupConnectionEvents(conn);
-      });
-    } catch (e) {
-      document.querySelector(".loading-spinner").style.display = "none";
-    }
-  }, 4000);
-  //});
+      setTimeout(() => {
+        if (peer == null) {
+          document.querySelector(".loading-spinner").style.display = "none";
+        }
+
+        // Establish connection with the destination peer
+        try {
+          conn = peer.connect(id, {
+            label: "chat",
+            reliable: true,
+          });
+          conn.on("open", () => {
+            setupConnectionEvents(conn);
+          });
+          conn.on("error", (e) => {
+            side_toaster("connection could not be established", 4000);
+            document.querySelector(".loading-spinner").style.display = "none";
+          });
+
+          chat_data.push({
+            id: "no-other-user-online",
+            nickname: settings.nickname,
+            content: "no other user online",
+            datetime: new Date(),
+          });
+
+          m.redraw();
+        } catch (e) {
+          alert(e);
+          document.querySelector(".loading-spinner").style.display = "none";
+        }
+      }, 4000);
+    })
+    .catch((e) => {});
 };
 
 //create room
@@ -666,7 +636,7 @@ let create_peer = function () {
         level: "H",
         padding: 5,
         size: 200,
-        value: current_room,
+        value: status.ownPeerId,
       });
 
       chat_data.push({
@@ -763,9 +733,22 @@ var about = {
           "button",
           {
             tabindex: 0,
+
+            class: "item",
             oncreate: ({ dom }) => {
               dom.focus();
             },
+            onclick: () => {
+              m.route.set("/about_page");
+            },
+          },
+          "About"
+        ),
+        m(
+          "button",
+          {
+            tabindex: 1,
+
             class: "item",
             onclick: () => {
               m.route.set("/settings_page");
@@ -777,7 +760,7 @@ var about = {
         m(
           "button",
           {
-            tabindex: 1,
+            tabindex: 2,
 
             class: "item",
             onclick: () => {
@@ -794,27 +777,44 @@ var about = {
             if (status.notKaiOS == false) load_ads();
           },
         }),
+      ]
+    );
+  },
+};
+
+var about_page = {
+  view: function () {
+    return m(
+      "div",
+      {
+        class: "page",
+        oncreate: () => {
+          top_bar("", "", "");
+
+          if (status.notKaiOS)
+            top_bar("", "", "<img src='assets/image/back.svg'>");
+        },
+      },
+      [
         m(
           "div",
-          { class: "item scroll", id: "about-text", tabindex: 2 },
+          { class: "item scroll", id: "about-text", tabindex: 0 },
           "With flop you can communicate directly with another person/machine (p2p). To do this you need a stable internet connection and you must know the other person's ID. When you start a chat you can share your ID via the options menu. Multiple people can also join the chat, the IDs of the other participants are automatically shared."
         ),
+
         m(
           "div",
-          { class: "item scroll", id: "about-text", tabindex: 3 },
-          m.trust("<br><strong>Thank you</strong><br><br> mithrilJS<br>peerJS")
-        ),
-        m(
-          "div",
-          { class: "item scroll", id: "about-text", tabindex: 4 },
+          { class: "item scroll", id: "about-text", tabindex: 1 },
           m.trust(
             "The code of the software is freely available: <a href='https://github.com/strukturart/flop'>gitHub</a>"
           )
         ),
         m(
           "div",
-          { class: "item scroll", id: "about-text", tabindex: 4 },
-          m.trust("<strong>License</strong>")
+          { class: "item scroll", id: "about-text", tabindex: 2 },
+          m.trust(
+            "<strong>License</strong><br><br>mithrilJS MIT<br>peerJS MIT<br>flop MIT"
+          )
         ),
       ]
     );
@@ -859,7 +859,7 @@ var privacy_policy = {
               class: "item button-style",
               tabindex: 2,
               onclick: function () {
-                open(
+                window.open(
                   "https://www.metered.ca/tools/openrelay/#%EF%B8%8Fsecurity"
                 );
               },
@@ -883,7 +883,7 @@ var privacy_policy = {
               },
             },
             m.trust(
-              "<h2>KaiAds</h2> This is a third party service that may collect information used to identify you.<br><br><br>"
+              "<h2>KaiOSAds</h2> This is a third party service that may collect information used to identify you.<br><br><br>"
             )
           ),
         ]
@@ -897,7 +897,7 @@ var settings_page = {
     return m(
       "div",
       {
-        class: "page",
+        class: "page flex justify-content-spacearound",
         id: "settings_page",
         oncreate: () => {
           bottom_bar("", "", "");
@@ -925,20 +925,79 @@ var settings_page = {
               },
               "Nickname"
             ),
+
             m("input", {
               id: "nickname",
               placeholder: "nickname",
               value: settings.nickname,
+              oninput: (vnode) => {
+                settings.nickname = vnode.target.value;
+              },
             }),
           ]
         ),
-
-        m("H2", { class: "  text-center" }, "Server Settings"),
 
         m(
           "div",
           {
             tabindex: 1,
+
+            class: "item input-parent  flex justify-content-spacearound",
+          },
+          [
+            m(
+              "label",
+              {
+                for: "custom-peer-id",
+              },
+              "Custom ID"
+            ),
+            m("input", {
+              id: "custom-peer-id",
+              placeholder: "ID",
+              value: settings.custom_peer_id,
+            }),
+          ]
+        ),
+        m(
+          "button",
+          {
+            class: "item",
+            tabindex: 2,
+            onclick: () => {
+              settings.custom_peer_id = "flop-" + uuidv4(16);
+              m.redraw();
+            },
+          },
+          "generate new ID"
+        ),
+
+        m(
+          "button",
+          {
+            class: "item",
+            tabindex: 3,
+            onclick: () => {
+              share(
+                settings.invite_url + "?id=" + settings.custom_peer_id
+              ).then((success) => {
+                if (success) {
+                  console.log("Sharing was successful.");
+                } else {
+                  console.log("Sharing failed.");
+                }
+              });
+            },
+          },
+          "share"
+        ),
+
+        m("H2", { class: "text-center" }, m.trust("<br>Server Settings")),
+
+        m(
+          "div",
+          {
+            tabindex: 4,
 
             class: "item input-parent  flex justify-content-spacearound",
           },
@@ -961,7 +1020,7 @@ var settings_page = {
         m(
           "div",
           {
-            tabindex: 2,
+            tabindex: 5,
 
             class: "item input-parent  flex  justify-content-spacearound",
           },
@@ -984,7 +1043,7 @@ var settings_page = {
         m(
           "div",
           {
-            tabindex: 3,
+            tabindex: 6,
 
             class: "item input-parent  flex justify-content-spacearound",
           },
@@ -1007,7 +1066,7 @@ var settings_page = {
         m(
           "div",
           {
-            tabindex: 4,
+            tabindex: 7,
 
             class: "item input-parent  flex justify-content-spacearound",
           },
@@ -1030,7 +1089,7 @@ var settings_page = {
         m(
           "button",
           {
-            tabindex: 5,
+            tabindex: 8,
 
             class: "item",
             "data-function": "save-settings",
@@ -1050,7 +1109,6 @@ var settings_page = {
                 .then(function (value) {
                   // Do other things once the value has been saved.
                   side_toaster("settings saved", 2000);
-                  m.route.set("/start");
                 })
                 .catch(function (err) {
                   // This code runs if there were any errors
@@ -1218,7 +1276,9 @@ var start = {
               vnode.dom.focus();
             },
           },
-          "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images and your position with your chat partner. To create a peer, press enter."
+          m.trust(
+            "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images and your position with your chat partner. To create a peer, press enter.<br><br>"
+          )
         ),
         m(
           "button",
@@ -1579,6 +1639,7 @@ m.route(root, "/intro", {
   "/settings_page": settings_page,
   "/scan": scan,
   "/about": about,
+  "/about_page": about_page,
   "/privacy_policy": privacy_policy,
 });
 
@@ -1873,6 +1934,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
       }
 
       if (m.route.get() == "/privacy_policy") {
+        evt.preventDefault();
+        status.action = "";
+        m.route.set("/about");
+      }
+
+      if (m.route.get() == "/about_page") {
         evt.preventDefault();
         status.action = "";
         m.route.set("/about");
