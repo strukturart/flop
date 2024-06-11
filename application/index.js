@@ -27,7 +27,7 @@ import m from "mithril";
 import qrious from "qrious";
 import { v4 as uuidv4 } from "uuid";
 import "webrtc-adapter";
-import find from "local-devices";
+import { createAudioRecorder } from "./recorder.js";
 
 //github.com/laurentpayot/minidenticons#usage
 export let status = {
@@ -1477,6 +1477,8 @@ var chat = {
         },
         oncreate: () => {
           top_bar("", "", "");
+          const recorder = createAudioRecorder("start", "stop", "playback");
+
           if (status.notKaiOS == true)
             top_bar("", "", "<img src='assets/image/back.svg'>");
 
