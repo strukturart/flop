@@ -12,6 +12,7 @@ import {
   top_bar,
   getManifest,
   setTabindex,
+  downloadFile,
 } from "./assets/js/helper.js";
 import { start_scan } from "./assets/js/scan.js";
 import { stop_scan } from "./assets/js/scan.js";
@@ -26,6 +27,7 @@ import m from "mithril";
 import qrious from "qrious";
 import { v4 as uuidv4 } from "uuid";
 import "webrtc-adapter";
+import find from "local-devices";
 
 //github.com/laurentpayot/minidenticons#usage
 export let status = {
@@ -145,6 +147,13 @@ window.addEventListener("offline", () => {
   status.deviceOnline = false;
 });
 
+// Function to check if an element already exists in chat_data
+function elementExists(chat_data, criteria) {
+  return chat_data.some((element) => {
+    return Object.keys(criteria).every((key) => element[key] === criteria[key]);
+  });
+}
+
 let compareUserList = (userlist) => {
   const filteredUserList = userlist.filter((userId) => userId !== peer.id);
   userlist = filteredUserList;
@@ -181,6 +190,16 @@ function setupConnectionEvents(conn) {
   let pc = conn.peerConnection;
 
   if (pc) {
+    pc.addEventListener("negotiationneeded", (event) => {
+      console.log(event);
+      /*
+      conn = peer.connect(conn.peer, {
+        label: "chat",
+        reliable: true,
+      });
+      */
+    });
+
     pc.addEventListener("icecandidateerror", (event) => {
       side_toaster(event.errorText, 5000);
     });
@@ -206,6 +225,7 @@ function setupConnectionEvents(conn) {
     remove_no_user_online();
 
     if (data.file || data.text) {
+      console.log(data);
       if (data.file) {
         if (!status.visibility) pushLocalNotification("flop", "new message");
 
@@ -214,6 +234,7 @@ function setupConnectionEvents(conn) {
           content: "",
           datetime: new Date(),
           image: data.file,
+          filename: data.filename,
         });
       }
 
@@ -255,6 +276,8 @@ function setupConnectionEvents(conn) {
   });
 
   conn.on("disconnected", () => {
+    // conn.reconnect();
+
     side_toaster(`User has been disconnected`, 1000);
     connectedPeers = connectedPeers.filter((c) => c !== userId);
     updateConnections();
@@ -353,11 +376,8 @@ async function getIceServers() {
     });
 
     peer.on("open", function () {
-      if (peer.id === null) {
-        peer.id = lastPeerId;
-      } else {
-        lastPeerId = peer.id;
-      }
+      if (peer.id == null) peer.id = settings.custom_peer_id;
+
       document.querySelector(".loading-spinner").style.display = "none";
 
       status.ownPeerId = peer.id;
@@ -366,13 +386,13 @@ async function getIceServers() {
     peer.on("connection", function (c) {
       //store all connections
       document.querySelector(".loading-spinner").style.display = "none";
-
       setupConnectionEvents(c);
     });
 
     peer.on("disconnected", function () {
       try {
-        // peer.reconnect();
+        //side_toaster("try to reconnect", 2000);
+        //peer.reconnect();
       } catch (e) {
         console.log("reconnect error: " + e);
       }
@@ -483,6 +503,7 @@ function sendMessage(msg, type) {
         content: "",
         datetime: new Date(),
         image: src,
+        filename: msg.filename,
       });
 
       msg = {
@@ -543,10 +564,6 @@ function closeAllConnections() {
   });
 }
 
-getIceServers().then(() => {
-  console.log("succesfull downloaded ice servers");
-});
-
 //connect to peer
 let connect_to_peer = function (id) {
   if (!status.deviceOnline) {
@@ -556,6 +573,8 @@ let connect_to_peer = function (id) {
   getIceServers()
     .then(() => {
       //clear chat data
+      console.log("succesfull downloaded ice servers");
+
       chat_data = [];
 
       current_room = id;
@@ -615,6 +634,8 @@ let create_peer = function () {
   document.querySelector(".loading-spinner").style.display = "block";
 
   getIceServers().then(() => {
+    console.log("succesfull downloaded ice servers");
+
     peer.on("open", function () {
       // Workaround for peer.reconnect deleting previous id
       if (peer.id === null) {
@@ -639,19 +660,39 @@ let create_peer = function () {
         value: status.ownPeerId,
       });
 
-      chat_data.push({
+      // Define the elements to be added
+      const invitationLinkElement = {
         nickname: settings.nickname,
         content: "invitation link",
         datetime: new Date(),
         image: qrs.toDataURL(),
-      });
+      };
 
-      chat_data.push({
+      const noOtherUserOnlineElement = {
         id: "no-other-user-online",
         nickname: settings.nickname,
         content: "no other user online, you should invite someone.",
         datetime: new Date(),
-      });
+      };
+
+      // Check if elements already exist before pushing
+      if (
+        !elementExists(chat_data, {
+          nickname: settings.nickname,
+          content: "invitation link",
+        })
+      ) {
+        chat_data.push(invitationLinkElement);
+      }
+
+      if (
+        !elementExists(chat_data, {
+          id: "no-other-user-online",
+          content: "no other user online, you should invite someone.",
+        })
+      ) {
+        chat_data.push(noOtherUserOnlineElement);
+      }
 
       bottom_bar("", "", "<img src='assets/image/option.svg'>");
 
@@ -1448,7 +1489,6 @@ var chat = {
             if (connectedPeers) {
               status.userOnline = connectedPeers.length;
 
-              console.log(connectedPeers);
               sendMessageToAll({
                 userlist: connectedPeers,
                 nickname: settings.nickname,
@@ -1528,7 +1568,19 @@ var chat = {
               },
               item.content
             ),
-            m("img", { class: "message-media", src: item.image }),
+            m("img", {
+              class: "message-media",
+              src: item.image,
+              "data-filename": item.filename,
+              oncreate: () => {
+                console.log(item);
+              },
+              onclick: () => {
+                let filename = item.filename;
+                let download_successfull = () => {};
+                downloadFile(filename, item.image, download_successfull);
+              },
+            }),
             m("div", { class: "flex message-head" }, [
               m("div", time_parse(item.datetime)),
               m("div", { class: "nickname" }, nickname),

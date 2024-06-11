@@ -684,3 +684,57 @@ export function deleteFile(storage, path, notification) {
     helper.toaster("Unable to delete the file: " + this.error);
   };
 }
+
+export let downloadFile = function (filename, data, callback) {
+  if (status.notKaiOS) {
+    // Create a new Blob object using the data
+    var filedata = new Blob([data]);
+
+    // Create a URL for the Blob
+    var url = URL.createObjectURL(filedata);
+
+    // Create an invisible <a> element to trigger the download
+    var a = document.createElement("a");
+    a.style.display = "none";
+    a.href = url;
+    a.download = filename;
+
+    // Append the <a> element to the document body
+    document.body.appendChild(a);
+
+    // Programmatically click the <a> element to trigger the download
+    a.click();
+
+    // Clean up by revoking the object URL and removing the <a> element
+    setTimeout(() => {
+      URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      if (callback) {
+        callback(filename);
+      }
+    }, 100);
+  } else {
+    let sdcard = "";
+
+    try {
+      sdcard = navigator.getDeviceStorage("sdcard");
+    } catch (e) {}
+
+    if ("b2g" in navigator) {
+      try {
+        sdcard = navigator.b2g.getDeviceStorage("sdcard");
+      } catch (e) {}
+    }
+
+    var filedata = new Blob([data]);
+
+    var request = sdcard.addNamed(filedata, filename);
+    request.onsuccess = function () {
+      callback(filename, request.result);
+    };
+
+    request.onerror = function () {
+      helper.side_toaster("Unable to download the file", 2000);
+    };
+  }
+};
