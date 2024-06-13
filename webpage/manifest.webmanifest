@@ -53,7 +53,7 @@
   ],
 
   "b2g_features": {
-    "version": "0.3071",
+    "version": "0.3074",
     "id": "flop",
     "subtitle": "flop p2p messenger app",
     "core": true,
@@ -97,6 +97,12 @@
       "video-capture": {
         "description": "Reading Codes using the Camera"
       },
+
+      "device-storage:pictures": {
+        "description": "Read/Write pictures",
+        "access": ["read", "write", "create"]
+      },
+
       "spatialnavigation-app-manage": {
         "navigator.spatialNavigationEnabled": false
       },

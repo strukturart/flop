@@ -629,9 +629,7 @@ export let pick_image = function (callback) {
 
   if ("b2g" in navigator) {
     let pick = new WebActivity("pick", {
-      data: {
-        type: ["image/png", "image/jpg", "image/jpeg"],
-      },
+      type: "image/*",
     });
 
     pick.start().then(
@@ -643,7 +641,7 @@ export let pick_image = function (callback) {
       }
     );
   }
-  if (status.notKaiOS || status.os) {
+  if (status.notKaiOS) {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
     fileInput.accept = "image/*";
@@ -687,32 +685,21 @@ export function deleteFile(storage, path, notification) {
 
 export let downloadFile = function (filename, data, callback) {
   if (status.notKaiOS) {
-    // Create a new Blob object using the data
-    var filedata = new Blob([data]);
+    const imgSrc = data;
 
-    // Create a URL for the Blob
-    var url = URL.createObjectURL(filedata);
-
-    // Create an invisible <a> element to trigger the download
-    var a = document.createElement("a");
-    a.style.display = "none";
-    a.href = url;
+    // Create a link element
+    const a = document.createElement("a");
+    a.href = imgSrc;
     a.download = filename;
 
-    // Append the <a> element to the document body
+    // Append the link to the body
     document.body.appendChild(a);
 
-    // Programmatically click the <a> element to trigger the download
+    // Programmatically click the link to trigger the download
     a.click();
 
-    // Clean up by revoking the object URL and removing the <a> element
-    setTimeout(() => {
-      URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-      if (callback) {
-        callback(filename);
-      }
-    }, 100);
+    // Remove the link from the document
+    document.body.removeChild(a);
   } else {
     let sdcard = "";
 
@@ -726,15 +713,77 @@ export let downloadFile = function (filename, data, callback) {
       } catch (e) {}
     }
 
-    var filedata = new Blob([data]);
+    fetch(data)
+      .then((res) => res.blob())
+      .then((blob) => {
+        let request = sdcard.addNamed(blob, filename);
+        request.onsuccess = function () {
+          side_toaster("file downloaded", 2000);
+        };
 
-    var request = sdcard.addNamed(filedata, filename);
-    request.onsuccess = function () {
-      callback(filename, request.result);
-    };
-
-    request.onerror = function () {
-      helper.side_toaster("Unable to download the file", 2000);
-    };
+        request.onerror = function () {
+          side_toaster("Unable to download the file", 2000);
+        };
+      })
+      .catch((error) => {
+        side_toaster("Unable to download the file", 2000);
+      });
   }
 };
+
+export function createAudioRecorder(
+  startButtonId,
+  stopButtonId,
+  playbackElementId
+) {
+  const startButton = document.getElementById(startButtonId);
+  const stopButton = document.getElementById(stopButtonId);
+  const playbackElement = document.getElementById(playbackElementId);
+
+  let mediaRecorder;
+  let recordedChunks = [];
+
+  async function init() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          recordedChunks.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: "audio/webm" });
+        recordedChunks = [];
+        const url = URL.createObjectURL(blob);
+        playbackElement.src = url;
+      };
+
+      startButton.addEventListener("click", startRecording);
+      stopButton.addEventListener("click", stopRecording);
+    } catch (error) {
+      console.error("Error accessing media devices.", error);
+    }
+  }
+
+  function startRecording() {
+    mediaRecorder.start();
+    startButton.disabled = true;
+    stopButton.disabled = false;
+  }
+
+  function stopRecording() {
+    mediaRecorder.stop();
+    startButton.disabled = false;
+    stopButton.disabled = true;
+  }
+
+  init();
+
+  return {
+    startRecording,
+    stopRecording,
+  };
+}

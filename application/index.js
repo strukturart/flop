@@ -27,7 +27,7 @@ import m from "mithril";
 import qrious from "qrious";
 import { v4 as uuidv4 } from "uuid";
 import "webrtc-adapter";
-import { createAudioRecorder } from "./recorder.js";
+import { createAudioRecorder } from "./assets/js/helper.js";
 
 //github.com/laurentpayot/minidenticons#usage
 export let status = {
@@ -38,6 +38,7 @@ export let status = {
   notKaiOS: window.innerWidth > 300 ? true : false,
   os: detectMobileOS(),
   ownPeerId: "",
+  current_article_type: "",
 };
 
 if ("b2g" in navigator || "navigator.mozApps" in navigator)
@@ -225,7 +226,6 @@ function setupConnectionEvents(conn) {
     remove_no_user_online();
 
     if (data.file || data.text) {
-      console.log(data);
       if (data.file) {
         if (!status.visibility) pushLocalNotification("flop", "new message");
 
@@ -235,6 +235,7 @@ function setupConnectionEvents(conn) {
           datetime: new Date(),
           image: data.file,
           filename: data.filename,
+          type: data.type,
         });
       }
 
@@ -245,6 +246,7 @@ function setupConnectionEvents(conn) {
           nickname: data.nickname,
           content: data.text,
           datetime: new Date(),
+          type: data.type,
         });
       }
 
@@ -495,7 +497,6 @@ function sendMessage(msg, type) {
     // Encode the file using the FileReader API
     const reader = new FileReader();
     reader.onloadend = () => {
-      //add image to feed
       let src = URL.createObjectURL(msg.blob);
 
       chat_data.push({
@@ -504,6 +505,7 @@ function sendMessage(msg, type) {
         datetime: new Date(),
         image: src,
         filename: msg.filename,
+        type: type,
       });
 
       msg = {
@@ -511,6 +513,7 @@ function sendMessage(msg, type) {
         filename: msg.filename,
         filetype: msg.type,
         nickname: settings.nickname,
+        type: type,
       };
       sendMessageToAll(msg);
 
@@ -527,11 +530,13 @@ function sendMessage(msg, type) {
     msg = {
       text: msg,
       nickname: settings.nickname,
+      type: type,
     };
     chat_data.push({
       nickname: settings.nickname,
       content: msg.text,
       datetime: new Date(),
+      type: type,
     });
 
     sendMessageToAll(msg);
@@ -612,7 +617,6 @@ let connect_to_peer = function (id) {
 
           m.redraw();
         } catch (e) {
-          alert(e);
           document.querySelector(".loading-spinner").style.display = "none";
         }
       }, 4000);
@@ -1477,7 +1481,7 @@ var chat = {
         },
         oncreate: () => {
           top_bar("", "", "");
-          const recorder = createAudioRecorder("start", "stop", "playback");
+          // const recorder = createAudioRecorder("start", "stop", "playback");
 
           if (status.notKaiOS == true)
             top_bar("", "", "<img src='assets/image/back.svg'>");
@@ -1542,6 +1546,7 @@ var chat = {
         }),
       ]),
       chat_data.map(function (item, index) {
+        console.log(item);
         let nickname = "me";
         if (item.nickname != settings.nickname) {
           nickname = item.nickname;
@@ -1549,14 +1554,34 @@ var chat = {
         return m(
           "article",
           {
-            class: " item " + nickname + " " + item.class,
+            class: " item " + nickname + " " + item.type,
             tabindex: index,
+            "data-type": item.type,
             onfocus: () => {
               links = linkify.find(document.activeElement.textContent);
               if (links.length > 0) {
+                status.current_article_type = "link";
                 bottom_bar(
                   "<img src='assets/image/send.svg'>",
                   "<img src='assets/image/link.svg'>",
+                  "<img src='assets/image/option.svg'>"
+                );
+              }
+
+              if (item.type == "image") {
+                status.current_article_type = "image";
+                if (status.notKaiOS) return false;
+                bottom_bar(
+                  "<img src='assets/image/send.svg'>",
+                  "<img src='assets/image/save.svg'>",
+                  "<img src='assets/image/option.svg'>"
+                );
+              } else {
+                status.current_article_type = "text";
+
+                bottom_bar(
+                  "<img src='assets/image/send.svg'>",
+                  "",
                   "<img src='assets/image/option.svg'>"
                 );
               }
@@ -1574,14 +1599,6 @@ var chat = {
               class: "message-media",
               src: item.image,
               "data-filename": item.filename,
-              oncreate: () => {
-                console.log(item);
-              },
-              onclick: () => {
-                let filename = item.filename;
-                let download_successfull = () => {};
-                downloadFile(filename, item.image, download_successfull);
-              },
             }),
             m("div", { class: "flex message-head" }, [
               m("div", time_parse(item.datetime)),
@@ -1936,10 +1953,20 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
         if (route.startsWith("/chat")) {
           if (document.activeElement.tagName == "ARTICLE") {
-            links = linkify.find(document.activeElement.textContent);
-
-            if (links.length > 0) {
+            if (status.current_article_type == "link") {
               m.route.set("/links_page");
+            }
+            if (status.current_article_type == "image") {
+              let filename = document.activeElement
+                .querySelector("img")
+                .getAttribute("data-filename");
+
+              let data = document.activeElement
+                .querySelector("img")
+                .getAttribute("src");
+
+              let download_successfull = () => {};
+              downloadFile(filename, data, download_successfull);
             } else {
               return false;
             }
@@ -2106,7 +2133,6 @@ window.addEventListener("pagehide", function (event) {
 //start ping interval in service worker
 //channel.postMessage("startInterval");
 channel.addEventListener("message", (event) => {
-  alert(event.data);
   if (event.data === "intervalTriggered") {
     if (connectedPeers > 0)
       sendMessageToAll({
