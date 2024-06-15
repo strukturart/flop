@@ -596,6 +596,10 @@ div#top {
   top: 0;
 }
 
+div.text {
+  padding: 20px;
+}
+
 #chat {
   background: #fff;
 }
@@ -693,6 +697,10 @@ div#message-input input {
 
 #open-peer-menu {
   padding: 10px;
+}
+
+#addressbook button:last-child {
+  margin-bottom: 50px;
 }
 
 @media screen and (width >= 400px) and (width <= 1000px) {

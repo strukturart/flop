@@ -4,7 +4,6 @@ import {
   bottom_bar,
   side_toaster,
   pick_image,
-  open,
   month,
   generateRandomString,
   load_ads,
@@ -39,13 +38,15 @@ export let status = {
   os: detectMobileOS(),
   ownPeerId: "",
   current_article_type: "",
+  current_user_id: "",
+  current_user_nickname: "",
+  current_room: "",
 };
 
 if ("b2g" in navigator || "navigator.mozApps" in navigator)
   status.notKaiOS = false;
 
 export let settings = {};
-export let current_room = "";
 
 const channel = new BroadcastChannel("sw-messages");
 
@@ -178,9 +179,56 @@ let compareUserList = (userlist) => {
   });
 };
 
+//add to addressbook
+
+let addressbook = [];
+localforage
+  .getItem("addressbook")
+  .then((e) => {
+    if (e !== null) addressbook = e;
+  })
+  .catch(() => {});
+
+let addUserToAddressBook = (a, b) => {
+  if (!Array.isArray(addressbook)) {
+    console.error("addressbook is not defined or is not an array");
+    return;
+  }
+
+  function hasEmptyValues(obj) {
+    return (
+      obj.id === undefined ||
+      obj.id === null ||
+      obj.id === "" ||
+      obj.name === undefined ||
+      obj.name === null ||
+      obj.name === ""
+    );
+  }
+
+  //addressbook = addressbook.filter((obj) => !hasEmptyValues(obj));
+
+  let exists = addressbook.some((e) => e.id == a);
+
+  if (!exists) {
+    addressbook.push({ id: a, nickname: b });
+
+    localforage
+      .setItem("addressbook", addressbook)
+      .then((e) => {
+        side_toaster("done", 3000);
+        console.log(e);
+      })
+      .catch(() => {});
+  } else {
+    side_toaster("user still exist", 3000);
+  }
+};
+
 //track single connections
 //to update connections list
 function setupConnectionEvents(conn) {
+  console.log(conn);
   if (connectedPeers.includes(conn.peer)) {
     return false;
   }
@@ -231,6 +279,7 @@ function setupConnectionEvents(conn) {
 
         chat_data.push({
           nickname: data.nickname,
+          userId: data.userId,
           content: "",
           datetime: new Date(),
           image: data.file,
@@ -247,6 +296,7 @@ function setupConnectionEvents(conn) {
           content: data.text,
           datetime: new Date(),
           type: data.type,
+          userId: data.userId,
         });
       }
 
@@ -437,6 +487,13 @@ localforage
         settings[key] = defaultValues[key];
       }
     }
+
+    if (value == null) {
+      settings = defaultValues;
+      localforage.setItem("settings", settings).then(() => {
+        console.log("stored the first time");
+      });
+    }
   })
   .catch(function (err) {
     console.log(err);
@@ -513,6 +570,7 @@ function sendMessage(msg, type) {
         filename: msg.filename,
         filetype: msg.type,
         nickname: settings.nickname,
+        userId: settings.custom_peer_id,
         type: type,
       };
       sendMessageToAll(msg);
@@ -531,6 +589,7 @@ function sendMessage(msg, type) {
       text: msg,
       nickname: settings.nickname,
       type: type,
+      userId: settings.custom_peer_id,
     };
     chat_data.push({
       nickname: settings.nickname,
@@ -582,7 +641,6 @@ let connect_to_peer = function (id) {
 
       chat_data = [];
 
-      current_room = id;
       status.current_room = id;
       m.route.set("/chat?id=" + id);
       setTimeout(() => {
@@ -614,6 +672,8 @@ let connect_to_peer = function (id) {
             content: "no other user online",
             datetime: new Date(),
           });
+
+          document.querySelector(".loading-spinner").style.display = "none";
 
           m.redraw();
         } catch (e) {
@@ -648,10 +708,11 @@ let create_peer = function () {
         lastPeerId = peer.id;
       }
 
-      current_room = peer.id;
       status.current_room = peer.id;
 
-      m.route.set("/chat?id=" + status.ownPeerId);
+      console.log("peer" + peer.id + "/" + settings.custom_peer_id);
+
+      m.route.set("/chat?id=" + settings.custom_peer_id);
 
       //make qr code
       var qrs = new qrious();
@@ -661,7 +722,7 @@ let create_peer = function () {
         level: "H",
         padding: 5,
         size: 200,
-        value: status.ownPeerId,
+        value: settings.custom_peer_id,
       });
 
       // Define the elements to be added
@@ -1216,6 +1277,34 @@ var options = {
         m(
           "button",
           {
+            oncreate: () =>
+              setTimeout(function () {
+                setTabindex();
+              }, 500),
+            class: "item",
+            style: { display: status.userOnline ? "" : "none" },
+
+            onfocus: () => {
+              bottom_bar(
+                "",
+                "<img class='not-desktop' src='./assets/image/select.svg'>",
+                ""
+              );
+            },
+            onclick: function () {
+              if (status.current_user_id !== "" && status.user_nickname !== "")
+                addUserToAddressBook(
+                  status.current_user_id,
+                  status.current_user_nickname
+                );
+            },
+          },
+          "add user to addressbook"
+        ),
+
+        m(
+          "button",
+          {
             class: "item",
             onfocus: () => {
               bottom_bar(
@@ -1252,16 +1341,16 @@ var options = {
             },
 
             onclick: function () {
-              share(settings.invite_url + "?id=" + status.ownPeerId).then(
-                (success) => {
-                  if (success) {
-                    console.log("Sharing was successful.");
-                    m.route.set("/chat?id=" + status.ownPeerId);
-                  } else {
-                    console.log("Sharing failed.");
-                  }
+              share(
+                settings.invite_url + "?id=" + settings.custom_peer_id
+              ).then((success) => {
+                if (success) {
+                  console.log("Sharing was successful.");
+                  m.route.set("/chat?id=" + settings.custom_peer_id);
+                } else {
+                  console.log("Sharing failed.");
                 }
-              );
+              });
             },
             onfocus: () => {
               bottom_bar(
@@ -1300,7 +1389,7 @@ var start = {
           });
 
           bottom_bar(
-            "<img src='assets/image/save.svg'>",
+            "<img src='assets/image/person.svg'>",
             "<img src='assets/image/plus.svg'>",
             "<img src='assets/image/option.svg'>"
           );
@@ -1456,8 +1545,42 @@ var open_peer_menu = {
         ),
         m(
           "div",
-          {},
+          {
+            class: "text",
+          },
           "You can join a chat when someone invites you with a link. If you don't have this link, you can also enter the chat ID here or scan the QR code."
+        ),
+        m(
+          "div",
+          {
+            class: "width-100 flex justify-content-center",
+            style: { display: addressbook.length == 0 ? "none" : "" },
+          },
+          m.trust("<br><br>Addressbook<br>")
+        ),
+        m(
+          "div",
+          { class: "width-100 flex justify-content-center", id: "addressbook" },
+          [
+            addressbook.map((e) => {
+              return m(
+                "button",
+                {
+                  class: "item",
+                  "data-id": e.id,
+                  oncreate: () => {
+                    setTabindex();
+                  },
+                  onclick: (e) => {
+                    connect_to_peer(
+                      document.activeElement.getAttribute("data-id")
+                    );
+                  },
+                },
+                e.nickname
+              );
+            }),
+          ]
         ),
       ]
     );
@@ -1498,6 +1621,7 @@ var chat = {
               sendMessageToAll({
                 userlist: connectedPeers,
                 nickname: settings.nickname,
+                userId: settings.custom_peer_id,
               });
 
               if (status.notKaiOS == true && status.userOnline > 0) {
@@ -1546,7 +1670,7 @@ var chat = {
         }),
       ]),
       chat_data.map(function (item, index) {
-        console.log(item);
+        //own message
         let nickname = "me";
         if (item.nickname != settings.nickname) {
           nickname = item.nickname;
@@ -1557,7 +1681,15 @@ var chat = {
             class: " item " + nickname + " " + item.type,
             tabindex: index,
             "data-type": item.type,
+            "data-user-id": item.userId,
+            "data-user-nickname": item.nickname,
+
             onfocus: () => {
+              status.current_user_id =
+                document.activeElement.getAttribute("data-user-id");
+              status.current_user_nickname =
+                document.activeElement.getAttribute("data-user-nickname");
+
               links = linkify.find(document.activeElement.textContent);
               if (links.length > 0) {
                 status.current_article_type = "link";
@@ -1714,6 +1846,45 @@ m.route(root, "/intro", {
   "/privacy_policy": privacy_policy,
 });
 
+function scrollToCenter() {
+  const activeElement = document.activeElement;
+  if (!activeElement) return;
+
+  const rect = activeElement.getBoundingClientRect();
+  let elY = rect.top + rect.height / 2;
+
+  let scrollContainer = activeElement.parentNode;
+
+  // Find the first scrollable parent
+  while (scrollContainer) {
+    if (
+      scrollContainer.scrollHeight > scrollContainer.clientHeight ||
+      scrollContainer.scrollWidth > scrollContainer.clientWidth
+    ) {
+      // Calculate the element's offset relative to the scrollable parent
+      const containerRect = scrollContainer.getBoundingClientRect();
+      elY = rect.top - containerRect.top + rect.height / 2;
+      break;
+    }
+    scrollContainer = scrollContainer.parentNode;
+  }
+
+  if (scrollContainer) {
+    scrollContainer.scrollBy({
+      left: 0,
+      top: elY - scrollContainer.clientHeight / 2,
+      behavior: "smooth",
+    });
+  } else {
+    // If no scrollable parent is found, scroll the document body
+    document.body.scrollBy({
+      left: 0,
+      top: elY - window.innerHeight / 2,
+      behavior: "smooth",
+    });
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function (e) {
   /////////////////
   ///NAVIGATION
@@ -1759,39 +1930,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
       targetElement.focus();
     }
 
-    // smooth center scrolling
-
-    const rect = document.activeElement.getBoundingClientRect();
-    const elY =
-      rect.top - document.body.getBoundingClientRect().top + rect.height / 2;
-
-    let scrollContainer = document.activeElement.parentNode;
-
-    // Find the first scrollable parent
-    while (scrollContainer) {
-      if (
-        scrollContainer.scrollHeight > scrollContainer.clientHeight ||
-        scrollContainer.scrollWidth > scrollContainer.clientWidth
-      ) {
-        break;
-      }
-      scrollContainer = scrollContainer.parentNode;
-    }
-
-    if (scrollContainer) {
-      scrollContainer.scrollBy({
-        left: 0,
-        top: elY - window.innerHeight / 2,
-        behavior: "smooth",
-      });
-    } else {
-      // If no scrollable parent is found, scroll the document body
-      document.body.scrollBy({
-        left: 0,
-        top: elY - window.innerHeight / 2,
-        behavior: "smooth",
-      });
-    }
+    scrollToCenter();
   };
 
   // Add click listeners to simulate key events
@@ -1946,9 +2085,21 @@ document.addEventListener("DOMContentLoaded", function (e) {
           document.activeElement.children[0].focus();
         }
 
+        if (m.route.get() == "/options") {
+          if (status.current_user_id !== "" && status.user_nickname !== "")
+            addUserToAddressBook(
+              status.current_user_id,
+              status.current_user_nickname
+            );
+        }
+
         if (route == "/start") {
           chat_data = [];
           create_peer();
+        }
+        //addressbook open peer
+        if (route == "/open_peer_menu") {
+          connect_to_peer(document.activeElement.getAttribute("data-id"));
         }
 
         if (route.startsWith("/chat")) {

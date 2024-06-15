@@ -722,7 +722,10 @@ export let downloadFile = function (filename, data, callback) {
         };
 
         request.onerror = function () {
-          side_toaster("Unable to download the file", 2000);
+          side_toaster(
+            "Unable to download the file, the file probably already exists.",
+            4000
+          );
         };
       })
       .catch((error) => {
