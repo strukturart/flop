@@ -270,10 +270,11 @@ function setupConnectionEvents(conn) {
   }
 
   conn.on("data", function (data) {
+    console.log(data);
     document.querySelector(".loading-spinner").style.display = "none";
     remove_no_user_online();
 
-    if (data.file || data.text) {
+    if (data.file || data.text || data.gps) {
       if (data.file) {
         if (!status.visibility) pushLocalNotification("flop", "new message");
 
@@ -298,6 +299,25 @@ function setupConnectionEvents(conn) {
           type: data.type,
           userId: data.userId,
         });
+      }
+
+      if (data.gps) {
+        let existingMsg = chat_data.find((item) => item.type === "gps");
+
+        if (existingMsg) {
+          // Update the existing GPS message
+          existingMsg.content = data.content;
+          existingMsg.datetime = data.datetime;
+        } else {
+          // Push a new GPS message if not found
+          chat_data.push({
+            nickname: data.nickname,
+            content: data.content,
+            datetime: new Date(),
+            type: data.type,
+            userId: data.userId,
+          });
+        }
       }
 
       m.redraw();
@@ -550,6 +570,9 @@ const focus_last_article = function () {
 };
 
 function sendMessage(msg, type) {
+  //write data
+  //and send data
+
   if (type == "image") {
     // Encode the file using the FileReader API
     const reader = new FileReader();
@@ -598,6 +621,39 @@ function sendMessage(msg, type) {
       type: type,
     });
 
+    sendMessageToAll(msg);
+
+    m.redraw();
+    focus_last_article();
+    write();
+  }
+
+  if (type == "gps") {
+    console.log("gps" + JSON.stringify(msg));
+    if (msg == "") return false;
+    let existingMsg = chat_data.find((item) => item.type === "gps");
+
+    if (existingMsg) {
+      // Update the existing GPS message
+      existingMsg.content = msg.content;
+      existingMsg.datetime = msg.datetime;
+    } else {
+      // Push a new GPS message if not found
+      chat_data.push({
+        nickname: settings.nickname,
+        content: msg.content,
+        datetime: msg.datetime,
+        type: type,
+        userId: settings.custom_peer_id,
+      });
+    }
+
+    msg = {
+      gps: msg,
+      nickname: settings.nickname,
+      type: type,
+      userId: settings.custom_peer_id,
+    };
     sendMessageToAll(msg);
 
     m.redraw();
@@ -807,10 +863,13 @@ let geolocation_callback = function (e) {
     "/" +
     e.coords.longitude;
 
-  chat_data.push({ content: link_url, datetime: new Date() });
-
-  sendMessage(link_url, "text");
-  m.route.set("/chat");
+  // chat_data.push({ content: link_url, datetime: new Date() });
+  if (e.coords) {
+    sendMessage({ link_url, "datetime": new Date() }, "gps");
+    m.route.set("/chat");
+  } else {
+    alert("nö");
+  }
 };
 
 var root = document.getElementById("app");
@@ -1700,6 +1759,16 @@ var chat = {
                 );
               }
 
+              if (item.type == "gps") {
+                status.current_article_type = "gps";
+
+                bottom_bar(
+                  "<img src='assets/image/send.svg'>",
+                  "",
+                  "<img src='assets/image/option.svg'>"
+                );
+              }
+
               if (item.type == "image") {
                 status.current_article_type = "image";
                 if (status.notKaiOS) return false;
@@ -1708,7 +1777,9 @@ var chat = {
                   "<img src='assets/image/save.svg'>",
                   "<img src='assets/image/option.svg'>"
                 );
-              } else {
+              }
+
+              if (item.type == "text") {
                 status.current_article_type = "text";
 
                 bottom_bar(
