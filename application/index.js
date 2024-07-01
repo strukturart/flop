@@ -41,6 +41,7 @@ export let status = {
   current_user_id: "",
   current_user_nickname: "",
   current_room: "",
+  users_geolocation: [],
 };
 
 if ("b2g" in navigator || "navigator.mozApps" in navigator)
@@ -69,35 +70,6 @@ if (debug) {
     return true;
   };
 }
-
-//history
-let chat_history = [];
-/*
-// Retrieve chat history from local storage
-localforage
-  .getItem("chat_history")
-  .then((e) => {
-    console.log(e);
-    if (e) {
-      chat_history = e; // directly assign the retrieved array to chat_history
-    }
-  })
-  .catch((e) => {
-    console.log(e);
-  });
-
-let store_history = (id) => {
-  chat_history.push({ id: id, date: new Date(), data: "" }); // push new entry directly to the array
-  localforage
-    .setItem("chat_history", chat_history) // store the array directly
-    .then((e) => {
-      console.log(e);
-    })
-    .catch((e) => {
-      console.log(e);
-    });
-};
-*/
 
 //open KaiOS app
 let app_launcher = () => {
@@ -160,7 +132,6 @@ let compareUserList = (userlist) => {
   const filteredUserList = userlist.filter((userId) => userId !== peer.id);
   userlist = filteredUserList;
   userlist.forEach((user) => {
-    console.log(user);
     if (!connectedPeers.includes(user)) {
       try {
         conn = peer.connect(user, {
@@ -228,7 +199,6 @@ let addUserToAddressBook = (a, b) => {
 //track single connections
 //to update connections list
 function setupConnectionEvents(conn) {
-  console.log(conn);
   if (connectedPeers.includes(conn.peer)) {
     return false;
   }
@@ -273,7 +243,12 @@ function setupConnectionEvents(conn) {
     document.querySelector(".loading-spinner").style.display = "none";
     remove_no_user_online();
 
-    if (data.file || data.text) {
+    if (
+      data.type == "image" ||
+      data.type == "text" ||
+      data.type == "gps_live"
+    ) {
+      console.log(data);
       if (data.file) {
         if (!status.visibility) pushLocalNotification("flop", "new message");
 
@@ -286,6 +261,10 @@ function setupConnectionEvents(conn) {
           filename: data.filename,
           type: data.type,
         });
+
+        m.redraw();
+        focus_last_article();
+        stop_scan();
       }
 
       if (data.text) {
@@ -298,11 +277,45 @@ function setupConnectionEvents(conn) {
           type: data.type,
           userId: data.userId,
         });
+        m.redraw();
+        focus_last_article();
+        stop_scan();
       }
 
-      m.redraw();
-      focus_last_article();
-      stop_scan();
+      if (data.type == "gps_live") {
+        let existingMsg = chat_data.find((item) => item.type === "gps_live");
+
+        if (existingMsg) {
+          // Update the existing GPS message
+
+          let e = status.users_geolocation.find(
+            (item) => item.userId === data.userId
+          );
+          if (e) {
+            e.gps = data.content;
+            console.log(status.users_geolocation);
+          } else {
+            status.users_geolocation.push({
+              userId: data.userId,
+              gps: data.content,
+            });
+          }
+
+          existingMsg.content = data.content;
+          existingMsg.datetime = new Date();
+        } else {
+          // Push a new GPS message if not found
+          chat_data.push({
+            nickname: data.nickname,
+            content: data.content,
+            datetime: new Date(),
+            type: data.type,
+            userId: data.userId,
+          });
+        }
+
+        m.redraw();
+      }
     } else {
       if (data.userlist) {
         compareUserList(data.userlist);
@@ -550,6 +563,9 @@ const focus_last_article = function () {
 };
 
 function sendMessage(msg, type) {
+  //write data
+  //and send data
+
   if (type == "image") {
     // Encode the file using the FileReader API
     const reader = new FileReader();
@@ -603,6 +619,37 @@ function sendMessage(msg, type) {
     m.redraw();
     focus_last_article();
     write();
+  }
+
+  if (type == "gps_live") {
+    if (msg == "") return false;
+    let existingMsg = chat_data.find((item) => item.type === "gps_live");
+
+    if (existingMsg) {
+      // Update the existing GPS message
+      existingMsg.content = msg;
+      existingMsg.datetime = new Date();
+    } else {
+      // Push a new GPS message if not found
+      chat_data.push({
+        nickname: settings.nickname,
+        content: msg,
+        datetime: new Date(),
+        type: type,
+        userId: settings.custom_peer_id,
+      });
+    }
+
+    msg = {
+      text: "",
+      content: msg,
+      nickname: settings.nickname,
+      type: type,
+      userId: settings.custom_peer_id,
+    };
+    sendMessageToAll(msg);
+
+    m.redraw();
   }
 }
 //send to all connections
@@ -807,10 +854,29 @@ let geolocation_callback = function (e) {
     "/" +
     e.coords.longitude;
 
-  chat_data.push({ content: link_url, datetime: new Date() });
+  // chat_data.push({ content: link_url, datetime: new Date() });
+  if (e.coords) {
+    sendMessage(link_url, "text");
 
-  sendMessage(link_url, "text");
-  m.route.set("/chat");
+    m.route.set("/chat");
+  } else {
+  }
+};
+
+let geolocation_autoupdate_callback = (e) => {
+  if (e.coords) {
+    let link_url =
+      "https://www.openstreetmap.org/#map=19/" +
+      e.coords.latitude +
+      "/" +
+      e.coords.longitude;
+    if (!status.geolcation_autoupdate) {
+      m.route.set("/chat");
+    }
+    status.geolcation_autoupdate = true;
+    sendMessage(link_url, "gps_live");
+  } else {
+  }
 };
 
 var root = document.getElementById("app");
@@ -1329,6 +1395,45 @@ var options = {
         m(
           "button",
           {
+            class: "item",
+            id: "sharing-live-geolocation",
+            oncreate: () => {
+              if (status.geolcation_autoupdate) {
+                document.getElementById("sharing-live-geolocation").innerText =
+                  "stop live location";
+              } else {
+                document.getElementById("sharing-live-geolocation").innerText =
+                  "start live location";
+              }
+            },
+            onfocus: () => {
+              bottom_bar(
+                "",
+                "<img class='not-desktop' src='assets/image/select.svg'>",
+                ""
+              );
+            },
+            style: { display: status.userOnline ? "" : "none" },
+
+            onclick: function () {
+              if (status.userOnline) {
+                if (status.geolcation_autoupdate) {
+                  geolocation(geolocation_autoupdate_callback, false, true);
+                  status.geolocation_autoupdate = false;
+                } else {
+                  geolocation(geolocation_autoupdate_callback, true, false);
+                }
+              } else {
+                side_toaster("no user online", 3000);
+              }
+            },
+          },
+          "start shareing live location"
+        ),
+
+        m(
+          "button",
+          {
             class: "item share-id-button",
             oninit: ({ dom }) => {
               setTabindex();
@@ -1700,6 +1805,16 @@ var chat = {
                 );
               }
 
+              if (item.type == "gps_live") {
+                status.current_article_type = "gps_live";
+
+                bottom_bar(
+                  "<img src='assets/image/send.svg'>",
+                  "",
+                  "<img src='assets/image/option.svg'>"
+                );
+              }
+
               if (item.type == "image") {
                 status.current_article_type = "image";
                 if (status.notKaiOS) return false;
@@ -1708,7 +1823,9 @@ var chat = {
                   "<img src='assets/image/save.svg'>",
                   "<img src='assets/image/option.svg'>"
                 );
-              } else {
+              }
+
+              if (item.type == "text") {
                 status.current_article_type = "text";
 
                 bottom_bar(

@@ -90,14 +90,19 @@ if (window.NodeList && !NodeList.prototype.forEach) {
   NodeList.prototype.forEach = Array.prototype.forEach;
 }
 
-export const geolocation = function (callback) {
-  let n = document.getElementById("side-toast");
+let watchId = null; // Variable to store the watch ID globally
 
+export const geolocation = function (
+  callback,
+  autoupdate = false,
+  stopUpdate = false
+) {
+  let n = document.getElementById("side-toast");
   n.style.transform = "translate(0vw,0px)";
-  n.innerHTML = "determine position";
+  n.innerHTML = "Determining position...";
 
   let showPosition = function (position) {
-    callback(position);
+    callback(position, autoupdate); // Pass the autoupdate flag to the callback
     n.style.transform = "translate(-100vw,0px)";
     n.innerHTML = "";
   };
@@ -116,19 +121,34 @@ export const geolocation = function (callback) {
         side_toaster("Timeout", 2000);
         break;
       default:
-        side_toaster("unknown error", 2000);
+        side_toaster("Unknown error", 2000);
         break;
     }
   };
 
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition, error, {
-      enableHighAccuracy: true,
-      timeout: 20000,
-      maximumAge: 0,
-    });
+  if (stopUpdate && watchId !== null) {
+    navigator.geolocation.clearWatch(watchId);
+    watchId = null;
+    n.style.transform = "translate(-100vw,0px)";
+    n.innerHTML = "";
   } else {
-    side_toaster("Geolocation is not supported by this browser.", 2000);
+    if (navigator.geolocation) {
+      if (autoupdate) {
+        watchId = navigator.geolocation.watchPosition(showPosition, error, {
+          enableHighAccuracy: true,
+          timeout: 20000,
+          maximumAge: 0,
+        });
+      } else {
+        navigator.geolocation.getCurrentPosition(showPosition, error, {
+          enableHighAccuracy: true,
+          timeout: 20000,
+          maximumAge: 0,
+        });
+      }
+    } else {
+      side_toaster("Geolocation is not supported by this browser.", 2000);
+    }
   }
 };
 
