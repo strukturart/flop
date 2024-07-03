@@ -27,6 +27,7 @@ import qrious from "qrious";
 import { v4 as uuidv4 } from "uuid";
 import "webrtc-adapter";
 import { createAudioRecorder } from "./assets/js/helper.js";
+import L from "leaflet";
 
 //github.com/laurentpayot/minidenticons#usage
 export let status = {
@@ -42,6 +43,7 @@ export let status = {
   current_user_nickname: "",
   current_room: "",
   users_geolocation: [],
+  userMarkers: [],
 };
 
 if ("b2g" in navigator || "navigator.mozApps" in navigator)
@@ -211,12 +213,6 @@ function setupConnectionEvents(conn) {
   if (pc) {
     pc.addEventListener("negotiationneeded", (event) => {
       console.log(event);
-      /*
-      conn = peer.connect(conn.peer, {
-        label: "chat",
-        reliable: true,
-      });
-      */
     });
 
     pc.addEventListener("icecandidateerror", (event) => {
@@ -246,9 +242,9 @@ function setupConnectionEvents(conn) {
     if (
       data.type == "image" ||
       data.type == "text" ||
-      data.type == "gps_live"
+      data.type == "gps_live" ||
+      data.type == "gps"
     ) {
-      console.log(data);
       if (data.file) {
         if (!status.visibility) pushLocalNotification("flop", "new message");
 
@@ -282,35 +278,56 @@ function setupConnectionEvents(conn) {
         stop_scan();
       }
 
+      if (data.type == "gps") {
+        let f = JSON.parse(data.content);
+
+        let link_url =
+          "https://www.openstreetmap.org/#map=19/" + f.lat + "/" + f.lng;
+
+        chat_data.push({
+          nickname: data.nickname,
+          content: link_url,
+          datetime: new Date(),
+          type: data.type,
+          userId: data.userId,
+          gps: data.content,
+        });
+      }
+
       if (data.type == "gps_live") {
         let existingMsg = chat_data.find((item) => item.type === "gps_live");
+        let f = JSON.parse(data.content);
+
+        let link_url =
+          "https://www.openstreetmap.org/#map=19/" + f.lat + "/" + f.lng;
 
         if (existingMsg) {
-          // Update the existing GPS message
+          existingMsg.content = link_url;
+          existingMsg.datetime = new Date();
 
+          //store different users location
+          //to create/update markers on map
           let e = status.users_geolocation.find(
             (item) => item.userId === data.userId
           );
           if (e) {
             e.gps = data.content;
-            console.log(status.users_geolocation);
           } else {
             status.users_geolocation.push({
               userId: data.userId,
               gps: data.content,
             });
           }
-
-          existingMsg.content = data.content;
-          existingMsg.datetime = new Date();
         } else {
           // Push a new GPS message if not found
+
           chat_data.push({
             nickname: data.nickname,
-            content: data.content,
+            content: link_url,
             datetime: new Date(),
             type: data.type,
             userId: data.userId,
+            gps: data.content,
           });
         }
 
@@ -456,7 +473,8 @@ async function getIceServers() {
 
     peer.on("disconnected", function () {
       try {
-        //side_toaster("try to reconnect", 2000);
+        side_toaster("disconnected", 2000);
+        m.route.set("/start");
         //peer.reconnect();
       } catch (e) {
         console.log("reconnect error: " + e);
@@ -469,11 +487,10 @@ async function getIceServers() {
     });
 
     peer.on("error", function (err) {
-      //side_toaster("connection error " + err.type, 8000);
+      side_toaster("connection error " + err.type, 8000);
       document.querySelector(".loading-spinner").style.display = "none";
     });
   } catch (error) {
-    alert("Error fetching ice servers:", error.message);
     document.querySelector(".loading-spinner").style.display = "none";
     side_toaster("please retry to connect", 2000);
   }
@@ -591,7 +608,6 @@ function sendMessage(msg, type) {
       };
       sendMessageToAll(msg);
 
-      m.redraw();
       focus_last_article();
     };
     reader.onerror = (e) => {
@@ -616,7 +632,6 @@ function sendMessage(msg, type) {
 
     sendMessageToAll(msg);
 
-    m.redraw();
     focus_last_article();
     write();
   }
@@ -625,18 +640,24 @@ function sendMessage(msg, type) {
     if (msg == "") return false;
     let existingMsg = chat_data.find((item) => item.type === "gps_live");
 
+    let m = JSON.parse(msg);
+    let link_url =
+      "https://www.openstreetmap.org/#map=19/" + m.lat + "/" + m.lng;
+
     if (existingMsg) {
       // Update the existing GPS message
-      existingMsg.content = msg;
+      existingMsg.content = link_url;
       existingMsg.datetime = new Date();
     } else {
       // Push a new GPS message if not found
+
       chat_data.push({
         nickname: settings.nickname,
-        content: msg,
+        content: link_url,
         datetime: new Date(),
         type: type,
         userId: settings.custom_peer_id,
+        gps: msg,
       });
     }
 
@@ -646,14 +667,42 @@ function sendMessage(msg, type) {
       nickname: settings.nickname,
       type: type,
       userId: settings.custom_peer_id,
+      gps: msg,
     };
     sendMessageToAll(msg);
+  }
 
-    m.redraw();
+  if (type == "gps") {
+    if (msg == "") return false;
+
+    let m = JSON.parse(msg);
+    let link_url =
+      "https://www.openstreetmap.org/#map=19/" + m.lat + "/" + m.lng;
+
+    chat_data.push({
+      nickname: settings.nickname,
+      content: link_url,
+      datetime: new Date(),
+      type: type,
+      userId: settings.custom_peer_id,
+      gps: msg,
+    });
+
+    msg = {
+      text: "",
+      content: msg,
+      nickname: settings.nickname,
+      type: type,
+      userId: settings.custom_peer_id,
+      gps: msg,
+    };
+    sendMessageToAll(msg);
   }
 }
 //send to all connections
 function sendMessageToAll(message) {
+  m.redraw();
+
   Object.keys(peer.connections).forEach((peerId) => {
     peer.connections[peerId].forEach((conn) => {
       if (conn.open) {
@@ -845,39 +894,196 @@ let scan_callback = function (n) {
   connect_to_peer(n);
   status.action = "";
 };
+//map
+var MapComponent = {
+  oncreate: function (vnode) {
+    var mapContainer = vnode.dom;
+    var lat = vnode.attrs.lat;
+    var lng = vnode.attrs.lng;
+    var map = L.map(mapContainer, {
+      keyboard: true,
+      zoomControl: false,
+    }).setView([lat, lng], 13);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "© OpenStreetMap contributors",
+    }).addTo(map);
+
+    L.marker([lat, lng]).addTo(map);
+
+    vnode.state.map = map; // Store the map instance in the vnode state
+  },
+  onremove: function (vnode) {
+    vnode.state.map.remove(); // Clean up the map instance when the component is removed
+  },
+  view: function () {
+    return m("div", { style: { height: "200px" } });
+  },
+};
 
 //callback geolocation
 let geolocation_callback = function (e) {
-  let link_url =
-    "https://www.openstreetmap.org/#map=19/" +
-    e.coords.latitude +
-    "/" +
-    e.coords.longitude;
-
-  // chat_data.push({ content: link_url, datetime: new Date() });
   if (e.coords) {
-    sendMessage(link_url, "text");
+    let latlng = { "lat": e.coords.latitude, "lng": e.coords.longitude };
+    sendMessage(JSON.stringify(latlng), "gps");
 
     m.route.set("/chat");
   } else {
+    console.log("error");
   }
 };
 
 let geolocation_autoupdate_callback = (e) => {
   if (e.coords) {
-    let link_url =
-      "https://www.openstreetmap.org/#map=19/" +
-      e.coords.latitude +
-      "/" +
-      e.coords.longitude;
+    let latlng = { "lat": e.coords.latitude, "lng": e.coords.longitude };
     if (!status.geolcation_autoupdate) {
       m.route.set("/chat");
     }
     status.geolcation_autoupdate = true;
-    sendMessage(link_url, "gps_live");
+    sendMessage(JSON.stringify(latlng), "gps_live");
   } else {
+    console.log("error");
   }
 };
+
+let map,
+  step = 20;
+const userMarkers = {};
+const mainmarker = { current_lat: 0, current_lng: 0 }; // Example mainmarker object
+
+// Function to zoom the map
+function ZoomMap(in_out) {
+  if (!map) return; // Check if the map is initialized
+
+  let current_zoom_level = map.getZoom();
+  if (in_out === "in") {
+    map.setZoom(current_zoom_level + 1);
+  } else if (in_out === "out") {
+    map.setZoom(current_zoom_level - 1);
+  }
+}
+
+// Function to move the map
+function MovemMap(direction) {
+  if (!map) return; // Check if the map is initialized
+
+  mapcenter_position();
+
+  let n = map.getCenter();
+  mainmarker.current_lat = n.lat;
+  mainmarker.current_lng = n.lng;
+
+  if (direction === "left") {
+    mainmarker.current_lng -= step;
+  } else if (direction === "right") {
+    mainmarker.current_lng += step;
+  } else if (direction === "up") {
+    mainmarker.current_lat += step;
+  } else if (direction === "down") {
+    mainmarker.current_lat -= step;
+  }
+  map.panTo(new L.LatLng(mainmarker.current_lat, mainmarker.current_lng));
+}
+
+// Initialize the map and define the setup
+function map_function() {
+  map = L.map("map", { keyboard: true, zoomControl: false }).setView(
+    [51.505, -0.09],
+    13
+  );
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  }).addTo(map);
+
+  setTimeout(() => {
+    document.querySelector(".leaflet-control-container").style.display = "none";
+  }, 5000);
+
+  const myMarker = L.marker([51.5, -0.09])
+    .addTo(map)
+    .bindPopup("It's me")
+    .openPopup();
+  myMarker._icon.classList.add("myMarker");
+
+  let once = false; // Define 'once' outside the callback to persist its state
+
+  let geolocation_callback = function (e) {
+    myMarker.setLatLng([e.coords.latitude, e.coords.longitude]);
+    status.userMarkers[0] = myMarker;
+
+    if (!once) {
+      map.setView([e.coords.latitude, e.coords.longitude]);
+      once = true; // Set 'once' to true after the first execution
+    }
+  };
+
+  geolocation(geolocation_callback, true, false);
+
+  // Function to update or add markers
+  function updateMarkers(status) {
+    const usersGeolocation = status.users_geolocation;
+    status.userMarkers = status.userMarkers || {}; // Ensure userMarkers is initialized as an object
+
+    usersGeolocation.forEach((user) => {
+      const { userId, gps } = user;
+      const { lat, lng } = JSON.parse(gps); // Parse the gps string
+
+      if (status.userMarkers[userId]) {
+        // Update marker position
+        status.userMarkers[userId].setLatLng([lat, lng]);
+      } else {
+        // Create new marker
+        const marker = L.marker([lat, lng])
+          .addTo(map)
+          .bindPopup(userId)
+          .openPopup();
+        status.userMarkers[userId] = marker; // Store marker in the object with userId as key
+      }
+    });
+  }
+
+  setTimeout(() => {
+    updateMarkers(status);
+  }, 5000);
+
+  map.on("zoomend", function () {
+    let zoom_level = map.getZoom();
+    if (zoom_level < 2) {
+      step = 20;
+    } else if (zoom_level > 2) {
+      step = 8;
+    } else if (zoom_level > 3) {
+      step = 4.5;
+    } else if (zoom_level > 4) {
+      step = 2.75;
+    } else if (zoom_level > 5) {
+      step = 1.2;
+    } else if (zoom_level > 6) {
+      step = 0.5;
+    } else if (zoom_level > 7) {
+      step = 0.3;
+    } else if (zoom_level > 8) {
+      step = 0.15;
+    } else if (zoom_level > 9) {
+      step = 0.075;
+    } else if (zoom_level > 10) {
+      step = 0.04;
+    } else if (zoom_level > 11) {
+      step = 0.02;
+    } else if (zoom_level > 12) {
+      step = 0.01;
+    } else if (zoom_level > 13) {
+      step = 0.004;
+    } else if (zoom_level > 14) {
+      step = 0.002;
+    } else if (zoom_level > 15) {
+      step = 0.001;
+    } else if (zoom_level > 16) {
+      step = 0.0005;
+    }
+  });
+}
 
 var root = document.getElementById("app");
 
@@ -1383,7 +1589,7 @@ var options = {
 
             onclick: function () {
               if (status.userOnline) {
-                geolocation(geolocation_callback);
+                geolocation(geolocation_callback, false, false);
               } else {
                 side_toaster("no user online", 3000);
               }
@@ -1400,10 +1606,10 @@ var options = {
             oncreate: () => {
               if (status.geolcation_autoupdate) {
                 document.getElementById("sharing-live-geolocation").innerText =
-                  "stop live location";
+                  "stop sharing live location";
               } else {
                 document.getElementById("sharing-live-geolocation").innerText =
-                  "start live location";
+                  "share live location";
               }
             },
             onfocus: () => {
@@ -1420,15 +1626,21 @@ var options = {
                 if (status.geolcation_autoupdate) {
                   geolocation(geolocation_autoupdate_callback, false, true);
                   status.geolocation_autoupdate = false;
+                  document.getElementById(
+                    "sharing-live-geolocation"
+                  ).innerText = "share live location";
                 } else {
                   geolocation(geolocation_autoupdate_callback, true, false);
+                  document.getElementById(
+                    "sharing-live-geolocation"
+                  ).innerText = "share live location";
                 }
               } else {
                 side_toaster("no user online", 3000);
               }
             },
           },
-          "start shareing live location"
+          "start live location"
         ),
 
         m(
@@ -1746,7 +1958,7 @@ var chat = {
               if (status.notKaiOS)
                 top_bar("", "", "<img src='assets/image/back.svg'>");
             }
-          }, 10000);
+          }, 5000);
         },
       },
 
@@ -1780,6 +1992,11 @@ var chat = {
         if (item.nickname != settings.nickname) {
           nickname = item.nickname;
         }
+        let f;
+        if (item.type == "gps") {
+          f = JSON.parse(item.gps);
+        }
+
         return m(
           "article",
           {
@@ -1788,6 +2005,12 @@ var chat = {
             "data-type": item.type,
             "data-user-id": item.userId,
             "data-user-nickname": item.nickname,
+
+            onclick: () => {
+              if (item.type == "gps" || item.type == "gps_live") {
+                m.route.set("/map_view");
+              }
+            },
 
             onfocus: () => {
               status.current_user_id =
@@ -1807,6 +2030,16 @@ var chat = {
 
               if (item.type == "gps_live") {
                 status.current_article_type = "gps_live";
+
+                bottom_bar(
+                  "<img src='assets/image/send.svg'>",
+                  "",
+                  "<img src='assets/image/option.svg'>"
+                );
+              }
+
+              if (item.type == "gps") {
+                status.current_article_type = "gps";
 
                 bottom_bar(
                   "<img src='assets/image/send.svg'>",
@@ -1849,6 +2082,18 @@ var chat = {
               src: item.image,
               "data-filename": item.filename,
             }),
+
+            item.type === "gps"
+              ? m(
+                  "div",
+                  {
+                    class: "message-map",
+                  },
+
+                  m(MapComponent, { lat: f.lat, lng: f.lng })
+                )
+              : null,
+
             m("div", { class: "flex message-head" }, [
               m("div", time_parse(item.datetime)),
               m("div", { class: "nickname" }, nickname),
@@ -1857,6 +2102,23 @@ var chat = {
         );
       })
     );
+  },
+};
+
+let map_view = {
+  view: function () {
+    return m("div", {
+      id: "map",
+      oncreate: () => {
+        bottom_bar(
+          "<img src='assets/image/plus.svg'>",
+          "<img src='assets/image/person.svg'>",
+          "<img src='assets/image/minus.svg'>"
+        );
+
+        map_function();
+      },
+    });
   },
 };
 
@@ -1961,6 +2223,7 @@ m.route(root, "/intro", {
   "/about": about,
   "/about_page": about_page,
   "/privacy_policy": privacy_policy,
+  "/map_view": map_view,
 });
 
 function scrollToCenter() {
@@ -2097,6 +2360,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
         m.route.set("/about");
       }
 
+      if (m.route.get() == "/map_view") {
+        status.action = "";
+        m.route.set("/options");
+      }
+
       if (m.route.get() == "/options" || m.route.get() == "/links_page") {
         m.route.set("/chat?id=") + status.ownPeerId;
       }
@@ -2133,6 +2401,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
   //////////////
   ////LONGPRESS
   /////////////
+  let users_geolocation_count = 0;
 
   function longpress_action(param) {
     switch (param.key) {
@@ -2172,13 +2441,18 @@ document.addEventListener("DOMContentLoaded", function (e) {
         break;
 
       case "SoftRight":
+      case "Alt":
         if (route.startsWith("/chat")) m.route.set("/options");
         if (route == "/start") m.route.set("/about");
+
+        if (route == "/map_view") {
+          ZoomMap("out");
+        }
 
         break;
 
       case "SoftLeft":
-      case "Alt":
+      case "Control":
         if (route.startsWith("/chat") && status.action == "write") {
           sendMessage(document.getElementsByTagName("input")[0].value, "text");
           write();
@@ -2189,6 +2463,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
           } else {
             side_toaster("no user online", 3000);
           }
+        }
+
+        if (route == "/map_view") {
+          ZoomMap("in");
         }
 
         if (route == "/start") {
@@ -2218,11 +2496,41 @@ document.addEventListener("DOMContentLoaded", function (e) {
         if (route == "/open_peer_menu") {
           connect_to_peer(document.activeElement.getAttribute("data-id"));
         }
+        if (route == "/map_view") {
+          // Ensure users_geolocation_count is within bounds
+          if (
+            users_geolocation_count ==
+            Object.keys(status.userMarkers).length - 1
+          ) {
+            users_geolocation_count = 0;
+          } else {
+            users_geolocation_count++;
+          }
+
+          const userIds = Object.keys(status.userMarkers);
+          const currentMarker =
+            status.userMarkers[userIds[users_geolocation_count]];
+
+          if (currentMarker) {
+            map.setView(currentMarker.getLatLng());
+          } else {
+            console.log(
+              "Marker not found for index: " + users_geolocation_count
+            );
+          }
+        }
 
         if (route.startsWith("/chat")) {
           if (document.activeElement.tagName == "ARTICLE") {
             if (status.current_article_type == "link") {
               m.route.set("/links_page");
+            }
+
+            if (status.current_article_type == "gps_live") {
+              m.route.set("/map_view");
+            }
+            if (status.current_article_type == "gps") {
+              m.route.set("/map_view");
             }
             if (status.current_article_type == "image") {
               let filename = document.activeElement
@@ -2269,7 +2577,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
         m.route.get() == "/settings_page" ||
         m.route.get() == "/scan" ||
         m.route.get() == "/open_peer_menu" ||
-        m.route.get() == "/about"
+        m.route.get() == "/about" ||
+        m.route.get() == "/map_view"
       ) {
         evt.preventDefault();
         status.action = "";
@@ -2292,6 +2601,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
         evt.preventDefault();
         status.action = "";
         m.route.set("/about");
+      }
+
+      if (m.route.get() == "/map_view") {
+        evt.preventDefault();
+        status.action = "";
+        m.route.set("/chat?id=") + status.ownPeerId;
       }
 
       if (m.route.get() == "/options" || m.route.get() == "/links_page") {

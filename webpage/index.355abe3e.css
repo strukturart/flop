@@ -63,6 +63,7 @@ video {
 }
 
 #app {
+  height: 100%;
   position: relative;
 }
 
@@ -115,7 +116,7 @@ button {
   font-family: Roboto !important;
 }
 
-button:focus {
+button:focus, button:hover {
   background: orange;
   border: 0 solid gray;
 }
@@ -585,6 +586,19 @@ article img {
   100% {
     transform: rotate(360deg);
   }
+}
+
+#map {
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+img.myMarker {
+  filter: hue-rotate(120deg);
 }
 
 #about-text {

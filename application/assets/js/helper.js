@@ -98,13 +98,17 @@ export const geolocation = function (
   stopUpdate = false
 ) {
   let n = document.getElementById("side-toast");
-  n.style.transform = "translate(0vw,0px)";
-  n.innerHTML = "Determining position...";
+  if (n) {
+    n.style.transform = "translate(0vw,0px)";
+    n.innerHTML = "Determining position...";
+  }
 
   let showPosition = function (position) {
-    callback(position, autoupdate); // Pass the autoupdate flag to the callback
-    n.style.transform = "translate(-100vw,0px)";
-    n.innerHTML = "";
+    callback(position, autoupdate);
+    if (n) {
+      n.style.transform = "translate(-100vw,0px)";
+      n.innerHTML = "";
+    }
   };
 
   let error = function (error) {
@@ -118,53 +122,55 @@ export const geolocation = function (
         side_toaster("Current location not available", 2000);
         break;
       case error.TIMEOUT:
-        side_toaster("Timeout", 2000);
+      case 3:
+        side_toaster("Current location not available", 2000);
         break;
       default:
-        side_toaster("Unknown error", 2000);
+        side_toaster("Current location not available", 2000);
         break;
+    }
+
+    if (n) {
+      n.style.transform = "translate(-100vw,0px)";
+      n.innerHTML = "";
     }
   };
 
-  if (stopUpdate && watchId !== null) {
-    navigator.geolocation.clearWatch(watchId);
-    watchId = null;
-    n.style.transform = "translate(-100vw,0px)";
-    n.innerHTML = "";
+  if (stopUpdate && window.watchId !== undefined) {
+    navigator.geolocation.clearWatch(window.watchId);
+    window.watchId = null;
+    if (n) {
+      n.style.transform = "translate(-100vw,0px)";
+      n.innerHTML = "";
+    }
   } else {
     if (navigator.geolocation) {
       if (autoupdate) {
-        watchId = navigator.geolocation.watchPosition(showPosition, error, {
-          enableHighAccuracy: true,
-          timeout: 20000,
-          maximumAge: 0,
-        });
+        window.watchId = navigator.geolocation.watchPosition(
+          showPosition,
+          error,
+          {
+            enableHighAccuracy: true,
+            timeout: 40000,
+            maximumAge: 0,
+          }
+        );
       } else {
         navigator.geolocation.getCurrentPosition(showPosition, error, {
           enableHighAccuracy: true,
-          timeout: 20000,
+          timeout: 40000,
           maximumAge: 0,
         });
       }
     } else {
       side_toaster("Geolocation is not supported by this browser.", 2000);
+      if (n) {
+        n.style.transform = "translate(-100vw,0px)";
+        n.innerHTML = "";
+      }
     }
   }
 };
-
-function hashCode(str) {
-  var hash = 0;
-  for (var i = 0; i < str.length; i++) {
-    hash = ~~((hash << 5) - hash + str.charCodeAt(i));
-  }
-  return hash;
-}
-
-function intToRGB(i) {
-  var c = (i & 0x00ffffff).toString(16).toUpperCase();
-
-  return "00000".substring(0, 6 - c.length) + c;
-}
 
 export let clipboard = function () {
   try {
@@ -753,6 +759,11 @@ export let downloadFile = function (filename, data, callback) {
       });
   }
 };
+
+//leaflet
+/////////////////////
+////ZOOM MAP/////////
+////////////////////
 
 export function createAudioRecorder(
   startButtonId,

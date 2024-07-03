@@ -14,10 +14,10 @@ Currently you can exchange text messages, pictures and your location with each o
 - create chat
 - join chat
 - share location
+- share live location
 - share image
-- invite users
-
-![image-4](/images/mockup.png)
+- audio message (coming soon)
+  ![image-4](/images/mockup.png)
 
 ## yes, but
 
@@ -25,8 +25,7 @@ In order to establish a connection between 2 peers, you have to know the id of t
 
 ## How to install
 
-- bHaCkerStore
-- KaiOS Store(coming soon)
+- <a href="https://www.kaiostech.com/store/apps/?bundle_id=kaios.app.flop">KaiOS Store</a>
 - Sideloading <a href="https://www.martinkaptein.com/blog/sideloading-and-deploying-apps-to-kai-os/">step-by-step article</a> by martinkaptein
 
 ## Test Version
@@ -46,6 +45,7 @@ https://www.metered.ca/tools/openrelay/
 
 - peerJS MIT License
 - mithril
+- leaflet
 
 ## Donation
 
