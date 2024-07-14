@@ -243,9 +243,10 @@ function setupConnectionEvents(conn) {
       data.type == "image" ||
       data.type == "text" ||
       data.type == "gps_live" ||
-      data.type == "gps"
+      data.type == "gps" ||
+      data.type == "audio"
     ) {
-      if (data.file) {
+      if (data.type == "image") {
         if (!status.visibility) pushLocalNotification("flop", "new message");
 
         chat_data.push({
@@ -263,12 +264,12 @@ function setupConnectionEvents(conn) {
         stop_scan();
       }
 
-      if (data.text) {
-        if (!status.visibility) pushLocalNotification("flop", "new message");
+      if (data.type == "text") {
+        if (!status.visibility) pushLocalNotification("flop", data.content);
 
         chat_data.push({
           nickname: data.nickname,
-          content: data.text,
+          content: data.content,
           datetime: new Date(),
           type: data.type,
           userId: data.userId,
@@ -276,6 +277,20 @@ function setupConnectionEvents(conn) {
         m.redraw();
         focus_last_article();
         stop_scan();
+      }
+
+      if (data.type == "audio") {
+        const audioBuffer = new Uint8Array(data.content);
+        const audioBlob = new Blob([audioBuffer], { type: "audio/webm" });
+        const url = URL.createObjectURL(audioBlob);
+
+        chat_data.push({
+          nickname: data.nickname,
+          content: url,
+          datetime: new Date(),
+          type: data.type,
+          userId: data.userId,
+        });
       }
 
       if (data.type == "gps") {
@@ -580,9 +595,6 @@ const focus_last_article = function () {
 };
 
 function sendMessage(msg, type) {
-  //write data
-  //and send data
-
   if (type == "image") {
     // Encode the file using the FileReader API
     const reader = new FileReader();
@@ -618,17 +630,19 @@ function sendMessage(msg, type) {
   if (type == "text") {
     if (msg == "") return false;
     msg = {
-      text: msg,
       nickname: settings.nickname,
       type: type,
       userId: settings.custom_peer_id,
+      content: msg,
     };
     chat_data.push({
       nickname: settings.nickname,
-      content: msg.text,
+      content: msg.content,
       datetime: new Date(),
       type: type,
     });
+
+    console.log(msg);
 
     sendMessageToAll(msg);
 
@@ -662,7 +676,6 @@ function sendMessage(msg, type) {
     }
 
     msg = {
-      text: "",
       content: msg,
       nickname: settings.nickname,
       type: type,
@@ -697,6 +710,29 @@ function sendMessage(msg, type) {
       gps: msg,
     };
     sendMessageToAll(msg);
+  }
+
+  if (type == "audio") {
+    if (msg == "") return false;
+
+    chat_data.push({
+      nickname: settings.nickname,
+      content: URL.createObjectURL(msg),
+      datetime: new Date(),
+      type: type,
+      userId: settings.custom_peer_id,
+    });
+    msg.arrayBuffer().then((buffer) => {
+      // Send the buffer through the WebRTC data channel
+
+      msg = {
+        content: buffer,
+        nickname: settings.nickname,
+        type: type,
+        userId: settings.custom_peer_id,
+      };
+      sendMessageToAll(msg);
+    });
   }
 }
 //send to all connections
@@ -806,8 +842,6 @@ let create_peer = function () {
 
       status.current_room = peer.id;
 
-      console.log("peer" + peer.id + "/" + settings.custom_peer_id);
-
       m.route.set("/chat?id=" + settings.custom_peer_id);
 
       //make qr code
@@ -827,6 +861,7 @@ let create_peer = function () {
         content: "invitation link",
         datetime: new Date(),
         image: qrs.toDataURL(),
+        type: "image",
       };
 
       const noOtherUserOnlineElement = {
@@ -834,6 +869,7 @@ let create_peer = function () {
         nickname: settings.nickname,
         content: "no other user online, you should invite someone.",
         datetime: new Date(),
+        type: "text",
       };
 
       // Check if elements already exist before pushing
@@ -917,7 +953,7 @@ var MapComponent = {
     vnode.state.map.remove(); // Clean up the map instance when the component is removed
   },
   view: function () {
-    return m("div", { style: { height: "200px" } });
+    return m("div", { class: "map-component" });
   },
 };
 
@@ -1275,7 +1311,7 @@ var settings_page = {
     return m(
       "div",
       {
-        class: "page flex justify-content-spacearound",
+        class: "flex justify-content-center page",
         id: "settings_page",
         oncreate: () => {
           bottom_bar("", "", "");
@@ -1921,7 +1957,6 @@ var chat = {
         },
         oncreate: () => {
           top_bar("", "", "");
-          // const recorder = createAudioRecorder("start", "stop", "playback");
 
           if (status.notKaiOS == true)
             top_bar("", "", "<img src='assets/image/back.svg'>");
@@ -1980,7 +2015,7 @@ var chat = {
 
             bottom_bar(
               "<img src='assets/image/send.svg'>",
-              "",
+              "<img src='assets/image/record.svg'>",
               "<img src='assets/image/option.svg'>"
             );
           },
@@ -1988,6 +2023,7 @@ var chat = {
       ]),
       chat_data.map(function (item, index) {
         //own message
+        console.log(item);
         let nickname = "me";
         if (item.nickname != settings.nickname) {
           nickname = item.nickname;
@@ -2019,7 +2055,7 @@ var chat = {
                 document.activeElement.getAttribute("data-user-nickname");
 
               links = linkify.find(document.activeElement.textContent);
-              if (links.length > 0) {
+              if (links.length > 0 && item.type == "text") {
                 status.current_article_type = "link";
                 bottom_bar(
                   "<img src='assets/image/send.svg'>",
@@ -2070,18 +2106,23 @@ var chat = {
             },
           },
           [
-            m(
-              "div",
-              {
-                class: "message-main",
-              },
-              item.content
-            ),
-            m("img", {
-              class: "message-media",
-              src: item.image,
-              "data-filename": item.filename,
-            }),
+            item.type === "text"
+              ? m(
+                  "div",
+                  {
+                    class: "message-main",
+                  },
+                  item.content
+                )
+              : null,
+
+            item.type === "image"
+              ? m("img", {
+                  class: "message-media",
+                  src: item.image,
+                  "data-filename": item.filename,
+                })
+              : null,
 
             item.type === "gps"
               ? m(
@@ -2091,6 +2132,17 @@ var chat = {
                   },
 
                   m(MapComponent, { lat: f.lat, lng: f.lng })
+                )
+              : null,
+
+            item.type === "audio"
+              ? m(
+                  "div",
+                  {
+                    class: "audioplayer",
+                  },
+
+                  m("audio", { controls: true, src: item.content })
                 )
               : null,
 
@@ -2388,6 +2440,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
   // ////////////////////////////
   // //KEYPAD HANDLER////////////
   // ////////////////////////////
+  const audioRecorder = createAudioRecorder();
 
   let longpress = false;
   const longpress_timespan = 1000;
@@ -2404,14 +2457,27 @@ document.addEventListener("DOMContentLoaded", function (e) {
   let users_geolocation_count = 0;
 
   function longpress_action(param) {
-    switch (param.key) {
-      case "0":
-        break;
+    let route = m.route.get();
 
+    switch (param.key) {
       case "Backspace":
         closeAllConnections();
         peer.destroy();
         window.close();
+        break;
+
+      case "Enter":
+        if (
+          route.startsWith("/chat") &&
+          document.activeElement.tagName === "INPUT"
+        ) {
+          // Start recording
+          audioRecorder.startRecording().then(() => {
+            console.log("Recording started");
+            status.audio_recording = true;
+          });
+        }
+
         break;
     }
   }
@@ -2638,6 +2704,18 @@ document.addEventListener("DOMContentLoaded", function (e) {
   }
 
   function handleKeyUp(evt) {
+    if (status.audio_recording === true) {
+      // Stop recording and get the recorded data
+      audioRecorder.stopRecording().then((audioBlob) => {
+        // Do something with the audioBlob, e.g., create a URL or upload it
+
+        sendMessage(audioBlob, "audio");
+
+        // Clean up the audio recorder
+        audioRecorder.cleanup();
+      });
+    }
+
     if (status.visibility === false) return false;
 
     clearTimeout(timeout);

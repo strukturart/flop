@@ -760,64 +760,69 @@ export let downloadFile = function (filename, data, callback) {
   }
 };
 
-//leaflet
-/////////////////////
-////ZOOM MAP/////////
-////////////////////
-
-export function createAudioRecorder(
-  startButtonId,
-  stopButtonId,
-  playbackElementId
-) {
-  const startButton = document.getElementById(startButtonId);
-  const stopButton = document.getElementById(stopButtonId);
-  const playbackElement = document.getElementById(playbackElementId);
-
+export function createAudioRecorder() {
   let mediaRecorder;
   let recordedChunks = [];
+  let isInitialized = false;
+  let stream;
 
   async function init() {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorder = new MediaRecorder(stream);
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
 
       mediaRecorder.ondataavailable = (event) => {
+        console.log(event);
+
         if (event.data.size > 0) {
           recordedChunks.push(event.data);
+          console.log(event.data);
         }
       };
 
-      mediaRecorder.onstop = () => {
-        const blob = new Blob(recordedChunks, { type: "audio/webm" });
-        recordedChunks = [];
-        const url = URL.createObjectURL(blob);
-        playbackElement.src = url;
-      };
+      mediaRecorder.addEventListener("error", (event) => {
+        console.error(`Error recording stream: ${event.error.name}`);
+      });
 
-      startButton.addEventListener("click", startRecording);
-      stopButton.addEventListener("click", stopRecording);
+      isInitialized = true; // Set the flag to true when initialization is complete
     } catch (error) {
       console.error("Error accessing media devices.", error);
     }
   }
 
-  function startRecording() {
+  async function startRecording() {
+    if (!isInitialized) {
+      await init(); // Ensure initialization is complete before starting recording
+    }
+    recordedChunks = []; // Clear any previous recordings
     mediaRecorder.start();
-    startButton.disabled = true;
-    stopButton.disabled = false;
   }
 
   function stopRecording() {
-    mediaRecorder.stop();
-    startButton.disabled = false;
-    stopButton.disabled = true;
+    return new Promise((resolve) => {
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: "audio/webm" });
+        recordedChunks = [];
+        resolve(blob);
+      };
+      mediaRecorder.stop();
+    });
   }
 
-  init();
+  function cleanup() {
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+    }
+    mediaRecorder = null;
+    recordedChunks = [];
+    stream = null;
+    isInitialized = false;
+  }
 
+  // Return an object with the methods to start and stop recording
   return {
     startRecording,
     stopRecording,
+    cleanup,
   };
 }

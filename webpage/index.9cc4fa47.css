@@ -532,7 +532,13 @@ article div.user-date span {
 }
 
 article img {
-  min-width: 100%;
+  width: 100%;
+}
+
+article .map-component {
+  outline: 2px solid red;
+  width: 100%;
+  height: 200px;
 }
 
 [id*="page-"] {
@@ -719,14 +725,15 @@ div#message-input input {
 
 @media screen and (width >= 400px) and (width <= 1000px) {
   #app {
-    min-width: 100%;
-    max-width: 100%;
+    min-width: 400px;
+    max-width: 400px;
     padding: 50px 0 0;
     overflow: scroll;
   }
 
   article {
     min-width: 400px;
+    display: block;
     max-width: 400px !important;
   }
 
