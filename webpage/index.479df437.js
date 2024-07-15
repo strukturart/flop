@@ -35227,13 +35227,50 @@ var $17d11d58618cc814$var$scan_callback = function scan_callback(n) {
     $17d11d58618cc814$var$connect_to_peer(n);
     $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
 };
+//audio
+var $17d11d58618cc814$var$AudioComponent = {
+    oninit: function(vnode) {
+        vnode.state.isPlaying = false;
+        vnode.state.audio = null;
+    },
+    view: function(vnode) {
+        var togglePlayPause = function togglePlayPause() {
+            if (vnode.state.isPlaying) vnode.state.audio.pause();
+            else vnode.state.audio.play();
+            vnode.state.isPlaying = !vnode.state.isPlaying;
+        };
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div.audio-player", [
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("audio", {
+                src: vnode.attrs.src,
+                onkeydown: function onkeydown(e) {
+                    if (e.key === "Enter") togglePlayPause();
+                },
+                oncreate: function(audioVnode) {
+                    vnode.state.audio = audioVnode.dom;
+                    audioVnode.dom.controls = false;
+                    // Add event listener for 'ended' event
+                    audioVnode.dom.addEventListener("ended", function() {
+                        vnode.state.isPlaying = false;
+                        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
+                    });
+                },
+                style: {
+                    display: "none"
+                }
+            }),
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
+                onclick: togglePlayPause
+            }, vnode.state.isPlaying ? "Pause" : "Play")
+        ]);
+    }
+};
 //map
 var $17d11d58618cc814$var$MapComponent = {
     oncreate: function oncreate(vnode) {
         var mapContainer = vnode.dom;
         var lat = vnode.attrs.lat;
         var lng = vnode.attrs.lng;
-        var map = (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).map(mapContainer, {
+        var map_box = (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).map(mapContainer, {
             keyboard: true,
             zoomControl: false
         }).setView([
@@ -35242,12 +35279,12 @@ var $17d11d58618cc814$var$MapComponent = {
         ], 13);
         (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution: "\xa9 OpenStreetMap contributors"
-        }).addTo(map);
+        }).addTo(map_box);
         (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).marker([
             lat,
             lng
-        ]).addTo(map);
-        vnode.state.map = map; // Store the map instance in the vnode state
+        ]).addTo(map_box);
+        vnode.state.map = map_box; // Store the map instance in the vnode state
     },
     onremove: function onremove(vnode) {
         vnode.state.map.remove(); // Clean up the map instance when the component is removed
@@ -35645,7 +35682,6 @@ var $17d11d58618cc814$var$options = {
     view: function view() {
         return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
             class: "flex justify-content-center page",
-            id: "login",
             oncreate: function() {
                 (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "");
                 if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
@@ -35909,7 +35945,7 @@ var $17d11d58618cc814$var$chat = {
             oncreate: function() {
                 (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "");
                 if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS == true) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
-                (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
+                (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/record.svg'>", "<img src='assets/image/option.svg'>");
                 $17d11d58618cc814$var$user_check = setInterval(function() {
                     if ($17d11d58618cc814$var$connectedPeers) {
                         $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline = $17d11d58618cc814$var$connectedPeers.length;
@@ -35935,18 +35971,17 @@ var $17d11d58618cc814$var$chat = {
                 type: "text",
                 onblur: function() {
                     setTimeout(function() {
-                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
+                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/record.svg'>", "<img src='assets/image/option.svg'>");
                         $17d11d58618cc814$var$write();
                     }, 1000);
                 },
                 onfocus: function() {
                     $17d11d58618cc814$export$471f7ae5c4103ae1.action = "write";
-                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "<img src='assets/image/record.svg'>", "<img src='assets/image/option.svg'>");
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "", "<img src='assets/image/option.svg'>");
                 }
             })
         ]), $17d11d58618cc814$var$chat_data.map(function(item, index) {
             //own message
-            console.log(item);
             var nickname = "me";
             if (item.nickname != $17d11d58618cc814$export$a5a6e0b888b2c992.nickname) nickname = item.nickname;
             var f;
@@ -35966,24 +36001,28 @@ var $17d11d58618cc814$var$chat = {
                     $17d11d58618cc814$var$links = $410e7a787f87a2b4$export$71aa6c912b956294(document.activeElement.textContent);
                     if ($17d11d58618cc814$var$links.length > 0 && item.type == "text") {
                         $17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type = "link";
-                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "<img src='assets/image/link.svg'>", "<img src='assets/image/option.svg'>");
+                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/link.svg'>", "<img src='assets/image/option.svg'>");
                     }
                     if (item.type == "gps_live") {
                         $17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type = "gps_live";
-                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "", "<img src='assets/image/option.svg'>");
+                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
                     }
                     if (item.type == "gps") {
                         $17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type = "gps";
-                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "", "<img src='assets/image/option.svg'>");
+                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
                     }
                     if (item.type == "image") {
                         $17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type = "image";
                         if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) return false;
-                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "<img src='assets/image/save.svg'>", "<img src='assets/image/option.svg'>");
+                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/save.svg'>", "<img src='assets/image/option.svg'>");
+                    }
+                    if (item.type == "audio") {
+                        $17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type = "audio";
+                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/play.svg'>", "<img src='assets/image/option.svg'>");
                     }
                     if (item.type == "text") {
                         $17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type = "text";
-                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "", "<img src='assets/image/option.svg'>");
+                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
                     }
                 }
             }, [
@@ -36003,8 +36042,7 @@ var $17d11d58618cc814$var$chat = {
                 })) : null,
                 item.type === "audio" ? (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                     class: "audioplayer"
-                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("audio", {
-                    controls: true,
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))($17d11d58618cc814$var$AudioComponent, {
                     src: item.content
                 })) : null,
                 (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
@@ -36238,10 +36276,10 @@ document.addEventListener("DOMContentLoaded", function(e) {
                 window.close();
                 break;
             case "Enter":
-                if (route.startsWith("/chat") && document.activeElement.tagName === "INPUT") // Start recording
+                if (route.startsWith("/chat") && $17d11d58618cc814$export$471f7ae5c4103ae1.action !== "write") // Start recording
                 audioRecorder.startRecording().then(function() {
-                    console.log("Recording started");
                     $17d11d58618cc814$export$471f7ae5c4103ae1.audio_recording = true;
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/record-live.svg'>", "<img src='assets/image/option.svg'>");
                 });
                 break;
         }
@@ -36302,6 +36340,11 @@ document.addEventListener("DOMContentLoaded", function(e) {
                 if (route.startsWith("/chat")) {
                     if (document.activeElement.tagName == "ARTICLE") {
                         if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type == "link") (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/links_page");
+                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type == "audio") document.activeElement.querySelectorAll("div.audio-player").forEach(function(e) {
+                            var playPauseButton = e.querySelector("button");
+                            // Check if the play/pause button exists and trigger a click event
+                            if (playPauseButton) playPauseButton.click();
+                        });
                         if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type == "gps_live") (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/map_view");
                         if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type == "gps") (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/map_view");
                         if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type == "image") {
@@ -36378,6 +36421,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
         audioRecorder.stopRecording().then(function(audioBlob) {
             // Do something with the audioBlob, e.g., create a URL or upload it
             $17d11d58618cc814$var$sendMessage(audioBlob, "audio");
+            (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/record.svg'>", "<img src='assets/image/option.svg'>");
             // Clean up the audio recorder
             audioRecorder.cleanup();
         });

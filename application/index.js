@@ -930,24 +930,72 @@ let scan_callback = function (n) {
   connect_to_peer(n);
   status.action = "";
 };
+
+//audio
+
+var AudioComponent = {
+  oninit: (vnode) => {
+    vnode.state.isPlaying = false;
+    vnode.state.audio = null;
+  },
+  view: (vnode) => {
+    return m("div.audio-player", [
+      m("audio", {
+        src: vnode.attrs.src,
+        onkeydown: function (e) {
+          if (e.key === "Enter") togglePlayPause();
+        },
+        oncreate: (audioVnode) => {
+          vnode.state.audio = audioVnode.dom;
+          audioVnode.dom.controls = false;
+
+          // Add event listener for 'ended' event
+          audioVnode.dom.addEventListener("ended", function () {
+            vnode.state.isPlaying = false;
+            m.redraw();
+          });
+        },
+        style: { display: "none" }, // Hide the default audio element
+      }),
+      m(
+        "button",
+        {
+          onclick: togglePlayPause,
+        },
+        vnode.state.isPlaying ? "Pause" : "Play"
+      ),
+    ]);
+
+    function togglePlayPause() {
+      if (vnode.state.isPlaying) {
+        vnode.state.audio.pause();
+      } else {
+        vnode.state.audio.play();
+      }
+      vnode.state.isPlaying = !vnode.state.isPlaying;
+    }
+  },
+};
+
 //map
 var MapComponent = {
   oncreate: function (vnode) {
     var mapContainer = vnode.dom;
     var lat = vnode.attrs.lat;
     var lng = vnode.attrs.lng;
-    var map = L.map(mapContainer, {
-      keyboard: true,
+    var map_box = L.map(mapContainer, {
+      keyboard: false,
       zoomControl: false,
+      attributionControl: false,
     }).setView([lat, lng], 13);
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "© OpenStreetMap contributors",
-    }).addTo(map);
+    }).addTo(map_box);
 
-    L.marker([lat, lng]).addTo(map);
+    L.marker([lat, lng]).addTo(map_box);
 
-    vnode.state.map = map; // Store the map instance in the vnode state
+    vnode.state.map = map_box; // Store the map instance in the vnode state
   },
   onremove: function (vnode) {
     vnode.state.map.remove(); // Clean up the map instance when the component is removed
@@ -1023,7 +1071,7 @@ function MovemMap(direction) {
 
 // Initialize the map and define the setup
 function map_function() {
-  map = L.map("map", { keyboard: true, zoomControl: false }).setView(
+  let map = L.map("map", { keyboard: true, zoomControl: false }).setView(
     [51.505, -0.09],
     13
   );
@@ -1543,7 +1591,6 @@ var options = {
       "div",
       {
         class: "flex justify-content-center page",
-        id: "login",
         oncreate: () => {
           top_bar("", "", "");
 
@@ -1850,7 +1897,6 @@ var open_peer_menu = {
       "div",
       {
         class: "flex justify-content-center",
-        id: "open-peer-menu",
         oncreate: () => {
           if (status.notKaiOS == true)
             top_bar("", "", "<img src='assets/image/back.svg'>");
@@ -1963,7 +2009,7 @@ var chat = {
 
           bottom_bar(
             "<img src='assets/image/pencil.svg'>",
-            "",
+            "<img src='assets/image/record.svg'>",
             "<img src='assets/image/option.svg'>"
           );
           user_check = setInterval(() => {
@@ -2004,7 +2050,7 @@ var chat = {
             setTimeout(() => {
               bottom_bar(
                 "<img src='assets/image/pencil.svg'>",
-                "",
+                "<img src='assets/image/record.svg'>",
                 "<img src='assets/image/option.svg'>"
               );
               write();
@@ -2015,7 +2061,7 @@ var chat = {
 
             bottom_bar(
               "<img src='assets/image/send.svg'>",
-              "<img src='assets/image/record.svg'>",
+              "",
               "<img src='assets/image/option.svg'>"
             );
           },
@@ -2023,7 +2069,6 @@ var chat = {
       ]),
       chat_data.map(function (item, index) {
         //own message
-        console.log(item);
         let nickname = "me";
         if (item.nickname != settings.nickname) {
           nickname = item.nickname;
@@ -2058,7 +2103,7 @@ var chat = {
               if (links.length > 0 && item.type == "text") {
                 status.current_article_type = "link";
                 bottom_bar(
-                  "<img src='assets/image/send.svg'>",
+                  "<img src='assets/image/pencil.svg'>",
                   "<img src='assets/image/link.svg'>",
                   "<img src='assets/image/option.svg'>"
                 );
@@ -2068,7 +2113,7 @@ var chat = {
                 status.current_article_type = "gps_live";
 
                 bottom_bar(
-                  "<img src='assets/image/send.svg'>",
+                  "<img src='assets/image/pencil.svg'>",
                   "",
                   "<img src='assets/image/option.svg'>"
                 );
@@ -2078,7 +2123,7 @@ var chat = {
                 status.current_article_type = "gps";
 
                 bottom_bar(
-                  "<img src='assets/image/send.svg'>",
+                  "<img src='assets/image/pencil.svg'>",
                   "",
                   "<img src='assets/image/option.svg'>"
                 );
@@ -2088,8 +2133,17 @@ var chat = {
                 status.current_article_type = "image";
                 if (status.notKaiOS) return false;
                 bottom_bar(
-                  "<img src='assets/image/send.svg'>",
+                  "<img src='assets/image/pencil.svg'>",
                   "<img src='assets/image/save.svg'>",
+                  "<img src='assets/image/option.svg'>"
+                );
+              }
+
+              if (item.type == "audio") {
+                status.current_article_type = "audio";
+                bottom_bar(
+                  "<img src='assets/image/pencil.svg'>",
+                  "<img src='assets/image/play.svg'>",
                   "<img src='assets/image/option.svg'>"
                 );
               }
@@ -2098,7 +2152,7 @@ var chat = {
                 status.current_article_type = "text";
 
                 bottom_bar(
-                  "<img src='assets/image/send.svg'>",
+                  "<img src='assets/image/pencil.svg'>",
                   "",
                   "<img src='assets/image/option.svg'>"
                 );
@@ -2142,7 +2196,7 @@ var chat = {
                     class: "audioplayer",
                   },
 
-                  m("audio", { controls: true, src: item.content })
+                  m(AudioComponent, { src: item.content })
                 )
               : null,
 
@@ -2167,6 +2221,8 @@ let map_view = {
           "<img src='assets/image/person.svg'>",
           "<img src='assets/image/minus.svg'>"
         );
+
+        top_bar("", "", "");
 
         map_function();
       },
@@ -2467,14 +2523,15 @@ document.addEventListener("DOMContentLoaded", function (e) {
         break;
 
       case "Enter":
-        if (
-          route.startsWith("/chat") &&
-          document.activeElement.tagName === "INPUT"
-        ) {
+        if (route.startsWith("/chat") && status.action !== "write") {
           // Start recording
           audioRecorder.startRecording().then(() => {
-            console.log("Recording started");
             status.audio_recording = true;
+            bottom_bar(
+              "<img src='assets/image/pencil.svg'>",
+              "<img src='assets/image/record-live.svg'>",
+              "<img src='assets/image/option.svg'>"
+            );
           });
         }
 
@@ -2592,9 +2649,23 @@ document.addEventListener("DOMContentLoaded", function (e) {
               m.route.set("/links_page");
             }
 
+            if (status.current_article_type == "audio") {
+              document.activeElement
+                .querySelectorAll("div.audio-player")
+                .forEach((e) => {
+                  var playPauseButton = e.querySelector("button");
+
+                  // Check if the play/pause button exists and trigger a click event
+                  if (playPauseButton) {
+                    playPauseButton.click();
+                  }
+                });
+            }
+
             if (status.current_article_type == "gps_live") {
               m.route.set("/map_view");
             }
+
             if (status.current_article_type == "gps") {
               m.route.set("/map_view");
             }
@@ -2710,6 +2781,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
         // Do something with the audioBlob, e.g., create a URL or upload it
 
         sendMessage(audioBlob, "audio");
+        bottom_bar(
+          "<img src='assets/image/pencil.svg'>",
+          "<img src='assets/image/record.svg'>",
+          "<img src='assets/image/option.svg'>"
+        );
 
         // Clean up the audio recorder
         audioRecorder.cleanup();

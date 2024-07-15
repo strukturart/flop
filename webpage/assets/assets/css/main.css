@@ -592,8 +592,7 @@ article img {
 article .map-component {
   width: 100%;
   min-width: 90vw;
-  height: 200px;
-  overflow: hidden;
+  height: auto;
 }
 
 [id*="page-"] {
