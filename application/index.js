@@ -46,6 +46,8 @@ export let status = {
   userMarkers: [],
 };
 
+const audioRecorder = createAudioRecorder();
+
 if ("b2g" in navigator || "navigator.mozApps" in navigator)
   status.notKaiOS = false;
 
@@ -642,8 +644,6 @@ function sendMessage(msg, type) {
       type: type,
     });
 
-    console.log(msg);
-
     sendMessageToAll(msg);
 
     focus_last_article();
@@ -983,17 +983,28 @@ var MapComponent = {
     var mapContainer = vnode.dom;
     var lat = vnode.attrs.lat;
     var lng = vnode.attrs.lng;
-    var map_box = L.map(mapContainer, {
+
+    let map_box = L.map(mapContainer, {
       keyboard: false,
       zoomControl: false,
-      attributionControl: false,
-    }).setView([lat, lng], 13);
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "© OpenStreetMap contributors",
+    }).setView([lat, lng], 10);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map_box);
 
-    L.marker([lat, lng]).addTo(map_box);
+    setTimeout(() => {
+      document.querySelector(".leaflet-control-container").style.display =
+        "none";
+    }, 5);
+
+    setTimeout(() => {
+      map_box.setView([lat, lng], 10);
+    }, 5000);
+
+    const myMarker = L.marker([lat, lng]).addTo(map_box);
+
+    myMarker._icon.classList.add("myMarker");
 
     vnode.state.map = map_box; // Store the map instance in the vnode state
   },
@@ -1030,8 +1041,8 @@ let geolocation_autoupdate_callback = (e) => {
   }
 };
 
-let map,
-  step = 20;
+let map;
+let step = 0.004;
 const userMarkers = {};
 const mainmarker = { current_lat: 0, current_lng: 0 }; // Example mainmarker object
 
@@ -1048,12 +1059,9 @@ function ZoomMap(in_out) {
 }
 
 // Function to move the map
-function MovemMap(direction) {
-  if (!map) return; // Check if the map is initialized
-
-  mapcenter_position();
-
+function MoveMap(direction) {
   let n = map.getCenter();
+
   mainmarker.current_lat = n.lat;
   mainmarker.current_lng = n.lng;
 
@@ -1071,10 +1079,10 @@ function MovemMap(direction) {
 
 // Initialize the map and define the setup
 function map_function() {
-  let map = L.map("map", { keyboard: true, zoomControl: false }).setView(
-    [51.505, -0.09],
-    13
-  );
+  map = L.map("map-container", {
+    keyboard: true,
+    zoomControl: false,
+  }).setView([51.505, -0.09], 13);
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution:
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -1106,25 +1114,28 @@ function map_function() {
 
   // Function to update or add markers
   function updateMarkers(status) {
-    const usersGeolocation = status.users_geolocation;
-    status.userMarkers = status.userMarkers || {}; // Ensure userMarkers is initialized as an object
+    if (status.users_geolocation) {
+      const usersGeolocation = status.users_geolocation;
+      status.userMarkers = status.userMarkers || {}; // Ensure userMarkers is initialized as an object
 
-    usersGeolocation.forEach((user) => {
-      const { userId, gps } = user;
-      const { lat, lng } = JSON.parse(gps); // Parse the gps string
+      usersGeolocation.forEach((user) => {
+        const { userId, gps } = user;
+        const { lat, lng } = JSON.parse(gps); // Parse the gps string
 
-      if (status.userMarkers[userId]) {
-        // Update marker position
-        status.userMarkers[userId].setLatLng([lat, lng]);
-      } else {
-        // Create new marker
-        const marker = L.marker([lat, lng])
-          .addTo(map)
-          .bindPopup(userId)
-          .openPopup();
-        status.userMarkers[userId] = marker; // Store marker in the object with userId as key
-      }
-    });
+        if (status.userMarkers[userId]) {
+          // Update marker position
+          status.userMarkers[userId].setLatLng([lat, lng]);
+        } else {
+          // Create new marker
+          const marker = L.marker([lat, lng])
+            .addTo(map)
+            .bindPopup(userId)
+            .openPopup();
+          status.userMarkers[userId] = marker; // Store marker in the object with userId as key
+        }
+      });
+    } else {
+    }
   }
 
   setTimeout(() => {
@@ -1133,39 +1144,43 @@ function map_function() {
 
   map.on("zoomend", function () {
     let zoom_level = map.getZoom();
-    if (zoom_level < 2) {
-      step = 20;
-    } else if (zoom_level > 2) {
-      step = 8;
-    } else if (zoom_level > 3) {
-      step = 4.5;
-    } else if (zoom_level > 4) {
-      step = 2.75;
-    } else if (zoom_level > 5) {
-      step = 1.2;
-    } else if (zoom_level > 6) {
-      step = 0.5;
-    } else if (zoom_level > 7) {
-      step = 0.3;
-    } else if (zoom_level > 8) {
-      step = 0.15;
-    } else if (zoom_level > 9) {
-      step = 0.075;
-    } else if (zoom_level > 10) {
-      step = 0.04;
-    } else if (zoom_level > 11) {
-      step = 0.02;
-    } else if (zoom_level > 12) {
-      step = 0.01;
-    } else if (zoom_level > 13) {
-      step = 0.004;
-    } else if (zoom_level > 14) {
-      step = 0.002;
+    console.log(zoom_level);
+
+    if (zoom_level > 16) {
+      step = 0.0005;
     } else if (zoom_level > 15) {
       step = 0.001;
-    } else if (zoom_level > 16) {
-      step = 0.0005;
+    } else if (zoom_level > 14) {
+      step = 0.002;
+    } else if (zoom_level > 13) {
+      step = 0.004;
+    } else if (zoom_level > 12) {
+      step = 0.01;
+    } else if (zoom_level > 11) {
+      step = 0.02;
+    } else if (zoom_level > 10) {
+      step = 0.04;
+    } else if (zoom_level > 9) {
+      step = 0.075;
+    } else if (zoom_level > 8) {
+      step = 0.15;
+    } else if (zoom_level > 7) {
+      step = 0.3;
+    } else if (zoom_level > 6) {
+      step = 0.5;
+    } else if (zoom_level > 5) {
+      step = 1.2;
+    } else if (zoom_level > 4) {
+      step = 2.75;
+    } else if (zoom_level > 3) {
+      step = 4.5;
+    } else if (zoom_level > 2) {
+      step = 8;
+    } else {
+      step = 20;
     }
+
+    console.log(step);
   });
 }
 
@@ -1590,7 +1605,7 @@ var options = {
     return m(
       "div",
       {
-        class: "flex justify-content-center page",
+        class: "flex justify-content-center algin-item-start page",
         oncreate: () => {
           top_bar("", "", "");
 
@@ -1772,7 +1787,7 @@ var start = {
     return m(
       "div",
       {
-        class: "flex justify-content-spacearound",
+        class: "flex justify-content-center algin-item-start page",
         id: "start",
         oncreate: () => {
           top_bar("", "", "");
@@ -1896,7 +1911,7 @@ var open_peer_menu = {
     return m(
       "div",
       {
-        class: "flex justify-content-center",
+        class: "flex justify-content-center algin-item-start",
         oncreate: () => {
           if (status.notKaiOS == true)
             top_bar("", "", "<img src='assets/image/back.svg'>");
@@ -1993,7 +2008,7 @@ var chat = {
       "div",
       {
         id: "chat",
-        class: "flex justify-content-center",
+        class: "flex justify-content-center algin-item-start",
         onremove: () => {
           clearInterval(user_check);
 
@@ -2009,7 +2024,7 @@ var chat = {
 
           bottom_bar(
             "<img src='assets/image/pencil.svg'>",
-            "<img src='assets/image/record.svg'>",
+            "",
             "<img src='assets/image/option.svg'>"
           );
           user_check = setInterval(() => {
@@ -2050,18 +2065,16 @@ var chat = {
             setTimeout(() => {
               bottom_bar(
                 "<img src='assets/image/pencil.svg'>",
-                "<img src='assets/image/record.svg'>",
+                "",
                 "<img src='assets/image/option.svg'>"
               );
-              write();
+              if (status.action === "write") write();
             }, 1000);
           },
           onfocus: () => {
-            status.action = "write";
-
             bottom_bar(
-              "<img src='assets/image/send.svg'>",
-              "",
+              "<img src='assets/image/pencil.svg'>",
+              "<img src='assets/image/record.svg'>",
               "<img src='assets/image/option.svg'>"
             );
           },
@@ -2114,7 +2127,7 @@ var chat = {
 
                 bottom_bar(
                   "<img src='assets/image/pencil.svg'>",
-                  "",
+                  "<img src='assets/image/select.svg'>",
                   "<img src='assets/image/option.svg'>"
                 );
               }
@@ -2124,7 +2137,7 @@ var chat = {
 
                 bottom_bar(
                   "<img src='assets/image/pencil.svg'>",
-                  "",
+                  "<img src='assets/image/select.svg'>",
                   "<img src='assets/image/option.svg'>"
                 );
               }
@@ -2214,7 +2227,9 @@ var chat = {
 let map_view = {
   view: function () {
     return m("div", {
-      id: "map",
+      class: "width-100 height-100",
+
+      id: "map-container",
       oncreate: () => {
         bottom_bar(
           "<img src='assets/image/plus.svg'>",
@@ -2496,10 +2511,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
   // ////////////////////////////
   // //KEYPAD HANDLER////////////
   // ////////////////////////////
-  const audioRecorder = createAudioRecorder();
 
   let longpress = false;
-  const longpress_timespan = 1000;
+  const longpress_timespan = 2000;
   let timeout;
 
   function repeat_action(param) {
@@ -2523,10 +2537,20 @@ document.addEventListener("DOMContentLoaded", function (e) {
         break;
 
       case "Enter":
-        if (route.startsWith("/chat") && status.action !== "write") {
+        if (
+          route.startsWith("/chat") &&
+          document.activeElement.tagName == "INPUT" &&
+          status.notKaiOS
+        ) {
+          document.activeElement.blur();
           // Start recording
+          if (status.audio_recording) return false;
           audioRecorder.startRecording().then(() => {
             status.audio_recording = true;
+
+            document.getElementById("app").style.opacity = "0";
+            document.querySelector(".playing").style.opacity = "1";
+
             bottom_bar(
               "<img src='assets/image/pencil.svg'>",
               "<img src='assets/image/record-live.svg'>",
@@ -2548,25 +2572,58 @@ document.addEventListener("DOMContentLoaded", function (e) {
     let route = m.route.get();
 
     switch (param.key) {
+      case "ArrowRight":
+        if (route == "/map_view") {
+          MoveMap("right");
+        }
+        break;
+
+      case "ArrowLeft":
+        if (route == "/map_view") {
+          MoveMap("left");
+        }
+        break;
       case "ArrowUp":
         if (
           route.startsWith("/chat") &&
           document.activeElement.tagName === "INPUT"
         ) {
+          status.action == "write";
           write();
         }
-        nav(-1);
+
+        if (route == "/map_view") {
+          MoveMap("up");
+        } else {
+          nav(-1);
+        }
 
         break;
       case "ArrowDown":
-        nav(+1);
+        if (route == "/map_view") {
+          MoveMap("down");
+        } else {
+          nav(+1);
+        }
 
         break;
 
       case "SoftRight":
       case "Alt":
-        if (route.startsWith("/chat")) m.route.set("/options");
+        if (route.startsWith("/chat") && !status.audio_recording)
+          m.route.set("/options");
         if (route == "/start") m.route.set("/about");
+
+        if (status.audio_recording && route.startsWith("/chat")) {
+          audioRecorder.stopRecording().then((audioBlob) => {
+            status.audio_recording = false;
+
+            document.getElementById("app").style.opacity = "1";
+            document.querySelector(".playing").style.opacity = "0";
+
+            write();
+          });
+        }
 
         if (route == "/map_view") {
           ZoomMap("out");
@@ -2576,6 +2633,30 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
       case "SoftLeft":
       case "Control":
+        if (
+          route.startsWith("/chat") &&
+          status.action == "write" &&
+          status.audio_recording
+        ) {
+          // Stop recording and get the recorded data
+          audioRecorder.stopRecording().then((audioBlob) => {
+            document.getElementById("app").style.opacity = "1";
+            document.querySelector(".playing").style.opacity = "0";
+
+            sendMessage(audioBlob, "audio");
+            bottom_bar(
+              "<img src='assets/image/pencil.svg'>",
+              "",
+              "<img src='assets/image/option.svg'>"
+            );
+
+            // Clean up the audio recorder
+            audioRecorder.cleanup();
+            status.audio_recording = false;
+            write();
+          });
+        }
+
         if (route.startsWith("/chat") && status.action == "write") {
           sendMessage(document.getElementsByTagName("input")[0].value, "text");
           write();
@@ -2599,6 +2680,22 @@ document.addEventListener("DOMContentLoaded", function (e) {
         break;
 
       case "Enter":
+        if (document.activeElement.tagName == "INPUT") {
+          if (route.startsWith("/chat" && status.action == "write"))
+            if (status.audio_recording) return false;
+          audioRecorder.startRecording().then(() => {
+            document.getElementById("app").style.opacity = "0";
+            document.querySelector(".playing").style.opacity = "1";
+
+            status.audio_recording = true;
+            bottom_bar(
+              "<img src='assets/image/send.svg'>",
+              "<img src='assets/image/record-live.svg'>",
+              "<img src='assets/image/cancel.svg'>"
+            );
+          });
+        }
+
         if (document.activeElement.classList.contains("input-parent")) {
           document.activeElement.children[0].focus();
         }
@@ -2637,6 +2734,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
           if (currentMarker) {
             map.setView(currentMarker.getLatLng());
           } else {
+            users_geolocation_count = 0;
+
             console.log(
               "Marker not found for index: " + users_geolocation_count
             );
@@ -2708,6 +2807,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
       evt.preventDefault();
     }
 
+    if (evt.key == "Enter" && route == "/chat") {
+      evt.preventDefault();
+    }
+
     if (evt.key === "Backspace") {
       if (
         route.startsWith("/chat") ||
@@ -2776,20 +2879,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
   function handleKeyUp(evt) {
     if (status.audio_recording === true) {
-      // Stop recording and get the recorded data
-      audioRecorder.stopRecording().then((audioBlob) => {
-        // Do something with the audioBlob, e.g., create a URL or upload it
-
-        sendMessage(audioBlob, "audio");
-        bottom_bar(
-          "<img src='assets/image/pencil.svg'>",
-          "<img src='assets/image/record.svg'>",
-          "<img src='assets/image/option.svg'>"
-        );
-
-        // Clean up the audio recorder
-        audioRecorder.cleanup();
-      });
     }
 
     if (status.visibility === false) return false;

@@ -15,9 +15,9 @@
     <link rel="stylesheet" href="assets/css/main.css" />
     <link rel="stylesheet" href="assets/css/grid.css" />
     <link rel="stylesheet" href="assets/css/qr-reader.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""/>
+    <link rel="stylesheet" href="assets/css/leaflet.css" />
+
+  
 
 </head>
 
@@ -43,6 +43,13 @@ content="width=device-width,user-scalable=no,initial-scale=1"
             <div></div>
             <div></div>
           </div>
+        <div class="playing">
+            <span class="playing__bar playing__bar1"></span>
+            <span class="playing__bar playing__bar2"></span>
+            <span class="playing__bar playing__bar3"></span>
+        </div>
+
+       
 
             <div id="bottom-bar">
                 <div class="inner flex justify-content-spacebetween width-100">
@@ -79,7 +86,6 @@ content="width=device-width,user-scalable=no,initial-scale=1"
 </body>
 <script type="module" src="index.js"></script>
 <script src="assets/js/peerjs.js"></script>
-
 <script src="http://127.0.0.1/api/v1/shared/core.js"></script>
 <script src="http://127.0.0.1/api/v1/shared/session.js"></script>
 <script src="http://127.0.0.1/api/v1/apps/service.js"></script>

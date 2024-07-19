@@ -4,9 +4,9 @@
   "source": "application/index.html",
   "browserslist": "Firefox <= 48",
   "scripts": {
-    "build": "rm -rf dist/* && parcel build --no-source-maps --no-optimize application/index.html  && cp application/manifest.webapp dist && mkdir dist/assets && cp -r application/assets/icons dist/assets/",
+    "build": "rm -rf dist/* && parcel build --no-source-maps --no-optimize application/index.html  && cp application/manifest.webapp dist && mkdir dist/assets && cp -r application/assets/icons dist/assets/ && cp -r application/assets/css/marker-icon.png dist/",
     "run": "parcel",
-    "web": "rm -rf webpage/* && parcel build --dist-dir webpage --public-url ./ --no-source-maps --no-optimize application/index.html && cp application/manifest.webapp webpage && cp application/manifest.webmanifest webpage && mkdir -p webpage/assets && cp -r application/assets/icons webpage/assets/ && cp -r application/assets/image webpage/assets/ && cp -r application/assets/fonts webpage/assets/"
+    "web": "rm -rf webpage/* && parcel build --dist-dir webpage --public-url ./ --no-source-maps --no-optimize application/index.html && cp application/manifest.webapp webpage && cp application/manifest.webmanifest webpage && mkdir -p webpage/assets && cp -r application/assets/icons webpage/assets/ && cp -r application/assets/image webpage/assets/ && cp -r application/assets/fonts webpage/assets/ && cp -r application/assets/css/marker-icon.png webpage/"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.10",
