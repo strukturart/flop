@@ -3222,8 +3222,13 @@ function $162001cafa2b40fd$export$637fd9537164f29b() {
     function stopRecording() {
         return new Promise(function(resolve) {
             mediaRecorder.onstop = function() {
+                var mimeType = "";
+                if (MediaRecorder.isTypeSupported("audio/webm; codecs=opus")) mimeType = "audio/webm; codecs=opus";
+                else if (MediaRecorder.isTypeSupported("audio/ogg; codecs=opus")) mimeType = "audio/ogg; codecs=opus";
+                else if (MediaRecorder.isTypeSupported("audio/mpeg")) mimeType = "audio/mpeg";
+                else console.warn("No supported MIME type found for audio recording.");
                 var blob = new Blob(recordedChunks, {
-                    type: "audio/webm"
+                    type: mimeType
                 });
                 recordedChunks = [];
                 resolve(blob);
@@ -34508,7 +34513,8 @@ var $17d11d58618cc814$export$471f7ae5c4103ae1 = {
     current_user_nickname: "",
     current_room: "",
     users_geolocation: [],
-    userMarkers: []
+    userMarkers: [],
+    addressbook_in_focus: ""
 };
 var $17d11d58618cc814$var$audioRecorder = (0, $162001cafa2b40fd$export$637fd9537164f29b)();
 if ("b2g" in navigator || "navigator.mozApps" in navigator) $17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS = false;
@@ -34599,6 +34605,19 @@ var $17d11d58618cc814$var$addressbook = [];
 (0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).getItem("addressbook").then(function(e) {
     if (e !== null) $17d11d58618cc814$var$addressbook = e;
 }).catch(function() {});
+var $17d11d58618cc814$var$delete_addressbook_item = function(userIdToDelete) {
+    // Filter out the user with the specified id
+    $17d11d58618cc814$var$addressbook = $17d11d58618cc814$var$addressbook.filter(function(user) {
+        return user.id !== userIdToDelete;
+    });
+    (0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).setItem("addressbook", $17d11d58618cc814$var$addressbook).then(function(e) {
+        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("deleted", 3000);
+        console.log(e);
+        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
+    }).catch(function(error1) {
+        console.error("Error saving address book:", error1);
+    });
+};
 var $17d11d58618cc814$var$addUserToAddressBook = function(a, b) {
     var hasEmptyValues = function hasEmptyValues(obj) {
         return obj.id === undefined || obj.id === null || obj.id === "" || obj.name === undefined || obj.name === null || obj.name === "";
@@ -34654,6 +34673,12 @@ function $17d11d58618cc814$var$setupConnectionEvents(conn) {
     conn.on("data", function(data) {
         document.querySelector(".loading-spinner").style.display = "none";
         $17d11d58618cc814$var$remove_no_user_online();
+        //add user
+        try {
+            $17d11d58618cc814$var$setupConnectionEvents(data.userId);
+        } catch (e) {
+            console.log(error);
+        }
         if (data.type == "image" || data.type == "text" || data.type == "gps_live" || data.type == "gps" || data.type == "audio") {
             if (data.type == "image") {
                 if (!$17d11d58618cc814$export$471f7ae5c4103ae1.visibility) (0, $162001cafa2b40fd$export$75525525b38ea7b3)("flop", "new message");
@@ -34690,6 +34715,7 @@ function $17d11d58618cc814$var$setupConnectionEvents(conn) {
                 ], {
                     type: "audio/webm"
                 });
+                console.log(audioBlob);
                 var url = URL.createObjectURL(audioBlob);
                 $17d11d58618cc814$var$chat_data.push({
                     nickname: data.nickname,
@@ -34778,10 +34804,6 @@ function $17d11d58618cc814$var$setupConnectionEvents(conn) {
 }
 function $17d11d58618cc814$var$updateConnections() {
     $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline = $17d11d58618cc814$var$connectedPeers.length;
-    if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS == true && $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline > 0 && (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "chat") {
-        document.querySelector("img.users").setAttribute("title", $17d11d58618cc814$export$471f7ae5c4103ae1.online);
-        if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img class='users' title='0' src='assets/image/monster.svg'>", "", "<img src='assets/image/back.svg'>");
-    }
 }
 var $17d11d58618cc814$var$ice_servers = {
     "iceServers": [
@@ -34811,7 +34833,7 @@ function $17d11d58618cc814$var$getIceServers() {
 function $17d11d58618cc814$var$_getIceServers() {
     $17d11d58618cc814$var$_getIceServers = //load ICE Server
     (0, $ba0748fc6d85beab$export$7c398597f8905a1)(function() {
-        var response, a, error;
+        var response, a, error1;
         return (0, $04f2fd83a0b0b7f9$export$67ebef60e6f28a6)(this, function(_state) {
             switch(_state.label){
                 case 0:
@@ -34889,7 +34911,7 @@ function $17d11d58618cc814$var$_getIceServers() {
                         5
                     ];
                 case 4:
-                    error = _state.sent();
+                    error1 = _state.sent();
                     document.querySelector(".loading-spinner").style.display = "none";
                     (0, $162001cafa2b40fd$export$6593825dc0f3a767)("please retry to connect", 2000);
                     return [
@@ -35178,7 +35200,8 @@ var $17d11d58618cc814$var$create_peer = function create_peer() {
                 level: "H",
                 padding: 5,
                 size: 200,
-                value: $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id
+                // value: settings.custom_peer_id,
+                value: $17d11d58618cc814$export$a5a6e0b888b2c992.invite_url + "#!/intro?id=" + $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id
             });
             // Define the elements to be added
             var invitationLinkElement = {
@@ -35224,7 +35247,8 @@ var $17d11d58618cc814$var$time_parse = function time_parse(value) {
 };
 //callback qr-code scan
 var $17d11d58618cc814$var$scan_callback = function scan_callback(n) {
-    $17d11d58618cc814$var$connect_to_peer(n);
+    var _$m = n.split("id=");
+    $17d11d58618cc814$var$connect_to_peer(_$m[1]);
     $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
 };
 //audio
@@ -35839,18 +35863,9 @@ var $17d11d58618cc814$var$start = {
                 },
                 onclick: function(e) {
                     (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat?id=" + $17d11d58618cc814$export$471f7ae5c4103ae1.ownPeerId);
+                    $17d11d58618cc814$var$peer.reconnect();
                 }
-            }, "reopen chat"),
-            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
-                tabIndex: 2,
-                class: "item button-create-peer",
-                oncreate: function(vnode) {
-                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_room == null || $17d11d58618cc814$export$471f7ae5c4103ae1.current_room == "") vnode.dom.style.display = "none";
-                },
-                onclick: function(e) {
-                    $17d11d58618cc814$var$create_peer();
-                }
-            }, "create chat")
+            }, "reopen chat")
         ]);
     }
 };
@@ -35884,44 +35899,24 @@ var $17d11d58618cc814$var$scan = {
 var $17d11d58618cc814$var$open_peer_menu = {
     view: function view() {
         return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
-            class: "flex justify-content-center algin-item-start",
+            class: "flex justify-content-center algin-item-start page",
             oncreate: function() {
+                (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img  src='assets/image/qr.svg'>", "", "<img  src='assets/image/id.svg'>");
                 if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS == true) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
-                (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='assets/image/select.svg'>", "");
             }
         }, [
-            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
-                oncreate: function(param) {
-                    var dom = param.dom;
-                    return setTimeout(function() {
-                        dom.focus();
-                    }, 500);
-                },
-                class: "item",
-                tabindex: 0,
-                onclick: function onclick() {
-                    (0, $2b0cc46421a6d3fe$export$be96fe42679d1b7e)($17d11d58618cc814$var$scan_callback);
-                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/scan");
-                }
-            }, "QR-Code"),
-            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
-                class: "item",
-                tabindex: 1,
-                onclick: function onclick() {
-                    var prp = prompt("Enter the chat id");
-                    if (prp != null) $17d11d58618cc814$var$connect_to_peer(prp);
-                    else history.back();
-                }
-            }, "id"),
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
-                class: "text"
+                class: "text item",
+                onfocus: function() {
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img  src='assets/image/qr.svg'>", "", "<img  src='assets/image/id.svg'>");
+                }
             }, "You can join a chat when someone invites you with a link. If you don't have this link, you can also enter the chat ID here or scan the QR code."),
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 class: "width-100 flex justify-content-center",
                 style: {
                     display: $17d11d58618cc814$var$addressbook.length == 0 ? "none" : ""
                 }
-            }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<br><br>Addressbook<br>")),
+            }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<br><br>Addressbook<br><br>")),
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 class: "width-100 flex justify-content-center",
                 id: "addressbook"
@@ -35932,6 +35927,13 @@ var $17d11d58618cc814$var$open_peer_menu = {
                         "data-id": e.id,
                         oncreate: function() {
                             (0, $162001cafa2b40fd$export$6c04b58eee2a9a32)();
+                        },
+                        onfocus: function() {
+                            $17d11d58618cc814$export$471f7ae5c4103ae1.addressbook_in_focus = e.id;
+                            (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img  src='assets/image/select.svg'>", "<img  src='assets/image/delete.svg'>");
+                        },
+                        onblur: function() {
+                            $17d11d58618cc814$export$471f7ae5c4103ae1.addressbook_in_focus = "";
                         },
                         onclick: function(e) {
                             $17d11d58618cc814$var$connect_to_peer(document.activeElement.getAttribute("data-id"));
@@ -35955,24 +35957,26 @@ var $17d11d58618cc814$var$chat = {
                 } catch (e) {}
             },
             oncreate: function() {
-                (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "");
-                if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS == true) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
+                (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img src='assets/image/no-monster.svg'>", "", "");
+                if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img src='assets/image/no-monster.svg'>", "", "<img src='assets/image/back.svg'>");
                 (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
                 $17d11d58618cc814$var$user_check = setInterval(function() {
                     if ($17d11d58618cc814$var$connectedPeers) {
                         $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline = $17d11d58618cc814$var$connectedPeers.length;
+                        document.querySelector("img.users").setAttribute("title", $17d11d58618cc814$export$471f7ae5c4103ae1.online);
                         $17d11d58618cc814$var$sendMessageToAll({
                             userlist: $17d11d58618cc814$var$connectedPeers,
                             nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
                             userId: $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id
                         });
-                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS == true && $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline > 0) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img class='users' title='" + $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline + "' src='assets/image/monster.svg'>", "", "<img src='assets/image/back.svg'>");
-                        else if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
+                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS && $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline > 0) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img class='users' title='" + $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline + "' src='assets/image/monster.svg'>", "", "<img src='assets/image/back.svg'>");
+                        else if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img src='assets/image/no-monster.svg'>", "", "<img src='assets/image/back.svg'>");
                     } else {
                         $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline = 0;
-                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
+                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img src='assets/image/no-monster.svg'>", "", "<img src='assets/image/back.svg'>");
+                        else (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img src='assets/image/no-monster.svg'>", "", "");
                     }
-                }, 5000);
+                }, 3000);
             }
         }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
             id: "message-input",
@@ -35988,7 +35992,7 @@ var $17d11d58618cc814$var$chat = {
                     }, 1000);
                 },
                 onfocus: function() {
-                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/record.svg'>", "<img src='assets/image/option.svg'>");
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "<img src='assets/image/record.svg'>", "<img src='assets/image/option.svg'>");
                 }
             })
         ]), $17d11d58618cc814$var$chat_data.map(function(item, index) {
@@ -36101,7 +36105,8 @@ var $17d11d58618cc814$var$intro = {
                     $17d11d58618cc814$export$471f7ae5c4103ae1.launching = true;
                     if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS == false) $17d11d58618cc814$var$app_launcher();
                     else setTimeout(function() {
-                        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/start");
+                        var _$m = fullUrl.split("id=");
+                        $17d11d58618cc814$var$connect_to_peer(_$m[1]);
                     }, 1000);
                 } else setTimeout(function() {
                     (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/start");
@@ -36338,6 +36343,14 @@ document.addEventListener("DOMContentLoaded", function(e) {
                     $17d11d58618cc814$var$write();
                 });
                 if (route == "/map_view") $17d11d58618cc814$var$ZoomMap("out");
+                if (route == "/open_peer_menu") {
+                    console.log($17d11d58618cc814$export$471f7ae5c4103ae1.addressbook_in_focus);
+                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.addressbook_in_focus == "") {
+                        var prp = prompt("Enter the chat id");
+                        if (prp != null) $17d11d58618cc814$var$connect_to_peer(prp);
+                        else history.back();
+                    } else $17d11d58618cc814$var$delete_addressbook_item($17d11d58618cc814$export$471f7ae5c4103ae1.addressbook_in_focus);
+                }
                 break;
             case "SoftLeft":
             case "Control":
@@ -36362,6 +36375,10 @@ document.addEventListener("DOMContentLoaded", function(e) {
                 }
                 if (route == "/map_view") $17d11d58618cc814$var$ZoomMap("in");
                 if (route == "/start") (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/open_peer_menu");
+                if (route == "/open_peer_menu") {
+                    (0, $2b0cc46421a6d3fe$export$be96fe42679d1b7e)($17d11d58618cc814$var$scan_callback);
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/scan");
+                }
                 break;
             case "Enter":
                 if (document.activeElement.tagName == "INPUT") {
@@ -36509,8 +36526,8 @@ try {
         registration.waiting;
         registration.systemMessageManager.subscribe("activity").then(function(rv) {
             console.log(rv);
-        }, function(error) {
-            console.log(error);
+        }, function(error1) {
+            console.log(error1);
         });
     });
 } catch (e) {

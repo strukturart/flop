@@ -801,7 +801,20 @@ export function createAudioRecorder() {
   function stopRecording() {
     return new Promise((resolve) => {
       mediaRecorder.onstop = () => {
-        const blob = new Blob(recordedChunks, { type: "audio/webm" });
+        let mimeType = "";
+
+        if (MediaRecorder.isTypeSupported("audio/webm; codecs=opus")) {
+          mimeType = "audio/webm; codecs=opus";
+        } else if (MediaRecorder.isTypeSupported("audio/ogg; codecs=opus")) {
+          mimeType = "audio/ogg; codecs=opus";
+        } else if (MediaRecorder.isTypeSupported("audio/mpeg")) {
+          mimeType = "audio/mpeg";
+        } else {
+          console.warn("No supported MIME type found for audio recording.");
+        }
+
+        const blob = new Blob(recordedChunks, { type: mimeType });
+
         recordedChunks = [];
         resolve(blob);
       };

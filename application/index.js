@@ -44,6 +44,7 @@ export let status = {
   current_room: "",
   users_geolocation: [],
   userMarkers: [],
+  addressbook_in_focus: "",
 };
 
 const audioRecorder = createAudioRecorder();
@@ -164,6 +165,22 @@ localforage
   })
   .catch(() => {});
 
+let delete_addressbook_item = (userIdToDelete) => {
+  // Filter out the user with the specified id
+  addressbook = addressbook.filter((user) => user.id !== userIdToDelete);
+
+  localforage
+    .setItem("addressbook", addressbook)
+    .then((e) => {
+      side_toaster("deleted", 3000);
+      console.log(e);
+      m.redraw();
+    })
+    .catch((error) => {
+      console.error("Error saving address book:", error);
+    });
+};
+
 let addUserToAddressBook = (a, b) => {
   if (!Array.isArray(addressbook)) {
     console.error("addressbook is not defined or is not an array");
@@ -241,6 +258,14 @@ function setupConnectionEvents(conn) {
     document.querySelector(".loading-spinner").style.display = "none";
     remove_no_user_online();
 
+    //add user
+
+    try {
+      setupConnectionEvents(data.userId);
+    } catch (e) {
+      console.log(error);
+    }
+
     if (
       data.type == "image" ||
       data.type == "text" ||
@@ -283,7 +308,10 @@ function setupConnectionEvents(conn) {
 
       if (data.type == "audio") {
         const audioBuffer = new Uint8Array(data.content);
-        const audioBlob = new Blob([audioBuffer], { type: "audio/webm" });
+        const audioBlob = new Blob([audioBuffer], {
+          type: "audio/webm",
+        });
+        console.log(audioBlob);
         const url = URL.createObjectURL(audioBlob);
 
         chat_data.push({
@@ -392,19 +420,6 @@ function setupConnectionEvents(conn) {
 
 function updateConnections() {
   status.userOnline = connectedPeers.length;
-  if (
-    status.notKaiOS == true &&
-    status.userOnline > 0 &&
-    m.route.get() == "chat"
-  ) {
-    document.querySelector("img.users").setAttribute("title", status.online);
-    if (status.notKaiOS)
-      top_bar(
-        "<img class='users' title='0' src='assets/image/monster.svg'>",
-        "",
-        "<img src='assets/image/back.svg'>"
-      );
-  }
 }
 
 let ice_servers = {
@@ -852,7 +867,8 @@ let create_peer = function () {
         level: "H",
         padding: 5,
         size: 200,
-        value: settings.custom_peer_id,
+        // value: settings.custom_peer_id,
+        value: settings.invite_url + "#!/intro?id=" + settings.custom_peer_id,
       });
 
       // Define the elements to be added
@@ -927,7 +943,8 @@ let time_parse = function (value) {
 
 //callback qr-code scan
 let scan_callback = function (n) {
-  connect_to_peer(n);
+  let m = n.split("id=");
+  connect_to_peer(m[1]);
   status.action = "";
 };
 
@@ -1842,27 +1859,10 @@ var start = {
             },
             onclick: (e) => {
               m.route.set("/chat?id=" + status.ownPeerId);
+              peer.reconnect();
             },
           },
           "reopen chat"
-        ),
-
-        m(
-          "button",
-          {
-            tabIndex: 2,
-
-            class: "item button-create-peer",
-            oncreate: (vnode) => {
-              if (status.current_room == null || status.current_room == "") {
-                vnode.dom.style.display = "none";
-              }
-            },
-            onclick: (e) => {
-              create_peer();
-            },
-          },
-          "create chat"
         ),
       ]
     );
@@ -1911,56 +1911,30 @@ var open_peer_menu = {
     return m(
       "div",
       {
-        class: "flex justify-content-center algin-item-start",
+        class: "flex justify-content-center algin-item-start page",
         oncreate: () => {
+          bottom_bar(
+            "<img  src='assets/image/qr.svg'>",
+            "",
+            "<img  src='assets/image/id.svg'>"
+          );
+
           if (status.notKaiOS == true)
             top_bar("", "", "<img src='assets/image/back.svg'>");
-
-          bottom_bar(
-            "",
-            "<img class='not-desktop' src='assets/image/select.svg'>",
-            ""
-          );
         },
       },
       [
         m(
-          "button",
-          {
-            oncreate: ({ dom }) =>
-              setTimeout(function () {
-                dom.focus();
-              }, 500),
-            class: "item",
-            tabindex: 0,
-            onclick: function () {
-              start_scan(scan_callback);
-              m.route.set("/scan");
-            },
-          },
-          "QR-Code"
-        ),
-
-        m(
-          "button",
-          {
-            class: "item",
-            tabindex: 1,
-            onclick: function () {
-              let prp = prompt("Enter the chat id");
-              if (prp != null) {
-                connect_to_peer(prp);
-              } else {
-                history.back();
-              }
-            },
-          },
-          "id"
-        ),
-        m(
           "div",
           {
-            class: "text",
+            class: "text item",
+            onfocus: () => {
+              bottom_bar(
+                "<img  src='assets/image/qr.svg'>",
+                "",
+                "<img  src='assets/image/id.svg'>"
+              );
+            },
           },
           "You can join a chat when someone invites you with a link. If you don't have this link, you can also enter the chat ID here or scan the QR code."
         ),
@@ -1970,7 +1944,7 @@ var open_peer_menu = {
             class: "width-100 flex justify-content-center",
             style: { display: addressbook.length == 0 ? "none" : "" },
           },
-          m.trust("<br><br>Addressbook<br>")
+          m.trust("<br><br>Addressbook<br><br>")
         ),
         m(
           "div",
@@ -1985,6 +1959,18 @@ var open_peer_menu = {
                   oncreate: () => {
                     setTabindex();
                   },
+                  onfocus: () => {
+                    status.addressbook_in_focus = e.id;
+                    bottom_bar(
+                      "",
+                      "<img  src='assets/image/select.svg'>",
+                      "<img  src='assets/image/delete.svg'>"
+                    );
+                  },
+                  onblur: () => {
+                    status.addressbook_in_focus = "";
+                  },
+
                   onclick: (e) => {
                     connect_to_peer(
                       document.activeElement.getAttribute("data-id")
@@ -2017,10 +2003,13 @@ var chat = {
           } catch (e) {}
         },
         oncreate: () => {
-          top_bar("", "", "");
-
-          if (status.notKaiOS == true)
-            top_bar("", "", "<img src='assets/image/back.svg'>");
+          top_bar("<img src='assets/image/no-monster.svg'>", "", "");
+          if (status.notKaiOS)
+            top_bar(
+              "<img src='assets/image/no-monster.svg'>",
+              "",
+              "<img src='assets/image/back.svg'>"
+            );
 
           bottom_bar(
             "<img src='assets/image/pencil.svg'>",
@@ -2030,6 +2019,9 @@ var chat = {
           user_check = setInterval(() => {
             if (connectedPeers) {
               status.userOnline = connectedPeers.length;
+              document
+                .querySelector("img.users")
+                .setAttribute("title", status.online);
 
               sendMessageToAll({
                 userlist: connectedPeers,
@@ -2037,7 +2029,7 @@ var chat = {
                 userId: settings.custom_peer_id,
               });
 
-              if (status.notKaiOS == true && status.userOnline > 0) {
+              if (status.notKaiOS && status.userOnline > 0) {
                 top_bar(
                   "<img class='users' title='" +
                     status.userOnline +
@@ -2047,14 +2039,25 @@ var chat = {
                 );
               } else {
                 if (status.notKaiOS)
-                  top_bar("", "", "<img src='assets/image/back.svg'>");
+                  top_bar(
+                    "<img src='assets/image/no-monster.svg'>",
+                    "",
+                    "<img src='assets/image/back.svg'>"
+                  );
               }
             } else {
               status.userOnline = 0;
-              if (status.notKaiOS)
-                top_bar("", "", "<img src='assets/image/back.svg'>");
+              if (status.notKaiOS) {
+                top_bar(
+                  "<img src='assets/image/no-monster.svg'>",
+                  "",
+                  "<img src='assets/image/back.svg'>"
+                );
+              } else {
+                top_bar("<img src='assets/image/no-monster.svg'>", "", "");
+              }
             }
-          }, 5000);
+          }, 3000);
         },
       },
 
@@ -2073,7 +2076,7 @@ var chat = {
           },
           onfocus: () => {
             bottom_bar(
-              "<img src='assets/image/pencil.svg'>",
+              "<img src='assets/image/send.svg'>",
               "<img src='assets/image/record.svg'>",
               "<img src='assets/image/option.svg'>"
             );
@@ -2268,7 +2271,8 @@ var intro = {
               app_launcher();
             } else {
               setTimeout(function () {
-                m.route.set("/start");
+                let m = fullUrl.split("id=");
+                connect_to_peer(m[1]);
               }, 1000);
             }
           } else {
@@ -2629,6 +2633,20 @@ document.addEventListener("DOMContentLoaded", function (e) {
           ZoomMap("out");
         }
 
+        if (route == "/open_peer_menu") {
+          console.log(status.addressbook_in_focus);
+          if (status.addressbook_in_focus == "") {
+            let prp = prompt("Enter the chat id");
+            if (prp != null) {
+              connect_to_peer(prp);
+            } else {
+              history.back();
+            }
+          } else {
+            delete_addressbook_item(status.addressbook_in_focus);
+          }
+        }
+
         break;
 
       case "SoftLeft":
@@ -2675,6 +2693,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
         if (route == "/start") {
           m.route.set("/open_peer_menu");
+        }
+
+        if (route == "/open_peer_menu") {
+          start_scan(scan_callback);
+          m.route.set("/scan");
         }
 
         break;

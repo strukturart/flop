@@ -3,7 +3,7 @@
    id="emoji"
    viewBox="0 0 72 72"
    version="1.1"
-   sodipodi:docname="play.svg"
+   sodipodi:docname="id.svg"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -20,9 +20,9 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="true"
      showgrid="false"
-     inkscape:zoom="6.4119689"
-     inkscape:cx="52.791897"
-     inkscape:cy="37.040105"
+     inkscape:zoom="3.6975792"
+     inkscape:cx="32.58889"
+     inkscape:cy="38.538728"
      inkscape:window-width="1920"
      inkscape:window-height="1016"
      inkscape:window-x="0"
@@ -36,24 +36,15 @@
      cy="36"
      rx="34.540501"
      ry="34.540272" />
-  <g
-     id="g6"
-     transform="matrix(0.11289063,0,0,0.11289063,7.0999987,7.0999987)">
-    <g
-       id="g4">
-      <path
-         d="M 256,0 C 114.608,0 0,114.608 0,256 0,397.392 114.608,512 256,512 397.392,512 512,397.392 512,256 512,114.608 397.392,0 256,0 Z m 0,496 C 123.664,496 16,388.336 16,256 16,123.664 123.664,16 256,16 388.336,16 496,123.664 496,256 496,388.336 388.336,496 256,496 Z"
-         id="path2" />
-    </g>
-  </g>
-  <g
-     id="g12"
-     transform="matrix(0.11289063,0,0,0.11289063,3.3493204,7.0819362)">
-    <g
-       id="g10">
-      <polygon
-         points="189.776,370.992 388.672,256.16 189.776,141.328 "
-         id="polygon8" />
-    </g>
-  </g>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:48.7619px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.21905"
+     x="15.559525"
+     y="53.5"
+     id="text2646"><tspan
+       sodipodi:role="line"
+       id="tspan2644"
+       x="15.559525"
+       y="53.5"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';stroke-width:1.21905">#</tspan></text>
 </svg>

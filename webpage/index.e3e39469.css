@@ -291,6 +291,7 @@ div#intro img {
   top: 50%;
   right: calc(50%-2rem);
   z-index: 1000;
+  opacity: 0;
   background: #ffffff1a;
   -moz-border-radius: .3rem;
   border-radius: .3rem;
