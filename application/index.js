@@ -173,7 +173,6 @@ let delete_addressbook_item = (userIdToDelete) => {
     .setItem("addressbook", addressbook)
     .then((e) => {
       side_toaster("deleted", 3000);
-      console.log(e);
       m.redraw();
     })
     .catch((error) => {
@@ -783,9 +782,6 @@ let connect_to_peer = function (id) {
   }
   getIceServers()
     .then(() => {
-      //clear chat data
-      console.log("succesfull downloaded ice servers");
-
       chat_data = [];
 
       status.current_room = id;
@@ -811,13 +807,6 @@ let connect_to_peer = function (id) {
           conn.on("error", (e) => {
             side_toaster("connection could not be established", 4000);
             document.querySelector(".loading-spinner").style.display = "none";
-          });
-
-          chat_data.push({
-            id: "no-other-user-online",
-            nickname: settings.nickname,
-            content: "no other user online",
-            datetime: new Date(),
           });
 
           document.querySelector(".loading-spinner").style.display = "none";
@@ -906,8 +895,6 @@ let create_peer = function () {
       ) {
         chat_data.push(noOtherUserOnlineElement);
       }
-
-      bottom_bar("", "", "<img src='assets/image/option.svg'>");
 
       m.redraw();
       focus_last_article();
@@ -1281,8 +1268,9 @@ var about_page = {
     return m(
       "div",
       {
-        class: "page",
-        oncreate: () => {
+        class: "page about-page",
+        oncreate: ({ dom }) => {
+          dom.focus();
           top_bar("", "", "");
 
           if (status.notKaiOS)
@@ -1292,20 +1280,81 @@ var about_page = {
       [
         m(
           "div",
-          { class: "item scroll", id: "about-text", tabindex: 0 },
+          { class: "item scroll", id: "about-text" },
           "With flop you can communicate directly with another person/machine (p2p). To do this you need a stable internet connection and you must know the other person's ID. When you start a chat you can share your ID via the options menu. Multiple people can also join the chat, the IDs of the other participants are automatically shared."
         ),
 
+        m("div", { id: "description" }, [
+          m("h2", {}, "Icons"),
+          m(
+            "div",
+            { class: "flex width-100 item" },
+            m.trust(
+              "<img src='assets/image/no-monster.svg'> no other user online"
+            )
+          ),
+
+          m(
+            "div",
+            { class: "flex width-100 item" },
+            m.trust("<img src='assets/image/monster.svg'>user online")
+          ),
+
+          m(
+            "div",
+            { class: "flex width-100 item" },
+            m.trust("<img src='assets/image/pencil.svg'>write")
+          ),
+
+          m(
+            "div",
+            { class: "flex width-100 item" },
+            m.trust("<img src='assets/image/send.svg'>send")
+          ),
+
+          m(
+            "div",
+            { class: "flex width-100 item" },
+            m.trust("<img src='assets/image/plus.svg'>open new chat")
+          ),
+
+          m(
+            "div",
+            { class: "flex width-100 item" },
+            m.trust("<img src='assets/image/option.svg'>option")
+          ),
+
+          m(
+            "div",
+            { class: "flex width-100" },
+            m.trust("<img src='assets/image/record.svg'>audio message")
+          ),
+
+          m(
+            "div",
+            { class: "flex width-100 item" },
+            m.trust(
+              "<img src='assets/image/record-live.svg'>recording audio message"
+            )
+          ),
+        ]),
+
         m(
           "div",
-          { class: "item scroll", id: "about-text", tabindex: 1 },
+          { class: "item scroll", id: "about-text" },
           m.trust(
             "The code of the software is freely available: <a href='https://github.com/strukturart/flop'>gitHub</a>"
           )
         ),
         m(
           "div",
-          { class: "item scroll", id: "about-text", tabindex: 2 },
+          {
+            class: "item scroll",
+            id: "about-text",
+            oncreate: () => {
+              setTabindex();
+            },
+          },
           m.trust(
             "<strong>License</strong><br><br>mithrilJS MIT<br>peerJS MIT<br>flop MIT"
           )
@@ -1843,7 +1892,7 @@ var start = {
             },
           },
           m.trust(
-            "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images and your position with your chat partner. To create a peer, press enter.<br><br>"
+            "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images, audio and your position with your chat partner. To create a peer, press enter.<br><br>"
           )
         ),
         m(
@@ -2003,10 +2052,14 @@ var chat = {
           } catch (e) {}
         },
         oncreate: () => {
-          top_bar("<img src='assets/image/no-monster.svg'>", "", "");
+          top_bar(
+            "<img  class='users' title='0' 'src='assets/image/no-monster.svg'>",
+            "",
+            ""
+          );
           if (status.notKaiOS)
             top_bar(
-              "<img src='assets/image/no-monster.svg'>",
+              "<img class='users' title='0' src='assets/image/no-monster.svg'>",
               "",
               "<img src='assets/image/back.svg'>"
             );
@@ -2029,7 +2082,16 @@ var chat = {
                 userId: settings.custom_peer_id,
               });
 
-              if (status.notKaiOS && status.userOnline > 0) {
+              if (!status.notKaiOS && status.userOnline > 0)
+                top_bar(
+                  "<img class='users' title='" +
+                    status.userOnline +
+                    "' src='assets/image/monster.svg'>",
+                  "",
+                  ""
+                );
+
+              if (status.notKaiOS && status.userOnline > 0)
                 top_bar(
                   "<img class='users' title='" +
                     status.userOnline +
@@ -2037,25 +2099,24 @@ var chat = {
                   "",
                   "<img src='assets/image/back.svg'>"
                 );
-              } else {
-                if (status.notKaiOS)
-                  top_bar(
-                    "<img src='assets/image/no-monster.svg'>",
-                    "",
-                    "<img src='assets/image/back.svg'>"
-                  );
-              }
-            } else {
-              status.userOnline = 0;
-              if (status.notKaiOS) {
+
+              if (status.notKaiOS && status.userOnline == 0)
                 top_bar(
-                  "<img src='assets/image/no-monster.svg'>",
+                  "<img class='users' title='" +
+                    status.userOnline +
+                    "' src='assets/image/no-monster.svg'>",
                   "",
                   "<img src='assets/image/back.svg'>"
                 );
-              } else {
-                top_bar("<img src='assets/image/no-monster.svg'>", "", "");
-              }
+
+              if (!status.notKaiOS && status.userOnline == 0)
+                top_bar(
+                  "<img class='users' title='" +
+                    status.userOnline +
+                    "' src='assets/image/no-monster.svg'>",
+                  "",
+                  ""
+                );
             }
           }, 3000);
         },
@@ -2634,7 +2695,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
         }
 
         if (route == "/open_peer_menu") {
-          console.log(status.addressbook_in_focus);
           if (status.addressbook_in_focus == "") {
             let prp = prompt("Enter the chat id");
             if (prp != null) {
@@ -2717,6 +2777,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
               "<img src='assets/image/cancel.svg'>"
             );
           });
+        }
+
+        if (status.notKaiOS) {
+          if (route.startsWith("/chat" && status.action == "write")) {
+          }
         }
 
         if (document.activeElement.classList.contains("input-parent")) {

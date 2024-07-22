@@ -34614,8 +34614,8 @@ var $17d11d58618cc814$var$delete_addressbook_item = function(userIdToDelete) {
         (0, $162001cafa2b40fd$export$6593825dc0f3a767)("deleted", 3000);
         console.log(e);
         (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
-    }).catch(function(error1) {
-        console.error("Error saving address book:", error1);
+    }).catch(function(error) {
+        console.error("Error saving address book:", error);
     });
 };
 var $17d11d58618cc814$var$addUserToAddressBook = function(a, b) {
@@ -34674,12 +34674,13 @@ function $17d11d58618cc814$var$setupConnectionEvents(conn) {
         document.querySelector(".loading-spinner").style.display = "none";
         $17d11d58618cc814$var$remove_no_user_online();
         //add user
-        try {
-            $17d11d58618cc814$var$setupConnectionEvents(data.userId);
-        } catch (e) {
-            console.log(error);
-        }
-        if (data.type == "image" || data.type == "text" || data.type == "gps_live" || data.type == "gps" || data.type == "audio") {
+        /*
+    try {
+      setupConnectionEvents(data.userId);
+    } catch (e) {
+      console.log(error);
+    }
+    */ if (data.type == "image" || data.type == "text" || data.type == "gps_live" || data.type == "gps" || data.type == "audio") {
             if (data.type == "image") {
                 if (!$17d11d58618cc814$export$471f7ae5c4103ae1.visibility) (0, $162001cafa2b40fd$export$75525525b38ea7b3)("flop", "new message");
                 $17d11d58618cc814$var$chat_data.push({
@@ -34833,7 +34834,7 @@ function $17d11d58618cc814$var$getIceServers() {
 function $17d11d58618cc814$var$_getIceServers() {
     $17d11d58618cc814$var$_getIceServers = //load ICE Server
     (0, $ba0748fc6d85beab$export$7c398597f8905a1)(function() {
-        var response, a, error1;
+        var response, a, error;
         return (0, $04f2fd83a0b0b7f9$export$67ebef60e6f28a6)(this, function(_state) {
             switch(_state.label){
                 case 0:
@@ -34911,7 +34912,7 @@ function $17d11d58618cc814$var$_getIceServers() {
                         5
                     ];
                 case 4:
-                    error1 = _state.sent();
+                    error = _state.sent();
                     document.querySelector(".loading-spinner").style.display = "none";
                     (0, $162001cafa2b40fd$export$6593825dc0f3a767)("please retry to connect", 2000);
                     return [
@@ -35136,8 +35137,6 @@ var $17d11d58618cc814$var$connect_to_peer = function connect_to_peer(id) {
         return false;
     }
     $17d11d58618cc814$var$getIceServers().then(function() {
-        //clear chat data
-        console.log("succesfull downloaded ice servers");
         $17d11d58618cc814$var$chat_data = [];
         $17d11d58618cc814$export$471f7ae5c4103ae1.current_room = id;
         (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat?id=" + id);
@@ -35158,12 +35157,6 @@ var $17d11d58618cc814$var$connect_to_peer = function connect_to_peer(id) {
                 $17d11d58618cc814$var$conn.on("error", function(e) {
                     (0, $162001cafa2b40fd$export$6593825dc0f3a767)("connection could not be established", 4000);
                     document.querySelector(".loading-spinner").style.display = "none";
-                });
-                $17d11d58618cc814$var$chat_data.push({
-                    id: "no-other-user-online",
-                    nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
-                    content: "no other user online",
-                    datetime: new Date()
                 });
                 document.querySelector(".loading-spinner").style.display = "none";
                 (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
@@ -35227,7 +35220,6 @@ var $17d11d58618cc814$var$create_peer = function create_peer() {
                 id: "no-other-user-online",
                 content: "no other user online, you should invite someone."
             })) $17d11d58618cc814$var$chat_data.push(noOtherUserOnlineElement);
-            (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "", "<img src='assets/image/option.svg'>");
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
             $17d11d58618cc814$var$focus_last_article();
             document.querySelector(".loading-spinner").style.display = "none";
@@ -35510,26 +35502,57 @@ var $17d11d58618cc814$var$about = {
 var $17d11d58618cc814$var$about_page = {
     view: function view() {
         return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
-            class: "page",
-            oncreate: function() {
+            class: "page about-page",
+            oncreate: function(param) {
+                var dom = param.dom;
+                dom.focus();
                 (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "");
                 if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
             }
         }, [
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 class: "item scroll",
-                id: "about-text",
-                tabindex: 0
+                id: "about-text"
             }, "With flop you can communicate directly with another person/machine (p2p). To do this you need a stable internet connection and you must know the other person's ID. When you start a chat you can share your ID via the options menu. Multiple people can also join the chat, the IDs of the other participants are automatically shared."),
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                id: "description"
+            }, [
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("h2", {}, "Icons"),
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "flex width-100 item"
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img src='assets/image/no-monster.svg'> no other user online")),
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "flex width-100 item"
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img src='assets/image/monster.svg'>user online")),
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "flex width-100 item"
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img src='assets/image/pencil.svg'>write")),
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "flex width-100 item"
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img src='assets/image/send.svg'>send")),
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "flex width-100 item"
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img src='assets/image/plus.svg'>open new chat")),
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "flex width-100 item"
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img src='assets/image/option.svg'>option")),
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "flex width-100"
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img src='assets/image/record.svg'>audio message")),
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "flex width-100 item"
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img src='assets/image/record-live.svg'>recording audio message"))
+            ]),
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 class: "item scroll",
-                id: "about-text",
-                tabindex: 1
+                id: "about-text"
             }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("The code of the software is freely available: <a href='https://github.com/strukturart/flop'>gitHub</a>")),
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 class: "item scroll",
                 id: "about-text",
-                tabindex: 2
+                oncreate: function() {
+                    (0, $162001cafa2b40fd$export$6c04b58eee2a9a32)();
+                }
             }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<strong>License</strong><br><br>mithrilJS MIT<br>peerJS MIT<br>flop MIT"))
         ]);
     }
@@ -35957,8 +35980,8 @@ var $17d11d58618cc814$var$chat = {
                 } catch (e) {}
             },
             oncreate: function() {
-                (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img src='assets/image/no-monster.svg'>", "", "");
-                if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img src='assets/image/no-monster.svg'>", "", "<img src='assets/image/back.svg'>");
+                (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img  class='users' title='0' 'src='assets/image/no-monster.svg'>", "", "");
+                if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img class='users' title='0' src='assets/image/no-monster.svg'>", "", "<img src='assets/image/back.svg'>");
                 (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
                 $17d11d58618cc814$var$user_check = setInterval(function() {
                     if ($17d11d58618cc814$var$connectedPeers) {
@@ -35969,12 +35992,11 @@ var $17d11d58618cc814$var$chat = {
                             nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
                             userId: $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id
                         });
+                        if (!$17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS && $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline > 0) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img class='users' title='" + $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline + "' src='assets/image/monster.svg'>", "", "");
                         if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS && $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline > 0) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img class='users' title='" + $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline + "' src='assets/image/monster.svg'>", "", "<img src='assets/image/back.svg'>");
-                        else if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img src='assets/image/no-monster.svg'>", "", "<img src='assets/image/back.svg'>");
-                    } else {
-                        $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline = 0;
-                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img src='assets/image/no-monster.svg'>", "", "<img src='assets/image/back.svg'>");
-                        else (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img src='assets/image/no-monster.svg'>", "", "");
+                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS && $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline == 0) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img class='users' title='" + $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline + "' src='assets/image/no-monster.svg'>", "", "<img src='assets/image/back.svg'>");
+                        if (!$17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS && $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline == 0) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img class='users' title='" + $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline + "' src='assets/image/no-monster.svg'>", "", "");
+                        console.log($17d11d58618cc814$export$471f7ae5c4103ae1.userOnline);
                     }
                 }, 3000);
             }
@@ -36392,6 +36414,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
                         (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "<img src='assets/image/record-live.svg'>", "<img src='assets/image/cancel.svg'>");
                     });
                 }
+                if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) route.startsWith($17d11d58618cc814$export$471f7ae5c4103ae1.action == "write");
                 if (document.activeElement.classList.contains("input-parent")) document.activeElement.children[0].focus();
                 if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/options") {
                     if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_user_id !== "" && $17d11d58618cc814$export$471f7ae5c4103ae1.user_nickname !== "") $17d11d58618cc814$var$addUserToAddressBook($17d11d58618cc814$export$471f7ae5c4103ae1.current_user_id, $17d11d58618cc814$export$471f7ae5c4103ae1.current_user_nickname);
@@ -36526,8 +36549,8 @@ try {
         registration.waiting;
         registration.systemMessageManager.subscribe("activity").then(function(rv) {
             console.log(rv);
-        }, function(error1) {
-            console.log(error1);
+        }, function(error) {
+            console.log(error);
         });
     });
 } catch (e) {

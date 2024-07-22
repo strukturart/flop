@@ -444,6 +444,23 @@ img.myMarker {
   filter: hue-rotate(120deg);
 }
 
+div#description {
+  margin: 50px 0;
+}
+
+div#description div {
+  margin: 0 10px 10px 0;
+}
+
+div#description h2 {
+  margin: 0 0 20px;
+}
+
+div#description div img {
+  max-width: 30px;
+  margin: 0 10px 0 0;
+}
+
 div#bottom-bar {
   z-index: 2000;
   z-index: 6;

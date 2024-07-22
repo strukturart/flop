@@ -114,6 +114,6 @@ $06479aad94a8f866$export$5a759dc7a1cfb72a = $06479aad94a8f866$var$getOrigin;
 var $7feabcc09eb4afac$exports = {};
 
 
-(parcelRequire("kDffi")).register((parcelRequire("xqsiy")).getBundleURL("2D5Ur"), JSON.parse('["2D5Ur","index.3396bff8.js","2qxSZ","sw.js"]'));
+(parcelRequire("kDffi")).register((parcelRequire("xqsiy")).getBundleURL("2D5Ur"), JSON.parse('["2D5Ur","index.a01817a1.js","2qxSZ","sw.js"]'));
 
 })();
