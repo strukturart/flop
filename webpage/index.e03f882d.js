@@ -2006,7 +2006,7 @@ function $ba0748fc6d85beab$var$asyncGeneratorStep(gen, resolve, reject, _next, _
     if (info.done) resolve(value);
     else Promise.resolve(value).then(_next, _throw);
 }
-function $ba0748fc6d85beab$export$7c398597f8905a1(fn) {
+function $ba0748fc6d85beab$export$71511d61b312f219(fn) {
     return function() {
         var self = this, args = arguments;
         return new Promise(function(resolve, reject) {
@@ -2036,7 +2036,7 @@ INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
 LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */ /* global Reflect, Promise, SuppressedError, Symbol */ function $7bd6d9ddf4a378c5$export$5f0017c582d45a2d(obj) {
+***************************************************************************** */ /* global Reflect, Promise, SuppressedError, Symbol */ function $7bd6d9ddf4a378c5$export$71511d61b312f219(obj) {
     "@swc/helpers - typeof";
     return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
 }
@@ -2130,10 +2130,10 @@ function $04f2fd83a0b0b7f9$export$d831c04e792af3d(thisArg, initializers, value) 
     return useValue ? value : void 0;
 }
 function $04f2fd83a0b0b7f9$export$6a2a36740a146cb8(x) {
-    return (typeof x === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$5f0017c582d45a2d)(x)) === "symbol" ? x : "".concat(x);
+    return (typeof x === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$71511d61b312f219)(x)) === "symbol" ? x : "".concat(x);
 }
 function $04f2fd83a0b0b7f9$export$d1a06452d3489bc7(f, name, prefix) {
-    if ((typeof name === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$5f0017c582d45a2d)(name)) === "symbol") name = name.description ? "[".concat(name.description, "]") : "";
+    if ((typeof name === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$71511d61b312f219)(name)) === "symbol") name = name.description ? "[".concat(name.description, "]") : "";
     return Object.defineProperty(f, "name", {
         configurable: true,
         value: prefix ? "".concat(prefix, " ", name) : name
@@ -2645,20 +2645,19 @@ var $162001cafa2b40fd$export$33d904bed5c25b69 = function geolocation(callback) {
         }
     };
     var error = function error(error) {
-        console.log(error.code);
+        alert("Current location not available");
         switch(error.code){
             case error.PERMISSION_DENIED:
-                $162001cafa2b40fd$export$6593825dc0f3a767("Location not provided", 2000);
+                $162001cafa2b40fd$export$6593825dc0f3a767("Location not provided", 5000);
                 break;
             case error.POSITION_UNAVAILABLE:
-                $162001cafa2b40fd$export$6593825dc0f3a767("Current location not available", 2000);
+                $162001cafa2b40fd$export$6593825dc0f3a767("Current location not available", 5000);
                 break;
             case error.TIMEOUT:
-            case 3:
-                $162001cafa2b40fd$export$6593825dc0f3a767("Current location not available", 2000);
+                $162001cafa2b40fd$export$6593825dc0f3a767("Current location not available", 5000);
                 break;
             default:
-                $162001cafa2b40fd$export$6593825dc0f3a767("Current location not available", 2000);
+                $162001cafa2b40fd$export$6593825dc0f3a767("Current location not available", 5000);
                 break;
         }
         if (n) {
@@ -2676,13 +2675,13 @@ var $162001cafa2b40fd$export$33d904bed5c25b69 = function geolocation(callback) {
     } else if (navigator.geolocation) {
         if (autoupdate) window.watchId = navigator.geolocation.watchPosition(showPosition, error, {
             enableHighAccuracy: true,
-            timeout: 40000,
-            maximumAge: 0
+            timeout: 20000,
+            maximumAge: 1000
         });
         else navigator.geolocation.getCurrentPosition(showPosition, error, {
             enableHighAccuracy: true,
-            timeout: 40000,
-            maximumAge: 0
+            timeout: 20000,
+            maximumAge: 1000
         });
     } else {
         $162001cafa2b40fd$export$6593825dc0f3a767("Geolocation is not supported by this browser.", 2000);
@@ -3136,7 +3135,7 @@ function $162001cafa2b40fd$export$637fd9537164f29b() {
         return _init.apply(this, arguments);
     }
     function _init() {
-        _init = (0, $ba0748fc6d85beab$export$7c398597f8905a1)(function() {
+        _init = (0, $ba0748fc6d85beab$export$71511d61b312f219)(function() {
             var error;
             return (0, $04f2fd83a0b0b7f9$export$67ebef60e6f28a6)(this, function(_state) {
                 switch(_state.label){
@@ -3193,7 +3192,7 @@ function $162001cafa2b40fd$export$637fd9537164f29b() {
         return _startRecording.apply(this, arguments);
     }
     function _startRecording() {
-        _startRecording = (0, $ba0748fc6d85beab$export$7c398597f8905a1)(function() {
+        _startRecording = (0, $ba0748fc6d85beab$export$71511d61b312f219)(function() {
             return (0, $04f2fd83a0b0b7f9$export$67ebef60e6f28a6)(this, function(_state) {
                 switch(_state.label){
                     case 0:
@@ -14991,10 +14990,10 @@ var $9fbe31c6ff058869$exports = {};
         4: [
             function(_dereq_, module1, exports) {
                 "use strict";
-                var _typeof = typeof Symbol === "function" && (0, $7bd6d9ddf4a378c5$export$5f0017c582d45a2d)(Symbol.iterator) === "symbol" ? function _typeof(obj) {
-                    return typeof obj === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$5f0017c582d45a2d)(obj);
+                var _typeof = typeof Symbol === "function" && (0, $7bd6d9ddf4a378c5$export$71511d61b312f219)(Symbol.iterator) === "symbol" ? function _typeof(obj) {
+                    return typeof obj === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$71511d61b312f219)(obj);
                 } : function(obj) {
-                    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$5f0017c582d45a2d)(obj);
+                    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$71511d61b312f219)(obj);
                 };
                 function _classCallCheck(instance, Constructor) {
                     if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
@@ -21257,7 +21256,7 @@ var $6995a202bee889c8$export$2e2bcd8739ae039 = $6995a202bee889c8$var$v4;
  *  Use of this source code is governed by a BSD-style license
  *  that can be found in the LICENSE file in the root of the source
  *  tree.
- */ /* eslint-env node */ function $ca7b5bc57a9adfd0$export$1e71eb4bef00f6b0(obj, key, value) {
+ */ /* eslint-env node */ function $ca7b5bc57a9adfd0$export$71511d61b312f219(obj, key, value) {
     if (key in obj) Object.defineProperty(obj, key, {
         value: value,
         enumerable: true,
@@ -21327,12 +21326,12 @@ function $8ec7d4c1b33e5d30$export$1f48841962b828b1(window1, eventNameToWrap, wra
     });
 }
 function $8ec7d4c1b33e5d30$export$afbfee8cc06fd3e4(bool) {
-    if (typeof bool !== "boolean") return new Error("Argument type: " + (typeof bool === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$5f0017c582d45a2d)(bool)) + ". Please use a boolean.");
+    if (typeof bool !== "boolean") return new Error("Argument type: " + (typeof bool === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$71511d61b312f219)(bool)) + ". Please use a boolean.");
     $8ec7d4c1b33e5d30$var$logDisabled_ = bool;
     return bool ? "adapter.js logging disabled" : "adapter.js logging enabled";
 }
 function $8ec7d4c1b33e5d30$export$51516be4b019e41e(bool) {
-    if (typeof bool !== "boolean") return new Error("Argument type: " + (typeof bool === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$5f0017c582d45a2d)(bool)) + ". Please use a boolean.");
+    if (typeof bool !== "boolean") return new Error("Argument type: " + (typeof bool === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$71511d61b312f219)(bool)) + ". Please use a boolean.");
     $8ec7d4c1b33e5d30$var$deprecationWarnings_ = !bool;
     return "adapter.js deprecation warnings " + (bool ? "disabled" : "enabled");
 }
@@ -21403,7 +21402,7 @@ function $8ec7d4c1b33e5d30$export$15384eac40dc88c8(data) {
         var value = isObj ? $8ec7d4c1b33e5d30$export$15384eac40dc88c8(data[key]) : data[key];
         var isEmptyObject = isObj && !Object.keys(value).length;
         if (value === undefined || isEmptyObject) return accumulator;
-        return Object.assign(accumulator, (0, $ca7b5bc57a9adfd0$export$1e71eb4bef00f6b0)({}, key, value));
+        return Object.assign(accumulator, (0, $ca7b5bc57a9adfd0$export$71511d61b312f219)({}, key, value));
     }, {});
 }
 function $8ec7d4c1b33e5d30$export$571b373e75babb58(stats, base, resultSet) {
@@ -22041,7 +22040,7 @@ function $13e030d5bc326ad3$export$9588259fcf4ebc91(window, browserDetails) {
         "createAnswer"
     ].forEach(function(method) {
         var nativeMethod = window.RTCPeerConnection.prototype[method];
-        var methodObj = (0, $ca7b5bc57a9adfd0$export$1e71eb4bef00f6b0)({}, method, function() {
+        var methodObj = (0, $ca7b5bc57a9adfd0$export$71511d61b312f219)({}, method, function() {
             var _this = this;
             var args = arguments;
             var isLegacyCall = arguments.length && typeof arguments[0] === "function";
@@ -22116,7 +22115,7 @@ function $13e030d5bc326ad3$export$852a08dda9a55ea7(window, browserDetails) {
         "addIceCandidate"
     ].forEach(function(method) {
         var nativeMethod = window.RTCPeerConnection.prototype[method];
-        var methodObj = (0, $ca7b5bc57a9adfd0$export$1e71eb4bef00f6b0)({}, method, function() {
+        var methodObj = (0, $ca7b5bc57a9adfd0$export$71511d61b312f219)({}, method, function() {
             arguments[0] = new (method === "addIceCandidate" ? window.RTCIceCandidate : window.RTCSessionDescription)(arguments[0]);
             return nativeMethod.apply(this, arguments);
         });
@@ -22155,12 +22154,12 @@ $parcel$export($fe2ad74ba0077acb$exports, "shimGetDisplayMedia", function () { r
  *  that can be found in the LICENSE file in the root of the source
  *  tree.
  */ /* eslint-env node */ 
-function $77a89769c0981dfc$export$e6256bf45c68d561(arr) {
+function $77a89769c0981dfc$export$71511d61b312f219(arr) {
     if (Array.isArray(arr)) return arr;
 }
 
 
-function $654ff405d6bc2163$export$2fd15edff6687200(arr, i) {
+function $654ff405d6bc2163$export$71511d61b312f219(arr, i) {
     var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
     if (_i == null) return;
     var _arr = [];
@@ -22186,52 +22185,52 @@ function $654ff405d6bc2163$export$2fd15edff6687200(arr, i) {
 }
 
 
-function $5e28bf0636117a29$export$60dbc22abd7da546() {
+function $5e28bf0636117a29$export$71511d61b312f219() {
     throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
 
-function $adff3c4e0c1171cc$export$79e617b1955a2616(arr, len) {
+function $adff3c4e0c1171cc$export$71511d61b312f219(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
     for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
     return arr2;
 }
 
 
-function $51a6752bab5162a4$export$a5be06335b3a083c(o, minLen) {
+function $51a6752bab5162a4$export$71511d61b312f219(o, minLen) {
     if (!o) return;
-    if (typeof o === "string") return (0, $adff3c4e0c1171cc$export$79e617b1955a2616)(o, minLen);
+    if (typeof o === "string") return (0, $adff3c4e0c1171cc$export$71511d61b312f219)(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
     if (n === "Map" || n === "Set") return Array.from(n);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return (0, $adff3c4e0c1171cc$export$79e617b1955a2616)(o, minLen);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return (0, $adff3c4e0c1171cc$export$71511d61b312f219)(o, minLen);
 }
 
 
-function $c26877c109f33d6d$export$fdf2a89c76341bbf(arr, i) {
-    return (0, $77a89769c0981dfc$export$e6256bf45c68d561)(arr) || (0, $654ff405d6bc2163$export$2fd15edff6687200)(arr, i) || (0, $51a6752bab5162a4$export$a5be06335b3a083c)(arr, i) || (0, $5e28bf0636117a29$export$60dbc22abd7da546)();
+function $c26877c109f33d6d$export$71511d61b312f219(arr, i) {
+    return (0, $77a89769c0981dfc$export$71511d61b312f219)(arr) || (0, $654ff405d6bc2163$export$71511d61b312f219)(arr, i) || (0, $51a6752bab5162a4$export$71511d61b312f219)(arr, i) || (0, $5e28bf0636117a29$export$71511d61b312f219)();
 }
 
 
 
-function $103ec1b33d0c31a4$export$7e0947b5ad3404e2(arr) {
-    if (Array.isArray(arr)) return (0, $adff3c4e0c1171cc$export$79e617b1955a2616)(arr);
+function $103ec1b33d0c31a4$export$71511d61b312f219(arr) {
+    if (Array.isArray(arr)) return (0, $adff3c4e0c1171cc$export$71511d61b312f219)(arr);
 }
 
 
-function $fdb1565f2fa1c9a2$export$1eb58a6e75231000(iter) {
+function $fdb1565f2fa1c9a2$export$71511d61b312f219(iter) {
     if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
 }
 
 
-function $89e35634fd357221$export$e6f3c4780d19eb2b() {
+function $89e35634fd357221$export$71511d61b312f219() {
     throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
 
 
-function $bff51d46f29b3217$export$1b5e630bc3aea29f(arr) {
-    return (0, $103ec1b33d0c31a4$export$7e0947b5ad3404e2)(arr) || (0, $fdb1565f2fa1c9a2$export$1eb58a6e75231000)(arr) || (0, $51a6752bab5162a4$export$a5be06335b3a083c)(arr) || (0, $89e35634fd357221$export$e6f3c4780d19eb2b)();
+function $bff51d46f29b3217$export$71511d61b312f219(arr) {
+    return (0, $103ec1b33d0c31a4$export$71511d61b312f219)(arr) || (0, $fdb1565f2fa1c9a2$export$71511d61b312f219)(arr) || (0, $51a6752bab5162a4$export$71511d61b312f219)(arr) || (0, $89e35634fd357221$export$71511d61b312f219)();
 }
 
 
@@ -22342,7 +22341,7 @@ function $fe2ad74ba0077acb$export$852a08dda9a55ea7(window, browserDetails) {
         "addIceCandidate"
     ].forEach(function(method) {
         var nativeMethod = window.RTCPeerConnection.prototype[method];
-        var methodObj = (0, $ca7b5bc57a9adfd0$export$1e71eb4bef00f6b0)({}, method, function() {
+        var methodObj = (0, $ca7b5bc57a9adfd0$export$71511d61b312f219)({}, method, function() {
             arguments[0] = new (method === "addIceCandidate" ? window.RTCIceCandidate : window.RTCSessionDescription)(arguments[0]);
             return nativeMethod.apply(this, arguments);
         });
@@ -22357,7 +22356,7 @@ function $fe2ad74ba0077acb$export$852a08dda9a55ea7(window, browserDetails) {
     };
     var nativeGetStats = window.RTCPeerConnection.prototype.getStats;
     window.RTCPeerConnection.prototype.getStats = function getStats() {
-        var _arguments = (0, $c26877c109f33d6d$export$fdf2a89c76341bbf)(arguments, 3), selector = _arguments[0], onSucc = _arguments[1], onErr = _arguments[2];
+        var _arguments = (0, $c26877c109f33d6d$export$71511d61b312f219)(arguments, 3), selector = _arguments[0], onSucc = _arguments[1], onErr = _arguments[2];
         return nativeGetStats.apply(this, [
             selector || null
         ]).then(function(stats) {
@@ -22448,7 +22447,7 @@ function $fe2ad74ba0077acb$export$70c77533b6e9908d(window) {
         // WebIDL input coercion and validation
         var sendEncodings = arguments[1] && arguments[1].sendEncodings;
         if (sendEncodings === undefined) sendEncodings = [];
-        sendEncodings = (0, $bff51d46f29b3217$export$1b5e630bc3aea29f)(sendEncodings);
+        sendEncodings = (0, $bff51d46f29b3217$export$71511d61b312f219)(sendEncodings);
         var shouldPerformCheck = sendEncodings.length > 0;
         if (shouldPerformCheck) // If sendEncodings params are provided, validate grammar
         sendEncodings.forEach(function(encodingParam) {
@@ -24273,7 +24272,7 @@ var $6e11092d7331cd03$exports = {};
         // attach listener (without syntactic sugar now)
         _on: function _on(type, fn, context, _once) {
             if (typeof fn !== "function") {
-                console.warn("wrong listener type: " + (typeof fn === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$5f0017c582d45a2d)(fn)));
+                console.warn("wrong listener type: " + (typeof fn === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$71511d61b312f219)(fn)));
                 return;
             }
             // check if fn already there
@@ -24303,7 +24302,7 @@ var $6e11092d7331cd03$exports = {};
                 return;
             }
             if (typeof fn !== "function") {
-                console.warn("wrong listener type: " + (typeof fn === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$5f0017c582d45a2d)(fn)));
+                console.warn("wrong listener type: " + (typeof fn === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$71511d61b312f219)(fn)));
                 return;
             }
             // find fn and remove it
@@ -34612,7 +34611,6 @@ var $17d11d58618cc814$var$delete_addressbook_item = function(userIdToDelete) {
     });
     (0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).setItem("addressbook", $17d11d58618cc814$var$addressbook).then(function(e) {
         (0, $162001cafa2b40fd$export$6593825dc0f3a767)("deleted", 3000);
-        console.log(e);
         (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
     }).catch(function(error) {
         console.error("Error saving address book:", error);
@@ -34673,14 +34671,7 @@ function $17d11d58618cc814$var$setupConnectionEvents(conn) {
     conn.on("data", function(data) {
         document.querySelector(".loading-spinner").style.display = "none";
         $17d11d58618cc814$var$remove_no_user_online();
-        //add user
-        /*
-    try {
-      setupConnectionEvents(data.userId);
-    } catch (e) {
-      console.log(error);
-    }
-    */ if (data.type == "image" || data.type == "text" || data.type == "gps_live" || data.type == "gps" || data.type == "audio") {
+        if (data.type == "image" || data.type == "text" || data.type == "gps_live" || data.type == "gps" || data.type == "audio") {
             if (data.type == "image") {
                 if (!$17d11d58618cc814$export$471f7ae5c4103ae1.visibility) (0, $162001cafa2b40fd$export$75525525b38ea7b3)("flop", "new message");
                 $17d11d58618cc814$var$chat_data.push({
@@ -34738,6 +34729,7 @@ function $17d11d58618cc814$var$setupConnectionEvents(conn) {
                     gps: data.content
                 });
             }
+            //to do not stable
             if (data.type == "gps_live") {
                 var existingMsg = $17d11d58618cc814$var$chat_data.find(function(item) {
                     return item.type === "gps_live";
@@ -34787,13 +34779,11 @@ function $17d11d58618cc814$var$setupConnectionEvents(conn) {
         $17d11d58618cc814$var$updateConnections();
     });
     conn.on("disconnected", function() {
-        // conn.reconnect();
-        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User has been disconnected", 1000);
-        $17d11d58618cc814$var$connectedPeers = $17d11d58618cc814$var$connectedPeers.filter(function(c) {
-            return c !== userId;
-        });
-        $17d11d58618cc814$var$updateConnections();
-    });
+    /*
+    side_toaster(`User has been disconnected`, 1000);
+    connectedPeers = connectedPeers.filter((c) => c !== userId);
+    updateConnections();
+    */ });
     // Event handler for connection errors
     conn.on("error", function() {
         (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User has been disconnected", 1000);
@@ -34833,7 +34823,7 @@ function $17d11d58618cc814$var$getIceServers() {
 }
 function $17d11d58618cc814$var$_getIceServers() {
     $17d11d58618cc814$var$_getIceServers = //load ICE Server
-    (0, $ba0748fc6d85beab$export$7c398597f8905a1)(function() {
+    (0, $ba0748fc6d85beab$export$71511d61b312f219)(function() {
         var response, a, error;
         return (0, $04f2fd83a0b0b7f9$export$67ebef60e6f28a6)(this, function(_state) {
             switch(_state.label){
@@ -35192,8 +35182,7 @@ var $17d11d58618cc814$var$create_peer = function create_peer() {
                 foreground: "black",
                 level: "H",
                 padding: 5,
-                size: 200,
-                // value: settings.custom_peer_id,
+                size: 1000,
                 value: $17d11d58618cc814$export$a5a6e0b888b2c992.invite_url + "#!/intro?id=" + $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id
             });
             // Define the elements to be added
@@ -35280,44 +35269,48 @@ var $17d11d58618cc814$var$AudioComponent = {
         ]);
     }
 };
-//map
+// MapComponent
 var $17d11d58618cc814$var$MapComponent = {
     oncreate: function oncreate(vnode) {
         var mapContainer = vnode.dom;
         var lat = vnode.attrs.lat;
         var lng = vnode.attrs.lng;
+        // Create the map instance
         var map_box = (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).map(mapContainer, {
             keyboard: false,
             zoomControl: false
         }).setView([
             lat,
             lng
-        ], 10);
-        (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map_box);
-        setTimeout(function() {
-            document.querySelector(".leaflet-control-container").style.display = "none";
-        }, 5);
-        setTimeout(function() {
-            map_box.setView([
-                lat,
-                lng
-            ], 10);
-        }, 5000);
+        ], 7);
         var myMarker = (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).marker([
             lat,
             lng
         ]).addTo(map_box);
-        myMarker._icon.classList.add("myMarker");
+        //myMarker._icon.classList.add("myMarker");
+        myMarker.options.shadowSize = [
+            0,
+            0
+        ];
+        // Hide the leaflet control container
+        setTimeout(function() {
+            document.querySelector(".leaflet-control-container").style.display = "none";
+        }, 5);
         vnode.state.map = map_box; // Store the map instance in the vnode state
+        // Ensure map is properly resized when container size changes
+        window.addEventListener("resize", function() {
+            map_box.invalidateSize();
+        });
     },
     onremove: function onremove(vnode) {
         vnode.state.map.remove(); // Clean up the map instance when the component is removed
     },
     view: function view() {
         return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
-            class: "map-component"
+            class: "map-component",
+            style: {
+                height: "100%"
+            }
         });
     }
 };
@@ -35369,7 +35362,7 @@ function $17d11d58618cc814$var$MoveMap(direction) {
     $17d11d58618cc814$var$map.panTo(new (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).LatLng($17d11d58618cc814$var$mainmarker.current_lat, $17d11d58618cc814$var$mainmarker.current_lng));
 }
 // Initialize the map and define the setup
-function $17d11d58618cc814$var$map_function() {
+function $17d11d58618cc814$var$map_function(lat, lng, id) {
     $17d11d58618cc814$var$map = (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).map("map-container", {
         keyboard: true,
         zoomControl: false
@@ -35383,55 +35376,75 @@ function $17d11d58618cc814$var$map_function() {
     setTimeout(function() {
         document.querySelector(".leaflet-control-container").style.display = "none";
     }, 5000);
-    var myMarker = (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).marker([
-        51.5,
-        -0.09
-    ]).addTo($17d11d58618cc814$var$map).bindPopup("It's me").openPopup();
-    myMarker._icon.classList.add("myMarker");
     var once = false; // Define 'once' outside the callback to persist its state
+    var myMarker; // Define 'myMarker' outside the callback to persist its state
     var geolocation_callback = function geolocation_callback(e) {
+        if (!myMarker) {
+            // Create the marker only once
+            myMarker = (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).marker([
+                e.coords.latitude,
+                e.coords.longitude
+            ]).addTo($17d11d58618cc814$var$map).bindPopup("It's me").openPopup();
+            myMarker._icon.classList.add("myMarker");
+            $17d11d58618cc814$export$471f7ae5c4103ae1.userMarkers[0] = myMarker;
+            if (!once) {
+                // Set the view only once
+                $17d11d58618cc814$var$map.setView([
+                    e.coords.latitude,
+                    e.coords.longitude
+                ]);
+                once = true; // Set 'once' to true after the first execution
+            }
+        } else // Update the marker's position
         myMarker.setLatLng([
             e.coords.latitude,
             e.coords.longitude
         ]);
-        $17d11d58618cc814$export$471f7ae5c4103ae1.userMarkers[0] = myMarker;
-        if (!once) {
-            $17d11d58618cc814$var$map.setView([
-                e.coords.latitude,
-                e.coords.longitude
-            ]);
-            once = true; // Set 'once' to true after the first execution
-        }
     };
-    (0, $162001cafa2b40fd$export$33d904bed5c25b69)(geolocation_callback, true, false);
-    // Function to update or add markers
-    function updateMarkers(status) {
-        if (status.users_geolocation) {
-            var usersGeolocation = status.users_geolocation;
-            status.userMarkers = status.userMarkers || {}; // Ensure userMarkers is initialized as an object
-            usersGeolocation.forEach(function(user) {
-                var userId = user.userId, gps = user.gps;
-                var _JSON_parse = JSON.parse(gps), lat = _JSON_parse.lat, lng = _JSON_parse.lng; // Parse the gps string
-                if (status.userMarkers[userId]) // Update marker position
-                status.userMarkers[userId].setLatLng([
-                    lat,
-                    lng
-                ]);
-                else {
-                    // Create new marker
-                    var marker = (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).marker([
-                        lat,
-                        lng
-                    ]).addTo($17d11d58618cc814$var$map).bindPopup(userId).openPopup();
-                    status.userMarkers[userId] = marker; // Store marker in the object with userId as key
-                }
-            });
-        }
+    (0, $162001cafa2b40fd$export$33d904bed5c25b69)(geolocation_callback, false, true);
+    if (lat && lng) {
+        var _$m = (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).marker([
+            lat,
+            lng
+        ]).addTo($17d11d58618cc814$var$map).bindPopup(id).openPopup();
+        setTimeout(function() {
+            $17d11d58618cc814$var$map.setView([
+                lat,
+                lng
+            ]);
+            $17d11d58618cc814$export$471f7ae5c4103ae1.userMarkers[1] = _$m;
+        }, 3000);
     }
-    setTimeout(function() {
-        updateMarkers($17d11d58618cc814$export$471f7ae5c4103ae1);
-    }, 5000);
-    $17d11d58618cc814$var$map.on("zoomend", function() {
+    /*
+  // Function to update or add markers
+  function updateMarkers(status) {
+    if (status.users_geolocation) {
+      const usersGeolocation = status.users_geolocation;
+      status.userMarkers = status.userMarkers || {}; // Ensure userMarkers is initialized as an object
+
+      usersGeolocation.forEach((user) => {
+        const { userId, gps } = user;
+        const { lat, lng } = JSON.parse(gps); // Parse the gps string
+
+        if (status.userMarkers[userId]) {
+          // Update marker position
+          status.userMarkers[userId].setLatLng([lat, lng]);
+        } else {
+          // Create new marker
+          const marker = L.marker([lat, lng])
+            .addTo(map)
+            .bindPopup(userId)
+            .openPopup();
+          status.userMarkers[userId] = marker; // Store marker in the object with userId as key
+        }
+      });
+    }
+  }
+
+  setTimeout(() => {
+    updateMarkers(status);
+  }, 5000);
+*/ $17d11d58618cc814$var$map.on("zoomend", function() {
         var zoom_level = $17d11d58618cc814$var$map.getZoom();
         console.log(zoom_level);
         if (zoom_level > 16) $17d11d58618cc814$var$step = 0.0005;
@@ -35450,7 +35463,6 @@ function $17d11d58618cc814$var$map_function() {
         else if (zoom_level > 3) $17d11d58618cc814$var$step = 4.5;
         else if (zoom_level > 2) $17d11d58618cc814$var$step = 8;
         else $17d11d58618cc814$var$step = 20;
-        console.log($17d11d58618cc814$var$step);
     });
 }
 var $17d11d58618cc814$var$root = document.getElementById("app");
@@ -35744,6 +35756,8 @@ var $17d11d58618cc814$var$options = {
             class: "flex justify-content-center algin-item-start page",
             oncreate: function() {
                 (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "");
+                (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='./assets/image/select.svg'>", "");
+                (0, $162001cafa2b40fd$export$6c04b58eee2a9a32)();
                 if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
             }
         }, [
@@ -35774,11 +35788,12 @@ var $17d11d58618cc814$var$options = {
                     }, 500);
                 },
                 class: "item",
+                id: "button-add-user",
                 style: {
                     display: $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline ? "" : "none"
                 },
                 onfocus: function() {
-                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='./assets/image/select.svg'>", "");
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img  src='./assets/image/select.svg'>", "");
                 },
                 onclick: function onclick() {
                     if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_user_id !== "" && $17d11d58618cc814$export$471f7ae5c4103ae1.user_nickname !== "") $17d11d58618cc814$var$addUserToAddressBook($17d11d58618cc814$export$471f7ae5c4103ae1.current_user_id, $17d11d58618cc814$export$471f7ae5c4103ae1.current_user_nickname);
@@ -35787,7 +35802,7 @@ var $17d11d58618cc814$var$options = {
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
                 class: "item",
                 onfocus: function() {
-                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='assets/image/select.svg'>", "");
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img src='assets/image/select.svg'>", "");
                 },
                 style: {
                     display: $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline ? "" : "none"
@@ -35797,33 +35812,53 @@ var $17d11d58618cc814$var$options = {
                     else (0, $162001cafa2b40fd$export$6593825dc0f3a767)("no user online", 3000);
                 }
             }, "share location"),
-            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
-                class: "item",
-                id: "sharing-live-geolocation",
-                oncreate: function() {
-                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.geolcation_autoupdate) document.getElementById("sharing-live-geolocation").innerText = "stop sharing live location";
-                    else document.getElementById("sharing-live-geolocation").innerText = "share live location";
-                },
-                onfocus: function() {
-                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='assets/image/select.svg'>", "");
-                },
-                style: {
-                    display: $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline ? "" : "none"
-                },
-                onclick: function onclick() {
-                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.userOnline) {
-                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.geolcation_autoupdate) {
-                            (0, $162001cafa2b40fd$export$33d904bed5c25b69)($17d11d58618cc814$var$geolocation_autoupdate_callback, false, true);
-                            $17d11d58618cc814$export$471f7ae5c4103ae1.geolocation_autoupdate = false;
-                            document.getElementById("sharing-live-geolocation").innerText = "share live location";
-                        } else {
-                            (0, $162001cafa2b40fd$export$33d904bed5c25b69)($17d11d58618cc814$var$geolocation_autoupdate_callback, true, false);
-                            document.getElementById("sharing-live-geolocation").innerText = "share live location";
-                        }
-                    } else (0, $162001cafa2b40fd$export$6593825dc0f3a767)("no user online", 3000);
+            /*
+        m(
+          "button",
+          {
+            class: "item",
+            id: "sharing-live-geolocation",
+            oncreate: () => {
+              if (status.geolcation_autoupdate) {
+                document.getElementById("sharing-live-geolocation").innerText =
+                  "stop sharing live location";
+              } else {
+                document.getElementById("sharing-live-geolocation").innerText =
+                  "share live location";
+              }
+            },
+            onfocus: () => {
+              bottom_bar(
+                "",
+                "<img class='not-desktop' src='assets/image/select.svg'>",
+                ""
+              );
+            },
+            style: { display: status.userOnline ? "" : "none" },
+
+            onclick: function () {
+              if (status.userOnline) {
+                if (status.geolcation_autoupdate) {
+                  geolocation(geolocation_autoupdate_callback, true, true);
+                  status.geolocation_autoupdate = false;
+                  document.getElementById(
+                    "sharing-live-geolocation"
+                  ).innerText = "share live location";
+                } else {
+                  geolocation(geolocation_autoupdate_callback, true, false);
+                  document.getElementById(
+                    "sharing-live-geolocation"
+                  ).innerText = "share live location";
+                  status.geolocation_autoupdate = true;
                 }
-            }, "start live location"),
-            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
+              } else {
+                side_toaster("no user online", 3000);
+              }
+            },
+          },
+          "start live location"
+        ),
+*/ (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
                 class: "item share-id-button",
                 oninit: function(param) {
                     var dom = param.dom;
@@ -35877,7 +35912,7 @@ var $17d11d58618cc814$var$start = {
                     document.querySelector("#start p").focus();
                     vnode.dom.focus();
                 }
-            }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images and your position with your chat partner. To create a peer, press enter.<br><br>")),
+            }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images, audio and your position with your chat partner. To create a peer, press enter.<br><br>")),
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
                 tabIndex: 1,
                 class: "item",
@@ -35924,6 +35959,7 @@ var $17d11d58618cc814$var$open_peer_menu = {
         return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
             class: "flex justify-content-center algin-item-start page",
             oncreate: function() {
+                $17d11d58618cc814$export$471f7ae5c4103ae1.addressbook_in_focus = "";
                 (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img  src='assets/image/qr.svg'>", "", "<img  src='assets/image/id.svg'>");
                 if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS == true) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
             }
@@ -35996,7 +36032,6 @@ var $17d11d58618cc814$var$chat = {
                         if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS && $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline > 0) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img class='users' title='" + $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline + "' src='assets/image/monster.svg'>", "", "<img src='assets/image/back.svg'>");
                         if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS && $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline == 0) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img class='users' title='" + $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline + "' src='assets/image/no-monster.svg'>", "", "<img src='assets/image/back.svg'>");
                         if (!$17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS && $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline == 0) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img class='users' title='" + $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline + "' src='assets/image/no-monster.svg'>", "", "");
-                        console.log($17d11d58618cc814$export$471f7ae5c4103ae1.userOnline);
                     }
                 }, 3000);
             }
@@ -36019,18 +36054,30 @@ var $17d11d58618cc814$var$chat = {
             })
         ]), $17d11d58618cc814$var$chat_data.map(function(item, index) {
             //own message
+            var ff = {
+                lat: "",
+                lng: ""
+            };
+            if (item.type == "gps" || item.type == "gps_live") {
+                var n = JSON.parse(item.gps);
+                ff.lat = n.lat;
+                ff.lng = n.lng;
+            }
             var nickname = "me";
             if (item.nickname != $17d11d58618cc814$export$a5a6e0b888b2c992.nickname) nickname = item.nickname;
-            var f;
-            if (item.type == "gps") f = JSON.parse(item.gps);
             return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("article", {
-                class: " item " + nickname + " " + item.type,
+                class: "item " + nickname + " " + item.type,
                 tabindex: index,
                 "data-type": item.type,
                 "data-user-id": item.userId,
                 "data-user-nickname": item.nickname,
+                "data-lat": ff.lat,
+                "data-lng": ff.lng,
                 onclick: function() {
-                    if (item.type == "gps" || item.type == "gps_live") (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/map_view");
+                    if (item.type == "gps" || item.type == "gps_live") {
+                        var f = JSON.parse(item.gps);
+                        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/map_view?lat=" + f.lat + "&lng=" + f.lng + "&id=" + item.nickname);
+                    }
                 },
                 onfocus: function() {
                     $17d11d58618cc814$export$471f7ae5c4103ae1.current_user_id = document.activeElement.getAttribute("data-user-id");
@@ -36039,10 +36086,6 @@ var $17d11d58618cc814$var$chat = {
                     if ($17d11d58618cc814$var$links.length > 0 && item.type == "text") {
                         $17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type = "link";
                         (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/link.svg'>", "<img src='assets/image/option.svg'>");
-                    }
-                    if (item.type == "gps_live") {
-                        $17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type = "gps_live";
-                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/select.svg'>", "<img src='assets/image/option.svg'>");
                     }
                     if (item.type == "gps") {
                         $17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type = "gps";
@@ -36072,11 +36115,9 @@ var $17d11d58618cc814$var$chat = {
                     "data-filename": item.filename
                 }) : null,
                 item.type === "gps" ? (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
-                    class: "message-map"
-                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))($17d11d58618cc814$var$MapComponent, {
-                    lat: f.lat,
-                    lng: f.lng
-                })) : null,
+                    class: "message-map",
+                    oncreate: function(vnode) {}
+                }) : null,
                 item.type === "audio" ? (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                     class: "audioplayer"
                 }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))($17d11d58618cc814$var$AudioComponent, {
@@ -36088,7 +36129,13 @@ var $17d11d58618cc814$var$chat = {
                     (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", $17d11d58618cc814$var$time_parse(item.datetime)),
                     (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                         class: "nickname"
-                    }, nickname)
+                    }, nickname),
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                        class: "type",
+                        style: {
+                            display: item.type == "gps" ? "" : "none"
+                        }
+                    }, "  Location")
                 ])
             ]);
         }));
@@ -36099,10 +36146,14 @@ var $17d11d58618cc814$var$map_view = {
         return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
             class: "width-100 height-100",
             id: "map-container",
-            oncreate: function() {
+            oncreate: function(vnode) {
                 (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/plus.svg'>", "<img src='assets/image/person.svg'>", "<img src='assets/image/minus.svg'>");
-                (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "");
-                $17d11d58618cc814$var$map_function();
+                var params = new URLSearchParams((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get().split("?")[1]);
+                var lat = parseFloat(params.get("lat"));
+                var lng = parseFloat(params.get("lng"));
+                var id = params.get("id");
+                $17d11d58618cc814$var$map_function(lat, lng, id);
+                if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
             }
         });
     }
@@ -36261,7 +36312,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
     //top bar
     document.querySelector("#top-bar div div.button-right").addEventListener("click", function(event) {
         var route = (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get();
-        if (route.startsWith("/chat") || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/settings_page" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/scan" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/open_peer_menu" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/about") {
+        if (route.startsWith("/chat") || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/settings_page" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/scan" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/open_peer_menu" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/about" || route.startsWith("/map_view")) {
             $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/start");
         }
@@ -36270,6 +36321,10 @@ document.addEventListener("DOMContentLoaded", function(e) {
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/about");
         }
         if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/privacy_policy") {
+            $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/about");
+        }
+        if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/about_page") {
             $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/about");
         }
@@ -36347,7 +36402,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
                     $17d11d58618cc814$export$471f7ae5c4103ae1.action;
                     $17d11d58618cc814$var$write();
                 }
-                if (route == "/map_view") $17d11d58618cc814$var$MoveMap("up");
+                if (route.startsWith("/map_view")) $17d11d58618cc814$var$MoveMap("up");
                 else nav(-1);
                 break;
             case "ArrowDown":
@@ -36364,13 +36419,12 @@ document.addEventListener("DOMContentLoaded", function(e) {
                     document.querySelector(".playing").style.opacity = "0";
                     $17d11d58618cc814$var$write();
                 });
-                if (route == "/map_view") $17d11d58618cc814$var$ZoomMap("out");
+                if (route.startsWith("/map_view")) $17d11d58618cc814$var$ZoomMap("out");
                 if (route == "/open_peer_menu") {
-                    console.log($17d11d58618cc814$export$471f7ae5c4103ae1.addressbook_in_focus);
                     if ($17d11d58618cc814$export$471f7ae5c4103ae1.addressbook_in_focus == "") {
-                        var prp = prompt("Enter the chat id");
-                        if (prp != null) $17d11d58618cc814$var$connect_to_peer(prp);
-                        else history.back();
+                        var prp = prompt("Enter the chat ID");
+                        if (prp !== null && prp !== "") $17d11d58618cc814$var$connect_to_peer(prp);
+                        else (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/open_peer_menu");
                     } else $17d11d58618cc814$var$delete_addressbook_item($17d11d58618cc814$export$471f7ae5c4103ae1.addressbook_in_focus);
                 }
                 break;
@@ -36395,7 +36449,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
                     if ($17d11d58618cc814$export$471f7ae5c4103ae1.userOnline > 0) $17d11d58618cc814$var$write();
                     else (0, $162001cafa2b40fd$export$6593825dc0f3a767)("no user online", 3000);
                 }
-                if (route == "/map_view") $17d11d58618cc814$var$ZoomMap("in");
+                if (route.startsWith("/map_view")) $17d11d58618cc814$var$ZoomMap("in");
                 if (route == "/start") (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/open_peer_menu");
                 if (route == "/open_peer_menu") {
                     (0, $2b0cc46421a6d3fe$export$be96fe42679d1b7e)($17d11d58618cc814$var$scan_callback);
@@ -36416,7 +36470,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
                 }
                 if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) route.startsWith($17d11d58618cc814$export$471f7ae5c4103ae1.action == "write");
                 if (document.activeElement.classList.contains("input-parent")) document.activeElement.children[0].focus();
-                if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/options") {
+                if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/options" && document.activeElement.id == "button-add-user") {
                     if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_user_id !== "" && $17d11d58618cc814$export$471f7ae5c4103ae1.user_nickname !== "") $17d11d58618cc814$var$addUserToAddressBook($17d11d58618cc814$export$471f7ae5c4103ae1.current_user_id, $17d11d58618cc814$export$471f7ae5c4103ae1.current_user_nickname);
                 }
                 if (route == "/start") {
@@ -36425,7 +36479,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
                 }
                 //addressbook open peer
                 if (route == "/open_peer_menu") $17d11d58618cc814$var$connect_to_peer(document.activeElement.getAttribute("data-id"));
-                if (route == "/map_view") {
+                if (route.startsWith("/map_view")) {
                     // Ensure users_geolocation_count is within bounds
                     if (users_geolocation_count == Object.keys($17d11d58618cc814$export$471f7ae5c4103ae1.userMarkers).length - 1) users_geolocation_count = 0;
                     else users_geolocation_count++;
@@ -36446,7 +36500,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
                             if (playPauseButton) playPauseButton.click();
                         });
                         if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type == "gps_live") (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/map_view");
-                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type == "gps") (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/map_view");
+                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type == "gps") (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/map_view?lat=" + document.activeElement.getAttribute("data-lat") + "&lng=" + document.activeElement.getAttribute("data-lng") + "&id=" + document.activeElement.getAttribute("data-user-nickname"));
                         if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type == "image") {
                             var filename = document.activeElement.querySelector("img").getAttribute("data-filename");
                             var data = document.activeElement.querySelector("img").getAttribute("src");
@@ -36470,7 +36524,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
         if (evt.key === "Backspace" && (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() != "/start") evt.preventDefault();
         if (evt.key == "Enter" && route == "/chat") evt.preventDefault();
         if (evt.key === "Backspace") {
-            if (route.startsWith("/chat") || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/settings_page" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/scan" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/open_peer_menu" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/about" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/map_view") {
+            if (route.startsWith("/chat") || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/settings_page" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/scan" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/open_peer_menu" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/about" || route.startsWith("/map_view")) {
                 evt.preventDefault();
                 $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
                 (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/start");
@@ -36490,7 +36544,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
                 $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
                 (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/about");
             }
-            if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/map_view") {
+            if (route.startsWith("/map_view")) {
                 evt.preventDefault();
                 $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
                 (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat?id="), $17d11d58618cc814$export$471f7ae5c4103ae1.ownPeerId;

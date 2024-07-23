@@ -112,21 +112,20 @@ export const geolocation = function (
   };
 
   let error = function (error) {
-    console.log(error.code);
+    alert("Current location not available");
 
     switch (error.code) {
       case error.PERMISSION_DENIED:
-        side_toaster("Location not provided", 2000);
+        side_toaster("Location not provided", 5000);
         break;
       case error.POSITION_UNAVAILABLE:
-        side_toaster("Current location not available", 2000);
+        side_toaster("Current location not available", 5000);
         break;
       case error.TIMEOUT:
-      case 3:
-        side_toaster("Current location not available", 2000);
+        side_toaster("Current location not available", 5000);
         break;
       default:
-        side_toaster("Current location not available", 2000);
+        side_toaster("Current location not available", 5000);
         break;
     }
 
@@ -151,15 +150,15 @@ export const geolocation = function (
           error,
           {
             enableHighAccuracy: true,
-            timeout: 40000,
-            maximumAge: 0,
+            timeout: 20000,
+            maximumAge: 1000,
           }
         );
       } else {
         navigator.geolocation.getCurrentPosition(showPosition, error, {
           enableHighAccuracy: true,
-          timeout: 40000,
-          maximumAge: 0,
+          timeout: 20000,
+          maximumAge: 1000,
         });
       }
     } else {

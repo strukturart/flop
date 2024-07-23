@@ -94,9 +94,14 @@ label {
 }
 
 article img {
-  max-width: 90vw;
+  width: 100%;
   height: auto;
+  padding: 10px;
   display: block;
+}
+
+#chat {
+  padding: 40px 0;
 }
 
 img[src=""], img[src=" "] {
@@ -370,6 +375,10 @@ div#intro img {
   padding: 10px;
 }
 
+#app {
+  max-width: 500px;
+}
+
 div#toast {
   overflow: none;
   color: #fff;
@@ -605,8 +614,11 @@ div#top-bar div.button-center img, div#top-bar div.button-center:hover img {
 
 article {
   width: 100%;
+  max-width: 400px;
   margin: 0 0 10px;
   padding: 3px;
+  position: relative;
+  overflow: hidden;
 }
 
 article div.user-date {
@@ -623,17 +635,10 @@ article img {
 }
 
 article .message-map {
+  background: url("map.25bf3a08.png") 0 0 / cover;
   width: 100%;
-  min-width: 100%;
-  max-height: 100px;
-}
-
-article .map-component {
-  width: 100%;
-  min-width: 100%;
-  height: 100px;
-  max-height: 100px;
-  overflow: hidden;
+  height: 150px;
+  position: relative;
 }
 
 [id*="page-"] {
@@ -728,15 +733,15 @@ article div.message-main {
   padding: 5px;
 }
 
+article div.message-main:empty {
+  display: none;
+}
+
 article.me div.message-main {
   background: #a7aca449;
   -moz-border-radius: 7px;
   border-radius: 7px;
   padding: 5px;
-}
-
-article div.message-main:empty {
-  display: none;
 }
 
 article.image {
@@ -898,8 +903,8 @@ div#message-input input {
 
 @media screen and (width >= 1500px) and (width <= 3000px) {
   #app {
-    min-width: 100%;
-    max-width: 100%;
+    min-width: 400px;
+    max-width: 400px;
     padding: 50px 0 0;
     overflow: scroll;
   }
