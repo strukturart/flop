@@ -806,23 +806,40 @@ div#message-input input {
   padding: 10px;
 }
 
+#addressbook button img {
+  width: 30px;
+  display: none;
+}
+
+#addressbook button.live img.online {
+  display: inline-block;
+}
+
+#addressbook button.live img.offline {
+  display: none;
+}
+
+#addressbook button img.offline {
+  display: inline-block;
+}
+
 #addressbook button:last-child {
   margin-bottom: 50px;
 }
 
 @media screen and (width >= 400px) and (width <= 2000px) {
   #app {
-    min-width: 400px;
-    max-width: 400px;
     padding: 50px 0 0;
     overflow: scroll;
   }
 
+  #chat {
+    max-width: 400px;
+  }
+
   article {
-    min-width: 400px;
     display: block;
     overflow: hidden;
-    max-width: 400px !important;
   }
 
   article img {
@@ -903,20 +920,20 @@ div#message-input input {
 
 @media screen and (width >= 1500px) and (width <= 3000px) {
   #app {
-    min-width: 400px;
-    max-width: 400px;
     padding: 50px 0 0;
     overflow: scroll;
   }
 
   article {
-    min-width: 400px;
     overflow: hidden;
-    max-width: 400px !important;
   }
 
   article img {
     width: 100%;
+  }
+
+  #chat {
+    max-width: 400px;
   }
 
   #wrapper {
