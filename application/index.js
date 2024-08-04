@@ -1,5 +1,7 @@
 "use strict";
 
+import "webrtc-adapter";
+
 import {
   bottom_bar,
   side_toaster,
@@ -236,11 +238,14 @@ function setupConnectionEvents(conn) {
 
   if (pc) {
     pc.addEventListener("negotiationneeded", (event) => {
-      console.log("ti" + event);
+      console.log(event);
+
+      //side_toaster(event, 5000);
     });
 
     pc.addEventListener("icecandidateerror", (event) => {
-      side_toaster("mi" + event.errorText, 5000);
+      //side_toaster(event.errorText, 5000);
+      //side_toaster(event.url, 5000);
     });
 
     pc.addEventListener("iceconnectionstatechange", () => {
@@ -260,6 +265,7 @@ function setupConnectionEvents(conn) {
   }
 
   conn.on("data", function (data) {
+    console.log(data);
     document.querySelector(".loading-spinner").style.display = "none";
     remove_no_user_online();
 
@@ -398,6 +404,10 @@ function setupConnectionEvents(conn) {
     updateConnections();
   });
 
+  conn.on("connection", function (dataConnection) {
+    side_toaster("remote connection", 4000);
+  });
+
   conn.on("disconnected", () => {});
   // Event handler for connection errors
 
@@ -413,7 +423,7 @@ function updateConnections() {
 }
 
 let ice_servers = {
-  "iceServers": [{ urls: "stun:stun.l.google.com:19302" }],
+  "iceServers": [],
 };
 
 const remove_no_user_online = () => {
@@ -473,13 +483,13 @@ async function getIceServers() {
     }
 
     peer = new Peer(settings.custom_peer_id, {
-      debug: 0,
+      debug: 1,
       secure: false,
       config: ice_servers,
       referrerPolicy: "no-referrer",
     });
 
-    peer.on("open", function () {
+    peer.on("open", function (c) {
       if (peer.id == null) peer.id = settings.custom_peer_id;
 
       document.querySelector(".loading-spinner").style.display = "none";
@@ -489,14 +499,18 @@ async function getIceServers() {
 
     peer.on("connection", function (c) {
       //store all connections
-      document.querySelector(".loading-spinner").style.display = "none";
+      //document.querySelector(".loading-spinner").style.display = "none";
       setupConnectionEvents(c);
+
+      status.user_does_not_exist = false;
+      var x = document.querySelector("div#side-toast");
+      x.style.transform = "translate(-100vw,0px)";
     });
 
     peer.on("disconnected", function () {
       try {
         //side_toaster("disconnected", 2000);
-        m.route.set("/start");
+        //  m.route.set("/start");
       } catch (e) {
         console.log("reconnect error: " + e);
       }
@@ -521,7 +535,7 @@ async function getIceServers() {
           break;
       }
 
-      document.querySelector(".loading-spinner").style.display = "none";
+      //document.querySelector(".loading-spinner").style.display = "none";
     });
   } catch (error) {
     document.querySelector(".loading-spinner").style.display = "none";
@@ -800,80 +814,81 @@ let peer_is_online = async function () {
     return false;
   }
 
-  document.querySelector(".loading-spinner").style.display = "block";
-
   try {
     setTimeout(() => {
-      if (ppeer) {
-        ppeer.destroy();
-        console.log("Existing peer instance destroyed");
-      }
-
-      const ppeer = new Peer({
-        debug: 1,
-        secure: false,
-        config: ice_servers,
-        referrerPolicy: "no-referrer",
-      });
-
       // Uncomment and refactor this part if needed
-      setTimeout(() => {
-        addressbook.forEach((entry, index) => {
-          if (ppeer && !ppeer.disconnected) {
-            addressbook[index].live = false;
+      if (addressbook.length > 0) {
+        document.querySelector(".loading-spinner").style.display = "block";
 
-            try {
-              const tempConn = ppeer.connect(entry.id, {
-                label: "ping",
-                reliable: true,
-              });
+        if (ppeer) {
+          ppeer.destroy();
+          console.log("Existing peer instance destroyed");
+        }
 
-              if (tempConn) {
-                tempConn.on("open", () => {
-                  console.log("Connection established" + entry.id);
-                  addressbook[index].live = true;
+        const ppeer = new Peer({
+          debug: 0,
+          secure: false,
+          config: ice_servers,
+          referrerPolicy: "no-referrer",
+        });
 
-                  document
-                    .querySelector("button[data-id='" + entry.id + "']")
-                    .classList.add("live");
+        setTimeout(() => {
+          addressbook.forEach((entry, index) => {
+            if (ppeer && !ppeer.disconnected) {
+              addressbook[index].live = false;
 
-                  tempConn.close();
+              try {
+                const tempConn = ppeer.connect(entry.id, {
+                  label: "ping",
+                  reliable: true,
                 });
 
-                tempConn.on("error", () => {
-                  console.log("Connection could not be established");
+                if (tempConn) {
+                  tempConn.on("open", () => {
+                    console.log("Connection established" + entry.id);
+                    addressbook[index].live = true;
+
+                    document
+                      .querySelector("button[data-id='" + entry.id + "']")
+                      .classList.add("live");
+
+                    tempConn.close();
+                  });
+
+                  tempConn.on("error", () => {
+                    console.log("Connection could not be established");
+                    addressbook[index].live = false;
+
+                    document
+                      .querySelector("button[data-id='" + entry.id + "']")
+                      .classList.add("offline");
+                  });
+                } else {
+                  console.log(`Could not connect to peer with id: ${entry.id}`);
                   addressbook[index].live = false;
 
                   document
                     .querySelector("button[data-id='" + entry.id + "']")
                     .classList.add("offline");
-                });
-              } else {
-                console.log(`Could not connect to peer with id: ${entry.id}`);
+                }
+              } catch (error) {
+                console.log(
+                  `Error connecting to peer with id: ${entry.id}. Error: ${error.message}`
+                );
                 addressbook[index].live = false;
 
                 document
                   .querySelector("button[data-id='" + entry.id + "']")
                   .classList.add("offline");
               }
-            } catch (error) {
-              console.log(
-                `Error connecting to peer with id: ${entry.id}. Error: ${error.message}`
-              );
-              addressbook[index].live = false;
-
-              document
-                .querySelector("button[data-id='" + entry.id + "']")
-                .classList.add("offline");
+            } else {
+              console.log("Peer instance is disconnected or does not exist");
             }
-          } else {
-            console.log("Peer instance is disconnected or does not exist");
-          }
-        });
-      }, 4000);
-
-      document.querySelector(".loading-spinner").style.display = "none";
-    }, 2000);
+          });
+          document.querySelector(".loading-spinner").style.display = "none";
+        }, 4000);
+      }
+    }, 1000);
 
     return true;
   } catch (error) {
@@ -884,49 +899,184 @@ let peer_is_online = async function () {
 };
 
 //connect to peer
-let connect_to_peer = function (id) {
+let connect_to_peer = function (id, route_target) {
   if (!status.deviceOnline) {
     alert("Device is offline");
     return false;
   }
+  m.route.set("/waiting");
+
   getIceServers()
     .then(() => {
       chat_data = [];
 
-      status.current_room = id;
-      m.route.set("/chat?id=" + id);
       setTimeout(() => {
-        document.querySelector(".loading-spinner").style.display = "block";
-      }, 2000);
-
-      setTimeout(() => {
-        if (peer == null) {
-          document.querySelector(".loading-spinner").style.display = "none";
+        if (!peer) {
+          console.error("Peer object is null");
+          if (route_target == null || route_target == undefined) {
+            history.back();
+          } else {
+            m.route.set(route_target);
+          }
+          return;
         }
 
-        // Establish connection with the destination peer
         try {
+          console.log("Attempting to connect to peer with ID:", id);
           conn = peer.connect(id, {
             label: "flop",
             reliable: true,
           });
-          conn.on("open", () => {
-            setupConnectionEvents(conn);
-          });
-          conn.on("error", (e) => {
-            side_toaster("connection could not be established", 4000);
-            document.querySelector(".loading-spinner").style.display = "none";
-          });
 
-          document.querySelector(".loading-spinner").style.display = "none";
+          if (conn) {
+            console.log("Connection object created:", conn);
 
-          m.redraw();
+            conn.on("open", () => {
+              console.log("Connection opened with peer:", id);
+              setupConnectionEvents(conn);
+              status.current_room = id;
+              m.route.set("/chat?id=" + id);
+            });
+
+            conn.on("connection", (e) => {
+              console.log("Connection with peer:", e);
+            });
+
+            conn.on("error", (e) => {
+              if (route_target == null || route_target == undefined) {
+                history.back();
+              } else {
+                m.route.set(route_target);
+              }
+
+              console.error("Connection error:", e);
+            });
+
+            let pc = conn.peerConnection;
+            if (pc) {
+              pc.addEventListener("icecandidate", (event) => {
+                console.log("ICE candidate event:" + event);
+              });
+
+              pc.addEventListener("icecandidateerror", (event) => {
+                console.error("ICE candidate error:", event);
+              });
+
+              pc.addEventListener("icegatheringstatechange", () => {
+                console.log(
+                  "ICE gathering state changed:",
+                  pc.iceGatheringState
+                );
+                if (pc.iceGatheringState === "complete") {
+                  console.log("ICE gathering state is complete");
+                }
+              });
+
+              pc.addEventListener("iceconnectionstatechange", () => {
+                console.log(
+                  "ICE connection state changed:",
+                  pc.iceConnectionState
+                );
+                if (pc.iceConnectionState === "disconnected") {
+                }
+                if (pc.iceConnectionState === "connected") {
+                }
+                if (
+                  pc.iceConnectionState === "failed" ||
+                  pc.iceConnectionState === "closed"
+                ) {
+                }
+              });
+
+              pc.addEventListener("signalingstatechange", () => {
+                console.log("Signaling state changed:", pc.signalingState);
+              });
+
+              pc.addEventListener("negotiationneeded", (event) => {
+                console.log("Negotiation needed:", event);
+              });
+
+              pc.addEventListener("connectionstatechange", () => {
+                console.log("Connection state changed:", pc.connectionState);
+                if (pc.connectionState === "connected") {
+                  console.log("Peers are fully connected");
+                }
+                if (pc.connectionState === "disconnected") {
+                  console.log("Peers are disconnected");
+                }
+                if (pc.connectionState === "failed") {
+                  console.log("Connection failed");
+                }
+                if (pc.connectionState === "closed") {
+                  console.log("Connection closed");
+                }
+              });
+            } else {
+              console.warn("Peer connection object not available");
+              if (status.user_does_not_exist) {
+                side_toaster("The user does not exist.", 100000);
+              } else {
+                side_toaster("Connection could not be established", 40000);
+              }
+              if (route_target == null || route_target == undefined) {
+                history.back();
+              } else {
+                m.route.set(route_target);
+              }
+            }
+
+            // Fallback in case 'open' or 'error' events are not triggered
+            setTimeout(() => {
+              if (!conn.open) {
+                console.warn("Connection timeout");
+                if (status.user_does_not_exist) {
+                  side_toaster("The user does not exist.", 100000);
+                } else {
+                  side_toaster("Connection could not be established", 40000);
+                }
+                if (route_target == null || route_target == undefined) {
+                  history.back();
+                } else {
+                  m.route.set(route_target);
+                }
+              }
+            }, 10000); // Adjust timeout as needed
+          } else {
+            console.error("Failed to create connection object");
+            if (status.user_does_not_exist) {
+              side_toaster("The user does not exist.", 100000);
+            } else {
+              side_toaster("Connection could not be established", 40000);
+            }
+            if (route_target == null || route_target == undefined) {
+              history.back();
+            } else {
+              m.route.set(route_target);
+            }
+          }
         } catch (e) {
-          document.querySelector(".loading-spinner").style.display = "none";
+          console.error("An error occurred during connection attempt:", e);
+          if (route_target == null || route_target == undefined) {
+            history.back();
+          } else {
+            m.route.set(route_target);
+          }
+          if (status.user_does_not_exist) {
+            side_toaster("The user does not exist.", 100000);
+          } else {
+            side_toaster("Connection could not be established", 40000);
+          }
         }
       }, 4000);
     })
-    .catch((e) => {});
+    .catch((e) => {
+      console.error("Failed to get ICE servers:", e);
+      if (status.user_does_not_exist) {
+        side_toaster("The user does not exist.", 100000);
+      } else {
+        side_toaster("Connection could not be established", 40000);
+      }
+    });
 };
 
 //create room
@@ -943,8 +1093,6 @@ let create_peer = function () {
   document.querySelector(".loading-spinner").style.display = "block";
 
   getIceServers().then(() => {
-    console.log("succesfull downloaded ice servers");
-
     peer.on("open", function () {
       // Workaround for peer.reconnect deleting previous id
       if (peer.id === null) {
@@ -1038,9 +1186,10 @@ let time_parse = function (value) {
 
 //callback qr-code scan
 let scan_callback = function (n) {
+  //maybe add new view "try to connect with funny animation"
   let m = n.split("id=");
-  connect_to_peer(m[1]);
   status.action = "";
+  connect_to_peer(m[1]);
 };
 
 //audio
@@ -1308,6 +1457,34 @@ function map_function(lat, lng, id) {
 }
 
 var root = document.getElementById("app");
+
+var waiting = {
+  view: function () {
+    return m(
+      "div",
+      {
+        id: "waiting",
+        class:
+          "width-100 height-100 flex align-item-center justify-content-center",
+        oninit: () => {
+          top_bar("", "", "");
+        },
+      },
+      [
+        m(
+          "span",
+          {
+            oncreate: () => {
+              document.querySelector(".loading-spinner").style.display =
+                "block";
+            },
+          },
+          "connecting"
+        ),
+      ]
+    );
+  },
+};
 
 var about = {
   view: function () {
@@ -1984,16 +2161,34 @@ var start = {
         oncreate: () => {
           top_bar("", "", "");
 
+          var x = document.querySelector("div#side-toast");
+          x.style.transform = "translate(-100vw,0px)";
+
           //auto connect if id is given
 
-          localforage.getItem("connect_to_id").then((e) => {
-            let params = e.data.split("?id=");
-            let id = params[1];
-            setTimeout(() => {
-              connect_to_peer(id);
-              localforage.removeItem("connect_to_id");
-            }, 1000);
-          });
+          localforage
+            .getItem("connect_to_id")
+            .then((e) => {
+              if (e && e.data) {
+                // Check if e and e.data are not null or undefined
+                let params = e.data.split("?id=");
+                if (params.length > 1) {
+                  let id = params[1];
+                  setTimeout(() => {
+                    localforage.removeItem("connect_to_id").then(() => {
+                      connect_to_peer(id, "/start");
+                    });
+                  }, 2000);
+                } else {
+                  console.error("Invalid data format"); // Handle invalid data format
+                }
+              } else {
+                console.error("Data not found"); // Handle case where e or e.data is null or undefined
+              }
+            })
+            .catch((error) => {
+              console.error("Error retrieving data:", error); // Handle error retrieving data
+            });
 
           bottom_bar(
             "<img src='assets/image/person.svg'>",
@@ -2005,7 +2200,6 @@ var start = {
       [
         m("img", {
           src: "assets/icons/intro.svg",
-          class: "",
         }),
         m(
           "p",
@@ -2093,6 +2287,10 @@ var open_peer_menu = {
       "div",
       {
         class: "flex justify-content-center algin-item-start page",
+
+        onremove: () => {
+          document.querySelector(".loading-spinner").style.display = "none";
+        },
         oncreate: () => {
           peer_is_online();
           setTimeout(() => {
@@ -2501,7 +2699,7 @@ var intro = {
             } else {
               setTimeout(function () {
                 let m = fullUrl.split("id=");
-                connect_to_peer(m[1]);
+                connect_to_peer(m[1], "/start");
               }, 1000);
             }
           } else {
@@ -2580,6 +2778,7 @@ m.route(root, "/intro", {
   "/about_page": about_page,
   "/privacy_policy": privacy_policy,
   "/map_view": map_view,
+  "/waiting": waiting,
 });
 
 function scrollToCenter() {
@@ -2705,6 +2904,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
       ) {
         status.action = "";
         m.route.set("/start");
+      }
+
+      if (m.route.get() == "/scan") {
+        status.action = "";
+        m.route.set("/open_peer_menu");
       }
 
       if (m.route.get() == "/settings") {
@@ -3066,7 +3270,13 @@ document.addEventListener("DOMContentLoaded", function (e) {
         break;
 
       case "Backspace":
-        stop_scan();
+        if (m.route.get() == "/scan") {
+          stop_scan();
+
+          m.route.set("/open_peer_menu");
+
+          status.action = "";
+        }
 
         break;
     }
@@ -3088,10 +3298,17 @@ document.addEventListener("DOMContentLoaded", function (e) {
     }
 
     if (evt.key === "Backspace") {
+      if (m.route.get() == "/scan") {
+        stop_scan();
+
+        m.route.set("/open_peer_menu");
+
+        status.action = "";
+      }
+
       if (
         route.startsWith("/chat") ||
         m.route.get() == "/settings_page" ||
-        m.route.get() == "/scan" ||
         m.route.get() == "/open_peer_menu" ||
         m.route.get() == "/about" ||
         route.startsWith("/map_view")
@@ -3181,7 +3398,7 @@ try {
     let id = params[1];
     if (id) {
       setTimeout(() => {
-        connect_to_peer(id);
+        connect_to_peer(id, "/start");
       }, 5000);
     }
   });

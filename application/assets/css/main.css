@@ -226,6 +226,19 @@ label {
 .input-parent:focus {
   background: orange;
 }
+
+#waiting {
+  background: rgb(228, 100, 14);
+  position: fixed;
+  z-index: 1000;
+  top: 0px;
+}
+
+#waiting span {
+  margin: -120px 0 0 0;
+  color: antiquewhite;
+}
+
 div#intro {
   position: fixed;
   background: black;
