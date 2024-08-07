@@ -239,8 +239,6 @@ function setupConnectionEvents(conn) {
   if (pc) {
     pc.addEventListener("negotiationneeded", (event) => {
       console.log(event);
-
-      //side_toaster(event, 5000);
     });
 
     pc.addEventListener("icecandidateerror", (event) => {
@@ -259,13 +257,13 @@ function setupConnectionEvents(conn) {
         side_toaster(`User has entered`, 1000);
         remove_no_user_online();
 
+        setupConnectionEvents(conn);
         updateConnections();
       }
     });
   }
 
   conn.on("data", function (data) {
-    console.log(data);
     document.querySelector(".loading-spinner").style.display = "none";
     remove_no_user_online();
 
@@ -391,9 +389,10 @@ function setupConnectionEvents(conn) {
   // Event handler for successful connection
   conn.on("open", function () {
     document.querySelector(".loading-spinner").style.display = "none";
-    side_toaster("Connected", 5000);
+    side_toaster("User has entered", 5000);
     m.redraw();
     stop_scan();
+    remove_no_user_online();
   });
 
   // Event handler for connection closure
@@ -420,6 +419,7 @@ function setupConnectionEvents(conn) {
 
 function updateConnections() {
   status.userOnline = connectedPeers.length;
+  remove_no_user_online();
 }
 
 let ice_servers = {
@@ -448,6 +448,10 @@ let get_manifest_callback = (e) => {
   localStorage.setItem("version", version);
 };
 getManifest(get_manifest_callback);
+
+getIceServers().then(() => {
+  console.log("peer created");
+});
 
 //load ICE Server
 async function getIceServers() {
@@ -483,7 +487,7 @@ async function getIceServers() {
     }
 
     peer = new Peer(settings.custom_peer_id, {
-      debug: 1,
+      debug: 0,
       secure: false,
       config: ice_servers,
       referrerPolicy: "no-referrer",
@@ -493,14 +497,16 @@ async function getIceServers() {
       if (peer.id == null) peer.id = settings.custom_peer_id;
 
       document.querySelector(".loading-spinner").style.display = "none";
-
       status.ownPeerId = peer.id;
+      remove_no_user_online();
     });
 
     peer.on("connection", function (c) {
       //store all connections
       //document.querySelector(".loading-spinner").style.display = "none";
       setupConnectionEvents(c);
+      side_toaster(`User has entered`, 1000);
+      console.log("allow user?");
 
       status.user_does_not_exist = false;
       var x = document.querySelector("div#side-toast");
@@ -939,7 +945,8 @@ let connect_to_peer = function (id, route_target) {
             });
 
             conn.on("connection", (e) => {
-              console.log("Connection with peer:", e);
+              console.log("would you open connection with :", e);
+              setupConnectionEvents(conn);
             });
 
             conn.on("error", (e) => {
@@ -1092,71 +1099,73 @@ let create_peer = function () {
   }
   document.querySelector(".loading-spinner").style.display = "block";
 
-  getIceServers().then(() => {
-    peer.on("open", function () {
-      // Workaround for peer.reconnect deleting previous id
-      if (peer.id === null) {
-        peer.id = lastPeerId;
-      } else {
-        lastPeerId = peer.id;
-      }
+  //getIceServers().then(() => {
+  /*
+  peer.on("open", function () {
+    // Workaround for peer.reconnect deleting previous id
+    if (peer.id === null) {
+      peer.id = lastPeerId;
+    } else {
+      lastPeerId = peer.id;
+    }
+    */
 
-      status.current_room = peer.id;
+  status.current_room = peer.id;
 
-      m.route.set("/chat?id=" + settings.custom_peer_id);
+  m.route.set("/chat?id=" + settings.custom_peer_id);
 
-      //make qr code
-      var qrs = new qrious();
-      qrs.set({
-        background: "white",
-        foreground: "black",
-        level: "H",
-        padding: 5,
-        size: 1000,
-        value: settings.invite_url + "#!/intro?id=" + settings.custom_peer_id,
-      });
-
-      // Define the elements to be added
-      const invitationLinkElement = {
-        nickname: settings.nickname,
-        content: "invitation link",
-        datetime: new Date(),
-        image: qrs.toDataURL(),
-        type: "image",
-      };
-
-      const noOtherUserOnlineElement = {
-        id: "no-other-user-online",
-        nickname: settings.nickname,
-        content: "no other user online, you should invite someone.",
-        datetime: new Date(),
-        type: "text",
-      };
-
-      // Check if elements already exist before pushing
-      if (
-        !elementExists(chat_data, {
-          nickname: settings.nickname,
-          content: "invitation link",
-        })
-      ) {
-        chat_data.push(invitationLinkElement);
-      }
-
-      if (
-        !elementExists(chat_data, {
-          id: "no-other-user-online",
-          content: "no other user online, you should invite someone.",
-        })
-      ) {
-        chat_data.push(noOtherUserOnlineElement);
-      }
-
-      m.redraw();
-      focus_last_article();
-      document.querySelector(".loading-spinner").style.display = "none";
-    });
+  //make qr code
+  var qrs = new qrious();
+  qrs.set({
+    background: "white",
+    foreground: "black",
+    level: "H",
+    padding: 5,
+    size: 1000,
+    value: settings.invite_url + "#!/intro?id=" + settings.custom_peer_id,
   });
+
+  // Define the elements to be added
+  const invitationLinkElement = {
+    nickname: settings.nickname,
+    content: "invitation link",
+    datetime: new Date(),
+    image: qrs.toDataURL(),
+    type: "image",
+  };
+
+  const noOtherUserOnlineElement = {
+    id: "no-other-user-online",
+    nickname: settings.nickname,
+    content: "no other user online, you should invite someone.",
+    datetime: new Date(),
+    type: "text",
+  };
+
+  // Check if elements already exist before pushing
+  if (
+    !elementExists(chat_data, {
+      nickname: settings.nickname,
+      content: "invitation link",
+    })
+  ) {
+    chat_data.push(invitationLinkElement);
+  }
+
+  if (
+    !elementExists(chat_data, {
+      id: "no-other-user-online",
+      content: "no other user online, you should invite someone.",
+    })
+  ) {
+    chat_data.push(noOtherUserOnlineElement);
+  }
+
+  m.redraw();
+  focus_last_article();
+  document.querySelector(".loading-spinner").style.display = "none";
+  // });
+  // });
 };
 
 let handleImage = function (t) {
@@ -2183,7 +2192,7 @@ var start = {
                   console.error("Invalid data format"); // Handle invalid data format
                 }
               } else {
-                console.error("Data not found"); // Handle case where e or e.data is null or undefined
+                console.error("notihing to do!"); // Handle case where e or e.data is null or undefined
               }
             })
             .catch((error) => {
@@ -3180,6 +3189,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         if (route == "/start") {
           chat_data = [];
           create_peer();
+          // m.route.set("/chat?id=" + settings.custom_peer_id);
         }
         //addressbook open peer
         if (route == "/open_peer_menu") {

@@ -1,3 +1,4 @@
+(function () {
 
       var $parcel$global =
         typeof globalThis !== 'undefined'
@@ -49,9 +50,9 @@ if (parcelRequire == null) {
 }
 
 var parcelRegister = parcelRequire.register;
-parcelRegister("6eh63", function(module, exports) {
+parcelRegister("ahPL4", function(module, exports) {
 "use strict";
-function $48914fe86425e792$var$Vnode(tag, key, attrs, children, text, dom) {
+function $77d3a4009e38b328$var$Vnode(tag, key, attrs, children, text, dom) {
     return {
         tag: tag,
         key: key,
@@ -65,13 +66,13 @@ function $48914fe86425e792$var$Vnode(tag, key, attrs, children, text, dom) {
         instance: undefined
     };
 }
-$48914fe86425e792$var$Vnode.normalize = function(node) {
-    if (Array.isArray(node)) return $48914fe86425e792$var$Vnode("[", undefined, undefined, $48914fe86425e792$var$Vnode.normalizeChildren(node), undefined, undefined);
+$77d3a4009e38b328$var$Vnode.normalize = function(node) {
+    if (Array.isArray(node)) return $77d3a4009e38b328$var$Vnode("[", undefined, undefined, $77d3a4009e38b328$var$Vnode.normalizeChildren(node), undefined, undefined);
     if (node == null || typeof node === "boolean") return null;
     if (typeof node === "object") return node;
-    return $48914fe86425e792$var$Vnode("#", undefined, undefined, String(node), undefined, undefined);
+    return $77d3a4009e38b328$var$Vnode("#", undefined, undefined, String(node), undefined, undefined);
 };
-$48914fe86425e792$var$Vnode.normalizeChildren = function(input) {
+$77d3a4009e38b328$var$Vnode.normalizeChildren = function(input) {
     var children = [];
     if (input.length) {
         var isKeyed = input[0] != null && input[0].key != null;
@@ -81,43 +82,43 @@ $48914fe86425e792$var$Vnode.normalizeChildren = function(input) {
         for(var i = 1; i < input.length; i++){
             if ((input[i] != null && input[i].key != null) !== isKeyed) throw new TypeError(isKeyed && (input[i] != null || typeof input[i] === "boolean") ? "In fragments, vnodes must either all have keys or none have keys. You may wish to consider using an explicit keyed empty fragment, m.fragment({key: ...}), instead of a hole." : "In fragments, vnodes must either all have keys or none have keys.");
         }
-        for(var i = 0; i < input.length; i++)children[i] = $48914fe86425e792$var$Vnode.normalize(input[i]);
+        for(var i = 0; i < input.length; i++)children[i] = $77d3a4009e38b328$var$Vnode.normalize(input[i]);
     }
     return children;
 };
-module.exports = $48914fe86425e792$var$Vnode;
+module.exports = $77d3a4009e38b328$var$Vnode;
 
 });
 
-parcelRegister("8K51h", function(module, exports) {
+parcelRegister("hc09f", function(module, exports) {
 "use strict";
 
-var $6eh63 = parcelRequire("6eh63");
+var $ahPL4 = parcelRequire("ahPL4");
 module.exports = function(html) {
     if (html == null) html = "";
-    return $6eh63("<", undefined, undefined, html, undefined, undefined);
+    return $ahPL4("<", undefined, undefined, html, undefined, undefined);
 };
 
 });
 
-parcelRegister("df15h", function(module, exports) {
+parcelRegister("uUr9B", function(module, exports) {
 "use strict";
 
-var $6eh63 = parcelRequire("6eh63");
+var $ahPL4 = parcelRequire("ahPL4");
 
-var $iCmA2 = parcelRequire("iCmA2");
+var $lNZGj = parcelRequire("lNZGj");
 module.exports = function() {
-    var vnode = $iCmA2.apply(0, arguments);
+    var vnode = $lNZGj.apply(0, arguments);
     vnode.tag = "[";
-    vnode.children = $6eh63.normalizeChildren(vnode.children);
+    vnode.children = $ahPL4.normalizeChildren(vnode.children);
     return vnode;
 };
 
 });
-parcelRegister("iCmA2", function(module, exports) {
+parcelRegister("lNZGj", function(module, exports) {
 "use strict";
 
-var $6eh63 = parcelRequire("6eh63");
+var $ahPL4 = parcelRequire("ahPL4");
 // Call via `hyperscriptVnode.apply(startOffset, arguments)`
 //
 // The reason I do it this way, forwarding the arguments and passing the start
@@ -163,16 +164,16 @@ module.exports = function() {
         children = [];
         while(start < arguments.length)children.push(arguments[start++]);
     }
-    return $6eh63("", attrs.key, attrs, children);
+    return $ahPL4("", attrs.key, attrs, children);
 };
 
 });
 
 
-parcelRegister("cx1fz", function(module, exports) {
+parcelRegister("4kqT7", function(module, exports) {
 "use strict";
-/** @constructor */ var $91f989581edf3c1c$var$PromisePolyfill = function PromisePolyfill1(executor) {
-    if (!(this instanceof $91f989581edf3c1c$var$PromisePolyfill)) throw new Error("Promise must be called with 'new'.");
+/** @constructor */ var $326de31341d20e95$var$PromisePolyfill = function PromisePolyfill1(executor) {
+    if (!(this instanceof $326de31341d20e95$var$PromisePolyfill)) throw new Error("Promise must be called with 'new'.");
     if (typeof executor !== "function") throw new TypeError("executor must be a function.");
     var self = this, resolvers = [], rejectors = [], resolveCurrent = handler(resolvers, true), rejectCurrent = handler(rejectors, false);
     var instance = self._instance = {
@@ -218,7 +219,7 @@ parcelRegister("cx1fz", function(module, exports) {
     }
     executeOnce(executor);
 };
-$91f989581edf3c1c$var$PromisePolyfill.prototype.then = function(onFulfilled, onRejection) {
+$326de31341d20e95$var$PromisePolyfill.prototype.then = function(onFulfilled, onRejection) {
     var self = this, instance = self._instance;
     function handle(callback, list, next, state) {
         list.push(function(value) {
@@ -232,39 +233,39 @@ $91f989581edf3c1c$var$PromisePolyfill.prototype.then = function(onFulfilled, onR
         if (typeof instance.retry === "function" && state === instance.state) instance.retry();
     }
     var resolveNext, rejectNext;
-    var promise = new $91f989581edf3c1c$var$PromisePolyfill(function(resolve, reject) {
+    var promise = new $326de31341d20e95$var$PromisePolyfill(function(resolve, reject) {
         resolveNext = resolve, rejectNext = reject;
     });
     handle(onFulfilled, instance.resolvers, resolveNext, true), handle(onRejection, instance.rejectors, rejectNext, false);
     return promise;
 };
-$91f989581edf3c1c$var$PromisePolyfill.prototype["catch"] = function(onRejection) {
+$326de31341d20e95$var$PromisePolyfill.prototype.catch = function(onRejection) {
     return this.then(null, onRejection);
 };
-$91f989581edf3c1c$var$PromisePolyfill.prototype["finally"] = function(callback) {
+$326de31341d20e95$var$PromisePolyfill.prototype.finally = function(callback) {
     return this.then(function(value) {
-        return $91f989581edf3c1c$var$PromisePolyfill.resolve(callback()).then(function() {
+        return $326de31341d20e95$var$PromisePolyfill.resolve(callback()).then(function() {
             return value;
         });
     }, function(reason) {
-        return $91f989581edf3c1c$var$PromisePolyfill.resolve(callback()).then(function() {
-            return $91f989581edf3c1c$var$PromisePolyfill.reject(reason);
+        return $326de31341d20e95$var$PromisePolyfill.resolve(callback()).then(function() {
+            return $326de31341d20e95$var$PromisePolyfill.reject(reason);
         });
     });
 };
-$91f989581edf3c1c$var$PromisePolyfill.resolve = function(value) {
-    if (value instanceof $91f989581edf3c1c$var$PromisePolyfill) return value;
-    return new $91f989581edf3c1c$var$PromisePolyfill(function(resolve) {
+$326de31341d20e95$var$PromisePolyfill.resolve = function(value) {
+    if (value instanceof $326de31341d20e95$var$PromisePolyfill) return value;
+    return new $326de31341d20e95$var$PromisePolyfill(function(resolve) {
         resolve(value);
     });
 };
-$91f989581edf3c1c$var$PromisePolyfill.reject = function(value) {
-    return new $91f989581edf3c1c$var$PromisePolyfill(function(resolve, reject) {
+$326de31341d20e95$var$PromisePolyfill.reject = function(value) {
+    return new $326de31341d20e95$var$PromisePolyfill(function(resolve, reject) {
         reject(value);
     });
 };
-$91f989581edf3c1c$var$PromisePolyfill.all = function(list) {
-    return new $91f989581edf3c1c$var$PromisePolyfill(function(resolve, reject) {
+$326de31341d20e95$var$PromisePolyfill.all = function(list) {
+    return new $326de31341d20e95$var$PromisePolyfill(function(resolve, reject) {
         var total = list.length, count = 0, values = [];
         if (list.length === 0) resolve([]);
         else for(var i = 0; i < list.length; i++)(function(i) {
@@ -278,25 +279,25 @@ $91f989581edf3c1c$var$PromisePolyfill.all = function(list) {
         })(i);
     });
 };
-$91f989581edf3c1c$var$PromisePolyfill.race = function(list) {
-    return new $91f989581edf3c1c$var$PromisePolyfill(function(resolve, reject) {
+$326de31341d20e95$var$PromisePolyfill.race = function(list) {
+    return new $326de31341d20e95$var$PromisePolyfill(function(resolve, reject) {
         for(var i = 0; i < list.length; i++)list[i].then(resolve, reject);
     });
 };
-module.exports = $91f989581edf3c1c$var$PromisePolyfill;
+module.exports = $326de31341d20e95$var$PromisePolyfill;
 
 });
 
-parcelRegister("lI9DA", function(module, exports) {
+parcelRegister("iHb4t", function(module, exports) {
 "use strict";
 
-module.exports = (parcelRequire("gXSNh"))(typeof window !== "undefined" ? window : null);
+module.exports = (parcelRequire("lNBAB"))(typeof window !== "undefined" ? window : null);
 
 });
-parcelRegister("gXSNh", function(module, exports) {
+parcelRegister("lNBAB", function(module, exports) {
 "use strict";
 
-var $6eh63 = parcelRequire("6eh63");
+var $ahPL4 = parcelRequire("ahPL4");
 module.exports = function($window) {
     var $doc = $window && $window.document;
     var currentRedraw;
@@ -445,7 +446,7 @@ module.exports = function($window) {
         }
         initLifecycle(vnode.state, vnode, hooks);
         if (vnode.attrs != null) initLifecycle(vnode.attrs, vnode, hooks);
-        vnode.instance = $6eh63.normalize(callHook.call(vnode.state.view, vnode));
+        vnode.instance = $ahPL4.normalize(callHook.call(vnode.state.view, vnode));
         if (vnode.instance === vnode) throw Error("A view cannot return the vnode it received as argument");
         sentinel.$$reentrantLock$$ = null;
     }
@@ -744,7 +745,7 @@ module.exports = function($window) {
         if (!maybeSetContentEditable(vnode)) updateNodes(element, old.children, vnode.children, hooks, null, ns);
     }
     function updateComponent(parent, old, vnode, hooks, nextSibling, ns) {
-        vnode.instance = $6eh63.normalize(callHook.call(vnode.state.view, vnode));
+        vnode.instance = $ahPL4.normalize(callHook.call(vnode.state.view, vnode));
         if (vnode.instance === vnode) throw Error("A view cannot return the vnode it received as argument");
         updateLifecycle(vnode.state, vnode, hooks);
         if (vnode.attrs != null) updateLifecycle(vnode.attrs, vnode, hooks);
@@ -1186,7 +1187,7 @@ module.exports = function($window) {
         try {
             // First time rendering into a node clears it out
             if (dom.vnodes == null) dom.textContent = "";
-            vnodes = $6eh63.normalizeChildren(Array.isArray(vnodes) ? vnodes : [
+            vnodes = $ahPL4.normalizeChildren(Array.isArray(vnodes) ? vnodes : [
                 vnodes
             ]);
             updateNodes(dom, dom.vnodes, vnodes, hooks, null, namespace === "http://www.w3.org/1999/xhtml" ? undefined : namespace);
@@ -1204,17 +1205,17 @@ module.exports = function($window) {
 });
 
 
-parcelRegister("e8CF5", function(module, exports) {
+parcelRegister("UfRe2", function(module, exports) {
 "use strict";
 
-var $6eh63 = parcelRequire("6eh63");
+var $ahPL4 = parcelRequire("ahPL4");
 module.exports = function(render, schedule, console) {
     var subscriptions = [];
     var pending = false;
     var offset = -1;
     function sync() {
         for(offset = 0; offset < subscriptions.length; offset += 2)try {
-            render(subscriptions[offset], $6eh63(subscriptions[offset + 1]), redraw);
+            render(subscriptions[offset], $ahPL4(subscriptions[offset + 1]), redraw);
         } catch (e) {
             console.error(e);
         }
@@ -1240,7 +1241,7 @@ module.exports = function(render, schedule, console) {
         }
         if (component != null) {
             subscriptions.push(root, component);
-            render(root, $6eh63(component), redraw);
+            render(root, $ahPL4(component), redraw);
         }
     }
     return {
@@ -1251,12 +1252,12 @@ module.exports = function(render, schedule, console) {
 
 });
 
-parcelRegister("dEYHd", function(module, exports) {
+parcelRegister("8ohAQ", function(module, exports) {
 "use strict";
 
-var $1dGiU = parcelRequire("1dGiU");
+var $bGJ5a = parcelRequire("bGJ5a");
 
-var $4PZUy = parcelRequire("4PZUy");
+var $9MCRO = parcelRequire("9MCRO");
 module.exports = function($window, Promise, oncompletion) {
     var callbackCount = 0;
     function PromiseProxy(executor) {
@@ -1275,7 +1276,7 @@ module.exports = function($window, Promise, oncompletion) {
                 url = url.url;
             } else if (args == null) args = {};
             var promise = new Promise(function(resolve, reject) {
-                factory($1dGiU(url, args.params), args, function(data) {
+                factory($bGJ5a(url, args.params), args, function(data) {
                     if (typeof args.type === "function") {
                         if (Array.isArray(data)) for(var i = 0; i < data.length; i++)data[i] = new args.type(data[i]);
                         else data = new args.type(data);
@@ -1314,7 +1315,7 @@ module.exports = function($window, Promise, oncompletion) {
     }
     function hasHeader(args, name) {
         for(var key in args.headers){
-            if ($4PZUy.call(args.headers, key) && key.toLowerCase() === name) return true;
+            if ($9MCRO.call(args.headers, key) && key.toLowerCase() === name) return true;
         }
         return false;
     }
@@ -1337,7 +1338,7 @@ module.exports = function($window, Promise, oncompletion) {
             if (args.withCredentials) xhr.withCredentials = args.withCredentials;
             if (args.timeout) xhr.timeout = args.timeout;
             xhr.responseType = responseType;
-            for(var key in args.headers)if ($4PZUy.call(args.headers, key)) xhr.setRequestHeader(key, args.headers[key]);
+            for(var key in args.headers)if ($9MCRO.call(args.headers, key)) xhr.setRequestHeader(key, args.headers[key]);
             xhr.onreadystatechange = function(ev) {
                 // Don't throw errors on xhr.abort().
                 if (aborted) return;
@@ -1439,12 +1440,12 @@ module.exports = function($window, Promise, oncompletion) {
 };
 
 });
-parcelRegister("1dGiU", function(module, exports) {
+parcelRegister("bGJ5a", function(module, exports) {
 "use strict";
 
-var $2OUex = parcelRequire("2OUex");
+var $6KLd1 = parcelRequire("6KLd1");
 
-var $jiyQ0 = parcelRequire("jiyQ0");
+var $bVkaq = parcelRequire("bVkaq");
 // Returns `path` from `template` + `params`
 module.exports = function(template, params) {
     if (/:([^\/\.-]+)(\.{3})?:/.test(template)) throw new SyntaxError("Template parameter names must be separated by either a '/', '-', or '.'.");
@@ -1455,7 +1456,7 @@ module.exports = function(template, params) {
     var pathEnd = queryIndex < 0 ? queryEnd : queryIndex;
     var path = template.slice(0, pathEnd);
     var query = {};
-    $jiyQ0(query, params);
+    $bVkaq(query, params);
     var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m, key, variadic) {
         delete query[key];
         // If no such parameter exists, don't interpolate it.
@@ -1471,7 +1472,7 @@ module.exports = function(template, params) {
     var result = resolved.slice(0, newPathEnd);
     if (queryIndex >= 0) result += template.slice(queryIndex, queryEnd);
     if (newQueryIndex >= 0) result += (queryIndex < 0 ? "?" : "&") + resolved.slice(newQueryIndex, newQueryEnd);
-    var querystring = $2OUex(query);
+    var querystring = $6KLd1(query);
     if (querystring) result += (queryIndex < 0 && newQueryIndex < 0 ? "?" : "&") + querystring;
     if (hashIndex >= 0) result += template.slice(hashIndex);
     if (newHashIndex >= 0) result += (hashIndex < 0 ? "" : "&") + resolved.slice(newHashIndex);
@@ -1479,7 +1480,7 @@ module.exports = function(template, params) {
 };
 
 });
-parcelRegister("2OUex", function(module, exports) {
+parcelRegister("6KLd1", function(module, exports) {
 "use strict";
 module.exports = function(object) {
     if (Object.prototype.toString.call(object) !== "[object Object]") return "";
@@ -1495,17 +1496,17 @@ module.exports = function(object) {
 
 });
 
-parcelRegister("jiyQ0", function(module, exports) {
+parcelRegister("bVkaq", function(module, exports) {
 // This exists so I'm only saving it once.
 "use strict";
 
-var $4PZUy = parcelRequire("4PZUy");
+var $9MCRO = parcelRequire("9MCRO");
 module.exports = Object.assign || function(target, source) {
-    for(var key in source)if ($4PZUy.call(source, key)) target[key] = source[key];
+    for(var key in source)if ($9MCRO.call(source, key)) target[key] = source[key];
 };
 
 });
-parcelRegister("4PZUy", function(module, exports) {
+parcelRegister("9MCRO", function(module, exports) {
 // This exists so I'm only saving it once.
 "use strict";
 module.exports = ({}).hasOwnProperty;
@@ -1515,43 +1516,43 @@ module.exports = ({}).hasOwnProperty;
 
 
 
-parcelRegister("7AzvW", function(module, exports) {
+parcelRegister("jFffZ", function(module, exports) {
 "use strict";
 
-var $2Mjqa = parcelRequire("2Mjqa");
+var $fBKqb = parcelRequire("fBKqb");
 
-module.exports = (parcelRequire("e7LPu"))(typeof window !== "undefined" ? window : null, $2Mjqa);
+module.exports = (parcelRequire("bO6oz"))(typeof window !== "undefined" ? window : null, $fBKqb);
 
 });
-parcelRegister("2Mjqa", function(module, exports) {
+parcelRegister("fBKqb", function(module, exports) {
 "use strict";
 
-var $lI9DA = parcelRequire("lI9DA");
+var $iHb4t = parcelRequire("iHb4t");
 
-module.exports = (parcelRequire("e8CF5"))($lI9DA, typeof requestAnimationFrame !== "undefined" ? requestAnimationFrame : null, typeof console !== "undefined" ? console : null);
+module.exports = (parcelRequire("UfRe2"))($iHb4t, typeof requestAnimationFrame !== "undefined" ? requestAnimationFrame : null, typeof console !== "undefined" ? console : null);
 
 });
 
-parcelRegister("e7LPu", function(module, exports) {
+parcelRegister("bO6oz", function(module, exports) {
 "use strict";
 
-var $6eh63 = parcelRequire("6eh63");
+var $ahPL4 = parcelRequire("ahPL4");
 
-var $7EpIm = parcelRequire("7EpIm");
+var $hPUTp = parcelRequire("hPUTp");
 
-var $ebgA8 = parcelRequire("ebgA8");
+var $dXPdz = parcelRequire("dXPdz");
 
-var $1dGiU = parcelRequire("1dGiU");
+var $bGJ5a = parcelRequire("bGJ5a");
 
-var $1h0el = parcelRequire("1h0el");
+var $1bhZB = parcelRequire("1bhZB");
 
-var $gCGHa = parcelRequire("gCGHa");
+var $427bo = parcelRequire("427bo");
 
-var $jiyQ0 = parcelRequire("jiyQ0");
+var $bVkaq = parcelRequire("bVkaq");
 
-var $kU92C = parcelRequire("kU92C");
-var $a486d21768d97099$var$sentinel = {};
-function $a486d21768d97099$var$decodeURIComponentSave(component) {
+var $1Zud9 = parcelRequire("1Zud9");
+var $8989532d49d4b2cf$var$sentinel = {};
+function $8989532d49d4b2cf$var$decodeURIComponentSave(component) {
     try {
         return decodeURIComponent(component);
     } catch (e) {
@@ -1560,7 +1561,7 @@ function $a486d21768d97099$var$decodeURIComponentSave(component) {
 }
 module.exports = function($window, mountRedraw) {
     var callAsync = $window == null ? null : typeof $window.setImmediate === "function" ? $window.setImmediate : $window.setTimeout;
-    var p = $ebgA8.resolve();
+    var p = $dXPdz.resolve();
     var scheduled = false;
     // state === 0: init
     // state === 1: scheduled
@@ -1568,21 +1569,21 @@ module.exports = function($window, mountRedraw) {
     var ready = false;
     var state = 0;
     var compiled, fallbackRoute;
-    var currentResolver = $a486d21768d97099$var$sentinel, component, attrs, currentPath, lastUpdate;
+    var currentResolver = $8989532d49d4b2cf$var$sentinel, component, attrs, currentPath, lastUpdate;
     var RouterRoot = {
         onbeforeupdate: function onbeforeupdate() {
             state = state ? 2 : 1;
-            return !(!state || $a486d21768d97099$var$sentinel === currentResolver);
+            return !(!state || $8989532d49d4b2cf$var$sentinel === currentResolver);
         },
         onremove: function onremove() {
             $window.removeEventListener("popstate", fireAsync, false);
             $window.removeEventListener("hashchange", resolveRoute, false);
         },
         view: function view() {
-            if (!state || $a486d21768d97099$var$sentinel === currentResolver) return;
+            if (!state || $8989532d49d4b2cf$var$sentinel === currentResolver) return;
             // Wrap in a fragment to preserve existing key semantics
             var vnode = [
-                $6eh63(component, attrs.key, attrs)
+                $ahPL4(component, attrs.key, attrs)
             ];
             if (currentResolver) vnode = currentResolver.render(vnode[0]);
             return vnode;
@@ -1604,9 +1605,9 @@ module.exports = function($window, mountRedraw) {
         // This seemingly useless `.concat()` speeds up the tests quite a bit,
         // since the representation is consistently a relatively poorly
         // optimized cons string.
-        var path = prefix.concat().replace(/(?:%[a-f89][a-f0-9])+/gim, $a486d21768d97099$var$decodeURIComponentSave).slice(route.prefix.length);
-        var data = $1h0el(path);
-        $jiyQ0(data.params, $window.history.state);
+        var path = prefix.concat().replace(/(?:%[a-f89][a-f0-9])+/gim, $8989532d49d4b2cf$var$decodeURIComponentSave).slice(route.prefix.length);
+        var data = $1bhZB(path);
+        $bVkaq(data.params, $window.history.state);
         function reject(e) {
             console.error(e);
             setPath(fallbackRoute, null, {
@@ -1665,7 +1666,7 @@ module.exports = function($window, mountRedraw) {
         }
     }
     function setPath(path, data, options) {
-        path = $1dGiU(path, data);
+        path = $bGJ5a(path, data);
         if (ready) {
             fireAsync();
             var state = options ? options.state : null;
@@ -1682,12 +1683,12 @@ module.exports = function($window, mountRedraw) {
             return {
                 route: route,
                 component: routes[route],
-                check: $gCGHa(route)
+                check: $427bo(route)
             };
         });
         fallbackRoute = defaultRoute;
         if (defaultRoute != null) {
-            var defaultData = $1h0el(defaultRoute);
+            var defaultData = $1bhZB(defaultRoute);
             if (!compiled.some(function(i) {
                 return i.check(defaultData);
             })) throw new ReferenceError("Default route doesn't match any known routes.");
@@ -1717,7 +1718,7 @@ module.exports = function($window, mountRedraw) {
             //
             // We don't strip the other parameters because for convenience we
             // let them be specified in the selector as well.
-            var child = $7EpIm(vnode.attrs.selector || "a", $kU92C(vnode.attrs, [
+            var child = $hPUTp(vnode.attrs.selector || "a", $1Zud9(vnode.attrs, [
                 "options",
                 "params",
                 "selector",
@@ -1739,7 +1740,7 @@ module.exports = function($window, mountRedraw) {
                 options = vnode.attrs.options;
                 onclick = vnode.attrs.onclick;
                 // Easier to build it now to keep it isomorphic.
-                href = $1dGiU(child.attrs.href, vnode.attrs.params);
+                href = $bGJ5a(child.attrs.href, vnode.attrs.params);
                 child.attrs.href = route.prefix + href;
                 child.attrs.onclick = function(e) {
                     var result;
@@ -1776,23 +1777,23 @@ module.exports = function($window, mountRedraw) {
 };
 
 });
-parcelRegister("7EpIm", function(module, exports) {
+parcelRegister("hPUTp", function(module, exports) {
 "use strict";
 
-var $6eh63 = parcelRequire("6eh63");
+var $ahPL4 = parcelRequire("ahPL4");
 
-var $iCmA2 = parcelRequire("iCmA2");
+var $lNZGj = parcelRequire("lNZGj");
 
-var $4PZUy = parcelRequire("4PZUy");
-var $592037321c32a7fb$var$selectorParser = /(?:(^|#|\.)([^#\.\[\]]+))|(\[(.+?)(?:\s*=\s*("|'|)((?:\\["'\]]|.)*?)\5)?\])/g;
-var $592037321c32a7fb$var$selectorCache = {};
-function $592037321c32a7fb$var$isEmpty(object) {
-    for(var key in object)if ($4PZUy.call(object, key)) return false;
+var $9MCRO = parcelRequire("9MCRO");
+var $cfc354cae4080493$var$selectorParser = /(?:(^|#|\.)([^#\.\[\]]+))|(\[(.+?)(?:\s*=\s*("|'|)((?:\\["'\]]|.)*?)\5)?\])/g;
+var $cfc354cae4080493$var$selectorCache = {};
+function $cfc354cae4080493$var$isEmpty(object) {
+    for(var key in object)if ($9MCRO.call(object, key)) return false;
     return true;
 }
-function $592037321c32a7fb$var$compileSelector(selector) {
+function $cfc354cae4080493$var$compileSelector(selector) {
     var match, tag = "div", classes = [], attrs = {};
-    while(match = $592037321c32a7fb$var$selectorParser.exec(selector)){
+    while(match = $cfc354cae4080493$var$selectorParser.exec(selector)){
         var type = match[1], value = match[2];
         if (type === "" && value !== "") tag = value;
         else if (type === "#") attrs.id = value;
@@ -1805,65 +1806,65 @@ function $592037321c32a7fb$var$compileSelector(selector) {
         }
     }
     if (classes.length > 0) attrs.className = classes.join(" ");
-    return $592037321c32a7fb$var$selectorCache[selector] = {
+    return $cfc354cae4080493$var$selectorCache[selector] = {
         tag: tag,
         attrs: attrs
     };
 }
-function $592037321c32a7fb$var$execSelector(state, vnode) {
+function $cfc354cae4080493$var$execSelector(state, vnode) {
     var attrs = vnode.attrs;
-    var hasClass = $4PZUy.call(attrs, "class");
-    var className = hasClass ? attrs["class"] : attrs.className;
+    var hasClass = $9MCRO.call(attrs, "class");
+    var className = hasClass ? attrs.class : attrs.className;
     vnode.tag = state.tag;
     vnode.attrs = {};
-    if (!$592037321c32a7fb$var$isEmpty(state.attrs) && !$592037321c32a7fb$var$isEmpty(attrs)) {
+    if (!$cfc354cae4080493$var$isEmpty(state.attrs) && !$cfc354cae4080493$var$isEmpty(attrs)) {
         var newAttrs = {};
-        for(var key in attrs)if ($4PZUy.call(attrs, key)) newAttrs[key] = attrs[key];
+        for(var key in attrs)if ($9MCRO.call(attrs, key)) newAttrs[key] = attrs[key];
         attrs = newAttrs;
     }
-    for(var key in state.attrs)if ($4PZUy.call(state.attrs, key) && key !== "className" && !$4PZUy.call(attrs, key)) attrs[key] = state.attrs[key];
+    for(var key in state.attrs)if ($9MCRO.call(state.attrs, key) && key !== "className" && !$9MCRO.call(attrs, key)) attrs[key] = state.attrs[key];
     if (className != null || state.attrs.className != null) attrs.className = className != null ? state.attrs.className != null ? String(state.attrs.className) + " " + String(className) : className : state.attrs.className != null ? state.attrs.className : null;
-    if (hasClass) attrs["class"] = null;
-    for(var key in attrs)if ($4PZUy.call(attrs, key) && key !== "key") {
+    if (hasClass) attrs.class = null;
+    for(var key in attrs)if ($9MCRO.call(attrs, key) && key !== "key") {
         vnode.attrs = attrs;
         break;
     }
     return vnode;
 }
-function $592037321c32a7fb$var$hyperscript(selector) {
+function $cfc354cae4080493$var$hyperscript(selector) {
     if (selector == null || typeof selector !== "string" && typeof selector !== "function" && typeof selector.view !== "function") throw Error("The selector must be either a string or a component.");
-    var vnode = $iCmA2.apply(1, arguments);
+    var vnode = $lNZGj.apply(1, arguments);
     if (typeof selector === "string") {
-        vnode.children = $6eh63.normalizeChildren(vnode.children);
-        if (selector !== "[") return $592037321c32a7fb$var$execSelector($592037321c32a7fb$var$selectorCache[selector] || $592037321c32a7fb$var$compileSelector(selector), vnode);
+        vnode.children = $ahPL4.normalizeChildren(vnode.children);
+        if (selector !== "[") return $cfc354cae4080493$var$execSelector($cfc354cae4080493$var$selectorCache[selector] || $cfc354cae4080493$var$compileSelector(selector), vnode);
     }
     vnode.tag = selector;
     return vnode;
 }
-module.exports = $592037321c32a7fb$var$hyperscript;
+module.exports = $cfc354cae4080493$var$hyperscript;
 
 });
 
-parcelRegister("ebgA8", function(module, exports) {
+parcelRegister("dXPdz", function(module, exports) {
 /* global window */ "use strict";
 
-var $cx1fz = parcelRequire("cx1fz");
+var $4kqT7 = parcelRequire("4kqT7");
 if (typeof window !== "undefined") {
-    if (typeof window.Promise === "undefined") window.Promise = $cx1fz;
-    else if (!window.Promise.prototype["finally"]) window.Promise.prototype["finally"] = $cx1fz.prototype["finally"];
+    if (typeof window.Promise === "undefined") window.Promise = $4kqT7;
+    else if (!window.Promise.prototype.finally) window.Promise.prototype.finally = $4kqT7.prototype.finally;
     module.exports = window.Promise;
 } else if (typeof $parcel$global !== "undefined") {
-    if (typeof $parcel$global.Promise === "undefined") $parcel$global.Promise = $cx1fz;
-    else if (!$parcel$global.Promise.prototype["finally"]) $parcel$global.Promise.prototype["finally"] = $cx1fz.prototype["finally"];
+    if (typeof $parcel$global.Promise === "undefined") $parcel$global.Promise = $4kqT7;
+    else if (!$parcel$global.Promise.prototype.finally) $parcel$global.Promise.prototype.finally = $4kqT7.prototype.finally;
     module.exports = $parcel$global.Promise;
-} else module.exports = $cx1fz;
+} else module.exports = $4kqT7;
 
 });
 
-parcelRegister("1h0el", function(module, exports) {
+parcelRegister("1bhZB", function(module, exports) {
 "use strict";
 
-var $59vIi = parcelRequire("59vIi");
+var $iahK6 = parcelRequire("iahK6");
 // Returns `{path, params}` from `url`
 module.exports = function(url) {
     var queryIndex = url.indexOf("?");
@@ -1878,14 +1879,14 @@ module.exports = function(url) {
     }
     return {
         path: path,
-        params: queryIndex < 0 ? {} : $59vIi(url.slice(queryIndex + 1, queryEnd))
+        params: queryIndex < 0 ? {} : $iahK6(url.slice(queryIndex + 1, queryEnd))
     };
 };
 
 });
-parcelRegister("59vIi", function(module, exports) {
+parcelRegister("iahK6", function(module, exports) {
 "use strict";
-function $3c0664a0ec7ed11b$var$decodeURIComponentSave(str) {
+function $d396ec7404febe23$var$decodeURIComponentSave(str) {
     try {
         return decodeURIComponent(str);
     } catch (err) {
@@ -1898,8 +1899,8 @@ module.exports = function(string) {
     var entries = string.split("&"), counters = {}, data = {};
     for(var i = 0; i < entries.length; i++){
         var entry = entries[i].split("=");
-        var key = $3c0664a0ec7ed11b$var$decodeURIComponentSave(entry[0]);
-        var value = entry.length === 2 ? $3c0664a0ec7ed11b$var$decodeURIComponentSave(entry[1]) : "";
+        var key = $d396ec7404febe23$var$decodeURIComponentSave(entry[0]);
+        var value = entry.length === 2 ? $d396ec7404febe23$var$decodeURIComponentSave(entry[1]) : "";
         if (value === "true") value = true;
         else if (value === "false") value = false;
         var levels = key.split(/\]\[?|\[/);
@@ -1930,17 +1931,17 @@ module.exports = function(string) {
 });
 
 
-parcelRegister("gCGHa", function(module, exports) {
+parcelRegister("427bo", function(module, exports) {
 "use strict";
 
-var $1h0el = parcelRequire("1h0el");
+var $1bhZB = parcelRequire("1bhZB");
 // Compiles a template into a function that takes a resolved path (without query
 // strings) and returns an object containing the template parameters with their
 // parsed values. This expects the input of the compiled template to be the
 // output of `parsePathname`. Note that it does *not* remove query parameters
 // specified in the template.
 module.exports = function(template) {
-    var templateData = $1h0el(template);
+    var templateData = $1bhZB(template);
     var templateKeys = Object.keys(templateData.params);
     var keys = [];
     var regexp = new RegExp("^" + templateData.path.replace(// I escape literal text so people can use things like `:file.:ext` or
@@ -1974,18 +1975,18 @@ module.exports = function(template) {
 
 });
 
-parcelRegister("kU92C", function(module, exports) {
+parcelRegister("1Zud9", function(module, exports) {
 "use strict";
 
-var $4PZUy = parcelRequire("4PZUy");
+var $9MCRO = parcelRequire("9MCRO");
 // Words in RegExp literals are sometimes mangled incorrectly by the internal bundler, so use RegExp().
-var $f3800d011b806959$var$magic = new RegExp("^(?:key|oninit|oncreate|onbeforeupdate|onupdate|onbeforeremove|onremove)$");
+var $1732ec3cd5be4a3d$var$magic = new RegExp("^(?:key|oninit|oncreate|onbeforeupdate|onupdate|onbeforeremove|onremove)$");
 module.exports = function(attrs, extras) {
     var result = {};
     if (extras != null) {
-        for(var key in attrs)if ($4PZUy.call(attrs, key) && !$f3800d011b806959$var$magic.test(key) && extras.indexOf(key) < 0) result[key] = attrs[key];
+        for(var key in attrs)if ($9MCRO.call(attrs, key) && !$1732ec3cd5be4a3d$var$magic.test(key) && extras.indexOf(key) < 0) result[key] = attrs[key];
     } else {
-        for(var key in attrs)if ($4PZUy.call(attrs, key) && !$f3800d011b806959$var$magic.test(key)) result[key] = attrs[key];
+        for(var key in attrs)if ($9MCRO.call(attrs, key) && !$1732ec3cd5be4a3d$var$magic.test(key)) result[key] = attrs[key];
     }
     return result;
 };
@@ -1994,7 +1995,7 @@ module.exports = function(attrs, extras) {
 
 
 
-function $bdca4d8f0452b8e7$var$asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+function $ba0748fc6d85beab$var$asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
     try {
         var info = gen[key](arg);
         var value = info.value;
@@ -2005,16 +2006,16 @@ function $bdca4d8f0452b8e7$var$asyncGeneratorStep(gen, resolve, reject, _next, _
     if (info.done) resolve(value);
     else Promise.resolve(value).then(_next, _throw);
 }
-function $bdca4d8f0452b8e7$export$71511d61b312f219(fn) {
+function $ba0748fc6d85beab$export$71511d61b312f219(fn) {
     return function() {
         var self = this, args = arguments;
         return new Promise(function(resolve, reject) {
             var gen = fn.apply(self, args);
             function _next(value) {
-                $bdca4d8f0452b8e7$var$asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+                $ba0748fc6d85beab$var$asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
             }
             function _throw(err) {
-                $bdca4d8f0452b8e7$var$asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+                $ba0748fc6d85beab$var$asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
             }
             _next(undefined);
         });
@@ -2035,41 +2036,41 @@ INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
 LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */ /* global Reflect, Promise, SuppressedError, Symbol */ function $4cfdb3add9285597$export$71511d61b312f219(obj) {
+***************************************************************************** */ /* global Reflect, Promise, SuppressedError, Symbol */ function $7bd6d9ddf4a378c5$export$71511d61b312f219(obj) {
     "@swc/helpers - typeof";
     return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
 }
 
 
-var $95fedd77f81839f7$var$extendStatics = function extendStatics1(d, b) {
-    $95fedd77f81839f7$var$extendStatics = Object.setPrototypeOf || ({
+var $04f2fd83a0b0b7f9$var$extendStatics = function extendStatics1(d, b) {
+    $04f2fd83a0b0b7f9$var$extendStatics = Object.setPrototypeOf || ({
         __proto__: []
     }) instanceof Array && function(d, b) {
         d.__proto__ = b;
     } || function(d, b) {
         for(var p in b)if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
     };
-    return $95fedd77f81839f7$var$extendStatics(d, b);
+    return $04f2fd83a0b0b7f9$var$extendStatics(d, b);
 };
-function $95fedd77f81839f7$export$a8ba968b8961cb8a(d, b) {
+function $04f2fd83a0b0b7f9$export$a8ba968b8961cb8a(d, b) {
     if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-    $95fedd77f81839f7$var$extendStatics(d, b);
+    $04f2fd83a0b0b7f9$var$extendStatics(d, b);
     function __() {
         this.constructor = d;
     }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
-var $95fedd77f81839f7$export$18ce0697a983be9b = function __assign1() {
-    $95fedd77f81839f7$export$18ce0697a983be9b = Object.assign || function __assign(t) {
+var $04f2fd83a0b0b7f9$export$18ce0697a983be9b = function __assign1() {
+    $04f2fd83a0b0b7f9$export$18ce0697a983be9b = Object.assign || function __assign(t) {
         for(var s, i = 1, n = arguments.length; i < n; i++){
             s = arguments[i];
             for(var p in s)if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
         }
         return t;
     };
-    return $95fedd77f81839f7$export$18ce0697a983be9b.apply(this, arguments);
+    return $04f2fd83a0b0b7f9$export$18ce0697a983be9b.apply(this, arguments);
 };
-function $95fedd77f81839f7$export$3c9a16f847548506(s, e) {
+function $04f2fd83a0b0b7f9$export$3c9a16f847548506(s, e) {
     var t = {};
     for(var p in s)if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
     if (s != null && typeof Object.getOwnPropertySymbols === "function") {
@@ -2077,18 +2078,18 @@ function $95fedd77f81839f7$export$3c9a16f847548506(s, e) {
     }
     return t;
 }
-function $95fedd77f81839f7$export$29e00dfd3077644b(decorators, target, key, desc) {
+function $04f2fd83a0b0b7f9$export$29e00dfd3077644b(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for(var i = decorators.length - 1; i >= 0; i--)if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 }
-function $95fedd77f81839f7$export$d5ad3fd78186038f(paramIndex, decorator) {
+function $04f2fd83a0b0b7f9$export$d5ad3fd78186038f(paramIndex, decorator) {
     return function(target, key) {
         decorator(target, key, paramIndex);
     };
 }
-function $95fedd77f81839f7$export$3a84e1ae4e97e9b0(ctor, descriptorIn, decorators, contextIn, initializers, extraInitializers) {
+function $04f2fd83a0b0b7f9$export$3a84e1ae4e97e9b0(ctor, descriptorIn, decorators, contextIn, initializers, extraInitializers) {
     function accept(f) {
         if (f !== void 0 && typeof f !== "function") throw new TypeError("Function expected");
         return f;
@@ -2123,25 +2124,25 @@ function $95fedd77f81839f7$export$3a84e1ae4e97e9b0(ctor, descriptorIn, decorator
     if (target) Object.defineProperty(target, contextIn.name, descriptor);
     done = true;
 }
-function $95fedd77f81839f7$export$d831c04e792af3d(thisArg, initializers, value) {
+function $04f2fd83a0b0b7f9$export$d831c04e792af3d(thisArg, initializers, value) {
     var useValue = arguments.length > 2;
     for(var i = 0; i < initializers.length; i++)value = useValue ? initializers[i].call(thisArg, value) : initializers[i].call(thisArg);
     return useValue ? value : void 0;
 }
-function $95fedd77f81839f7$export$6a2a36740a146cb8(x) {
-    return (typeof x === "undefined" ? "undefined" : (0, $4cfdb3add9285597$export$71511d61b312f219)(x)) === "symbol" ? x : "".concat(x);
+function $04f2fd83a0b0b7f9$export$6a2a36740a146cb8(x) {
+    return (typeof x === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$71511d61b312f219)(x)) === "symbol" ? x : "".concat(x);
 }
-function $95fedd77f81839f7$export$d1a06452d3489bc7(f, name, prefix) {
-    if ((typeof name === "undefined" ? "undefined" : (0, $4cfdb3add9285597$export$71511d61b312f219)(name)) === "symbol") name = name.description ? "[".concat(name.description, "]") : "";
+function $04f2fd83a0b0b7f9$export$d1a06452d3489bc7(f, name, prefix) {
+    if ((typeof name === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$71511d61b312f219)(name)) === "symbol") name = name.description ? "[".concat(name.description, "]") : "";
     return Object.defineProperty(f, "name", {
         configurable: true,
         value: prefix ? "".concat(prefix, " ", name) : name
     });
 }
-function $95fedd77f81839f7$export$f1db080c865becb9(metadataKey, metadataValue) {
+function $04f2fd83a0b0b7f9$export$f1db080c865becb9(metadataKey, metadataValue) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
 }
-function $95fedd77f81839f7$export$1050f835b63b671e(thisArg, _arguments, P, generator) {
+function $04f2fd83a0b0b7f9$export$1050f835b63b671e(thisArg, _arguments, P, generator) {
     function adopt(value) {
         return value instanceof P ? value : new P(function(resolve) {
             resolve(value);
@@ -2168,7 +2169,7 @@ function $95fedd77f81839f7$export$1050f835b63b671e(thisArg, _arguments, P, gener
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 }
-function $95fedd77f81839f7$export$67ebef60e6f28a6(thisArg, body) {
+function $04f2fd83a0b0b7f9$export$67ebef60e6f28a6(thisArg, body) {
     var _ = {
         label: 0,
         sent: function sent() {
@@ -2263,7 +2264,7 @@ function $95fedd77f81839f7$export$67ebef60e6f28a6(thisArg, body) {
         };
     }
 }
-var $95fedd77f81839f7$export$45d3717a4c69092e = Object.create ? function __createBinding(o, m, k, k2) {
+var $04f2fd83a0b0b7f9$export$45d3717a4c69092e = Object.create ? function __createBinding(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
     if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) desc = {
@@ -2277,10 +2278,10 @@ var $95fedd77f81839f7$export$45d3717a4c69092e = Object.create ? function __creat
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
 };
-function $95fedd77f81839f7$export$f33643c0debef087(m, o) {
-    for(var p in m)if (p !== "default" && !Object.prototype.hasOwnProperty.call(o, p)) $95fedd77f81839f7$export$45d3717a4c69092e(o, m, p);
+function $04f2fd83a0b0b7f9$export$f33643c0debef087(m, o) {
+    for(var p in m)if (p !== "default" && !Object.prototype.hasOwnProperty.call(o, p)) $04f2fd83a0b0b7f9$export$45d3717a4c69092e(o, m, p);
 }
-function $95fedd77f81839f7$export$19a8beecd37a4c45(o) {
+function $04f2fd83a0b0b7f9$export$19a8beecd37a4c45(o) {
     var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
     if (m) return m.call(o);
     if (o && typeof o.length === "number") return {
@@ -2294,7 +2295,7 @@ function $95fedd77f81839f7$export$19a8beecd37a4c45(o) {
     };
     throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 }
-function $95fedd77f81839f7$export$8d051b38c9118094(o, n) {
+function $04f2fd83a0b0b7f9$export$8d051b38c9118094(o, n) {
     var m = typeof Symbol === "function" && o[Symbol.iterator];
     if (!m) return o;
     var i = m.call(o), r, ar = [], e;
@@ -2313,16 +2314,16 @@ function $95fedd77f81839f7$export$8d051b38c9118094(o, n) {
     }
     return ar;
 }
-function $95fedd77f81839f7$export$afc72e2116322959() {
-    for(var ar = [], i = 0; i < arguments.length; i++)ar = ar.concat($95fedd77f81839f7$export$8d051b38c9118094(arguments[i]));
+function $04f2fd83a0b0b7f9$export$afc72e2116322959() {
+    for(var ar = [], i = 0; i < arguments.length; i++)ar = ar.concat($04f2fd83a0b0b7f9$export$8d051b38c9118094(arguments[i]));
     return ar;
 }
-function $95fedd77f81839f7$export$6388937ca91ccae8() {
+function $04f2fd83a0b0b7f9$export$6388937ca91ccae8() {
     for(var s = 0, i = 0, il = arguments.length; i < il; i++)s += arguments[i].length;
     for(var r = Array(s), k = 0, i = 0; i < il; i++)for(var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)r[k] = a[j];
     return r;
 }
-function $95fedd77f81839f7$export$1216008129fb82ed(to, from, pack) {
+function $04f2fd83a0b0b7f9$export$1216008129fb82ed(to, from, pack) {
     if (pack || arguments.length === 2) {
         for(var i = 0, l = from.length, ar; i < l; i++)if (ar || !(i in from)) {
             if (!ar) ar = Array.prototype.slice.call(from, 0, i);
@@ -2331,10 +2332,10 @@ function $95fedd77f81839f7$export$1216008129fb82ed(to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 }
-function $95fedd77f81839f7$export$10c90e4f7922046c(v) {
-    return this instanceof $95fedd77f81839f7$export$10c90e4f7922046c ? (this.v = v, this) : new $95fedd77f81839f7$export$10c90e4f7922046c(v);
+function $04f2fd83a0b0b7f9$export$10c90e4f7922046c(v) {
+    return this instanceof $04f2fd83a0b0b7f9$export$10c90e4f7922046c ? (this.v = v, this) : new $04f2fd83a0b0b7f9$export$10c90e4f7922046c(v);
 }
-function $95fedd77f81839f7$export$e427f37a30a4de9b(thisArg, _arguments, generator) {
+function $04f2fd83a0b0b7f9$export$e427f37a30a4de9b(thisArg, _arguments, generator) {
     if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
     var g = generator.apply(thisArg, _arguments || []), i, q = [];
     return i = {}, verb("next"), verb("throw"), verb("return", awaitReturn), i[Symbol.asyncIterator] = function() {
@@ -2368,7 +2369,7 @@ function $95fedd77f81839f7$export$e427f37a30a4de9b(thisArg, _arguments, generato
         }
     }
     function step(r) {
-        r.value instanceof $95fedd77f81839f7$export$10c90e4f7922046c ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r);
+        r.value instanceof $04f2fd83a0b0b7f9$export$10c90e4f7922046c ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r);
     }
     function fulfill(value) {
         resume("next", value);
@@ -2380,7 +2381,7 @@ function $95fedd77f81839f7$export$e427f37a30a4de9b(thisArg, _arguments, generato
         if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]);
     }
 }
-function $95fedd77f81839f7$export$bbd80228419bb833(o) {
+function $04f2fd83a0b0b7f9$export$bbd80228419bb833(o) {
     var i, p;
     return i = {}, verb("next"), verb("throw", function(e) {
         throw e;
@@ -2390,16 +2391,16 @@ function $95fedd77f81839f7$export$bbd80228419bb833(o) {
     function verb(n, f) {
         i[n] = o[n] ? function(v) {
             return (p = !p) ? {
-                value: $95fedd77f81839f7$export$10c90e4f7922046c(o[n](v)),
+                value: $04f2fd83a0b0b7f9$export$10c90e4f7922046c(o[n](v)),
                 done: false
             } : f ? f(v) : v;
         } : f;
     }
 }
-function $95fedd77f81839f7$export$e3b29a3d6162315f(o) {
+function $04f2fd83a0b0b7f9$export$e3b29a3d6162315f(o) {
     if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
     var m = o[Symbol.asyncIterator], i;
-    return m ? m.call(o) : (o = typeof $95fedd77f81839f7$export$19a8beecd37a4c45 === "function" ? $95fedd77f81839f7$export$19a8beecd37a4c45(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function() {
+    return m ? m.call(o) : (o = typeof $04f2fd83a0b0b7f9$export$19a8beecd37a4c45 === "function" ? $04f2fd83a0b0b7f9$export$19a8beecd37a4c45(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function() {
         return this;
     }, i);
     function verb(n) {
@@ -2418,14 +2419,14 @@ function $95fedd77f81839f7$export$e3b29a3d6162315f(o) {
         }, reject);
     }
 }
-function $95fedd77f81839f7$export$4fb47efe1390b86f(cooked, raw) {
+function $04f2fd83a0b0b7f9$export$4fb47efe1390b86f(cooked, raw) {
     if (Object.defineProperty) Object.defineProperty(cooked, "raw", {
         value: raw
     });
     else cooked.raw = raw;
     return cooked;
 }
-var $95fedd77f81839f7$var$__setModuleDefault = Object.create ? function __setModuleDefault(o, v) {
+var $04f2fd83a0b0b7f9$var$__setModuleDefault = Object.create ? function __setModuleDefault(o, v) {
     Object.defineProperty(o, "default", {
         enumerable: true,
         value: v
@@ -2433,36 +2434,36 @@ var $95fedd77f81839f7$var$__setModuleDefault = Object.create ? function __setMod
 } : function(o, v) {
     o["default"] = v;
 };
-function $95fedd77f81839f7$export$c21735bcef00d192(mod) {
+function $04f2fd83a0b0b7f9$export$c21735bcef00d192(mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
     if (mod != null) {
-        for(var k in mod)if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) $95fedd77f81839f7$export$45d3717a4c69092e(result, mod, k);
+        for(var k in mod)if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) $04f2fd83a0b0b7f9$export$45d3717a4c69092e(result, mod, k);
     }
-    $95fedd77f81839f7$var$__setModuleDefault(result, mod);
+    $04f2fd83a0b0b7f9$var$__setModuleDefault(result, mod);
     return result;
 }
-function $95fedd77f81839f7$export$da59b14a69baef04(mod) {
+function $04f2fd83a0b0b7f9$export$da59b14a69baef04(mod) {
     return mod && mod.__esModule ? mod : {
-        "default": mod
+        default: mod
     };
 }
-function $95fedd77f81839f7$export$d5dcaf168c640c35(receiver, state, kind, f) {
+function $04f2fd83a0b0b7f9$export$d5dcaf168c640c35(receiver, state, kind, f) {
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 }
-function $95fedd77f81839f7$export$d40a35129aaff81f(receiver, state, value, kind, f) {
+function $04f2fd83a0b0b7f9$export$d40a35129aaff81f(receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value), value;
 }
-function $95fedd77f81839f7$export$81fdc39f203e4e04(state, receiver) {
+function $04f2fd83a0b0b7f9$export$81fdc39f203e4e04(state, receiver) {
     if (receiver === null || typeof receiver !== "object" && typeof receiver !== "function") throw new TypeError("Cannot use 'in' operator on non-object");
     return typeof state === "function" ? receiver === state : state.has(receiver);
 }
-function $95fedd77f81839f7$export$88ac25d8e944e405(env, value, async) {
+function $04f2fd83a0b0b7f9$export$88ac25d8e944e405(env, value, async) {
     if (value !== null && value !== void 0) {
         if (typeof value !== "object" && typeof value !== "function") throw new TypeError("Object expected.");
         var dispose, inner;
@@ -2493,13 +2494,13 @@ function $95fedd77f81839f7$export$88ac25d8e944e405(env, value, async) {
     });
     return value;
 }
-var $95fedd77f81839f7$var$_SuppressedError = typeof SuppressedError === "function" ? SuppressedError : function _SuppressedError(error, suppressed, message) {
+var $04f2fd83a0b0b7f9$var$_SuppressedError = typeof SuppressedError === "function" ? SuppressedError : function _SuppressedError(error, suppressed, message) {
     var e = new Error(message);
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
 };
-function $95fedd77f81839f7$export$8f076105dc360e92(env) {
+function $04f2fd83a0b0b7f9$export$8f076105dc360e92(env) {
     function fail(e) {
-        env.error = env.hasError ? new $95fedd77f81839f7$var$_SuppressedError(e, env.error, "An error was suppressed during disposal.") : e;
+        env.error = env.hasError ? new $04f2fd83a0b0b7f9$var$_SuppressedError(e, env.error, "An error was suppressed during disposal.") : e;
         env.hasError = true;
     }
     function next() {
@@ -2519,34 +2520,34 @@ function $95fedd77f81839f7$export$8f076105dc360e92(env) {
     }
     return next();
 }
-var $95fedd77f81839f7$export$2e2bcd8739ae039 = {
-    __extends: $95fedd77f81839f7$export$a8ba968b8961cb8a,
-    __assign: $95fedd77f81839f7$export$18ce0697a983be9b,
-    __rest: $95fedd77f81839f7$export$3c9a16f847548506,
-    __decorate: $95fedd77f81839f7$export$29e00dfd3077644b,
-    __param: $95fedd77f81839f7$export$d5ad3fd78186038f,
-    __metadata: $95fedd77f81839f7$export$f1db080c865becb9,
-    __awaiter: $95fedd77f81839f7$export$1050f835b63b671e,
-    __generator: $95fedd77f81839f7$export$67ebef60e6f28a6,
-    __createBinding: $95fedd77f81839f7$export$45d3717a4c69092e,
-    __exportStar: $95fedd77f81839f7$export$f33643c0debef087,
-    __values: $95fedd77f81839f7$export$19a8beecd37a4c45,
-    __read: $95fedd77f81839f7$export$8d051b38c9118094,
-    __spread: $95fedd77f81839f7$export$afc72e2116322959,
-    __spreadArrays: $95fedd77f81839f7$export$6388937ca91ccae8,
-    __spreadArray: $95fedd77f81839f7$export$1216008129fb82ed,
-    __await: $95fedd77f81839f7$export$10c90e4f7922046c,
-    __asyncGenerator: $95fedd77f81839f7$export$e427f37a30a4de9b,
-    __asyncDelegator: $95fedd77f81839f7$export$bbd80228419bb833,
-    __asyncValues: $95fedd77f81839f7$export$e3b29a3d6162315f,
-    __makeTemplateObject: $95fedd77f81839f7$export$4fb47efe1390b86f,
-    __importStar: $95fedd77f81839f7$export$c21735bcef00d192,
-    __importDefault: $95fedd77f81839f7$export$da59b14a69baef04,
-    __classPrivateFieldGet: $95fedd77f81839f7$export$d5dcaf168c640c35,
-    __classPrivateFieldSet: $95fedd77f81839f7$export$d40a35129aaff81f,
-    __classPrivateFieldIn: $95fedd77f81839f7$export$81fdc39f203e4e04,
-    __addDisposableResource: $95fedd77f81839f7$export$88ac25d8e944e405,
-    __disposeResources: $95fedd77f81839f7$export$8f076105dc360e92
+var $04f2fd83a0b0b7f9$export$2e2bcd8739ae039 = {
+    __extends: $04f2fd83a0b0b7f9$export$a8ba968b8961cb8a,
+    __assign: $04f2fd83a0b0b7f9$export$18ce0697a983be9b,
+    __rest: $04f2fd83a0b0b7f9$export$3c9a16f847548506,
+    __decorate: $04f2fd83a0b0b7f9$export$29e00dfd3077644b,
+    __param: $04f2fd83a0b0b7f9$export$d5ad3fd78186038f,
+    __metadata: $04f2fd83a0b0b7f9$export$f1db080c865becb9,
+    __awaiter: $04f2fd83a0b0b7f9$export$1050f835b63b671e,
+    __generator: $04f2fd83a0b0b7f9$export$67ebef60e6f28a6,
+    __createBinding: $04f2fd83a0b0b7f9$export$45d3717a4c69092e,
+    __exportStar: $04f2fd83a0b0b7f9$export$f33643c0debef087,
+    __values: $04f2fd83a0b0b7f9$export$19a8beecd37a4c45,
+    __read: $04f2fd83a0b0b7f9$export$8d051b38c9118094,
+    __spread: $04f2fd83a0b0b7f9$export$afc72e2116322959,
+    __spreadArrays: $04f2fd83a0b0b7f9$export$6388937ca91ccae8,
+    __spreadArray: $04f2fd83a0b0b7f9$export$1216008129fb82ed,
+    __await: $04f2fd83a0b0b7f9$export$10c90e4f7922046c,
+    __asyncGenerator: $04f2fd83a0b0b7f9$export$e427f37a30a4de9b,
+    __asyncDelegator: $04f2fd83a0b0b7f9$export$bbd80228419bb833,
+    __asyncValues: $04f2fd83a0b0b7f9$export$e3b29a3d6162315f,
+    __makeTemplateObject: $04f2fd83a0b0b7f9$export$4fb47efe1390b86f,
+    __importStar: $04f2fd83a0b0b7f9$export$c21735bcef00d192,
+    __importDefault: $04f2fd83a0b0b7f9$export$da59b14a69baef04,
+    __classPrivateFieldGet: $04f2fd83a0b0b7f9$export$d5dcaf168c640c35,
+    __classPrivateFieldSet: $04f2fd83a0b0b7f9$export$d40a35129aaff81f,
+    __classPrivateFieldIn: $04f2fd83a0b0b7f9$export$81fdc39f203e4e04,
+    __addDisposableResource: $04f2fd83a0b0b7f9$export$88ac25d8e944e405,
+    __disposeResources: $04f2fd83a0b0b7f9$export$8f076105dc360e92
 };
 
 
@@ -2568,7 +2569,7 @@ var $95fedd77f81839f7$export$2e2bcd8739ae039 = {
  *  Use of this source code is governed by a BSD-style license
  *  that can be found in the LICENSE file in the root of the source
  *  tree.
- */ /* eslint-env node */ function $c96c38d675a75115$export$71511d61b312f219(obj, key, value) {
+ */ /* eslint-env node */ function $ca7b5bc57a9adfd0$export$71511d61b312f219(obj, key, value) {
     if (key in obj) Object.defineProperty(obj, key, {
         value: value,
         enumerable: true,
@@ -2582,13 +2583,13 @@ var $95fedd77f81839f7$export$2e2bcd8739ae039 = {
 
 
 "use strict";
-var $ecbc82f8e2fc2f44$var$logDisabled_ = true;
-var $ecbc82f8e2fc2f44$var$deprecationWarnings_ = true;
-function $ecbc82f8e2fc2f44$export$e3c02be309be1f23(uastring, expr, pos) {
+var $8ec7d4c1b33e5d30$var$logDisabled_ = true;
+var $8ec7d4c1b33e5d30$var$deprecationWarnings_ = true;
+function $8ec7d4c1b33e5d30$export$e3c02be309be1f23(uastring, expr, pos) {
     var match = uastring.match(expr);
     return match && match.length >= pos && parseInt(match[pos], 10);
 }
-function $ecbc82f8e2fc2f44$export$1f48841962b828b1(window1, eventNameToWrap, wrapper) {
+function $8ec7d4c1b33e5d30$export$1f48841962b828b1(window1, eventNameToWrap, wrapper) {
     if (!window1.RTCPeerConnection) return;
     var proto = window1.RTCPeerConnection.prototype;
     var nativeAddEventListener = proto.addEventListener;
@@ -2614,7 +2615,7 @@ function $ecbc82f8e2fc2f44$export$1f48841962b828b1(window1, eventNameToWrap, wra
         if (nativeEventName !== eventNameToWrap || !this._eventMap || !this._eventMap[eventNameToWrap]) return nativeRemoveEventListener.apply(this, arguments);
         if (!this._eventMap[eventNameToWrap].has(cb)) return nativeRemoveEventListener.apply(this, arguments);
         var unwrappedCb = this._eventMap[eventNameToWrap].get(cb);
-        this._eventMap[eventNameToWrap]["delete"](cb);
+        this._eventMap[eventNameToWrap].delete(cb);
         if (this._eventMap[eventNameToWrap].size === 0) delete this._eventMap[eventNameToWrap];
         if (Object.keys(this._eventMap).length === 0) delete this._eventMap;
         return nativeRemoveEventListener.apply(this, [
@@ -2637,27 +2638,27 @@ function $ecbc82f8e2fc2f44$export$1f48841962b828b1(window1, eventNameToWrap, wra
         configurable: true
     });
 }
-function $ecbc82f8e2fc2f44$export$afbfee8cc06fd3e4(bool) {
-    if (typeof bool !== "boolean") return new Error("Argument type: " + (typeof bool === "undefined" ? "undefined" : (0, $4cfdb3add9285597$export$71511d61b312f219)(bool)) + ". Please use a boolean.");
-    $ecbc82f8e2fc2f44$var$logDisabled_ = bool;
+function $8ec7d4c1b33e5d30$export$afbfee8cc06fd3e4(bool) {
+    if (typeof bool !== "boolean") return new Error("Argument type: " + (typeof bool === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$71511d61b312f219)(bool)) + ". Please use a boolean.");
+    $8ec7d4c1b33e5d30$var$logDisabled_ = bool;
     return bool ? "adapter.js logging disabled" : "adapter.js logging enabled";
 }
-function $ecbc82f8e2fc2f44$export$51516be4b019e41e(bool) {
-    if (typeof bool !== "boolean") return new Error("Argument type: " + (typeof bool === "undefined" ? "undefined" : (0, $4cfdb3add9285597$export$71511d61b312f219)(bool)) + ". Please use a boolean.");
-    $ecbc82f8e2fc2f44$var$deprecationWarnings_ = !bool;
+function $8ec7d4c1b33e5d30$export$51516be4b019e41e(bool) {
+    if (typeof bool !== "boolean") return new Error("Argument type: " + (typeof bool === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$71511d61b312f219)(bool)) + ". Please use a boolean.");
+    $8ec7d4c1b33e5d30$var$deprecationWarnings_ = !bool;
     return "adapter.js deprecation warnings " + (bool ? "disabled" : "enabled");
 }
-function $ecbc82f8e2fc2f44$export$bef1f36f5486a6a3() {
+function $8ec7d4c1b33e5d30$export$bef1f36f5486a6a3() {
     if (typeof window === "object") {
-        if ($ecbc82f8e2fc2f44$var$logDisabled_) return;
+        if ($8ec7d4c1b33e5d30$var$logDisabled_) return;
         if (typeof console !== "undefined" && typeof console.log === "function") console.log.apply(console, arguments);
     }
 }
-function $ecbc82f8e2fc2f44$export$cdd73fc4100a6ef4(oldMethod, newMethod) {
-    if (!$ecbc82f8e2fc2f44$var$deprecationWarnings_) return;
+function $8ec7d4c1b33e5d30$export$cdd73fc4100a6ef4(oldMethod, newMethod) {
+    if (!$8ec7d4c1b33e5d30$var$deprecationWarnings_) return;
     console.warn(oldMethod + " is deprecated, please use " + newMethod + " instead.");
 }
-function $ecbc82f8e2fc2f44$export$2d31490a0c05f094(window1) {
+function $8ec7d4c1b33e5d30$export$2d31490a0c05f094(window1) {
     // Returned result object.
     var result = {
         browser: null,
@@ -2681,17 +2682,17 @@ function $ecbc82f8e2fc2f44$export$2d31490a0c05f094(window1) {
     }
     if (navigator.mozGetUserMedia) {
         result.browser = "firefox";
-        result.version = $ecbc82f8e2fc2f44$export$e3c02be309be1f23(navigator.userAgent, /Firefox\/(\d+)\./, 1);
+        result.version = $8ec7d4c1b33e5d30$export$e3c02be309be1f23(navigator.userAgent, /Firefox\/(\d+)\./, 1);
     } else if (navigator.webkitGetUserMedia || window1.isSecureContext === false && window1.webkitRTCPeerConnection) {
         // Chrome, Chromium, Webview, Opera.
         // Version matches Chrome/WebRTC version.
         // Chrome 74 removed webkitGetUserMedia on http as well so we need the
         // more complicated fallback to webkitRTCPeerConnection.
         result.browser = "chrome";
-        result.version = $ecbc82f8e2fc2f44$export$e3c02be309be1f23(navigator.userAgent, /Chrom(e|ium)\/(\d+)\./, 2);
+        result.version = $8ec7d4c1b33e5d30$export$e3c02be309be1f23(navigator.userAgent, /Chrom(e|ium)\/(\d+)\./, 2);
     } else if (window1.RTCPeerConnection && navigator.userAgent.match(/AppleWebKit\/(\d+)\./)) {
         result.browser = "safari";
-        result.version = $ecbc82f8e2fc2f44$export$e3c02be309be1f23(navigator.userAgent, /AppleWebKit\/(\d+)\./, 1);
+        result.version = $8ec7d4c1b33e5d30$export$e3c02be309be1f23(navigator.userAgent, /AppleWebKit\/(\d+)\./, 1);
         result.supportsUnifiedPlan = window1.RTCRtpTransceiver && "currentDirection" in window1.RTCRtpTransceiver.prototype;
     } else {
         result.browser = "Not a supported browser.";
@@ -2704,30 +2705,30 @@ function $ecbc82f8e2fc2f44$export$2d31490a0c05f094(window1) {
  *
  * @param {*} val The something you want to check.
  * @return true if val is an object, false otherwise.
- */ function $ecbc82f8e2fc2f44$var$isObject(val) {
+ */ function $8ec7d4c1b33e5d30$var$isObject(val) {
     return Object.prototype.toString.call(val) === "[object Object]";
 }
-function $ecbc82f8e2fc2f44$export$15384eac40dc88c8(data) {
-    if (!$ecbc82f8e2fc2f44$var$isObject(data)) return data;
+function $8ec7d4c1b33e5d30$export$15384eac40dc88c8(data) {
+    if (!$8ec7d4c1b33e5d30$var$isObject(data)) return data;
     return Object.keys(data).reduce(function(accumulator, key) {
-        var isObj = $ecbc82f8e2fc2f44$var$isObject(data[key]);
-        var value = isObj ? $ecbc82f8e2fc2f44$export$15384eac40dc88c8(data[key]) : data[key];
+        var isObj = $8ec7d4c1b33e5d30$var$isObject(data[key]);
+        var value = isObj ? $8ec7d4c1b33e5d30$export$15384eac40dc88c8(data[key]) : data[key];
         var isEmptyObject = isObj && !Object.keys(value).length;
         if (value === undefined || isEmptyObject) return accumulator;
-        return Object.assign(accumulator, (0, $c96c38d675a75115$export$71511d61b312f219)({}, key, value));
+        return Object.assign(accumulator, (0, $ca7b5bc57a9adfd0$export$71511d61b312f219)({}, key, value));
     }, {});
 }
-function $ecbc82f8e2fc2f44$export$571b373e75babb58(stats, base, resultSet) {
+function $8ec7d4c1b33e5d30$export$571b373e75babb58(stats, base, resultSet) {
     if (!base || resultSet.has(base.id)) return;
     resultSet.set(base.id, base);
     Object.keys(base).forEach(function(name) {
-        if (name.endsWith("Id")) $ecbc82f8e2fc2f44$export$571b373e75babb58(stats, stats.get(base[name]), resultSet);
+        if (name.endsWith("Id")) $8ec7d4c1b33e5d30$export$571b373e75babb58(stats, stats.get(base[name]), resultSet);
         else if (name.endsWith("Ids")) base[name].forEach(function(id) {
-            $ecbc82f8e2fc2f44$export$571b373e75babb58(stats, stats.get(id), resultSet);
+            $8ec7d4c1b33e5d30$export$571b373e75babb58(stats, stats.get(id), resultSet);
         });
     });
 }
-function $ecbc82f8e2fc2f44$export$93439ffc3f787d51(result, track, outbound) {
+function $8ec7d4c1b33e5d30$export$93439ffc3f787d51(result, track, outbound) {
     var streamStatsType = outbound ? "outbound-rtp" : "inbound-rtp";
     var filteredResult = new Map();
     if (track === null) return filteredResult;
@@ -2737,24 +2738,24 @@ function $ecbc82f8e2fc2f44$export$93439ffc3f787d51(result, track, outbound) {
     });
     trackStats.forEach(function(trackStat) {
         result.forEach(function(stats) {
-            if (stats.type === streamStatsType && stats.trackId === trackStat.id) $ecbc82f8e2fc2f44$export$571b373e75babb58(result, stats, filteredResult);
+            if (stats.type === streamStatsType && stats.trackId === trackStat.id) $8ec7d4c1b33e5d30$export$571b373e75babb58(result, stats, filteredResult);
         });
     });
     return filteredResult;
 }
 
 
-var $c83c9d2c0bca1d6e$exports = {};
+var $13e030d5bc326ad3$exports = {};
 
-$parcel$export($c83c9d2c0bca1d6e$exports, "shimMediaStream", function () { return $c83c9d2c0bca1d6e$export$33ee24e7a300bcd1; });
-$parcel$export($c83c9d2c0bca1d6e$exports, "shimOnTrack", function () { return $c83c9d2c0bca1d6e$export$f358708f68ab068; });
-$parcel$export($c83c9d2c0bca1d6e$exports, "shimGetSendersWithDtmf", function () { return $c83c9d2c0bca1d6e$export$a41a030a2842f5d6; });
-$parcel$export($c83c9d2c0bca1d6e$exports, "shimSenderReceiverGetStats", function () { return $c83c9d2c0bca1d6e$export$f2f0f2338114eb4b; });
-$parcel$export($c83c9d2c0bca1d6e$exports, "shimAddTrackRemoveTrackWithNative", function () { return $c83c9d2c0bca1d6e$export$30e3cdd46f8d5100; });
-$parcel$export($c83c9d2c0bca1d6e$exports, "shimAddTrackRemoveTrack", function () { return $c83c9d2c0bca1d6e$export$9588259fcf4ebc91; });
-$parcel$export($c83c9d2c0bca1d6e$exports, "shimPeerConnection", function () { return $c83c9d2c0bca1d6e$export$852a08dda9a55ea7; });
-$parcel$export($c83c9d2c0bca1d6e$exports, "fixNegotiationNeeded", function () { return $c83c9d2c0bca1d6e$export$341293bbeaae37cb; });
-$parcel$export($c83c9d2c0bca1d6e$exports, "shimGetUserMedia", function () { return $21705115f518b830$export$1ed4910f4d37dc5e; });
+$parcel$export($13e030d5bc326ad3$exports, "shimMediaStream", function () { return $13e030d5bc326ad3$export$33ee24e7a300bcd1; });
+$parcel$export($13e030d5bc326ad3$exports, "shimOnTrack", function () { return $13e030d5bc326ad3$export$f358708f68ab068; });
+$parcel$export($13e030d5bc326ad3$exports, "shimGetSendersWithDtmf", function () { return $13e030d5bc326ad3$export$a41a030a2842f5d6; });
+$parcel$export($13e030d5bc326ad3$exports, "shimSenderReceiverGetStats", function () { return $13e030d5bc326ad3$export$f2f0f2338114eb4b; });
+$parcel$export($13e030d5bc326ad3$exports, "shimAddTrackRemoveTrackWithNative", function () { return $13e030d5bc326ad3$export$30e3cdd46f8d5100; });
+$parcel$export($13e030d5bc326ad3$exports, "shimAddTrackRemoveTrack", function () { return $13e030d5bc326ad3$export$9588259fcf4ebc91; });
+$parcel$export($13e030d5bc326ad3$exports, "shimPeerConnection", function () { return $13e030d5bc326ad3$export$852a08dda9a55ea7; });
+$parcel$export($13e030d5bc326ad3$exports, "fixNegotiationNeeded", function () { return $13e030d5bc326ad3$export$341293bbeaae37cb; });
+$parcel$export($13e030d5bc326ad3$exports, "shimGetUserMedia", function () { return $b3103f45a9e42302$export$1ed4910f4d37dc5e; });
 /*
  *  Copyright (c) 2016 The WebRTC project authors. All Rights Reserved.
  *
@@ -2771,8 +2772,8 @@ $parcel$export($c83c9d2c0bca1d6e$exports, "shimGetUserMedia", function () { retu
  *  tree.
  */ /* eslint-env node */ 
 "use strict";
-var $21705115f518b830$var$logging = $ecbc82f8e2fc2f44$export$bef1f36f5486a6a3;
-function $21705115f518b830$export$1ed4910f4d37dc5e(window, browserDetails) {
+var $b3103f45a9e42302$var$logging = $8ec7d4c1b33e5d30$export$bef1f36f5486a6a3;
+function $b3103f45a9e42302$export$1ed4910f4d37dc5e(window, browserDetails) {
     var navigator = window && window.navigator;
     if (!navigator.mediaDevices) return;
     var constraintsToChrome_ = function constraintsToChrome_(c) {
@@ -2867,13 +2868,13 @@ function $21705115f518b830$export$1ed4910f4d37dc5e(window, browserDetails) {
                         ideal: dev.deviceId
                     };
                     constraints.video = constraintsToChrome_(constraints.video);
-                    $21705115f518b830$var$logging("chrome: " + JSON.stringify(constraints));
+                    $b3103f45a9e42302$var$logging("chrome: " + JSON.stringify(constraints));
                     return func(constraints);
                 });
             }
             constraints.video = constraintsToChrome_(constraints.video);
         }
-        $21705115f518b830$var$logging("chrome: " + JSON.stringify(constraints));
+        $b3103f45a9e42302$var$logging("chrome: " + JSON.stringify(constraints));
         return func(constraints);
     };
     var shimError_ = function shimError_(e) {
@@ -2932,10 +2933,10 @@ function $21705115f518b830$export$1ed4910f4d37dc5e(window, browserDetails) {
 
 
 "use strict";
-function $c83c9d2c0bca1d6e$export$33ee24e7a300bcd1(window) {
+function $13e030d5bc326ad3$export$33ee24e7a300bcd1(window) {
     window.MediaStream = window.MediaStream || window.webkitMediaStream;
 }
-function $c83c9d2c0bca1d6e$export$f358708f68ab068(window) {
+function $13e030d5bc326ad3$export$f358708f68ab068(window) {
     if (typeof window === "object" && window.RTCPeerConnection && !("ontrack" in window.RTCPeerConnection.prototype)) {
         Object.defineProperty(window.RTCPeerConnection.prototype, "ontrack", {
             get: function() {
@@ -3001,7 +3002,7 @@ function $c83c9d2c0bca1d6e$export$f358708f68ab068(window) {
     } else // even if RTCRtpTransceiver is in window, it is only used and
     // emitted in unified-plan. Unfortunately this means we need
     // to unconditionally wrap the event.
-    $ecbc82f8e2fc2f44$export$1f48841962b828b1(window, "track", function(e) {
+    $8ec7d4c1b33e5d30$export$1f48841962b828b1(window, "track", function(e) {
         if (!e.transceiver) Object.defineProperty(e, "transceiver", {
             value: {
                 receiver: e.receiver
@@ -3010,7 +3011,7 @@ function $c83c9d2c0bca1d6e$export$f358708f68ab068(window) {
         return e;
     });
 }
-function $c83c9d2c0bca1d6e$export$a41a030a2842f5d6(window) {
+function $13e030d5bc326ad3$export$a41a030a2842f5d6(window) {
     // Overrides addTrack/removeTrack, depends on shimAddTrackRemoveTrack.
     if (typeof window === "object" && window.RTCPeerConnection && !("getSenders" in window.RTCPeerConnection.prototype) && "createDTMFSender" in window.RTCPeerConnection.prototype) {
         var shimSenderWithDtmf = function shimSenderWithDtmf(pc, track) {
@@ -3094,7 +3095,7 @@ function $c83c9d2c0bca1d6e$export$a41a030a2842f5d6(window) {
         });
     }
 }
-function $c83c9d2c0bca1d6e$export$f2f0f2338114eb4b(window) {
+function $13e030d5bc326ad3$export$f2f0f2338114eb4b(window) {
     if (!(typeof window === "object" && window.RTCPeerConnection && window.RTCRtpSender && window.RTCRtpReceiver)) return;
     // shim sender stats.
     if (!("getStats" in window.RTCRtpSender.prototype)) {
@@ -3119,7 +3120,7 @@ function $c83c9d2c0bca1d6e$export$f2f0f2338114eb4b(window) {
                 return(/* Note: this will include stats of all senders that
          *   send a track with the same id as sender.track as
          *   it is not possible to identify the RTCRtpSender.
-         */ $ecbc82f8e2fc2f44$export$93439ffc3f787d51(result, sender.track, true));
+         */ $8ec7d4c1b33e5d30$export$93439ffc3f787d51(result, sender.track, true));
             });
         };
     }
@@ -3134,14 +3135,14 @@ function $c83c9d2c0bca1d6e$export$f2f0f2338114eb4b(window) {
             });
             return receivers;
         };
-        $ecbc82f8e2fc2f44$export$1f48841962b828b1(window, "track", function(e) {
+        $8ec7d4c1b33e5d30$export$1f48841962b828b1(window, "track", function(e) {
             e.receiver._pc = e.srcElement;
             return e;
         });
         window.RTCRtpReceiver.prototype.getStats = function getStats() {
             var receiver = this;
             return this._pc.getStats().then(function(result) {
-                return $ecbc82f8e2fc2f44$export$93439ffc3f787d51(result, receiver.track, false);
+                return $8ec7d4c1b33e5d30$export$93439ffc3f787d51(result, receiver.track, false);
             });
         };
     }
@@ -3175,7 +3176,7 @@ function $c83c9d2c0bca1d6e$export$f2f0f2338114eb4b(window) {
         return origGetStats.apply(this, arguments);
     };
 }
-function $c83c9d2c0bca1d6e$export$30e3cdd46f8d5100(window) {
+function $13e030d5bc326ad3$export$30e3cdd46f8d5100(window) {
     // shim addTrack/removeTrack with native variants in order to make
     // the interactions with legacy getLocalStreams behave as in other browsers.
     // Keeps a mapping stream.id => [stream, rtpsenders...]
@@ -3235,10 +3236,10 @@ function $c83c9d2c0bca1d6e$export$30e3cdd46f8d5100(window) {
         return origRemoveTrack.apply(this, arguments);
     };
 }
-function $c83c9d2c0bca1d6e$export$9588259fcf4ebc91(window, browserDetails) {
+function $13e030d5bc326ad3$export$9588259fcf4ebc91(window, browserDetails) {
     if (!window.RTCPeerConnection) return;
     // shim addTrack and removeTrack.
-    if (window.RTCPeerConnection.prototype.addTrack && browserDetails.version >= 65) return $c83c9d2c0bca1d6e$export$30e3cdd46f8d5100(window);
+    if (window.RTCPeerConnection.prototype.addTrack && browserDetails.version >= 65) return $13e030d5bc326ad3$export$30e3cdd46f8d5100(window);
     // also shim pc.getLocalStreams when addTrack is shimmed
     // to return the original streams.
     var origGetLocalStreams = window.RTCPeerConnection.prototype.getLocalStreams;
@@ -3352,7 +3353,7 @@ function $c83c9d2c0bca1d6e$export$9588259fcf4ebc91(window, browserDetails) {
         "createAnswer"
     ].forEach(function(method) {
         var nativeMethod = window.RTCPeerConnection.prototype[method];
-        var methodObj = (0, $c96c38d675a75115$export$71511d61b312f219)({}, method, function() {
+        var methodObj = (0, $ca7b5bc57a9adfd0$export$71511d61b312f219)({}, method, function() {
             var _this = this;
             var args = arguments;
             var isLegacyCall = arguments.length && typeof arguments[0] === "function";
@@ -3416,7 +3417,7 @@ function $c83c9d2c0bca1d6e$export$9588259fcf4ebc91(window, browserDetails) {
         }
     };
 }
-function $c83c9d2c0bca1d6e$export$852a08dda9a55ea7(window, browserDetails) {
+function $13e030d5bc326ad3$export$852a08dda9a55ea7(window, browserDetails) {
     if (!window.RTCPeerConnection && window.webkitRTCPeerConnection) // very basic support for old versions.
     window.RTCPeerConnection = window.webkitRTCPeerConnection;
     if (!window.RTCPeerConnection) return;
@@ -3427,15 +3428,15 @@ function $c83c9d2c0bca1d6e$export$852a08dda9a55ea7(window, browserDetails) {
         "addIceCandidate"
     ].forEach(function(method) {
         var nativeMethod = window.RTCPeerConnection.prototype[method];
-        var methodObj = (0, $c96c38d675a75115$export$71511d61b312f219)({}, method, function() {
+        var methodObj = (0, $ca7b5bc57a9adfd0$export$71511d61b312f219)({}, method, function() {
             arguments[0] = new (method === "addIceCandidate" ? window.RTCIceCandidate : window.RTCSessionDescription)(arguments[0]);
             return nativeMethod.apply(this, arguments);
         });
         window.RTCPeerConnection.prototype[method] = methodObj[method];
     });
 }
-function $c83c9d2c0bca1d6e$export$341293bbeaae37cb(window, browserDetails) {
-    $ecbc82f8e2fc2f44$export$1f48841962b828b1(window, "negotiationneeded", function(e) {
+function $13e030d5bc326ad3$export$341293bbeaae37cb(window, browserDetails) {
+    $8ec7d4c1b33e5d30$export$1f48841962b828b1(window, "negotiationneeded", function(e) {
         var pc = e.target;
         if (browserDetails.version < 72 || pc.getConfiguration && pc.getConfiguration().sdpSemantics === "plan-b") {
             if (pc.signalingState !== "stable") return;
@@ -3445,20 +3446,20 @@ function $c83c9d2c0bca1d6e$export$341293bbeaae37cb(window, browserDetails) {
 }
 
 
-var $69fa72c68315eefd$exports = {};
+var $fe2ad74ba0077acb$exports = {};
 
-$parcel$export($69fa72c68315eefd$exports, "shimOnTrack", function () { return $69fa72c68315eefd$export$f358708f68ab068; });
-$parcel$export($69fa72c68315eefd$exports, "shimPeerConnection", function () { return $69fa72c68315eefd$export$852a08dda9a55ea7; });
-$parcel$export($69fa72c68315eefd$exports, "shimSenderGetStats", function () { return $69fa72c68315eefd$export$f0525502095c04ef; });
-$parcel$export($69fa72c68315eefd$exports, "shimReceiverGetStats", function () { return $69fa72c68315eefd$export$83d69126527b1171; });
-$parcel$export($69fa72c68315eefd$exports, "shimRemoveStream", function () { return $69fa72c68315eefd$export$825e523ef749bd8c; });
-$parcel$export($69fa72c68315eefd$exports, "shimRTCDataChannel", function () { return $69fa72c68315eefd$export$ff9cb3bc8990e8f7; });
-$parcel$export($69fa72c68315eefd$exports, "shimAddTransceiver", function () { return $69fa72c68315eefd$export$70c77533b6e9908d; });
-$parcel$export($69fa72c68315eefd$exports, "shimGetParameters", function () { return $69fa72c68315eefd$export$66238223c298fbaa; });
-$parcel$export($69fa72c68315eefd$exports, "shimCreateOffer", function () { return $69fa72c68315eefd$export$51beccf0e777b843; });
-$parcel$export($69fa72c68315eefd$exports, "shimCreateAnswer", function () { return $69fa72c68315eefd$export$df0b46e7cef08150; });
-$parcel$export($69fa72c68315eefd$exports, "shimGetUserMedia", function () { return $5e3a1eb03a6ad947$export$1ed4910f4d37dc5e; });
-$parcel$export($69fa72c68315eefd$exports, "shimGetDisplayMedia", function () { return $1852db07731944b1$export$97270b87351d9c04; });
+$parcel$export($fe2ad74ba0077acb$exports, "shimOnTrack", function () { return $fe2ad74ba0077acb$export$f358708f68ab068; });
+$parcel$export($fe2ad74ba0077acb$exports, "shimPeerConnection", function () { return $fe2ad74ba0077acb$export$852a08dda9a55ea7; });
+$parcel$export($fe2ad74ba0077acb$exports, "shimSenderGetStats", function () { return $fe2ad74ba0077acb$export$f0525502095c04ef; });
+$parcel$export($fe2ad74ba0077acb$exports, "shimReceiverGetStats", function () { return $fe2ad74ba0077acb$export$83d69126527b1171; });
+$parcel$export($fe2ad74ba0077acb$exports, "shimRemoveStream", function () { return $fe2ad74ba0077acb$export$825e523ef749bd8c; });
+$parcel$export($fe2ad74ba0077acb$exports, "shimRTCDataChannel", function () { return $fe2ad74ba0077acb$export$ff9cb3bc8990e8f7; });
+$parcel$export($fe2ad74ba0077acb$exports, "shimAddTransceiver", function () { return $fe2ad74ba0077acb$export$70c77533b6e9908d; });
+$parcel$export($fe2ad74ba0077acb$exports, "shimGetParameters", function () { return $fe2ad74ba0077acb$export$66238223c298fbaa; });
+$parcel$export($fe2ad74ba0077acb$exports, "shimCreateOffer", function () { return $fe2ad74ba0077acb$export$51beccf0e777b843; });
+$parcel$export($fe2ad74ba0077acb$exports, "shimCreateAnswer", function () { return $fe2ad74ba0077acb$export$df0b46e7cef08150; });
+$parcel$export($fe2ad74ba0077acb$exports, "shimGetUserMedia", function () { return $759f3e3247645d83$export$1ed4910f4d37dc5e; });
+$parcel$export($fe2ad74ba0077acb$exports, "shimGetDisplayMedia", function () { return $42e3ea1f763d9e8a$export$97270b87351d9c04; });
 /*
  *  Copyright (c) 2016 The WebRTC project authors. All Rights Reserved.
  *
@@ -3466,12 +3467,12 @@ $parcel$export($69fa72c68315eefd$exports, "shimGetDisplayMedia", function () { r
  *  that can be found in the LICENSE file in the root of the source
  *  tree.
  */ /* eslint-env node */ 
-function $f76c296ed2fab950$export$71511d61b312f219(arr) {
+function $77a89769c0981dfc$export$71511d61b312f219(arr) {
     if (Array.isArray(arr)) return arr;
 }
 
 
-function $d4d0fa0b930ea205$export$71511d61b312f219(arr, i) {
+function $654ff405d6bc2163$export$71511d61b312f219(arr, i) {
     var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
     if (_i == null) return;
     var _arr = [];
@@ -3497,52 +3498,52 @@ function $d4d0fa0b930ea205$export$71511d61b312f219(arr, i) {
 }
 
 
-function $a857e8ed28e4994b$export$71511d61b312f219() {
+function $5e28bf0636117a29$export$71511d61b312f219() {
     throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
 
-function $67440b47eae652c8$export$71511d61b312f219(arr, len) {
+function $adff3c4e0c1171cc$export$71511d61b312f219(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
     for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
     return arr2;
 }
 
 
-function $3899c414e8c0a384$export$71511d61b312f219(o, minLen) {
+function $51a6752bab5162a4$export$71511d61b312f219(o, minLen) {
     if (!o) return;
-    if (typeof o === "string") return (0, $67440b47eae652c8$export$71511d61b312f219)(o, minLen);
+    if (typeof o === "string") return (0, $adff3c4e0c1171cc$export$71511d61b312f219)(o, minLen);
     var n = Object.prototype.toString.call(o).slice(8, -1);
     if (n === "Object" && o.constructor) n = o.constructor.name;
     if (n === "Map" || n === "Set") return Array.from(n);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return (0, $67440b47eae652c8$export$71511d61b312f219)(o, minLen);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return (0, $adff3c4e0c1171cc$export$71511d61b312f219)(o, minLen);
 }
 
 
-function $13b9422e3d1c1523$export$71511d61b312f219(arr, i) {
-    return (0, $f76c296ed2fab950$export$71511d61b312f219)(arr) || (0, $d4d0fa0b930ea205$export$71511d61b312f219)(arr, i) || (0, $3899c414e8c0a384$export$71511d61b312f219)(arr, i) || (0, $a857e8ed28e4994b$export$71511d61b312f219)();
+function $c26877c109f33d6d$export$71511d61b312f219(arr, i) {
+    return (0, $77a89769c0981dfc$export$71511d61b312f219)(arr) || (0, $654ff405d6bc2163$export$71511d61b312f219)(arr, i) || (0, $51a6752bab5162a4$export$71511d61b312f219)(arr, i) || (0, $5e28bf0636117a29$export$71511d61b312f219)();
 }
 
 
 
-function $3d26cc3e6f094fde$export$71511d61b312f219(arr) {
-    if (Array.isArray(arr)) return (0, $67440b47eae652c8$export$71511d61b312f219)(arr);
+function $103ec1b33d0c31a4$export$71511d61b312f219(arr) {
+    if (Array.isArray(arr)) return (0, $adff3c4e0c1171cc$export$71511d61b312f219)(arr);
 }
 
 
-function $682837897e59553e$export$71511d61b312f219(iter) {
+function $fdb1565f2fa1c9a2$export$71511d61b312f219(iter) {
     if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
 }
 
 
-function $56c83c6767c8811f$export$71511d61b312f219() {
+function $89e35634fd357221$export$71511d61b312f219() {
     throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
 
 
-function $4c7c66606cd92a42$export$71511d61b312f219(arr) {
-    return (0, $3d26cc3e6f094fde$export$71511d61b312f219)(arr) || (0, $682837897e59553e$export$71511d61b312f219)(arr) || (0, $3899c414e8c0a384$export$71511d61b312f219)(arr) || (0, $56c83c6767c8811f$export$71511d61b312f219)();
+function $bff51d46f29b3217$export$71511d61b312f219(arr) {
+    return (0, $103ec1b33d0c31a4$export$71511d61b312f219)(arr) || (0, $fdb1565f2fa1c9a2$export$71511d61b312f219)(arr) || (0, $51a6752bab5162a4$export$71511d61b312f219)(arr) || (0, $89e35634fd357221$export$71511d61b312f219)();
 }
 
 
@@ -3555,12 +3556,12 @@ function $4c7c66606cd92a42$export$71511d61b312f219(arr) {
  *  tree.
  */ /* eslint-env node */ 
 "use strict";
-function $5e3a1eb03a6ad947$export$1ed4910f4d37dc5e(window, browserDetails) {
+function $759f3e3247645d83$export$1ed4910f4d37dc5e(window, browserDetails) {
     var navigator = window && window.navigator;
     var MediaStreamTrack = window && window.MediaStreamTrack;
     navigator.getUserMedia = function(constraints, onSuccess, onError) {
         // Replace Firefox 44+'s deprecation warning with unprefixed version.
-        $ecbc82f8e2fc2f44$export$cdd73fc4100a6ef4("navigator.getUserMedia", "navigator.mediaDevices.getUserMedia");
+        $8ec7d4c1b33e5d30$export$cdd73fc4100a6ef4("navigator.getUserMedia", "navigator.mediaDevices.getUserMedia");
         navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
     };
     if (!(browserDetails.version > 55 && "autoGainControl" in navigator.mediaDevices.getSupportedConstraints())) {
@@ -3612,7 +3613,7 @@ function $5e3a1eb03a6ad947$export$1ed4910f4d37dc5e(window, browserDetails) {
  *  that can be found in the LICENSE file in the root of the source
  *  tree.
  */ /* eslint-env node */ "use strict";
-function $1852db07731944b1$export$97270b87351d9c04(window, preferredMediaSource) {
+function $42e3ea1f763d9e8a$export$97270b87351d9c04(window, preferredMediaSource) {
     if (window.navigator.mediaDevices && "getDisplayMedia" in window.navigator.mediaDevices) return;
     if (!window.navigator.mediaDevices) return;
     window.navigator.mediaDevices.getDisplayMedia = function getDisplayMedia(constraints) {
@@ -3633,7 +3634,7 @@ function $1852db07731944b1$export$97270b87351d9c04(window, preferredMediaSource)
 
 
 "use strict";
-function $69fa72c68315eefd$export$f358708f68ab068(window) {
+function $fe2ad74ba0077acb$export$f358708f68ab068(window) {
     if (typeof window === "object" && window.RTCTrackEvent && "receiver" in window.RTCTrackEvent.prototype && !("transceiver" in window.RTCTrackEvent.prototype)) Object.defineProperty(window.RTCTrackEvent.prototype, "transceiver", {
         get: function() {
             return {
@@ -3642,7 +3643,7 @@ function $69fa72c68315eefd$export$f358708f68ab068(window) {
         }
     });
 }
-function $69fa72c68315eefd$export$852a08dda9a55ea7(window, browserDetails) {
+function $fe2ad74ba0077acb$export$852a08dda9a55ea7(window, browserDetails) {
     if (typeof window !== "object" || !(window.RTCPeerConnection || window.mozRTCPeerConnection)) return; // probably media.peerconnection.enabled=false in about:config
     if (!window.RTCPeerConnection && window.mozRTCPeerConnection) // very basic support for old versions.
     window.RTCPeerConnection = window.mozRTCPeerConnection;
@@ -3653,7 +3654,7 @@ function $69fa72c68315eefd$export$852a08dda9a55ea7(window, browserDetails) {
         "addIceCandidate"
     ].forEach(function(method) {
         var nativeMethod = window.RTCPeerConnection.prototype[method];
-        var methodObj = (0, $c96c38d675a75115$export$71511d61b312f219)({}, method, function() {
+        var methodObj = (0, $ca7b5bc57a9adfd0$export$71511d61b312f219)({}, method, function() {
             arguments[0] = new (method === "addIceCandidate" ? window.RTCIceCandidate : window.RTCSessionDescription)(arguments[0]);
             return nativeMethod.apply(this, arguments);
         });
@@ -3668,7 +3669,7 @@ function $69fa72c68315eefd$export$852a08dda9a55ea7(window, browserDetails) {
     };
     var nativeGetStats = window.RTCPeerConnection.prototype.getStats;
     window.RTCPeerConnection.prototype.getStats = function getStats() {
-        var _arguments = (0, $13b9422e3d1c1523$export$71511d61b312f219)(arguments, 3), selector = _arguments[0], onSucc = _arguments[1], onErr = _arguments[2];
+        var _arguments = (0, $c26877c109f33d6d$export$71511d61b312f219)(arguments, 3), selector = _arguments[0], onSucc = _arguments[1], onErr = _arguments[2];
         return nativeGetStats.apply(this, [
             selector || null
         ]).then(function(stats) {
@@ -3691,7 +3692,7 @@ function $69fa72c68315eefd$export$852a08dda9a55ea7(window, browserDetails) {
         }).then(onSucc, onErr);
     };
 }
-function $69fa72c68315eefd$export$f0525502095c04ef(window) {
+function $fe2ad74ba0077acb$export$f0525502095c04ef(window) {
     if (!(typeof window === "object" && window.RTCPeerConnection && window.RTCRtpSender)) return;
     if (window.RTCRtpSender && "getStats" in window.RTCRtpSender.prototype) return;
     var origGetSenders = window.RTCPeerConnection.prototype.getSenders;
@@ -3713,7 +3714,7 @@ function $69fa72c68315eefd$export$f0525502095c04ef(window) {
         return this.track ? this._pc.getStats(this.track) : Promise.resolve(new Map());
     };
 }
-function $69fa72c68315eefd$export$83d69126527b1171(window) {
+function $fe2ad74ba0077acb$export$83d69126527b1171(window) {
     if (!(typeof window === "object" && window.RTCPeerConnection && window.RTCRtpSender)) return;
     if (window.RTCRtpSender && "getStats" in window.RTCRtpReceiver.prototype) return;
     var origGetReceivers = window.RTCPeerConnection.prototype.getReceivers;
@@ -3725,7 +3726,7 @@ function $69fa72c68315eefd$export$83d69126527b1171(window) {
         });
         return receivers;
     };
-    $ecbc82f8e2fc2f44$export$1f48841962b828b1(window, "track", function(e) {
+    $8ec7d4c1b33e5d30$export$1f48841962b828b1(window, "track", function(e) {
         e.receiver._pc = e.srcElement;
         return e;
     });
@@ -3733,22 +3734,22 @@ function $69fa72c68315eefd$export$83d69126527b1171(window) {
         return this._pc.getStats(this.track);
     };
 }
-function $69fa72c68315eefd$export$825e523ef749bd8c(window) {
+function $fe2ad74ba0077acb$export$825e523ef749bd8c(window) {
     if (!window.RTCPeerConnection || "removeStream" in window.RTCPeerConnection.prototype) return;
     window.RTCPeerConnection.prototype.removeStream = function removeStream(stream) {
         var _this = this;
-        $ecbc82f8e2fc2f44$export$cdd73fc4100a6ef4("removeStream", "removeTrack");
+        $8ec7d4c1b33e5d30$export$cdd73fc4100a6ef4("removeStream", "removeTrack");
         this.getSenders().forEach(function(sender) {
             if (sender.track && stream.getTracks().includes(sender.track)) _this.removeTrack(sender);
         });
     };
 }
-function $69fa72c68315eefd$export$ff9cb3bc8990e8f7(window) {
+function $fe2ad74ba0077acb$export$ff9cb3bc8990e8f7(window) {
     // rename DataChannel to RTCDataChannel (native fix in FF60):
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1173851
     if (window.DataChannel && !window.RTCDataChannel) window.RTCDataChannel = window.DataChannel;
 }
-function $69fa72c68315eefd$export$70c77533b6e9908d(window) {
+function $fe2ad74ba0077acb$export$70c77533b6e9908d(window) {
     // https://github.com/webrtcHacks/adapter/issues/998#issuecomment-516921647
     // Firefox ignores the init sendEncodings options passed to addTransceiver
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1396918
@@ -3759,7 +3760,7 @@ function $69fa72c68315eefd$export$70c77533b6e9908d(window) {
         // WebIDL input coercion and validation
         var sendEncodings = arguments[1] && arguments[1].sendEncodings;
         if (sendEncodings === undefined) sendEncodings = [];
-        sendEncodings = (0, $4c7c66606cd92a42$export$71511d61b312f219)(sendEncodings);
+        sendEncodings = (0, $bff51d46f29b3217$export$71511d61b312f219)(sendEncodings);
         var shouldPerformCheck = sendEncodings.length > 0;
         if (shouldPerformCheck) // If sendEncodings params are provided, validate grammar
         sendEncodings.forEach(function(encodingParam) {
@@ -3791,7 +3792,7 @@ function $69fa72c68315eefd$export$70c77533b6e9908d(window) {
                 sender.sendEncodings = sendEncodings;
                 this.setParametersPromises.push(sender.setParameters(params).then(function() {
                     delete sender.sendEncodings;
-                })["catch"](function() {
+                }).catch(function() {
                     delete sender.sendEncodings;
                 }));
             }
@@ -3799,7 +3800,7 @@ function $69fa72c68315eefd$export$70c77533b6e9908d(window) {
         return transceiver;
     };
 }
-function $69fa72c68315eefd$export$66238223c298fbaa(window) {
+function $fe2ad74ba0077acb$export$66238223c298fbaa(window) {
     if (!(typeof window === "object" && window.RTCRtpSender)) return;
     var origGetParameters = window.RTCRtpSender.prototype.getParameters;
     if (origGetParameters) window.RTCRtpSender.prototype.getParameters = function getParameters() {
@@ -3810,7 +3811,7 @@ function $69fa72c68315eefd$export$66238223c298fbaa(window) {
         return params;
     };
 }
-function $69fa72c68315eefd$export$51beccf0e777b843(window) {
+function $fe2ad74ba0077acb$export$51beccf0e777b843(window) {
     // https://github.com/webrtcHacks/adapter/issues/998#issuecomment-516921647
     // Firefox ignores the init sendEncodings options passed to addTransceiver
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1396918
@@ -3820,13 +3821,13 @@ function $69fa72c68315eefd$export$51beccf0e777b843(window) {
         var _this = this, _arguments = arguments;
         if (this.setParametersPromises && this.setParametersPromises.length) return Promise.all(this.setParametersPromises).then(function() {
             return origCreateOffer.apply(_this, _arguments);
-        })["finally"](function() {
+        }).finally(function() {
             _this.setParametersPromises = [];
         });
         return origCreateOffer.apply(this, arguments);
     };
 }
-function $69fa72c68315eefd$export$df0b46e7cef08150(window) {
+function $fe2ad74ba0077acb$export$df0b46e7cef08150(window) {
     // https://github.com/webrtcHacks/adapter/issues/998#issuecomment-516921647
     // Firefox ignores the init sendEncodings options passed to addTransceiver
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1396918
@@ -3836,7 +3837,7 @@ function $69fa72c68315eefd$export$df0b46e7cef08150(window) {
         var _this = this, _arguments = arguments;
         if (this.setParametersPromises && this.setParametersPromises.length) return Promise.all(this.setParametersPromises).then(function() {
             return origCreateAnswer.apply(_this, _arguments);
-        })["finally"](function() {
+        }).finally(function() {
             _this.setParametersPromises = [];
         });
         return origCreateAnswer.apply(this, arguments);
@@ -3844,17 +3845,17 @@ function $69fa72c68315eefd$export$df0b46e7cef08150(window) {
 }
 
 
-var $30149506f5b6e50a$exports = {};
+var $0c32657ad79478cd$exports = {};
 
-$parcel$export($30149506f5b6e50a$exports, "shimLocalStreamsAPI", function () { return $30149506f5b6e50a$export$8df41282f4fdcea2; });
-$parcel$export($30149506f5b6e50a$exports, "shimRemoteStreamsAPI", function () { return $30149506f5b6e50a$export$762aa4cbb4f2f857; });
-$parcel$export($30149506f5b6e50a$exports, "shimCallbacksAPI", function () { return $30149506f5b6e50a$export$da31df245debdd3; });
-$parcel$export($30149506f5b6e50a$exports, "shimGetUserMedia", function () { return $30149506f5b6e50a$export$1ed4910f4d37dc5e; });
-$parcel$export($30149506f5b6e50a$exports, "shimConstraints", function () { return $30149506f5b6e50a$export$494a01ac68ba81ac; });
-$parcel$export($30149506f5b6e50a$exports, "shimRTCIceServerUrls", function () { return $30149506f5b6e50a$export$671a8b47b41b6f41; });
-$parcel$export($30149506f5b6e50a$exports, "shimTrackEventTransceiver", function () { return $30149506f5b6e50a$export$85d53da088cb1b14; });
-$parcel$export($30149506f5b6e50a$exports, "shimCreateOfferLegacy", function () { return $30149506f5b6e50a$export$d444266503fdd2d4; });
-$parcel$export($30149506f5b6e50a$exports, "shimAudioContext", function () { return $30149506f5b6e50a$export$857cd739a7b795d2; });
+$parcel$export($0c32657ad79478cd$exports, "shimLocalStreamsAPI", function () { return $0c32657ad79478cd$export$8df41282f4fdcea2; });
+$parcel$export($0c32657ad79478cd$exports, "shimRemoteStreamsAPI", function () { return $0c32657ad79478cd$export$762aa4cbb4f2f857; });
+$parcel$export($0c32657ad79478cd$exports, "shimCallbacksAPI", function () { return $0c32657ad79478cd$export$da31df245debdd3; });
+$parcel$export($0c32657ad79478cd$exports, "shimGetUserMedia", function () { return $0c32657ad79478cd$export$1ed4910f4d37dc5e; });
+$parcel$export($0c32657ad79478cd$exports, "shimConstraints", function () { return $0c32657ad79478cd$export$494a01ac68ba81ac; });
+$parcel$export($0c32657ad79478cd$exports, "shimRTCIceServerUrls", function () { return $0c32657ad79478cd$export$671a8b47b41b6f41; });
+$parcel$export($0c32657ad79478cd$exports, "shimTrackEventTransceiver", function () { return $0c32657ad79478cd$export$85d53da088cb1b14; });
+$parcel$export($0c32657ad79478cd$exports, "shimCreateOfferLegacy", function () { return $0c32657ad79478cd$export$d444266503fdd2d4; });
+$parcel$export($0c32657ad79478cd$exports, "shimAudioContext", function () { return $0c32657ad79478cd$export$857cd739a7b795d2; });
 /*
  *  Copyright (c) 2016 The WebRTC project authors. All Rights Reserved.
  *
@@ -3863,7 +3864,7 @@ $parcel$export($30149506f5b6e50a$exports, "shimAudioContext", function () { retu
  *  tree.
  */ 
 "use strict";
-function $30149506f5b6e50a$export$8df41282f4fdcea2(window) {
+function $0c32657ad79478cd$export$8df41282f4fdcea2(window) {
     if (typeof window !== "object" || !window.RTCPeerConnection) return;
     if (!("getLocalStreams" in window.RTCPeerConnection.prototype)) window.RTCPeerConnection.prototype.getLocalStreams = function getLocalStreams() {
         if (!this._localStreams) this._localStreams = [];
@@ -3910,7 +3911,7 @@ function $30149506f5b6e50a$export$8df41282f4fdcea2(window) {
         });
     };
 }
-function $30149506f5b6e50a$export$762aa4cbb4f2f857(window) {
+function $0c32657ad79478cd$export$762aa4cbb4f2f857(window) {
     if (typeof window !== "object" || !window.RTCPeerConnection) return;
     if (!("getRemoteStreams" in window.RTCPeerConnection.prototype)) window.RTCPeerConnection.prototype.getRemoteStreams = function getRemoteStreams() {
         return this._remoteStreams ? this._remoteStreams : [];
@@ -3956,7 +3957,7 @@ function $30149506f5b6e50a$export$762aa4cbb4f2f857(window) {
         };
     }
 }
-function $30149506f5b6e50a$export$da31df245debdd3(window) {
+function $0c32657ad79478cd$export$da31df245debdd3(window) {
     if (typeof window !== "object" || !window.RTCPeerConnection) return;
     var prototype = window.RTCPeerConnection.prototype;
     var origCreateOffer = prototype.createOffer;
@@ -4010,27 +4011,27 @@ function $30149506f5b6e50a$export$da31df245debdd3(window) {
     };
     prototype.addIceCandidate = withCallback;
 }
-function $30149506f5b6e50a$export$1ed4910f4d37dc5e(window) {
+function $0c32657ad79478cd$export$1ed4910f4d37dc5e(window) {
     var navigator = window && window.navigator;
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         // shim not needed in Safari 12.1
         var mediaDevices = navigator.mediaDevices;
         var _getUserMedia = mediaDevices.getUserMedia.bind(mediaDevices);
         navigator.mediaDevices.getUserMedia = function(constraints) {
-            return _getUserMedia($30149506f5b6e50a$export$494a01ac68ba81ac(constraints));
+            return _getUserMedia($0c32657ad79478cd$export$494a01ac68ba81ac(constraints));
         };
     }
     if (!navigator.getUserMedia && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) navigator.getUserMedia = (function getUserMedia(constraints, cb, errcb) {
         navigator.mediaDevices.getUserMedia(constraints).then(cb, errcb);
     }).bind(navigator);
 }
-function $30149506f5b6e50a$export$494a01ac68ba81ac(constraints) {
+function $0c32657ad79478cd$export$494a01ac68ba81ac(constraints) {
     if (constraints && constraints.video !== undefined) return Object.assign({}, constraints, {
-        video: $ecbc82f8e2fc2f44$export$15384eac40dc88c8(constraints.video)
+        video: $8ec7d4c1b33e5d30$export$15384eac40dc88c8(constraints.video)
     });
     return constraints;
 }
-function $30149506f5b6e50a$export$671a8b47b41b6f41(window) {
+function $0c32657ad79478cd$export$671a8b47b41b6f41(window) {
     if (!window.RTCPeerConnection) return;
     // migrate from non-spec RTCIceServer.url to RTCIceServer.urls
     var OrigPeerConnection = window.RTCPeerConnection;
@@ -4040,7 +4041,7 @@ function $30149506f5b6e50a$export$671a8b47b41b6f41(window) {
             for(var i = 0; i < pcConfig.iceServers.length; i++){
                 var server = pcConfig.iceServers[i];
                 if (server.urls === undefined && server.url) {
-                    $ecbc82f8e2fc2f44$export$cdd73fc4100a6ef4("RTCIceServer.url", "RTCIceServer.urls");
+                    $8ec7d4c1b33e5d30$export$cdd73fc4100a6ef4("RTCIceServer.url", "RTCIceServer.urls");
                     server = JSON.parse(JSON.stringify(server));
                     server.urls = server.url;
                     delete server.url;
@@ -4059,7 +4060,7 @@ function $30149506f5b6e50a$export$671a8b47b41b6f41(window) {
         }
     });
 }
-function $30149506f5b6e50a$export$85d53da088cb1b14(window) {
+function $0c32657ad79478cd$export$85d53da088cb1b14(window) {
     // Add event.transceiver member over deprecated event.receiver
     if (typeof window === "object" && window.RTCTrackEvent && "receiver" in window.RTCTrackEvent.prototype && !("transceiver" in window.RTCTrackEvent.prototype)) Object.defineProperty(window.RTCTrackEvent.prototype, "transceiver", {
         get: function() {
@@ -4069,7 +4070,7 @@ function $30149506f5b6e50a$export$85d53da088cb1b14(window) {
         }
     });
 }
-function $30149506f5b6e50a$export$d444266503fdd2d4(window) {
+function $0c32657ad79478cd$export$d444266503fdd2d4(window) {
     var origCreateOffer = window.RTCPeerConnection.prototype.createOffer;
     window.RTCPeerConnection.prototype.createOffer = function createOffer(offerOptions) {
         if (offerOptions) {
@@ -4109,66 +4110,66 @@ function $30149506f5b6e50a$export$d444266503fdd2d4(window) {
         return origCreateOffer.apply(this, arguments);
     };
 }
-function $30149506f5b6e50a$export$857cd739a7b795d2(window) {
+function $0c32657ad79478cd$export$857cd739a7b795d2(window) {
     if (typeof window !== "object" || window.AudioContext) return;
     window.AudioContext = window.webkitAudioContext;
 }
 
 
-var $ad8f8a0faac16970$exports = {};
+var $9fedca9c5b6fb109$exports = {};
 
-$parcel$export($ad8f8a0faac16970$exports, "shimRTCIceCandidate", function () { return $ad8f8a0faac16970$export$cf133661e444ccfe; });
-$parcel$export($ad8f8a0faac16970$exports, "shimRTCIceCandidateRelayProtocol", function () { return $ad8f8a0faac16970$export$fdafb8d8280e29b5; });
-$parcel$export($ad8f8a0faac16970$exports, "shimMaxMessageSize", function () { return $ad8f8a0faac16970$export$a99147c78a56edc4; });
-$parcel$export($ad8f8a0faac16970$exports, "shimSendThrowTypeError", function () { return $ad8f8a0faac16970$export$d461c8d5c5db5da7; });
-$parcel$export($ad8f8a0faac16970$exports, "shimConnectionState", function () { return $ad8f8a0faac16970$export$63bb816cc75460; });
-$parcel$export($ad8f8a0faac16970$exports, "removeExtmapAllowMixed", function () { return $ad8f8a0faac16970$export$a57d114344295149; });
-$parcel$export($ad8f8a0faac16970$exports, "shimAddIceCandidateNullOrEmpty", function () { return $ad8f8a0faac16970$export$51d5e40b48c771c7; });
-$parcel$export($ad8f8a0faac16970$exports, "shimParameterlessSetLocalDescription", function () { return $ad8f8a0faac16970$export$7170d04e59f9d553; });
+$parcel$export($9fedca9c5b6fb109$exports, "shimRTCIceCandidate", function () { return $9fedca9c5b6fb109$export$cf133661e444ccfe; });
+$parcel$export($9fedca9c5b6fb109$exports, "shimRTCIceCandidateRelayProtocol", function () { return $9fedca9c5b6fb109$export$fdafb8d8280e29b5; });
+$parcel$export($9fedca9c5b6fb109$exports, "shimMaxMessageSize", function () { return $9fedca9c5b6fb109$export$a99147c78a56edc4; });
+$parcel$export($9fedca9c5b6fb109$exports, "shimSendThrowTypeError", function () { return $9fedca9c5b6fb109$export$d461c8d5c5db5da7; });
+$parcel$export($9fedca9c5b6fb109$exports, "shimConnectionState", function () { return $9fedca9c5b6fb109$export$63bb816cc75460; });
+$parcel$export($9fedca9c5b6fb109$exports, "removeExtmapAllowMixed", function () { return $9fedca9c5b6fb109$export$a57d114344295149; });
+$parcel$export($9fedca9c5b6fb109$exports, "shimAddIceCandidateNullOrEmpty", function () { return $9fedca9c5b6fb109$export$51d5e40b48c771c7; });
+$parcel$export($9fedca9c5b6fb109$exports, "shimParameterlessSetLocalDescription", function () { return $9fedca9c5b6fb109$export$7170d04e59f9d553; });
 /*
  *  Copyright (c) 2017 The WebRTC project authors. All Rights Reserved.
  *
  *  Use of this source code is governed by a BSD-style license
  *  that can be found in the LICENSE file in the root of the source
  *  tree.
- */ /* eslint-env node */ var $6ef33e7fea041b5b$exports = {};
+ */ /* eslint-env node */ var $8a6d164b876c1fb5$exports = {};
 /* eslint-env node */ "use strict";
 // SDP helpers.
-var $6ef33e7fea041b5b$var$SDPUtils = {};
+var $8a6d164b876c1fb5$var$SDPUtils = {};
 // Generate an alphanumeric identifier for cname or mids.
 // TODO: use UUIDs instead? https://gist.github.com/jed/982883
-$6ef33e7fea041b5b$var$SDPUtils.generateIdentifier = function() {
+$8a6d164b876c1fb5$var$SDPUtils.generateIdentifier = function() {
     return Math.random().toString(36).substring(2, 12);
 };
 // The RTCP CNAME used by all peerconnections from the same JS.
-$6ef33e7fea041b5b$var$SDPUtils.localCName = $6ef33e7fea041b5b$var$SDPUtils.generateIdentifier();
+$8a6d164b876c1fb5$var$SDPUtils.localCName = $8a6d164b876c1fb5$var$SDPUtils.generateIdentifier();
 // Splits SDP into lines, dealing with both CRLF and LF.
-$6ef33e7fea041b5b$var$SDPUtils.splitLines = function(blob) {
+$8a6d164b876c1fb5$var$SDPUtils.splitLines = function(blob) {
     return blob.trim().split("\n").map(function(line) {
         return line.trim();
     });
 };
 // Splits SDP into sessionpart and mediasections. Ensures CRLF.
-$6ef33e7fea041b5b$var$SDPUtils.splitSections = function(blob) {
+$8a6d164b876c1fb5$var$SDPUtils.splitSections = function(blob) {
     var parts = blob.split("\nm=");
     return parts.map(function(part, index) {
         return (index > 0 ? "m=" + part : part).trim() + "\r\n";
     });
 };
 // Returns the session description.
-$6ef33e7fea041b5b$var$SDPUtils.getDescription = function(blob) {
-    var sections = $6ef33e7fea041b5b$var$SDPUtils.splitSections(blob);
+$8a6d164b876c1fb5$var$SDPUtils.getDescription = function(blob) {
+    var sections = $8a6d164b876c1fb5$var$SDPUtils.splitSections(blob);
     return sections && sections[0];
 };
 // Returns the individual media sections.
-$6ef33e7fea041b5b$var$SDPUtils.getMediaSections = function(blob) {
-    var sections = $6ef33e7fea041b5b$var$SDPUtils.splitSections(blob);
+$8a6d164b876c1fb5$var$SDPUtils.getMediaSections = function(blob) {
+    var sections = $8a6d164b876c1fb5$var$SDPUtils.splitSections(blob);
     sections.shift();
     return sections;
 };
 // Returns lines that start with a certain prefix.
-$6ef33e7fea041b5b$var$SDPUtils.matchPrefix = function(blob, prefix) {
-    return $6ef33e7fea041b5b$var$SDPUtils.splitLines(blob).filter(function(line) {
+$8a6d164b876c1fb5$var$SDPUtils.matchPrefix = function(blob, prefix) {
+    return $8a6d164b876c1fb5$var$SDPUtils.splitLines(blob).filter(function(line) {
         return line.indexOf(prefix) === 0;
     });
 };
@@ -4176,7 +4177,7 @@ $6ef33e7fea041b5b$var$SDPUtils.matchPrefix = function(blob, prefix) {
 // candidate:702786350 2 udp 41819902 8.8.8.8 60769 typ relay raddr 8.8.8.8
 // rport 55996"
 // Input can be prefixed with a=.
-$6ef33e7fea041b5b$var$SDPUtils.parseCandidate = function(line) {
+$8a6d164b876c1fb5$var$SDPUtils.parseCandidate = function(line) {
     var parts;
     // Parse both variants.
     if (line.indexOf("a=candidate:") === 0) parts = line.substring(12).split(" ");
@@ -4217,7 +4218,7 @@ $6ef33e7fea041b5b$var$SDPUtils.parseCandidate = function(line) {
 };
 // Translates a candidate object into SDP candidate attribute.
 // This does not include the a= prefix!
-$6ef33e7fea041b5b$var$SDPUtils.writeCandidate = function(candidate) {
+$8a6d164b876c1fb5$var$SDPUtils.writeCandidate = function(candidate) {
     var sdp = [];
     sdp.push(candidate.foundation);
     var component = candidate.component;
@@ -4250,12 +4251,12 @@ $6ef33e7fea041b5b$var$SDPUtils.writeCandidate = function(candidate) {
 // Parses an ice-options line, returns an array of option tags.
 // Sample input:
 // a=ice-options:foo bar
-$6ef33e7fea041b5b$var$SDPUtils.parseIceOptions = function(line) {
+$8a6d164b876c1fb5$var$SDPUtils.parseIceOptions = function(line) {
     return line.substring(14).split(" ");
 };
 // Parses a rtpmap line, returns RTCRtpCoddecParameters. Sample input:
 // a=rtpmap:111 opus/48000/2
-$6ef33e7fea041b5b$var$SDPUtils.parseRtpMap = function(line) {
+$8a6d164b876c1fb5$var$SDPUtils.parseRtpMap = function(line) {
     var parts = line.substring(9).split(" ");
     var parsed = {
         payloadType: parseInt(parts.shift(), 10)
@@ -4270,7 +4271,7 @@ $6ef33e7fea041b5b$var$SDPUtils.parseRtpMap = function(line) {
 };
 // Generates a rtpmap line from RTCRtpCodecCapability or
 // RTCRtpCodecParameters.
-$6ef33e7fea041b5b$var$SDPUtils.writeRtpMap = function(codec) {
+$8a6d164b876c1fb5$var$SDPUtils.writeRtpMap = function(codec) {
     var pt = codec.payloadType;
     if (codec.preferredPayloadType !== undefined) pt = codec.preferredPayloadType;
     var channels = codec.channels || codec.numChannels || 1;
@@ -4279,7 +4280,7 @@ $6ef33e7fea041b5b$var$SDPUtils.writeRtpMap = function(codec) {
 // Parses a extmap line (headerextension from RFC 5285). Sample input:
 // a=extmap:2 urn:ietf:params:rtp-hdrext:toffset
 // a=extmap:2/sendonly urn:ietf:params:rtp-hdrext:toffset
-$6ef33e7fea041b5b$var$SDPUtils.parseExtmap = function(line) {
+$8a6d164b876c1fb5$var$SDPUtils.parseExtmap = function(line) {
     var parts = line.substring(9).split(" ");
     return {
         id: parseInt(parts[0], 10),
@@ -4290,13 +4291,13 @@ $6ef33e7fea041b5b$var$SDPUtils.parseExtmap = function(line) {
 };
 // Generates an extmap line from RTCRtpHeaderExtensionParameters or
 // RTCRtpHeaderExtension.
-$6ef33e7fea041b5b$var$SDPUtils.writeExtmap = function(headerExtension) {
+$8a6d164b876c1fb5$var$SDPUtils.writeExtmap = function(headerExtension) {
     return "a=extmap:" + (headerExtension.id || headerExtension.preferredId) + (headerExtension.direction && headerExtension.direction !== "sendrecv" ? "/" + headerExtension.direction : "") + " " + headerExtension.uri + (headerExtension.attributes ? " " + headerExtension.attributes : "") + "\r\n";
 };
 // Parses a fmtp line, returns dictionary. Sample input:
 // a=fmtp:96 vbr=on;cng=on
 // Also deals with vbr=on; cng=on
-$6ef33e7fea041b5b$var$SDPUtils.parseFmtp = function(line) {
+$8a6d164b876c1fb5$var$SDPUtils.parseFmtp = function(line) {
     var parsed = {};
     var kv;
     var parts = line.substring(line.indexOf(" ") + 1).split(";");
@@ -4307,7 +4308,7 @@ $6ef33e7fea041b5b$var$SDPUtils.parseFmtp = function(line) {
     return parsed;
 };
 // Generates a fmtp line from RTCRtpCodecCapability or RTCRtpCodecParameters.
-$6ef33e7fea041b5b$var$SDPUtils.writeFmtp = function(codec) {
+$8a6d164b876c1fb5$var$SDPUtils.writeFmtp = function(codec) {
     var line = "";
     var pt = codec.payloadType;
     if (codec.preferredPayloadType !== undefined) pt = codec.preferredPayloadType;
@@ -4323,7 +4324,7 @@ $6ef33e7fea041b5b$var$SDPUtils.writeFmtp = function(codec) {
 };
 // Parses a rtcp-fb line, returns RTCPRtcpFeedback object. Sample input:
 // a=rtcp-fb:98 nack rpsi
-$6ef33e7fea041b5b$var$SDPUtils.parseRtcpFb = function(line) {
+$8a6d164b876c1fb5$var$SDPUtils.parseRtcpFb = function(line) {
     var parts = line.substring(line.indexOf(" ") + 1).split(" ");
     return {
         type: parts.shift(),
@@ -4331,7 +4332,7 @@ $6ef33e7fea041b5b$var$SDPUtils.parseRtcpFb = function(line) {
     };
 };
 // Generate a=rtcp-fb lines from RTCRtpCodecCapability or RTCRtpCodecParameters.
-$6ef33e7fea041b5b$var$SDPUtils.writeRtcpFb = function(codec) {
+$8a6d164b876c1fb5$var$SDPUtils.writeRtcpFb = function(codec) {
     var lines = "";
     var pt = codec.payloadType;
     if (codec.preferredPayloadType !== undefined) pt = codec.preferredPayloadType;
@@ -4343,7 +4344,7 @@ $6ef33e7fea041b5b$var$SDPUtils.writeRtcpFb = function(codec) {
 };
 // Parses a RFC 5576 ssrc media attribute. Sample input:
 // a=ssrc:3735928559 cname:something
-$6ef33e7fea041b5b$var$SDPUtils.parseSsrcMedia = function(line) {
+$8a6d164b876c1fb5$var$SDPUtils.parseSsrcMedia = function(line) {
     var sp = line.indexOf(" ");
     var parts = {
         ssrc: parseInt(line.substring(7, sp), 10)
@@ -4357,7 +4358,7 @@ $6ef33e7fea041b5b$var$SDPUtils.parseSsrcMedia = function(line) {
 };
 // Parse a ssrc-group line (see RFC 5576). Sample input:
 // a=ssrc-group:semantics 12 34
-$6ef33e7fea041b5b$var$SDPUtils.parseSsrcGroup = function(line) {
+$8a6d164b876c1fb5$var$SDPUtils.parseSsrcGroup = function(line) {
     var parts = line.substring(13).split(" ");
     return {
         semantics: parts.shift(),
@@ -4368,12 +4369,12 @@ $6ef33e7fea041b5b$var$SDPUtils.parseSsrcGroup = function(line) {
 };
 // Extracts the MID (RFC 5888) from a media section.
 // Returns the MID or undefined if no mid line was found.
-$6ef33e7fea041b5b$var$SDPUtils.getMid = function(mediaSection) {
-    var mid = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=mid:")[0];
+$8a6d164b876c1fb5$var$SDPUtils.getMid = function(mediaSection) {
+    var mid = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection, "a=mid:")[0];
     if (mid) return mid.substring(6);
 };
 // Parses a fingerprint line for DTLS-SRTP.
-$6ef33e7fea041b5b$var$SDPUtils.parseFingerprint = function(line) {
+$8a6d164b876c1fb5$var$SDPUtils.parseFingerprint = function(line) {
     var parts = line.substring(14).split(" ");
     return {
         algorithm: parts[0].toLowerCase(),
@@ -4383,16 +4384,16 @@ $6ef33e7fea041b5b$var$SDPUtils.parseFingerprint = function(line) {
 // Extracts DTLS parameters from SDP media section or sessionpart.
 // FIXME: for consistency with other functions this should only
 //   get the fingerprint line as input. See also getIceParameters.
-$6ef33e7fea041b5b$var$SDPUtils.getDtlsParameters = function(mediaSection, sessionpart) {
-    var lines = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection + sessionpart, "a=fingerprint:");
+$8a6d164b876c1fb5$var$SDPUtils.getDtlsParameters = function(mediaSection, sessionpart) {
+    var lines = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection + sessionpart, "a=fingerprint:");
     // Note: a=setup line is ignored since we use the 'auto' role in Edge.
     return {
         role: "auto",
-        fingerprints: lines.map($6ef33e7fea041b5b$var$SDPUtils.parseFingerprint)
+        fingerprints: lines.map($8a6d164b876c1fb5$var$SDPUtils.parseFingerprint)
     };
 };
 // Serializes DTLS parameters to SDP.
-$6ef33e7fea041b5b$var$SDPUtils.writeDtlsParameters = function(params, setupType) {
+$8a6d164b876c1fb5$var$SDPUtils.writeDtlsParameters = function(params, setupType) {
     var sdp = "a=setup:" + setupType + "\r\n";
     params.fingerprints.forEach(function(fp) {
         sdp += "a=fingerprint:" + fp.algorithm + " " + fp.value + "\r\n";
@@ -4401,7 +4402,7 @@ $6ef33e7fea041b5b$var$SDPUtils.writeDtlsParameters = function(params, setupType)
 };
 // Parses a=crypto lines into
 //   https://rawgit.com/aboba/edgertc/master/msortc-rs4.html#dictionary-rtcsrtpsdesparameters-members
-$6ef33e7fea041b5b$var$SDPUtils.parseCryptoLine = function(line) {
+$8a6d164b876c1fb5$var$SDPUtils.parseCryptoLine = function(line) {
     var parts = line.substring(9).split(" ");
     return {
         tag: parseInt(parts[0], 10),
@@ -4410,12 +4411,12 @@ $6ef33e7fea041b5b$var$SDPUtils.parseCryptoLine = function(line) {
         sessionParams: parts.slice(3)
     };
 };
-$6ef33e7fea041b5b$var$SDPUtils.writeCryptoLine = function(parameters) {
-    return "a=crypto:" + parameters.tag + " " + parameters.cryptoSuite + " " + (typeof parameters.keyParams === "object" ? $6ef33e7fea041b5b$var$SDPUtils.writeCryptoKeyParams(parameters.keyParams) : parameters.keyParams) + (parameters.sessionParams ? " " + parameters.sessionParams.join(" ") : "") + "\r\n";
+$8a6d164b876c1fb5$var$SDPUtils.writeCryptoLine = function(parameters) {
+    return "a=crypto:" + parameters.tag + " " + parameters.cryptoSuite + " " + (typeof parameters.keyParams === "object" ? $8a6d164b876c1fb5$var$SDPUtils.writeCryptoKeyParams(parameters.keyParams) : parameters.keyParams) + (parameters.sessionParams ? " " + parameters.sessionParams.join(" ") : "") + "\r\n";
 };
 // Parses the crypto key parameters into
 //   https://rawgit.com/aboba/edgertc/master/msortc-rs4.html#rtcsrtpkeyparam*
-$6ef33e7fea041b5b$var$SDPUtils.parseCryptoKeyParams = function(keyParams) {
+$8a6d164b876c1fb5$var$SDPUtils.parseCryptoKeyParams = function(keyParams) {
     if (keyParams.indexOf("inline:") !== 0) return null;
     var parts = keyParams.substring(7).split("|");
     return {
@@ -4426,20 +4427,20 @@ $6ef33e7fea041b5b$var$SDPUtils.parseCryptoKeyParams = function(keyParams) {
         mkiLength: parts[2] ? parts[2].split(":")[1] : undefined
     };
 };
-$6ef33e7fea041b5b$var$SDPUtils.writeCryptoKeyParams = function(keyParams) {
+$8a6d164b876c1fb5$var$SDPUtils.writeCryptoKeyParams = function(keyParams) {
     return keyParams.keyMethod + ":" + keyParams.keySalt + (keyParams.lifeTime ? "|" + keyParams.lifeTime : "") + (keyParams.mkiValue && keyParams.mkiLength ? "|" + keyParams.mkiValue + ":" + keyParams.mkiLength : "");
 };
 // Extracts all SDES parameters.
-$6ef33e7fea041b5b$var$SDPUtils.getCryptoParameters = function(mediaSection, sessionpart) {
-    var lines = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection + sessionpart, "a=crypto:");
-    return lines.map($6ef33e7fea041b5b$var$SDPUtils.parseCryptoLine);
+$8a6d164b876c1fb5$var$SDPUtils.getCryptoParameters = function(mediaSection, sessionpart) {
+    var lines = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection + sessionpart, "a=crypto:");
+    return lines.map($8a6d164b876c1fb5$var$SDPUtils.parseCryptoLine);
 };
 // Parses ICE information from SDP media section or sessionpart.
 // FIXME: for consistency with other functions this should only
 //   get the ice-ufrag and ice-pwd lines as input.
-$6ef33e7fea041b5b$var$SDPUtils.getIceParameters = function(mediaSection, sessionpart) {
-    var ufrag = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection + sessionpart, "a=ice-ufrag:")[0];
-    var pwd = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection + sessionpart, "a=ice-pwd:")[0];
+$8a6d164b876c1fb5$var$SDPUtils.getIceParameters = function(mediaSection, sessionpart) {
+    var ufrag = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection + sessionpart, "a=ice-ufrag:")[0];
+    var pwd = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection + sessionpart, "a=ice-pwd:")[0];
     if (!(ufrag && pwd)) return null;
     return {
         usernameFragment: ufrag.substring(12),
@@ -4447,31 +4448,31 @@ $6ef33e7fea041b5b$var$SDPUtils.getIceParameters = function(mediaSection, session
     };
 };
 // Serializes ICE parameters to SDP.
-$6ef33e7fea041b5b$var$SDPUtils.writeIceParameters = function(params) {
+$8a6d164b876c1fb5$var$SDPUtils.writeIceParameters = function(params) {
     var sdp = "a=ice-ufrag:" + params.usernameFragment + "\r\n" + "a=ice-pwd:" + params.password + "\r\n";
     if (params.iceLite) sdp += "a=ice-lite\r\n";
     return sdp;
 };
 // Parses the SDP media section and returns RTCRtpParameters.
-$6ef33e7fea041b5b$var$SDPUtils.parseRtpParameters = function(mediaSection) {
+$8a6d164b876c1fb5$var$SDPUtils.parseRtpParameters = function(mediaSection) {
     var description = {
         codecs: [],
         headerExtensions: [],
         fecMechanisms: [],
         rtcp: []
     };
-    var lines = $6ef33e7fea041b5b$var$SDPUtils.splitLines(mediaSection);
+    var lines = $8a6d164b876c1fb5$var$SDPUtils.splitLines(mediaSection);
     var mline = lines[0].split(" ");
     description.profile = mline[2];
     for(var i = 3; i < mline.length; i++){
         var pt = mline[i];
-        var rtpmapline = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=rtpmap:" + pt + " ")[0];
+        var rtpmapline = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection, "a=rtpmap:" + pt + " ")[0];
         if (rtpmapline) {
-            var codec = $6ef33e7fea041b5b$var$SDPUtils.parseRtpMap(rtpmapline);
-            var fmtps = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=fmtp:" + pt + " ");
+            var codec = $8a6d164b876c1fb5$var$SDPUtils.parseRtpMap(rtpmapline);
+            var fmtps = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection, "a=fmtp:" + pt + " ");
             // Only the first a=fmtp:<pt> is considered.
-            codec.parameters = fmtps.length ? $6ef33e7fea041b5b$var$SDPUtils.parseFmtp(fmtps[0]) : {};
-            codec.rtcpFeedback = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=rtcp-fb:" + pt + " ").map($6ef33e7fea041b5b$var$SDPUtils.parseRtcpFb);
+            codec.parameters = fmtps.length ? $8a6d164b876c1fb5$var$SDPUtils.parseFmtp(fmtps[0]) : {};
+            codec.rtcpFeedback = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection, "a=rtcp-fb:" + pt + " ").map($8a6d164b876c1fb5$var$SDPUtils.parseRtcpFb);
             description.codecs.push(codec);
             // parse FEC mechanisms from rtpmap lines.
             switch(codec.name.toUpperCase()){
@@ -4484,10 +4485,10 @@ $6ef33e7fea041b5b$var$SDPUtils.parseRtpParameters = function(mediaSection) {
             }
         }
     }
-    $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=extmap:").forEach(function(line) {
-        description.headerExtensions.push($6ef33e7fea041b5b$var$SDPUtils.parseExtmap(line));
+    $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection, "a=extmap:").forEach(function(line) {
+        description.headerExtensions.push($8a6d164b876c1fb5$var$SDPUtils.parseExtmap(line));
     });
-    var wildcardRtcpFb = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=rtcp-fb:* ").map($6ef33e7fea041b5b$var$SDPUtils.parseRtcpFb);
+    var wildcardRtcpFb = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection, "a=rtcp-fb:* ").map($8a6d164b876c1fb5$var$SDPUtils.parseRtcpFb);
     description.codecs.forEach(function(codec) {
         wildcardRtcpFb.forEach(function(fb) {
             var duplicate = codec.rtcpFeedback.find(function(existingFeedback) {
@@ -4501,7 +4502,7 @@ $6ef33e7fea041b5b$var$SDPUtils.parseRtpParameters = function(mediaSection) {
 };
 // Generates parts of the SDP media section describing the capabilities /
 // parameters.
-$6ef33e7fea041b5b$var$SDPUtils.writeRtpDescription = function(kind, caps) {
+$8a6d164b876c1fb5$var$SDPUtils.writeRtpDescription = function(kind, caps) {
     var sdp = "";
     // Build the mline.
     sdp += "m=" + kind + " ";
@@ -4515,9 +4516,9 @@ $6ef33e7fea041b5b$var$SDPUtils.writeRtpDescription = function(kind, caps) {
     sdp += "a=rtcp:9 IN IP4 0.0.0.0\r\n";
     // Add a=rtpmap lines for each codec. Also fmtp and rtcp-fb.
     caps.codecs.forEach(function(codec) {
-        sdp += $6ef33e7fea041b5b$var$SDPUtils.writeRtpMap(codec);
-        sdp += $6ef33e7fea041b5b$var$SDPUtils.writeFmtp(codec);
-        sdp += $6ef33e7fea041b5b$var$SDPUtils.writeRtcpFb(codec);
+        sdp += $8a6d164b876c1fb5$var$SDPUtils.writeRtpMap(codec);
+        sdp += $8a6d164b876c1fb5$var$SDPUtils.writeFmtp(codec);
+        sdp += $8a6d164b876c1fb5$var$SDPUtils.writeRtcpFb(codec);
     });
     var maxptime = 0;
     caps.codecs.forEach(function(codec) {
@@ -4525,27 +4526,27 @@ $6ef33e7fea041b5b$var$SDPUtils.writeRtpDescription = function(kind, caps) {
     });
     if (maxptime > 0) sdp += "a=maxptime:" + maxptime + "\r\n";
     if (caps.headerExtensions) caps.headerExtensions.forEach(function(extension) {
-        sdp += $6ef33e7fea041b5b$var$SDPUtils.writeExtmap(extension);
+        sdp += $8a6d164b876c1fb5$var$SDPUtils.writeExtmap(extension);
     });
     // FIXME: write fecMechanisms.
     return sdp;
 };
 // Parses the SDP media section and returns an array of
 // RTCRtpEncodingParameters.
-$6ef33e7fea041b5b$var$SDPUtils.parseRtpEncodingParameters = function(mediaSection) {
+$8a6d164b876c1fb5$var$SDPUtils.parseRtpEncodingParameters = function(mediaSection) {
     var encodingParameters = [];
-    var description = $6ef33e7fea041b5b$var$SDPUtils.parseRtpParameters(mediaSection);
+    var description = $8a6d164b876c1fb5$var$SDPUtils.parseRtpParameters(mediaSection);
     var hasRed = description.fecMechanisms.indexOf("RED") !== -1;
     var hasUlpfec = description.fecMechanisms.indexOf("ULPFEC") !== -1;
     // filter a=ssrc:... cname:, ignore PlanB-msid
-    var ssrcs = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=ssrc:").map(function(line) {
-        return $6ef33e7fea041b5b$var$SDPUtils.parseSsrcMedia(line);
+    var ssrcs = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection, "a=ssrc:").map(function(line) {
+        return $8a6d164b876c1fb5$var$SDPUtils.parseSsrcMedia(line);
     }).filter(function(parts) {
         return parts.attribute === "cname";
     });
     var primarySsrc = ssrcs.length > 0 && ssrcs[0].ssrc;
     var secondarySsrc;
-    var flows = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=ssrc-group:FID").map(function(line) {
+    var flows = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection, "a=ssrc-group:FID").map(function(line) {
         var parts = line.substring(17).split(" ");
         return parts.map(function(part) {
             return parseInt(part, 10);
@@ -4576,7 +4577,7 @@ $6ef33e7fea041b5b$var$SDPUtils.parseRtpEncodingParameters = function(mediaSectio
         ssrc: primarySsrc
     });
     // we support both b=AS and b=TIAS but interpret AS as TIAS.
-    var bandwidth = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "b=");
+    var bandwidth = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection, "b=");
     if (bandwidth.length) {
         if (bandwidth[0].indexOf("b=TIAS:") === 0) bandwidth = parseInt(bandwidth[0].substring(7), 10);
         else if (bandwidth[0].indexOf("b=AS:") === 0) // use formula from JSEP to convert b=AS to TIAS value.
@@ -4589,12 +4590,12 @@ $6ef33e7fea041b5b$var$SDPUtils.parseRtpEncodingParameters = function(mediaSectio
     return encodingParameters;
 };
 // parses http://draft.ortc.org/#rtcrtcpparameters*
-$6ef33e7fea041b5b$var$SDPUtils.parseRtcpParameters = function(mediaSection) {
+$8a6d164b876c1fb5$var$SDPUtils.parseRtcpParameters = function(mediaSection) {
     var rtcpParameters = {};
     // Gets the first SSRC. Note that with RTX there might be multiple
     // SSRCs.
-    var remoteSsrc = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=ssrc:").map(function(line) {
-        return $6ef33e7fea041b5b$var$SDPUtils.parseSsrcMedia(line);
+    var remoteSsrc = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection, "a=ssrc:").map(function(line) {
+        return $8a6d164b876c1fb5$var$SDPUtils.parseSsrcMedia(line);
     }).filter(function(obj) {
         return obj.attribute === "cname";
     })[0];
@@ -4604,16 +4605,16 @@ $6ef33e7fea041b5b$var$SDPUtils.parseRtcpParameters = function(mediaSection) {
     }
     // Edge uses the compound attribute instead of reducedSize
     // compound is !reducedSize
-    var rsize = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=rtcp-rsize");
+    var rsize = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection, "a=rtcp-rsize");
     rtcpParameters.reducedSize = rsize.length > 0;
     rtcpParameters.compound = rsize.length === 0;
     // parses the rtcp-mux attrіbute.
     // Note that Edge does not support unmuxed RTCP.
-    var mux = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=rtcp-mux");
+    var mux = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection, "a=rtcp-mux");
     rtcpParameters.mux = mux.length > 0;
     return rtcpParameters;
 };
-$6ef33e7fea041b5b$var$SDPUtils.writeRtcpParameters = function(rtcpParameters) {
+$8a6d164b876c1fb5$var$SDPUtils.writeRtcpParameters = function(rtcpParameters) {
     var sdp = "";
     if (rtcpParameters.reducedSize) sdp += "a=rtcp-rsize\r\n";
     if (rtcpParameters.mux) sdp += "a=rtcp-mux\r\n";
@@ -4622,9 +4623,9 @@ $6ef33e7fea041b5b$var$SDPUtils.writeRtcpParameters = function(rtcpParameters) {
 };
 // parses either a=msid: or a=ssrc:... msid lines and returns
 // the id of the MediaStream and MediaStreamTrack.
-$6ef33e7fea041b5b$var$SDPUtils.parseMsid = function(mediaSection) {
+$8a6d164b876c1fb5$var$SDPUtils.parseMsid = function(mediaSection) {
     var parts;
-    var spec = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=msid:");
+    var spec = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection, "a=msid:");
     if (spec.length === 1) {
         parts = spec[0].substring(7).split(" ");
         return {
@@ -4632,8 +4633,8 @@ $6ef33e7fea041b5b$var$SDPUtils.parseMsid = function(mediaSection) {
             track: parts[1]
         };
     }
-    var planB = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=ssrc:").map(function(line) {
-        return $6ef33e7fea041b5b$var$SDPUtils.parseSsrcMedia(line);
+    var planB = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection, "a=ssrc:").map(function(line) {
+        return $8a6d164b876c1fb5$var$SDPUtils.parseSsrcMedia(line);
     }).filter(function(msidParts) {
         return msidParts.attribute === "msid";
     });
@@ -4648,19 +4649,19 @@ $6ef33e7fea041b5b$var$SDPUtils.parseMsid = function(mediaSection) {
 // SCTP
 // parses draft-ietf-mmusic-sctp-sdp-26 first and falls back
 // to draft-ietf-mmusic-sctp-sdp-05
-$6ef33e7fea041b5b$var$SDPUtils.parseSctpDescription = function(mediaSection) {
-    var mline = $6ef33e7fea041b5b$var$SDPUtils.parseMLine(mediaSection);
-    var maxSizeLine = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=max-message-size:");
+$8a6d164b876c1fb5$var$SDPUtils.parseSctpDescription = function(mediaSection) {
+    var mline = $8a6d164b876c1fb5$var$SDPUtils.parseMLine(mediaSection);
+    var maxSizeLine = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection, "a=max-message-size:");
     var maxMessageSize;
     if (maxSizeLine.length > 0) maxMessageSize = parseInt(maxSizeLine[0].substring(19), 10);
     if (isNaN(maxMessageSize)) maxMessageSize = 65536;
-    var sctpPort = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=sctp-port:");
+    var sctpPort = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection, "a=sctp-port:");
     if (sctpPort.length > 0) return {
         port: parseInt(sctpPort[0].substring(12), 10),
         protocol: mline.fmt,
         maxMessageSize: maxMessageSize
     };
-    var sctpMapLines = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "a=sctpmap:");
+    var sctpMapLines = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection, "a=sctpmap:");
     if (sctpMapLines.length > 0) {
         var parts = sctpMapLines[0].substring(10).split(" ");
         return {
@@ -4675,7 +4676,7 @@ $6ef33e7fea041b5b$var$SDPUtils.parseSctpDescription = function(mediaSection) {
 // support by now receiving in this format, unless we originally parsed
 // as the draft-ietf-mmusic-sctp-sdp-05 format (indicated by the m-line
 // protocol of DTLS/SCTP -- without UDP/ or TCP/)
-$6ef33e7fea041b5b$var$SDPUtils.writeSctpDescription = function(media, sctp) {
+$8a6d164b876c1fb5$var$SDPUtils.writeSctpDescription = function(media, sctp) {
     var output = [];
     if (media.protocol !== "DTLS/SCTP") output = [
         "m=" + media.kind + " 9 " + media.protocol + " " + sctp.protocol + "\r\n",
@@ -4694,7 +4695,7 @@ $6ef33e7fea041b5b$var$SDPUtils.writeSctpDescription = function(media, sctp) {
 // https://tools.ietf.org/html/draft-ietf-rtcweb-jsep-20#section-5.2.1
 // recommends using a cryptographically random +ve 64-bit value
 // but right now this should be acceptable and within the right range
-$6ef33e7fea041b5b$var$SDPUtils.generateSessionId = function() {
+$8a6d164b876c1fb5$var$SDPUtils.generateSessionId = function() {
     return Math.random().toString().substr(2, 22);
 };
 // Write boiler plate for start of SDP
@@ -4702,19 +4703,19 @@ $6ef33e7fea041b5b$var$SDPUtils.generateSessionId = function() {
 // be generated randomly
 // sessVersion is optional and defaults to 2
 // sessUser is optional and defaults to 'thisisadapterortc'
-$6ef33e7fea041b5b$var$SDPUtils.writeSessionBoilerplate = function(sessId, sessVer, sessUser) {
+$8a6d164b876c1fb5$var$SDPUtils.writeSessionBoilerplate = function(sessId, sessVer, sessUser) {
     var sessionId;
     var version = sessVer !== undefined ? sessVer : 2;
     if (sessId) sessionId = sessId;
-    else sessionId = $6ef33e7fea041b5b$var$SDPUtils.generateSessionId();
+    else sessionId = $8a6d164b876c1fb5$var$SDPUtils.generateSessionId();
     var user = sessUser || "thisisadapterortc";
     // FIXME: sess-id should be an NTP timestamp.
     return "v=0\r\no=" + user + " " + sessionId + " " + version + " IN IP4 127.0.0.1\r\n" + "s=-\r\n" + "t=0 0\r\n";
 };
 // Gets the direction from the mediaSection or the sessionpart.
-$6ef33e7fea041b5b$var$SDPUtils.getDirection = function(mediaSection, sessionpart) {
+$8a6d164b876c1fb5$var$SDPUtils.getDirection = function(mediaSection, sessionpart) {
     // Look for sendrecv, sendonly, recvonly, inactive, default to sendrecv.
-    var lines = $6ef33e7fea041b5b$var$SDPUtils.splitLines(mediaSection);
+    var lines = $8a6d164b876c1fb5$var$SDPUtils.splitLines(mediaSection);
     for(var i = 0; i < lines.length; i++)switch(lines[i]){
         case "a=sendrecv":
         case "a=sendonly":
@@ -4723,19 +4724,19 @@ $6ef33e7fea041b5b$var$SDPUtils.getDirection = function(mediaSection, sessionpart
             return lines[i].substring(2);
         default:
     }
-    if (sessionpart) return $6ef33e7fea041b5b$var$SDPUtils.getDirection(sessionpart);
+    if (sessionpart) return $8a6d164b876c1fb5$var$SDPUtils.getDirection(sessionpart);
     return "sendrecv";
 };
-$6ef33e7fea041b5b$var$SDPUtils.getKind = function(mediaSection) {
-    var lines = $6ef33e7fea041b5b$var$SDPUtils.splitLines(mediaSection);
+$8a6d164b876c1fb5$var$SDPUtils.getKind = function(mediaSection) {
+    var lines = $8a6d164b876c1fb5$var$SDPUtils.splitLines(mediaSection);
     var mline = lines[0].split(" ");
     return mline[0].substring(2);
 };
-$6ef33e7fea041b5b$var$SDPUtils.isRejected = function(mediaSection) {
+$8a6d164b876c1fb5$var$SDPUtils.isRejected = function(mediaSection) {
     return mediaSection.split(" ", 2)[1] === "0";
 };
-$6ef33e7fea041b5b$var$SDPUtils.parseMLine = function(mediaSection) {
-    var lines = $6ef33e7fea041b5b$var$SDPUtils.splitLines(mediaSection);
+$8a6d164b876c1fb5$var$SDPUtils.parseMLine = function(mediaSection) {
+    var lines = $8a6d164b876c1fb5$var$SDPUtils.splitLines(mediaSection);
     var parts = lines[0].substring(2).split(" ");
     return {
         kind: parts[0],
@@ -4744,8 +4745,8 @@ $6ef33e7fea041b5b$var$SDPUtils.parseMLine = function(mediaSection) {
         fmt: parts.slice(3).join(" ")
     };
 };
-$6ef33e7fea041b5b$var$SDPUtils.parseOLine = function(mediaSection) {
-    var line = $6ef33e7fea041b5b$var$SDPUtils.matchPrefix(mediaSection, "o=")[0];
+$8a6d164b876c1fb5$var$SDPUtils.parseOLine = function(mediaSection) {
+    var line = $8a6d164b876c1fb5$var$SDPUtils.matchPrefix(mediaSection, "o=")[0];
     var parts = line.substring(2).split(" ");
     return {
         username: parts[0],
@@ -4757,21 +4758,21 @@ $6ef33e7fea041b5b$var$SDPUtils.parseOLine = function(mediaSection) {
     };
 };
 // a very naive interpretation of a valid SDP.
-$6ef33e7fea041b5b$var$SDPUtils.isValidSDP = function(blob) {
+$8a6d164b876c1fb5$var$SDPUtils.isValidSDP = function(blob) {
     if (typeof blob !== "string" || blob.length === 0) return false;
-    var lines = $6ef33e7fea041b5b$var$SDPUtils.splitLines(blob);
+    var lines = $8a6d164b876c1fb5$var$SDPUtils.splitLines(blob);
     for(var i = 0; i < lines.length; i++){
         if (lines[i].length < 2 || lines[i].charAt(1) !== "=") return false;
     // TODO: check the modifier a bit more.
     }
     return true;
 };
-$6ef33e7fea041b5b$exports = $6ef33e7fea041b5b$var$SDPUtils;
+$8a6d164b876c1fb5$exports = $8a6d164b876c1fb5$var$SDPUtils;
 
 
 
 "use strict";
-function $ad8f8a0faac16970$export$cf133661e444ccfe(window) {
+function $9fedca9c5b6fb109$export$cf133661e444ccfe(window) {
     // foundation is arbitrarily chosen as an indicator for full support for
     // https://w3c.github.io/webrtc-pc/#rtcicecandidate-interface
     if (!window.RTCIceCandidate || window.RTCIceCandidate && "foundation" in window.RTCIceCandidate.prototype) return;
@@ -4785,7 +4786,7 @@ function $ad8f8a0faac16970$export$cf133661e444ccfe(window) {
         if (args.candidate && args.candidate.length) {
             // Augment the native candidate with the parsed fields.
             var nativeCandidate = new NativeRTCIceCandidate(args);
-            var parsedCandidate = (0, (/*@__PURE__*/$parcel$interopDefault($6ef33e7fea041b5b$exports))).parseCandidate(args.candidate);
+            var parsedCandidate = (0, (/*@__PURE__*/$parcel$interopDefault($8a6d164b876c1fb5$exports))).parseCandidate(args.candidate);
             for(var key in parsedCandidate)if (!(key in nativeCandidate)) Object.defineProperty(nativeCandidate, key, {
                 value: parsedCandidate[key]
             });
@@ -4805,7 +4806,7 @@ function $ad8f8a0faac16970$export$cf133661e444ccfe(window) {
     window.RTCIceCandidate.prototype = NativeRTCIceCandidate.prototype;
     // Hook up the augmented candidate in onicecandidate and
     // addEventListener('icecandidate', ...)
-    $ecbc82f8e2fc2f44$export$1f48841962b828b1(window, "icecandidate", function(e) {
+    $8ec7d4c1b33e5d30$export$1f48841962b828b1(window, "icecandidate", function(e) {
         if (e.candidate) Object.defineProperty(e, "candidate", {
             value: new window.RTCIceCandidate(e.candidate),
             writable: "false"
@@ -4813,13 +4814,13 @@ function $ad8f8a0faac16970$export$cf133661e444ccfe(window) {
         return e;
     });
 }
-function $ad8f8a0faac16970$export$fdafb8d8280e29b5(window) {
+function $9fedca9c5b6fb109$export$fdafb8d8280e29b5(window) {
     if (!window.RTCIceCandidate || window.RTCIceCandidate && "relayProtocol" in window.RTCIceCandidate.prototype) return;
     // Hook up the augmented candidate in onicecandidate and
     // addEventListener('icecandidate', ...)
-    $ecbc82f8e2fc2f44$export$1f48841962b828b1(window, "icecandidate", function(e) {
+    $8ec7d4c1b33e5d30$export$1f48841962b828b1(window, "icecandidate", function(e) {
         if (e.candidate) {
-            var parsedCandidate = (0, (/*@__PURE__*/$parcel$interopDefault($6ef33e7fea041b5b$exports))).parseCandidate(e.candidate.candidate);
+            var parsedCandidate = (0, (/*@__PURE__*/$parcel$interopDefault($8a6d164b876c1fb5$exports))).parseCandidate(e.candidate.candidate);
             if (parsedCandidate.type === "relay") // This is a libwebrtc-specific mapping of local type preference
             // to relayProtocol.
             e.candidate.relayProtocol = ({
@@ -4831,7 +4832,7 @@ function $ad8f8a0faac16970$export$fdafb8d8280e29b5(window) {
         return e;
     });
 }
-function $ad8f8a0faac16970$export$a99147c78a56edc4(window, browserDetails) {
+function $9fedca9c5b6fb109$export$a99147c78a56edc4(window, browserDetails) {
     if (!window.RTCPeerConnection) return;
     if (!("sctp" in window.RTCPeerConnection.prototype)) Object.defineProperty(window.RTCPeerConnection.prototype, "sctp", {
         get: function() {
@@ -4840,10 +4841,10 @@ function $ad8f8a0faac16970$export$a99147c78a56edc4(window, browserDetails) {
     });
     var sctpInDescription = function sctpInDescription(description) {
         if (!description || !description.sdp) return false;
-        var sections = (0, (/*@__PURE__*/$parcel$interopDefault($6ef33e7fea041b5b$exports))).splitSections(description.sdp);
+        var sections = (0, (/*@__PURE__*/$parcel$interopDefault($8a6d164b876c1fb5$exports))).splitSections(description.sdp);
         sections.shift();
         return sections.some(function(mediaSection) {
-            var mLine = (0, (/*@__PURE__*/$parcel$interopDefault($6ef33e7fea041b5b$exports))).parseMLine(mediaSection);
+            var mLine = (0, (/*@__PURE__*/$parcel$interopDefault($8a6d164b876c1fb5$exports))).parseMLine(mediaSection);
             return mLine && mLine.kind === "application" && mLine.protocol.indexOf("SCTP") !== -1;
         });
     };
@@ -4887,7 +4888,7 @@ function $ad8f8a0faac16970$export$a99147c78a56edc4(window, browserDetails) {
         // we need to adjust it here to avoid a failure when sending.
         // See: https://bugzilla.mozilla.org/show_bug.cgi?id=1425697
         if (browserDetails.browser === "firefox" && browserDetails.version === 57) maxMessageSize = 65535;
-        var match = (0, (/*@__PURE__*/$parcel$interopDefault($6ef33e7fea041b5b$exports))).matchPrefix(description.sdp, "a=max-message-size:");
+        var match = (0, (/*@__PURE__*/$parcel$interopDefault($8a6d164b876c1fb5$exports))).matchPrefix(description.sdp, "a=max-message-size:");
         if (match.length > 0) maxMessageSize = parseInt(match[0].substring(19), 10);
         else if (browserDetails.browser === "firefox" && remoteIsFirefox !== -1) // If the maximum message size is not present in the remote SDP and
         // both local and remote are Firefox, the remote peer can receive
@@ -4936,7 +4937,7 @@ function $ad8f8a0faac16970$export$a99147c78a56edc4(window, browserDetails) {
         return origSetRemoteDescription.apply(this, arguments);
     };
 }
-function $ad8f8a0faac16970$export$d461c8d5c5db5da7(window) {
+function $9fedca9c5b6fb109$export$d461c8d5c5db5da7(window) {
     if (!(window.RTCPeerConnection && "createDataChannel" in window.RTCPeerConnection.prototype)) return;
     // Note: Although Firefox >= 57 has a native implementation, the maximum
     //       message size can be reset for all data channels at a later stage.
@@ -4956,12 +4957,12 @@ function $ad8f8a0faac16970$export$d461c8d5c5db5da7(window) {
         wrapDcSend(dataChannel, this);
         return dataChannel;
     };
-    $ecbc82f8e2fc2f44$export$1f48841962b828b1(window, "datachannel", function(e) {
+    $8ec7d4c1b33e5d30$export$1f48841962b828b1(window, "datachannel", function(e) {
         wrapDcSend(e.channel, e.target);
         return e;
     });
 }
-function $ad8f8a0faac16970$export$63bb816cc75460(window) {
+function $9fedca9c5b6fb109$export$63bb816cc75460(window) {
     if (!window.RTCPeerConnection || "connectionState" in window.RTCPeerConnection.prototype) return;
     var proto = window.RTCPeerConnection.prototype;
     Object.defineProperty(proto, "connectionState", {
@@ -5010,7 +5011,7 @@ function $ad8f8a0faac16970$export$63bb816cc75460(window) {
         };
     });
 }
-function $ad8f8a0faac16970$export$a57d114344295149(window, browserDetails) {
+function $9fedca9c5b6fb109$export$a57d114344295149(window, browserDetails) {
     /* remove a=extmap-allow-mixed for webrtc.org < M71 */ if (!window.RTCPeerConnection) return;
     if (browserDetails.browser === "chrome" && browserDetails.version >= 71) return;
     if (browserDetails.browser === "safari" && browserDetails.version >= 605) return;
@@ -5030,7 +5031,7 @@ function $ad8f8a0faac16970$export$a57d114344295149(window, browserDetails) {
         return nativeSRD.apply(this, arguments);
     };
 }
-function $ad8f8a0faac16970$export$51d5e40b48c771c7(window, browserDetails) {
+function $9fedca9c5b6fb109$export$51d5e40b48c771c7(window, browserDetails) {
     // Support for addIceCandidate(null or undefined)
     // as well as addIceCandidate({candidate: "", ...})
     // https://bugs.chromium.org/p/chromium/issues/detail?id=978582
@@ -5052,7 +5053,7 @@ function $ad8f8a0faac16970$export$51d5e40b48c771c7(window, browserDetails) {
         return nativeAddIceCandidate.apply(this, arguments);
     };
 }
-function $ad8f8a0faac16970$export$7170d04e59f9d553(window, browserDetails) {
+function $9fedca9c5b6fb109$export$7170d04e59f9d553(window, browserDetails) {
     if (!(window.RTCPeerConnection && window.RTCPeerConnection.prototype)) return;
     var nativeSetLocalDescription = window.RTCPeerConnection.prototype.setLocalDescription;
     if (!nativeSetLocalDescription || nativeSetLocalDescription.length === 0) return;
@@ -5095,28 +5096,28 @@ function $ad8f8a0faac16970$export$7170d04e59f9d553(window, browserDetails) {
 
 
 
-function $8cca9dedcd8a8f9f$export$e77bf46c04ac7d12() {
+function $d36cb99b0c0d5e5b$export$e77bf46c04ac7d12() {
     var window = (arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {}).window, options = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {
         shimChrome: true,
         shimFirefox: true,
         shimSafari: true
     };
     // Utils.
-    var logging = $ecbc82f8e2fc2f44$export$bef1f36f5486a6a3;
-    var browserDetails = $ecbc82f8e2fc2f44$export$2d31490a0c05f094(window);
+    var logging = $8ec7d4c1b33e5d30$export$bef1f36f5486a6a3;
+    var browserDetails = $8ec7d4c1b33e5d30$export$2d31490a0c05f094(window);
     var adapter = {
         browserDetails: browserDetails,
-        commonShim: $ad8f8a0faac16970$exports,
-        extractVersion: $ecbc82f8e2fc2f44$export$e3c02be309be1f23,
-        disableLog: $ecbc82f8e2fc2f44$export$afbfee8cc06fd3e4,
-        disableWarnings: $ecbc82f8e2fc2f44$export$51516be4b019e41e,
+        commonShim: $9fedca9c5b6fb109$exports,
+        extractVersion: $8ec7d4c1b33e5d30$export$e3c02be309be1f23,
+        disableLog: $8ec7d4c1b33e5d30$export$afbfee8cc06fd3e4,
+        disableWarnings: $8ec7d4c1b33e5d30$export$51516be4b019e41e,
         // Expose sdp as a convenience. For production apps include directly.
-        sdp: $6ef33e7fea041b5b$exports
+        sdp: $8a6d164b876c1fb5$exports
     };
     // Shim browser if found.
     switch(browserDetails.browser){
         case "chrome":
-            if (!$c83c9d2c0bca1d6e$exports || !$c83c9d2c0bca1d6e$exports.shimPeerConnection || !options.shimChrome) {
+            if (!$13e030d5bc326ad3$exports || !$13e030d5bc326ad3$exports.shimPeerConnection || !options.shimChrome) {
                 logging("Chrome shim is not included in this adapter release.");
                 return adapter;
             }
@@ -5126,76 +5127,76 @@ function $8cca9dedcd8a8f9f$export$e77bf46c04ac7d12() {
             }
             logging("adapter.js shimming chrome.");
             // Export to the adapter global object visible in the browser.
-            adapter.browserShim = $c83c9d2c0bca1d6e$exports;
+            adapter.browserShim = $13e030d5bc326ad3$exports;
             // Must be called before shimPeerConnection.
-            $ad8f8a0faac16970$exports.shimAddIceCandidateNullOrEmpty(window, browserDetails);
-            $ad8f8a0faac16970$exports.shimParameterlessSetLocalDescription(window, browserDetails);
-            $c83c9d2c0bca1d6e$exports.shimGetUserMedia(window, browserDetails);
-            $c83c9d2c0bca1d6e$exports.shimMediaStream(window, browserDetails);
-            $c83c9d2c0bca1d6e$exports.shimPeerConnection(window, browserDetails);
-            $c83c9d2c0bca1d6e$exports.shimOnTrack(window, browserDetails);
-            $c83c9d2c0bca1d6e$exports.shimAddTrackRemoveTrack(window, browserDetails);
-            $c83c9d2c0bca1d6e$exports.shimGetSendersWithDtmf(window, browserDetails);
-            $c83c9d2c0bca1d6e$exports.shimSenderReceiverGetStats(window, browserDetails);
-            $c83c9d2c0bca1d6e$exports.fixNegotiationNeeded(window, browserDetails);
-            $ad8f8a0faac16970$exports.shimRTCIceCandidate(window, browserDetails);
-            $ad8f8a0faac16970$exports.shimRTCIceCandidateRelayProtocol(window, browserDetails);
-            $ad8f8a0faac16970$exports.shimConnectionState(window, browserDetails);
-            $ad8f8a0faac16970$exports.shimMaxMessageSize(window, browserDetails);
-            $ad8f8a0faac16970$exports.shimSendThrowTypeError(window, browserDetails);
-            $ad8f8a0faac16970$exports.removeExtmapAllowMixed(window, browserDetails);
+            $9fedca9c5b6fb109$exports.shimAddIceCandidateNullOrEmpty(window, browserDetails);
+            $9fedca9c5b6fb109$exports.shimParameterlessSetLocalDescription(window, browserDetails);
+            $13e030d5bc326ad3$exports.shimGetUserMedia(window, browserDetails);
+            $13e030d5bc326ad3$exports.shimMediaStream(window, browserDetails);
+            $13e030d5bc326ad3$exports.shimPeerConnection(window, browserDetails);
+            $13e030d5bc326ad3$exports.shimOnTrack(window, browserDetails);
+            $13e030d5bc326ad3$exports.shimAddTrackRemoveTrack(window, browserDetails);
+            $13e030d5bc326ad3$exports.shimGetSendersWithDtmf(window, browserDetails);
+            $13e030d5bc326ad3$exports.shimSenderReceiverGetStats(window, browserDetails);
+            $13e030d5bc326ad3$exports.fixNegotiationNeeded(window, browserDetails);
+            $9fedca9c5b6fb109$exports.shimRTCIceCandidate(window, browserDetails);
+            $9fedca9c5b6fb109$exports.shimRTCIceCandidateRelayProtocol(window, browserDetails);
+            $9fedca9c5b6fb109$exports.shimConnectionState(window, browserDetails);
+            $9fedca9c5b6fb109$exports.shimMaxMessageSize(window, browserDetails);
+            $9fedca9c5b6fb109$exports.shimSendThrowTypeError(window, browserDetails);
+            $9fedca9c5b6fb109$exports.removeExtmapAllowMixed(window, browserDetails);
             break;
         case "firefox":
-            if (!$69fa72c68315eefd$exports || !$69fa72c68315eefd$exports.shimPeerConnection || !options.shimFirefox) {
+            if (!$fe2ad74ba0077acb$exports || !$fe2ad74ba0077acb$exports.shimPeerConnection || !options.shimFirefox) {
                 logging("Firefox shim is not included in this adapter release.");
                 return adapter;
             }
             logging("adapter.js shimming firefox.");
             // Export to the adapter global object visible in the browser.
-            adapter.browserShim = $69fa72c68315eefd$exports;
+            adapter.browserShim = $fe2ad74ba0077acb$exports;
             // Must be called before shimPeerConnection.
-            $ad8f8a0faac16970$exports.shimAddIceCandidateNullOrEmpty(window, browserDetails);
-            $ad8f8a0faac16970$exports.shimParameterlessSetLocalDescription(window, browserDetails);
-            $69fa72c68315eefd$exports.shimGetUserMedia(window, browserDetails);
-            $69fa72c68315eefd$exports.shimPeerConnection(window, browserDetails);
-            $69fa72c68315eefd$exports.shimOnTrack(window, browserDetails);
-            $69fa72c68315eefd$exports.shimRemoveStream(window, browserDetails);
-            $69fa72c68315eefd$exports.shimSenderGetStats(window, browserDetails);
-            $69fa72c68315eefd$exports.shimReceiverGetStats(window, browserDetails);
-            $69fa72c68315eefd$exports.shimRTCDataChannel(window, browserDetails);
-            $69fa72c68315eefd$exports.shimAddTransceiver(window, browserDetails);
-            $69fa72c68315eefd$exports.shimGetParameters(window, browserDetails);
-            $69fa72c68315eefd$exports.shimCreateOffer(window, browserDetails);
-            $69fa72c68315eefd$exports.shimCreateAnswer(window, browserDetails);
-            $ad8f8a0faac16970$exports.shimRTCIceCandidate(window, browserDetails);
-            $ad8f8a0faac16970$exports.shimConnectionState(window, browserDetails);
-            $ad8f8a0faac16970$exports.shimMaxMessageSize(window, browserDetails);
-            $ad8f8a0faac16970$exports.shimSendThrowTypeError(window, browserDetails);
+            $9fedca9c5b6fb109$exports.shimAddIceCandidateNullOrEmpty(window, browserDetails);
+            $9fedca9c5b6fb109$exports.shimParameterlessSetLocalDescription(window, browserDetails);
+            $fe2ad74ba0077acb$exports.shimGetUserMedia(window, browserDetails);
+            $fe2ad74ba0077acb$exports.shimPeerConnection(window, browserDetails);
+            $fe2ad74ba0077acb$exports.shimOnTrack(window, browserDetails);
+            $fe2ad74ba0077acb$exports.shimRemoveStream(window, browserDetails);
+            $fe2ad74ba0077acb$exports.shimSenderGetStats(window, browserDetails);
+            $fe2ad74ba0077acb$exports.shimReceiverGetStats(window, browserDetails);
+            $fe2ad74ba0077acb$exports.shimRTCDataChannel(window, browserDetails);
+            $fe2ad74ba0077acb$exports.shimAddTransceiver(window, browserDetails);
+            $fe2ad74ba0077acb$exports.shimGetParameters(window, browserDetails);
+            $fe2ad74ba0077acb$exports.shimCreateOffer(window, browserDetails);
+            $fe2ad74ba0077acb$exports.shimCreateAnswer(window, browserDetails);
+            $9fedca9c5b6fb109$exports.shimRTCIceCandidate(window, browserDetails);
+            $9fedca9c5b6fb109$exports.shimConnectionState(window, browserDetails);
+            $9fedca9c5b6fb109$exports.shimMaxMessageSize(window, browserDetails);
+            $9fedca9c5b6fb109$exports.shimSendThrowTypeError(window, browserDetails);
             break;
         case "safari":
-            if (!$30149506f5b6e50a$exports || !options.shimSafari) {
+            if (!$0c32657ad79478cd$exports || !options.shimSafari) {
                 logging("Safari shim is not included in this adapter release.");
                 return adapter;
             }
             logging("adapter.js shimming safari.");
             // Export to the adapter global object visible in the browser.
-            adapter.browserShim = $30149506f5b6e50a$exports;
+            adapter.browserShim = $0c32657ad79478cd$exports;
             // Must be called before shimCallbackAPI.
-            $ad8f8a0faac16970$exports.shimAddIceCandidateNullOrEmpty(window, browserDetails);
-            $ad8f8a0faac16970$exports.shimParameterlessSetLocalDescription(window, browserDetails);
-            $30149506f5b6e50a$exports.shimRTCIceServerUrls(window, browserDetails);
-            $30149506f5b6e50a$exports.shimCreateOfferLegacy(window, browserDetails);
-            $30149506f5b6e50a$exports.shimCallbacksAPI(window, browserDetails);
-            $30149506f5b6e50a$exports.shimLocalStreamsAPI(window, browserDetails);
-            $30149506f5b6e50a$exports.shimRemoteStreamsAPI(window, browserDetails);
-            $30149506f5b6e50a$exports.shimTrackEventTransceiver(window, browserDetails);
-            $30149506f5b6e50a$exports.shimGetUserMedia(window, browserDetails);
-            $30149506f5b6e50a$exports.shimAudioContext(window, browserDetails);
-            $ad8f8a0faac16970$exports.shimRTCIceCandidate(window, browserDetails);
-            $ad8f8a0faac16970$exports.shimRTCIceCandidateRelayProtocol(window, browserDetails);
-            $ad8f8a0faac16970$exports.shimMaxMessageSize(window, browserDetails);
-            $ad8f8a0faac16970$exports.shimSendThrowTypeError(window, browserDetails);
-            $ad8f8a0faac16970$exports.removeExtmapAllowMixed(window, browserDetails);
+            $9fedca9c5b6fb109$exports.shimAddIceCandidateNullOrEmpty(window, browserDetails);
+            $9fedca9c5b6fb109$exports.shimParameterlessSetLocalDescription(window, browserDetails);
+            $0c32657ad79478cd$exports.shimRTCIceServerUrls(window, browserDetails);
+            $0c32657ad79478cd$exports.shimCreateOfferLegacy(window, browserDetails);
+            $0c32657ad79478cd$exports.shimCallbacksAPI(window, browserDetails);
+            $0c32657ad79478cd$exports.shimLocalStreamsAPI(window, browserDetails);
+            $0c32657ad79478cd$exports.shimRemoteStreamsAPI(window, browserDetails);
+            $0c32657ad79478cd$exports.shimTrackEventTransceiver(window, browserDetails);
+            $0c32657ad79478cd$exports.shimGetUserMedia(window, browserDetails);
+            $0c32657ad79478cd$exports.shimAudioContext(window, browserDetails);
+            $9fedca9c5b6fb109$exports.shimRTCIceCandidate(window, browserDetails);
+            $9fedca9c5b6fb109$exports.shimRTCIceCandidateRelayProtocol(window, browserDetails);
+            $9fedca9c5b6fb109$exports.shimMaxMessageSize(window, browserDetails);
+            $9fedca9c5b6fb109$exports.shimSendThrowTypeError(window, browserDetails);
+            $9fedca9c5b6fb109$exports.removeExtmapAllowMixed(window, browserDetails);
             break;
         default:
             logging("Unsupported browser!");
@@ -5206,17 +5207,17 @@ function $8cca9dedcd8a8f9f$export$e77bf46c04ac7d12() {
 
 
 "use strict";
-var $80abb24278d5ec27$var$adapter = (0, $8cca9dedcd8a8f9f$export$e77bf46c04ac7d12)({
+var $eb3d90d429777932$var$adapter = (0, $d36cb99b0c0d5e5b$export$e77bf46c04ac7d12)({
     window: typeof window === "undefined" ? undefined : window
 });
-var $80abb24278d5ec27$export$2e2bcd8739ae039 = $80abb24278d5ec27$var$adapter;
+var $eb3d90d429777932$export$2e2bcd8739ae039 = $eb3d90d429777932$var$adapter;
 
 
 
 
 
 "use strict";
-var $6d3f4b507512327e$export$af5de1609f06c8e6 = [
+var $162001cafa2b40fd$export$af5de1609f06c8e6 = [
     "January",
     "February",
     "March",
@@ -5230,14 +5231,14 @@ var $6d3f4b507512327e$export$af5de1609f06c8e6 = [
     "November",
     "December"
 ];
-var $6d3f4b507512327e$export$6c04b58eee2a9a32 = function() {
+var $162001cafa2b40fd$export$6c04b58eee2a9a32 = function() {
     var visibleElements = document.querySelectorAll('.item:not([style*="display: none"])');
     visibleElements.forEach(function(element, index) {
         if (getComputedStyle(element).display !== "none") element.setAttribute("tabindex", index);
         else element.removeAttribute("tabindex");
     });
 };
-var $6d3f4b507512327e$export$4f9f22e5a1695548 = function load_ads() {
+var $162001cafa2b40fd$export$4f9f22e5a1695548 = function load_ads() {
     var js = document.createElement("script");
     js.type = "text/javascript";
     js.src = "assets/js/kaiads.v5.min.js";
@@ -5265,7 +5266,7 @@ var $6d3f4b507512327e$export$4f9f22e5a1695548 = function load_ads() {
                 });
                 // the ad succesfully displayed
                 ad.on("display", function() {
-                    $6d3f4b507512327e$export$6c04b58eee2a9a32();
+                    $162001cafa2b40fd$export$6c04b58eee2a9a32();
                 });
                 // Ad is ready to be displayed
                 // calling 'display' will display the ad
@@ -5279,7 +5280,7 @@ var $6d3f4b507512327e$export$4f9f22e5a1695548 = function load_ads() {
     };
     document.head.appendChild(js);
 };
-function $6d3f4b507512327e$export$9e15fb06e64c4810(length) {
+function $162001cafa2b40fd$export$9e15fb06e64c4810(length) {
     var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     var result = "";
     for(var i = 0; i < length; i++){
@@ -5290,8 +5291,8 @@ function $6d3f4b507512327e$export$9e15fb06e64c4810(length) {
 }
 //polyfill
 if (window.NodeList && !NodeList.prototype.forEach) NodeList.prototype.forEach = Array.prototype.forEach;
-var $6d3f4b507512327e$var$watchId = null; // Variable to store the watch ID globally
-var $6d3f4b507512327e$export$33d904bed5c25b69 = function geolocation(callback) {
+var $162001cafa2b40fd$var$watchId = null; // Variable to store the watch ID globally
+var $162001cafa2b40fd$export$33d904bed5c25b69 = function geolocation(callback) {
     var autoupdate = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : false, stopUpdate = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : false;
     var n = document.getElementById("side-toast");
     if (n) {
@@ -5305,20 +5306,20 @@ var $6d3f4b507512327e$export$33d904bed5c25b69 = function geolocation(callback) {
             n.innerHTML = "";
         }
     };
-    var error = function error(_error) {
+    var error = function error(error) {
         alert("Current location not available");
-        switch(_error.code){
-            case _error.PERMISSION_DENIED:
-                $6d3f4b507512327e$export$6593825dc0f3a767("Location not provided", 5000);
+        switch(error.code){
+            case error.PERMISSION_DENIED:
+                $162001cafa2b40fd$export$6593825dc0f3a767("Location not provided", 5000);
                 break;
-            case _error.POSITION_UNAVAILABLE:
-                $6d3f4b507512327e$export$6593825dc0f3a767("Current location not available", 5000);
+            case error.POSITION_UNAVAILABLE:
+                $162001cafa2b40fd$export$6593825dc0f3a767("Current location not available", 5000);
                 break;
-            case _error.TIMEOUT:
-                $6d3f4b507512327e$export$6593825dc0f3a767("Current location not available", 5000);
+            case error.TIMEOUT:
+                $162001cafa2b40fd$export$6593825dc0f3a767("Current location not available", 5000);
                 break;
             default:
-                $6d3f4b507512327e$export$6593825dc0f3a767("Current location not available", 5000);
+                $162001cafa2b40fd$export$6593825dc0f3a767("Current location not available", 5000);
                 break;
         }
         if (n) {
@@ -5345,30 +5346,30 @@ var $6d3f4b507512327e$export$33d904bed5c25b69 = function geolocation(callback) {
             maximumAge: 1000
         });
     } else {
-        $6d3f4b507512327e$export$6593825dc0f3a767("Geolocation is not supported by this browser.", 2000);
+        $162001cafa2b40fd$export$6593825dc0f3a767("Geolocation is not supported by this browser.", 2000);
         if (n) {
             n.style.transform = "translate(-100vw,0px)";
             n.innerHTML = "";
         }
     }
 };
-var $6d3f4b507512327e$export$113cec1d2aba8489 = function clipboard() {
+var $162001cafa2b40fd$export$113cec1d2aba8489 = function clipboard() {
     try {
-        var text = window.location.origin + "/#!/intro?id=" + (0, $78f2cb3ec8734e95$export$471f7ae5c4103ae1).current_room;
+        var text = window.location.origin + "/#!/intro?id=" + (0, $17d11d58618cc814$export$a5a6e0b888b2c992).custom_peer_id;
         var input = document.createElement("input");
         input.setAttribute("value", text);
         document.body.appendChild(input);
         input.select();
         var result = document.execCommand("copy");
         document.body.removeChild(input);
-        $6d3f4b507512327e$export$6593825dc0f3a767("You can now open an app of your choice and invite a person to chat, the address that leads to the chat room is in your clipboard", 3000);
+        $162001cafa2b40fd$export$6593825dc0f3a767("You can now open an app of your choice and invite a person to chat, the address that leads to the chat room is in your clipboard", 3000);
         return result; // Returns true if the copy was successful, false otherwise
     } catch (error) {
         console.error("Failed to copy text: ", error);
         return false; // Returns false if an error occurred
     }
 };
-function $6d3f4b507512327e$export$ed80d9de1d9df928(url) {
+function $162001cafa2b40fd$export$ed80d9de1d9df928(url) {
     return new Promise(function(resolve) {
         try {
             var activity = new MozActivity({
@@ -5401,8 +5402,8 @@ function $6d3f4b507512327e$export$ed80d9de1d9df928(url) {
                 resolve(false);
             });
         }
-        if ((0, $78f2cb3ec8734e95$export$471f7ae5c4103ae1).notKaiOS) {
-            var success = $6d3f4b507512327e$export$113cec1d2aba8489();
+        if ((0, $17d11d58618cc814$export$471f7ae5c4103ae1).notKaiOS) {
+            var success = $162001cafa2b40fd$export$113cec1d2aba8489();
             if (success) {
                 console.log("Text copied to clipboard successfully.");
                 resolve(true);
@@ -5411,7 +5412,7 @@ function $6d3f4b507512327e$export$ed80d9de1d9df928(url) {
                 resolve(false);
             }
         }
-        if ((0, $78f2cb3ec8734e95$export$471f7ae5c4103ae1).os !== "unknow") {
+        if ((0, $17d11d58618cc814$export$471f7ae5c4103ae1).os !== "unknow") {
             if (navigator.share) navigator.share({
                 title: "Flop P2P-Messenger",
                 text: "Flop P2P-Messenger",
@@ -5419,7 +5420,7 @@ function $6d3f4b507512327e$export$ed80d9de1d9df928(url) {
             }).then(function() {
                 console.log("Successful share");
                 resolve(true);
-            })["catch"](function(error) {
+            }).catch(function(error) {
                 console.log("Error sharing", error);
                 resolve(false);
             });
@@ -5430,7 +5431,7 @@ function $6d3f4b507512327e$export$ed80d9de1d9df928(url) {
         }
     });
 }
-function $6d3f4b507512327e$export$ad64e00ff47c1b17() {
+function $162001cafa2b40fd$export$ad64e00ff47c1b17() {
     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
     // iOS detection
     if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) return "iOS";
@@ -5440,7 +5441,7 @@ function $6d3f4b507512327e$export$ad64e00ff47c1b17() {
     // Other mobile OS or not a mobile device
     return false;
 }
-function $6d3f4b507512327e$export$3ce6949f20cea765(url) {
+function $162001cafa2b40fd$export$3ce6949f20cea765(url) {
     try {
         var activity = new MozActivity({
             name: "view",
@@ -5467,7 +5468,7 @@ function $6d3f4b507512327e$export$3ce6949f20cea765(url) {
         });
     }
 }
-var $6d3f4b507512327e$export$8d5407925537b0ea = function(n) {
+var $162001cafa2b40fd$export$8d5407925537b0ea = function(n) {
     var smsLink = document.createElement("a");
     smsLink.href = "sms:" + n;
     smsLink.textContent = "";
@@ -5476,7 +5477,7 @@ var $6d3f4b507512327e$export$8d5407925537b0ea = function(n) {
     smsLink.click();
     document.body.removeChild(smsLink);
 };
-var $6d3f4b507512327e$export$d290fa47940df19d = function(n) {
+var $162001cafa2b40fd$export$d290fa47940df19d = function(n) {
     var email = "";
     var subject = "";
     var emailBody = n;
@@ -5489,16 +5490,16 @@ var $6d3f4b507512327e$export$d290fa47940df19d = function(n) {
     document.body.removeChild(smsLink);
 };
 //check if internet connection
-function $6d3f4b507512327e$var$check_iconnection() {
+function $162001cafa2b40fd$var$check_iconnection() {
     function updateOfflineStatus() {
-        $6d3f4b507512327e$export$a224d1f4f6f98541("Your Browser is offline", 15000);
+        $162001cafa2b40fd$export$a224d1f4f6f98541("Your Browser is offline", 15000);
         return false;
     }
     window.addEventListener("offline", updateOfflineStatus);
 }
-function $6d3f4b507512327e$var$delete_file(filename) {
+function $162001cafa2b40fd$var$delete_file(filename) {
     var sdcard = navigator.getDeviceStorages("sdcard");
-    var request = sdcard[1]["delete"](filename);
+    var request = sdcard[1].delete(filename);
     request.onsuccess = function() {
     //toaster("File deleted", 2000);
     };
@@ -5506,7 +5507,7 @@ function $6d3f4b507512327e$var$delete_file(filename) {
     //toaster("Unable to delete the file: " + this.error, 2000);
     };
 }
-function $6d3f4b507512327e$var$get_file(filename) {
+function $162001cafa2b40fd$var$get_file(filename) {
     var sdcard = navigator.getDeviceStorages("sdcard");
     var request = sdcard[1].get(filename);
     request.onsuccess = function() {
@@ -5517,7 +5518,7 @@ function $6d3f4b507512327e$var$get_file(filename) {
     //alert("Unable to get the file: " + this.error);
     };
 }
-function $6d3f4b507512327e$var$write_file(data, filename) {
+function $162001cafa2b40fd$var$write_file(data, filename) {
     var sdcard = navigator.getDeviceStorages("sdcard");
     var file = new Blob([
         data
@@ -5531,10 +5532,10 @@ function $6d3f4b507512327e$var$write_file(data, filename) {
     };
     // An error typically occur if a file with the same name already exist
     request.onerror = function() {
-        $6d3f4b507512327e$export$a224d1f4f6f98541("Unable to write the file: " + this.error, 2000);
+        $162001cafa2b40fd$export$a224d1f4f6f98541("Unable to write the file: " + this.error, 2000);
     };
 }
-var $6d3f4b507512327e$export$b04ad9f70842c3f1 = function sort_array(arr, item_key, type) {
+var $162001cafa2b40fd$export$b04ad9f70842c3f1 = function sort_array(arr, item_key, type) {
     if (type == "date") arr.sort(function(a, b) {
         var da = new Date(a[item_key]), db = new Date(b[item_key]);
         return da - db;
@@ -5551,15 +5552,15 @@ var $6d3f4b507512327e$export$b04ad9f70842c3f1 = function sort_array(arr, item_ke
         return 0;
     });
 };
-var $6d3f4b507512327e$var$uid = function uid() {
+var $162001cafa2b40fd$var$uid = function uid() {
     function _p8(s) {
         var p = (Math.random().toString(16) + "000000000").substr(2, 8);
         return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
     }
     return "greg@" + _p8() + _p8(true) + _p8(true) + _p8();
 };
-var $6d3f4b507512327e$var$notification = "";
-var $6d3f4b507512327e$var$notify = function notify(param_title, param_text, param_silent) {
+var $162001cafa2b40fd$var$notification = "";
+var $162001cafa2b40fd$var$notify = function notify(param_title, param_text, param_silent) {
     var options = {
         body: param_text,
         silent: param_silent,
@@ -5567,14 +5568,14 @@ var $6d3f4b507512327e$var$notify = function notify(param_title, param_text, para
     };
     // Let's check whether notification permissions have already been granted
     if (Notification.permission === "granted") // If it's okay let's create a notification
-    $6d3f4b507512327e$var$notification = new Notification(param_title, options);
+    $162001cafa2b40fd$var$notification = new Notification(param_title, options);
     // Otherwise, we need to ask the user for permission
     if (Notification.permission !== "denied") Notification.requestPermission().then(function(permission) {
         // If the user accepts, let's create a notification
-        if (permission === "granted") $6d3f4b507512327e$var$notification = new Notification(param_title, options);
+        if (permission === "granted") $162001cafa2b40fd$var$notification = new Notification(param_title, options);
     });
 };
-var $6d3f4b507512327e$export$75525525b38ea7b3 = function pushLocalNotification(title, body) {
+var $162001cafa2b40fd$export$75525525b38ea7b3 = function pushLocalNotification(title, body) {
     window.Notification.requestPermission().then(function(result) {
         var notification = new window.Notification(title, {
             body: body
@@ -5599,14 +5600,14 @@ var $6d3f4b507512327e$export$75525525b38ea7b3 = function pushLocalNotification(t
     });
 };
 if (navigator.mozSetMessageHandler) navigator.mozSetMessageHandler("alarm", function(message) {
-    $6d3f4b507512327e$export$75525525b38ea7b3("Greg", message.data.note);
+    $162001cafa2b40fd$export$75525525b38ea7b3("Greg", message.data.note);
 });
-function $6d3f4b507512327e$export$a22775fa5e2eebd9(url) {
+function $162001cafa2b40fd$export$a22775fa5e2eebd9(url) {
     var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
     if (pattern.test(url)) return true;
     return false;
 }
-var $6d3f4b507512327e$export$39e873de56f329d8 = function getManifest(callback) {
+var $162001cafa2b40fd$export$39e873de56f329d8 = function getManifest(callback) {
     if (navigator.mozApps) {
         var self = navigator.mozApps.getSelf();
         self.onsuccess = function() {
@@ -5620,79 +5621,79 @@ var $6d3f4b507512327e$export$39e873de56f329d8 = function getManifest(callback) {
     });
 };
 //top toaster
-var $6d3f4b507512327e$var$queue = [];
-var $6d3f4b507512327e$var$timeout;
-var $6d3f4b507512327e$export$a224d1f4f6f98541 = function toaster(text, time) {
-    $6d3f4b507512327e$var$queue.push({
+var $162001cafa2b40fd$var$queue = [];
+var $162001cafa2b40fd$var$timeout;
+var $162001cafa2b40fd$export$a224d1f4f6f98541 = function toaster(text, time) {
+    $162001cafa2b40fd$var$queue.push({
         text: text,
         time: time
     });
-    if ($6d3f4b507512327e$var$queue.length === 1) $6d3f4b507512327e$var$toast_q(text, time);
+    if ($162001cafa2b40fd$var$queue.length === 1) $162001cafa2b40fd$var$toast_q(text, time);
 };
-var $6d3f4b507512327e$var$toast_q = function toast_q1(text, time) {
+var $162001cafa2b40fd$var$toast_q = function toast_q1(text, time) {
     var x = document.querySelector("div#toast");
-    x.innerHTML = $6d3f4b507512327e$var$queue[0].text;
+    x.innerHTML = $162001cafa2b40fd$var$queue[0].text;
     x.style.transform = "translate(0px, 0px)";
-    $6d3f4b507512327e$var$timeout = setTimeout(function() {
-        $6d3f4b507512327e$var$timeout = null;
+    $162001cafa2b40fd$var$timeout = setTimeout(function() {
+        $162001cafa2b40fd$var$timeout = null;
         x.style.transform = "translate(0px, -100px)";
-        $6d3f4b507512327e$var$queue = $6d3f4b507512327e$var$queue.slice(1);
-        if ($6d3f4b507512327e$var$queue.length > 0) setTimeout(function() {
-            $6d3f4b507512327e$var$toast_q(text, time);
+        $162001cafa2b40fd$var$queue = $162001cafa2b40fd$var$queue.slice(1);
+        if ($162001cafa2b40fd$var$queue.length > 0) setTimeout(function() {
+            $162001cafa2b40fd$var$toast_q(text, time);
         }, 1000);
     }, time);
 };
 //side toaster
-var $6d3f4b507512327e$var$queue_st = [];
-var $6d3f4b507512327e$export$6593825dc0f3a767 = function side_toaster(text, time) {
-    $6d3f4b507512327e$var$queue_st.push({
+var $162001cafa2b40fd$var$queue_st = [];
+var $162001cafa2b40fd$export$6593825dc0f3a767 = function side_toaster(text, time) {
+    $162001cafa2b40fd$var$queue_st.push({
         text: text,
         time: time
     });
-    if ($6d3f4b507512327e$var$queue_st.length === 1) $6d3f4b507512327e$var$toast_qq(text, time);
+    if ($162001cafa2b40fd$var$queue_st.length === 1) $162001cafa2b40fd$var$toast_qq(text, time);
 };
-var $6d3f4b507512327e$var$toast_qq = function toast_qq1(text, time) {
+var $162001cafa2b40fd$var$toast_qq = function toast_qq1(text, time) {
     var x = document.querySelector("div#side-toast");
     x.style.opacity = "100";
-    x.innerHTML = $6d3f4b507512327e$var$queue_st[0].text;
+    x.innerHTML = $162001cafa2b40fd$var$queue_st[0].text;
     x.style.transform = "translate(0vh, 0vw)";
-    $6d3f4b507512327e$var$timeout = setTimeout(function() {
+    $162001cafa2b40fd$var$timeout = setTimeout(function() {
         x.style.transform = "translate(-100vw,0px)";
-        $6d3f4b507512327e$var$queue_st = $6d3f4b507512327e$var$queue.slice(1);
-        if ($6d3f4b507512327e$var$queue_st.length > 0) setTimeout(function() {
-            $6d3f4b507512327e$var$toast_qq(text, time);
+        $162001cafa2b40fd$var$queue_st = $162001cafa2b40fd$var$queue.slice(1);
+        if ($162001cafa2b40fd$var$queue_st.length > 0) setTimeout(function() {
+            $162001cafa2b40fd$var$toast_qq(text, time);
         }, 1000);
     }, time);
 };
-var $6d3f4b507512327e$export$247be4ede8e3a24a = function bottom_bar(left, center, right) {
+var $162001cafa2b40fd$export$247be4ede8e3a24a = function bottom_bar(left, center, right) {
     document.querySelector("div#bottom-bar div.button-left").innerHTML = left;
     document.querySelector("div#bottom-bar div.button-center").innerHTML = center;
     document.querySelector("div#bottom-bar div.button-right").innerHTML = right;
     if (left == "" && center == "" && right == "") document.querySelector("div#bottom-bar").style.display = "none";
     else document.querySelector("div#bottom-bar").style.display = "block";
 };
-var $6d3f4b507512327e$export$7ce2ea7c45ae9a07 = function top_bar(left, center, right) {
+var $162001cafa2b40fd$export$7ce2ea7c45ae9a07 = function top_bar(left, center, right) {
     document.querySelector("div#top-bar div.button-left").innerHTML = left;
     document.querySelector("div#top-bar div.button-center").innerHTML = center;
     document.querySelector("div#top-bar div.button-right").innerHTML = right;
     if (left == "" && center == "" && right == "") document.querySelector("div#top-bar").style.display = "none";
     else document.querySelector("div#top-bar").style.display = "block";
 };
-var $6d3f4b507512327e$var$lock;
-var $6d3f4b507512327e$var$screenlock = function screenlock(stat) {
+var $162001cafa2b40fd$var$lock;
+var $162001cafa2b40fd$var$screenlock = function screenlock(stat) {
     if (typeof window.navigator.requestWakeLock === "undefined") return false;
     if (stat == "lock") {
-        $6d3f4b507512327e$var$lock = window.navigator.requestWakeLock("screen");
-        $6d3f4b507512327e$var$lock.onsuccess = function() {};
-        $6d3f4b507512327e$var$lock.onerror = function() {
+        $162001cafa2b40fd$var$lock = window.navigator.requestWakeLock("screen");
+        $162001cafa2b40fd$var$lock.onsuccess = function() {};
+        $162001cafa2b40fd$var$lock.onerror = function() {
             alert("An error occurred: " + this.error.name);
         };
     }
     if (stat == "unlock") {
-        if ($6d3f4b507512327e$var$lock.topic == "screen") $6d3f4b507512327e$var$lock.unlock();
+        if ($162001cafa2b40fd$var$lock.topic == "screen") $162001cafa2b40fd$var$lock.unlock();
     }
 };
-var $6d3f4b507512327e$export$6714d0f9237d35de = function pick_image(callback) {
+var $162001cafa2b40fd$export$6714d0f9237d35de = function pick_image(callback) {
     try {
         var pick = new MozActivity({
             name: "pick",
@@ -5724,7 +5725,7 @@ var $6d3f4b507512327e$export$6714d0f9237d35de = function pick_image(callback) {
             console.log(err);
         });
     }
-    if ((0, $78f2cb3ec8734e95$export$471f7ae5c4103ae1).notKaiOS) {
+    if ((0, $17d11d58618cc814$export$471f7ae5c4103ae1).notKaiOS) {
         var fileInput = document.createElement("input");
         fileInput.type = "file";
         fileInput.accept = "image/*";
@@ -5741,9 +5742,9 @@ var $6d3f4b507512327e$export$6714d0f9237d35de = function pick_image(callback) {
         });
     }
 };
-function $6d3f4b507512327e$export$dccb98b97a3cb8be(storage, path, notification) {
+function $162001cafa2b40fd$export$dccb98b97a3cb8be(storage, path, notification) {
     var sdcard = navigator.getDeviceStorages("sdcard");
-    var requestDel = sdcard[storage]["delete"](path);
+    var requestDel = sdcard[storage].delete(path);
     requestDel.onsuccess = function() {
         if (notification == "notification") helper.toaster('File "' + name + '" successfully deleted frome the sdcard storage area');
     };
@@ -5751,8 +5752,8 @@ function $6d3f4b507512327e$export$dccb98b97a3cb8be(storage, path, notification) 
         helper.toaster("Unable to delete the file: " + this.error);
     };
 }
-var $6d3f4b507512327e$export$bb3b75778e3e272 = function downloadFile(filename, data, callback) {
-    if ((0, $78f2cb3ec8734e95$export$471f7ae5c4103ae1).notKaiOS) {
+var $162001cafa2b40fd$export$bb3b75778e3e272 = function downloadFile(filename, data, callback) {
+    if ((0, $17d11d58618cc814$export$471f7ae5c4103ae1).notKaiOS) {
         var imgSrc = data;
         // Create a link element
         var a = document.createElement("a");
@@ -5777,17 +5778,17 @@ var $6d3f4b507512327e$export$bb3b75778e3e272 = function downloadFile(filename, d
         }).then(function(blob) {
             var request = sdcard.addNamed(blob, filename);
             request.onsuccess = function() {
-                $6d3f4b507512327e$export$6593825dc0f3a767("file downloaded", 2000);
+                $162001cafa2b40fd$export$6593825dc0f3a767("file downloaded", 2000);
             };
             request.onerror = function() {
-                $6d3f4b507512327e$export$6593825dc0f3a767("Unable to download the file, the file probably already exists.", 4000);
+                $162001cafa2b40fd$export$6593825dc0f3a767("Unable to download the file, the file probably already exists.", 4000);
             };
-        })["catch"](function(error) {
-            $6d3f4b507512327e$export$6593825dc0f3a767("Unable to download the file", 2000);
+        }).catch(function(error) {
+            $162001cafa2b40fd$export$6593825dc0f3a767("Unable to download the file", 2000);
         });
     }
 };
-function $6d3f4b507512327e$export$637fd9537164f29b() {
+function $162001cafa2b40fd$export$637fd9537164f29b() {
     var mediaRecorder;
     var recordedChunks = [];
     var isInitialized = false;
@@ -5796,9 +5797,9 @@ function $6d3f4b507512327e$export$637fd9537164f29b() {
         return _init.apply(this, arguments);
     }
     function _init() {
-        _init = (0, $bdca4d8f0452b8e7$export$71511d61b312f219)(function() {
+        _init = (0, $ba0748fc6d85beab$export$71511d61b312f219)(function() {
             var error;
-            return (0, $95fedd77f81839f7$export$67ebef60e6f28a6)(this, function(_state) {
+            return (0, $04f2fd83a0b0b7f9$export$67ebef60e6f28a6)(this, function(_state) {
                 switch(_state.label){
                     case 0:
                         _state.trys.push([
@@ -5853,8 +5854,8 @@ function $6d3f4b507512327e$export$637fd9537164f29b() {
         return _startRecording.apply(this, arguments);
     }
     function _startRecording() {
-        _startRecording = (0, $bdca4d8f0452b8e7$export$71511d61b312f219)(function() {
-            return (0, $95fedd77f81839f7$export$67ebef60e6f28a6)(this, function(_state) {
+        _startRecording = (0, $ba0748fc6d85beab$export$71511d61b312f219)(function() {
+            return (0, $04f2fd83a0b0b7f9$export$67ebef60e6f28a6)(this, function(_state) {
                 switch(_state.label){
                     case 0:
                         if (!!isInitialized) return [
@@ -5914,10 +5915,10 @@ function $6d3f4b507512327e$export$637fd9537164f29b() {
 }
 
 
-var $ba501d359f0081e2$exports = {};
+var $39e0152360893de3$exports = {};
 (function webpackUniversalModuleDefinition(root, factory) {
-    $ba501d359f0081e2$exports = factory();
-})(typeof self !== "undefined" ? self : $ba501d359f0081e2$exports, function() {
+    $39e0152360893de3$exports = factory();
+})(typeof self !== "undefined" ? self : $39e0152360893de3$exports, function() {
     return /******/ function(modules) {
         /******/ // The module cache
         /******/ var installedModules = {};
@@ -6021,10 +6022,10 @@ var $ba501d359f0081e2$exports = {};
                         if (x >= this.size) x = (x ^ this.primitive) & this.size - 1; // tslint:disable-line:no-bitwise
                     }
                     for(var i = 0; i < this.size - 1; i++)this.logTable[this.expTable[i]] = i;
-                    this.zero = new GenericGFPoly_1["default"](this, Uint8ClampedArray.from([
+                    this.zero = new GenericGFPoly_1.default(this, Uint8ClampedArray.from([
                         0
                     ]));
-                    this.one = new GenericGFPoly_1["default"](this, Uint8ClampedArray.from([
+                    this.one = new GenericGFPoly_1.default(this, Uint8ClampedArray.from([
                         1
                     ]));
                 }
@@ -6041,7 +6042,7 @@ var $ba501d359f0081e2$exports = {};
                     if (coefficient === 0) return this.zero;
                     var coefficients = new Uint8ClampedArray(degree + 1);
                     coefficients[0] = coefficient;
-                    return new GenericGFPoly_1["default"](this, coefficients);
+                    return new GenericGFPoly_1.default(this, coefficients);
                 };
                 GenericGF.prototype.log = function(a) {
                     if (a === 0) throw new Error("Can't take log(0)");
@@ -6052,7 +6053,7 @@ var $ba501d359f0081e2$exports = {};
                 };
                 return GenericGF;
             }();
-            exports["default"] = GenericGF;
+            exports.default = GenericGF;
         /***/ },
         /* 2 */ /***/ function(module1, exports, __webpack_require__) {
             "use strict";
@@ -6148,7 +6149,7 @@ var $ba501d359f0081e2$exports = {};
                 };
                 return GenericGFPoly;
             }();
-            exports["default"] = GenericGFPoly;
+            exports.default = GenericGFPoly;
         /***/ },
         /* 3 */ /***/ function(module1, exports, __webpack_require__) {
             "use strict";
@@ -6201,8 +6202,8 @@ var $ba501d359f0081e2$exports = {};
                 if (!result && (options.inversionAttempts === "attemptBoth" || options.inversionAttempts === "invertFirst")) result = scan(tryInvertedFirst ? binarized : inverted);
                 return result;
             }
-            jsQR["default"] = jsQR;
-            exports["default"] = jsQR;
+            jsQR.default = jsQR;
+            exports.default = jsQR;
         /***/ },
         /* 4 */ /***/ function(module1, exports, __webpack_require__) {
             "use strict";
@@ -6319,8 +6320,8 @@ var $ba501d359f0081e2$exports = {};
                 }
                 return bitCount;
             }
-            function pushBit(bit, _byte) {
-                return _byte << 1 | bit;
+            function pushBit(bit, byte) {
+                return byte << 1 | bit;
             }
             // tslint:enable:no-bitwise
             var FORMAT_INFO_TABLE = [
@@ -14206,8 +14207,8 @@ var $ba501d359f0081e2$exports = {};
             function decode(bytes, twoS) {
                 var outputBytes = new Uint8ClampedArray(bytes.length);
                 outputBytes.set(bytes);
-                var field = new GenericGF_1["default"](0x011D, 256, 0); // x^8 + x^4 + x^3 + x^2 + 1
-                var poly = new GenericGFPoly_1["default"](field, outputBytes);
+                var field = new GenericGF_1.default(0x011D, 256, 0); // x^8 + x^4 + x^3 + x^2 + 1
+                var poly = new GenericGFPoly_1.default(field, outputBytes);
                 var syndromeCoefficients = new Uint8ClampedArray(twoS);
                 var error = false;
                 for(var s = 0; s < twoS; s++){
@@ -14216,7 +14217,7 @@ var $ba501d359f0081e2$exports = {};
                     if (evaluation !== 0) error = true;
                 }
                 if (!error) return outputBytes;
-                var syndrome = new GenericGFPoly_1["default"](field, syndromeCoefficients);
+                var syndrome = new GenericGFPoly_1.default(field, syndromeCoefficients);
                 var sigmaOmega = runEuclideanAlgorithm(field, field.buildMonomial(twoS, 1), syndrome, twoS);
                 if (sigmaOmega === null) return null;
                 var errorLocations = findErrorLocations(field, sigmaOmega[0]);
@@ -17288,22 +17289,22 @@ var $ba501d359f0081e2$exports = {};
 });
 
 
-var $da5c51e5866985e6$var$mediaStream;
-var $da5c51e5866985e6$var$video;
-var $da5c51e5866985e6$export$55e6c60a43cc74e2 = function stop_scan(callback) {
+var $2b0cc46421a6d3fe$var$mediaStream;
+var $2b0cc46421a6d3fe$var$video;
+var $2b0cc46421a6d3fe$export$55e6c60a43cc74e2 = function stop_scan(callback) {
     document.getElementById("qr-screen").style.display = "none";
-    if ($da5c51e5866985e6$var$mediaStream) {
-        $da5c51e5866985e6$var$mediaStream.getTracks().forEach(function(track) {
+    if ($2b0cc46421a6d3fe$var$mediaStream) {
+        $2b0cc46421a6d3fe$var$mediaStream.getTracks().forEach(function(track) {
             track.stop();
         });
-        $da5c51e5866985e6$var$mediaStream = null;
+        $2b0cc46421a6d3fe$var$mediaStream = null;
     }
     if (callback) {
         document.getElementById("qr-screen").style.display = "none";
         callback();
     }
 };
-var $da5c51e5866985e6$export$be96fe42679d1b7e = function start_scan(callback) {
+var $2b0cc46421a6d3fe$export$be96fe42679d1b7e = function start_scan(callback) {
     document.getElementById("qr-screen").style.display = "block";
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) navigator.mediaDevices.getUserMedia({
         audio: false,
@@ -17311,38 +17312,38 @@ var $da5c51e5866985e6$export$be96fe42679d1b7e = function start_scan(callback) {
             facingMode: "environment"
         }
     }).then(function(stream) {
-        $da5c51e5866985e6$var$mediaStream = stream; // Assign the stream to mediaStream variable
-        $da5c51e5866985e6$var$video = document.getElementsByTagName("video")[0];
-        $da5c51e5866985e6$var$video.muted = true;
-        $da5c51e5866985e6$var$video.playsInline = true; // Important for iOS
-        $da5c51e5866985e6$var$video.autoplay = true;
-        $da5c51e5866985e6$var$video.srcObject = stream;
-        $da5c51e5866985e6$var$video.onloadedmetadata = function() {
-            $da5c51e5866985e6$var$video.play();
+        $2b0cc46421a6d3fe$var$mediaStream = stream; // Assign the stream to mediaStream variable
+        $2b0cc46421a6d3fe$var$video = document.getElementsByTagName("video")[0];
+        $2b0cc46421a6d3fe$var$video.muted = true;
+        $2b0cc46421a6d3fe$var$video.playsInline = true; // Important for iOS
+        $2b0cc46421a6d3fe$var$video.autoplay = true;
+        $2b0cc46421a6d3fe$var$video.srcObject = stream;
+        $2b0cc46421a6d3fe$var$video.onloadedmetadata = function() {
+            $2b0cc46421a6d3fe$var$video.play();
             var barcodeCanvas = document.createElement("canvas");
             var barcodeContext = barcodeCanvas.getContext("2d");
             var intv = setInterval(function() {
-                barcodeCanvas.width = $da5c51e5866985e6$var$video.videoWidth;
-                barcodeCanvas.height = $da5c51e5866985e6$var$video.videoHeight;
-                barcodeContext.drawImage($da5c51e5866985e6$var$video, 0, 0, $da5c51e5866985e6$var$video.videoWidth, $da5c51e5866985e6$var$video.videoHeight);
-                var imageData = barcodeContext.getImageData(0, 0, $da5c51e5866985e6$var$video.videoWidth, $da5c51e5866985e6$var$video.videoHeight);
+                barcodeCanvas.width = $2b0cc46421a6d3fe$var$video.videoWidth;
+                barcodeCanvas.height = $2b0cc46421a6d3fe$var$video.videoHeight;
+                barcodeContext.drawImage($2b0cc46421a6d3fe$var$video, 0, 0, $2b0cc46421a6d3fe$var$video.videoWidth, $2b0cc46421a6d3fe$var$video.videoHeight);
+                var imageData = barcodeContext.getImageData(0, 0, $2b0cc46421a6d3fe$var$video.videoWidth, $2b0cc46421a6d3fe$var$video.videoHeight);
                 var idd = imageData.data;
-                var code = (0, (/*@__PURE__*/$parcel$interopDefault($ba501d359f0081e2$exports)))(idd, $da5c51e5866985e6$var$video.videoWidth, $da5c51e5866985e6$var$video.videoHeight);
+                var code = (0, (/*@__PURE__*/$parcel$interopDefault($39e0152360893de3$exports)))(idd, $2b0cc46421a6d3fe$var$video.videoWidth, $2b0cc46421a6d3fe$var$video.videoHeight);
                 if (code) {
                     clearInterval(intv);
-                    $da5c51e5866985e6$export$55e6c60a43cc74e2();
+                    $2b0cc46421a6d3fe$export$55e6c60a43cc74e2();
                     callback(code.data);
                 }
             }, 1000);
         };
-    })["catch"](function(err) {
+    }).catch(function(err) {
         alert("The following error occurred: " + err.name);
     });
     else alert("getUserMedia not supported");
 };
 
 
-var $f09be4829256f6d5$exports = {};
+var $9fbe31c6ff058869$exports = {};
 
 /*!
     localForage -- Offline Storage, Improved
@@ -17351,7 +17352,7 @@ var $f09be4829256f6d5$exports = {};
     (c) 2013-2017 Mozilla, Apache License 2.0
 */ (function(f) {
     var g;
-    $f09be4829256f6d5$exports = f();
+    $9fbe31c6ff058869$exports = f();
 })(function() {
     var define, module1, exports;
     return (function e(t, n, r) {
@@ -17651,10 +17652,10 @@ var $f09be4829256f6d5$exports = {};
         4: [
             function(_dereq_, module1, exports) {
                 "use strict";
-                var _typeof = typeof Symbol === "function" && (0, $4cfdb3add9285597$export$71511d61b312f219)(Symbol.iterator) === "symbol" ? function _typeof(obj) {
-                    return typeof obj === "undefined" ? "undefined" : (0, $4cfdb3add9285597$export$71511d61b312f219)(obj);
+                var _typeof = typeof Symbol === "function" && (0, $7bd6d9ddf4a378c5$export$71511d61b312f219)(Symbol.iterator) === "symbol" ? function _typeof(obj) {
+                    return typeof obj === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$71511d61b312f219)(obj);
                 } : function(obj) {
-                    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : (0, $4cfdb3add9285597$export$71511d61b312f219)(obj);
+                    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$71511d61b312f219)(obj);
                 };
                 function _classCallCheck(instance, Constructor) {
                     if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
@@ -19557,7 +19558,7 @@ var $f09be4829256f6d5$exports = {};
  * transition to t is the accepting token type, if any. If this is the terminal
  * state, then it does not emit a token.
  * @param {string|class} token to emit
- */ function $a06d5a398bbbfd36$var$State(token) {
+ */ function $410e7a787f87a2b4$var$State(token) {
     this.j = {}; // IMPLEMENTATION 1
     // this.j = []; // IMPLEMENTATION 2
     this.jr = [];
@@ -19571,7 +19572,7 @@ var $f09be4829256f6d5$exports = {};
  * @param {string} input character or token to transition on
  * @param {string|class} [token] token or multi-token to emit when reaching
  * this state
- */ $a06d5a398bbbfd36$var$State.prototype = {
+ */ $410e7a787f87a2b4$var$State.prototype = {
     /**
    * @param {State} state
    */ accepts: function accepts() {
@@ -19609,8 +19610,8 @@ var $f09be4829256f6d5$exports = {};
              // overrwites previous token
             return nextState;
         } // Create a new state for this input
-        nextState = $a06d5a398bbbfd36$var$makeState(); // Take the transition using the usual default mechanisms
-        var templateState = $a06d5a398bbbfd36$var$takeT(this, input);
+        nextState = $410e7a787f87a2b4$var$makeState(); // Take the transition using the usual default mechanisms
+        var templateState = $410e7a787f87a2b4$var$takeT(this, input);
         if (templateState) {
             // Some default state transition, make a prime state based on this one
             Object.assign(nextState.j, templateState.j);
@@ -19625,21 +19626,21 @@ var $f09be4829256f6d5$exports = {};
 /**
  * Utility function to create state without using new keyword (reduced file size
  * when minified)
- */ var $a06d5a398bbbfd36$var$makeState = function makeState() {
-    return new $a06d5a398bbbfd36$var$State();
+ */ var $410e7a787f87a2b4$var$makeState = function makeState() {
+    return new $410e7a787f87a2b4$var$State();
 };
 /**
  * Similar to previous except it is an accepting state that emits a token
  * @param {Token} token
- */ var $a06d5a398bbbfd36$var$makeAcceptingState = function makeAcceptingState(token) {
-    return new $a06d5a398bbbfd36$var$State(token);
+ */ var $410e7a787f87a2b4$var$makeAcceptingState = function makeAcceptingState(token) {
+    return new $410e7a787f87a2b4$var$State(token);
 };
 /**
  * Create a transition from startState to nextState via the given character
  * @param {State} startState transition from thie starting state
  * @param {Token} input via this input character or other concrete token type
  * @param {State} nextState to this next state
- */ var $a06d5a398bbbfd36$var$makeT = function makeT(startState, input, nextState) {
+ */ var $410e7a787f87a2b4$var$makeT = function makeT(startState, input, nextState) {
     // IMPLEMENTATION 1: Add to object (fast)
     if (!startState.j[input]) startState.j[input] = nextState;
      // IMPLEMENTATION 2: Add to array (slower)
@@ -19650,7 +19651,7 @@ var $f09be4829256f6d5$exports = {};
  * @param {State} startState stransition from this starting state
  * @param {RegExp} regex Regular expression to match on input
  * @param {State} nextState transition to this next state if there's are regex match
- */ var $a06d5a398bbbfd36$var$makeRegexT = function makeRegexT(startState, regex, nextState) {
+ */ var $410e7a787f87a2b4$var$makeRegexT = function makeRegexT(startState, regex, nextState) {
     startState.jr.push([
         regex,
         nextState
@@ -19661,7 +19662,7 @@ var $f09be4829256f6d5$exports = {};
  * @param {State} state
  * @param {Token} input character or other concrete token type to transition
  * @returns {?State} the next state, if any
- */ var $a06d5a398bbbfd36$var$takeT = function takeT(state, input) {
+ */ var $410e7a787f87a2b4$var$takeT = function takeT(state, input) {
     // IMPLEMENTATION 1: Object key lookup (faster)
     var nextState = state.j[input];
     if (nextState) return nextState;
@@ -19685,8 +19686,8 @@ var $f09be4829256f6d5$exports = {};
  * @param {State} startState
  * @param {Array} chars
  * @param {State} nextState
- */ var $a06d5a398bbbfd36$var$makeMultiT = function makeMultiT(startState, chars, nextState) {
-    for(var i = 0; i < chars.length; i++)$a06d5a398bbbfd36$var$makeT(startState, chars[i], nextState);
+ */ var $410e7a787f87a2b4$var$makeMultiT = function makeMultiT(startState, chars, nextState) {
+    for(var i = 0; i < chars.length; i++)$410e7a787f87a2b4$var$makeT(startState, chars[i], nextState);
 };
 /**
  * Set up a list of multiple transitions at once. transitions is a list of
@@ -19694,11 +19695,11 @@ var $f09be4829256f6d5$exports = {};
  * is the state to transition to
  * @param {State} startState
  * @param {Array} transitions
- */ var $a06d5a398bbbfd36$var$makeBatchT = function makeBatchT(startState, transitions) {
+ */ var $410e7a787f87a2b4$var$makeBatchT = function makeBatchT(startState, transitions) {
     for(var i = 0; i < transitions.length; i++){
         var input = transitions[i][0];
         var nextState = transitions[i][1];
-        $a06d5a398bbbfd36$var$makeT(startState, input, nextState);
+        $410e7a787f87a2b4$var$makeT(startState, input, nextState);
     }
 };
 /**
@@ -19714,7 +19715,7 @@ var $f09be4829256f6d5$exports = {};
  * @param {string} str
  * @param {Token} endStateFactory
  * @param {Token} defaultStateFactory
- */ var $a06d5a398bbbfd36$var$makeChainT = function makeChainT(state, str, endState, defaultStateFactory) {
+ */ var $410e7a787f87a2b4$var$makeChainT = function makeChainT(state, str, endState, defaultStateFactory) {
     var i = 0, len = str.length, nextState; // Find the next state without a jump to the next character
     while(i < len && (nextState = state.j[str[i]])){
         state = nextState;
@@ -19724,110 +19725,110 @@ var $f09be4829256f6d5$exports = {};
      // no new tokens were added
     while(i < len - 1){
         nextState = defaultStateFactory();
-        $a06d5a398bbbfd36$var$makeT(state, str[i], nextState);
+        $410e7a787f87a2b4$var$makeT(state, str[i], nextState);
         state = nextState;
         i++;
     }
-    $a06d5a398bbbfd36$var$makeT(state, str[len - 1], endState);
+    $410e7a787f87a2b4$var$makeT(state, str[len - 1], endState);
 };
 /******************************************************************************
 	Text Tokens
 	Tokens composed of strings
 ******************************************************************************/ // A valid web domain token
-var $a06d5a398bbbfd36$var$DOMAIN = "DOMAIN";
-var $a06d5a398bbbfd36$var$LOCALHOST = "LOCALHOST"; // special case of domain
+var $410e7a787f87a2b4$var$DOMAIN = "DOMAIN";
+var $410e7a787f87a2b4$var$LOCALHOST = "LOCALHOST"; // special case of domain
 // Valid top-level domain (see tlds.js)
-var $a06d5a398bbbfd36$var$TLD = "TLD"; // Any sequence of digits 0-9
-var $a06d5a398bbbfd36$var$NUM = "NUM"; // A web URL protocol. Supported types include
+var $410e7a787f87a2b4$var$TLD = "TLD"; // Any sequence of digits 0-9
+var $410e7a787f87a2b4$var$NUM = "NUM"; // A web URL protocol. Supported types include
 // - `http:`
 // - `https:`
 // - `ftp:`
 // - `ftps:`
 // - user-defined custom protocols
-var $a06d5a398bbbfd36$var$PROTOCOL = "PROTOCOL"; // Start of the email URI protocol
-var $a06d5a398bbbfd36$var$MAILTO = "MAILTO"; // mailto:
+var $410e7a787f87a2b4$var$PROTOCOL = "PROTOCOL"; // Start of the email URI protocol
+var $410e7a787f87a2b4$var$MAILTO = "MAILTO"; // mailto:
 // Any number of consecutive whitespace characters that are not newline
-var $a06d5a398bbbfd36$var$WS = "WS"; // New line (unix style)
-var $a06d5a398bbbfd36$var$NL = "NL"; // \n
+var $410e7a787f87a2b4$var$WS = "WS"; // New line (unix style)
+var $410e7a787f87a2b4$var$NL = "NL"; // \n
 // Opening/closing bracket classes
-var $a06d5a398bbbfd36$var$OPENBRACE = "OPENBRACE"; // {
-var $a06d5a398bbbfd36$var$OPENBRACKET = "OPENBRACKET"; // [
-var $a06d5a398bbbfd36$var$OPENANGLEBRACKET = "OPENANGLEBRACKET"; // <
-var $a06d5a398bbbfd36$var$OPENPAREN = "OPENPAREN"; // (
-var $a06d5a398bbbfd36$var$CLOSEBRACE = "CLOSEBRACE"; // }
-var $a06d5a398bbbfd36$var$CLOSEBRACKET = "CLOSEBRACKET"; // ]
-var $a06d5a398bbbfd36$var$CLOSEANGLEBRACKET = "CLOSEANGLEBRACKET"; // >
-var $a06d5a398bbbfd36$var$CLOSEPAREN = "CLOSEPAREN"; // )
+var $410e7a787f87a2b4$var$OPENBRACE = "OPENBRACE"; // {
+var $410e7a787f87a2b4$var$OPENBRACKET = "OPENBRACKET"; // [
+var $410e7a787f87a2b4$var$OPENANGLEBRACKET = "OPENANGLEBRACKET"; // <
+var $410e7a787f87a2b4$var$OPENPAREN = "OPENPAREN"; // (
+var $410e7a787f87a2b4$var$CLOSEBRACE = "CLOSEBRACE"; // }
+var $410e7a787f87a2b4$var$CLOSEBRACKET = "CLOSEBRACKET"; // ]
+var $410e7a787f87a2b4$var$CLOSEANGLEBRACKET = "CLOSEANGLEBRACKET"; // >
+var $410e7a787f87a2b4$var$CLOSEPAREN = "CLOSEPAREN"; // )
 // Various symbols
-var $a06d5a398bbbfd36$var$AMPERSAND = "AMPERSAND"; // &
-var $a06d5a398bbbfd36$var$APOSTROPHE = "APOSTROPHE"; // '
-var $a06d5a398bbbfd36$var$ASTERISK = "ASTERISK"; // *
-var $a06d5a398bbbfd36$var$AT = "AT"; // @
-var $a06d5a398bbbfd36$var$BACKSLASH = "BACKSLASH"; // \
-var $a06d5a398bbbfd36$var$BACKTICK = "BACKTICK"; // `
-var $a06d5a398bbbfd36$var$CARET = "CARET"; // ^
-var $a06d5a398bbbfd36$var$COLON = "COLON"; // :
-var $a06d5a398bbbfd36$var$COMMA = "COMMA"; // ,
-var $a06d5a398bbbfd36$var$DOLLAR = "DOLLAR"; // $
-var $a06d5a398bbbfd36$var$DOT = "DOT"; // .
-var $a06d5a398bbbfd36$var$EQUALS = "EQUALS"; // =
-var $a06d5a398bbbfd36$var$EXCLAMATION = "EXCLAMATION"; // !
-var $a06d5a398bbbfd36$var$HYPHEN = "HYPHEN"; // -
-var $a06d5a398bbbfd36$var$PERCENT = "PERCENT"; // %
-var $a06d5a398bbbfd36$var$PIPE = "PIPE"; // |
-var $a06d5a398bbbfd36$var$PLUS = "PLUS"; // +
-var $a06d5a398bbbfd36$var$POUND = "POUND"; // #
-var $a06d5a398bbbfd36$var$QUERY = "QUERY"; // ?
-var $a06d5a398bbbfd36$var$QUOTE = "QUOTE"; // "
-var $a06d5a398bbbfd36$var$SEMI = "SEMI"; // ;
-var $a06d5a398bbbfd36$var$SLASH = "SLASH"; // /
-var $a06d5a398bbbfd36$var$TILDE = "TILDE"; // ~
-var $a06d5a398bbbfd36$var$UNDERSCORE = "UNDERSCORE"; // _
+var $410e7a787f87a2b4$var$AMPERSAND = "AMPERSAND"; // &
+var $410e7a787f87a2b4$var$APOSTROPHE = "APOSTROPHE"; // '
+var $410e7a787f87a2b4$var$ASTERISK = "ASTERISK"; // *
+var $410e7a787f87a2b4$var$AT = "AT"; // @
+var $410e7a787f87a2b4$var$BACKSLASH = "BACKSLASH"; // \
+var $410e7a787f87a2b4$var$BACKTICK = "BACKTICK"; // `
+var $410e7a787f87a2b4$var$CARET = "CARET"; // ^
+var $410e7a787f87a2b4$var$COLON = "COLON"; // :
+var $410e7a787f87a2b4$var$COMMA = "COMMA"; // ,
+var $410e7a787f87a2b4$var$DOLLAR = "DOLLAR"; // $
+var $410e7a787f87a2b4$var$DOT = "DOT"; // .
+var $410e7a787f87a2b4$var$EQUALS = "EQUALS"; // =
+var $410e7a787f87a2b4$var$EXCLAMATION = "EXCLAMATION"; // !
+var $410e7a787f87a2b4$var$HYPHEN = "HYPHEN"; // -
+var $410e7a787f87a2b4$var$PERCENT = "PERCENT"; // %
+var $410e7a787f87a2b4$var$PIPE = "PIPE"; // |
+var $410e7a787f87a2b4$var$PLUS = "PLUS"; // +
+var $410e7a787f87a2b4$var$POUND = "POUND"; // #
+var $410e7a787f87a2b4$var$QUERY = "QUERY"; // ?
+var $410e7a787f87a2b4$var$QUOTE = "QUOTE"; // "
+var $410e7a787f87a2b4$var$SEMI = "SEMI"; // ;
+var $410e7a787f87a2b4$var$SLASH = "SLASH"; // /
+var $410e7a787f87a2b4$var$TILDE = "TILDE"; // ~
+var $410e7a787f87a2b4$var$UNDERSCORE = "UNDERSCORE"; // _
 // Default token - anything that is not one of the above
-var $a06d5a398bbbfd36$var$SYM = "SYM";
-var $a06d5a398bbbfd36$var$text = /*#__PURE__*/ Object.freeze({
+var $410e7a787f87a2b4$var$SYM = "SYM";
+var $410e7a787f87a2b4$var$text = /*#__PURE__*/ Object.freeze({
     __proto__: null,
-    DOMAIN: $a06d5a398bbbfd36$var$DOMAIN,
-    LOCALHOST: $a06d5a398bbbfd36$var$LOCALHOST,
-    TLD: $a06d5a398bbbfd36$var$TLD,
-    NUM: $a06d5a398bbbfd36$var$NUM,
-    PROTOCOL: $a06d5a398bbbfd36$var$PROTOCOL,
-    MAILTO: $a06d5a398bbbfd36$var$MAILTO,
-    WS: $a06d5a398bbbfd36$var$WS,
-    NL: $a06d5a398bbbfd36$var$NL,
-    OPENBRACE: $a06d5a398bbbfd36$var$OPENBRACE,
-    OPENBRACKET: $a06d5a398bbbfd36$var$OPENBRACKET,
-    OPENANGLEBRACKET: $a06d5a398bbbfd36$var$OPENANGLEBRACKET,
-    OPENPAREN: $a06d5a398bbbfd36$var$OPENPAREN,
-    CLOSEBRACE: $a06d5a398bbbfd36$var$CLOSEBRACE,
-    CLOSEBRACKET: $a06d5a398bbbfd36$var$CLOSEBRACKET,
-    CLOSEANGLEBRACKET: $a06d5a398bbbfd36$var$CLOSEANGLEBRACKET,
-    CLOSEPAREN: $a06d5a398bbbfd36$var$CLOSEPAREN,
-    AMPERSAND: $a06d5a398bbbfd36$var$AMPERSAND,
-    APOSTROPHE: $a06d5a398bbbfd36$var$APOSTROPHE,
-    ASTERISK: $a06d5a398bbbfd36$var$ASTERISK,
-    AT: $a06d5a398bbbfd36$var$AT,
-    BACKSLASH: $a06d5a398bbbfd36$var$BACKSLASH,
-    BACKTICK: $a06d5a398bbbfd36$var$BACKTICK,
-    CARET: $a06d5a398bbbfd36$var$CARET,
-    COLON: $a06d5a398bbbfd36$var$COLON,
-    COMMA: $a06d5a398bbbfd36$var$COMMA,
-    DOLLAR: $a06d5a398bbbfd36$var$DOLLAR,
-    DOT: $a06d5a398bbbfd36$var$DOT,
-    EQUALS: $a06d5a398bbbfd36$var$EQUALS,
-    EXCLAMATION: $a06d5a398bbbfd36$var$EXCLAMATION,
-    HYPHEN: $a06d5a398bbbfd36$var$HYPHEN,
-    PERCENT: $a06d5a398bbbfd36$var$PERCENT,
-    PIPE: $a06d5a398bbbfd36$var$PIPE,
-    PLUS: $a06d5a398bbbfd36$var$PLUS,
-    POUND: $a06d5a398bbbfd36$var$POUND,
-    QUERY: $a06d5a398bbbfd36$var$QUERY,
-    QUOTE: $a06d5a398bbbfd36$var$QUOTE,
-    SEMI: $a06d5a398bbbfd36$var$SEMI,
-    SLASH: $a06d5a398bbbfd36$var$SLASH,
-    TILDE: $a06d5a398bbbfd36$var$TILDE,
-    UNDERSCORE: $a06d5a398bbbfd36$var$UNDERSCORE,
-    SYM: $a06d5a398bbbfd36$var$SYM
+    DOMAIN: $410e7a787f87a2b4$var$DOMAIN,
+    LOCALHOST: $410e7a787f87a2b4$var$LOCALHOST,
+    TLD: $410e7a787f87a2b4$var$TLD,
+    NUM: $410e7a787f87a2b4$var$NUM,
+    PROTOCOL: $410e7a787f87a2b4$var$PROTOCOL,
+    MAILTO: $410e7a787f87a2b4$var$MAILTO,
+    WS: $410e7a787f87a2b4$var$WS,
+    NL: $410e7a787f87a2b4$var$NL,
+    OPENBRACE: $410e7a787f87a2b4$var$OPENBRACE,
+    OPENBRACKET: $410e7a787f87a2b4$var$OPENBRACKET,
+    OPENANGLEBRACKET: $410e7a787f87a2b4$var$OPENANGLEBRACKET,
+    OPENPAREN: $410e7a787f87a2b4$var$OPENPAREN,
+    CLOSEBRACE: $410e7a787f87a2b4$var$CLOSEBRACE,
+    CLOSEBRACKET: $410e7a787f87a2b4$var$CLOSEBRACKET,
+    CLOSEANGLEBRACKET: $410e7a787f87a2b4$var$CLOSEANGLEBRACKET,
+    CLOSEPAREN: $410e7a787f87a2b4$var$CLOSEPAREN,
+    AMPERSAND: $410e7a787f87a2b4$var$AMPERSAND,
+    APOSTROPHE: $410e7a787f87a2b4$var$APOSTROPHE,
+    ASTERISK: $410e7a787f87a2b4$var$ASTERISK,
+    AT: $410e7a787f87a2b4$var$AT,
+    BACKSLASH: $410e7a787f87a2b4$var$BACKSLASH,
+    BACKTICK: $410e7a787f87a2b4$var$BACKTICK,
+    CARET: $410e7a787f87a2b4$var$CARET,
+    COLON: $410e7a787f87a2b4$var$COLON,
+    COMMA: $410e7a787f87a2b4$var$COMMA,
+    DOLLAR: $410e7a787f87a2b4$var$DOLLAR,
+    DOT: $410e7a787f87a2b4$var$DOT,
+    EQUALS: $410e7a787f87a2b4$var$EQUALS,
+    EXCLAMATION: $410e7a787f87a2b4$var$EXCLAMATION,
+    HYPHEN: $410e7a787f87a2b4$var$HYPHEN,
+    PERCENT: $410e7a787f87a2b4$var$PERCENT,
+    PIPE: $410e7a787f87a2b4$var$PIPE,
+    PLUS: $410e7a787f87a2b4$var$PLUS,
+    POUND: $410e7a787f87a2b4$var$POUND,
+    QUERY: $410e7a787f87a2b4$var$QUERY,
+    QUOTE: $410e7a787f87a2b4$var$QUOTE,
+    SEMI: $410e7a787f87a2b4$var$SEMI,
+    SLASH: $410e7a787f87a2b4$var$SLASH,
+    TILDE: $410e7a787f87a2b4$var$TILDE,
+    UNDERSCORE: $410e7a787f87a2b4$var$UNDERSCORE,
+    SYM: $410e7a787f87a2b4$var$SYM
 });
 // NOTE: punycode versions of IDNs are not included here because these will not
 // be as commonly used without the http prefix anyway and linkify will already
@@ -19835,7 +19836,7 @@ var $a06d5a398bbbfd36$var$text = /*#__PURE__*/ Object.freeze({
 // To be updated with the values in this list
 // http://data.iana.org/TLD/tlds-alpha-by-domain.txt
 // Version 2021022800, Last Updated Sun Feb 28 07:07:01 2021 UTC
-var $a06d5a398bbbfd36$var$tlds = "aaa aarp abarth abb abbott abbvie abc able abogado abudhabi ac academy accenture accountant accountants aco actor ad adac ads adult ae aeg aero aetna af afamilycompany afl africa ag agakhan agency ai aig airbus airforce airtel akdn al alfaromeo alibaba alipay allfinanz allstate ally alsace alstom am amazon americanexpress americanfamily amex amfam amica amsterdam analytics android anquan anz ao aol apartments app apple aq aquarelle ar arab aramco archi army arpa art arte as asda asia associates at athleta attorney au auction audi audible audio auspost author auto autos avianca aw aws ax axa az azure ba baby baidu banamex bananarepublic band bank bar barcelona barclaycard barclays barefoot bargains baseball basketball bauhaus bayern bb bbc bbt bbva bcg bcn bd be beats beauty beer bentley berlin best bestbuy bet bf bg bh bharti bi bible bid bike bing bingo bio biz bj black blackfriday blockbuster blog bloomberg blue bm bms bmw bn bnpparibas bo boats boehringer bofa bom bond boo book booking bosch bostik boston bot boutique box br bradesco bridgestone broadway broker brother brussels bs bt budapest bugatti build builders business buy buzz bv bw by bz bzh ca cab cafe cal call calvinklein cam camera camp cancerresearch canon capetown capital capitalone car caravan cards care career careers cars casa case cash casino cat catering catholic cba cbn cbre cbs cc cd center ceo cern cf cfa cfd cg ch chanel channel charity chase chat cheap chintai christmas chrome church ci cipriani circle cisco citadel citi citic city cityeats ck cl claims cleaning click clinic clinique clothing cloud club clubmed cm cn co coach codes coffee college cologne com comcast commbank community company compare computer comsec condos construction consulting contact contractors cooking cookingchannel cool coop corsica country coupon coupons courses cpa cr credit creditcard creditunion cricket crown crs cruise cruises csc cu cuisinella cv cw cx cy cymru cyou cz dabur dad dance data date dating datsun day dclk dds de deal dealer deals degree delivery dell deloitte delta democrat dental dentist desi design dev dhl diamonds diet digital direct directory discount discover dish diy dj dk dm dnp do docs doctor dog domains dot download drive dtv dubai duck dunlop dupont durban dvag dvr dz earth eat ec eco edeka edu education ee eg email emerck energy engineer engineering enterprises epson equipment er ericsson erni es esq estate et etisalat eu eurovision eus events exchange expert exposed express extraspace fage fail fairwinds faith family fan fans farm farmers fashion fast fedex feedback ferrari ferrero fi fiat fidelity fido film final finance financial fire firestone firmdale fish fishing fit fitness fj fk flickr flights flir florist flowers fly fm fo foo food foodnetwork football ford forex forsale forum foundation fox fr free fresenius frl frogans frontdoor frontier ftr fujitsu fujixerox fun fund furniture futbol fyi ga gal gallery gallo gallup game games gap garden gay gb gbiz gd gdn ge gea gent genting george gf gg ggee gh gi gift gifts gives giving gl glade glass gle global globo gm gmail gmbh gmo gmx gn godaddy gold goldpoint golf goo goodyear goog google gop got gov gp gq gr grainger graphics gratis green gripe grocery group gs gt gu guardian gucci guge guide guitars guru gw gy hair hamburg hangout haus hbo hdfc hdfcbank health healthcare help helsinki here hermes hgtv hiphop hisamitsu hitachi hiv hk hkt hm hn hockey holdings holiday homedepot homegoods homes homesense honda horse hospital host hosting hot hoteles hotels hotmail house how hr hsbc ht hu hughes hyatt hyundai ibm icbc ice icu id ie ieee ifm ikano il im imamat imdb immo immobilien in inc industries infiniti info ing ink institute insurance insure int international intuit investments io ipiranga iq ir irish is ismaili ist istanbul it itau itv iveco jaguar java jcb je jeep jetzt jewelry jio jll jm jmp jnj jo jobs joburg jot joy jp jpmorgan jprs juegos juniper kaufen kddi ke kerryhotels kerrylogistics kerryproperties kfh kg kh ki kia kim kinder kindle kitchen kiwi km kn koeln komatsu kosher kp kpmg kpn kr krd kred kuokgroup kw ky kyoto kz la lacaixa lamborghini lamer lancaster lancia land landrover lanxess lasalle lat latino latrobe law lawyer lb lc lds lease leclerc lefrak legal lego lexus lgbt li lidl life lifeinsurance lifestyle lighting like lilly limited limo lincoln linde link lipsy live living lixil lk llc llp loan loans locker locus loft lol london lotte lotto love lpl lplfinancial lr ls lt ltd ltda lu lundbeck luxe luxury lv ly ma macys madrid maif maison makeup man management mango map market marketing markets marriott marshalls maserati mattel mba mc mckinsey md me med media meet melbourne meme memorial men menu merckmsd mg mh miami microsoft mil mini mint mit mitsubishi mk ml mlb mls mm mma mn mo mobi mobile moda moe moi mom monash money monster mormon mortgage moscow moto motorcycles mov movie mp mq mr ms msd mt mtn mtr mu museum mutual mv mw mx my mz na nab nagoya name nationwide natura navy nba nc ne nec net netbank netflix network neustar new news next nextdirect nexus nf nfl ng ngo nhk ni nico nike nikon ninja nissan nissay nl no nokia northwesternmutual norton now nowruz nowtv np nr nra nrw ntt nu nyc nz obi observer off office okinawa olayan olayangroup oldnavy ollo om omega one ong onl online onyourside ooo open oracle orange org organic origins osaka otsuka ott ovh pa page panasonic paris pars partners parts party passagens pay pccw pe pet pf pfizer pg ph pharmacy phd philips phone photo photography photos physio pics pictet pictures pid pin ping pink pioneer pizza pk pl place play playstation plumbing plus pm pn pnc pohl poker politie porn post pr pramerica praxi press prime pro prod productions prof progressive promo properties property protection pru prudential ps pt pub pw pwc py qa qpon quebec quest qvc racing radio raid re read realestate realtor realty recipes red redstone redumbrella rehab reise reisen reit reliance ren rent rentals repair report republican rest restaurant review reviews rexroth rich richardli ricoh ril rio rip rmit ro rocher rocks rodeo rogers room rs rsvp ru rugby ruhr run rw rwe ryukyu sa saarland safe safety sakura sale salon samsclub samsung sandvik sandvikcoromant sanofi sap sarl sas save saxo sb sbi sbs sc sca scb schaeffler schmidt scholarships school schule schwarz science scjohnson scot sd se search seat secure security seek select sener services ses seven sew sex sexy sfr sg sh shangrila sharp shaw shell shia shiksha shoes shop shopping shouji show showtime si silk sina singles site sj sk ski skin sky skype sl sling sm smart smile sn sncf so soccer social softbank software sohu solar solutions song sony soy spa space sport spot spreadbetting sr srl ss st stada staples star statebank statefarm stc stcgroup stockholm storage store stream studio study style su sucks supplies supply support surf surgery suzuki sv swatch swiftcover swiss sx sy sydney systems sz tab taipei talk taobao target tatamotors tatar tattoo tax taxi tc tci td tdk team tech technology tel temasek tennis teva tf tg th thd theater theatre tiaa tickets tienda tiffany tips tires tirol tj tjmaxx tjx tk tkmaxx tl tm tmall tn to today tokyo tools top toray toshiba total tours town toyota toys tr trade trading training travel travelchannel travelers travelersinsurance trust trv tt tube tui tunes tushu tv tvs tw tz ua ubank ubs ug uk unicom university uno uol ups us uy uz va vacations vana vanguard vc ve vegas ventures verisign versicherung vet vg vi viajes video vig viking villas vin vip virgin visa vision viva vivo vlaanderen vn vodka volkswagen volvo vote voting voto voyage vu vuelos wales walmart walter wang wanggou watch watches weather weatherchannel webcam weber website wed wedding weibo weir wf whoswho wien wiki williamhill win windows wine winners wme wolterskluwer woodside work works world wow ws wtc wtf xbox xerox xfinity xihuan xin xxx xyz yachts yahoo yamaxun yandex ye yodobashi yoga yokohama you youtube yt yun za zappos zara zero zip zm zone zuerich zw verm\xf6gensberater-ctb verm\xf6gensberatung-pwb \u03B5\u03BB \u03B5\u03C5 \u0431\u0433 \u0431\u0435\u043B \u0434\u0435\u0442\u0438 \u0435\u044E \u043A\u0430\u0442\u043E\u043B\u0438\u043A \u043A\u043E\u043C \u049B\u0430\u0437 \u043C\u043A\u0434 \u043C\u043E\u043D \u043C\u043E\u0441\u043A\u0432\u0430 \u043E\u043D\u043B\u0430\u0439\u043D \u043E\u0440\u0433 \u0440\u0443\u0441 \u0440\u0444 \u0441\u0430\u0439\u0442 \u0441\u0440\u0431 \u0443\u043A\u0440 \u10D2\u10D4 \u0570\u0561\u0575 \u05D9\u05E9\u05E8\u05D0\u05DC \u05E7\u05D5\u05DD \u0627\u0628\u0648\u0638\u0628\u064A \u0627\u062A\u0635\u0627\u0644\u0627\u062A \u0627\u0631\u0627\u0645\u0643\u0648 \u0627\u0644\u0627\u0631\u062F\u0646 \u0627\u0644\u0628\u062D\u0631\u064A\u0646 \u0627\u0644\u062C\u0632\u0627\u0626\u0631 \u0627\u0644\u0633\u0639\u0648\u062F\u064A\u0629 \u0627\u0644\u0639\u0644\u064A\u0627\u0646 \u0627\u0644\u0645\u063A\u0631\u0628 \u0627\u0645\u0627\u0631\u0627\u062A \u0627\u06CC\u0631\u0627\u0646 \u0628\u0627\u0631\u062A \u0628\u0627\u0632\u0627\u0631 \u0628\u06BE\u0627\u0631\u062A \u0628\u064A\u062A\u0643 \u067E\u0627\u06A9\u0633\u062A\u0627\u0646 \u0680\u0627\u0631\u062A \u062A\u0648\u0646\u0633 \u0633\u0648\u062F\u0627\u0646 \u0633\u0648\u0631\u064A\u0629 \u0634\u0628\u0643\u0629 \u0639\u0631\u0627\u0642 \u0639\u0631\u0628 \u0639\u0645\u0627\u0646 \u0641\u0644\u0633\u0637\u064A\u0646 \u0642\u0637\u0631 \u0643\u0627\u062B\u0648\u0644\u064A\u0643 \u0643\u0648\u0645 \u0645\u0635\u0631 \u0645\u0644\u064A\u0633\u064A\u0627 \u0645\u0648\u0631\u064A\u062A\u0627\u0646\u064A\u0627 \u0645\u0648\u0642\u0639 \u0647\u0645\u0631\u0627\u0647 \u0915\u0949\u092E \u0928\u0947\u091F \u092D\u093E\u0930\u0924 \u092D\u093E\u0930\u0924\u092E\u094D \u092D\u093E\u0930\u094B\u0924 \u0938\u0902\u0917\u0920\u0928 \u09AC\u09BE\u0982\u09B2\u09BE \u09AD\u09BE\u09B0\u09A4 \u09AD\u09BE\u09F0\u09A4 \u0A2D\u0A3E\u0A30\u0A24 \u0AAD\u0ABE\u0AB0\u0AA4 \u0B2D\u0B3E\u0B30\u0B24 \u0B87\u0BA8\u0BCD\u0BA4\u0BBF\u0BAF\u0BBE \u0B87\u0BB2\u0B99\u0BCD\u0B95\u0BC8 \u0B9A\u0BBF\u0B99\u0BCD\u0B95\u0BAA\u0BCD\u0BAA\u0BC2\u0BB0\u0BCD \u0C2D\u0C3E\u0C30\u0C24\u0C4D \u0CAD\u0CBE\u0CB0\u0CA4 \u0D2D\u0D3E\u0D30\u0D24\u0D02 \u0DBD\u0D82\u0D9A\u0DCF \u0E04\u0E2D\u0E21 \u0E44\u0E17\u0E22 \u0EA5\u0EB2\u0EA7 \uB2F7\uB137 \uB2F7\uCEF4 \uC0BC\uC131 \uD55C\uAD6D \u30A2\u30DE\u30BE\u30F3 \u30B0\u30FC\u30B0\u30EB \u30AF\u30E9\u30A6\u30C9 \u30B3\u30E0 \u30B9\u30C8\u30A2 \u30BB\u30FC\u30EB \u30D5\u30A1\u30C3\u30B7\u30E7\u30F3 \u30DD\u30A4\u30F3\u30C8 \u307F\u3093\u306A \u4E16\u754C \u4E2D\u4FE1 \u4E2D\u56FD \u4E2D\u570B \u4E2D\u6587\u7F51 \u4E9A\u9A6C\u900A \u4F01\u4E1A \u4F5B\u5C71 \u4FE1\u606F \u5065\u5EB7 \u516B\u5366 \u516C\u53F8 \u516C\u76CA \u53F0\u6E7E \u53F0\u7063 \u5546\u57CE \u5546\u5E97 \u5546\u6807 \u5609\u91CC \u5609\u91CC\u5927\u9152\u5E97 \u5728\u7EBF \u5927\u4F17\u6C7D\u8F66 \u5927\u62FF \u5929\u4E3B\u6559 \u5A31\u4E50 \u5BB6\u96FB \u5E7F\u4E1C \u5FAE\u535A \u6148\u5584 \u6211\u7231\u4F60 \u624B\u673A \u62DB\u8058 \u653F\u52A1 \u653F\u5E9C \u65B0\u52A0\u5761 \u65B0\u95FB \u65F6\u5C1A \u66F8\u7C4D \u673A\u6784 \u6DE1\u9A6C\u9521 \u6E38\u620F \u6FB3\u9580 \u70B9\u770B \u79FB\u52A8 \u7EC4\u7EC7\u673A\u6784 \u7F51\u5740 \u7F51\u5E97 \u7F51\u7AD9 \u7F51\u7EDC \u8054\u901A \u8BFA\u57FA\u4E9A \u8C37\u6B4C \u8D2D\u7269 \u901A\u8CA9 \u96C6\u56E2 \u96FB\u8A0A\u76C8\u79D1 \u98DE\u5229\u6D66 \u98DF\u54C1 \u9910\u5385 \u9999\u683C\u91CC\u62C9 \u9999\u6E2F".split(" ");
+var $410e7a787f87a2b4$var$tlds = "aaa aarp abarth abb abbott abbvie abc able abogado abudhabi ac academy accenture accountant accountants aco actor ad adac ads adult ae aeg aero aetna af afamilycompany afl africa ag agakhan agency ai aig airbus airforce airtel akdn al alfaromeo alibaba alipay allfinanz allstate ally alsace alstom am amazon americanexpress americanfamily amex amfam amica amsterdam analytics android anquan anz ao aol apartments app apple aq aquarelle ar arab aramco archi army arpa art arte as asda asia associates at athleta attorney au auction audi audible audio auspost author auto autos avianca aw aws ax axa az azure ba baby baidu banamex bananarepublic band bank bar barcelona barclaycard barclays barefoot bargains baseball basketball bauhaus bayern bb bbc bbt bbva bcg bcn bd be beats beauty beer bentley berlin best bestbuy bet bf bg bh bharti bi bible bid bike bing bingo bio biz bj black blackfriday blockbuster blog bloomberg blue bm bms bmw bn bnpparibas bo boats boehringer bofa bom bond boo book booking bosch bostik boston bot boutique box br bradesco bridgestone broadway broker brother brussels bs bt budapest bugatti build builders business buy buzz bv bw by bz bzh ca cab cafe cal call calvinklein cam camera camp cancerresearch canon capetown capital capitalone car caravan cards care career careers cars casa case cash casino cat catering catholic cba cbn cbre cbs cc cd center ceo cern cf cfa cfd cg ch chanel channel charity chase chat cheap chintai christmas chrome church ci cipriani circle cisco citadel citi citic city cityeats ck cl claims cleaning click clinic clinique clothing cloud club clubmed cm cn co coach codes coffee college cologne com comcast commbank community company compare computer comsec condos construction consulting contact contractors cooking cookingchannel cool coop corsica country coupon coupons courses cpa cr credit creditcard creditunion cricket crown crs cruise cruises csc cu cuisinella cv cw cx cy cymru cyou cz dabur dad dance data date dating datsun day dclk dds de deal dealer deals degree delivery dell deloitte delta democrat dental dentist desi design dev dhl diamonds diet digital direct directory discount discover dish diy dj dk dm dnp do docs doctor dog domains dot download drive dtv dubai duck dunlop dupont durban dvag dvr dz earth eat ec eco edeka edu education ee eg email emerck energy engineer engineering enterprises epson equipment er ericsson erni es esq estate et etisalat eu eurovision eus events exchange expert exposed express extraspace fage fail fairwinds faith family fan fans farm farmers fashion fast fedex feedback ferrari ferrero fi fiat fidelity fido film final finance financial fire firestone firmdale fish fishing fit fitness fj fk flickr flights flir florist flowers fly fm fo foo food foodnetwork football ford forex forsale forum foundation fox fr free fresenius frl frogans frontdoor frontier ftr fujitsu fujixerox fun fund furniture futbol fyi ga gal gallery gallo gallup game games gap garden gay gb gbiz gd gdn ge gea gent genting george gf gg ggee gh gi gift gifts gives giving gl glade glass gle global globo gm gmail gmbh gmo gmx gn godaddy gold goldpoint golf goo goodyear goog google gop got gov gp gq gr grainger graphics gratis green gripe grocery group gs gt gu guardian gucci guge guide guitars guru gw gy hair hamburg hangout haus hbo hdfc hdfcbank health healthcare help helsinki here hermes hgtv hiphop hisamitsu hitachi hiv hk hkt hm hn hockey holdings holiday homedepot homegoods homes homesense honda horse hospital host hosting hot hoteles hotels hotmail house how hr hsbc ht hu hughes hyatt hyundai ibm icbc ice icu id ie ieee ifm ikano il im imamat imdb immo immobilien in inc industries infiniti info ing ink institute insurance insure int international intuit investments io ipiranga iq ir irish is ismaili ist istanbul it itau itv iveco jaguar java jcb je jeep jetzt jewelry jio jll jm jmp jnj jo jobs joburg jot joy jp jpmorgan jprs juegos juniper kaufen kddi ke kerryhotels kerrylogistics kerryproperties kfh kg kh ki kia kim kinder kindle kitchen kiwi km kn koeln komatsu kosher kp kpmg kpn kr krd kred kuokgroup kw ky kyoto kz la lacaixa lamborghini lamer lancaster lancia land landrover lanxess lasalle lat latino latrobe law lawyer lb lc lds lease leclerc lefrak legal lego lexus lgbt li lidl life lifeinsurance lifestyle lighting like lilly limited limo lincoln linde link lipsy live living lixil lk llc llp loan loans locker locus loft lol london lotte lotto love lpl lplfinancial lr ls lt ltd ltda lu lundbeck luxe luxury lv ly ma macys madrid maif maison makeup man management mango map market marketing markets marriott marshalls maserati mattel mba mc mckinsey md me med media meet melbourne meme memorial men menu merckmsd mg mh miami microsoft mil mini mint mit mitsubishi mk ml mlb mls mm mma mn mo mobi mobile moda moe moi mom monash money monster mormon mortgage moscow moto motorcycles mov movie mp mq mr ms msd mt mtn mtr mu museum mutual mv mw mx my mz na nab nagoya name nationwide natura navy nba nc ne nec net netbank netflix network neustar new news next nextdirect nexus nf nfl ng ngo nhk ni nico nike nikon ninja nissan nissay nl no nokia northwesternmutual norton now nowruz nowtv np nr nra nrw ntt nu nyc nz obi observer off office okinawa olayan olayangroup oldnavy ollo om omega one ong onl online onyourside ooo open oracle orange org organic origins osaka otsuka ott ovh pa page panasonic paris pars partners parts party passagens pay pccw pe pet pf pfizer pg ph pharmacy phd philips phone photo photography photos physio pics pictet pictures pid pin ping pink pioneer pizza pk pl place play playstation plumbing plus pm pn pnc pohl poker politie porn post pr pramerica praxi press prime pro prod productions prof progressive promo properties property protection pru prudential ps pt pub pw pwc py qa qpon quebec quest qvc racing radio raid re read realestate realtor realty recipes red redstone redumbrella rehab reise reisen reit reliance ren rent rentals repair report republican rest restaurant review reviews rexroth rich richardli ricoh ril rio rip rmit ro rocher rocks rodeo rogers room rs rsvp ru rugby ruhr run rw rwe ryukyu sa saarland safe safety sakura sale salon samsclub samsung sandvik sandvikcoromant sanofi sap sarl sas save saxo sb sbi sbs sc sca scb schaeffler schmidt scholarships school schule schwarz science scjohnson scot sd se search seat secure security seek select sener services ses seven sew sex sexy sfr sg sh shangrila sharp shaw shell shia shiksha shoes shop shopping shouji show showtime si silk sina singles site sj sk ski skin sky skype sl sling sm smart smile sn sncf so soccer social softbank software sohu solar solutions song sony soy spa space sport spot spreadbetting sr srl ss st stada staples star statebank statefarm stc stcgroup stockholm storage store stream studio study style su sucks supplies supply support surf surgery suzuki sv swatch swiftcover swiss sx sy sydney systems sz tab taipei talk taobao target tatamotors tatar tattoo tax taxi tc tci td tdk team tech technology tel temasek tennis teva tf tg th thd theater theatre tiaa tickets tienda tiffany tips tires tirol tj tjmaxx tjx tk tkmaxx tl tm tmall tn to today tokyo tools top toray toshiba total tours town toyota toys tr trade trading training travel travelchannel travelers travelersinsurance trust trv tt tube tui tunes tushu tv tvs tw tz ua ubank ubs ug uk unicom university uno uol ups us uy uz va vacations vana vanguard vc ve vegas ventures verisign versicherung vet vg vi viajes video vig viking villas vin vip virgin visa vision viva vivo vlaanderen vn vodka volkswagen volvo vote voting voto voyage vu vuelos wales walmart walter wang wanggou watch watches weather weatherchannel webcam weber website wed wedding weibo weir wf whoswho wien wiki williamhill win windows wine winners wme wolterskluwer woodside work works world wow ws wtc wtf xbox xerox xfinity xihuan xin xxx xyz yachts yahoo yamaxun yandex ye yodobashi yoga yokohama you youtube yt yun za zappos zara zero zip zm zone zuerich zw verm\xf6gensberater-ctb verm\xf6gensberatung-pwb \u03B5\u03BB \u03B5\u03C5 \u0431\u0433 \u0431\u0435\u043B \u0434\u0435\u0442\u0438 \u0435\u044E \u043A\u0430\u0442\u043E\u043B\u0438\u043A \u043A\u043E\u043C \u049B\u0430\u0437 \u043C\u043A\u0434 \u043C\u043E\u043D \u043C\u043E\u0441\u043A\u0432\u0430 \u043E\u043D\u043B\u0430\u0439\u043D \u043E\u0440\u0433 \u0440\u0443\u0441 \u0440\u0444 \u0441\u0430\u0439\u0442 \u0441\u0440\u0431 \u0443\u043A\u0440 \u10D2\u10D4 \u0570\u0561\u0575 \u05D9\u05E9\u05E8\u05D0\u05DC \u05E7\u05D5\u05DD \u0627\u0628\u0648\u0638\u0628\u064A \u0627\u062A\u0635\u0627\u0644\u0627\u062A \u0627\u0631\u0627\u0645\u0643\u0648 \u0627\u0644\u0627\u0631\u062F\u0646 \u0627\u0644\u0628\u062D\u0631\u064A\u0646 \u0627\u0644\u062C\u0632\u0627\u0626\u0631 \u0627\u0644\u0633\u0639\u0648\u062F\u064A\u0629 \u0627\u0644\u0639\u0644\u064A\u0627\u0646 \u0627\u0644\u0645\u063A\u0631\u0628 \u0627\u0645\u0627\u0631\u0627\u062A \u0627\u06CC\u0631\u0627\u0646 \u0628\u0627\u0631\u062A \u0628\u0627\u0632\u0627\u0631 \u0628\u06BE\u0627\u0631\u062A \u0628\u064A\u062A\u0643 \u067E\u0627\u06A9\u0633\u062A\u0627\u0646 \u0680\u0627\u0631\u062A \u062A\u0648\u0646\u0633 \u0633\u0648\u062F\u0627\u0646 \u0633\u0648\u0631\u064A\u0629 \u0634\u0628\u0643\u0629 \u0639\u0631\u0627\u0642 \u0639\u0631\u0628 \u0639\u0645\u0627\u0646 \u0641\u0644\u0633\u0637\u064A\u0646 \u0642\u0637\u0631 \u0643\u0627\u062B\u0648\u0644\u064A\u0643 \u0643\u0648\u0645 \u0645\u0635\u0631 \u0645\u0644\u064A\u0633\u064A\u0627 \u0645\u0648\u0631\u064A\u062A\u0627\u0646\u064A\u0627 \u0645\u0648\u0642\u0639 \u0647\u0645\u0631\u0627\u0647 \u0915\u0949\u092E \u0928\u0947\u091F \u092D\u093E\u0930\u0924 \u092D\u093E\u0930\u0924\u092E\u094D \u092D\u093E\u0930\u094B\u0924 \u0938\u0902\u0917\u0920\u0928 \u09AC\u09BE\u0982\u09B2\u09BE \u09AD\u09BE\u09B0\u09A4 \u09AD\u09BE\u09F0\u09A4 \u0A2D\u0A3E\u0A30\u0A24 \u0AAD\u0ABE\u0AB0\u0AA4 \u0B2D\u0B3E\u0B30\u0B24 \u0B87\u0BA8\u0BCD\u0BA4\u0BBF\u0BAF\u0BBE \u0B87\u0BB2\u0B99\u0BCD\u0B95\u0BC8 \u0B9A\u0BBF\u0B99\u0BCD\u0B95\u0BAA\u0BCD\u0BAA\u0BC2\u0BB0\u0BCD \u0C2D\u0C3E\u0C30\u0C24\u0C4D \u0CAD\u0CBE\u0CB0\u0CA4 \u0D2D\u0D3E\u0D30\u0D24\u0D02 \u0DBD\u0D82\u0D9A\u0DCF \u0E04\u0E2D\u0E21 \u0E44\u0E17\u0E22 \u0EA5\u0EB2\u0EA7 \uB2F7\uB137 \uB2F7\uCEF4 \uC0BC\uC131 \uD55C\uAD6D \u30A2\u30DE\u30BE\u30F3 \u30B0\u30FC\u30B0\u30EB \u30AF\u30E9\u30A6\u30C9 \u30B3\u30E0 \u30B9\u30C8\u30A2 \u30BB\u30FC\u30EB \u30D5\u30A1\u30C3\u30B7\u30E7\u30F3 \u30DD\u30A4\u30F3\u30C8 \u307F\u3093\u306A \u4E16\u754C \u4E2D\u4FE1 \u4E2D\u56FD \u4E2D\u570B \u4E2D\u6587\u7F51 \u4E9A\u9A6C\u900A \u4F01\u4E1A \u4F5B\u5C71 \u4FE1\u606F \u5065\u5EB7 \u516B\u5366 \u516C\u53F8 \u516C\u76CA \u53F0\u6E7E \u53F0\u7063 \u5546\u57CE \u5546\u5E97 \u5546\u6807 \u5609\u91CC \u5609\u91CC\u5927\u9152\u5E97 \u5728\u7EBF \u5927\u4F17\u6C7D\u8F66 \u5927\u62FF \u5929\u4E3B\u6559 \u5A31\u4E50 \u5BB6\u96FB \u5E7F\u4E1C \u5FAE\u535A \u6148\u5584 \u6211\u7231\u4F60 \u624B\u673A \u62DB\u8058 \u653F\u52A1 \u653F\u5E9C \u65B0\u52A0\u5761 \u65B0\u95FB \u65F6\u5C1A \u66F8\u7C4D \u673A\u6784 \u6DE1\u9A6C\u9521 \u6E38\u620F \u6FB3\u9580 \u70B9\u770B \u79FB\u52A8 \u7EC4\u7EC7\u673A\u6784 \u7F51\u5740 \u7F51\u5E97 \u7F51\u7AD9 \u7F51\u7EDC \u8054\u901A \u8BFA\u57FA\u4E9A \u8C37\u6B4C \u8D2D\u7269 \u901A\u8CA9 \u96C6\u56E2 \u96FB\u8A0A\u76C8\u79D1 \u98DE\u5229\u6D66 \u98DF\u54C1 \u9910\u5385 \u9999\u683C\u91CC\u62C9 \u9999\u6E2F".split(" ");
 /**
 	The scanner provides an interface that takes a string of text as input, and
 	outputs an array of tokens instances that can be used for easy URL parsing.
@@ -19843,42 +19844,42 @@ var $a06d5a398bbbfd36$var$tlds = "aaa aarp abarth abb abbott abbvie abc able abo
 	@module linkify
 	@submodule scanner
 	@main scanner
-*/ var $a06d5a398bbbfd36$var$LETTER = /(?:[A-Za-z\xAA\xB5\xBA\xC0-\xD6\xD8-\xF6\xF8-\u02C1\u02C6-\u02D1\u02E0-\u02E4\u02EC\u02EE\u0370-\u0374\u0376\u0377\u037A-\u037D\u037F\u0386\u0388-\u038A\u038C\u038E-\u03A1\u03A3-\u03F5\u03F7-\u0481\u048A-\u052F\u0531-\u0556\u0559\u0560-\u0588\u05D0-\u05EA\u05EF-\u05F2\u0620-\u064A\u066E\u066F\u0671-\u06D3\u06D5\u06E5\u06E6\u06EE\u06EF\u06FA-\u06FC\u06FF\u0710\u0712-\u072F\u074D-\u07A5\u07B1\u07CA-\u07EA\u07F4\u07F5\u07FA\u0800-\u0815\u081A\u0824\u0828\u0840-\u0858\u0860-\u086A\u0870-\u0887\u0889-\u088E\u08A0-\u08C9\u0904-\u0939\u093D\u0950\u0958-\u0961\u0971-\u0980\u0985-\u098C\u098F\u0990\u0993-\u09A8\u09AA-\u09B0\u09B2\u09B6-\u09B9\u09BD\u09CE\u09DC\u09DD\u09DF-\u09E1\u09F0\u09F1\u09FC\u0A05-\u0A0A\u0A0F\u0A10\u0A13-\u0A28\u0A2A-\u0A30\u0A32\u0A33\u0A35\u0A36\u0A38\u0A39\u0A59-\u0A5C\u0A5E\u0A72-\u0A74\u0A85-\u0A8D\u0A8F-\u0A91\u0A93-\u0AA8\u0AAA-\u0AB0\u0AB2\u0AB3\u0AB5-\u0AB9\u0ABD\u0AD0\u0AE0\u0AE1\u0AF9\u0B05-\u0B0C\u0B0F\u0B10\u0B13-\u0B28\u0B2A-\u0B30\u0B32\u0B33\u0B35-\u0B39\u0B3D\u0B5C\u0B5D\u0B5F-\u0B61\u0B71\u0B83\u0B85-\u0B8A\u0B8E-\u0B90\u0B92-\u0B95\u0B99\u0B9A\u0B9C\u0B9E\u0B9F\u0BA3\u0BA4\u0BA8-\u0BAA\u0BAE-\u0BB9\u0BD0\u0C05-\u0C0C\u0C0E-\u0C10\u0C12-\u0C28\u0C2A-\u0C39\u0C3D\u0C58-\u0C5A\u0C5D\u0C60\u0C61\u0C80\u0C85-\u0C8C\u0C8E-\u0C90\u0C92-\u0CA8\u0CAA-\u0CB3\u0CB5-\u0CB9\u0CBD\u0CDD\u0CDE\u0CE0\u0CE1\u0CF1\u0CF2\u0D04-\u0D0C\u0D0E-\u0D10\u0D12-\u0D3A\u0D3D\u0D4E\u0D54-\u0D56\u0D5F-\u0D61\u0D7A-\u0D7F\u0D85-\u0D96\u0D9A-\u0DB1\u0DB3-\u0DBB\u0DBD\u0DC0-\u0DC6\u0E01-\u0E30\u0E32\u0E33\u0E40-\u0E46\u0E81\u0E82\u0E84\u0E86-\u0E8A\u0E8C-\u0EA3\u0EA5\u0EA7-\u0EB0\u0EB2\u0EB3\u0EBD\u0EC0-\u0EC4\u0EC6\u0EDC-\u0EDF\u0F00\u0F40-\u0F47\u0F49-\u0F6C\u0F88-\u0F8C\u1000-\u102A\u103F\u1050-\u1055\u105A-\u105D\u1061\u1065\u1066\u106E-\u1070\u1075-\u1081\u108E\u10A0-\u10C5\u10C7\u10CD\u10D0-\u10FA\u10FC-\u1248\u124A-\u124D\u1250-\u1256\u1258\u125A-\u125D\u1260-\u1288\u128A-\u128D\u1290-\u12B0\u12B2-\u12B5\u12B8-\u12BE\u12C0\u12C2-\u12C5\u12C8-\u12D6\u12D8-\u1310\u1312-\u1315\u1318-\u135A\u1380-\u138F\u13A0-\u13F5\u13F8-\u13FD\u1401-\u166C\u166F-\u167F\u1681-\u169A\u16A0-\u16EA\u16F1-\u16F8\u1700-\u1711\u171F-\u1731\u1740-\u1751\u1760-\u176C\u176E-\u1770\u1780-\u17B3\u17D7\u17DC\u1820-\u1878\u1880-\u1884\u1887-\u18A8\u18AA\u18B0-\u18F5\u1900-\u191E\u1950-\u196D\u1970-\u1974\u1980-\u19AB\u19B0-\u19C9\u1A00-\u1A16\u1A20-\u1A54\u1AA7\u1B05-\u1B33\u1B45-\u1B4C\u1B83-\u1BA0\u1BAE\u1BAF\u1BBA-\u1BE5\u1C00-\u1C23\u1C4D-\u1C4F\u1C5A-\u1C7D\u1C80-\u1C88\u1C90-\u1CBA\u1CBD-\u1CBF\u1CE9-\u1CEC\u1CEE-\u1CF3\u1CF5\u1CF6\u1CFA\u1D00-\u1DBF\u1E00-\u1F15\u1F18-\u1F1D\u1F20-\u1F45\u1F48-\u1F4D\u1F50-\u1F57\u1F59\u1F5B\u1F5D\u1F5F-\u1F7D\u1F80-\u1FB4\u1FB6-\u1FBC\u1FBE\u1FC2-\u1FC4\u1FC6-\u1FCC\u1FD0-\u1FD3\u1FD6-\u1FDB\u1FE0-\u1FEC\u1FF2-\u1FF4\u1FF6-\u1FFC\u2071\u207F\u2090-\u209C\u2102\u2107\u210A-\u2113\u2115\u2119-\u211D\u2124\u2126\u2128\u212A-\u212D\u212F-\u2139\u213C-\u213F\u2145-\u2149\u214E\u2183\u2184\u2C00-\u2CE4\u2CEB-\u2CEE\u2CF2\u2CF3\u2D00-\u2D25\u2D27\u2D2D\u2D30-\u2D67\u2D6F\u2D80-\u2D96\u2DA0-\u2DA6\u2DA8-\u2DAE\u2DB0-\u2DB6\u2DB8-\u2DBE\u2DC0-\u2DC6\u2DC8-\u2DCE\u2DD0-\u2DD6\u2DD8-\u2DDE\u2E2F\u3005\u3006\u3031-\u3035\u303B\u303C\u3041-\u3096\u309D-\u309F\u30A1-\u30FA\u30FC-\u30FF\u3105-\u312F\u3131-\u318E\u31A0-\u31BF\u31F0-\u31FF\u3400-\u4DBF\u4E00-\uA48C\uA4D0-\uA4FD\uA500-\uA60C\uA610-\uA61F\uA62A\uA62B\uA640-\uA66E\uA67F-\uA69D\uA6A0-\uA6E5\uA717-\uA71F\uA722-\uA788\uA78B-\uA7CA\uA7D0\uA7D1\uA7D3\uA7D5-\uA7D9\uA7F2-\uA801\uA803-\uA805\uA807-\uA80A\uA80C-\uA822\uA840-\uA873\uA882-\uA8B3\uA8F2-\uA8F7\uA8FB\uA8FD\uA8FE\uA90A-\uA925\uA930-\uA946\uA960-\uA97C\uA984-\uA9B2\uA9CF\uA9E0-\uA9E4\uA9E6-\uA9EF\uA9FA-\uA9FE\uAA00-\uAA28\uAA40-\uAA42\uAA44-\uAA4B\uAA60-\uAA76\uAA7A\uAA7E-\uAAAF\uAAB1\uAAB5\uAAB6\uAAB9-\uAABD\uAAC0\uAAC2\uAADB-\uAADD\uAAE0-\uAAEA\uAAF2-\uAAF4\uAB01-\uAB06\uAB09-\uAB0E\uAB11-\uAB16\uAB20-\uAB26\uAB28-\uAB2E\uAB30-\uAB5A\uAB5C-\uAB69\uAB70-\uABE2\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\uF900-\uFA6D\uFA70-\uFAD9\uFB00-\uFB06\uFB13-\uFB17\uFB1D\uFB1F-\uFB28\uFB2A-\uFB36\uFB38-\uFB3C\uFB3E\uFB40\uFB41\uFB43\uFB44\uFB46-\uFBB1\uFBD3-\uFD3D\uFD50-\uFD8F\uFD92-\uFDC7\uFDF0-\uFDFB\uFE70-\uFE74\uFE76-\uFEFC\uFF21-\uFF3A\uFF41-\uFF5A\uFF66-\uFFBE\uFFC2-\uFFC7\uFFCA-\uFFCF\uFFD2-\uFFD7\uFFDA-\uFFDC]|\uD800[\uDC00-\uDC0B\uDC0D-\uDC26\uDC28-\uDC3A\uDC3C\uDC3D\uDC3F-\uDC4D\uDC50-\uDC5D\uDC80-\uDCFA\uDE80-\uDE9C\uDEA0-\uDED0\uDF00-\uDF1F\uDF2D-\uDF40\uDF42-\uDF49\uDF50-\uDF75\uDF80-\uDF9D\uDFA0-\uDFC3\uDFC8-\uDFCF]|\uD801[\uDC00-\uDC9D\uDCB0-\uDCD3\uDCD8-\uDCFB\uDD00-\uDD27\uDD30-\uDD63\uDD70-\uDD7A\uDD7C-\uDD8A\uDD8C-\uDD92\uDD94\uDD95\uDD97-\uDDA1\uDDA3-\uDDB1\uDDB3-\uDDB9\uDDBB\uDDBC\uDE00-\uDF36\uDF40-\uDF55\uDF60-\uDF67\uDF80-\uDF85\uDF87-\uDFB0\uDFB2-\uDFBA]|\uD802[\uDC00-\uDC05\uDC08\uDC0A-\uDC35\uDC37\uDC38\uDC3C\uDC3F-\uDC55\uDC60-\uDC76\uDC80-\uDC9E\uDCE0-\uDCF2\uDCF4\uDCF5\uDD00-\uDD15\uDD20-\uDD39\uDD80-\uDDB7\uDDBE\uDDBF\uDE00\uDE10-\uDE13\uDE15-\uDE17\uDE19-\uDE35\uDE60-\uDE7C\uDE80-\uDE9C\uDEC0-\uDEC7\uDEC9-\uDEE4\uDF00-\uDF35\uDF40-\uDF55\uDF60-\uDF72\uDF80-\uDF91]|\uD803[\uDC00-\uDC48\uDC80-\uDCB2\uDCC0-\uDCF2\uDD00-\uDD23\uDE80-\uDEA9\uDEB0\uDEB1\uDF00-\uDF1C\uDF27\uDF30-\uDF45\uDF70-\uDF81\uDFB0-\uDFC4\uDFE0-\uDFF6]|\uD804[\uDC03-\uDC37\uDC71\uDC72\uDC75\uDC83-\uDCAF\uDCD0-\uDCE8\uDD03-\uDD26\uDD44\uDD47\uDD50-\uDD72\uDD76\uDD83-\uDDB2\uDDC1-\uDDC4\uDDDA\uDDDC\uDE00-\uDE11\uDE13-\uDE2B\uDE80-\uDE86\uDE88\uDE8A-\uDE8D\uDE8F-\uDE9D\uDE9F-\uDEA8\uDEB0-\uDEDE\uDF05-\uDF0C\uDF0F\uDF10\uDF13-\uDF28\uDF2A-\uDF30\uDF32\uDF33\uDF35-\uDF39\uDF3D\uDF50\uDF5D-\uDF61]|\uD805[\uDC00-\uDC34\uDC47-\uDC4A\uDC5F-\uDC61\uDC80-\uDCAF\uDCC4\uDCC5\uDCC7\uDD80-\uDDAE\uDDD8-\uDDDB\uDE00-\uDE2F\uDE44\uDE80-\uDEAA\uDEB8\uDF00-\uDF1A\uDF40-\uDF46]|\uD806[\uDC00-\uDC2B\uDCA0-\uDCDF\uDCFF-\uDD06\uDD09\uDD0C-\uDD13\uDD15\uDD16\uDD18-\uDD2F\uDD3F\uDD41\uDDA0-\uDDA7\uDDAA-\uDDD0\uDDE1\uDDE3\uDE00\uDE0B-\uDE32\uDE3A\uDE50\uDE5C-\uDE89\uDE9D\uDEB0-\uDEF8]|\uD807[\uDC00-\uDC08\uDC0A-\uDC2E\uDC40\uDC72-\uDC8F\uDD00-\uDD06\uDD08\uDD09\uDD0B-\uDD30\uDD46\uDD60-\uDD65\uDD67\uDD68\uDD6A-\uDD89\uDD98\uDEE0-\uDEF2\uDFB0]|\uD808[\uDC00-\uDF99]|\uD809[\uDC80-\uDD43]|\uD80B[\uDF90-\uDFF0]|[\uD80C\uD81C-\uD820\uD822\uD840-\uD868\uD86A-\uD86C\uD86F-\uD872\uD874-\uD879\uD880-\uD883][\uDC00-\uDFFF]|\uD80D[\uDC00-\uDC2E]|\uD811[\uDC00-\uDE46]|\uD81A[\uDC00-\uDE38\uDE40-\uDE5E\uDE70-\uDEBE\uDED0-\uDEED\uDF00-\uDF2F\uDF40-\uDF43\uDF63-\uDF77\uDF7D-\uDF8F]|\uD81B[\uDE40-\uDE7F\uDF00-\uDF4A\uDF50\uDF93-\uDF9F\uDFE0\uDFE1\uDFE3]|\uD821[\uDC00-\uDFF7]|\uD823[\uDC00-\uDCD5\uDD00-\uDD08]|\uD82B[\uDFF0-\uDFF3\uDFF5-\uDFFB\uDFFD\uDFFE]|\uD82C[\uDC00-\uDD22\uDD50-\uDD52\uDD64-\uDD67\uDD70-\uDEFB]|\uD82F[\uDC00-\uDC6A\uDC70-\uDC7C\uDC80-\uDC88\uDC90-\uDC99]|\uD835[\uDC00-\uDC54\uDC56-\uDC9C\uDC9E\uDC9F\uDCA2\uDCA5\uDCA6\uDCA9-\uDCAC\uDCAE-\uDCB9\uDCBB\uDCBD-\uDCC3\uDCC5-\uDD05\uDD07-\uDD0A\uDD0D-\uDD14\uDD16-\uDD1C\uDD1E-\uDD39\uDD3B-\uDD3E\uDD40-\uDD44\uDD46\uDD4A-\uDD50\uDD52-\uDEA5\uDEA8-\uDEC0\uDEC2-\uDEDA\uDEDC-\uDEFA\uDEFC-\uDF14\uDF16-\uDF34\uDF36-\uDF4E\uDF50-\uDF6E\uDF70-\uDF88\uDF8A-\uDFA8\uDFAA-\uDFC2\uDFC4-\uDFCB]|\uD837[\uDF00-\uDF1E]|\uD838[\uDD00-\uDD2C\uDD37-\uDD3D\uDD4E\uDE90-\uDEAD\uDEC0-\uDEEB]|\uD839[\uDFE0-\uDFE6\uDFE8-\uDFEB\uDFED\uDFEE\uDFF0-\uDFFE]|\uD83A[\uDC00-\uDCC4\uDD00-\uDD43\uDD4B]|\uD83B[\uDE00-\uDE03\uDE05-\uDE1F\uDE21\uDE22\uDE24\uDE27\uDE29-\uDE32\uDE34-\uDE37\uDE39\uDE3B\uDE42\uDE47\uDE49\uDE4B\uDE4D-\uDE4F\uDE51\uDE52\uDE54\uDE57\uDE59\uDE5B\uDE5D\uDE5F\uDE61\uDE62\uDE64\uDE67-\uDE6A\uDE6C-\uDE72\uDE74-\uDE77\uDE79-\uDE7C\uDE7E\uDE80-\uDE89\uDE8B-\uDE9B\uDEA1-\uDEA3\uDEA5-\uDEA9\uDEAB-\uDEBB]|\uD869[\uDC00-\uDEDF\uDF00-\uDFFF]|\uD86D[\uDC00-\uDF38\uDF40-\uDFFF]|\uD86E[\uDC00-\uDC1D\uDC20-\uDFFF]|\uD873[\uDC00-\uDEA1\uDEB0-\uDFFF]|\uD87A[\uDC00-\uDFE0]|\uD87E[\uDC00-\uDE1D]|\uD884[\uDC00-\uDF4A])/; // Any Unicode character with letter data type
-var $a06d5a398bbbfd36$var$EMOJI = /(?:[#\*0-9\xA9\xAE\u203C\u2049\u2122\u2139\u2194-\u2199\u21A9\u21AA\u231A\u231B\u2328\u23CF\u23E9-\u23F3\u23F8-\u23FA\u24C2\u25AA\u25AB\u25B6\u25C0\u25FB-\u25FE\u2600-\u2604\u260E\u2611\u2614\u2615\u2618\u261D\u2620\u2622\u2623\u2626\u262A\u262E\u262F\u2638-\u263A\u2640\u2642\u2648-\u2653\u265F\u2660\u2663\u2665\u2666\u2668\u267B\u267E\u267F\u2692-\u2697\u2699\u269B\u269C\u26A0\u26A1\u26A7\u26AA\u26AB\u26B0\u26B1\u26BD\u26BE\u26C4\u26C5\u26C8\u26CE\u26CF\u26D1\u26D3\u26D4\u26E9\u26EA\u26F0-\u26F5\u26F7-\u26FA\u26FD\u2702\u2705\u2708-\u270D\u270F\u2712\u2714\u2716\u271D\u2721\u2728\u2733\u2734\u2744\u2747\u274C\u274E\u2753-\u2755\u2757\u2763\u2764\u2795-\u2797\u27A1\u27B0\u27BF\u2934\u2935\u2B05-\u2B07\u2B1B\u2B1C\u2B50\u2B55\u3030\u303D\u3297\u3299]|\uD83C[\uDC04\uDCCF\uDD70\uDD71\uDD7E\uDD7F\uDD8E\uDD91-\uDD9A\uDDE6-\uDDFF\uDE01\uDE02\uDE1A\uDE2F\uDE32-\uDE3A\uDE50\uDE51\uDF00-\uDF21\uDF24-\uDF93\uDF96\uDF97\uDF99-\uDF9B\uDF9E-\uDFF0\uDFF3-\uDFF5\uDFF7-\uDFFF]|\uD83D[\uDC00-\uDCFD\uDCFF-\uDD3D\uDD49-\uDD4E\uDD50-\uDD67\uDD6F\uDD70\uDD73-\uDD7A\uDD87\uDD8A-\uDD8D\uDD90\uDD95\uDD96\uDDA4\uDDA5\uDDA8\uDDB1\uDDB2\uDDBC\uDDC2-\uDDC4\uDDD1-\uDDD3\uDDDC-\uDDDE\uDDE1\uDDE3\uDDE8\uDDEF\uDDF3\uDDFA-\uDE4F\uDE80-\uDEC5\uDECB-\uDED2\uDED5-\uDED7\uDEDD-\uDEE5\uDEE9\uDEEB\uDEEC\uDEF0\uDEF3-\uDEFC\uDFE0-\uDFEB\uDFF0]|\uD83E[\uDD0C-\uDD3A\uDD3C-\uDD45\uDD47-\uDDFF\uDE70-\uDE74\uDE78-\uDE7C\uDE80-\uDE86\uDE90-\uDEAC\uDEB0-\uDEBA\uDEC0-\uDEC5\uDED0-\uDED9\uDEE0-\uDEE7\uDEF0-\uDEF6])/; // Any Unicode emoji character
-var $a06d5a398bbbfd36$var$EMOJI_VARIATION = /\uFE0F/; // Variation selector, follows heart and others
-var $a06d5a398bbbfd36$var$DIGIT = /\d/;
-var $a06d5a398bbbfd36$var$SPACE = /\s/;
+*/ var $410e7a787f87a2b4$var$LETTER = /(?:[A-Za-z\xAA\xB5\xBA\xC0-\xD6\xD8-\xF6\xF8-\u02C1\u02C6-\u02D1\u02E0-\u02E4\u02EC\u02EE\u0370-\u0374\u0376\u0377\u037A-\u037D\u037F\u0386\u0388-\u038A\u038C\u038E-\u03A1\u03A3-\u03F5\u03F7-\u0481\u048A-\u052F\u0531-\u0556\u0559\u0560-\u0588\u05D0-\u05EA\u05EF-\u05F2\u0620-\u064A\u066E\u066F\u0671-\u06D3\u06D5\u06E5\u06E6\u06EE\u06EF\u06FA-\u06FC\u06FF\u0710\u0712-\u072F\u074D-\u07A5\u07B1\u07CA-\u07EA\u07F4\u07F5\u07FA\u0800-\u0815\u081A\u0824\u0828\u0840-\u0858\u0860-\u086A\u0870-\u0887\u0889-\u088E\u08A0-\u08C9\u0904-\u0939\u093D\u0950\u0958-\u0961\u0971-\u0980\u0985-\u098C\u098F\u0990\u0993-\u09A8\u09AA-\u09B0\u09B2\u09B6-\u09B9\u09BD\u09CE\u09DC\u09DD\u09DF-\u09E1\u09F0\u09F1\u09FC\u0A05-\u0A0A\u0A0F\u0A10\u0A13-\u0A28\u0A2A-\u0A30\u0A32\u0A33\u0A35\u0A36\u0A38\u0A39\u0A59-\u0A5C\u0A5E\u0A72-\u0A74\u0A85-\u0A8D\u0A8F-\u0A91\u0A93-\u0AA8\u0AAA-\u0AB0\u0AB2\u0AB3\u0AB5-\u0AB9\u0ABD\u0AD0\u0AE0\u0AE1\u0AF9\u0B05-\u0B0C\u0B0F\u0B10\u0B13-\u0B28\u0B2A-\u0B30\u0B32\u0B33\u0B35-\u0B39\u0B3D\u0B5C\u0B5D\u0B5F-\u0B61\u0B71\u0B83\u0B85-\u0B8A\u0B8E-\u0B90\u0B92-\u0B95\u0B99\u0B9A\u0B9C\u0B9E\u0B9F\u0BA3\u0BA4\u0BA8-\u0BAA\u0BAE-\u0BB9\u0BD0\u0C05-\u0C0C\u0C0E-\u0C10\u0C12-\u0C28\u0C2A-\u0C39\u0C3D\u0C58-\u0C5A\u0C5D\u0C60\u0C61\u0C80\u0C85-\u0C8C\u0C8E-\u0C90\u0C92-\u0CA8\u0CAA-\u0CB3\u0CB5-\u0CB9\u0CBD\u0CDD\u0CDE\u0CE0\u0CE1\u0CF1\u0CF2\u0D04-\u0D0C\u0D0E-\u0D10\u0D12-\u0D3A\u0D3D\u0D4E\u0D54-\u0D56\u0D5F-\u0D61\u0D7A-\u0D7F\u0D85-\u0D96\u0D9A-\u0DB1\u0DB3-\u0DBB\u0DBD\u0DC0-\u0DC6\u0E01-\u0E30\u0E32\u0E33\u0E40-\u0E46\u0E81\u0E82\u0E84\u0E86-\u0E8A\u0E8C-\u0EA3\u0EA5\u0EA7-\u0EB0\u0EB2\u0EB3\u0EBD\u0EC0-\u0EC4\u0EC6\u0EDC-\u0EDF\u0F00\u0F40-\u0F47\u0F49-\u0F6C\u0F88-\u0F8C\u1000-\u102A\u103F\u1050-\u1055\u105A-\u105D\u1061\u1065\u1066\u106E-\u1070\u1075-\u1081\u108E\u10A0-\u10C5\u10C7\u10CD\u10D0-\u10FA\u10FC-\u1248\u124A-\u124D\u1250-\u1256\u1258\u125A-\u125D\u1260-\u1288\u128A-\u128D\u1290-\u12B0\u12B2-\u12B5\u12B8-\u12BE\u12C0\u12C2-\u12C5\u12C8-\u12D6\u12D8-\u1310\u1312-\u1315\u1318-\u135A\u1380-\u138F\u13A0-\u13F5\u13F8-\u13FD\u1401-\u166C\u166F-\u167F\u1681-\u169A\u16A0-\u16EA\u16F1-\u16F8\u1700-\u1711\u171F-\u1731\u1740-\u1751\u1760-\u176C\u176E-\u1770\u1780-\u17B3\u17D7\u17DC\u1820-\u1878\u1880-\u1884\u1887-\u18A8\u18AA\u18B0-\u18F5\u1900-\u191E\u1950-\u196D\u1970-\u1974\u1980-\u19AB\u19B0-\u19C9\u1A00-\u1A16\u1A20-\u1A54\u1AA7\u1B05-\u1B33\u1B45-\u1B4C\u1B83-\u1BA0\u1BAE\u1BAF\u1BBA-\u1BE5\u1C00-\u1C23\u1C4D-\u1C4F\u1C5A-\u1C7D\u1C80-\u1C88\u1C90-\u1CBA\u1CBD-\u1CBF\u1CE9-\u1CEC\u1CEE-\u1CF3\u1CF5\u1CF6\u1CFA\u1D00-\u1DBF\u1E00-\u1F15\u1F18-\u1F1D\u1F20-\u1F45\u1F48-\u1F4D\u1F50-\u1F57\u1F59\u1F5B\u1F5D\u1F5F-\u1F7D\u1F80-\u1FB4\u1FB6-\u1FBC\u1FBE\u1FC2-\u1FC4\u1FC6-\u1FCC\u1FD0-\u1FD3\u1FD6-\u1FDB\u1FE0-\u1FEC\u1FF2-\u1FF4\u1FF6-\u1FFC\u2071\u207F\u2090-\u209C\u2102\u2107\u210A-\u2113\u2115\u2119-\u211D\u2124\u2126\u2128\u212A-\u212D\u212F-\u2139\u213C-\u213F\u2145-\u2149\u214E\u2183\u2184\u2C00-\u2CE4\u2CEB-\u2CEE\u2CF2\u2CF3\u2D00-\u2D25\u2D27\u2D2D\u2D30-\u2D67\u2D6F\u2D80-\u2D96\u2DA0-\u2DA6\u2DA8-\u2DAE\u2DB0-\u2DB6\u2DB8-\u2DBE\u2DC0-\u2DC6\u2DC8-\u2DCE\u2DD0-\u2DD6\u2DD8-\u2DDE\u2E2F\u3005\u3006\u3031-\u3035\u303B\u303C\u3041-\u3096\u309D-\u309F\u30A1-\u30FA\u30FC-\u30FF\u3105-\u312F\u3131-\u318E\u31A0-\u31BF\u31F0-\u31FF\u3400-\u4DBF\u4E00-\uA48C\uA4D0-\uA4FD\uA500-\uA60C\uA610-\uA61F\uA62A\uA62B\uA640-\uA66E\uA67F-\uA69D\uA6A0-\uA6E5\uA717-\uA71F\uA722-\uA788\uA78B-\uA7CA\uA7D0\uA7D1\uA7D3\uA7D5-\uA7D9\uA7F2-\uA801\uA803-\uA805\uA807-\uA80A\uA80C-\uA822\uA840-\uA873\uA882-\uA8B3\uA8F2-\uA8F7\uA8FB\uA8FD\uA8FE\uA90A-\uA925\uA930-\uA946\uA960-\uA97C\uA984-\uA9B2\uA9CF\uA9E0-\uA9E4\uA9E6-\uA9EF\uA9FA-\uA9FE\uAA00-\uAA28\uAA40-\uAA42\uAA44-\uAA4B\uAA60-\uAA76\uAA7A\uAA7E-\uAAAF\uAAB1\uAAB5\uAAB6\uAAB9-\uAABD\uAAC0\uAAC2\uAADB-\uAADD\uAAE0-\uAAEA\uAAF2-\uAAF4\uAB01-\uAB06\uAB09-\uAB0E\uAB11-\uAB16\uAB20-\uAB26\uAB28-\uAB2E\uAB30-\uAB5A\uAB5C-\uAB69\uAB70-\uABE2\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\uF900-\uFA6D\uFA70-\uFAD9\uFB00-\uFB06\uFB13-\uFB17\uFB1D\uFB1F-\uFB28\uFB2A-\uFB36\uFB38-\uFB3C\uFB3E\uFB40\uFB41\uFB43\uFB44\uFB46-\uFBB1\uFBD3-\uFD3D\uFD50-\uFD8F\uFD92-\uFDC7\uFDF0-\uFDFB\uFE70-\uFE74\uFE76-\uFEFC\uFF21-\uFF3A\uFF41-\uFF5A\uFF66-\uFFBE\uFFC2-\uFFC7\uFFCA-\uFFCF\uFFD2-\uFFD7\uFFDA-\uFFDC]|\uD800[\uDC00-\uDC0B\uDC0D-\uDC26\uDC28-\uDC3A\uDC3C\uDC3D\uDC3F-\uDC4D\uDC50-\uDC5D\uDC80-\uDCFA\uDE80-\uDE9C\uDEA0-\uDED0\uDF00-\uDF1F\uDF2D-\uDF40\uDF42-\uDF49\uDF50-\uDF75\uDF80-\uDF9D\uDFA0-\uDFC3\uDFC8-\uDFCF]|\uD801[\uDC00-\uDC9D\uDCB0-\uDCD3\uDCD8-\uDCFB\uDD00-\uDD27\uDD30-\uDD63\uDD70-\uDD7A\uDD7C-\uDD8A\uDD8C-\uDD92\uDD94\uDD95\uDD97-\uDDA1\uDDA3-\uDDB1\uDDB3-\uDDB9\uDDBB\uDDBC\uDE00-\uDF36\uDF40-\uDF55\uDF60-\uDF67\uDF80-\uDF85\uDF87-\uDFB0\uDFB2-\uDFBA]|\uD802[\uDC00-\uDC05\uDC08\uDC0A-\uDC35\uDC37\uDC38\uDC3C\uDC3F-\uDC55\uDC60-\uDC76\uDC80-\uDC9E\uDCE0-\uDCF2\uDCF4\uDCF5\uDD00-\uDD15\uDD20-\uDD39\uDD80-\uDDB7\uDDBE\uDDBF\uDE00\uDE10-\uDE13\uDE15-\uDE17\uDE19-\uDE35\uDE60-\uDE7C\uDE80-\uDE9C\uDEC0-\uDEC7\uDEC9-\uDEE4\uDF00-\uDF35\uDF40-\uDF55\uDF60-\uDF72\uDF80-\uDF91]|\uD803[\uDC00-\uDC48\uDC80-\uDCB2\uDCC0-\uDCF2\uDD00-\uDD23\uDE80-\uDEA9\uDEB0\uDEB1\uDF00-\uDF1C\uDF27\uDF30-\uDF45\uDF70-\uDF81\uDFB0-\uDFC4\uDFE0-\uDFF6]|\uD804[\uDC03-\uDC37\uDC71\uDC72\uDC75\uDC83-\uDCAF\uDCD0-\uDCE8\uDD03-\uDD26\uDD44\uDD47\uDD50-\uDD72\uDD76\uDD83-\uDDB2\uDDC1-\uDDC4\uDDDA\uDDDC\uDE00-\uDE11\uDE13-\uDE2B\uDE80-\uDE86\uDE88\uDE8A-\uDE8D\uDE8F-\uDE9D\uDE9F-\uDEA8\uDEB0-\uDEDE\uDF05-\uDF0C\uDF0F\uDF10\uDF13-\uDF28\uDF2A-\uDF30\uDF32\uDF33\uDF35-\uDF39\uDF3D\uDF50\uDF5D-\uDF61]|\uD805[\uDC00-\uDC34\uDC47-\uDC4A\uDC5F-\uDC61\uDC80-\uDCAF\uDCC4\uDCC5\uDCC7\uDD80-\uDDAE\uDDD8-\uDDDB\uDE00-\uDE2F\uDE44\uDE80-\uDEAA\uDEB8\uDF00-\uDF1A\uDF40-\uDF46]|\uD806[\uDC00-\uDC2B\uDCA0-\uDCDF\uDCFF-\uDD06\uDD09\uDD0C-\uDD13\uDD15\uDD16\uDD18-\uDD2F\uDD3F\uDD41\uDDA0-\uDDA7\uDDAA-\uDDD0\uDDE1\uDDE3\uDE00\uDE0B-\uDE32\uDE3A\uDE50\uDE5C-\uDE89\uDE9D\uDEB0-\uDEF8]|\uD807[\uDC00-\uDC08\uDC0A-\uDC2E\uDC40\uDC72-\uDC8F\uDD00-\uDD06\uDD08\uDD09\uDD0B-\uDD30\uDD46\uDD60-\uDD65\uDD67\uDD68\uDD6A-\uDD89\uDD98\uDEE0-\uDEF2\uDFB0]|\uD808[\uDC00-\uDF99]|\uD809[\uDC80-\uDD43]|\uD80B[\uDF90-\uDFF0]|[\uD80C\uD81C-\uD820\uD822\uD840-\uD868\uD86A-\uD86C\uD86F-\uD872\uD874-\uD879\uD880-\uD883][\uDC00-\uDFFF]|\uD80D[\uDC00-\uDC2E]|\uD811[\uDC00-\uDE46]|\uD81A[\uDC00-\uDE38\uDE40-\uDE5E\uDE70-\uDEBE\uDED0-\uDEED\uDF00-\uDF2F\uDF40-\uDF43\uDF63-\uDF77\uDF7D-\uDF8F]|\uD81B[\uDE40-\uDE7F\uDF00-\uDF4A\uDF50\uDF93-\uDF9F\uDFE0\uDFE1\uDFE3]|\uD821[\uDC00-\uDFF7]|\uD823[\uDC00-\uDCD5\uDD00-\uDD08]|\uD82B[\uDFF0-\uDFF3\uDFF5-\uDFFB\uDFFD\uDFFE]|\uD82C[\uDC00-\uDD22\uDD50-\uDD52\uDD64-\uDD67\uDD70-\uDEFB]|\uD82F[\uDC00-\uDC6A\uDC70-\uDC7C\uDC80-\uDC88\uDC90-\uDC99]|\uD835[\uDC00-\uDC54\uDC56-\uDC9C\uDC9E\uDC9F\uDCA2\uDCA5\uDCA6\uDCA9-\uDCAC\uDCAE-\uDCB9\uDCBB\uDCBD-\uDCC3\uDCC5-\uDD05\uDD07-\uDD0A\uDD0D-\uDD14\uDD16-\uDD1C\uDD1E-\uDD39\uDD3B-\uDD3E\uDD40-\uDD44\uDD46\uDD4A-\uDD50\uDD52-\uDEA5\uDEA8-\uDEC0\uDEC2-\uDEDA\uDEDC-\uDEFA\uDEFC-\uDF14\uDF16-\uDF34\uDF36-\uDF4E\uDF50-\uDF6E\uDF70-\uDF88\uDF8A-\uDFA8\uDFAA-\uDFC2\uDFC4-\uDFCB]|\uD837[\uDF00-\uDF1E]|\uD838[\uDD00-\uDD2C\uDD37-\uDD3D\uDD4E\uDE90-\uDEAD\uDEC0-\uDEEB]|\uD839[\uDFE0-\uDFE6\uDFE8-\uDFEB\uDFED\uDFEE\uDFF0-\uDFFE]|\uD83A[\uDC00-\uDCC4\uDD00-\uDD43\uDD4B]|\uD83B[\uDE00-\uDE03\uDE05-\uDE1F\uDE21\uDE22\uDE24\uDE27\uDE29-\uDE32\uDE34-\uDE37\uDE39\uDE3B\uDE42\uDE47\uDE49\uDE4B\uDE4D-\uDE4F\uDE51\uDE52\uDE54\uDE57\uDE59\uDE5B\uDE5D\uDE5F\uDE61\uDE62\uDE64\uDE67-\uDE6A\uDE6C-\uDE72\uDE74-\uDE77\uDE79-\uDE7C\uDE7E\uDE80-\uDE89\uDE8B-\uDE9B\uDEA1-\uDEA3\uDEA5-\uDEA9\uDEAB-\uDEBB]|\uD869[\uDC00-\uDEDF\uDF00-\uDFFF]|\uD86D[\uDC00-\uDF38\uDF40-\uDFFF]|\uD86E[\uDC00-\uDC1D\uDC20-\uDFFF]|\uD873[\uDC00-\uDEA1\uDEB0-\uDFFF]|\uD87A[\uDC00-\uDFE0]|\uD87E[\uDC00-\uDE1D]|\uD884[\uDC00-\uDF4A])/; // Any Unicode character with letter data type
+var $410e7a787f87a2b4$var$EMOJI = /(?:[#\*0-9\xA9\xAE\u203C\u2049\u2122\u2139\u2194-\u2199\u21A9\u21AA\u231A\u231B\u2328\u23CF\u23E9-\u23F3\u23F8-\u23FA\u24C2\u25AA\u25AB\u25B6\u25C0\u25FB-\u25FE\u2600-\u2604\u260E\u2611\u2614\u2615\u2618\u261D\u2620\u2622\u2623\u2626\u262A\u262E\u262F\u2638-\u263A\u2640\u2642\u2648-\u2653\u265F\u2660\u2663\u2665\u2666\u2668\u267B\u267E\u267F\u2692-\u2697\u2699\u269B\u269C\u26A0\u26A1\u26A7\u26AA\u26AB\u26B0\u26B1\u26BD\u26BE\u26C4\u26C5\u26C8\u26CE\u26CF\u26D1\u26D3\u26D4\u26E9\u26EA\u26F0-\u26F5\u26F7-\u26FA\u26FD\u2702\u2705\u2708-\u270D\u270F\u2712\u2714\u2716\u271D\u2721\u2728\u2733\u2734\u2744\u2747\u274C\u274E\u2753-\u2755\u2757\u2763\u2764\u2795-\u2797\u27A1\u27B0\u27BF\u2934\u2935\u2B05-\u2B07\u2B1B\u2B1C\u2B50\u2B55\u3030\u303D\u3297\u3299]|\uD83C[\uDC04\uDCCF\uDD70\uDD71\uDD7E\uDD7F\uDD8E\uDD91-\uDD9A\uDDE6-\uDDFF\uDE01\uDE02\uDE1A\uDE2F\uDE32-\uDE3A\uDE50\uDE51\uDF00-\uDF21\uDF24-\uDF93\uDF96\uDF97\uDF99-\uDF9B\uDF9E-\uDFF0\uDFF3-\uDFF5\uDFF7-\uDFFF]|\uD83D[\uDC00-\uDCFD\uDCFF-\uDD3D\uDD49-\uDD4E\uDD50-\uDD67\uDD6F\uDD70\uDD73-\uDD7A\uDD87\uDD8A-\uDD8D\uDD90\uDD95\uDD96\uDDA4\uDDA5\uDDA8\uDDB1\uDDB2\uDDBC\uDDC2-\uDDC4\uDDD1-\uDDD3\uDDDC-\uDDDE\uDDE1\uDDE3\uDDE8\uDDEF\uDDF3\uDDFA-\uDE4F\uDE80-\uDEC5\uDECB-\uDED2\uDED5-\uDED7\uDEDD-\uDEE5\uDEE9\uDEEB\uDEEC\uDEF0\uDEF3-\uDEFC\uDFE0-\uDFEB\uDFF0]|\uD83E[\uDD0C-\uDD3A\uDD3C-\uDD45\uDD47-\uDDFF\uDE70-\uDE74\uDE78-\uDE7C\uDE80-\uDE86\uDE90-\uDEAC\uDEB0-\uDEBA\uDEC0-\uDEC5\uDED0-\uDED9\uDEE0-\uDEE7\uDEF0-\uDEF6])/; // Any Unicode emoji character
+var $410e7a787f87a2b4$var$EMOJI_VARIATION = /\uFE0F/; // Variation selector, follows heart and others
+var $410e7a787f87a2b4$var$DIGIT = /\d/;
+var $410e7a787f87a2b4$var$SPACE = /\s/;
 /**
  * Initialize the scanner character-based state machine for the given start state
  * @return {State} scanner starting state
- */ function $a06d5a398bbbfd36$var$init$2() {
+ */ function $410e7a787f87a2b4$var$init$2() {
     var customProtocols = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     // Frequently used states
-    var S_START = $a06d5a398bbbfd36$var$makeState();
-    var S_NUM = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$NUM);
-    var S_DOMAIN = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$DOMAIN);
-    var S_DOMAIN_HYPHEN = $a06d5a398bbbfd36$var$makeState(); // domain followed by 1 or more hyphen characters
-    var S_WS = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$WS);
+    var S_START = $410e7a787f87a2b4$var$makeState();
+    var S_NUM = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$NUM);
+    var S_DOMAIN = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$DOMAIN);
+    var S_DOMAIN_HYPHEN = $410e7a787f87a2b4$var$makeState(); // domain followed by 1 or more hyphen characters
+    var S_WS = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$WS);
     var DOMAIN_REGEX_TRANSITIONS = [
         [
-            $a06d5a398bbbfd36$var$DIGIT,
+            $410e7a787f87a2b4$var$DIGIT,
             S_DOMAIN
         ],
         [
-            $a06d5a398bbbfd36$var$LETTER,
+            $410e7a787f87a2b4$var$LETTER,
             S_DOMAIN
         ],
         [
-            $a06d5a398bbbfd36$var$EMOJI,
+            $410e7a787f87a2b4$var$EMOJI,
             S_DOMAIN
         ],
         [
-            $a06d5a398bbbfd36$var$EMOJI_VARIATION,
+            $410e7a787f87a2b4$var$EMOJI_VARIATION,
             S_DOMAIN
         ]
     ]; // Create a state which emits a domain token
     var makeDomainState = function makeDomainState() {
-        var state = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$DOMAIN);
+        var state = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$DOMAIN);
         state.j = {
             "-": S_DOMAIN_HYPHEN
         };
@@ -19891,189 +19892,189 @@ var $a06d5a398bbbfd36$var$SPACE = /\s/;
         state.t = token;
         return state;
     }; // States for special URL symbols that accept immediately after start
-    $a06d5a398bbbfd36$var$makeBatchT(S_START, [
+    $410e7a787f87a2b4$var$makeBatchT(S_START, [
         [
             "'",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$APOSTROPHE)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$APOSTROPHE)
         ],
         [
             "{",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$OPENBRACE)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$OPENBRACE)
         ],
         [
             "[",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$OPENBRACKET)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$OPENBRACKET)
         ],
         [
             "<",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$OPENANGLEBRACKET)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$OPENANGLEBRACKET)
         ],
         [
             "(",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$OPENPAREN)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$OPENPAREN)
         ],
         [
             "}",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$CLOSEBRACE)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$CLOSEBRACE)
         ],
         [
             "]",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$CLOSEBRACKET)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$CLOSEBRACKET)
         ],
         [
             ">",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$CLOSEANGLEBRACKET)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$CLOSEANGLEBRACKET)
         ],
         [
             ")",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$CLOSEPAREN)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$CLOSEPAREN)
         ],
         [
             "&",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$AMPERSAND)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$AMPERSAND)
         ],
         [
             "*",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$ASTERISK)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$ASTERISK)
         ],
         [
             "@",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$AT)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$AT)
         ],
         [
             "`",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$BACKTICK)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$BACKTICK)
         ],
         [
             "^",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$CARET)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$CARET)
         ],
         [
             ":",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$COLON)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$COLON)
         ],
         [
             ",",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$COMMA)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$COMMA)
         ],
         [
             "$",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$DOLLAR)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$DOLLAR)
         ],
         [
             ".",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$DOT)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$DOT)
         ],
         [
             "=",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$EQUALS)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$EQUALS)
         ],
         [
             "!",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$EXCLAMATION)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$EXCLAMATION)
         ],
         [
             "-",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$HYPHEN)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$HYPHEN)
         ],
         [
             "%",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$PERCENT)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$PERCENT)
         ],
         [
             "|",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$PIPE)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$PIPE)
         ],
         [
             "+",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$PLUS)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$PLUS)
         ],
         [
             "#",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$POUND)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$POUND)
         ],
         [
             "?",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$QUERY)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$QUERY)
         ],
         [
             '"',
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$QUOTE)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$QUOTE)
         ],
         [
             "/",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$SLASH)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$SLASH)
         ],
         [
             ";",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$SEMI)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$SEMI)
         ],
         [
             "~",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$TILDE)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$TILDE)
         ],
         [
             "_",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$UNDERSCORE)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$UNDERSCORE)
         ],
         [
             "\\",
-            $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$BACKSLASH)
+            $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$BACKSLASH)
         ]
     ]); // Whitespace jumps
     // Tokens of only non-newline whitespace are arbitrarily long
-    $a06d5a398bbbfd36$var$makeT(S_START, "\n", $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$NL));
-    $a06d5a398bbbfd36$var$makeRegexT(S_START, $a06d5a398bbbfd36$var$SPACE, S_WS); // If any whitespace except newline, more whitespace!
-    $a06d5a398bbbfd36$var$makeT(S_WS, "\n", $a06d5a398bbbfd36$var$makeState()); // non-accepting state
-    $a06d5a398bbbfd36$var$makeRegexT(S_WS, $a06d5a398bbbfd36$var$SPACE, S_WS); // Generates states for top-level domains
+    $410e7a787f87a2b4$var$makeT(S_START, "\n", $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$NL));
+    $410e7a787f87a2b4$var$makeRegexT(S_START, $410e7a787f87a2b4$var$SPACE, S_WS); // If any whitespace except newline, more whitespace!
+    $410e7a787f87a2b4$var$makeT(S_WS, "\n", $410e7a787f87a2b4$var$makeState()); // non-accepting state
+    $410e7a787f87a2b4$var$makeRegexT(S_WS, $410e7a787f87a2b4$var$SPACE, S_WS); // Generates states for top-level domains
     // Note that this is most accurate when tlds are in alphabetical order
-    for(var i = 0; i < $a06d5a398bbbfd36$var$tlds.length; i++)$a06d5a398bbbfd36$var$makeChainT(S_START, $a06d5a398bbbfd36$var$tlds[i], makeNearDomainState($a06d5a398bbbfd36$var$TLD), makeDomainState);
+    for(var i = 0; i < $410e7a787f87a2b4$var$tlds.length; i++)$410e7a787f87a2b4$var$makeChainT(S_START, $410e7a787f87a2b4$var$tlds[i], makeNearDomainState($410e7a787f87a2b4$var$TLD), makeDomainState);
      // Collect the states generated by different protocls
     var S_PROTOCOL_FILE = makeDomainState();
     var S_PROTOCOL_FTP = makeDomainState();
     var S_PROTOCOL_HTTP = makeDomainState();
     var S_MAILTO = makeDomainState();
-    $a06d5a398bbbfd36$var$makeChainT(S_START, "file", S_PROTOCOL_FILE, makeDomainState);
-    $a06d5a398bbbfd36$var$makeChainT(S_START, "ftp", S_PROTOCOL_FTP, makeDomainState);
-    $a06d5a398bbbfd36$var$makeChainT(S_START, "http", S_PROTOCOL_HTTP, makeDomainState);
-    $a06d5a398bbbfd36$var$makeChainT(S_START, "mailto", S_MAILTO, makeDomainState); // Protocol states
+    $410e7a787f87a2b4$var$makeChainT(S_START, "file", S_PROTOCOL_FILE, makeDomainState);
+    $410e7a787f87a2b4$var$makeChainT(S_START, "ftp", S_PROTOCOL_FTP, makeDomainState);
+    $410e7a787f87a2b4$var$makeChainT(S_START, "http", S_PROTOCOL_HTTP, makeDomainState);
+    $410e7a787f87a2b4$var$makeChainT(S_START, "mailto", S_MAILTO, makeDomainState); // Protocol states
     var S_PROTOCOL_SECURE = makeDomainState();
-    var S_FULL_PROTOCOL = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$PROTOCOL); // Full protocol ends with COLON
-    var S_FULL_MAILTO = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$MAILTO); // Mailto ends with COLON
+    var S_FULL_PROTOCOL = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$PROTOCOL); // Full protocol ends with COLON
+    var S_FULL_MAILTO = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$MAILTO); // Mailto ends with COLON
     // Secure protocols (end with 's')
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_FTP, "s", S_PROTOCOL_SECURE);
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_FTP, ":", S_FULL_PROTOCOL);
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_HTTP, "s", S_PROTOCOL_SECURE);
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_HTTP, ":", S_FULL_PROTOCOL); // Become protocol tokens after a COLON
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_FILE, ":", S_FULL_PROTOCOL);
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_SECURE, ":", S_FULL_PROTOCOL);
-    $a06d5a398bbbfd36$var$makeT(S_MAILTO, ":", S_FULL_MAILTO); // Register custom protocols
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_FTP, "s", S_PROTOCOL_SECURE);
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_FTP, ":", S_FULL_PROTOCOL);
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_HTTP, "s", S_PROTOCOL_SECURE);
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_HTTP, ":", S_FULL_PROTOCOL); // Become protocol tokens after a COLON
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_FILE, ":", S_FULL_PROTOCOL);
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_SECURE, ":", S_FULL_PROTOCOL);
+    $410e7a787f87a2b4$var$makeT(S_MAILTO, ":", S_FULL_MAILTO); // Register custom protocols
     var S_CUSTOM_PROTOCOL = makeDomainState();
-    for(var _i = 0; _i < customProtocols.length; _i++)$a06d5a398bbbfd36$var$makeChainT(S_START, customProtocols[_i], S_CUSTOM_PROTOCOL, makeDomainState);
-    $a06d5a398bbbfd36$var$makeT(S_CUSTOM_PROTOCOL, ":", S_FULL_PROTOCOL); // Localhost
-    $a06d5a398bbbfd36$var$makeChainT(S_START, "localhost", makeNearDomainState($a06d5a398bbbfd36$var$LOCALHOST), makeDomainState); // Everything else
+    for(var _i = 0; _i < customProtocols.length; _i++)$410e7a787f87a2b4$var$makeChainT(S_START, customProtocols[_i], S_CUSTOM_PROTOCOL, makeDomainState);
+    $410e7a787f87a2b4$var$makeT(S_CUSTOM_PROTOCOL, ":", S_FULL_PROTOCOL); // Localhost
+    $410e7a787f87a2b4$var$makeChainT(S_START, "localhost", makeNearDomainState($410e7a787f87a2b4$var$LOCALHOST), makeDomainState); // Everything else
     // DOMAINs make more DOMAINs
     // Number and character transitions
-    $a06d5a398bbbfd36$var$makeRegexT(S_START, $a06d5a398bbbfd36$var$DIGIT, S_NUM);
-    $a06d5a398bbbfd36$var$makeRegexT(S_START, $a06d5a398bbbfd36$var$LETTER, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_START, $a06d5a398bbbfd36$var$EMOJI, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_START, $a06d5a398bbbfd36$var$EMOJI_VARIATION, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_NUM, $a06d5a398bbbfd36$var$DIGIT, S_NUM);
-    $a06d5a398bbbfd36$var$makeRegexT(S_NUM, $a06d5a398bbbfd36$var$LETTER, S_DOMAIN); // number becomes DOMAIN
-    $a06d5a398bbbfd36$var$makeRegexT(S_NUM, $a06d5a398bbbfd36$var$EMOJI, S_DOMAIN); // number becomes DOMAIN
-    $a06d5a398bbbfd36$var$makeRegexT(S_NUM, $a06d5a398bbbfd36$var$EMOJI_VARIATION, S_DOMAIN); // number becomes DOMAIN
-    $a06d5a398bbbfd36$var$makeT(S_NUM, "-", S_DOMAIN_HYPHEN); // Default domain transitions
-    $a06d5a398bbbfd36$var$makeT(S_DOMAIN, "-", S_DOMAIN_HYPHEN);
-    $a06d5a398bbbfd36$var$makeT(S_DOMAIN_HYPHEN, "-", S_DOMAIN_HYPHEN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_DOMAIN, $a06d5a398bbbfd36$var$DIGIT, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_DOMAIN, $a06d5a398bbbfd36$var$LETTER, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_DOMAIN, $a06d5a398bbbfd36$var$EMOJI, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_DOMAIN, $a06d5a398bbbfd36$var$EMOJI_VARIATION, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_DOMAIN_HYPHEN, $a06d5a398bbbfd36$var$DIGIT, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_DOMAIN_HYPHEN, $a06d5a398bbbfd36$var$LETTER, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_DOMAIN_HYPHEN, $a06d5a398bbbfd36$var$EMOJI, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeRegexT(S_DOMAIN_HYPHEN, $a06d5a398bbbfd36$var$EMOJI_VARIATION, S_DOMAIN); // Set default transition for start state (some symbol)
-    S_START.jd = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$SYM);
+    $410e7a787f87a2b4$var$makeRegexT(S_START, $410e7a787f87a2b4$var$DIGIT, S_NUM);
+    $410e7a787f87a2b4$var$makeRegexT(S_START, $410e7a787f87a2b4$var$LETTER, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_START, $410e7a787f87a2b4$var$EMOJI, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_START, $410e7a787f87a2b4$var$EMOJI_VARIATION, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_NUM, $410e7a787f87a2b4$var$DIGIT, S_NUM);
+    $410e7a787f87a2b4$var$makeRegexT(S_NUM, $410e7a787f87a2b4$var$LETTER, S_DOMAIN); // number becomes DOMAIN
+    $410e7a787f87a2b4$var$makeRegexT(S_NUM, $410e7a787f87a2b4$var$EMOJI, S_DOMAIN); // number becomes DOMAIN
+    $410e7a787f87a2b4$var$makeRegexT(S_NUM, $410e7a787f87a2b4$var$EMOJI_VARIATION, S_DOMAIN); // number becomes DOMAIN
+    $410e7a787f87a2b4$var$makeT(S_NUM, "-", S_DOMAIN_HYPHEN); // Default domain transitions
+    $410e7a787f87a2b4$var$makeT(S_DOMAIN, "-", S_DOMAIN_HYPHEN);
+    $410e7a787f87a2b4$var$makeT(S_DOMAIN_HYPHEN, "-", S_DOMAIN_HYPHEN);
+    $410e7a787f87a2b4$var$makeRegexT(S_DOMAIN, $410e7a787f87a2b4$var$DIGIT, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_DOMAIN, $410e7a787f87a2b4$var$LETTER, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_DOMAIN, $410e7a787f87a2b4$var$EMOJI, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_DOMAIN, $410e7a787f87a2b4$var$EMOJI_VARIATION, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_DOMAIN_HYPHEN, $410e7a787f87a2b4$var$DIGIT, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_DOMAIN_HYPHEN, $410e7a787f87a2b4$var$LETTER, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_DOMAIN_HYPHEN, $410e7a787f87a2b4$var$EMOJI, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeRegexT(S_DOMAIN_HYPHEN, $410e7a787f87a2b4$var$EMOJI_VARIATION, S_DOMAIN); // Set default transition for start state (some symbol)
+    S_START.jd = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$SYM);
     return S_START;
 }
 /**
@@ -20084,13 +20085,13 @@ var $a06d5a398bbbfd36$var$SPACE = /\s/;
 	@param {State} start scanner starting state
 	@param {string} str input string to scan
 	@return {{t: string, v: string, s: number, l: number}[]} list of tokens, each with a type and value
-*/ function $a06d5a398bbbfd36$var$run$1(start, str) {
+*/ function $410e7a787f87a2b4$var$run$1(start, str) {
     // State machine is not case sensitive, so input is tokenized in lowercased
     // form (still returns the regular case though) Uses selective `toLowerCase`
     // is used because lowercasing the entire string causes the length and
     // character position to vary in some non-English strings with V8-based
     // runtimes.
-    var iterable = $a06d5a398bbbfd36$var$stringToArray(str.replace(/[A-Z]/g, function(c) {
+    var iterable = $410e7a787f87a2b4$var$stringToArray(str.replace(/[A-Z]/g, function(c) {
         return c.toLowerCase();
     }));
     var charCount = iterable.length; // <= len if there are emojis, etc
@@ -20106,7 +20107,7 @@ var $a06d5a398bbbfd36$var$SPACE = /\s/;
         var latestAccepting = null;
         var sinceAccepts = -1;
         var charsSinceAccepts = -1;
-        while(charCursor < charCount && (nextState = $a06d5a398bbbfd36$var$takeT(state, iterable[charCursor]))){
+        while(charCursor < charCount && (nextState = $410e7a787f87a2b4$var$takeT(state, iterable[charCursor]))){
             state = nextState; // Keep track of the latest accepting state
             if (state.accepts()) {
                 sinceAccepts = 0;
@@ -20146,38 +20147,38 @@ var $a06d5a398bbbfd36$var$SPACE = /\s/;
  * @function stringToArray
  * @param {string} str
  * @returns {string[]}
- */ function $a06d5a398bbbfd36$var$stringToArray(str) {
+ */ function $410e7a787f87a2b4$var$stringToArray(str) {
     var result = [];
     var len = str.length;
     var index = 0;
     while(index < len){
         var first = str.charCodeAt(index);
         var second = void 0;
-        var _char = first < 0xd800 || first > 0xdbff || index + 1 === len || (second = str.charCodeAt(index + 1)) < 0xdc00 || second > 0xdfff ? str[index] // single character
+        var char = first < 0xd800 || first > 0xdbff || index + 1 === len || (second = str.charCodeAt(index + 1)) < 0xdc00 || second > 0xdfff ? str[index] // single character
          : str.slice(index, index + 2); // two-index characters
-        result.push(_char);
-        index += _char.length;
+        result.push(char);
+        index += char.length;
     }
     return result;
 }
-function $a06d5a398bbbfd36$var$_typeof(obj) {
+function $410e7a787f87a2b4$var$_typeof(obj) {
     "@babel/helpers - typeof";
-    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") $a06d5a398bbbfd36$var$_typeof = function _typeof(obj) {
+    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") $410e7a787f87a2b4$var$_typeof = function _typeof(obj) {
         return typeof obj;
     };
-    else $a06d5a398bbbfd36$var$_typeof = function _typeof(obj) {
+    else $410e7a787f87a2b4$var$_typeof = function _typeof(obj) {
         return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
     };
-    return $a06d5a398bbbfd36$var$_typeof(obj);
+    return $410e7a787f87a2b4$var$_typeof(obj);
 }
 /**
  * @property {string} defaultProtocol
  * @property {{[string]: (event) => void}]} [events]
- */ var $a06d5a398bbbfd36$var$defaults = {
+ */ var $410e7a787f87a2b4$var$defaults = {
     defaultProtocol: "http",
     events: null,
-    format: $a06d5a398bbbfd36$var$noop,
-    formatHref: $a06d5a398bbbfd36$var$noop,
+    format: $410e7a787f87a2b4$var$noop,
+    formatHref: $410e7a787f87a2b4$var$noop,
     nl2br: false,
     tagName: "a",
     target: null,
@@ -20191,25 +20192,25 @@ function $a06d5a398bbbfd36$var$_typeof(obj) {
 /**
  * @class Options
  * @param {Object} [opts] Set option properties besides the defaults
- */ function $a06d5a398bbbfd36$export$c019608e5b5bb4cb(opts) {
+ */ function $410e7a787f87a2b4$export$c019608e5b5bb4cb(opts) {
     opts = opts || {};
-    this.defaultProtocol = "defaultProtocol" in opts ? opts.defaultProtocol : $a06d5a398bbbfd36$var$defaults.defaultProtocol;
-    this.events = "events" in opts ? opts.events : $a06d5a398bbbfd36$var$defaults.events;
-    this.format = "format" in opts ? opts.format : $a06d5a398bbbfd36$var$defaults.format;
-    this.formatHref = "formatHref" in opts ? opts.formatHref : $a06d5a398bbbfd36$var$defaults.formatHref;
-    this.nl2br = "nl2br" in opts ? opts.nl2br : $a06d5a398bbbfd36$var$defaults.nl2br;
-    this.tagName = "tagName" in opts ? opts.tagName : $a06d5a398bbbfd36$var$defaults.tagName;
-    this.target = "target" in opts ? opts.target : $a06d5a398bbbfd36$var$defaults.target;
-    this.rel = "rel" in opts ? opts.rel : $a06d5a398bbbfd36$var$defaults.rel;
-    this.validate = "validate" in opts ? opts.validate : $a06d5a398bbbfd36$var$defaults.validate;
-    this.truncate = "truncate" in opts ? opts.truncate : $a06d5a398bbbfd36$var$defaults.truncate;
-    this.className = "className" in opts ? opts.className : $a06d5a398bbbfd36$var$defaults.className;
-    this.attributes = opts.attributes || $a06d5a398bbbfd36$var$defaults.attributes;
+    this.defaultProtocol = "defaultProtocol" in opts ? opts.defaultProtocol : $410e7a787f87a2b4$var$defaults.defaultProtocol;
+    this.events = "events" in opts ? opts.events : $410e7a787f87a2b4$var$defaults.events;
+    this.format = "format" in opts ? opts.format : $410e7a787f87a2b4$var$defaults.format;
+    this.formatHref = "formatHref" in opts ? opts.formatHref : $410e7a787f87a2b4$var$defaults.formatHref;
+    this.nl2br = "nl2br" in opts ? opts.nl2br : $410e7a787f87a2b4$var$defaults.nl2br;
+    this.tagName = "tagName" in opts ? opts.tagName : $410e7a787f87a2b4$var$defaults.tagName;
+    this.target = "target" in opts ? opts.target : $410e7a787f87a2b4$var$defaults.target;
+    this.rel = "rel" in opts ? opts.rel : $410e7a787f87a2b4$var$defaults.rel;
+    this.validate = "validate" in opts ? opts.validate : $410e7a787f87a2b4$var$defaults.validate;
+    this.truncate = "truncate" in opts ? opts.truncate : $410e7a787f87a2b4$var$defaults.truncate;
+    this.className = "className" in opts ? opts.className : $410e7a787f87a2b4$var$defaults.className;
+    this.attributes = opts.attributes || $410e7a787f87a2b4$var$defaults.attributes;
     this.ignoreTags = []; // Make all tags names upper case
-    var ignoredTags = "ignoreTags" in opts ? opts.ignoreTags : $a06d5a398bbbfd36$var$defaults.ignoreTags;
+    var ignoredTags = "ignoreTags" in opts ? opts.ignoreTags : $410e7a787f87a2b4$var$defaults.ignoreTags;
     for(var i = 0; i < ignoredTags.length; i++)this.ignoreTags.push(ignoredTags[i].toUpperCase());
 }
-$a06d5a398bbbfd36$export$c019608e5b5bb4cb.prototype = {
+$410e7a787f87a2b4$export$c019608e5b5bb4cb.prototype = {
     /**
    * Given the token, return all options for how it should be displayed
    */ resolve: function resolve(token) {
@@ -20243,11 +20244,11 @@ $a06d5a398bbbfd36$export$c019608e5b5bb4cb.prototype = {
         var option = this[key];
         if (!option) return option;
         var optionValue;
-        switch($a06d5a398bbbfd36$var$_typeof(option)){
+        switch($410e7a787f87a2b4$var$_typeof(option)){
             case "function":
                 return option(operator, token.t);
             case "object":
-                optionValue = token.t in option ? option[token.t] : $a06d5a398bbbfd36$var$defaults[key];
+                optionValue = token.t in option ? option[token.t] : $410e7a787f87a2b4$var$defaults[key];
                 return typeof optionValue === "function" ? optionValue(operator, token.t) : optionValue;
         }
         return option;
@@ -20257,18 +20258,18 @@ $a06d5a398bbbfd36$export$c019608e5b5bb4cb.prototype = {
         return typeof option === "function" ? option(operator, token.t) : option;
     }
 };
-function $a06d5a398bbbfd36$var$noop(val) {
+function $410e7a787f87a2b4$var$noop(val) {
     return val;
 }
-var $a06d5a398bbbfd36$export$41c562ebe57d11e2 = /*#__PURE__*/ Object.freeze({
+var $410e7a787f87a2b4$export$41c562ebe57d11e2 = /*#__PURE__*/ Object.freeze({
     __proto__: null,
-    defaults: $a06d5a398bbbfd36$var$defaults,
-    Options: $a06d5a398bbbfd36$export$c019608e5b5bb4cb
+    defaults: $410e7a787f87a2b4$var$defaults,
+    Options: $410e7a787f87a2b4$export$c019608e5b5bb4cb
 });
 /******************************************************************************
 	Multi-Tokens
 	Tokens composed of arrays of TextTokens
-******************************************************************************/ function $a06d5a398bbbfd36$var$inherits(parent, child) {
+******************************************************************************/ function $410e7a787f87a2b4$var$inherits(parent, child) {
     var props = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     var extended = Object.create(parent.prototype);
     for(var p in props)extended[p] = props[p];
@@ -20288,8 +20289,8 @@ var $a06d5a398bbbfd36$export$41c562ebe57d11e2 = /*#__PURE__*/ Object.freeze({
 	@param {string} value
 	@param {{t: string, v: string, s: number, e: number}[]} tokens
 	@abstract
-*/ function $a06d5a398bbbfd36$var$MultiToken() {}
-$a06d5a398bbbfd36$var$MultiToken.prototype = {
+*/ function $410e7a787f87a2b4$var$MultiToken() {}
+$410e7a787f87a2b4$var$MultiToken.prototype = {
     /**
   	String representing the type for this token
   	@property t
@@ -20337,7 +20338,7 @@ $a06d5a398bbbfd36$var$MultiToken.prototype = {
   		@method toObject
   	@param {string} [protocol] `'http'` by default
   */ toObject: function toObject() {
-        var protocol = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : $a06d5a398bbbfd36$var$defaults.defaultProtocol;
+        var protocol = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : $410e7a787f87a2b4$var$defaults.defaultProtocol;
         return {
             type: this.t,
             value: this.v,
@@ -20353,27 +20354,27 @@ $a06d5a398bbbfd36$var$MultiToken.prototype = {
  * @param {string} type readable type of the token
  * @param {object} props properties to assign or override, including isLink = true or false
  * @returns {(value: string, tokens: {t: string, v: string, s: number, e: number}) => MultiToken} new token class
- */ function $a06d5a398bbbfd36$var$createTokenClass(type, props) {
+ */ function $410e7a787f87a2b4$var$createTokenClass(type, props) {
     function Token(value, tokens) {
         this.t = type;
         this.v = value;
         this.tk = tokens;
     }
-    $a06d5a398bbbfd36$var$inherits($a06d5a398bbbfd36$var$MultiToken, Token, props);
+    $410e7a787f87a2b4$var$inherits($410e7a787f87a2b4$var$MultiToken, Token, props);
     return Token;
 }
 /**
 	Represents an arbitrarily mailto email address with the prefix included
 	@class MailtoEmail
 	@extends MultiToken
-*/ var $a06d5a398bbbfd36$var$MailtoEmail = $a06d5a398bbbfd36$var$createTokenClass("email", {
+*/ var $410e7a787f87a2b4$var$MailtoEmail = $410e7a787f87a2b4$var$createTokenClass("email", {
     isLink: true
 });
 /**
 	Represents a list of tokens making up a valid email address
 	@class Email
 	@extends MultiToken
-*/ var $a06d5a398bbbfd36$var$Email = $a06d5a398bbbfd36$var$createTokenClass("email", {
+*/ var $410e7a787f87a2b4$var$Email = $410e7a787f87a2b4$var$createTokenClass("email", {
     isLink: true,
     toHref: function toHref() {
         return "mailto:" + this.toString();
@@ -20383,17 +20384,17 @@ $a06d5a398bbbfd36$var$MultiToken.prototype = {
 	Represents some plain text
 	@class Text
 	@extends MultiToken
-*/ var $a06d5a398bbbfd36$var$Text = $a06d5a398bbbfd36$var$createTokenClass("text");
+*/ var $410e7a787f87a2b4$var$Text = $410e7a787f87a2b4$var$createTokenClass("text");
 /**
 	Multi-linebreak token - represents a line break
 	@class Nl
 	@extends MultiToken
-*/ var $a06d5a398bbbfd36$var$Nl = $a06d5a398bbbfd36$var$createTokenClass("nl");
+*/ var $410e7a787f87a2b4$var$Nl = $410e7a787f87a2b4$var$createTokenClass("nl");
 /**
 	Represents a list of text tokens making up a valid URL
 	@class Url
 	@extends MultiToken
-*/ var $a06d5a398bbbfd36$var$Url = $a06d5a398bbbfd36$var$createTokenClass("url", {
+*/ var $410e7a787f87a2b4$var$Url = $410e7a787f87a2b4$var$createTokenClass("url", {
     isLink: true,
     /**
   	Lowercases relevant parts of the domain and adds the protocol if
@@ -20403,19 +20404,19 @@ $a06d5a398bbbfd36$var$MultiToken.prototype = {
   	@param {string} protocol
   	@return {string}
   */ toHref: function toHref() {
-        var protocol = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : $a06d5a398bbbfd36$var$defaults.defaultProtocol;
+        var protocol = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : $410e7a787f87a2b4$var$defaults.defaultProtocol;
         var tokens = this.tk;
         var hasProtocol = false;
         var hasSlashSlash = false;
         var result = [];
         var i = 0; // Make the first part of the domain lowercase
         // Lowercase protocol
-        while(tokens[i].t === $a06d5a398bbbfd36$var$PROTOCOL){
+        while(tokens[i].t === $410e7a787f87a2b4$var$PROTOCOL){
             hasProtocol = true;
             result.push(tokens[i].v);
             i++;
         } // Skip slash-slash
-        while(tokens[i].t === $a06d5a398bbbfd36$var$SLASH){
+        while(tokens[i].t === $410e7a787f87a2b4$var$SLASH){
             hasSlashSlash = true;
             result.push(tokens[i].v);
             i++;
@@ -20426,19 +20427,19 @@ $a06d5a398bbbfd36$var$MultiToken.prototype = {
         return result;
     },
     hasProtocol: function hasProtocol() {
-        return this.tk[0].t === $a06d5a398bbbfd36$var$PROTOCOL;
+        return this.tk[0].t === $410e7a787f87a2b4$var$PROTOCOL;
     }
 });
-var $a06d5a398bbbfd36$var$multi = /*#__PURE__*/ Object.freeze({
+var $410e7a787f87a2b4$var$multi = /*#__PURE__*/ Object.freeze({
     __proto__: null,
-    MultiToken: $a06d5a398bbbfd36$var$MultiToken,
-    Base: $a06d5a398bbbfd36$var$MultiToken,
-    createTokenClass: $a06d5a398bbbfd36$var$createTokenClass,
-    MailtoEmail: $a06d5a398bbbfd36$var$MailtoEmail,
-    Email: $a06d5a398bbbfd36$var$Email,
-    Text: $a06d5a398bbbfd36$var$Text,
-    Nl: $a06d5a398bbbfd36$var$Nl,
-    Url: $a06d5a398bbbfd36$var$Url
+    MultiToken: $410e7a787f87a2b4$var$MultiToken,
+    Base: $410e7a787f87a2b4$var$MultiToken,
+    createTokenClass: $410e7a787f87a2b4$var$createTokenClass,
+    MailtoEmail: $410e7a787f87a2b4$var$MailtoEmail,
+    Email: $410e7a787f87a2b4$var$Email,
+    Text: $410e7a787f87a2b4$var$Text,
+    Nl: $410e7a787f87a2b4$var$Nl,
+    Url: $410e7a787f87a2b4$var$Url
 });
 /**
 	Not exactly parser, more like the second-stage scanner (although we can
@@ -20456,229 +20457,229 @@ var $a06d5a398bbbfd36$var$multi = /*#__PURE__*/ Object.freeze({
 */ /**
  * Generate the parser multi token-based state machine
  * @returns {State} the starting state
- */ function $a06d5a398bbbfd36$var$init$1() {
+ */ function $410e7a787f87a2b4$var$init$1() {
     // The universal starting state.
-    var S_START = $a06d5a398bbbfd36$var$makeState(); // Intermediate states for URLs. Note that domains that begin with a protocol
+    var S_START = $410e7a787f87a2b4$var$makeState(); // Intermediate states for URLs. Note that domains that begin with a protocol
     // are treated slighly differently from those that don't.
-    var S_PROTOCOL = $a06d5a398bbbfd36$var$makeState(); // e.g., 'http:'
-    var S_MAILTO = $a06d5a398bbbfd36$var$makeState(); // 'mailto:'
-    var S_PROTOCOL_SLASH = $a06d5a398bbbfd36$var$makeState(); // e.g., 'http:/''
-    var S_PROTOCOL_SLASH_SLASH = $a06d5a398bbbfd36$var$makeState(); // e.g.,'http://'
-    var S_DOMAIN = $a06d5a398bbbfd36$var$makeState(); // parsed string ends with a potential domain name (A)
-    var S_DOMAIN_DOT = $a06d5a398bbbfd36$var$makeState(); // (A) domain followed by DOT
-    var S_TLD = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Url); // (A) Simplest possible URL with no query string
-    var S_TLD_COLON = $a06d5a398bbbfd36$var$makeState(); // (A) URL followed by colon (potential port number here)
-    var S_TLD_PORT = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Url); // TLD followed by a port number
-    var S_URL = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Url); // Long URL with optional port and maybe query string
-    var S_URL_NON_ACCEPTING = $a06d5a398bbbfd36$var$makeState(); // URL followed by some symbols (will not be part of the final URL)
-    var S_URL_OPENBRACE = $a06d5a398bbbfd36$var$makeState(); // URL followed by {
-    var S_URL_OPENBRACKET = $a06d5a398bbbfd36$var$makeState(); // URL followed by [
-    var S_URL_OPENANGLEBRACKET = $a06d5a398bbbfd36$var$makeState(); // URL followed by <
-    var S_URL_OPENPAREN = $a06d5a398bbbfd36$var$makeState(); // URL followed by (
-    var S_URL_OPENBRACE_Q = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Url); // URL followed by { and some symbols that the URL can end it
-    var S_URL_OPENBRACKET_Q = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Url); // URL followed by [ and some symbols that the URL can end it
-    var S_URL_OPENANGLEBRACKET_Q = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Url); // URL followed by < and some symbols that the URL can end it
-    var S_URL_OPENPAREN_Q = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Url); // URL followed by ( and some symbols that the URL can end it
-    var S_URL_OPENBRACE_SYMS = $a06d5a398bbbfd36$var$makeState(); // S_URL_OPENBRACE_Q followed by some symbols it cannot end it
-    var S_URL_OPENBRACKET_SYMS = $a06d5a398bbbfd36$var$makeState(); // S_URL_OPENBRACKET_Q followed by some symbols it cannot end it
-    var S_URL_OPENANGLEBRACKET_SYMS = $a06d5a398bbbfd36$var$makeState(); // S_URL_OPENANGLEBRACKET_Q followed by some symbols it cannot end it
-    var S_URL_OPENPAREN_SYMS = $a06d5a398bbbfd36$var$makeState(); // S_URL_OPENPAREN_Q followed by some symbols it cannot end it
-    var S_EMAIL_DOMAIN = $a06d5a398bbbfd36$var$makeState(); // parsed string starts with local email info + @ with a potential domain name (C)
-    var S_EMAIL_DOMAIN_DOT = $a06d5a398bbbfd36$var$makeState(); // (C) domain followed by DOT
-    var S_EMAIL = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Email); // (C) Possible email address (could have more tlds)
-    var S_EMAIL_COLON = $a06d5a398bbbfd36$var$makeState(); // (C) URL followed by colon (potential port number here)
-    var S_EMAIL_PORT = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Email); // (C) Email address with a port
-    var S_MAILTO_EMAIL = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$MailtoEmail); // Email that begins with the mailto prefix (D)
-    var S_MAILTO_EMAIL_NON_ACCEPTING = $a06d5a398bbbfd36$var$makeState(); // (D) Followed by some non-query string chars
-    var S_LOCALPART = $a06d5a398bbbfd36$var$makeState(); // Local part of the email address
-    var S_LOCALPART_AT = $a06d5a398bbbfd36$var$makeState(); // Local part of the email address plus @
-    var S_LOCALPART_DOT = $a06d5a398bbbfd36$var$makeState(); // Local part of the email address plus '.' (localpart cannot end in .)
-    var S_NL = $a06d5a398bbbfd36$var$makeAcceptingState($a06d5a398bbbfd36$var$Nl); // single new line
+    var S_PROTOCOL = $410e7a787f87a2b4$var$makeState(); // e.g., 'http:'
+    var S_MAILTO = $410e7a787f87a2b4$var$makeState(); // 'mailto:'
+    var S_PROTOCOL_SLASH = $410e7a787f87a2b4$var$makeState(); // e.g., 'http:/''
+    var S_PROTOCOL_SLASH_SLASH = $410e7a787f87a2b4$var$makeState(); // e.g.,'http://'
+    var S_DOMAIN = $410e7a787f87a2b4$var$makeState(); // parsed string ends with a potential domain name (A)
+    var S_DOMAIN_DOT = $410e7a787f87a2b4$var$makeState(); // (A) domain followed by DOT
+    var S_TLD = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Url); // (A) Simplest possible URL with no query string
+    var S_TLD_COLON = $410e7a787f87a2b4$var$makeState(); // (A) URL followed by colon (potential port number here)
+    var S_TLD_PORT = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Url); // TLD followed by a port number
+    var S_URL = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Url); // Long URL with optional port and maybe query string
+    var S_URL_NON_ACCEPTING = $410e7a787f87a2b4$var$makeState(); // URL followed by some symbols (will not be part of the final URL)
+    var S_URL_OPENBRACE = $410e7a787f87a2b4$var$makeState(); // URL followed by {
+    var S_URL_OPENBRACKET = $410e7a787f87a2b4$var$makeState(); // URL followed by [
+    var S_URL_OPENANGLEBRACKET = $410e7a787f87a2b4$var$makeState(); // URL followed by <
+    var S_URL_OPENPAREN = $410e7a787f87a2b4$var$makeState(); // URL followed by (
+    var S_URL_OPENBRACE_Q = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Url); // URL followed by { and some symbols that the URL can end it
+    var S_URL_OPENBRACKET_Q = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Url); // URL followed by [ and some symbols that the URL can end it
+    var S_URL_OPENANGLEBRACKET_Q = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Url); // URL followed by < and some symbols that the URL can end it
+    var S_URL_OPENPAREN_Q = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Url); // URL followed by ( and some symbols that the URL can end it
+    var S_URL_OPENBRACE_SYMS = $410e7a787f87a2b4$var$makeState(); // S_URL_OPENBRACE_Q followed by some symbols it cannot end it
+    var S_URL_OPENBRACKET_SYMS = $410e7a787f87a2b4$var$makeState(); // S_URL_OPENBRACKET_Q followed by some symbols it cannot end it
+    var S_URL_OPENANGLEBRACKET_SYMS = $410e7a787f87a2b4$var$makeState(); // S_URL_OPENANGLEBRACKET_Q followed by some symbols it cannot end it
+    var S_URL_OPENPAREN_SYMS = $410e7a787f87a2b4$var$makeState(); // S_URL_OPENPAREN_Q followed by some symbols it cannot end it
+    var S_EMAIL_DOMAIN = $410e7a787f87a2b4$var$makeState(); // parsed string starts with local email info + @ with a potential domain name (C)
+    var S_EMAIL_DOMAIN_DOT = $410e7a787f87a2b4$var$makeState(); // (C) domain followed by DOT
+    var S_EMAIL = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Email); // (C) Possible email address (could have more tlds)
+    var S_EMAIL_COLON = $410e7a787f87a2b4$var$makeState(); // (C) URL followed by colon (potential port number here)
+    var S_EMAIL_PORT = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Email); // (C) Email address with a port
+    var S_MAILTO_EMAIL = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$MailtoEmail); // Email that begins with the mailto prefix (D)
+    var S_MAILTO_EMAIL_NON_ACCEPTING = $410e7a787f87a2b4$var$makeState(); // (D) Followed by some non-query string chars
+    var S_LOCALPART = $410e7a787f87a2b4$var$makeState(); // Local part of the email address
+    var S_LOCALPART_AT = $410e7a787f87a2b4$var$makeState(); // Local part of the email address plus @
+    var S_LOCALPART_DOT = $410e7a787f87a2b4$var$makeState(); // Local part of the email address plus '.' (localpart cannot end in .)
+    var S_NL = $410e7a787f87a2b4$var$makeAcceptingState($410e7a787f87a2b4$var$Nl); // single new line
     // Make path from start to protocol (with '//')
-    $a06d5a398bbbfd36$var$makeT(S_START, $a06d5a398bbbfd36$var$NL, S_NL);
-    $a06d5a398bbbfd36$var$makeT(S_START, $a06d5a398bbbfd36$var$PROTOCOL, S_PROTOCOL);
-    $a06d5a398bbbfd36$var$makeT(S_START, $a06d5a398bbbfd36$var$MAILTO, S_MAILTO);
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL, $a06d5a398bbbfd36$var$SLASH, S_PROTOCOL_SLASH);
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_SLASH, $a06d5a398bbbfd36$var$SLASH, S_PROTOCOL_SLASH_SLASH); // The very first potential domain name
-    $a06d5a398bbbfd36$var$makeT(S_START, $a06d5a398bbbfd36$var$TLD, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_START, $a06d5a398bbbfd36$var$DOMAIN, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_START, $a06d5a398bbbfd36$var$LOCALHOST, S_TLD);
-    $a06d5a398bbbfd36$var$makeT(S_START, $a06d5a398bbbfd36$var$NUM, S_DOMAIN); // Force URL for protocol followed by anything sane
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_SLASH_SLASH, $a06d5a398bbbfd36$var$TLD, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_SLASH_SLASH, $a06d5a398bbbfd36$var$DOMAIN, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_SLASH_SLASH, $a06d5a398bbbfd36$var$NUM, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_PROTOCOL_SLASH_SLASH, $a06d5a398bbbfd36$var$LOCALHOST, S_URL); // Account for dots and hyphens
+    $410e7a787f87a2b4$var$makeT(S_START, $410e7a787f87a2b4$var$NL, S_NL);
+    $410e7a787f87a2b4$var$makeT(S_START, $410e7a787f87a2b4$var$PROTOCOL, S_PROTOCOL);
+    $410e7a787f87a2b4$var$makeT(S_START, $410e7a787f87a2b4$var$MAILTO, S_MAILTO);
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL, $410e7a787f87a2b4$var$SLASH, S_PROTOCOL_SLASH);
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_SLASH, $410e7a787f87a2b4$var$SLASH, S_PROTOCOL_SLASH_SLASH); // The very first potential domain name
+    $410e7a787f87a2b4$var$makeT(S_START, $410e7a787f87a2b4$var$TLD, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_START, $410e7a787f87a2b4$var$DOMAIN, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_START, $410e7a787f87a2b4$var$LOCALHOST, S_TLD);
+    $410e7a787f87a2b4$var$makeT(S_START, $410e7a787f87a2b4$var$NUM, S_DOMAIN); // Force URL for protocol followed by anything sane
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_SLASH_SLASH, $410e7a787f87a2b4$var$TLD, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_SLASH_SLASH, $410e7a787f87a2b4$var$DOMAIN, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_SLASH_SLASH, $410e7a787f87a2b4$var$NUM, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_PROTOCOL_SLASH_SLASH, $410e7a787f87a2b4$var$LOCALHOST, S_URL); // Account for dots and hyphens
     // hyphens are usually parts of domain names
-    $a06d5a398bbbfd36$var$makeT(S_DOMAIN, $a06d5a398bbbfd36$var$DOT, S_DOMAIN_DOT);
-    $a06d5a398bbbfd36$var$makeT(S_EMAIL_DOMAIN, $a06d5a398bbbfd36$var$DOT, S_EMAIL_DOMAIN_DOT); // Hyphen can jump back to a domain name
+    $410e7a787f87a2b4$var$makeT(S_DOMAIN, $410e7a787f87a2b4$var$DOT, S_DOMAIN_DOT);
+    $410e7a787f87a2b4$var$makeT(S_EMAIL_DOMAIN, $410e7a787f87a2b4$var$DOT, S_EMAIL_DOMAIN_DOT); // Hyphen can jump back to a domain name
     // After the first domain and a dot, we can find either a URL or another domain
-    $a06d5a398bbbfd36$var$makeT(S_DOMAIN_DOT, $a06d5a398bbbfd36$var$TLD, S_TLD);
-    $a06d5a398bbbfd36$var$makeT(S_DOMAIN_DOT, $a06d5a398bbbfd36$var$DOMAIN, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_DOMAIN_DOT, $a06d5a398bbbfd36$var$NUM, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_DOMAIN_DOT, $a06d5a398bbbfd36$var$LOCALHOST, S_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_EMAIL_DOMAIN_DOT, $a06d5a398bbbfd36$var$TLD, S_EMAIL);
-    $a06d5a398bbbfd36$var$makeT(S_EMAIL_DOMAIN_DOT, $a06d5a398bbbfd36$var$DOMAIN, S_EMAIL_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_EMAIL_DOMAIN_DOT, $a06d5a398bbbfd36$var$NUM, S_EMAIL_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_EMAIL_DOMAIN_DOT, $a06d5a398bbbfd36$var$LOCALHOST, S_EMAIL_DOMAIN); // S_TLD accepts! But the URL could be longer, try to find a match greedily
+    $410e7a787f87a2b4$var$makeT(S_DOMAIN_DOT, $410e7a787f87a2b4$var$TLD, S_TLD);
+    $410e7a787f87a2b4$var$makeT(S_DOMAIN_DOT, $410e7a787f87a2b4$var$DOMAIN, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_DOMAIN_DOT, $410e7a787f87a2b4$var$NUM, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_DOMAIN_DOT, $410e7a787f87a2b4$var$LOCALHOST, S_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_EMAIL_DOMAIN_DOT, $410e7a787f87a2b4$var$TLD, S_EMAIL);
+    $410e7a787f87a2b4$var$makeT(S_EMAIL_DOMAIN_DOT, $410e7a787f87a2b4$var$DOMAIN, S_EMAIL_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_EMAIL_DOMAIN_DOT, $410e7a787f87a2b4$var$NUM, S_EMAIL_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_EMAIL_DOMAIN_DOT, $410e7a787f87a2b4$var$LOCALHOST, S_EMAIL_DOMAIN); // S_TLD accepts! But the URL could be longer, try to find a match greedily
     // The `run` function should be able to "rollback" to the accepting state
-    $a06d5a398bbbfd36$var$makeT(S_TLD, $a06d5a398bbbfd36$var$DOT, S_DOMAIN_DOT);
-    $a06d5a398bbbfd36$var$makeT(S_EMAIL, $a06d5a398bbbfd36$var$DOT, S_EMAIL_DOMAIN_DOT); // Become real URLs after `SLASH` or `COLON NUM SLASH`
+    $410e7a787f87a2b4$var$makeT(S_TLD, $410e7a787f87a2b4$var$DOT, S_DOMAIN_DOT);
+    $410e7a787f87a2b4$var$makeT(S_EMAIL, $410e7a787f87a2b4$var$DOT, S_EMAIL_DOMAIN_DOT); // Become real URLs after `SLASH` or `COLON NUM SLASH`
     // Here PSS and non-PSS converge
-    $a06d5a398bbbfd36$var$makeT(S_TLD, $a06d5a398bbbfd36$var$COLON, S_TLD_COLON);
-    $a06d5a398bbbfd36$var$makeT(S_TLD, $a06d5a398bbbfd36$var$SLASH, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_TLD_COLON, $a06d5a398bbbfd36$var$NUM, S_TLD_PORT);
-    $a06d5a398bbbfd36$var$makeT(S_TLD_PORT, $a06d5a398bbbfd36$var$SLASH, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_EMAIL, $a06d5a398bbbfd36$var$COLON, S_EMAIL_COLON);
-    $a06d5a398bbbfd36$var$makeT(S_EMAIL_COLON, $a06d5a398bbbfd36$var$NUM, S_EMAIL_PORT); // Types of characters the URL can definitely end in
+    $410e7a787f87a2b4$var$makeT(S_TLD, $410e7a787f87a2b4$var$COLON, S_TLD_COLON);
+    $410e7a787f87a2b4$var$makeT(S_TLD, $410e7a787f87a2b4$var$SLASH, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_TLD_COLON, $410e7a787f87a2b4$var$NUM, S_TLD_PORT);
+    $410e7a787f87a2b4$var$makeT(S_TLD_PORT, $410e7a787f87a2b4$var$SLASH, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_EMAIL, $410e7a787f87a2b4$var$COLON, S_EMAIL_COLON);
+    $410e7a787f87a2b4$var$makeT(S_EMAIL_COLON, $410e7a787f87a2b4$var$NUM, S_EMAIL_PORT); // Types of characters the URL can definitely end in
     var qsAccepting = [
-        $a06d5a398bbbfd36$var$AMPERSAND,
-        $a06d5a398bbbfd36$var$ASTERISK,
-        $a06d5a398bbbfd36$var$AT,
-        $a06d5a398bbbfd36$var$BACKSLASH,
-        $a06d5a398bbbfd36$var$BACKTICK,
-        $a06d5a398bbbfd36$var$CARET,
-        $a06d5a398bbbfd36$var$DOLLAR,
-        $a06d5a398bbbfd36$var$DOMAIN,
-        $a06d5a398bbbfd36$var$EQUALS,
-        $a06d5a398bbbfd36$var$HYPHEN,
-        $a06d5a398bbbfd36$var$LOCALHOST,
-        $a06d5a398bbbfd36$var$NUM,
-        $a06d5a398bbbfd36$var$PERCENT,
-        $a06d5a398bbbfd36$var$PIPE,
-        $a06d5a398bbbfd36$var$PLUS,
-        $a06d5a398bbbfd36$var$POUND,
-        $a06d5a398bbbfd36$var$PROTOCOL,
-        $a06d5a398bbbfd36$var$SLASH,
-        $a06d5a398bbbfd36$var$SYM,
-        $a06d5a398bbbfd36$var$TILDE,
-        $a06d5a398bbbfd36$var$TLD,
-        $a06d5a398bbbfd36$var$UNDERSCORE
+        $410e7a787f87a2b4$var$AMPERSAND,
+        $410e7a787f87a2b4$var$ASTERISK,
+        $410e7a787f87a2b4$var$AT,
+        $410e7a787f87a2b4$var$BACKSLASH,
+        $410e7a787f87a2b4$var$BACKTICK,
+        $410e7a787f87a2b4$var$CARET,
+        $410e7a787f87a2b4$var$DOLLAR,
+        $410e7a787f87a2b4$var$DOMAIN,
+        $410e7a787f87a2b4$var$EQUALS,
+        $410e7a787f87a2b4$var$HYPHEN,
+        $410e7a787f87a2b4$var$LOCALHOST,
+        $410e7a787f87a2b4$var$NUM,
+        $410e7a787f87a2b4$var$PERCENT,
+        $410e7a787f87a2b4$var$PIPE,
+        $410e7a787f87a2b4$var$PLUS,
+        $410e7a787f87a2b4$var$POUND,
+        $410e7a787f87a2b4$var$PROTOCOL,
+        $410e7a787f87a2b4$var$SLASH,
+        $410e7a787f87a2b4$var$SYM,
+        $410e7a787f87a2b4$var$TILDE,
+        $410e7a787f87a2b4$var$TLD,
+        $410e7a787f87a2b4$var$UNDERSCORE
     ]; // Types of tokens that can follow a URL and be part of the query string
     // but cannot be the very last characters
     // Characters that cannot appear in the URL at all should be excluded
     var qsNonAccepting = [
-        $a06d5a398bbbfd36$var$APOSTROPHE,
-        $a06d5a398bbbfd36$var$CLOSEANGLEBRACKET,
-        $a06d5a398bbbfd36$var$CLOSEBRACE,
-        $a06d5a398bbbfd36$var$CLOSEBRACKET,
-        $a06d5a398bbbfd36$var$CLOSEPAREN,
-        $a06d5a398bbbfd36$var$COLON,
-        $a06d5a398bbbfd36$var$COMMA,
-        $a06d5a398bbbfd36$var$DOT,
-        $a06d5a398bbbfd36$var$EXCLAMATION,
-        $a06d5a398bbbfd36$var$OPENANGLEBRACKET,
-        $a06d5a398bbbfd36$var$OPENBRACE,
-        $a06d5a398bbbfd36$var$OPENBRACKET,
-        $a06d5a398bbbfd36$var$OPENPAREN,
-        $a06d5a398bbbfd36$var$QUERY,
-        $a06d5a398bbbfd36$var$QUOTE,
-        $a06d5a398bbbfd36$var$SEMI
+        $410e7a787f87a2b4$var$APOSTROPHE,
+        $410e7a787f87a2b4$var$CLOSEANGLEBRACKET,
+        $410e7a787f87a2b4$var$CLOSEBRACE,
+        $410e7a787f87a2b4$var$CLOSEBRACKET,
+        $410e7a787f87a2b4$var$CLOSEPAREN,
+        $410e7a787f87a2b4$var$COLON,
+        $410e7a787f87a2b4$var$COMMA,
+        $410e7a787f87a2b4$var$DOT,
+        $410e7a787f87a2b4$var$EXCLAMATION,
+        $410e7a787f87a2b4$var$OPENANGLEBRACKET,
+        $410e7a787f87a2b4$var$OPENBRACE,
+        $410e7a787f87a2b4$var$OPENBRACKET,
+        $410e7a787f87a2b4$var$OPENPAREN,
+        $410e7a787f87a2b4$var$QUERY,
+        $410e7a787f87a2b4$var$QUOTE,
+        $410e7a787f87a2b4$var$SEMI
     ]; // These states are responsible primarily for determining whether or not to
     // include the final round bracket.
     // URL, followed by an opening bracket
-    $a06d5a398bbbfd36$var$makeT(S_URL, $a06d5a398bbbfd36$var$OPENBRACE, S_URL_OPENBRACE);
-    $a06d5a398bbbfd36$var$makeT(S_URL, $a06d5a398bbbfd36$var$OPENBRACKET, S_URL_OPENBRACKET);
-    $a06d5a398bbbfd36$var$makeT(S_URL, $a06d5a398bbbfd36$var$OPENANGLEBRACKET, S_URL_OPENANGLEBRACKET);
-    $a06d5a398bbbfd36$var$makeT(S_URL, $a06d5a398bbbfd36$var$OPENPAREN, S_URL_OPENPAREN); // URL with extra symbols at the end, followed by an opening bracket
-    $a06d5a398bbbfd36$var$makeT(S_URL_NON_ACCEPTING, $a06d5a398bbbfd36$var$OPENBRACE, S_URL_OPENBRACE);
-    $a06d5a398bbbfd36$var$makeT(S_URL_NON_ACCEPTING, $a06d5a398bbbfd36$var$OPENBRACKET, S_URL_OPENBRACKET);
-    $a06d5a398bbbfd36$var$makeT(S_URL_NON_ACCEPTING, $a06d5a398bbbfd36$var$OPENANGLEBRACKET, S_URL_OPENANGLEBRACKET);
-    $a06d5a398bbbfd36$var$makeT(S_URL_NON_ACCEPTING, $a06d5a398bbbfd36$var$OPENPAREN, S_URL_OPENPAREN); // Closing bracket component. This character WILL be included in the URL
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENBRACE, $a06d5a398bbbfd36$var$CLOSEBRACE, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENBRACKET, $a06d5a398bbbfd36$var$CLOSEBRACKET, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENANGLEBRACKET, $a06d5a398bbbfd36$var$CLOSEANGLEBRACKET, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENPAREN, $a06d5a398bbbfd36$var$CLOSEPAREN, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENBRACE_Q, $a06d5a398bbbfd36$var$CLOSEBRACE, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENBRACKET_Q, $a06d5a398bbbfd36$var$CLOSEBRACKET, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENANGLEBRACKET_Q, $a06d5a398bbbfd36$var$CLOSEANGLEBRACKET, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENPAREN_Q, $a06d5a398bbbfd36$var$CLOSEPAREN, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENBRACE_SYMS, $a06d5a398bbbfd36$var$CLOSEBRACE, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENBRACKET_SYMS, $a06d5a398bbbfd36$var$CLOSEBRACKET, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENANGLEBRACKET_SYMS, $a06d5a398bbbfd36$var$CLOSEANGLEBRACKET, S_URL);
-    $a06d5a398bbbfd36$var$makeT(S_URL_OPENPAREN_SYMS, $a06d5a398bbbfd36$var$CLOSEPAREN, S_URL); // URL that beings with an opening bracket, followed by a symbols.
+    $410e7a787f87a2b4$var$makeT(S_URL, $410e7a787f87a2b4$var$OPENBRACE, S_URL_OPENBRACE);
+    $410e7a787f87a2b4$var$makeT(S_URL, $410e7a787f87a2b4$var$OPENBRACKET, S_URL_OPENBRACKET);
+    $410e7a787f87a2b4$var$makeT(S_URL, $410e7a787f87a2b4$var$OPENANGLEBRACKET, S_URL_OPENANGLEBRACKET);
+    $410e7a787f87a2b4$var$makeT(S_URL, $410e7a787f87a2b4$var$OPENPAREN, S_URL_OPENPAREN); // URL with extra symbols at the end, followed by an opening bracket
+    $410e7a787f87a2b4$var$makeT(S_URL_NON_ACCEPTING, $410e7a787f87a2b4$var$OPENBRACE, S_URL_OPENBRACE);
+    $410e7a787f87a2b4$var$makeT(S_URL_NON_ACCEPTING, $410e7a787f87a2b4$var$OPENBRACKET, S_URL_OPENBRACKET);
+    $410e7a787f87a2b4$var$makeT(S_URL_NON_ACCEPTING, $410e7a787f87a2b4$var$OPENANGLEBRACKET, S_URL_OPENANGLEBRACKET);
+    $410e7a787f87a2b4$var$makeT(S_URL_NON_ACCEPTING, $410e7a787f87a2b4$var$OPENPAREN, S_URL_OPENPAREN); // Closing bracket component. This character WILL be included in the URL
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENBRACE, $410e7a787f87a2b4$var$CLOSEBRACE, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENBRACKET, $410e7a787f87a2b4$var$CLOSEBRACKET, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENANGLEBRACKET, $410e7a787f87a2b4$var$CLOSEANGLEBRACKET, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENPAREN, $410e7a787f87a2b4$var$CLOSEPAREN, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENBRACE_Q, $410e7a787f87a2b4$var$CLOSEBRACE, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENBRACKET_Q, $410e7a787f87a2b4$var$CLOSEBRACKET, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENANGLEBRACKET_Q, $410e7a787f87a2b4$var$CLOSEANGLEBRACKET, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENPAREN_Q, $410e7a787f87a2b4$var$CLOSEPAREN, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENBRACE_SYMS, $410e7a787f87a2b4$var$CLOSEBRACE, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENBRACKET_SYMS, $410e7a787f87a2b4$var$CLOSEBRACKET, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENANGLEBRACKET_SYMS, $410e7a787f87a2b4$var$CLOSEANGLEBRACKET, S_URL);
+    $410e7a787f87a2b4$var$makeT(S_URL_OPENPAREN_SYMS, $410e7a787f87a2b4$var$CLOSEPAREN, S_URL); // URL that beings with an opening bracket, followed by a symbols.
     // Note that the final state can still be `S_URL_OPENBRACE_Q` (if the URL only
     // has a single opening bracket for some reason).
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACE, qsAccepting, S_URL_OPENBRACE_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACKET, qsAccepting, S_URL_OPENBRACKET_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENANGLEBRACKET, qsAccepting, S_URL_OPENANGLEBRACKET_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENPAREN, qsAccepting, S_URL_OPENPAREN_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACE, qsNonAccepting, S_URL_OPENBRACE_SYMS);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACKET, qsNonAccepting, S_URL_OPENBRACKET_SYMS);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENANGLEBRACKET, qsNonAccepting, S_URL_OPENANGLEBRACKET_SYMS);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENPAREN, qsNonAccepting, S_URL_OPENPAREN_SYMS); // URL that begins with an opening bracket, followed by some symbols
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACE_Q, qsAccepting, S_URL_OPENBRACE_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACKET_Q, qsAccepting, S_URL_OPENBRACKET_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENANGLEBRACKET_Q, qsAccepting, S_URL_OPENANGLEBRACKET_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENPAREN_Q, qsAccepting, S_URL_OPENPAREN_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACE_Q, qsNonAccepting, S_URL_OPENBRACE_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACKET_Q, qsNonAccepting, S_URL_OPENBRACKET_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENANGLEBRACKET_Q, qsNonAccepting, S_URL_OPENANGLEBRACKET_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENPAREN_Q, qsNonAccepting, S_URL_OPENPAREN_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACE_SYMS, qsAccepting, S_URL_OPENBRACE_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACKET_SYMS, qsAccepting, S_URL_OPENBRACKET_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENANGLEBRACKET_SYMS, qsAccepting, S_URL_OPENANGLEBRACKET_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENPAREN_SYMS, qsAccepting, S_URL_OPENPAREN_Q);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACE_SYMS, qsNonAccepting, S_URL_OPENBRACE_SYMS);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENBRACKET_SYMS, qsNonAccepting, S_URL_OPENBRACKET_SYMS);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENANGLEBRACKET_SYMS, qsNonAccepting, S_URL_OPENANGLEBRACKET_SYMS);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_OPENPAREN_SYMS, qsNonAccepting, S_URL_OPENPAREN_SYMS); // Account for the query string
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL, qsAccepting, S_URL);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_NON_ACCEPTING, qsAccepting, S_URL);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL, qsNonAccepting, S_URL_NON_ACCEPTING);
-    $a06d5a398bbbfd36$var$makeMultiT(S_URL_NON_ACCEPTING, qsNonAccepting, S_URL_NON_ACCEPTING); // Email address-specific state definitions
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACE, qsAccepting, S_URL_OPENBRACE_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACKET, qsAccepting, S_URL_OPENBRACKET_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENANGLEBRACKET, qsAccepting, S_URL_OPENANGLEBRACKET_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENPAREN, qsAccepting, S_URL_OPENPAREN_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACE, qsNonAccepting, S_URL_OPENBRACE_SYMS);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACKET, qsNonAccepting, S_URL_OPENBRACKET_SYMS);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENANGLEBRACKET, qsNonAccepting, S_URL_OPENANGLEBRACKET_SYMS);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENPAREN, qsNonAccepting, S_URL_OPENPAREN_SYMS); // URL that begins with an opening bracket, followed by some symbols
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACE_Q, qsAccepting, S_URL_OPENBRACE_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACKET_Q, qsAccepting, S_URL_OPENBRACKET_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENANGLEBRACKET_Q, qsAccepting, S_URL_OPENANGLEBRACKET_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENPAREN_Q, qsAccepting, S_URL_OPENPAREN_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACE_Q, qsNonAccepting, S_URL_OPENBRACE_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACKET_Q, qsNonAccepting, S_URL_OPENBRACKET_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENANGLEBRACKET_Q, qsNonAccepting, S_URL_OPENANGLEBRACKET_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENPAREN_Q, qsNonAccepting, S_URL_OPENPAREN_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACE_SYMS, qsAccepting, S_URL_OPENBRACE_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACKET_SYMS, qsAccepting, S_URL_OPENBRACKET_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENANGLEBRACKET_SYMS, qsAccepting, S_URL_OPENANGLEBRACKET_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENPAREN_SYMS, qsAccepting, S_URL_OPENPAREN_Q);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACE_SYMS, qsNonAccepting, S_URL_OPENBRACE_SYMS);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENBRACKET_SYMS, qsNonAccepting, S_URL_OPENBRACKET_SYMS);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENANGLEBRACKET_SYMS, qsNonAccepting, S_URL_OPENANGLEBRACKET_SYMS);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_OPENPAREN_SYMS, qsNonAccepting, S_URL_OPENPAREN_SYMS); // Account for the query string
+    $410e7a787f87a2b4$var$makeMultiT(S_URL, qsAccepting, S_URL);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_NON_ACCEPTING, qsAccepting, S_URL);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL, qsNonAccepting, S_URL_NON_ACCEPTING);
+    $410e7a787f87a2b4$var$makeMultiT(S_URL_NON_ACCEPTING, qsNonAccepting, S_URL_NON_ACCEPTING); // Email address-specific state definitions
     // Note: We are not allowing '/' in email addresses since this would interfere
     // with real URLs
     // For addresses with the mailto prefix
     // 'mailto:' followed by anything sane is a valid email
-    $a06d5a398bbbfd36$var$makeT(S_MAILTO, $a06d5a398bbbfd36$var$TLD, S_MAILTO_EMAIL);
-    $a06d5a398bbbfd36$var$makeT(S_MAILTO, $a06d5a398bbbfd36$var$DOMAIN, S_MAILTO_EMAIL);
-    $a06d5a398bbbfd36$var$makeT(S_MAILTO, $a06d5a398bbbfd36$var$NUM, S_MAILTO_EMAIL);
-    $a06d5a398bbbfd36$var$makeT(S_MAILTO, $a06d5a398bbbfd36$var$LOCALHOST, S_MAILTO_EMAIL); // Greedily get more potential valid email values
-    $a06d5a398bbbfd36$var$makeMultiT(S_MAILTO_EMAIL, qsAccepting, S_MAILTO_EMAIL);
-    $a06d5a398bbbfd36$var$makeMultiT(S_MAILTO_EMAIL, qsNonAccepting, S_MAILTO_EMAIL_NON_ACCEPTING);
-    $a06d5a398bbbfd36$var$makeMultiT(S_MAILTO_EMAIL_NON_ACCEPTING, qsAccepting, S_MAILTO_EMAIL);
-    $a06d5a398bbbfd36$var$makeMultiT(S_MAILTO_EMAIL_NON_ACCEPTING, qsNonAccepting, S_MAILTO_EMAIL_NON_ACCEPTING); // For addresses without the mailto prefix
+    $410e7a787f87a2b4$var$makeT(S_MAILTO, $410e7a787f87a2b4$var$TLD, S_MAILTO_EMAIL);
+    $410e7a787f87a2b4$var$makeT(S_MAILTO, $410e7a787f87a2b4$var$DOMAIN, S_MAILTO_EMAIL);
+    $410e7a787f87a2b4$var$makeT(S_MAILTO, $410e7a787f87a2b4$var$NUM, S_MAILTO_EMAIL);
+    $410e7a787f87a2b4$var$makeT(S_MAILTO, $410e7a787f87a2b4$var$LOCALHOST, S_MAILTO_EMAIL); // Greedily get more potential valid email values
+    $410e7a787f87a2b4$var$makeMultiT(S_MAILTO_EMAIL, qsAccepting, S_MAILTO_EMAIL);
+    $410e7a787f87a2b4$var$makeMultiT(S_MAILTO_EMAIL, qsNonAccepting, S_MAILTO_EMAIL_NON_ACCEPTING);
+    $410e7a787f87a2b4$var$makeMultiT(S_MAILTO_EMAIL_NON_ACCEPTING, qsAccepting, S_MAILTO_EMAIL);
+    $410e7a787f87a2b4$var$makeMultiT(S_MAILTO_EMAIL_NON_ACCEPTING, qsNonAccepting, S_MAILTO_EMAIL_NON_ACCEPTING); // For addresses without the mailto prefix
     // Tokens allowed in the localpart of the email
     var localpartAccepting = [
-        $a06d5a398bbbfd36$var$AMPERSAND,
-        $a06d5a398bbbfd36$var$APOSTROPHE,
-        $a06d5a398bbbfd36$var$ASTERISK,
-        $a06d5a398bbbfd36$var$BACKSLASH,
-        $a06d5a398bbbfd36$var$BACKTICK,
-        $a06d5a398bbbfd36$var$CARET,
-        $a06d5a398bbbfd36$var$CLOSEBRACE,
-        $a06d5a398bbbfd36$var$DOLLAR,
-        $a06d5a398bbbfd36$var$DOMAIN,
-        $a06d5a398bbbfd36$var$EQUALS,
-        $a06d5a398bbbfd36$var$HYPHEN,
-        $a06d5a398bbbfd36$var$NUM,
-        $a06d5a398bbbfd36$var$OPENBRACE,
-        $a06d5a398bbbfd36$var$PERCENT,
-        $a06d5a398bbbfd36$var$PIPE,
-        $a06d5a398bbbfd36$var$PLUS,
-        $a06d5a398bbbfd36$var$POUND,
-        $a06d5a398bbbfd36$var$QUERY,
-        $a06d5a398bbbfd36$var$SLASH,
-        $a06d5a398bbbfd36$var$SYM,
-        $a06d5a398bbbfd36$var$TILDE,
-        $a06d5a398bbbfd36$var$TLD,
-        $a06d5a398bbbfd36$var$UNDERSCORE
+        $410e7a787f87a2b4$var$AMPERSAND,
+        $410e7a787f87a2b4$var$APOSTROPHE,
+        $410e7a787f87a2b4$var$ASTERISK,
+        $410e7a787f87a2b4$var$BACKSLASH,
+        $410e7a787f87a2b4$var$BACKTICK,
+        $410e7a787f87a2b4$var$CARET,
+        $410e7a787f87a2b4$var$CLOSEBRACE,
+        $410e7a787f87a2b4$var$DOLLAR,
+        $410e7a787f87a2b4$var$DOMAIN,
+        $410e7a787f87a2b4$var$EQUALS,
+        $410e7a787f87a2b4$var$HYPHEN,
+        $410e7a787f87a2b4$var$NUM,
+        $410e7a787f87a2b4$var$OPENBRACE,
+        $410e7a787f87a2b4$var$PERCENT,
+        $410e7a787f87a2b4$var$PIPE,
+        $410e7a787f87a2b4$var$PLUS,
+        $410e7a787f87a2b4$var$POUND,
+        $410e7a787f87a2b4$var$QUERY,
+        $410e7a787f87a2b4$var$SLASH,
+        $410e7a787f87a2b4$var$SYM,
+        $410e7a787f87a2b4$var$TILDE,
+        $410e7a787f87a2b4$var$TLD,
+        $410e7a787f87a2b4$var$UNDERSCORE
     ]; // Some of the tokens in `localpartAccepting` are already accounted for here and
     // will not be overwritten (don't worry)
-    $a06d5a398bbbfd36$var$makeMultiT(S_DOMAIN, localpartAccepting, S_LOCALPART);
-    $a06d5a398bbbfd36$var$makeT(S_DOMAIN, $a06d5a398bbbfd36$var$AT, S_LOCALPART_AT);
-    $a06d5a398bbbfd36$var$makeMultiT(S_TLD, localpartAccepting, S_LOCALPART);
-    $a06d5a398bbbfd36$var$makeT(S_TLD, $a06d5a398bbbfd36$var$AT, S_LOCALPART_AT);
-    $a06d5a398bbbfd36$var$makeMultiT(S_DOMAIN_DOT, localpartAccepting, S_LOCALPART); // Now in localpart of address
+    $410e7a787f87a2b4$var$makeMultiT(S_DOMAIN, localpartAccepting, S_LOCALPART);
+    $410e7a787f87a2b4$var$makeT(S_DOMAIN, $410e7a787f87a2b4$var$AT, S_LOCALPART_AT);
+    $410e7a787f87a2b4$var$makeMultiT(S_TLD, localpartAccepting, S_LOCALPART);
+    $410e7a787f87a2b4$var$makeT(S_TLD, $410e7a787f87a2b4$var$AT, S_LOCALPART_AT);
+    $410e7a787f87a2b4$var$makeMultiT(S_DOMAIN_DOT, localpartAccepting, S_LOCALPART); // Now in localpart of address
     // TODO: IP addresses and what if the email starts with numbers?
-    $a06d5a398bbbfd36$var$makeMultiT(S_LOCALPART, localpartAccepting, S_LOCALPART);
-    $a06d5a398bbbfd36$var$makeT(S_LOCALPART, $a06d5a398bbbfd36$var$AT, S_LOCALPART_AT); // close to an email address now
-    $a06d5a398bbbfd36$var$makeT(S_LOCALPART, $a06d5a398bbbfd36$var$DOT, S_LOCALPART_DOT);
-    $a06d5a398bbbfd36$var$makeMultiT(S_LOCALPART_DOT, localpartAccepting, S_LOCALPART);
-    $a06d5a398bbbfd36$var$makeT(S_LOCALPART_AT, $a06d5a398bbbfd36$var$TLD, S_EMAIL_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_LOCALPART_AT, $a06d5a398bbbfd36$var$DOMAIN, S_EMAIL_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_LOCALPART_AT, $a06d5a398bbbfd36$var$NUM, S_EMAIL_DOMAIN);
-    $a06d5a398bbbfd36$var$makeT(S_LOCALPART_AT, $a06d5a398bbbfd36$var$LOCALHOST, S_EMAIL); // States following `@` defined above
+    $410e7a787f87a2b4$var$makeMultiT(S_LOCALPART, localpartAccepting, S_LOCALPART);
+    $410e7a787f87a2b4$var$makeT(S_LOCALPART, $410e7a787f87a2b4$var$AT, S_LOCALPART_AT); // close to an email address now
+    $410e7a787f87a2b4$var$makeT(S_LOCALPART, $410e7a787f87a2b4$var$DOT, S_LOCALPART_DOT);
+    $410e7a787f87a2b4$var$makeMultiT(S_LOCALPART_DOT, localpartAccepting, S_LOCALPART);
+    $410e7a787f87a2b4$var$makeT(S_LOCALPART_AT, $410e7a787f87a2b4$var$TLD, S_EMAIL_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_LOCALPART_AT, $410e7a787f87a2b4$var$DOMAIN, S_EMAIL_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_LOCALPART_AT, $410e7a787f87a2b4$var$NUM, S_EMAIL_DOMAIN);
+    $410e7a787f87a2b4$var$makeT(S_LOCALPART_AT, $410e7a787f87a2b4$var$LOCALHOST, S_EMAIL); // States following `@` defined above
     return S_START;
 }
 /**
@@ -20690,7 +20691,7 @@ var $a06d5a398bbbfd36$var$multi = /*#__PURE__*/ Object.freeze({
  * @param {string} input the original input used to generate the given tokens
  * @param {{t: string, v: string, s: number, e: number}[]} tokens list of scanned tokens
  * @returns {MultiToken[]}
- */ function $a06d5a398bbbfd36$var$run(start, input, tokens) {
+ */ function $410e7a787f87a2b4$var$run(start, input, tokens) {
     var len = tokens.length;
     var cursor = 0;
     var multis = [];
@@ -20702,10 +20703,10 @@ var $a06d5a398bbbfd36$var$multi = /*#__PURE__*/ Object.freeze({
         var multiLength = 0;
         var latestAccepting = null;
         var sinceAccepts = -1;
-        while(cursor < len && !(secondState = $a06d5a398bbbfd36$var$takeT(state, tokens[cursor].t)))// Starting tokens with nowhere to jump to.
+        while(cursor < len && !(secondState = $410e7a787f87a2b4$var$takeT(state, tokens[cursor].t)))// Starting tokens with nowhere to jump to.
         // Consider these to be just plain text
         textTokens.push(tokens[cursor++]);
-        while(cursor < len && (nextState = secondState || $a06d5a398bbbfd36$var$takeT(state, tokens[cursor].t))){
+        while(cursor < len && (nextState = secondState || $410e7a787f87a2b4$var$takeT(state, tokens[cursor].t))){
             // Get the next state
             secondState = null;
             state = nextState; // Keep track of the latest accepting state
@@ -20723,17 +20724,17 @@ var $a06d5a398bbbfd36$var$multi = /*#__PURE__*/ Object.freeze({
             // Accepting state!
             // First close off the textTokens (if available)
             if (textTokens.length > 0) {
-                multis.push($a06d5a398bbbfd36$var$parserCreateMultiToken($a06d5a398bbbfd36$var$Text, input, textTokens));
+                multis.push($410e7a787f87a2b4$var$parserCreateMultiToken($410e7a787f87a2b4$var$Text, input, textTokens));
                 textTokens = [];
             } // Roll back to the latest accepting state
             cursor -= sinceAccepts;
             multiLength -= sinceAccepts; // Create a new multitoken
             var Multi = latestAccepting.t;
             var subtokens = tokens.slice(cursor - multiLength, cursor);
-            multis.push($a06d5a398bbbfd36$var$parserCreateMultiToken(Multi, input, subtokens));
+            multis.push($410e7a787f87a2b4$var$parserCreateMultiToken(Multi, input, subtokens));
         }
     } // Finally close off the textTokens (if available)
-    if (textTokens.length > 0) multis.push($a06d5a398bbbfd36$var$parserCreateMultiToken($a06d5a398bbbfd36$var$Text, input, textTokens));
+    if (textTokens.length > 0) multis.push($410e7a787f87a2b4$var$parserCreateMultiToken($410e7a787f87a2b4$var$Text, input, textTokens));
     return multis;
 }
 /**
@@ -20743,14 +20744,14 @@ var $a06d5a398bbbfd36$var$multi = /*#__PURE__*/ Object.freeze({
  * @param {string} input original input string
  * @param {{t: string, v: string, s: number, e: number}[]} tokens consecutive tokens scanned from input string
  * @returns {MultiToken}
- */ function $a06d5a398bbbfd36$var$parserCreateMultiToken(Multi, input, tokens) {
+ */ function $410e7a787f87a2b4$var$parserCreateMultiToken(Multi, input, tokens) {
     var startIdx = tokens[0].s;
     var endIdx = tokens[tokens.length - 1].e;
     var value = input.substr(startIdx, endIdx - startIdx);
     return new Multi(value, tokens);
 }
-var $a06d5a398bbbfd36$var$warn = typeof console !== "undefined" && console && console.warn || function() {}; // Side-effect initialization state
-var $a06d5a398bbbfd36$var$INIT = {
+var $410e7a787f87a2b4$var$warn = typeof console !== "undefined" && console && console.warn || function() {}; // Side-effect initialization state
+var $410e7a787f87a2b4$var$INIT = {
     scanner: null,
     parser: null,
     pluginQueue: [],
@@ -20761,80 +20762,80 @@ var $a06d5a398bbbfd36$var$INIT = {
  * De-register all plugins and reset the internal state-machine. Used for
  * testing; not required in practice.
  * @private
- */ function $a06d5a398bbbfd36$export$aad8462122ac592b() {
-    $a06d5a398bbbfd36$var$INIT.scanner = null;
-    $a06d5a398bbbfd36$var$INIT.parser = null;
-    $a06d5a398bbbfd36$var$INIT.pluginQueue = [];
-    $a06d5a398bbbfd36$var$INIT.customProtocols = [];
-    $a06d5a398bbbfd36$var$INIT.initialized = false;
+ */ function $410e7a787f87a2b4$export$aad8462122ac592b() {
+    $410e7a787f87a2b4$var$INIT.scanner = null;
+    $410e7a787f87a2b4$var$INIT.parser = null;
+    $410e7a787f87a2b4$var$INIT.pluginQueue = [];
+    $410e7a787f87a2b4$var$INIT.customProtocols = [];
+    $410e7a787f87a2b4$var$INIT.initialized = false;
 }
 /**
  * Register a linkify extension plugin
  * @param {string} name of plugin to register
  * @param {Function} plugin function that accepts mutable linkify state
- */ function $a06d5a398bbbfd36$export$7612db19fb8beb1e(name, plugin) {
-    for(var i = 0; i < $a06d5a398bbbfd36$var$INIT.pluginQueue.length; i++)if (name === $a06d5a398bbbfd36$var$INIT.pluginQueue[i][0]) {
-        $a06d5a398bbbfd36$var$warn('linkifyjs: plugin "'.concat(name, '" already registered - will be overwritten'));
-        $a06d5a398bbbfd36$var$INIT.pluginQueue[i] = [
+ */ function $410e7a787f87a2b4$export$7612db19fb8beb1e(name, plugin) {
+    for(var i = 0; i < $410e7a787f87a2b4$var$INIT.pluginQueue.length; i++)if (name === $410e7a787f87a2b4$var$INIT.pluginQueue[i][0]) {
+        $410e7a787f87a2b4$var$warn('linkifyjs: plugin "'.concat(name, '" already registered - will be overwritten'));
+        $410e7a787f87a2b4$var$INIT.pluginQueue[i] = [
             name,
             plugin
         ];
         return;
     }
-    $a06d5a398bbbfd36$var$INIT.pluginQueue.push([
+    $410e7a787f87a2b4$var$INIT.pluginQueue.push([
         name,
         plugin
     ]);
-    if ($a06d5a398bbbfd36$var$INIT.initialized) $a06d5a398bbbfd36$var$warn('linkifyjs: already initialized - will not register plugin "'.concat(name, '" until you manually call linkify.init(). To avoid this warning, please register all plugins before invoking linkify the first time.'));
+    if ($410e7a787f87a2b4$var$INIT.initialized) $410e7a787f87a2b4$var$warn('linkifyjs: already initialized - will not register plugin "'.concat(name, '" until you manually call linkify.init(). To avoid this warning, please register all plugins before invoking linkify the first time.'));
 }
 /**
  * Detect URLs with the following additional protocol. Anything following
  * "protocol:" will be considered a link.
  * @param {string} protocol
- */ function $a06d5a398bbbfd36$export$821627edc2d26f5f(protocol) {
-    if ($a06d5a398bbbfd36$var$INIT.initialized) $a06d5a398bbbfd36$var$warn('linkifyjs: already initialized - will not register custom protocol "'.concat(protocol, '" until you manually call linkify.init(). To avoid this warning, please register all custom protocols before invoking linkify the first time.'));
+ */ function $410e7a787f87a2b4$export$821627edc2d26f5f(protocol) {
+    if ($410e7a787f87a2b4$var$INIT.initialized) $410e7a787f87a2b4$var$warn('linkifyjs: already initialized - will not register custom protocol "'.concat(protocol, '" until you manually call linkify.init(). To avoid this warning, please register all custom protocols before invoking linkify the first time.'));
     if (!/^[a-z-]+$/.test(protocol)) throw Error("linkifyjs: protocols containing characters other than a-z or - (hyphen) are not supported");
-    $a06d5a398bbbfd36$var$INIT.customProtocols.push(protocol);
+    $410e7a787f87a2b4$var$INIT.customProtocols.push(protocol);
 }
 /**
  * Initialize the linkify state machine. Called automatically the first time
  * linkify is called on a string, but may be called manually as well.
- */ function $a06d5a398bbbfd36$export$2cd8252107eb640b() {
+ */ function $410e7a787f87a2b4$export$2cd8252107eb640b() {
     // Initialize state machines
-    $a06d5a398bbbfd36$var$INIT.scanner = {
-        start: $a06d5a398bbbfd36$var$init$2($a06d5a398bbbfd36$var$INIT.customProtocols),
-        tokens: $a06d5a398bbbfd36$var$text
+    $410e7a787f87a2b4$var$INIT.scanner = {
+        start: $410e7a787f87a2b4$var$init$2($410e7a787f87a2b4$var$INIT.customProtocols),
+        tokens: $410e7a787f87a2b4$var$text
     };
-    $a06d5a398bbbfd36$var$INIT.parser = {
-        start: $a06d5a398bbbfd36$var$init$1(),
-        tokens: $a06d5a398bbbfd36$var$multi
+    $410e7a787f87a2b4$var$INIT.parser = {
+        start: $410e7a787f87a2b4$var$init$1(),
+        tokens: $410e7a787f87a2b4$var$multi
     };
     var utils = {
-        createTokenClass: $a06d5a398bbbfd36$var$createTokenClass
+        createTokenClass: $410e7a787f87a2b4$var$createTokenClass
     }; // Initialize plugins
-    for(var i = 0; i < $a06d5a398bbbfd36$var$INIT.pluginQueue.length; i++)$a06d5a398bbbfd36$var$INIT.pluginQueue[i][1]({
-        scanner: $a06d5a398bbbfd36$var$INIT.scanner,
-        parser: $a06d5a398bbbfd36$var$INIT.parser,
+    for(var i = 0; i < $410e7a787f87a2b4$var$INIT.pluginQueue.length; i++)$410e7a787f87a2b4$var$INIT.pluginQueue[i][1]({
+        scanner: $410e7a787f87a2b4$var$INIT.scanner,
+        parser: $410e7a787f87a2b4$var$INIT.parser,
         utils: utils
     });
-    $a06d5a398bbbfd36$var$INIT.initialized = true;
+    $410e7a787f87a2b4$var$INIT.initialized = true;
 }
 /**
 	Parse a string into tokens that represent linkable and non-linkable sub-components
 	@param {string} str
 	@return {MultiToken[]} tokens
-*/ function $a06d5a398bbbfd36$export$660b2ee2d4fb4eff(str) {
-    if (!$a06d5a398bbbfd36$var$INIT.initialized) $a06d5a398bbbfd36$export$2cd8252107eb640b();
-    return $a06d5a398bbbfd36$var$run($a06d5a398bbbfd36$var$INIT.parser.start, str, $a06d5a398bbbfd36$var$run$1($a06d5a398bbbfd36$var$INIT.scanner.start, str));
+*/ function $410e7a787f87a2b4$export$660b2ee2d4fb4eff(str) {
+    if (!$410e7a787f87a2b4$var$INIT.initialized) $410e7a787f87a2b4$export$2cd8252107eb640b();
+    return $410e7a787f87a2b4$var$run($410e7a787f87a2b4$var$INIT.parser.start, str, $410e7a787f87a2b4$var$run$1($410e7a787f87a2b4$var$INIT.scanner.start, str));
 }
 /**
 	Find a list of linkable items in the given string.
 	@param {string} str string to find links in
 	@param {string} [type] (optional) only find links of a specific type, e.g.,
 	'url' or 'email'
-*/ function $a06d5a398bbbfd36$export$71aa6c912b956294(str) {
+*/ function $410e7a787f87a2b4$export$71aa6c912b956294(str) {
     var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-    var tokens = $a06d5a398bbbfd36$export$660b2ee2d4fb4eff(str);
+    var tokens = $410e7a787f87a2b4$export$660b2ee2d4fb4eff(str);
     var filtered = [];
     for(var i = 0; i < tokens.length; i++){
         var token = tokens[i];
@@ -20857,71 +20858,71 @@ var $a06d5a398bbbfd36$var$INIT = {
  * @param {string} str string to test for links
  * @param {string} [type] optional specific link type to look for
  * @returns boolean true/false
- */ function $a06d5a398bbbfd36$export$e0969da9b8fb378d(str) {
+ */ function $410e7a787f87a2b4$export$e0969da9b8fb378d(str) {
     var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-    var tokens = $a06d5a398bbbfd36$export$660b2ee2d4fb4eff(str);
+    var tokens = $410e7a787f87a2b4$export$660b2ee2d4fb4eff(str);
     return tokens.length === 1 && tokens[0].isLink && (!type || tokens[0].t === type);
 }
 
 
-var $5648d4b0c5d9d32d$exports = {};
+var $fa8308bd2c5b6d7e$exports = {};
 "use strict";
-var $bd623089406672f6$exports = {};
-"use strict";
-
-var $7EpIm = parcelRequire("7EpIm");
-
-$7EpIm.trust = (parcelRequire("8K51h"));
-
-$7EpIm.fragment = (parcelRequire("df15h"));
-$bd623089406672f6$exports = $7EpIm;
-
-
-var $922559a60a60223e$exports = {};
+var $b51300f8ed8264b6$exports = {};
 "use strict";
 
-var $ebgA8 = parcelRequire("ebgA8");
+var $hPUTp = parcelRequire("hPUTp");
 
-var $2Mjqa = parcelRequire("2Mjqa");
+$hPUTp.trust = (parcelRequire("hc09f"));
 
-$922559a60a60223e$exports = (parcelRequire("dEYHd"))(typeof window !== "undefined" ? window : null, $ebgA8, $2Mjqa.redraw);
+$hPUTp.fragment = (parcelRequire("uUr9B"));
+$b51300f8ed8264b6$exports = $hPUTp;
+
+
+var $5eb9873530869c78$exports = {};
+"use strict";
+
+var $dXPdz = parcelRequire("dXPdz");
+
+var $fBKqb = parcelRequire("fBKqb");
+
+$5eb9873530869c78$exports = (parcelRequire("8ohAQ"))(typeof window !== "undefined" ? window : null, $dXPdz, $fBKqb.redraw);
 
 
 
-var $2Mjqa = parcelRequire("2Mjqa");
-var $5648d4b0c5d9d32d$var$m = function m() {
-    return $bd623089406672f6$exports.apply(this, arguments);
+var $fBKqb = parcelRequire("fBKqb");
+var $fa8308bd2c5b6d7e$var$m = function m() {
+    return $b51300f8ed8264b6$exports.apply(this, arguments);
 };
-$5648d4b0c5d9d32d$var$m.m = $bd623089406672f6$exports;
-$5648d4b0c5d9d32d$var$m.trust = $bd623089406672f6$exports.trust;
-$5648d4b0c5d9d32d$var$m.fragment = $bd623089406672f6$exports.fragment;
-$5648d4b0c5d9d32d$var$m.Fragment = "[";
-$5648d4b0c5d9d32d$var$m.mount = $2Mjqa.mount;
+$fa8308bd2c5b6d7e$var$m.m = $b51300f8ed8264b6$exports;
+$fa8308bd2c5b6d7e$var$m.trust = $b51300f8ed8264b6$exports.trust;
+$fa8308bd2c5b6d7e$var$m.fragment = $b51300f8ed8264b6$exports.fragment;
+$fa8308bd2c5b6d7e$var$m.Fragment = "[";
+$fa8308bd2c5b6d7e$var$m.mount = $fBKqb.mount;
 
-$5648d4b0c5d9d32d$var$m.route = (parcelRequire("7AzvW"));
+$fa8308bd2c5b6d7e$var$m.route = (parcelRequire("jFffZ"));
 
-$5648d4b0c5d9d32d$var$m.render = (parcelRequire("lI9DA"));
-$5648d4b0c5d9d32d$var$m.redraw = $2Mjqa.redraw;
-$5648d4b0c5d9d32d$var$m.request = $922559a60a60223e$exports.request;
-$5648d4b0c5d9d32d$var$m.jsonp = $922559a60a60223e$exports.jsonp;
+$fa8308bd2c5b6d7e$var$m.render = (parcelRequire("iHb4t"));
+$fa8308bd2c5b6d7e$var$m.redraw = $fBKqb.redraw;
+$fa8308bd2c5b6d7e$var$m.request = $5eb9873530869c78$exports.request;
+$fa8308bd2c5b6d7e$var$m.jsonp = $5eb9873530869c78$exports.jsonp;
 
-$5648d4b0c5d9d32d$var$m.parseQueryString = (parcelRequire("59vIi"));
+$fa8308bd2c5b6d7e$var$m.parseQueryString = (parcelRequire("iahK6"));
 
-$5648d4b0c5d9d32d$var$m.buildQueryString = (parcelRequire("2OUex"));
+$fa8308bd2c5b6d7e$var$m.buildQueryString = (parcelRequire("6KLd1"));
 
-$5648d4b0c5d9d32d$var$m.parsePathname = (parcelRequire("1h0el"));
+$fa8308bd2c5b6d7e$var$m.parsePathname = (parcelRequire("1bhZB"));
 
-$5648d4b0c5d9d32d$var$m.buildPathname = (parcelRequire("1dGiU"));
+$fa8308bd2c5b6d7e$var$m.buildPathname = (parcelRequire("bGJ5a"));
 
-$5648d4b0c5d9d32d$var$m.vnode = (parcelRequire("6eh63"));
+$fa8308bd2c5b6d7e$var$m.vnode = (parcelRequire("ahPL4"));
 
-$5648d4b0c5d9d32d$var$m.PromisePolyfill = (parcelRequire("cx1fz"));
+$fa8308bd2c5b6d7e$var$m.PromisePolyfill = (parcelRequire("4kqT7"));
 
-$5648d4b0c5d9d32d$var$m.censor = (parcelRequire("kU92C"));
-$5648d4b0c5d9d32d$exports = $5648d4b0c5d9d32d$var$m;
+$fa8308bd2c5b6d7e$var$m.censor = (parcelRequire("1Zud9"));
+$fa8308bd2c5b6d7e$exports = $fa8308bd2c5b6d7e$var$m;
 
 
-var $bd7c1575f3abb9eb$exports = {};
+var $fc3b5a28c7651bef$exports = {};
 /*
  * QRious v4.0.2
  * Copyright (C) 2017 Alasdair Mercer
@@ -20940,8 +20941,8 @@ var $bd7c1575f3abb9eb$exports = {};
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */ (function(global, factory) {
-    $bd7c1575f3abb9eb$exports = factory();
-})($bd7c1575f3abb9eb$exports, function() {
+    $fc3b5a28c7651bef$exports = factory();
+})($fc3b5a28c7651bef$exports, function() {
     "use strict";
     /*
    * Copyright (C) 2017 Alasdair Mercer, !ninja
@@ -23828,65 +23829,65 @@ var $bd7c1575f3abb9eb$exports = {};
 });
 
 
-var $e7c2b5109ce8b55f$var$randomUUID = typeof crypto !== "undefined" && crypto.randomUUID && crypto.randomUUID.bind(crypto);
-var $e7c2b5109ce8b55f$export$2e2bcd8739ae039 = {
-    randomUUID: $e7c2b5109ce8b55f$var$randomUUID
+var $30297a21b065704c$var$randomUUID = typeof crypto !== "undefined" && crypto.randomUUID && crypto.randomUUID.bind(crypto);
+var $30297a21b065704c$export$2e2bcd8739ae039 = {
+    randomUUID: $30297a21b065704c$var$randomUUID
 };
 
 
 // Unique ID creation requires a high quality random # generator. In the browser we therefore
 // require the crypto API and do not support built-in fallback to lower quality random number
 // generators (like Math.random()).
-var $1ad827f4e717086f$var$getRandomValues;
-var $1ad827f4e717086f$var$rnds8 = new Uint8Array(16);
-function $1ad827f4e717086f$export$2e2bcd8739ae039() {
+var $02bcf4a65a53d807$var$getRandomValues;
+var $02bcf4a65a53d807$var$rnds8 = new Uint8Array(16);
+function $02bcf4a65a53d807$export$2e2bcd8739ae039() {
     // lazy load so that environments that need to polyfill have a chance to do so
-    if (!$1ad827f4e717086f$var$getRandomValues) {
+    if (!$02bcf4a65a53d807$var$getRandomValues) {
         // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation.
-        $1ad827f4e717086f$var$getRandomValues = typeof crypto !== "undefined" && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
-        if (!$1ad827f4e717086f$var$getRandomValues) throw new Error("crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported");
+        $02bcf4a65a53d807$var$getRandomValues = typeof crypto !== "undefined" && crypto.getRandomValues && crypto.getRandomValues.bind(crypto);
+        if (!$02bcf4a65a53d807$var$getRandomValues) throw new Error("crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported");
     }
-    return $1ad827f4e717086f$var$getRandomValues($1ad827f4e717086f$var$rnds8);
+    return $02bcf4a65a53d807$var$getRandomValues($02bcf4a65a53d807$var$rnds8);
 }
 
 
-var $f7bc72ea7060480b$export$2e2bcd8739ae039 = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
+var $ddc332bde169d621$export$2e2bcd8739ae039 = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
 
 
-function $db45a83d45d0fc80$var$validate(uuid) {
-    return typeof uuid === "string" && (0, $f7bc72ea7060480b$export$2e2bcd8739ae039).test(uuid);
+function $c7d41d1d88149c19$var$validate(uuid) {
+    return typeof uuid === "string" && (0, $ddc332bde169d621$export$2e2bcd8739ae039).test(uuid);
 }
-var $db45a83d45d0fc80$export$2e2bcd8739ae039 = $db45a83d45d0fc80$var$validate;
+var $c7d41d1d88149c19$export$2e2bcd8739ae039 = $c7d41d1d88149c19$var$validate;
 
 
 /**
  * Convert array of 16 byte values to UUID string format of the form:
  * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
- */ var $4b2cf53490eb0cf7$var$byteToHex = [];
-for(var $4b2cf53490eb0cf7$var$i = 0; $4b2cf53490eb0cf7$var$i < 256; ++$4b2cf53490eb0cf7$var$i)$4b2cf53490eb0cf7$var$byteToHex.push(($4b2cf53490eb0cf7$var$i + 0x100).toString(16).slice(1));
-function $4b2cf53490eb0cf7$export$8fb373d660548968(arr) {
+ */ var $10d7c25fa75eabdb$var$byteToHex = [];
+for(var $10d7c25fa75eabdb$var$i = 0; $10d7c25fa75eabdb$var$i < 256; ++$10d7c25fa75eabdb$var$i)$10d7c25fa75eabdb$var$byteToHex.push(($10d7c25fa75eabdb$var$i + 0x100).toString(16).slice(1));
+function $10d7c25fa75eabdb$export$8fb373d660548968(arr) {
     var offset = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
     // Note: Be careful editing this code!  It's been tuned for performance
     // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
-    return $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 0]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 1]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 2]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 3]] + "-" + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 4]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 5]] + "-" + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 6]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 7]] + "-" + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 8]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 9]] + "-" + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 10]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 11]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 12]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 13]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 14]] + $4b2cf53490eb0cf7$var$byteToHex[arr[offset + 15]];
+    return $10d7c25fa75eabdb$var$byteToHex[arr[offset + 0]] + $10d7c25fa75eabdb$var$byteToHex[arr[offset + 1]] + $10d7c25fa75eabdb$var$byteToHex[arr[offset + 2]] + $10d7c25fa75eabdb$var$byteToHex[arr[offset + 3]] + "-" + $10d7c25fa75eabdb$var$byteToHex[arr[offset + 4]] + $10d7c25fa75eabdb$var$byteToHex[arr[offset + 5]] + "-" + $10d7c25fa75eabdb$var$byteToHex[arr[offset + 6]] + $10d7c25fa75eabdb$var$byteToHex[arr[offset + 7]] + "-" + $10d7c25fa75eabdb$var$byteToHex[arr[offset + 8]] + $10d7c25fa75eabdb$var$byteToHex[arr[offset + 9]] + "-" + $10d7c25fa75eabdb$var$byteToHex[arr[offset + 10]] + $10d7c25fa75eabdb$var$byteToHex[arr[offset + 11]] + $10d7c25fa75eabdb$var$byteToHex[arr[offset + 12]] + $10d7c25fa75eabdb$var$byteToHex[arr[offset + 13]] + $10d7c25fa75eabdb$var$byteToHex[arr[offset + 14]] + $10d7c25fa75eabdb$var$byteToHex[arr[offset + 15]];
 }
-function $4b2cf53490eb0cf7$var$stringify(arr) {
+function $10d7c25fa75eabdb$var$stringify(arr) {
     var offset = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
-    var uuid = $4b2cf53490eb0cf7$export$8fb373d660548968(arr, offset); // Consistency check for valid UUID.  If this throws, it's likely due to one
+    var uuid = $10d7c25fa75eabdb$export$8fb373d660548968(arr, offset); // Consistency check for valid UUID.  If this throws, it's likely due to one
     // of the following:
     // - One or more input array values don't map to a hex octet (leading to
     // "undefined" in the uuid)
     // - Invalid input values for the RFC `version` or `variant` fields
-    if (!(0, $db45a83d45d0fc80$export$2e2bcd8739ae039)(uuid)) throw TypeError("Stringified UUID is invalid");
+    if (!(0, $c7d41d1d88149c19$export$2e2bcd8739ae039)(uuid)) throw TypeError("Stringified UUID is invalid");
     return uuid;
 }
-var $4b2cf53490eb0cf7$export$2e2bcd8739ae039 = $4b2cf53490eb0cf7$var$stringify;
+var $10d7c25fa75eabdb$export$2e2bcd8739ae039 = $10d7c25fa75eabdb$var$stringify;
 
 
-function $194554b49bf11e1e$var$v4(options, buf, offset) {
-    if ((0, $e7c2b5109ce8b55f$export$2e2bcd8739ae039).randomUUID && !buf && !options) return (0, $e7c2b5109ce8b55f$export$2e2bcd8739ae039).randomUUID();
+function $6995a202bee889c8$var$v4(options, buf, offset) {
+    if ((0, $30297a21b065704c$export$2e2bcd8739ae039).randomUUID && !buf && !options) return (0, $30297a21b065704c$export$2e2bcd8739ae039).randomUUID();
     options = options || {};
-    var rnds = options.random || (options.rng || (0, $1ad827f4e717086f$export$2e2bcd8739ae039))(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+    var rnds = options.random || (options.rng || (0, $02bcf4a65a53d807$export$2e2bcd8739ae039))(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
     rnds[6] = rnds[6] & 0x0f | 0x40;
     rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
     if (buf) {
@@ -23894,18 +23895,18 @@ function $194554b49bf11e1e$var$v4(options, buf, offset) {
         for(var i = 0; i < 16; ++i)buf[offset + i] = rnds[i];
         return buf;
     }
-    return (0, $4b2cf53490eb0cf7$export$8fb373d660548968)(rnds);
+    return (0, $10d7c25fa75eabdb$export$8fb373d660548968)(rnds);
 }
-var $194554b49bf11e1e$export$2e2bcd8739ae039 = $194554b49bf11e1e$var$v4;
+var $6995a202bee889c8$export$2e2bcd8739ae039 = $6995a202bee889c8$var$v4;
 
 
-var $0cfc99b2164fd73d$exports = {};
+var $6e11092d7331cd03$exports = {};
 
 /* @preserve
  * Leaflet 1.9.4, a JS library for interactive maps. https://leafletjs.com
  * (c) 2010-2023 Vladimir Agafonkin, (c) 2010-2011 CloudMade
  */ (function(global, factory) {
-    factory($0cfc99b2164fd73d$exports);
+    factory($6e11092d7331cd03$exports);
 })(undefined, function(exports1) {
     "use strict";
     var version = "1.9.4";
@@ -24271,7 +24272,7 @@ var $0cfc99b2164fd73d$exports = {};
         // attach listener (without syntactic sugar now)
         _on: function _on(type, fn, context, _once) {
             if (typeof fn !== "function") {
-                console.warn("wrong listener type: " + (typeof fn === "undefined" ? "undefined" : (0, $4cfdb3add9285597$export$71511d61b312f219)(fn)));
+                console.warn("wrong listener type: " + (typeof fn === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$71511d61b312f219)(fn)));
                 return;
             }
             // check if fn already there
@@ -24301,7 +24302,7 @@ var $0cfc99b2164fd73d$exports = {};
                 return;
             }
             if (typeof fn !== "function") {
-                console.warn("wrong listener type: " + (typeof fn === "undefined" ? "undefined" : (0, $4cfdb3add9285597$export$71511d61b312f219)(fn)));
+                console.warn("wrong listener type: " + (typeof fn === "undefined" ? "undefined" : (0, $7bd6d9ddf4a378c5$export$71511d61b312f219)(fn)));
                 return;
             }
             // find fn and remove it
@@ -25575,7 +25576,7 @@ var $0cfc99b2164fd73d$exports = {};
             // a <input>.
             var path = getPropagationPath(e);
             if (path.some(function(el) {
-                return el instanceof HTMLLabelElement && el.attributes["for"];
+                return el instanceof HTMLLabelElement && el.attributes.for;
             }) && !path.some(function(el) {
                 return el instanceof HTMLInputElement || el instanceof HTMLSelectElement;
             })) return;
@@ -26447,8 +26448,8 @@ var $0cfc99b2164fd73d$exports = {};
             if (!this._panAnim) {
                 this._panAnim = new PosAnimation();
                 this._panAnim.on({
-                    step: this._onPanTransitionStep,
-                    end: this._onPanTransitionEnd
+                    "step": this._onPanTransitionStep,
+                    "end": this._onPanTransitionEnd
                 }, this);
             }
             // don't fire movestart if animating inertia
@@ -34498,13 +34499,13 @@ var $0cfc99b2164fd73d$exports = {};
 
 
 "use strict";
-var $78f2cb3ec8734e95$export$471f7ae5c4103ae1 = {
+var $17d11d58618cc814$export$471f7ae5c4103ae1 = {
     visibility: true,
     action: "",
     deviceOnline: true,
     userOnline: 0,
     notKaiOS: window.innerWidth > 300 ? true : false,
-    os: (0, $6d3f4b507512327e$export$ad64e00ff47c1b17)(),
+    os: (0, $162001cafa2b40fd$export$ad64e00ff47c1b17)(),
     ownPeerId: "",
     current_article_type: "",
     current_user_id: "",
@@ -34514,25 +34515,25 @@ var $78f2cb3ec8734e95$export$471f7ae5c4103ae1 = {
     userMarkers: [],
     addressbook_in_focus: ""
 };
-var $78f2cb3ec8734e95$var$audioRecorder = (0, $6d3f4b507512327e$export$637fd9537164f29b)();
-if ("b2g" in navigator || "navigator.mozApps" in navigator) $78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS = false;
-var $78f2cb3ec8734e95$export$a5a6e0b888b2c992 = {};
-var $78f2cb3ec8734e95$var$channel = new BroadcastChannel("sw-messages");
-var $78f2cb3ec8734e95$var$links = "";
-var $78f2cb3ec8734e95$var$chat_data = [];
-var $78f2cb3ec8734e95$var$lastPeerId = null;
-var $78f2cb3ec8734e95$var$peer = null;
-var $78f2cb3ec8734e95$var$conn = "";
-var $78f2cb3ec8734e95$var$tempConn = "";
-var $78f2cb3ec8734e95$var$connectedPeers = [];
+var $17d11d58618cc814$var$audioRecorder = (0, $162001cafa2b40fd$export$637fd9537164f29b)();
+if ("b2g" in navigator || "navigator.mozApps" in navigator) $17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS = false;
+var $17d11d58618cc814$export$a5a6e0b888b2c992 = {};
+var $17d11d58618cc814$var$channel = new BroadcastChannel("sw-messages");
+var $17d11d58618cc814$var$links = "";
+var $17d11d58618cc814$var$chat_data = [];
+var $17d11d58618cc814$var$lastPeerId = null;
+var $17d11d58618cc814$var$peer = null;
+var $17d11d58618cc814$var$conn = "";
+var $17d11d58618cc814$var$tempConn = "";
+var $17d11d58618cc814$var$connectedPeers = [];
 //.env turn server
-var $78f2cb3ec8734e95$var$debug = false;
-if ($78f2cb3ec8734e95$var$debug) window.onerror = function(msg, url, linenumber) {
+var $17d11d58618cc814$var$debug = false;
+if ($17d11d58618cc814$var$debug) window.onerror = function(msg, url, linenumber) {
     alert("Error message: " + msg + "\nURL: " + url + "\nLine Number: " + linenumber);
     return true;
 };
 //open KaiOS app
-var $78f2cb3ec8734e95$var$app_launcher = function() {
+var $17d11d58618cc814$var$app_launcher = function() {
     var currentUrl = window.location.href;
     // Check if the URL includes 'id='
     if (!currentUrl.includes("id=")) return false;
@@ -34566,32 +34567,32 @@ var $78f2cb3ec8734e95$var$app_launcher = function() {
     }, 4000);
 };
 window.addEventListener("online", function() {
-    $78f2cb3ec8734e95$export$471f7ae5c4103ae1.deviceOnline = true;
+    $17d11d58618cc814$export$471f7ae5c4103ae1.deviceOnline = true;
 });
 window.addEventListener("offline", function() {
-    $78f2cb3ec8734e95$export$471f7ae5c4103ae1.deviceOnline = false;
+    $17d11d58618cc814$export$471f7ae5c4103ae1.deviceOnline = false;
 });
 // Function to check if an element already exists in chat_data
-function $78f2cb3ec8734e95$var$elementExists(chat_data, criteria) {
+function $17d11d58618cc814$var$elementExists(chat_data, criteria) {
     return chat_data.some(function(element) {
         return Object.keys(criteria).every(function(key) {
             return element[key] === criteria[key];
         });
     });
 }
-var $78f2cb3ec8734e95$var$compareUserList = function(userlist) {
+var $17d11d58618cc814$var$compareUserList = function(userlist) {
     var filteredUserList = userlist.filter(function(userId) {
-        return userId !== $78f2cb3ec8734e95$var$peer.id;
+        return userId !== $17d11d58618cc814$var$peer.id;
     });
     userlist = filteredUserList;
     userlist.forEach(function(user) {
-        if (!$78f2cb3ec8734e95$var$connectedPeers.includes(user)) try {
-            $78f2cb3ec8734e95$var$conn = $78f2cb3ec8734e95$var$peer.connect(user, {
+        if (!$17d11d58618cc814$var$connectedPeers.includes(user)) try {
+            $17d11d58618cc814$var$conn = $17d11d58618cc814$var$peer.connect(user, {
                 label: "flop",
                 reliable: true
             });
-            $78f2cb3ec8734e95$var$conn.on("open", function() {
-                $78f2cb3ec8734e95$var$setupConnectionEvents($78f2cb3ec8734e95$var$conn);
+            $17d11d58618cc814$var$conn.on("open", function() {
+                $17d11d58618cc814$var$setupConnectionEvents($17d11d58618cc814$var$conn);
             });
         } catch (e) {
             console.log("try to connect failed" + e);
@@ -34600,60 +34601,59 @@ var $78f2cb3ec8734e95$var$compareUserList = function(userlist) {
     });
 };
 //add to addressbook
-var $78f2cb3ec8734e95$var$addressbook = [];
-(0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).getItem("addressbook").then(function(e) {
-    if (e !== null) $78f2cb3ec8734e95$var$addressbook = e;
-})["catch"](function() {});
-var $78f2cb3ec8734e95$var$delete_addressbook_item = function(userIdToDelete) {
+var $17d11d58618cc814$var$addressbook = [];
+(0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).getItem("addressbook").then(function(e) {
+    if (e !== null) $17d11d58618cc814$var$addressbook = e;
+}).catch(function() {});
+var $17d11d58618cc814$var$delete_addressbook_item = function(userIdToDelete) {
     // Filter out the user with the specified id
-    $78f2cb3ec8734e95$var$addressbook = $78f2cb3ec8734e95$var$addressbook.filter(function(user) {
+    $17d11d58618cc814$var$addressbook = $17d11d58618cc814$var$addressbook.filter(function(user) {
         return user.id !== userIdToDelete;
     });
-    (0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).setItem("addressbook", $78f2cb3ec8734e95$var$addressbook).then(function(e) {
-        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("deleted", 3000);
-        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
-    })["catch"](function(error) {
+    (0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).setItem("addressbook", $17d11d58618cc814$var$addressbook).then(function(e) {
+        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("deleted", 3000);
+        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
+    }).catch(function(error) {
         console.error("Error saving address book:", error);
     });
 };
-var $78f2cb3ec8734e95$var$addUserToAddressBook = function(a, b) {
+var $17d11d58618cc814$var$addUserToAddressBook = function(a, b) {
     var hasEmptyValues = function hasEmptyValues(obj) {
         return obj.id === undefined || obj.id === null || obj.id === "" || obj.name === undefined || obj.name === null || obj.name === "";
     };
-    if (!Array.isArray($78f2cb3ec8734e95$var$addressbook)) {
+    if (!Array.isArray($17d11d58618cc814$var$addressbook)) {
         console.error("addressbook is not defined or is not an array");
         return;
     }
     //addressbook = addressbook.filter((obj) => !hasEmptyValues(obj));
-    var exists = $78f2cb3ec8734e95$var$addressbook.some(function(e) {
+    var exists = $17d11d58618cc814$var$addressbook.some(function(e) {
         return e.id == a;
     });
     if (!exists) {
-        $78f2cb3ec8734e95$var$addressbook.push({
+        $17d11d58618cc814$var$addressbook.push({
             id: a,
             nickname: b
         });
-        (0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).setItem("addressbook", $78f2cb3ec8734e95$var$addressbook).then(function(e) {
-            (0, $6d3f4b507512327e$export$6593825dc0f3a767)("done", 3000);
+        (0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).setItem("addressbook", $17d11d58618cc814$var$addressbook).then(function(e) {
+            (0, $162001cafa2b40fd$export$6593825dc0f3a767)("done", 3000);
             console.log(e);
-        })["catch"](function() {});
-    } else (0, $6d3f4b507512327e$export$6593825dc0f3a767)("user still exist", 3000);
+        }).catch(function() {});
+    } else (0, $162001cafa2b40fd$export$6593825dc0f3a767)("user still exist", 3000);
 };
 //track single connections
 //to update connections list
-function $78f2cb3ec8734e95$var$setupConnectionEvents(conn) {
-    if ($78f2cb3ec8734e95$var$connectedPeers.includes(conn.peer)) return false;
+function $17d11d58618cc814$var$setupConnectionEvents(conn) {
+    if ($17d11d58618cc814$var$connectedPeers.includes(conn.peer)) return false;
     if (conn.label !== "flop") {
         console.log("forbidden");
         return false;
     }
-    $78f2cb3ec8734e95$var$connectedPeers.push(conn.peer);
+    $17d11d58618cc814$var$connectedPeers.push(conn.peer);
     var userId = conn.peer;
     var pc = conn.peerConnection;
     if (pc) {
         pc.addEventListener("negotiationneeded", function(event) {
             console.log(event);
-        //side_toaster(event, 5000);
         });
         pc.addEventListener("icecandidateerror", function(event) {
         //side_toaster(event.errorText, 5000);
@@ -34661,27 +34661,27 @@ function $78f2cb3ec8734e95$var$setupConnectionEvents(conn) {
         });
         pc.addEventListener("iceconnectionstatechange", function() {
             if (pc.iceConnectionState === "disconnected") {
-                (0, $6d3f4b507512327e$export$6593825dc0f3a767)("User has left the chat", 1000);
-                $78f2cb3ec8734e95$var$connectedPeers = $78f2cb3ec8734e95$var$connectedPeers.filter(function(c) {
+                (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User has left the chat", 1000);
+                $17d11d58618cc814$var$connectedPeers = $17d11d58618cc814$var$connectedPeers.filter(function(c) {
                     return c !== userId;
                 });
-                $78f2cb3ec8734e95$var$updateConnections();
+                $17d11d58618cc814$var$updateConnections();
             }
             if (pc.iceConnectionState === "connected") {
-                (0, $6d3f4b507512327e$export$6593825dc0f3a767)("User has entered", 1000);
-                $78f2cb3ec8734e95$var$remove_no_user_online();
-                $78f2cb3ec8734e95$var$updateConnections();
+                (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User has entered", 1000);
+                $17d11d58618cc814$var$remove_no_user_online();
+                $17d11d58618cc814$var$setupConnectionEvents(conn);
+                $17d11d58618cc814$var$updateConnections();
             }
         });
     }
     conn.on("data", function(data) {
-        console.log(data);
         document.querySelector(".loading-spinner").style.display = "none";
-        $78f2cb3ec8734e95$var$remove_no_user_online();
+        $17d11d58618cc814$var$remove_no_user_online();
         if (data.type == "image" || data.type == "text" || data.type == "gps_live" || data.type == "gps" || data.type == "audio") {
             if (data.type == "image") {
-                if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.visibility) (0, $6d3f4b507512327e$export$75525525b38ea7b3)("flop", "new message");
-                $78f2cb3ec8734e95$var$chat_data.push({
+                if (!$17d11d58618cc814$export$471f7ae5c4103ae1.visibility) (0, $162001cafa2b40fd$export$75525525b38ea7b3)("flop", "new message");
+                $17d11d58618cc814$var$chat_data.push({
                     nickname: data.nickname,
                     userId: data.userId,
                     content: "",
@@ -34690,22 +34690,22 @@ function $78f2cb3ec8734e95$var$setupConnectionEvents(conn) {
                     filename: data.filename,
                     type: data.type
                 });
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
-                $78f2cb3ec8734e95$var$focus_last_article();
-                (0, $da5c51e5866985e6$export$55e6c60a43cc74e2)();
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
+                $17d11d58618cc814$var$focus_last_article();
+                (0, $2b0cc46421a6d3fe$export$55e6c60a43cc74e2)();
             }
             if (data.type == "text") {
-                if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.visibility) (0, $6d3f4b507512327e$export$75525525b38ea7b3)("flop", data.content);
-                $78f2cb3ec8734e95$var$chat_data.push({
+                if (!$17d11d58618cc814$export$471f7ae5c4103ae1.visibility) (0, $162001cafa2b40fd$export$75525525b38ea7b3)("flop", data.content);
+                $17d11d58618cc814$var$chat_data.push({
                     nickname: data.nickname,
                     content: data.content,
                     datetime: new Date(),
                     type: data.type,
                     userId: data.userId
                 });
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
-                $78f2cb3ec8734e95$var$focus_last_article();
-                (0, $da5c51e5866985e6$export$55e6c60a43cc74e2)();
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
+                $17d11d58618cc814$var$focus_last_article();
+                (0, $2b0cc46421a6d3fe$export$55e6c60a43cc74e2)();
             }
             if (data.type == "audio") {
                 var audioBuffer = new Uint8Array(data.content);
@@ -34716,7 +34716,7 @@ function $78f2cb3ec8734e95$var$setupConnectionEvents(conn) {
                 });
                 console.log(audioBlob);
                 var url = URL.createObjectURL(audioBlob);
-                $78f2cb3ec8734e95$var$chat_data.push({
+                $17d11d58618cc814$var$chat_data.push({
                     nickname: data.nickname,
                     content: url,
                     datetime: new Date(),
@@ -34727,7 +34727,7 @@ function $78f2cb3ec8734e95$var$setupConnectionEvents(conn) {
             if (data.type == "gps") {
                 var f = JSON.parse(data.content);
                 var link_url = "https://www.openstreetmap.org/#map=19/" + f.lat + "/" + f.lng;
-                $78f2cb3ec8734e95$var$chat_data.push({
+                $17d11d58618cc814$var$chat_data.push({
                     nickname: data.nickname,
                     content: link_url,
                     datetime: new Date(),
@@ -34738,7 +34738,7 @@ function $78f2cb3ec8734e95$var$setupConnectionEvents(conn) {
             }
             //to do not stable
             if (data.type == "gps_live") {
-                var existingMsg = $78f2cb3ec8734e95$var$chat_data.find(function(item) {
+                var existingMsg = $17d11d58618cc814$var$chat_data.find(function(item) {
                     return item.type === "gps_live";
                 });
                 var f1 = JSON.parse(data.content);
@@ -34748,16 +34748,16 @@ function $78f2cb3ec8734e95$var$setupConnectionEvents(conn) {
                     existingMsg.datetime = new Date();
                     //store different users location
                     //to create/update markers on map
-                    var _$e = $78f2cb3ec8734e95$export$471f7ae5c4103ae1.users_geolocation.find(function(item) {
+                    var _$e = $17d11d58618cc814$export$471f7ae5c4103ae1.users_geolocation.find(function(item) {
                         return item.userId === data.userId;
                     });
                     if (_$e) _$e.gps = data.content;
-                    else $78f2cb3ec8734e95$export$471f7ae5c4103ae1.users_geolocation.push({
+                    else $17d11d58618cc814$export$471f7ae5c4103ae1.users_geolocation.push({
                         userId: data.userId,
                         gps: data.content
                     });
                 } else // Push a new GPS message if not found
-                $78f2cb3ec8734e95$var$chat_data.push({
+                $17d11d58618cc814$var$chat_data.push({
                     nickname: data.nickname,
                     content: link_url1,
                     datetime: new Date(),
@@ -34765,67 +34765,72 @@ function $78f2cb3ec8734e95$var$setupConnectionEvents(conn) {
                     userId: data.userId,
                     gps: data.content
                 });
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
             }
-        } else if (data.userlist) $78f2cb3ec8734e95$var$compareUserList(data.userlist);
+        } else if (data.userlist) $17d11d58618cc814$var$compareUserList(data.userlist);
     });
     // Event handler for successful connection
     conn.on("open", function() {
         document.querySelector(".loading-spinner").style.display = "none";
-        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("Connected", 5000);
-        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
-        (0, $da5c51e5866985e6$export$55e6c60a43cc74e2)();
+        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User has entered", 5000);
+        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
+        (0, $2b0cc46421a6d3fe$export$55e6c60a43cc74e2)();
+        $17d11d58618cc814$var$remove_no_user_online();
     });
     // Event handler for connection closure
     conn.on("close", function() {
-        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("User has left the chat", 1000);
-        $78f2cb3ec8734e95$var$connectedPeers = $78f2cb3ec8734e95$var$connectedPeers.filter(function(c) {
+        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User has left the chat", 1000);
+        $17d11d58618cc814$var$connectedPeers = $17d11d58618cc814$var$connectedPeers.filter(function(c) {
             return c !== conn.peer;
         });
-        $78f2cb3ec8734e95$var$updateConnections();
+        $17d11d58618cc814$var$updateConnections();
     });
     conn.on("connection", function(dataConnection) {
-        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("remote connection", 4000);
+        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("remote connection", 4000);
     });
     conn.on("disconnected", function() {});
     // Event handler for connection errors
     conn.on("error", function() {
-        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("User has been disconnected", 1000);
-        $78f2cb3ec8734e95$var$connectedPeers = $78f2cb3ec8734e95$var$connectedPeers.filter(function(c) {
+        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User has been disconnected", 1000);
+        $17d11d58618cc814$var$connectedPeers = $17d11d58618cc814$var$connectedPeers.filter(function(c) {
             return c !== userId;
         });
-        $78f2cb3ec8734e95$var$updateConnections();
+        $17d11d58618cc814$var$updateConnections();
     });
 }
-function $78f2cb3ec8734e95$var$updateConnections() {
-    $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline = $78f2cb3ec8734e95$var$connectedPeers.length;
+function $17d11d58618cc814$var$updateConnections() {
+    $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline = $17d11d58618cc814$var$connectedPeers.length;
+    $17d11d58618cc814$var$remove_no_user_online();
 }
-var $78f2cb3ec8734e95$var$ice_servers = {
-    iceServers: []
+var $17d11d58618cc814$var$ice_servers = {
+    "iceServers": []
 };
-var $78f2cb3ec8734e95$var$remove_no_user_online = function() {
-    $78f2cb3ec8734e95$var$chat_data = $78f2cb3ec8734e95$var$chat_data.filter(function(e) {
+var $17d11d58618cc814$var$remove_no_user_online = function() {
+    $17d11d58618cc814$var$chat_data = $17d11d58618cc814$var$chat_data.filter(function(e) {
         return e.id !== "no-other-user-online";
     });
-    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
+    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
 };
-var $78f2cb3ec8734e95$var$get_manifest_callback = function(e) {
+var $17d11d58618cc814$var$get_manifest_callback = function(e) {
     console.log(e);
     var version;
     if (navigator.mozApps) version = e.manifest.version;
     else version = e.b2g_features.version;
-    $78f2cb3ec8734e95$export$471f7ae5c4103ae1.version = version;
+    $17d11d58618cc814$export$471f7ae5c4103ae1.version = version;
     localStorage.setItem("version", version);
 };
-(0, $6d3f4b507512327e$export$39e873de56f329d8)($78f2cb3ec8734e95$var$get_manifest_callback);
-function $78f2cb3ec8734e95$var$getIceServers() {
-    return $78f2cb3ec8734e95$var$_getIceServers.apply(this, arguments);
+(0, $162001cafa2b40fd$export$39e873de56f329d8)($17d11d58618cc814$var$get_manifest_callback);
+$17d11d58618cc814$var$getIceServers().then(function() {
+    console.log("peer created");
+});
+function $17d11d58618cc814$var$getIceServers() {
+    return $17d11d58618cc814$var$_getIceServers.apply(this, arguments);
 }
-function $78f2cb3ec8734e95$var$_getIceServers() {
-    $78f2cb3ec8734e95$var$_getIceServers = //load ICE Server
-    (0, $bdca4d8f0452b8e7$export$71511d61b312f219)(function() {
+function $17d11d58618cc814$var$_getIceServers() {
+    $17d11d58618cc814$var$_getIceServers = //load ICE Server
+    (0, $ba0748fc6d85beab$export$71511d61b312f219)(function() {
         var response, a, error;
-        return (0, $95fedd77f81839f7$export$67ebef60e6f28a6)(this, function(_state) {
+        return (0, $04f2fd83a0b0b7f9$export$67ebef60e6f28a6)(this, function(_state) {
             switch(_state.label){
                 case 0:
                     document.querySelector(".loading-spinner").style.display = "block";
@@ -34854,47 +34859,50 @@ function $78f2cb3ec8734e95$var$_getIceServers() {
                 case 3:
                     a = _state.sent();
                     a.forEach(function(e) {
-                        $78f2cb3ec8734e95$var$ice_servers.iceServers.push(e);
+                        $17d11d58618cc814$var$ice_servers.iceServers.push(e);
                     });
-                    if ($78f2cb3ec8734e95$var$peer) {
+                    if ($17d11d58618cc814$var$peer) {
                         try {
-                            $78f2cb3ec8734e95$var$closeAllConnections();
+                            $17d11d58618cc814$var$closeAllConnections();
                         } catch (e) {
                             console.log(e);
                         }
-                        $78f2cb3ec8734e95$var$peer.destroy();
+                        $17d11d58618cc814$var$peer.destroy();
                     }
-                    $78f2cb3ec8734e95$var$peer = new Peer($78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id, {
-                        debug: 1,
+                    $17d11d58618cc814$var$peer = new Peer($17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id, {
+                        debug: 0,
                         secure: false,
-                        config: $78f2cb3ec8734e95$var$ice_servers,
+                        config: $17d11d58618cc814$var$ice_servers,
                         referrerPolicy: "no-referrer"
                     });
-                    $78f2cb3ec8734e95$var$peer.on("open", function(c) {
-                        if ($78f2cb3ec8734e95$var$peer.id == null) $78f2cb3ec8734e95$var$peer.id = $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id;
+                    $17d11d58618cc814$var$peer.on("open", function(c) {
+                        if ($17d11d58618cc814$var$peer.id == null) $17d11d58618cc814$var$peer.id = $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id;
                         document.querySelector(".loading-spinner").style.display = "none";
-                        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.ownPeerId = $78f2cb3ec8734e95$var$peer.id;
+                        $17d11d58618cc814$export$471f7ae5c4103ae1.ownPeerId = $17d11d58618cc814$var$peer.id;
+                        $17d11d58618cc814$var$remove_no_user_online();
                     });
-                    $78f2cb3ec8734e95$var$peer.on("connection", function(c) {
+                    $17d11d58618cc814$var$peer.on("connection", function(c) {
                         //store all connections
                         //document.querySelector(".loading-spinner").style.display = "none";
-                        $78f2cb3ec8734e95$var$setupConnectionEvents(c);
-                        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.user_does_not_exist = false;
+                        $17d11d58618cc814$var$setupConnectionEvents(c);
+                        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User has entered", 1000);
+                        console.log("allow user?");
+                        $17d11d58618cc814$export$471f7ae5c4103ae1.user_does_not_exist = false;
                         var x = document.querySelector("div#side-toast");
                         x.style.transform = "translate(-100vw,0px)";
                     });
-                    $78f2cb3ec8734e95$var$peer.on("disconnected", function() {});
-                    $78f2cb3ec8734e95$var$peer.on("close", function() {
+                    $17d11d58618cc814$var$peer.on("disconnected", function() {});
+                    $17d11d58618cc814$var$peer.on("close", function() {
                         document.querySelector(".loading-spinner").style.display = "none";
                     });
-                    $78f2cb3ec8734e95$var$peer.on("error", function(err) {
+                    $17d11d58618cc814$var$peer.on("error", function(err) {
                         switch(err.type){
                             case "server-error":
-                                (0, $6d3f4b507512327e$export$6593825dc0f3a767)("The connection server is not reachable", 4000);
+                                (0, $162001cafa2b40fd$export$6593825dc0f3a767)("The connection server is not reachable", 4000);
                                 break;
                             case "peer-unavailable":
-                                (0, $6d3f4b507512327e$export$6593825dc0f3a767)("The user does not exist.", 100000);
-                                $78f2cb3ec8734e95$export$471f7ae5c4103ae1.user_does_not_exist = true;
+                                (0, $162001cafa2b40fd$export$6593825dc0f3a767)("The user does not exist.", 100000);
+                                $17d11d58618cc814$export$471f7ae5c4103ae1.user_does_not_exist = true;
                                 return false;
                             default:
                                 break;
@@ -34908,7 +34916,7 @@ function $78f2cb3ec8734e95$var$_getIceServers() {
                 case 4:
                     error = _state.sent();
                     document.querySelector(".loading-spinner").style.display = "none";
-                    (0, $6d3f4b507512327e$export$6593825dc0f3a767)("please retry to connect", 2000);
+                    (0, $162001cafa2b40fd$export$6593825dc0f3a767)("please retry to connect", 2000);
                     return [
                         3,
                         5
@@ -34920,59 +34928,59 @@ function $78f2cb3ec8734e95$var$_getIceServers() {
             }
         });
     });
-    return $78f2cb3ec8734e95$var$_getIceServers.apply(this, arguments);
+    return $17d11d58618cc814$var$_getIceServers.apply(this, arguments);
 }
 //load settings
-(0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).getItem("settings").then(function(value) {
+(0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).getItem("settings").then(function(value) {
     // If settings are not present, provide default values for each key
-    $78f2cb3ec8734e95$export$a5a6e0b888b2c992 = value || {};
+    $17d11d58618cc814$export$a5a6e0b888b2c992 = value || {};
     var defaultValues = {
-        nickname: (0, $6d3f4b507512327e$export$9e15fb06e64c4810)(10),
+        nickname: (0, $162001cafa2b40fd$export$9e15fb06e64c4810)(10),
         server_url: "0.peerjs.com",
         server_path: "/",
         server_port: "443",
         invite_url: "https://flop.bhackers.uber.space/",
-        custom_peer_id: "flop-" + (0, $194554b49bf11e1e$export$2e2bcd8739ae039)(16)
+        custom_peer_id: "flop-" + (0, $6995a202bee889c8$export$2e2bcd8739ae039)(16)
     };
-    for(var key in defaultValues)if (!(key in $78f2cb3ec8734e95$export$a5a6e0b888b2c992)) $78f2cb3ec8734e95$export$a5a6e0b888b2c992[key] = defaultValues[key];
+    for(var key in defaultValues)if (!(key in $17d11d58618cc814$export$a5a6e0b888b2c992)) $17d11d58618cc814$export$a5a6e0b888b2c992[key] = defaultValues[key];
     if (value == null) {
-        $78f2cb3ec8734e95$export$a5a6e0b888b2c992 = defaultValues;
-        (0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).setItem("settings", $78f2cb3ec8734e95$export$a5a6e0b888b2c992).then(function() {
+        $17d11d58618cc814$export$a5a6e0b888b2c992 = defaultValues;
+        (0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).setItem("settings", $17d11d58618cc814$export$a5a6e0b888b2c992).then(function() {
             console.log("stored the first time");
         });
     }
-})["catch"](function(err) {
+}).catch(function(err) {
     console.log(err);
 });
-var $78f2cb3ec8734e95$var$warning_leave_chat = function warning_leave_chat() {
-    $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "confirm";
+var $17d11d58618cc814$var$warning_leave_chat = function warning_leave_chat() {
+    $17d11d58618cc814$export$471f7ae5c4103ae1.action = "confirm";
     if (confirm("Do you really want leave the room?")) {
-        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/start");
+        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/start");
         setTimeout(function() {
-            $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
-            $78f2cb3ec8734e95$var$peer.destroy();
+            $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
+            $17d11d58618cc814$var$peer.destroy();
         }, 1000);
     } else setTimeout(function() {
-        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
+        $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
     }, 1000);
 };
-var $78f2cb3ec8734e95$var$write = function write() {
-    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.action != "write") {
+var $17d11d58618cc814$var$write = function write() {
+    if ($17d11d58618cc814$export$471f7ae5c4103ae1.action != "write") {
         if (document.getElementById("message-input") != null) {
             document.getElementById("message-input").style.display = "block";
             document.querySelector("div#message-input input").focus();
         }
-        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "write";
+        $17d11d58618cc814$export$471f7ae5c4103ae1.action = "write";
     } else {
         if (document.getElementById("message-input") != null) {
             document.querySelector("div#message-input input").value = "";
             document.getElementById("message-input").style.display = "none";
         }
-        $78f2cb3ec8734e95$var$focus_last_article();
-        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
+        $17d11d58618cc814$var$focus_last_article();
+        $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
     }
 };
-var $78f2cb3ec8734e95$var$focus_last_article = function focus_last_article() {
+var $17d11d58618cc814$var$focus_last_article = function focus_last_article() {
     setTimeout(function() {
         var a = document.querySelectorAll("div#app article");
         a[a.length - 1].focus();
@@ -34985,14 +34993,14 @@ var $78f2cb3ec8734e95$var$focus_last_article = function focus_last_article() {
         });
     }, 1000);
 };
-function $78f2cb3ec8734e95$var$sendMessage(msg, type) {
+function $17d11d58618cc814$var$sendMessage(msg, type) {
     if (type == "image") {
         // Encode the file using the FileReader API
         var reader = new FileReader();
         reader.onloadend = function() {
             var src = URL.createObjectURL(msg.blob);
-            $78f2cb3ec8734e95$var$chat_data.push({
-                nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
+            $17d11d58618cc814$var$chat_data.push({
+                nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
                 content: "",
                 datetime: new Date(),
                 image: src,
@@ -35003,12 +35011,12 @@ function $78f2cb3ec8734e95$var$sendMessage(msg, type) {
                 file: reader.result,
                 filename: msg.filename,
                 filetype: msg.type,
-                nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
-                userId: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id,
+                nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
+                userId: $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id,
                 type: type
             };
-            $78f2cb3ec8734e95$var$sendMessageToAll(msg);
-            $78f2cb3ec8734e95$var$focus_last_article();
+            $17d11d58618cc814$var$sendMessageToAll(msg);
+            $17d11d58618cc814$var$focus_last_article();
         };
         reader.onerror = function(e) {
             alert("error");
@@ -35018,24 +35026,24 @@ function $78f2cb3ec8734e95$var$sendMessage(msg, type) {
     if (type == "text") {
         if (msg == "") return false;
         msg = {
-            nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
+            nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
             type: type,
-            userId: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id,
+            userId: $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id,
             content: msg
         };
-        $78f2cb3ec8734e95$var$chat_data.push({
-            nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
+        $17d11d58618cc814$var$chat_data.push({
+            nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
             content: msg.content,
             datetime: new Date(),
             type: type
         });
-        $78f2cb3ec8734e95$var$sendMessageToAll(msg);
-        $78f2cb3ec8734e95$var$focus_last_article();
-        $78f2cb3ec8734e95$var$write();
+        $17d11d58618cc814$var$sendMessageToAll(msg);
+        $17d11d58618cc814$var$focus_last_article();
+        $17d11d58618cc814$var$write();
     }
     if (type == "gps_live") {
         if (msg == "") return false;
-        var existingMsg = $78f2cb3ec8734e95$var$chat_data.find(function(item) {
+        var existingMsg = $17d11d58618cc814$var$chat_data.find(function(item) {
             return item.type === "gps_live";
         });
         var _$m = JSON.parse(msg);
@@ -35045,89 +35053,89 @@ function $78f2cb3ec8734e95$var$sendMessage(msg, type) {
             existingMsg.content = link_url;
             existingMsg.datetime = new Date();
         } else // Push a new GPS message if not found
-        $78f2cb3ec8734e95$var$chat_data.push({
-            nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
+        $17d11d58618cc814$var$chat_data.push({
+            nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
             content: link_url,
             datetime: new Date(),
             type: type,
-            userId: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id,
+            userId: $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id,
             gps: msg
         });
         msg = {
             content: msg,
-            nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
+            nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
             type: type,
-            userId: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id,
+            userId: $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id,
             gps: msg
         };
-        $78f2cb3ec8734e95$var$sendMessageToAll(msg);
+        $17d11d58618cc814$var$sendMessageToAll(msg);
     }
     if (type == "gps") {
         if (msg == "") return false;
         var _$m1 = JSON.parse(msg);
         var link_url1 = "https://www.openstreetmap.org/#map=19/" + _$m1.lat + "/" + _$m1.lng;
-        $78f2cb3ec8734e95$var$chat_data.push({
-            nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
+        $17d11d58618cc814$var$chat_data.push({
+            nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
             content: link_url1,
             datetime: new Date(),
             type: type,
-            userId: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id,
+            userId: $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id,
             gps: msg
         });
         msg = {
             text: "",
             content: msg,
-            nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
+            nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
             type: type,
-            userId: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id,
+            userId: $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id,
             gps: msg
         };
-        $78f2cb3ec8734e95$var$sendMessageToAll(msg);
+        $17d11d58618cc814$var$sendMessageToAll(msg);
     }
     if (type == "audio") {
         if (msg == "") return false;
-        $78f2cb3ec8734e95$var$chat_data.push({
-            nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
+        $17d11d58618cc814$var$chat_data.push({
+            nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
             content: URL.createObjectURL(msg),
             datetime: new Date(),
             type: type,
-            userId: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id
+            userId: $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id
         });
         msg.arrayBuffer().then(function(buffer) {
             // Send the buffer through the WebRTC data channel
             msg = {
                 content: buffer,
-                nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
+                nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
                 type: type,
-                userId: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id
+                userId: $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id
             };
-            $78f2cb3ec8734e95$var$sendMessageToAll(msg);
+            $17d11d58618cc814$var$sendMessageToAll(msg);
         });
     }
 }
 //send to all connections
-function $78f2cb3ec8734e95$var$sendMessageToAll(message) {
-    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
-    Object.keys($78f2cb3ec8734e95$var$peer.connections).forEach(function(peerId) {
-        $78f2cb3ec8734e95$var$peer.connections[peerId].forEach(function(conn) {
+function $17d11d58618cc814$var$sendMessageToAll(message) {
+    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
+    Object.keys($17d11d58618cc814$var$peer.connections).forEach(function(peerId) {
+        $17d11d58618cc814$var$peer.connections[peerId].forEach(function(conn) {
             if (conn.open) conn.send(message);
             else console.log("sending" + conn + "not open ");
         });
     });
 }
 //close all connections
-function $78f2cb3ec8734e95$var$closeAllConnections() {
-    if ($78f2cb3ec8734e95$var$peer.connections == null) return;
-    Object.keys($78f2cb3ec8734e95$var$peer.connections).forEach(function(peerId) {
-        $78f2cb3ec8734e95$var$peer.connections[peerId].forEach(function(conn) {
+function $17d11d58618cc814$var$closeAllConnections() {
+    if ($17d11d58618cc814$var$peer.connections == null) return;
+    Object.keys($17d11d58618cc814$var$peer.connections).forEach(function(peerId) {
+        $17d11d58618cc814$var$peer.connections[peerId].forEach(function(conn) {
             conn.close();
         });
     });
 }
-var $78f2cb3ec8734e95$var$turn = function() {
-    var _ref = (0, $bdca4d8f0452b8e7$export$71511d61b312f219)(function() {
+var $17d11d58618cc814$var$turn = function() {
+    var _ref = (0, $ba0748fc6d85beab$export$71511d61b312f219)(function() {
         var response, credentials;
-        return (0, $95fedd77f81839f7$export$67ebef60e6f28a6)(this, function(_state) {
+        return (0, $04f2fd83a0b0b7f9$export$67ebef60e6f28a6)(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
@@ -35150,7 +35158,7 @@ var $78f2cb3ec8734e95$var$turn = function() {
                 case 2:
                     credentials = _state.sent();
                     credentials.forEach(function(credential) {
-                        $78f2cb3ec8734e95$var$ice_servers.iceServers.push(credential);
+                        $17d11d58618cc814$var$ice_servers.iceServers.push(credential);
                     });
                     return [
                         2
@@ -35162,19 +35170,19 @@ var $78f2cb3ec8734e95$var$turn = function() {
         return _ref.apply(this, arguments);
     };
 }();
-$78f2cb3ec8734e95$var$turn();
+$17d11d58618cc814$var$turn();
 //connect to peer
-var $78f2cb3ec8734e95$var$peer_is_online = function() {
-    var _ref = (0, $bdca4d8f0452b8e7$export$71511d61b312f219)(function() {
-        return (0, $95fedd77f81839f7$export$67ebef60e6f28a6)(this, function(_state) {
-            if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.deviceOnline) return [
+var $17d11d58618cc814$var$peer_is_online = function() {
+    var _ref = (0, $ba0748fc6d85beab$export$71511d61b312f219)(function() {
+        return (0, $04f2fd83a0b0b7f9$export$67ebef60e6f28a6)(this, function(_state) {
+            if (!$17d11d58618cc814$export$471f7ae5c4103ae1.deviceOnline) return [
                 2,
                 false
             ];
             try {
                 setTimeout(function() {
                     // Uncomment and refactor this part if needed
-                    if ($78f2cb3ec8734e95$var$addressbook.length > 0) {
+                    if ($17d11d58618cc814$var$addressbook.length > 0) {
                         document.querySelector(".loading-spinner").style.display = "block";
                         if (ppeer) {
                             ppeer.destroy();
@@ -35183,13 +35191,13 @@ var $78f2cb3ec8734e95$var$peer_is_online = function() {
                         var ppeer = new Peer({
                             debug: 0,
                             secure: false,
-                            config: $78f2cb3ec8734e95$var$ice_servers,
+                            config: $17d11d58618cc814$var$ice_servers,
                             referrerPolicy: "no-referrer"
                         });
                         setTimeout(function() {
-                            $78f2cb3ec8734e95$var$addressbook.forEach(function(entry, index) {
+                            $17d11d58618cc814$var$addressbook.forEach(function(entry, index) {
                                 if (ppeer && !ppeer.disconnected) {
-                                    $78f2cb3ec8734e95$var$addressbook[index].live = false;
+                                    $17d11d58618cc814$var$addressbook[index].live = false;
                                     try {
                                         var tempConn = ppeer.connect(entry.id, {
                                             label: "ping",
@@ -35198,23 +35206,23 @@ var $78f2cb3ec8734e95$var$peer_is_online = function() {
                                         if (tempConn) {
                                             tempConn.on("open", function() {
                                                 console.log("Connection established" + entry.id);
-                                                $78f2cb3ec8734e95$var$addressbook[index].live = true;
+                                                $17d11d58618cc814$var$addressbook[index].live = true;
                                                 document.querySelector("button[data-id='" + entry.id + "']").classList.add("live");
                                                 tempConn.close();
                                             });
                                             tempConn.on("error", function() {
                                                 console.log("Connection could not be established");
-                                                $78f2cb3ec8734e95$var$addressbook[index].live = false;
+                                                $17d11d58618cc814$var$addressbook[index].live = false;
                                                 document.querySelector("button[data-id='" + entry.id + "']").classList.add("offline");
                                             });
                                         } else {
                                             console.log("Could not connect to peer with id: ".concat(entry.id));
-                                            $78f2cb3ec8734e95$var$addressbook[index].live = false;
+                                            $17d11d58618cc814$var$addressbook[index].live = false;
                                             document.querySelector("button[data-id='" + entry.id + "']").classList.add("offline");
                                         }
                                     } catch (error) {
                                         console.log("Error connecting to peer with id: ".concat(entry.id, ". Error: ").concat(error.message));
-                                        $78f2cb3ec8734e95$var$addressbook[index].live = false;
+                                        $17d11d58618cc814$var$addressbook[index].live = false;
                                         document.querySelector("button[data-id='" + entry.id + "']").classList.add("offline");
                                     }
                                 } else console.log("Peer instance is disconnected or does not exist");
@@ -35245,44 +35253,45 @@ var $78f2cb3ec8734e95$var$peer_is_online = function() {
     };
 }();
 //connect to peer
-var $78f2cb3ec8734e95$var$connect_to_peer = function connect_to_peer(id, route_target) {
-    if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.deviceOnline) {
+var $17d11d58618cc814$var$connect_to_peer = function connect_to_peer(id, route_target) {
+    if (!$17d11d58618cc814$export$471f7ae5c4103ae1.deviceOnline) {
         alert("Device is offline");
         return false;
     }
-    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/waiting");
-    $78f2cb3ec8734e95$var$getIceServers().then(function() {
-        $78f2cb3ec8734e95$var$chat_data = [];
+    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/waiting");
+    $17d11d58618cc814$var$getIceServers().then(function() {
+        $17d11d58618cc814$var$chat_data = [];
         setTimeout(function() {
-            if (!$78f2cb3ec8734e95$var$peer) {
+            if (!$17d11d58618cc814$var$peer) {
                 console.error("Peer object is null");
                 if (route_target == null || route_target == undefined) history.back();
-                else (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set(route_target);
+                else (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set(route_target);
                 return;
             }
             try {
                 console.log("Attempting to connect to peer with ID:", id);
-                $78f2cb3ec8734e95$var$conn = $78f2cb3ec8734e95$var$peer.connect(id, {
+                $17d11d58618cc814$var$conn = $17d11d58618cc814$var$peer.connect(id, {
                     label: "flop",
                     reliable: true
                 });
-                if ($78f2cb3ec8734e95$var$conn) {
-                    console.log("Connection object created:", $78f2cb3ec8734e95$var$conn);
-                    $78f2cb3ec8734e95$var$conn.on("open", function() {
+                if ($17d11d58618cc814$var$conn) {
+                    console.log("Connection object created:", $17d11d58618cc814$var$conn);
+                    $17d11d58618cc814$var$conn.on("open", function() {
                         console.log("Connection opened with peer:", id);
-                        $78f2cb3ec8734e95$var$setupConnectionEvents($78f2cb3ec8734e95$var$conn);
-                        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_room = id;
-                        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id=" + id);
+                        $17d11d58618cc814$var$setupConnectionEvents($17d11d58618cc814$var$conn);
+                        $17d11d58618cc814$export$471f7ae5c4103ae1.current_room = id;
+                        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat?id=" + id);
                     });
-                    $78f2cb3ec8734e95$var$conn.on("connection", function(e) {
-                        console.log("Connection with peer:", e);
+                    $17d11d58618cc814$var$conn.on("connection", function(e) {
+                        console.log("would you open connection with :", e);
+                        $17d11d58618cc814$var$setupConnectionEvents($17d11d58618cc814$var$conn);
                     });
-                    $78f2cb3ec8734e95$var$conn.on("error", function(e) {
+                    $17d11d58618cc814$var$conn.on("error", function(e) {
                         if (route_target == null || route_target == undefined) history.back();
-                        else (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set(route_target);
+                        else (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set(route_target);
                         console.error("Connection error:", e);
                     });
-                    var pc = $78f2cb3ec8734e95$var$conn.peerConnection;
+                    var pc = $17d11d58618cc814$var$conn.peerConnection;
                     if (pc) {
                         pc.addEventListener("icecandidate", function(event) {
                             console.log("ICE candidate event:" + event);
@@ -35315,120 +35324,124 @@ var $78f2cb3ec8734e95$var$connect_to_peer = function connect_to_peer(id, route_t
                         });
                     } else {
                         console.warn("Peer connection object not available");
-                        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.user_does_not_exist) (0, $6d3f4b507512327e$export$6593825dc0f3a767)("The user does not exist.", 100000);
-                        else (0, $6d3f4b507512327e$export$6593825dc0f3a767)("Connection could not be established", 40000);
+                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.user_does_not_exist) (0, $162001cafa2b40fd$export$6593825dc0f3a767)("The user does not exist.", 100000);
+                        else (0, $162001cafa2b40fd$export$6593825dc0f3a767)("Connection could not be established", 40000);
                         if (route_target == null || route_target == undefined) history.back();
-                        else (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set(route_target);
+                        else (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set(route_target);
                     }
                     // Fallback in case 'open' or 'error' events are not triggered
                     setTimeout(function() {
-                        if (!$78f2cb3ec8734e95$var$conn.open) {
+                        if (!$17d11d58618cc814$var$conn.open) {
                             console.warn("Connection timeout");
-                            if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.user_does_not_exist) (0, $6d3f4b507512327e$export$6593825dc0f3a767)("The user does not exist.", 100000);
-                            else (0, $6d3f4b507512327e$export$6593825dc0f3a767)("Connection could not be established", 40000);
+                            if ($17d11d58618cc814$export$471f7ae5c4103ae1.user_does_not_exist) (0, $162001cafa2b40fd$export$6593825dc0f3a767)("The user does not exist.", 100000);
+                            else (0, $162001cafa2b40fd$export$6593825dc0f3a767)("Connection could not be established", 40000);
                             if (route_target == null || route_target == undefined) history.back();
-                            else (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set(route_target);
+                            else (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set(route_target);
                         }
                     }, 10000); // Adjust timeout as needed
                 } else {
                     console.error("Failed to create connection object");
-                    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.user_does_not_exist) (0, $6d3f4b507512327e$export$6593825dc0f3a767)("The user does not exist.", 100000);
-                    else (0, $6d3f4b507512327e$export$6593825dc0f3a767)("Connection could not be established", 40000);
+                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.user_does_not_exist) (0, $162001cafa2b40fd$export$6593825dc0f3a767)("The user does not exist.", 100000);
+                    else (0, $162001cafa2b40fd$export$6593825dc0f3a767)("Connection could not be established", 40000);
                     if (route_target == null || route_target == undefined) history.back();
-                    else (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set(route_target);
+                    else (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set(route_target);
                 }
             } catch (e) {
                 console.error("An error occurred during connection attempt:", e);
                 if (route_target == null || route_target == undefined) history.back();
-                else (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set(route_target);
-                if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.user_does_not_exist) (0, $6d3f4b507512327e$export$6593825dc0f3a767)("The user does not exist.", 100000);
-                else (0, $6d3f4b507512327e$export$6593825dc0f3a767)("Connection could not be established", 40000);
+                else (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set(route_target);
+                if ($17d11d58618cc814$export$471f7ae5c4103ae1.user_does_not_exist) (0, $162001cafa2b40fd$export$6593825dc0f3a767)("The user does not exist.", 100000);
+                else (0, $162001cafa2b40fd$export$6593825dc0f3a767)("Connection could not be established", 40000);
             }
         }, 4000);
-    })["catch"](function(e) {
+    }).catch(function(e) {
         console.error("Failed to get ICE servers:", e);
-        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.user_does_not_exist) (0, $6d3f4b507512327e$export$6593825dc0f3a767)("The user does not exist.", 100000);
-        else (0, $6d3f4b507512327e$export$6593825dc0f3a767)("Connection could not be established", 40000);
+        if ($17d11d58618cc814$export$471f7ae5c4103ae1.user_does_not_exist) (0, $162001cafa2b40fd$export$6593825dc0f3a767)("The user does not exist.", 100000);
+        else (0, $162001cafa2b40fd$export$6593825dc0f3a767)("Connection could not be established", 40000);
     });
 };
 //create room
 // and create qr-code with peer id
-var $78f2cb3ec8734e95$var$create_peer = function create_peer() {
+var $17d11d58618cc814$var$create_peer = function create_peer() {
     //close connection before create peer
-    $78f2cb3ec8734e95$var$chat_data = [];
-    $78f2cb3ec8734e95$var$connectedPeers = [];
-    if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.deviceOnline) {
+    $17d11d58618cc814$var$chat_data = [];
+    $17d11d58618cc814$var$connectedPeers = [];
+    if (!$17d11d58618cc814$export$471f7ae5c4103ae1.deviceOnline) {
         alert("Device is offline");
         return false;
     }
     document.querySelector(".loading-spinner").style.display = "block";
-    $78f2cb3ec8734e95$var$getIceServers().then(function() {
-        $78f2cb3ec8734e95$var$peer.on("open", function() {
-            // Workaround for peer.reconnect deleting previous id
-            if ($78f2cb3ec8734e95$var$peer.id === null) $78f2cb3ec8734e95$var$peer.id = $78f2cb3ec8734e95$var$lastPeerId;
-            else $78f2cb3ec8734e95$var$lastPeerId = $78f2cb3ec8734e95$var$peer.id;
-            $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_room = $78f2cb3ec8734e95$var$peer.id;
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id=" + $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id);
-            //make qr code
-            var qrs = new (0, (/*@__PURE__*/$parcel$interopDefault($bd7c1575f3abb9eb$exports)))();
-            qrs.set({
-                background: "white",
-                foreground: "black",
-                level: "H",
-                padding: 5,
-                size: 1000,
-                value: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.invite_url + "#!/intro?id=" + $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id
-            });
-            // Define the elements to be added
-            var invitationLinkElement = {
-                nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
-                content: "invitation link",
-                datetime: new Date(),
-                image: qrs.toDataURL(),
-                type: "image"
-            };
-            var noOtherUserOnlineElement = {
-                id: "no-other-user-online",
-                nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
-                content: "no other user online, you should invite someone.",
-                datetime: new Date(),
-                type: "text"
-            };
-            // Check if elements already exist before pushing
-            if (!$78f2cb3ec8734e95$var$elementExists($78f2cb3ec8734e95$var$chat_data, {
-                nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
-                content: "invitation link"
-            })) $78f2cb3ec8734e95$var$chat_data.push(invitationLinkElement);
-            if (!$78f2cb3ec8734e95$var$elementExists($78f2cb3ec8734e95$var$chat_data, {
-                id: "no-other-user-online",
-                content: "no other user online, you should invite someone."
-            })) $78f2cb3ec8734e95$var$chat_data.push(noOtherUserOnlineElement);
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
-            $78f2cb3ec8734e95$var$focus_last_article();
-            document.querySelector(".loading-spinner").style.display = "none";
-        });
+    //getIceServers().then(() => {
+    /*
+  peer.on("open", function () {
+    // Workaround for peer.reconnect deleting previous id
+    if (peer.id === null) {
+      peer.id = lastPeerId;
+    } else {
+      lastPeerId = peer.id;
+    }
+    */ $17d11d58618cc814$export$471f7ae5c4103ae1.current_room = $17d11d58618cc814$var$peer.id;
+    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat?id=" + $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id);
+    //make qr code
+    var qrs = new (0, (/*@__PURE__*/$parcel$interopDefault($fc3b5a28c7651bef$exports)))();
+    qrs.set({
+        background: "white",
+        foreground: "black",
+        level: "H",
+        padding: 5,
+        size: 1000,
+        value: $17d11d58618cc814$export$a5a6e0b888b2c992.invite_url + "#!/intro?id=" + $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id
     });
+    // Define the elements to be added
+    var invitationLinkElement = {
+        nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
+        content: "invitation link",
+        datetime: new Date(),
+        image: qrs.toDataURL(),
+        type: "image"
+    };
+    var noOtherUserOnlineElement = {
+        id: "no-other-user-online",
+        nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
+        content: "no other user online, you should invite someone.",
+        datetime: new Date(),
+        type: "text"
+    };
+    // Check if elements already exist before pushing
+    if (!$17d11d58618cc814$var$elementExists($17d11d58618cc814$var$chat_data, {
+        nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
+        content: "invitation link"
+    })) $17d11d58618cc814$var$chat_data.push(invitationLinkElement);
+    if (!$17d11d58618cc814$var$elementExists($17d11d58618cc814$var$chat_data, {
+        id: "no-other-user-online",
+        content: "no other user online, you should invite someone."
+    })) $17d11d58618cc814$var$chat_data.push(noOtherUserOnlineElement);
+    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
+    $17d11d58618cc814$var$focus_last_article();
+    document.querySelector(".loading-spinner").style.display = "none";
+// });
+// });
 };
-var $78f2cb3ec8734e95$var$handleImage = function handleImage(t) {
-    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat");
-    if (t != "") $78f2cb3ec8734e95$var$sendMessage(t, "image");
+var $17d11d58618cc814$var$handleImage = function handleImage(t) {
+    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat");
+    if (t != "") $17d11d58618cc814$var$sendMessage(t, "image");
     var a = document.querySelectorAll("div#app article");
     a[a.length - 1].focus();
-    $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
+    $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
 };
-var $78f2cb3ec8734e95$var$time_parse = function time_parse(value) {
+var $17d11d58618cc814$var$time_parse = function time_parse(value) {
     var t = new Date(value);
-    return t.getDate() + " " + (0, $6d3f4b507512327e$export$af5de1609f06c8e6)[t.getMonth()] + " " + t.getFullYear() + ", " + t.getHours() + ":" + t.getMinutes();
+    return t.getDate() + " " + (0, $162001cafa2b40fd$export$af5de1609f06c8e6)[t.getMonth()] + " " + t.getFullYear() + ", " + t.getHours() + ":" + t.getMinutes();
 };
 //callback qr-code scan
-var $78f2cb3ec8734e95$var$scan_callback = function scan_callback(n) {
+var $17d11d58618cc814$var$scan_callback = function scan_callback(n) {
     //maybe add new view "try to connect with funny animation"
     var _$m = n.split("id=");
-    $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
-    $78f2cb3ec8734e95$var$connect_to_peer(_$m[1]);
+    $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
+    $17d11d58618cc814$var$connect_to_peer(_$m[1]);
 };
 //audio
-var $78f2cb3ec8734e95$var$AudioComponent = {
+var $17d11d58618cc814$var$AudioComponent = {
     oninit: function(vnode) {
         vnode.state.isPlaying = false;
         vnode.state.audio = null;
@@ -35439,8 +35452,8 @@ var $78f2cb3ec8734e95$var$AudioComponent = {
             else vnode.state.audio.play();
             vnode.state.isPlaying = !vnode.state.isPlaying;
         };
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div.audio-player", [
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("audio", {
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div.audio-player", [
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("audio", {
                 src: vnode.attrs.src,
                 onkeydown: function onkeydown(e) {
                     if (e.key === "Enter") togglePlayPause();
@@ -35451,34 +35464,34 @@ var $78f2cb3ec8734e95$var$AudioComponent = {
                     // Add event listener for 'ended' event
                     audioVnode.dom.addEventListener("ended", function() {
                         vnode.state.isPlaying = false;
-                        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
+                        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
                     });
                 },
                 style: {
                     display: "none"
                 }
             }),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
                 onclick: togglePlayPause
             }, vnode.state.isPlaying ? "Pause" : "Play")
         ]);
     }
 };
 // MapComponent
-var $78f2cb3ec8734e95$var$MapComponent = {
+var $17d11d58618cc814$var$MapComponent = {
     oncreate: function oncreate(vnode) {
         var mapContainer = vnode.dom;
         var lat = vnode.attrs.lat;
         var lng = vnode.attrs.lng;
         // Create the map instance
-        var map_box = (0, (/*@__PURE__*/$parcel$interopDefault($0cfc99b2164fd73d$exports))).map(mapContainer, {
+        var map_box = (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).map(mapContainer, {
             keyboard: false,
             zoomControl: false
         }).setView([
             lat,
             lng
         ], 7);
-        var myMarker = (0, (/*@__PURE__*/$parcel$interopDefault($0cfc99b2164fd73d$exports))).marker([
+        var myMarker = (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).marker([
             lat,
             lng
         ]).addTo(map_box);
@@ -35501,8 +35514,8 @@ var $78f2cb3ec8734e95$var$MapComponent = {
         vnode.state.map.remove(); // Clean up the map instance when the component is removed
     },
     view: function view() {
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-            "class": "map-component",
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+            class: "map-component",
             style: {
                 height: "100%"
             }
@@ -35510,64 +35523,64 @@ var $78f2cb3ec8734e95$var$MapComponent = {
     }
 };
 //callback geolocation
-var $78f2cb3ec8734e95$var$geolocation_callback = function geolocation_callback(e) {
+var $17d11d58618cc814$var$geolocation_callback = function geolocation_callback(e) {
     if (e.coords) {
         var latlng = {
-            lat: e.coords.latitude,
-            lng: e.coords.longitude
+            "lat": e.coords.latitude,
+            "lng": e.coords.longitude
         };
-        $78f2cb3ec8734e95$var$sendMessage(JSON.stringify(latlng), "gps");
-        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat");
+        $17d11d58618cc814$var$sendMessage(JSON.stringify(latlng), "gps");
+        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat");
     } else console.log("error");
 };
-var $78f2cb3ec8734e95$var$geolocation_autoupdate_callback = function(e) {
+var $17d11d58618cc814$var$geolocation_autoupdate_callback = function(e) {
     if (e.coords) {
         var latlng = {
-            lat: e.coords.latitude,
-            lng: e.coords.longitude
+            "lat": e.coords.latitude,
+            "lng": e.coords.longitude
         };
-        if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.geolcation_autoupdate) (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat");
-        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.geolcation_autoupdate = true;
-        $78f2cb3ec8734e95$var$sendMessage(JSON.stringify(latlng), "gps_live");
+        if (!$17d11d58618cc814$export$471f7ae5c4103ae1.geolcation_autoupdate) (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat");
+        $17d11d58618cc814$export$471f7ae5c4103ae1.geolcation_autoupdate = true;
+        $17d11d58618cc814$var$sendMessage(JSON.stringify(latlng), "gps_live");
     } else console.log("error");
 };
-var $78f2cb3ec8734e95$var$map;
-var $78f2cb3ec8734e95$var$step = 0.004;
-var $78f2cb3ec8734e95$var$userMarkers = {};
-var $78f2cb3ec8734e95$var$mainmarker = {
+var $17d11d58618cc814$var$map;
+var $17d11d58618cc814$var$step = 0.004;
+var $17d11d58618cc814$var$userMarkers = {};
+var $17d11d58618cc814$var$mainmarker = {
     current_lat: 0,
     current_lng: 0
 }; // Example mainmarker object
 // Function to zoom the map
-function $78f2cb3ec8734e95$var$ZoomMap(in_out) {
-    if (!$78f2cb3ec8734e95$var$map) return; // Check if the map is initialized
-    var current_zoom_level = $78f2cb3ec8734e95$var$map.getZoom();
-    if (in_out === "in") $78f2cb3ec8734e95$var$map.setZoom(current_zoom_level + 1);
-    else if (in_out === "out") $78f2cb3ec8734e95$var$map.setZoom(current_zoom_level - 1);
+function $17d11d58618cc814$var$ZoomMap(in_out) {
+    if (!$17d11d58618cc814$var$map) return; // Check if the map is initialized
+    var current_zoom_level = $17d11d58618cc814$var$map.getZoom();
+    if (in_out === "in") $17d11d58618cc814$var$map.setZoom(current_zoom_level + 1);
+    else if (in_out === "out") $17d11d58618cc814$var$map.setZoom(current_zoom_level - 1);
 }
 // Function to move the map
-function $78f2cb3ec8734e95$var$MoveMap(direction) {
-    var n = $78f2cb3ec8734e95$var$map.getCenter();
-    $78f2cb3ec8734e95$var$mainmarker.current_lat = n.lat;
-    $78f2cb3ec8734e95$var$mainmarker.current_lng = n.lng;
-    if (direction === "left") $78f2cb3ec8734e95$var$mainmarker.current_lng -= $78f2cb3ec8734e95$var$step;
-    else if (direction === "right") $78f2cb3ec8734e95$var$mainmarker.current_lng += $78f2cb3ec8734e95$var$step;
-    else if (direction === "up") $78f2cb3ec8734e95$var$mainmarker.current_lat += $78f2cb3ec8734e95$var$step;
-    else if (direction === "down") $78f2cb3ec8734e95$var$mainmarker.current_lat -= $78f2cb3ec8734e95$var$step;
-    $78f2cb3ec8734e95$var$map.panTo(new (0, (/*@__PURE__*/$parcel$interopDefault($0cfc99b2164fd73d$exports))).LatLng($78f2cb3ec8734e95$var$mainmarker.current_lat, $78f2cb3ec8734e95$var$mainmarker.current_lng));
+function $17d11d58618cc814$var$MoveMap(direction) {
+    var n = $17d11d58618cc814$var$map.getCenter();
+    $17d11d58618cc814$var$mainmarker.current_lat = n.lat;
+    $17d11d58618cc814$var$mainmarker.current_lng = n.lng;
+    if (direction === "left") $17d11d58618cc814$var$mainmarker.current_lng -= $17d11d58618cc814$var$step;
+    else if (direction === "right") $17d11d58618cc814$var$mainmarker.current_lng += $17d11d58618cc814$var$step;
+    else if (direction === "up") $17d11d58618cc814$var$mainmarker.current_lat += $17d11d58618cc814$var$step;
+    else if (direction === "down") $17d11d58618cc814$var$mainmarker.current_lat -= $17d11d58618cc814$var$step;
+    $17d11d58618cc814$var$map.panTo(new (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).LatLng($17d11d58618cc814$var$mainmarker.current_lat, $17d11d58618cc814$var$mainmarker.current_lng));
 }
 // Initialize the map and define the setup
-function $78f2cb3ec8734e95$var$map_function(lat, lng, id) {
-    $78f2cb3ec8734e95$var$map = (0, (/*@__PURE__*/$parcel$interopDefault($0cfc99b2164fd73d$exports))).map("map-container", {
+function $17d11d58618cc814$var$map_function(lat, lng, id) {
+    $17d11d58618cc814$var$map = (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).map("map-container", {
         keyboard: true,
         zoomControl: false
     }).setView([
         51.505,
         -0.09
     ], 13);
-    (0, (/*@__PURE__*/$parcel$interopDefault($0cfc99b2164fd73d$exports))).tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo($78f2cb3ec8734e95$var$map);
+    }).addTo($17d11d58618cc814$var$map);
     setTimeout(function() {
         document.querySelector(".leaflet-control-container").style.display = "none";
     }, 5000);
@@ -35576,15 +35589,15 @@ function $78f2cb3ec8734e95$var$map_function(lat, lng, id) {
     var geolocation_callback = function geolocation_callback(e) {
         if (!myMarker) {
             // Create the marker only once
-            myMarker = (0, (/*@__PURE__*/$parcel$interopDefault($0cfc99b2164fd73d$exports))).marker([
+            myMarker = (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).marker([
                 e.coords.latitude,
                 e.coords.longitude
-            ]).addTo($78f2cb3ec8734e95$var$map).bindPopup("It's me").openPopup();
+            ]).addTo($17d11d58618cc814$var$map).bindPopup("It's me").openPopup();
             myMarker._icon.classList.add("myMarker");
-            $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userMarkers[0] = myMarker;
+            $17d11d58618cc814$export$471f7ae5c4103ae1.userMarkers[0] = myMarker;
             if (!once) {
                 // Set the view only once
-                $78f2cb3ec8734e95$var$map.setView([
+                $17d11d58618cc814$var$map.setView([
                     e.coords.latitude,
                     e.coords.longitude
                 ]);
@@ -35596,18 +35609,18 @@ function $78f2cb3ec8734e95$var$map_function(lat, lng, id) {
             e.coords.longitude
         ]);
     };
-    (0, $6d3f4b507512327e$export$33d904bed5c25b69)(geolocation_callback, false, true);
+    (0, $162001cafa2b40fd$export$33d904bed5c25b69)(geolocation_callback, false, true);
     if (lat && lng) {
-        var _$m = (0, (/*@__PURE__*/$parcel$interopDefault($0cfc99b2164fd73d$exports))).marker([
+        var _$m = (0, (/*@__PURE__*/$parcel$interopDefault($6e11092d7331cd03$exports))).marker([
             lat,
             lng
-        ]).addTo($78f2cb3ec8734e95$var$map).bindPopup(id).openPopup();
+        ]).addTo($17d11d58618cc814$var$map).bindPopup(id).openPopup();
         setTimeout(function() {
-            $78f2cb3ec8734e95$var$map.setView([
+            $17d11d58618cc814$var$map.setView([
                 lat,
                 lng
             ]);
-            $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userMarkers[1] = _$m;
+            $17d11d58618cc814$export$471f7ae5c4103ae1.userMarkers[1] = _$m;
         }, 3000);
     }
     /*
@@ -35639,38 +35652,38 @@ function $78f2cb3ec8734e95$var$map_function(lat, lng, id) {
   setTimeout(() => {
     updateMarkers(status);
   }, 5000);
-*/ $78f2cb3ec8734e95$var$map.on("zoomend", function() {
-        var zoom_level = $78f2cb3ec8734e95$var$map.getZoom();
+*/ $17d11d58618cc814$var$map.on("zoomend", function() {
+        var zoom_level = $17d11d58618cc814$var$map.getZoom();
         console.log(zoom_level);
-        if (zoom_level > 16) $78f2cb3ec8734e95$var$step = 0.0005;
-        else if (zoom_level > 15) $78f2cb3ec8734e95$var$step = 0.001;
-        else if (zoom_level > 14) $78f2cb3ec8734e95$var$step = 0.002;
-        else if (zoom_level > 13) $78f2cb3ec8734e95$var$step = 0.004;
-        else if (zoom_level > 12) $78f2cb3ec8734e95$var$step = 0.01;
-        else if (zoom_level > 11) $78f2cb3ec8734e95$var$step = 0.02;
-        else if (zoom_level > 10) $78f2cb3ec8734e95$var$step = 0.04;
-        else if (zoom_level > 9) $78f2cb3ec8734e95$var$step = 0.075;
-        else if (zoom_level > 8) $78f2cb3ec8734e95$var$step = 0.15;
-        else if (zoom_level > 7) $78f2cb3ec8734e95$var$step = 0.3;
-        else if (zoom_level > 6) $78f2cb3ec8734e95$var$step = 0.5;
-        else if (zoom_level > 5) $78f2cb3ec8734e95$var$step = 1.2;
-        else if (zoom_level > 4) $78f2cb3ec8734e95$var$step = 2.75;
-        else if (zoom_level > 3) $78f2cb3ec8734e95$var$step = 4.5;
-        else if (zoom_level > 2) $78f2cb3ec8734e95$var$step = 8;
-        else $78f2cb3ec8734e95$var$step = 20;
+        if (zoom_level > 16) $17d11d58618cc814$var$step = 0.0005;
+        else if (zoom_level > 15) $17d11d58618cc814$var$step = 0.001;
+        else if (zoom_level > 14) $17d11d58618cc814$var$step = 0.002;
+        else if (zoom_level > 13) $17d11d58618cc814$var$step = 0.004;
+        else if (zoom_level > 12) $17d11d58618cc814$var$step = 0.01;
+        else if (zoom_level > 11) $17d11d58618cc814$var$step = 0.02;
+        else if (zoom_level > 10) $17d11d58618cc814$var$step = 0.04;
+        else if (zoom_level > 9) $17d11d58618cc814$var$step = 0.075;
+        else if (zoom_level > 8) $17d11d58618cc814$var$step = 0.15;
+        else if (zoom_level > 7) $17d11d58618cc814$var$step = 0.3;
+        else if (zoom_level > 6) $17d11d58618cc814$var$step = 0.5;
+        else if (zoom_level > 5) $17d11d58618cc814$var$step = 1.2;
+        else if (zoom_level > 4) $17d11d58618cc814$var$step = 2.75;
+        else if (zoom_level > 3) $17d11d58618cc814$var$step = 4.5;
+        else if (zoom_level > 2) $17d11d58618cc814$var$step = 8;
+        else $17d11d58618cc814$var$step = 20;
     });
 }
-var $78f2cb3ec8734e95$var$root = document.getElementById("app");
-var $78f2cb3ec8734e95$var$waiting = {
+var $17d11d58618cc814$var$root = document.getElementById("app");
+var $17d11d58618cc814$var$waiting = {
     view: function view() {
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
             id: "waiting",
-            "class": "width-100 height-100 flex align-item-center justify-content-center",
+            class: "width-100 height-100 flex align-item-center justify-content-center",
             oninit: function() {
-                (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "");
+                (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "");
             }
         }, [
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("span", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("span", {
                 oncreate: function() {
                     document.querySelector(".loading-spinner").style.display = "block";
                 }
@@ -35678,282 +35691,282 @@ var $78f2cb3ec8734e95$var$waiting = {
         ]);
     }
 };
-var $78f2cb3ec8734e95$var$about = {
+var $17d11d58618cc814$var$about = {
     view: function view() {
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-            "class": "page",
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+            class: "page",
             oncreate: function() {
-                (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "");
-                if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
-                (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='assets/image/select.svg'>", "");
+                (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "");
+                if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
+                (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='assets/image/select.svg'>", "");
             }
         }, [
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
                 tabindex: 0,
-                "class": "item",
+                class: "item",
                 oncreate: function(param) {
                     var dom = param.dom;
                     dom.focus();
                 },
                 onclick: function() {
-                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/about_page");
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/about_page");
                 }
             }, "About"),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
                 tabindex: 1,
-                "class": "item",
+                class: "item",
                 onclick: function() {
-                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/settings_page");
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/settings_page");
                 }
             }, "Settings"),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
                 tabindex: 2,
-                "class": "item",
+                class: "item",
                 onclick: function() {
-                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/privacy_policy");
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/privacy_policy");
                 }
             }, "Privacy Policy"),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 id: "KaiOSads-Wrapper",
-                "class": "width-100",
+                class: "width-100",
                 oncreate: function() {
-                    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS == false) (0, $6d3f4b507512327e$export$4f9f22e5a1695548)();
+                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS == false) (0, $162001cafa2b40fd$export$4f9f22e5a1695548)();
                 }
             })
         ]);
     }
 };
-var $78f2cb3ec8734e95$var$about_page = {
+var $17d11d58618cc814$var$about_page = {
     view: function view() {
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-            "class": "page about-page",
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+            class: "page about-page",
             oncreate: function(param) {
                 var dom = param.dom;
                 dom.focus();
-                (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "");
-                if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
+                (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "");
+                if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
             }
         }, [
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                "class": "item scroll",
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                class: "item scroll",
                 id: "about-text"
             }, "With flop you can communicate directly with another person/machine (p2p). To do this you need a stable internet connection and you must know the other person's ID. When you start a chat you can share your ID via the options menu. Multiple people can also join the chat, the IDs of the other participants are automatically shared."),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 id: "description"
             }, [
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("h2", {}, "Icons"),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                    "class": "flex width-100 item"
-                }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<img src='assets/image/no-monster.svg'> no other user online")),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                    "class": "flex width-100 item"
-                }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<img src='assets/image/monster.svg'>user online")),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                    "class": "flex width-100 item"
-                }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<img src='assets/image/pencil.svg'>write")),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                    "class": "flex width-100 item"
-                }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<img src='assets/image/send.svg'>send")),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                    "class": "flex width-100 item"
-                }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<img src='assets/image/plus.svg'>open new chat")),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                    "class": "flex width-100 item"
-                }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<img src='assets/image/option.svg'>option")),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                    "class": "flex width-100"
-                }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<img src='assets/image/record.svg'>audio message")),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                    "class": "flex width-100 item"
-                }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<img src='assets/image/record-live.svg'>recording audio message"))
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("h2", {}, "Icons"),
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "flex width-100 item"
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img src='assets/image/no-monster.svg'> no other user online")),
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "flex width-100 item"
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img src='assets/image/monster.svg'>user online")),
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "flex width-100 item"
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img src='assets/image/pencil.svg'>write")),
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "flex width-100 item"
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img src='assets/image/send.svg'>send")),
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "flex width-100 item"
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img src='assets/image/plus.svg'>open new chat")),
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "flex width-100 item"
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img src='assets/image/option.svg'>option")),
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "flex width-100"
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img src='assets/image/record.svg'>audio message")),
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "flex width-100 item"
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img src='assets/image/record-live.svg'>recording audio message"))
             ]),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                "class": "item scroll",
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                class: "item scroll",
                 id: "about-text"
-            }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("The code of the software is freely available: <a href='https://github.com/strukturart/flop'>gitHub</a>")),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                "class": "item scroll",
+            }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("The code of the software is freely available: <a href='https://github.com/strukturart/flop'>gitHub</a>")),
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                class: "item scroll",
                 id: "about-text",
                 oncreate: function() {
-                    (0, $6d3f4b507512327e$export$6c04b58eee2a9a32)();
+                    (0, $162001cafa2b40fd$export$6c04b58eee2a9a32)();
                 }
-            }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<strong>License</strong><br><br>mithrilJS MIT<br>peerJS MIT<br>flop MIT"))
+            }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<strong>License</strong><br><br>mithrilJS MIT<br>peerJS MIT<br>flop MIT"))
         ]);
     }
 };
-var $78f2cb3ec8734e95$var$privacy_policy = {
+var $17d11d58618cc814$var$privacy_policy = {
     view: function view() {
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-            "class": "page"
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+            class: "page"
         }, [
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 oncreate: function(param) {
                     var dom = param.dom;
                     dom.focus();
-                    (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "");
-                    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
+                    (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "");
+                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
                 },
                 oninit: function() {
-                    (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='assets/image/select.svg'>", "");
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='assets/image/select.svg'>", "");
                 },
                 onfocus: function() {
-                    (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "", "");
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "", "");
                 }
             }, [
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<div> <h2 class='item' tabindex=0>flop</h2> uses 2 different servers to connect two chat partners: <strong>0.peerjs.com</strong> and <strong>metered.ca</strong>, both of which are freely available. If you want to change that, you can store your own servers in the settings.<br> The app itself does not store any data, but be careful when exchanging sensitive data as no end-to-end encryption is implemented.</div>"),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<div><h2 class='item' tabindex=1>PeerJS</h2>We do not collect or store any information. While you are connected to a PeerJS server, your IP address, randomly-generated client ID, and signalling data are kept in the server's memory. With default settings, the server will remove this information from memory 60 seconds after you stop communicating with the service.</div>"),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
-                    "class": "item button-style",
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<div> <h2 class='item' tabindex=0>flop</h2> uses 2 different servers to connect two chat partners: <strong>0.peerjs.com</strong> and <strong>metered.ca</strong>, both of which are freely available. If you want to change that, you can store your own servers in the settings.<br> The app itself does not store any data, but be careful when exchanging sensitive data as no end-to-end encryption is implemented.</div>"),
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<div><h2 class='item' tabindex=1>PeerJS</h2>We do not collect or store any information. While you are connected to a PeerJS server, your IP address, randomly-generated client ID, and signalling data are kept in the server's memory. With default settings, the server will remove this information from memory 60 seconds after you stop communicating with the service.</div>"),
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
+                    class: "item button-style",
                     tabindex: 2,
                     onclick: function onclick() {
                         window.open("https://www.metered.ca/tools/openrelay/#%EF%B8%8Fsecurity");
                     },
                     onfocus: function() {
-                        (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='assets/image/select.svg'>", "");
+                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='assets/image/select.svg'>", "");
                     }
                 }, "Privacy Policy Metered"),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                    "class": "item",
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "item",
                     tabindex: 3,
                     onfocus: function() {
-                        (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img src='assets/image/select.svg'>", "");
+                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img src='assets/image/select.svg'>", "");
                     }
-                }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<h2>KaiOSAds</h2> This is a third party service that may collect information used to identify you.<br><br><br>"))
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<h2>KaiOSAds</h2> This is a third party service that may collect information used to identify you.<br><br><br>"))
             ])
         ]);
     }
 };
-var $78f2cb3ec8734e95$var$settings_page = {
+var $17d11d58618cc814$var$settings_page = {
     view: function view() {
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-            "class": "flex justify-content-center page",
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+            class: "flex justify-content-center page",
             id: "settings_page",
             oncreate: function() {
-                (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "", "");
-                (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "");
-                if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
+                (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "", "");
+                (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "");
+                if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
             }
         }, [
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 tabindex: 0,
                 oncreate: function(param) {
                     var dom = param.dom;
                     dom.focus();
                 },
-                "class": "item input-parent flex justify-content-spacearound"
+                class: "item input-parent flex justify-content-spacearound"
             }, [
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("label", {
-                    "for": "nickname"
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("label", {
+                    for: "nickname"
                 }, "Nickname"),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("input", {
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("input", {
                     id: "nickname",
                     placeholder: "nickname",
-                    value: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
+                    value: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
                     oninput: function(vnode) {
-                        $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname = vnode.target.value;
+                        $17d11d58618cc814$export$a5a6e0b888b2c992.nickname = vnode.target.value;
                     }
                 })
             ]),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 tabindex: 1,
-                "class": "item input-parent  flex justify-content-spacearound"
+                class: "item input-parent  flex justify-content-spacearound"
             }, [
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("label", {
-                    "for": "custom-peer-id"
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("label", {
+                    for: "custom-peer-id"
                 }, "Custom ID"),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("input", {
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("input", {
                     id: "custom-peer-id",
                     placeholder: "ID",
-                    value: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id
+                    value: $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id
                 })
             ]),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
-                "class": "item",
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
+                class: "item",
                 tabindex: 2,
                 onclick: function() {
-                    $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id = "flop-" + (0, $194554b49bf11e1e$export$2e2bcd8739ae039)(16);
-                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
+                    $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id = "flop-" + (0, $6995a202bee889c8$export$2e2bcd8739ae039)(16);
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
                 }
             }, "generate new ID"),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
-                "class": "item",
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
+                class: "item",
                 tabindex: 3,
                 onclick: function() {
-                    (0, $6d3f4b507512327e$export$ed80d9de1d9df928)($78f2cb3ec8734e95$export$a5a6e0b888b2c992.invite_url + "?id=" + $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id).then(function(success) {
+                    (0, $162001cafa2b40fd$export$ed80d9de1d9df928)($17d11d58618cc814$export$a5a6e0b888b2c992.invite_url + "?id=" + $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id).then(function(success) {
                         if (success) console.log("Sharing was successful.");
                         else console.log("Sharing failed.");
                     });
                 }
             }, "share"),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("H2", {
-                "class": "text-center"
-            }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<br>Server Settings")),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("H2", {
+                class: "text-center"
+            }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<br>Server Settings")),
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 tabindex: 4,
-                "class": "item input-parent  flex justify-content-spacearound"
+                class: "item input-parent  flex justify-content-spacearound"
             }, [
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("label", {
-                    "for": "server_url"
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("label", {
+                    for: "server_url"
                 }, "URL"),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("input", {
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("input", {
                     id: "server_url",
                     placeholder: "Server URL",
-                    value: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.server_url
+                    value: $17d11d58618cc814$export$a5a6e0b888b2c992.server_url
                 })
             ]),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 tabindex: 5,
-                "class": "item input-parent  flex  justify-content-spacearound"
+                class: "item input-parent  flex  justify-content-spacearound"
             }, [
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("label", {
-                    "for": "server_path"
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("label", {
+                    for: "server_path"
                 }, "Path"),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("input", {
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("input", {
                     id: "server_path",
                     placeholder: "Path",
-                    value: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.server_path
+                    value: $17d11d58618cc814$export$a5a6e0b888b2c992.server_path
                 })
             ]),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 tabindex: 6,
-                "class": "item input-parent  flex justify-content-spacearound"
+                class: "item input-parent  flex justify-content-spacearound"
             }, [
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("label", {
-                    "for": "server_port"
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("label", {
+                    for: "server_port"
                 }, "Port"),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("input", {
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("input", {
                     id: "server_port",
                     placeholder: "Port",
-                    value: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.server_port
+                    value: $17d11d58618cc814$export$a5a6e0b888b2c992.server_port
                 })
             ]),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 tabindex: 7,
-                "class": "item input-parent  flex justify-content-spacearound"
+                class: "item input-parent  flex justify-content-spacearound"
             }, [
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("label", {
-                    "for": "invite_url"
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("label", {
+                    for: "invite_url"
                 }, "Invite URL"),
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("input", {
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("input", {
                     id: "invite_url",
                     placeholder: "Invite URL",
-                    value: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.invite_url
+                    value: $17d11d58618cc814$export$a5a6e0b888b2c992.invite_url
                 })
             ]),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
                 tabindex: 8,
-                "class": "item",
+                class: "item",
                 "data-function": "save-settings",
                 onclick: function onclick() {
-                    $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname = document.getElementById("nickname").value;
-                    $78f2cb3ec8734e95$export$a5a6e0b888b2c992.server_url = document.getElementById("server_url").value;
-                    $78f2cb3ec8734e95$export$a5a6e0b888b2c992.server_path = document.getElementById("server_path").value;
-                    $78f2cb3ec8734e95$export$a5a6e0b888b2c992.server_port = document.getElementById("server_port").value;
-                    $78f2cb3ec8734e95$export$a5a6e0b888b2c992.invite_url = document.getElementById("invite_url").value;
-                    (0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).setItem("settings", $78f2cb3ec8734e95$export$a5a6e0b888b2c992).then(function(value) {
+                    $17d11d58618cc814$export$a5a6e0b888b2c992.nickname = document.getElementById("nickname").value;
+                    $17d11d58618cc814$export$a5a6e0b888b2c992.server_url = document.getElementById("server_url").value;
+                    $17d11d58618cc814$export$a5a6e0b888b2c992.server_path = document.getElementById("server_path").value;
+                    $17d11d58618cc814$export$a5a6e0b888b2c992.server_port = document.getElementById("server_port").value;
+                    $17d11d58618cc814$export$a5a6e0b888b2c992.invite_url = document.getElementById("invite_url").value;
+                    (0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).setItem("settings", $17d11d58618cc814$export$a5a6e0b888b2c992).then(function(value) {
                         // Do other things once the value has been saved.
-                        (0, $6d3f4b507512327e$export$6593825dc0f3a767)("settings saved", 2000);
-                    })["catch"](function(err) {
+                        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("settings saved", 2000);
+                    }).catch(function(err) {
                         // This code runs if there were any errors
                         console.log(err);
                     });
@@ -35962,66 +35975,66 @@ var $78f2cb3ec8734e95$var$settings_page = {
         ]);
     }
 };
-var $78f2cb3ec8734e95$var$options = {
+var $17d11d58618cc814$var$options = {
     view: function view() {
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-            "class": "flex justify-content-center algin-item-start page",
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+            class: "flex justify-content-center algin-item-start page",
             oncreate: function() {
-                (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "");
-                (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='./assets/image/select.svg'>", "");
-                (0, $6d3f4b507512327e$export$6c04b58eee2a9a32)();
-                if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
+                (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "");
+                (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='./assets/image/select.svg'>", "");
+                (0, $162001cafa2b40fd$export$6c04b58eee2a9a32)();
+                if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
             }
         }, [
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
                 oncreate: function(param) {
                     var dom = param.dom;
                     return setTimeout(function() {
-                        (0, $6d3f4b507512327e$export$6c04b58eee2a9a32)();
+                        (0, $162001cafa2b40fd$export$6c04b58eee2a9a32)();
                     }, 500);
                 },
-                "class": "item",
+                class: "item",
                 style: {
-                    display: $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline ? "" : "none"
+                    display: $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline ? "" : "none"
                 },
                 onfocus: function() {
-                    (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='./assets/image/select.svg'>", "");
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='./assets/image/select.svg'>", "");
                 },
                 onclick: function onclick() {
-                    (0, $6d3f4b507512327e$export$6714d0f9237d35de)($78f2cb3ec8734e95$var$handleImage);
-                    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline > 0) (0, $6d3f4b507512327e$export$6714d0f9237d35de)($78f2cb3ec8734e95$var$handleImage);
-                    else (0, $6d3f4b507512327e$export$6593825dc0f3a767)("no user online", 3000);
+                    (0, $162001cafa2b40fd$export$6714d0f9237d35de)($17d11d58618cc814$var$handleImage);
+                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.userOnline > 0) (0, $162001cafa2b40fd$export$6714d0f9237d35de)($17d11d58618cc814$var$handleImage);
+                    else (0, $162001cafa2b40fd$export$6593825dc0f3a767)("no user online", 3000);
                 }
             }, "share image"),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
                 oncreate: function() {
                     return setTimeout(function() {
-                        (0, $6d3f4b507512327e$export$6c04b58eee2a9a32)();
+                        (0, $162001cafa2b40fd$export$6c04b58eee2a9a32)();
                     }, 500);
                 },
-                "class": "item",
+                class: "item",
                 id: "button-add-user",
                 style: {
-                    display: $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline ? "" : "none"
+                    display: $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline ? "" : "none"
                 },
                 onfocus: function() {
-                    (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img  src='./assets/image/select.svg'>", "");
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img  src='./assets/image/select.svg'>", "");
                 },
                 onclick: function onclick() {
-                    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_user_id !== "" && $78f2cb3ec8734e95$export$471f7ae5c4103ae1.user_nickname !== "") $78f2cb3ec8734e95$var$addUserToAddressBook($78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_user_id, $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_user_nickname);
+                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_user_id !== "" && $17d11d58618cc814$export$471f7ae5c4103ae1.user_nickname !== "") $17d11d58618cc814$var$addUserToAddressBook($17d11d58618cc814$export$471f7ae5c4103ae1.current_user_id, $17d11d58618cc814$export$471f7ae5c4103ae1.current_user_nickname);
                 }
             }, "add user to addressbook"),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
-                "class": "item",
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
+                class: "item",
                 onfocus: function() {
-                    (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img src='assets/image/select.svg'>", "");
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img src='assets/image/select.svg'>", "");
                 },
                 style: {
-                    display: $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline ? "" : "none"
+                    display: $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline ? "" : "none"
                 },
                 onclick: function onclick() {
-                    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline) (0, $6d3f4b507512327e$export$33d904bed5c25b69)($78f2cb3ec8734e95$var$geolocation_callback, false, false);
-                    else (0, $6d3f4b507512327e$export$6593825dc0f3a767)("no user online", 3000);
+                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.userOnline) (0, $162001cafa2b40fd$export$33d904bed5c25b69)($17d11d58618cc814$var$geolocation_callback, false, false);
+                    else (0, $162001cafa2b40fd$export$6593825dc0f3a767)("no user online", 3000);
                 }
             }, "share location"),
             /*
@@ -36070,227 +36083,227 @@ var $78f2cb3ec8734e95$var$options = {
           },
           "start live location"
         ),
-*/ (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
-                "class": "item share-id-button",
+*/ (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
+                class: "item share-id-button",
                 oninit: function(param) {
                     var dom = param.dom;
-                    (0, $6d3f4b507512327e$export$6c04b58eee2a9a32)();
-                    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline == 0) setTimeout(function() {
+                    (0, $162001cafa2b40fd$export$6c04b58eee2a9a32)();
+                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.userOnline == 0) setTimeout(function() {
                         document.querySelector(".share-id-button").focus();
                     }, 500);
                 },
                 onclick: function onclick() {
-                    (0, $6d3f4b507512327e$export$ed80d9de1d9df928)($78f2cb3ec8734e95$export$a5a6e0b888b2c992.invite_url + "?id=" + $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id).then(function(success) {
+                    (0, $162001cafa2b40fd$export$ed80d9de1d9df928)($17d11d58618cc814$export$a5a6e0b888b2c992.invite_url + "?id=" + $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id).then(function(success) {
                         if (success) {
                             console.log("Sharing was successful.");
-                            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id=" + $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id);
+                            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat?id=" + $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id);
                         } else console.log("Sharing failed.");
                     });
                 },
                 onfocus: function() {
-                    (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='assets/image/select.svg'>", "");
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='assets/image/select.svg'>", "");
                 }
             }, "Invite users")
         ]);
     }
 };
-var $78f2cb3ec8734e95$var$start = {
+var $17d11d58618cc814$var$start = {
     view: function view() {
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-            "class": "flex justify-content-center algin-item-start page",
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+            class: "flex justify-content-center algin-item-start page",
             id: "start",
             oncreate: function() {
-                (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "");
+                (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "");
                 var x = document.querySelector("div#side-toast");
                 x.style.transform = "translate(-100vw,0px)";
                 //auto connect if id is given
-                (0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).getItem("connect_to_id").then(function(e) {
+                (0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).getItem("connect_to_id").then(function(e) {
                     if (e && e.data) {
                         // Check if e and e.data are not null or undefined
                         var params = e.data.split("?id=");
                         if (params.length > 1) {
                             var id = params[1];
                             setTimeout(function() {
-                                (0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).removeItem("connect_to_id").then(function() {
-                                    $78f2cb3ec8734e95$var$connect_to_peer(id, "/start");
+                                (0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).removeItem("connect_to_id").then(function() {
+                                    $17d11d58618cc814$var$connect_to_peer(id, "/start");
                                 });
                             }, 2000);
                         } else console.error("Invalid data format"); // Handle invalid data format
-                    } else console.error("Data not found"); // Handle case where e or e.data is null or undefined
-                })["catch"](function(error) {
+                    } else console.error("notihing to do!"); // Handle case where e or e.data is null or undefined
+                }).catch(function(error) {
                     console.error("Error retrieving data:", error); // Handle error retrieving data
                 });
-                (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img src='assets/image/person.svg'>", "<img src='assets/image/plus.svg'>", "<img src='assets/image/option.svg'>");
+                (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/person.svg'>", "<img src='assets/image/plus.svg'>", "<img src='assets/image/option.svg'>");
             }
         }, [
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("img", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("img", {
                 src: "assets/icons/intro.svg"
             }),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("p", {
-                "class": "item scroll",
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("p", {
+                class: "item scroll",
                 tabIndex: 0,
                 oncreate: function(vnode) {
                     document.querySelector("#start p").focus();
                     vnode.dom.focus();
                 }
-            }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images, audio and your position with your chat partner. To create a peer, press enter.<br><br>")),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
+            }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images, audio and your position with your chat partner. To create a peer, press enter.<br><br>")),
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
                 tabIndex: 1,
-                "class": "item",
+                class: "item",
                 oncreate: function(vnode) {
-                    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_room == null || $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_room == "" || $78f2cb3ec8734e95$export$471f7ae5c4103ae1.user_does_not_exist) {
+                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_room == null || $17d11d58618cc814$export$471f7ae5c4103ae1.current_room == "" || $17d11d58618cc814$export$471f7ae5c4103ae1.user_does_not_exist) {
                         vnode.dom.style.display = "none";
-                        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.user_does_not_exist = false;
+                        $17d11d58618cc814$export$471f7ae5c4103ae1.user_does_not_exist = false;
                     }
                 },
                 onclick: function(e) {
-                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id=" + $78f2cb3ec8734e95$export$471f7ae5c4103ae1.ownPeerId);
-                    $78f2cb3ec8734e95$var$peer.reconnect();
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat?id=" + $17d11d58618cc814$export$471f7ae5c4103ae1.ownPeerId);
+                    $17d11d58618cc814$var$peer.reconnect();
                 }
             }, "reopen chat")
         ]);
     }
 };
-var $78f2cb3ec8734e95$var$links_page = {
+var $17d11d58618cc814$var$links_page = {
     view: function view(vnode) {
-        return $78f2cb3ec8734e95$var$links.map(function(item, index) {
-            return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
+        return $17d11d58618cc814$var$links.map(function(item, index) {
+            return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
                 tabindex: index,
-                "class": "item",
+                class: "item",
                 onclick: function onclick() {
                     window.open(item.href);
-                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat");
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat");
                 },
                 onfocus: function() {
-                    (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='assets/image/select.svg'>", "");
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img class='not-desktop' src='assets/image/select.svg'>", "");
                 },
                 oncreate: function() {
                     var _ref;
                     (_ref = index == 1) !== null && _ref !== void 0 ? _ref : item.focus();
-                    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS == true) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
+                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS == true) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
                 }
             }, item.href);
         });
     }
 };
-var $78f2cb3ec8734e95$var$scan = {
+var $17d11d58618cc814$var$scan = {
     view: function view(vnode) {
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div");
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div");
     }
 };
-var $78f2cb3ec8734e95$var$open_peer_menu = {
+var $17d11d58618cc814$var$open_peer_menu = {
     view: function view() {
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-            "class": "flex justify-content-center algin-item-start page",
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+            class: "flex justify-content-center algin-item-start page",
             onremove: function() {
                 document.querySelector(".loading-spinner").style.display = "none";
             },
             oncreate: function() {
-                $78f2cb3ec8734e95$var$peer_is_online();
+                $17d11d58618cc814$var$peer_is_online();
                 setTimeout(function() {
-                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).redraw();
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
                 }, 10000);
-                $78f2cb3ec8734e95$export$471f7ae5c4103ae1.addressbook_in_focus = "";
-                (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img  src='assets/image/qr.svg'>", "", "<img  src='assets/image/id.svg'>");
-                if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS == true) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
+                $17d11d58618cc814$export$471f7ae5c4103ae1.addressbook_in_focus = "";
+                (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img  src='assets/image/qr.svg'>", "", "<img  src='assets/image/id.svg'>");
+                if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS == true) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
             }
         }, [
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                "class": "text item",
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                class: "text item",
                 onfocus: function() {
-                    (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img  src='assets/image/qr.svg'>", "", "<img  src='assets/image/id.svg'>");
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img  src='assets/image/qr.svg'>", "", "<img  src='assets/image/id.svg'>");
                 }
             }, "You can join a chat when someone invites you with a link. If you don't have this link, you can also enter the chat ID here or scan the QR code."),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                "class": "width-100 flex justify-content-center",
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                class: "width-100 flex justify-content-center",
                 style: {
-                    display: $78f2cb3ec8734e95$var$addressbook.length == 0 ? "none" : ""
+                    display: $17d11d58618cc814$var$addressbook.length == 0 ? "none" : ""
                 }
-            }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<br><br>Addressbook<br><br>")),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                "class": "width-100 flex justify-content-center",
+            }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<br><br>Addressbook<br><br>")),
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                class: "width-100 flex justify-content-center",
                 id: "addressbook"
             }, [
-                $78f2cb3ec8734e95$var$addressbook.map(function(e) {
-                    return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("button", {
-                        "class": "item flex justify-content-center align-item-center",
+                $17d11d58618cc814$var$addressbook.map(function(e) {
+                    return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
+                        class: "item flex justify-content-center align-item-center",
                         "data-id": e.id,
                         "data-online": e.live ? "true" : "false",
                         oncreate: function(vnode) {
-                            (0, $6d3f4b507512327e$export$6c04b58eee2a9a32)();
+                            (0, $162001cafa2b40fd$export$6c04b58eee2a9a32)();
                         },
                         onfocus: function() {
-                            $78f2cb3ec8734e95$export$471f7ae5c4103ae1.addressbook_in_focus = e.id;
-                            (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img  src='assets/image/select.svg'>", "<img  src='assets/image/delete.svg'>");
+                            $17d11d58618cc814$export$471f7ae5c4103ae1.addressbook_in_focus = e.id;
+                            (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img  src='assets/image/select.svg'>", "<img  src='assets/image/delete.svg'>");
                         },
                         onblur: function() {
-                            $78f2cb3ec8734e95$export$471f7ae5c4103ae1.addressbook_in_focus = "";
+                            $17d11d58618cc814$export$471f7ae5c4103ae1.addressbook_in_focus = "";
                         },
                         onclick: function() {
-                            if (e.live == true) $78f2cb3ec8734e95$var$connect_to_peer(document.activeElement.getAttribute("data-id"));
-                            else (0, $6d3f4b507512327e$export$6593825dc0f3a767)("user is not online", 3000);
+                            if (e.live == true) $17d11d58618cc814$var$connect_to_peer(document.activeElement.getAttribute("data-id"));
+                            else (0, $162001cafa2b40fd$export$6593825dc0f3a767)("user is not online", 3000);
                         }
                     }, [
-                        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("span", (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<img class='online' src='/assets/image/online.svg'><img class='offline' src='/assets/image/offline.svg'>")),
-                        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("span", e.nickname)
+                        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("span", (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img class='online' src='/assets/image/online.svg'><img class='offline' src='/assets/image/offline.svg'>")),
+                        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("span", e.nickname)
                     ]);
                 })
             ])
         ]);
     }
 };
-var $78f2cb3ec8734e95$var$user_check;
-var $78f2cb3ec8734e95$var$chat = {
+var $17d11d58618cc814$var$user_check;
+var $17d11d58618cc814$var$chat = {
     view: function view() {
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
             id: "chat",
-            "class": "flex justify-content-center algin-item-start",
+            class: "flex justify-content-center algin-item-start",
             onremove: function() {
-                clearInterval($78f2cb3ec8734e95$var$user_check);
+                clearInterval($17d11d58618cc814$var$user_check);
                 var x = document.querySelector("div#side-toast");
                 x.style.transform = "translate(-100vw,0px)";
                 try {
-                    (0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).removeItem("connect_to_id");
+                    (0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).removeItem("connect_to_id");
                 } catch (e) {}
             },
             oncreate: function() {
-                (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("<img  class='users' title='0' 'src='assets/image/no-monster.svg'>", "", "");
-                if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("<img class='users' title='0' src='assets/image/no-monster.svg'>", "", "<img src='assets/image/back.svg'>");
-                (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
-                $78f2cb3ec8734e95$var$user_check = setInterval(function() {
-                    if ($78f2cb3ec8734e95$var$connectedPeers) {
-                        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline = $78f2cb3ec8734e95$var$connectedPeers.length;
-                        document.querySelector("img.users").setAttribute("title", $78f2cb3ec8734e95$export$471f7ae5c4103ae1.online);
-                        $78f2cb3ec8734e95$var$sendMessageToAll({
-                            userlist: $78f2cb3ec8734e95$var$connectedPeers,
-                            nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname,
-                            userId: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.custom_peer_id
+                (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img  class='users' title='0' 'src='assets/image/no-monster.svg'>", "", "");
+                if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img class='users' title='0' src='assets/image/no-monster.svg'>", "", "<img src='assets/image/back.svg'>");
+                (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
+                $17d11d58618cc814$var$user_check = setInterval(function() {
+                    if ($17d11d58618cc814$var$connectedPeers) {
+                        $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline = $17d11d58618cc814$var$connectedPeers.length;
+                        document.querySelector("img.users").setAttribute("title", $17d11d58618cc814$export$471f7ae5c4103ae1.online);
+                        $17d11d58618cc814$var$sendMessageToAll({
+                            userlist: $17d11d58618cc814$var$connectedPeers,
+                            nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
+                            userId: $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id
                         });
-                        if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS && $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline > 0) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("<img class='users' title='" + $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline + "' src='assets/image/monster.svg'>", "", "");
-                        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS && $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline > 0) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("<img class='users' title='" + $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline + "' src='assets/image/monster.svg'>", "", "<img src='assets/image/back.svg'>");
-                        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS && $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline == 0) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("<img class='users' title='" + $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline + "' src='assets/image/no-monster.svg'>", "", "<img src='assets/image/back.svg'>");
-                        if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS && $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline == 0) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("<img class='users' title='" + $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline + "' src='assets/image/no-monster.svg'>", "", "");
+                        if (!$17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS && $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline > 0) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img class='users' title='" + $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline + "' src='assets/image/monster.svg'>", "", "");
+                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS && $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline > 0) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img class='users' title='" + $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline + "' src='assets/image/monster.svg'>", "", "<img src='assets/image/back.svg'>");
+                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS && $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline == 0) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img class='users' title='" + $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline + "' src='assets/image/no-monster.svg'>", "", "<img src='assets/image/back.svg'>");
+                        if (!$17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS && $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline == 0) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("<img class='users' title='" + $17d11d58618cc814$export$471f7ae5c4103ae1.userOnline + "' src='assets/image/no-monster.svg'>", "", "");
                     }
                 }, 3000);
             }
-        }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+        }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
             id: "message-input",
             type: "text",
-            "class": "width-100"
+            class: "width-100"
         }, [
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("input", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("input", {
                 type: "text",
                 onblur: function() {
                     setTimeout(function() {
-                        (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
-                        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.action === "write") $78f2cb3ec8734e95$var$write();
+                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
+                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.action === "write") $17d11d58618cc814$var$write();
                     }, 1000);
                 },
                 onfocus: function() {
-                    (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "<img src='assets/image/record.svg'>", "<img src='assets/image/option.svg'>");
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "<img src='assets/image/record.svg'>", "<img src='assets/image/option.svg'>");
                 }
             })
-        ]), $78f2cb3ec8734e95$var$chat_data.map(function(item, index) {
+        ]), $17d11d58618cc814$var$chat_data.map(function(item, index) {
             //own message
             var ff = {
                 lat: "",
@@ -36302,9 +36315,9 @@ var $78f2cb3ec8734e95$var$chat = {
                 ff.lng = n.lng;
             }
             var nickname = "me";
-            if (item.nickname != $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname) nickname = item.nickname;
-            return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("article", {
-                "class": "item " + nickname + " " + item.type,
+            if (item.nickname != $17d11d58618cc814$export$a5a6e0b888b2c992.nickname) nickname = item.nickname;
+            return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("article", {
+                class: "item " + nickname + " " + item.type,
                 tabindex: index,
                 "data-type": item.type,
                 "data-user-id": item.userId,
@@ -36314,62 +36327,62 @@ var $78f2cb3ec8734e95$var$chat = {
                 onclick: function() {
                     if (item.type == "gps" || item.type == "gps_live") {
                         var f = JSON.parse(item.gps);
-                        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/map_view?lat=" + f.lat + "&lng=" + f.lng + "&id=" + item.nickname);
+                        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/map_view?lat=" + f.lat + "&lng=" + f.lng + "&id=" + item.nickname);
                     }
                 },
                 onfocus: function() {
-                    $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_user_id = document.activeElement.getAttribute("data-user-id");
-                    $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_user_nickname = document.activeElement.getAttribute("data-user-nickname");
-                    $78f2cb3ec8734e95$var$links = $a06d5a398bbbfd36$export$71aa6c912b956294(document.activeElement.textContent);
-                    if ($78f2cb3ec8734e95$var$links.length > 0 && item.type == "text") {
-                        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_article_type = "link";
-                        (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/link.svg'>", "<img src='assets/image/option.svg'>");
+                    $17d11d58618cc814$export$471f7ae5c4103ae1.current_user_id = document.activeElement.getAttribute("data-user-id");
+                    $17d11d58618cc814$export$471f7ae5c4103ae1.current_user_nickname = document.activeElement.getAttribute("data-user-nickname");
+                    $17d11d58618cc814$var$links = $410e7a787f87a2b4$export$71aa6c912b956294(document.activeElement.textContent);
+                    if ($17d11d58618cc814$var$links.length > 0 && item.type == "text") {
+                        $17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type = "link";
+                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/link.svg'>", "<img src='assets/image/option.svg'>");
                     }
                     if (item.type == "gps") {
-                        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_article_type = "gps";
-                        (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/select.svg'>", "<img src='assets/image/option.svg'>");
+                        $17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type = "gps";
+                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/select.svg'>", "<img src='assets/image/option.svg'>");
                     }
                     if (item.type == "image") {
-                        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_article_type = "image";
-                        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) return false;
-                        (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/save.svg'>", "<img src='assets/image/option.svg'>");
+                        $17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type = "image";
+                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) return false;
+                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/save.svg'>", "<img src='assets/image/option.svg'>");
                     }
                     if (item.type == "audio") {
-                        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_article_type = "audio";
-                        (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/play.svg'>", "<img src='assets/image/option.svg'>");
+                        $17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type = "audio";
+                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/play.svg'>", "<img src='assets/image/option.svg'>");
                     }
                     if (item.type == "text") {
-                        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_article_type = "text";
-                        (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
+                        $17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type = "text";
+                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
                     }
                 }
             }, [
-                item.type === "text" ? (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                    "class": "message-main"
+                item.type === "text" ? (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "message-main"
                 }, item.content) : null,
-                item.type === "image" ? (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("img", {
-                    "class": "message-media",
+                item.type === "image" ? (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("img", {
+                    class: "message-media",
                     src: item.image,
                     "data-filename": item.filename
                 }) : null,
-                item.type === "gps" ? (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                    "class": "message-map",
+                item.type === "gps" ? (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "message-map",
                     oncreate: function(vnode) {}
                 }) : null,
-                item.type === "audio" ? (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                    "class": "audioplayer"
-                }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))($78f2cb3ec8734e95$var$AudioComponent, {
+                item.type === "audio" ? (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "audioplayer"
+                }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))($17d11d58618cc814$var$AudioComponent, {
                     src: item.content
                 })) : null,
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                    "class": "flex message-head"
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                    class: "flex message-head"
                 }, [
-                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", $78f2cb3ec8734e95$var$time_parse(item.datetime)),
-                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                        "class": "nickname"
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", $17d11d58618cc814$var$time_parse(item.datetime)),
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                        class: "nickname"
                     }, nickname),
-                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                        "class": "type",
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                        class: "type",
                         style: {
                             display: item.type == "gps" ? "" : "none"
                         }
@@ -36379,27 +36392,27 @@ var $78f2cb3ec8734e95$var$chat = {
         }));
     }
 };
-var $78f2cb3ec8734e95$var$map_view = {
+var $17d11d58618cc814$var$map_view = {
     view: function view() {
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-            "class": "width-100 height-100",
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+            class: "width-100 height-100",
             id: "map-container",
             oncreate: function(vnode) {
-                (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img src='assets/image/plus.svg'>", "<img src='assets/image/person.svg'>", "<img src='assets/image/minus.svg'>");
-                var params = new URLSearchParams((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get().split("?")[1]);
+                (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/plus.svg'>", "<img src='assets/image/person.svg'>", "<img src='assets/image/minus.svg'>");
+                var params = new URLSearchParams((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get().split("?")[1]);
                 var lat = parseFloat(params.get("lat"));
                 var lng = parseFloat(params.get("lng"));
                 var id = params.get("id");
-                $78f2cb3ec8734e95$var$map_function(lat, lng, id);
-                if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
+                $17d11d58618cc814$var$map_function(lat, lng, id);
+                if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
             }
         });
     }
 };
-var $78f2cb3ec8734e95$var$intro = {
+var $17d11d58618cc814$var$intro = {
     view: function view() {
-        return (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-            "class": "width-100 height-100",
+        return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+            class: "width-100 height-100",
             id: "intro",
             oninit: function oninit() {
                 var protocol = window.location.protocol;
@@ -36410,71 +36423,71 @@ var $78f2cb3ec8734e95$var$intro = {
                 var fullUrl = "".concat(protocol, "//").concat(host).concat(pathname).concat(search).concat(hash);
                 // Get the current hash
                 if (fullUrl.includes("?id=")) {
-                    (0, (/*@__PURE__*/$parcel$interopDefault($f09be4829256f6d5$exports))).setItem("connect_to_id", {
+                    (0, (/*@__PURE__*/$parcel$interopDefault($9fbe31c6ff058869$exports))).setItem("connect_to_id", {
                         data: fullUrl
                     });
-                    $78f2cb3ec8734e95$export$471f7ae5c4103ae1.launching = true;
-                    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS == false) $78f2cb3ec8734e95$var$app_launcher();
+                    $17d11d58618cc814$export$471f7ae5c4103ae1.launching = true;
+                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS == false) $17d11d58618cc814$var$app_launcher();
                     else setTimeout(function() {
                         var _$m = fullUrl.split("id=");
-                        $78f2cb3ec8734e95$var$connect_to_peer(_$m[1], "/start");
+                        $17d11d58618cc814$var$connect_to_peer(_$m[1], "/start");
                     }, 1000);
                 } else setTimeout(function() {
-                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/start");
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/start");
                 }, 5000);
             }
         }, [
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("img", {
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("img", {
                 src: "./assets/icons/intro.svg",
                 oncreate: function() {
                     var get_manifest_callback = function(e) {
                         try {
-                            $78f2cb3ec8734e95$export$471f7ae5c4103ae1.version = e.manifest.version;
+                            $17d11d58618cc814$export$471f7ae5c4103ae1.version = e.manifest.version;
                             document.querySelector("#version").textContent = e.manifest.version;
                         } catch (e) {}
                         if ("b2g" in navigator) fetch("/manifest.webmanifest").then(function(r) {
                             return r.json();
                         }).then(function(parsedResponse) {
-                            $78f2cb3ec8734e95$export$471f7ae5c4103ae1.version = parsedResponse.b2g_features.version;
+                            $17d11d58618cc814$export$471f7ae5c4103ae1.version = parsedResponse.b2g_features.version;
                             document.querySelector("#version").textContent = parsedResponse.b2g_features.version;
                         });
-                        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) fetch("/manifest.webmanifest").then(function(r) {
+                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) fetch("/manifest.webmanifest").then(function(r) {
                             return r.json();
                         }).then(function(parsedResponse) {
-                            $78f2cb3ec8734e95$export$471f7ae5c4103ae1.version = parsedResponse.b2g_features.version;
+                            $17d11d58618cc814$export$471f7ae5c4103ae1.version = parsedResponse.b2g_features.version;
                             document.querySelector("#version").textContent = parsedResponse.b2g_features.version;
                         });
                     };
-                    (0, $6d3f4b507512327e$export$39e873de56f329d8)(get_manifest_callback);
+                    (0, $162001cafa2b40fd$export$39e873de56f329d8)(get_manifest_callback);
                 }
             }),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                "class": "flex width-100  justify-content-center ",
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                class: "flex width-100  justify-content-center ",
                 id: "version-box"
             }, [
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("kbd", {
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("kbd", {
                     id: "version"
-                }, $78f2cb3ec8734e95$export$471f7ae5c4103ae1.version)
+                }, $17d11d58618cc814$export$471f7ae5c4103ae1.version)
             ])
         ]);
     }
 };
-(0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route($78f2cb3ec8734e95$var$root, "/intro", {
-    "/intro": $78f2cb3ec8734e95$var$intro,
-    "/open_peer_menu": $78f2cb3ec8734e95$var$open_peer_menu,
-    "/start": $78f2cb3ec8734e95$var$start,
-    "/links_page": $78f2cb3ec8734e95$var$links_page,
-    "/chat": $78f2cb3ec8734e95$var$chat,
-    "/options": $78f2cb3ec8734e95$var$options,
-    "/settings_page": $78f2cb3ec8734e95$var$settings_page,
-    "/scan": $78f2cb3ec8734e95$var$scan,
-    "/about": $78f2cb3ec8734e95$var$about,
-    "/about_page": $78f2cb3ec8734e95$var$about_page,
-    "/privacy_policy": $78f2cb3ec8734e95$var$privacy_policy,
-    "/map_view": $78f2cb3ec8734e95$var$map_view,
-    "/waiting": $78f2cb3ec8734e95$var$waiting
+(0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route($17d11d58618cc814$var$root, "/intro", {
+    "/intro": $17d11d58618cc814$var$intro,
+    "/open_peer_menu": $17d11d58618cc814$var$open_peer_menu,
+    "/start": $17d11d58618cc814$var$start,
+    "/links_page": $17d11d58618cc814$var$links_page,
+    "/chat": $17d11d58618cc814$var$chat,
+    "/options": $17d11d58618cc814$var$options,
+    "/settings_page": $17d11d58618cc814$var$settings_page,
+    "/scan": $17d11d58618cc814$var$scan,
+    "/about": $17d11d58618cc814$var$about,
+    "/about_page": $17d11d58618cc814$var$about_page,
+    "/privacy_policy": $17d11d58618cc814$var$privacy_policy,
+    "/map_view": $17d11d58618cc814$var$map_view,
+    "/waiting": $17d11d58618cc814$var$waiting
 });
-function $78f2cb3ec8734e95$var$scrollToCenter() {
+function $17d11d58618cc814$var$scrollToCenter() {
     var activeElement = document.activeElement;
     if (!activeElement) return;
     var rect = activeElement.getBoundingClientRect();
@@ -36536,7 +36549,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
             targetElement = items[0];
             targetElement.focus();
         }
-        $78f2cb3ec8734e95$var$scrollToCenter();
+        $17d11d58618cc814$var$scrollToCenter();
     };
     // Add click listeners to simulate key events
     document.querySelector("div.button-left").addEventListener("click", function(event) {
@@ -36550,32 +36563,32 @@ document.addEventListener("DOMContentLoaded", function(e) {
     });
     //top bar
     document.querySelector("#top-bar div div.button-right").addEventListener("click", function(event) {
-        var route = (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get();
-        if (route.startsWith("/chat") || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/settings_page" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/scan" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/open_peer_menu" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/about" || route.startsWith("/map_view")) {
-            $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/start");
+        var route = (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get();
+        if (route.startsWith("/chat") || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/settings_page" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/scan" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/open_peer_menu" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/about" || route.startsWith("/map_view")) {
+            $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/start");
         }
-        if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/scan") {
-            $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/open_peer_menu");
+        if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/scan") {
+            $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/open_peer_menu");
         }
-        if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/settings") {
-            $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/about");
+        if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/settings") {
+            $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/about");
         }
-        if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/privacy_policy") {
-            $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/about");
+        if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/privacy_policy") {
+            $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/about");
         }
-        if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/about_page") {
-            $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/about");
+        if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/about_page") {
+            $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/about");
         }
-        if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/map_view") {
-            $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/options");
+        if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/map_view") {
+            $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/options");
         }
-        if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/options" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/links_page") (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id="), $78f2cb3ec8734e95$export$471f7ae5c4103ae1.ownPeerId;
+        if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/options" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/links_page") (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat?id="), $17d11d58618cc814$export$471f7ae5c4103ae1.ownPeerId;
     });
     // Function to simulate key press events
     function simulateKeyPress(k) {
@@ -36605,23 +36618,23 @@ document.addEventListener("DOMContentLoaded", function(e) {
     /////////////
     var users_geolocation_count = 0;
     function longpress_action(param) {
-        var route = (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get();
+        var route = (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get();
         switch(param.key){
             case "Backspace":
-                $78f2cb3ec8734e95$var$closeAllConnections();
-                $78f2cb3ec8734e95$var$peer.destroy();
+                $17d11d58618cc814$var$closeAllConnections();
+                $17d11d58618cc814$var$peer.destroy();
                 window.close();
                 break;
             case "Enter":
-                if (route.startsWith("/chat") && document.activeElement.tagName == "INPUT" && $78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) {
+                if (route.startsWith("/chat") && document.activeElement.tagName == "INPUT" && $17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) {
                     document.activeElement.blur();
                     // Start recording
-                    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.audio_recording) return false;
-                    $78f2cb3ec8734e95$var$audioRecorder.startRecording().then(function() {
-                        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.audio_recording = true;
+                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.audio_recording) return false;
+                    $17d11d58618cc814$var$audioRecorder.startRecording().then(function() {
+                        $17d11d58618cc814$export$471f7ae5c4103ae1.audio_recording = true;
                         document.getElementById("app").style.opacity = "0";
                         document.querySelector(".playing").style.opacity = "1";
-                        (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/record-live.svg'>", "<img src='assets/image/option.svg'>");
+                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/record-live.svg'>", "<img src='assets/image/option.svg'>");
                     });
                 }
                 break;
@@ -36631,107 +36644,108 @@ document.addEventListener("DOMContentLoaded", function(e) {
     // //SHORTPRESS
     // ////////////
     function shortpress_action(param) {
-        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.action == "confirm") return false;
-        var route = (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get();
+        if ($17d11d58618cc814$export$471f7ae5c4103ae1.action == "confirm") return false;
+        var route = (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get();
         switch(param.key){
             case "ArrowRight":
-                if (route == "/map_view") $78f2cb3ec8734e95$var$MoveMap("right");
+                if (route == "/map_view") $17d11d58618cc814$var$MoveMap("right");
                 break;
             case "ArrowLeft":
-                if (route == "/map_view") $78f2cb3ec8734e95$var$MoveMap("left");
+                if (route == "/map_view") $17d11d58618cc814$var$MoveMap("left");
                 break;
             case "ArrowUp":
                 if (route.startsWith("/chat") && document.activeElement.tagName === "INPUT") {
-                    $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action;
-                    $78f2cb3ec8734e95$var$write();
+                    $17d11d58618cc814$export$471f7ae5c4103ae1.action;
+                    $17d11d58618cc814$var$write();
                 }
-                if (route.startsWith("/map_view")) $78f2cb3ec8734e95$var$MoveMap("up");
+                if (route.startsWith("/map_view")) $17d11d58618cc814$var$MoveMap("up");
                 else nav(-1);
                 break;
             case "ArrowDown":
-                if (route == "/map_view") $78f2cb3ec8734e95$var$MoveMap("down");
+                if (route == "/map_view") $17d11d58618cc814$var$MoveMap("down");
                 else nav(1);
                 break;
             case "SoftRight":
             case "Alt":
-                if (route.startsWith("/chat") && !$78f2cb3ec8734e95$export$471f7ae5c4103ae1.audio_recording) (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/options");
-                if (route == "/start") (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/about");
-                if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.audio_recording && route.startsWith("/chat")) $78f2cb3ec8734e95$var$audioRecorder.stopRecording().then(function(audioBlob) {
-                    $78f2cb3ec8734e95$export$471f7ae5c4103ae1.audio_recording = false;
+                if (route.startsWith("/chat") && !$17d11d58618cc814$export$471f7ae5c4103ae1.audio_recording) (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/options");
+                if (route == "/start") (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/about");
+                if ($17d11d58618cc814$export$471f7ae5c4103ae1.audio_recording && route.startsWith("/chat")) $17d11d58618cc814$var$audioRecorder.stopRecording().then(function(audioBlob) {
+                    $17d11d58618cc814$export$471f7ae5c4103ae1.audio_recording = false;
                     document.getElementById("app").style.opacity = "1";
                     document.querySelector(".playing").style.opacity = "0";
-                    $78f2cb3ec8734e95$var$write();
+                    $17d11d58618cc814$var$write();
                 });
-                if (route.startsWith("/map_view")) $78f2cb3ec8734e95$var$ZoomMap("out");
+                if (route.startsWith("/map_view")) $17d11d58618cc814$var$ZoomMap("out");
                 if (route == "/open_peer_menu") {
-                    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.addressbook_in_focus == "") {
+                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.addressbook_in_focus == "") {
                         var prp = prompt("Enter the chat ID");
-                        if (prp !== null && prp !== "") $78f2cb3ec8734e95$var$connect_to_peer(prp);
-                        else (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/open_peer_menu");
-                    } else $78f2cb3ec8734e95$var$delete_addressbook_item($78f2cb3ec8734e95$export$471f7ae5c4103ae1.addressbook_in_focus);
+                        if (prp !== null && prp !== "") $17d11d58618cc814$var$connect_to_peer(prp);
+                        else (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/open_peer_menu");
+                    } else $17d11d58618cc814$var$delete_addressbook_item($17d11d58618cc814$export$471f7ae5c4103ae1.addressbook_in_focus);
                 }
                 break;
             case "SoftLeft":
             case "Control":
-                if (route.startsWith("/chat") && $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action == "write" && $78f2cb3ec8734e95$export$471f7ae5c4103ae1.audio_recording) // Stop recording and get the recorded data
-                $78f2cb3ec8734e95$var$audioRecorder.stopRecording().then(function(audioBlob) {
+                if (route.startsWith("/chat") && $17d11d58618cc814$export$471f7ae5c4103ae1.action == "write" && $17d11d58618cc814$export$471f7ae5c4103ae1.audio_recording) // Stop recording and get the recorded data
+                $17d11d58618cc814$var$audioRecorder.stopRecording().then(function(audioBlob) {
                     document.getElementById("app").style.opacity = "1";
                     document.querySelector(".playing").style.opacity = "0";
-                    $78f2cb3ec8734e95$var$sendMessage(audioBlob, "audio");
-                    (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
+                    $17d11d58618cc814$var$sendMessage(audioBlob, "audio");
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
                     // Clean up the audio recorder
-                    $78f2cb3ec8734e95$var$audioRecorder.cleanup();
-                    $78f2cb3ec8734e95$export$471f7ae5c4103ae1.audio_recording = false;
-                    $78f2cb3ec8734e95$var$write();
+                    $17d11d58618cc814$var$audioRecorder.cleanup();
+                    $17d11d58618cc814$export$471f7ae5c4103ae1.audio_recording = false;
+                    $17d11d58618cc814$var$write();
                 });
-                if (route.startsWith("/chat") && $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action == "write") {
-                    $78f2cb3ec8734e95$var$sendMessage(document.getElementsByTagName("input")[0].value, "text");
-                    $78f2cb3ec8734e95$var$write();
+                if (route.startsWith("/chat") && $17d11d58618cc814$export$471f7ae5c4103ae1.action == "write") {
+                    $17d11d58618cc814$var$sendMessage(document.getElementsByTagName("input")[0].value, "text");
+                    $17d11d58618cc814$var$write();
                 }
-                if (route.startsWith("/chat") && $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action !== "write") {
-                    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.userOnline > 0) $78f2cb3ec8734e95$var$write();
-                    else (0, $6d3f4b507512327e$export$6593825dc0f3a767)("no user online", 3000);
+                if (route.startsWith("/chat") && $17d11d58618cc814$export$471f7ae5c4103ae1.action !== "write") {
+                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.userOnline > 0) $17d11d58618cc814$var$write();
+                    else (0, $162001cafa2b40fd$export$6593825dc0f3a767)("no user online", 3000);
                 }
-                if (route.startsWith("/map_view")) $78f2cb3ec8734e95$var$ZoomMap("in");
-                if (route == "/start") (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/open_peer_menu");
+                if (route.startsWith("/map_view")) $17d11d58618cc814$var$ZoomMap("in");
+                if (route == "/start") (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/open_peer_menu");
                 if (route == "/open_peer_menu") {
-                    (0, $da5c51e5866985e6$export$be96fe42679d1b7e)($78f2cb3ec8734e95$var$scan_callback);
-                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/scan");
+                    (0, $2b0cc46421a6d3fe$export$be96fe42679d1b7e)($17d11d58618cc814$var$scan_callback);
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/scan");
                 }
                 break;
             case "Enter":
                 if (document.activeElement.tagName == "INPUT") {
-                    if (route.startsWith($78f2cb3ec8734e95$export$471f7ae5c4103ae1.action == "write")) {
-                        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.audio_recording) return false;
+                    if (route.startsWith($17d11d58618cc814$export$471f7ae5c4103ae1.action == "write")) {
+                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.audio_recording) return false;
                     }
-                    $78f2cb3ec8734e95$var$audioRecorder.startRecording().then(function() {
+                    $17d11d58618cc814$var$audioRecorder.startRecording().then(function() {
                         document.getElementById("app").style.opacity = "0";
                         document.querySelector(".playing").style.opacity = "1";
-                        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.audio_recording = true;
-                        (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "<img src='assets/image/record-live.svg'>", "<img src='assets/image/cancel.svg'>");
+                        $17d11d58618cc814$export$471f7ae5c4103ae1.audio_recording = true;
+                        (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "<img src='assets/image/record-live.svg'>", "<img src='assets/image/cancel.svg'>");
                     });
                 }
-                if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS) route.startsWith($78f2cb3ec8734e95$export$471f7ae5c4103ae1.action == "write");
+                if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS) route.startsWith($17d11d58618cc814$export$471f7ae5c4103ae1.action == "write");
                 if (document.activeElement.classList.contains("input-parent")) document.activeElement.children[0].focus();
-                if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/options" && document.activeElement.id == "button-add-user") {
-                    if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_user_id !== "" && $78f2cb3ec8734e95$export$471f7ae5c4103ae1.user_nickname !== "") $78f2cb3ec8734e95$var$addUserToAddressBook($78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_user_id, $78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_user_nickname);
+                if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/options" && document.activeElement.id == "button-add-user") {
+                    if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_user_id !== "" && $17d11d58618cc814$export$471f7ae5c4103ae1.user_nickname !== "") $17d11d58618cc814$var$addUserToAddressBook($17d11d58618cc814$export$471f7ae5c4103ae1.current_user_id, $17d11d58618cc814$export$471f7ae5c4103ae1.current_user_nickname);
                 }
                 if (route == "/start") {
-                    $78f2cb3ec8734e95$var$chat_data = [];
-                    $78f2cb3ec8734e95$var$create_peer();
+                    $17d11d58618cc814$var$chat_data = [];
+                    $17d11d58618cc814$var$create_peer();
+                // m.route.set("/chat?id=" + settings.custom_peer_id);
                 }
                 //addressbook open peer
                 if (route == "/open_peer_menu") {
-                    if (document.activeElement.getAttribute("data-online") == "true") $78f2cb3ec8734e95$var$connect_to_peer(document.activeElement.getAttribute("data-id"));
-                    else (0, $6d3f4b507512327e$export$6593825dc0f3a767)("user is not online", 3000);
+                    if (document.activeElement.getAttribute("data-online") == "true") $17d11d58618cc814$var$connect_to_peer(document.activeElement.getAttribute("data-id"));
+                    else (0, $162001cafa2b40fd$export$6593825dc0f3a767)("user is not online", 3000);
                 }
                 if (route.startsWith("/map_view")) {
                     // Ensure users_geolocation_count is within bounds
-                    if (users_geolocation_count == Object.keys($78f2cb3ec8734e95$export$471f7ae5c4103ae1.userMarkers).length - 1) users_geolocation_count = 0;
+                    if (users_geolocation_count == Object.keys($17d11d58618cc814$export$471f7ae5c4103ae1.userMarkers).length - 1) users_geolocation_count = 0;
                     else users_geolocation_count++;
-                    var userIds = Object.keys($78f2cb3ec8734e95$export$471f7ae5c4103ae1.userMarkers);
-                    var currentMarker = $78f2cb3ec8734e95$export$471f7ae5c4103ae1.userMarkers[userIds[users_geolocation_count]];
-                    if (currentMarker) $78f2cb3ec8734e95$var$map.setView(currentMarker.getLatLng());
+                    var userIds = Object.keys($17d11d58618cc814$export$471f7ae5c4103ae1.userMarkers);
+                    var currentMarker = $17d11d58618cc814$export$471f7ae5c4103ae1.userMarkers[userIds[users_geolocation_count]];
+                    if (currentMarker) $17d11d58618cc814$var$map.setView(currentMarker.getLatLng());
                     else {
                         users_geolocation_count = 0;
                         console.log("Marker not found for index: " + users_geolocation_count);
@@ -36739,29 +36753,29 @@ document.addEventListener("DOMContentLoaded", function(e) {
                 }
                 if (route.startsWith("/chat")) {
                     if (document.activeElement.tagName == "ARTICLE") {
-                        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_article_type == "link") (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/links_page");
-                        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_article_type == "audio") document.activeElement.querySelectorAll("div.audio-player").forEach(function(e) {
+                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type == "link") (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/links_page");
+                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type == "audio") document.activeElement.querySelectorAll("div.audio-player").forEach(function(e) {
                             var playPauseButton = e.querySelector("button");
                             // Check if the play/pause button exists and trigger a click event
                             if (playPauseButton) playPauseButton.click();
                         });
-                        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_article_type == "gps_live") (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/map_view");
-                        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_article_type == "gps") (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/map_view?lat=" + document.activeElement.getAttribute("data-lat") + "&lng=" + document.activeElement.getAttribute("data-lng") + "&id=" + document.activeElement.getAttribute("data-user-nickname"));
-                        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.current_article_type == "image") {
+                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type == "gps_live") (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/map_view");
+                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type == "gps") (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/map_view?lat=" + document.activeElement.getAttribute("data-lat") + "&lng=" + document.activeElement.getAttribute("data-lng") + "&id=" + document.activeElement.getAttribute("data-user-nickname"));
+                        if ($17d11d58618cc814$export$471f7ae5c4103ae1.current_article_type == "image") {
                             var filename = document.activeElement.querySelector("img").getAttribute("data-filename");
                             var data = document.activeElement.querySelector("img").getAttribute("src");
                             var download_successfull = function() {};
-                            (0, $6d3f4b507512327e$export$bb3b75778e3e272)(filename, data, download_successfull);
+                            (0, $162001cafa2b40fd$export$bb3b75778e3e272)(filename, data, download_successfull);
                         } else return false;
                     }
                     break;
                 }
                 break;
             case "Backspace":
-                if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/scan") {
-                    (0, $da5c51e5866985e6$export$55e6c60a43cc74e2)();
-                    (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/open_peer_menu");
-                    $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
+                if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/scan") {
+                    (0, $2b0cc46421a6d3fe$export$55e6c60a43cc74e2)();
+                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/open_peer_menu");
+                    $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
                 }
                 break;
         }
@@ -36770,47 +36784,47 @@ document.addEventListener("DOMContentLoaded", function(e) {
     // //shortpress / longpress logic
     // //////////////////////////////
     function handleKeyDown(evt) {
-        var route = (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get();
-        if (evt.key === "Backspace" && (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() != "/start") evt.preventDefault();
+        var route = (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get();
+        if (evt.key === "Backspace" && (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() != "/start") evt.preventDefault();
         if (evt.key == "Enter" && route == "/chat") evt.preventDefault();
         if (evt.key === "Backspace") {
-            if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/scan") {
-                (0, $da5c51e5866985e6$export$55e6c60a43cc74e2)();
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/open_peer_menu");
-                $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
+            if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/scan") {
+                (0, $2b0cc46421a6d3fe$export$55e6c60a43cc74e2)();
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/open_peer_menu");
+                $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
             }
-            if (route.startsWith("/chat") || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/settings_page" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/open_peer_menu" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/about" || route.startsWith("/map_view")) {
+            if (route.startsWith("/chat") || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/settings_page" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/open_peer_menu" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/about" || route.startsWith("/map_view")) {
                 evt.preventDefault();
-                $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/start");
+                $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/start");
             }
-            if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/settings") {
+            if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/settings") {
                 evt.preventDefault();
-                $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/about");
+                $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/about");
             }
-            if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/privacy_policy") {
+            if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/privacy_policy") {
                 evt.preventDefault();
-                $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/about");
+                $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/about");
             }
-            if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/about_page") {
+            if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/about_page") {
                 evt.preventDefault();
-                $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/about");
+                $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/about");
             }
             if (route.startsWith("/map_view")) {
                 evt.preventDefault();
-                $78f2cb3ec8734e95$export$471f7ae5c4103ae1.action = "";
-                (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id="), $78f2cb3ec8734e95$export$471f7ae5c4103ae1.ownPeerId;
+                $17d11d58618cc814$export$471f7ae5c4103ae1.action = "";
+                (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat?id="), $17d11d58618cc814$export$471f7ae5c4103ae1.ownPeerId;
             }
-            if ((0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/options" || (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.get() == "/links_page") (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).route.set("/chat?id="), $78f2cb3ec8734e95$export$471f7ae5c4103ae1.ownPeerId;
+            if ((0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/options" || (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get() == "/links_page") (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat?id="), $17d11d58618cc814$export$471f7ae5c4103ae1.ownPeerId;
         }
         if (evt.key === "EndCall") {
             evt.preventDefault();
-            if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.action == "") {
-                $78f2cb3ec8734e95$var$closeAllConnections();
-                $78f2cb3ec8734e95$var$peer.destroy();
+            if ($17d11d58618cc814$export$471f7ae5c4103ae1.action == "") {
+                $17d11d58618cc814$var$closeAllConnections();
+                $17d11d58618cc814$var$peer.destroy();
                 window.close();
             }
         }
@@ -36827,14 +36841,14 @@ document.addEventListener("DOMContentLoaded", function(e) {
         }
     }
     function handleKeyUp(evt) {
-        $78f2cb3ec8734e95$export$471f7ae5c4103ae1.audio_recording;
-        if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.visibility === false) return false;
+        $17d11d58618cc814$export$471f7ae5c4103ae1.audio_recording;
+        if ($17d11d58618cc814$export$471f7ae5c4103ae1.visibility === false) return false;
         clearTimeout(timeout);
         if (!longpress) shortpress_action(evt);
     }
     document.addEventListener("visibilitychange", function() {
-        if (document.visibilityState === "visible") $78f2cb3ec8734e95$export$471f7ae5c4103ae1.visibility = true;
-        else $78f2cb3ec8734e95$export$471f7ae5c4103ae1.visibility = false;
+        if (document.visibilityState === "visible") $17d11d58618cc814$export$471f7ae5c4103ae1.visibility = true;
+        else $17d11d58618cc814$export$471f7ae5c4103ae1.visibility = false;
     });
 });
 try {
@@ -36843,18 +36857,18 @@ try {
         var params = option.data.split("?id=");
         var id = params[1];
         if (id) setTimeout(function() {
-            $78f2cb3ec8734e95$var$connect_to_peer(id, "/start");
+            $17d11d58618cc814$var$connect_to_peer(id, "/start");
         }, 5000);
     });
 } catch (e) {}
-var $06aed556e888da04$exports = {};
+var $3f7e6d0ea15d15be$exports = {};
 
-$06aed556e888da04$exports = (parcelRequire("a5ik5")).getBundleURL("5PBxX") + "sw.js";
+$3f7e6d0ea15d15be$exports = (parcelRequire("xqsiy")).getBundleURL("2D5Ur") + "sw.js";
 
 
 //webActivity KaiOS 3
 try {
-    navigator.serviceWorker.register($06aed556e888da04$exports).then(function(registration) {
+    navigator.serviceWorker.register($3f7e6d0ea15d15be$exports).then(function(registration) {
         registration.waiting;
         registration.systemMessageManager.subscribe("activity").then(function(rv) {
             console.log(rv);
@@ -36866,27 +36880,27 @@ try {
     console.log(e);
 }
 window.addEventListener("beforeunload", function(e) {
-    $78f2cb3ec8734e95$var$closeAllConnections();
-    $78f2cb3ec8734e95$var$peer.destroy();
+    $17d11d58618cc814$var$closeAllConnections();
+    $17d11d58618cc814$var$peer.destroy();
 });
 window.addEventListener("unload", function() {
-    $78f2cb3ec8734e95$var$closeAllConnections();
-    $78f2cb3ec8734e95$var$peer.destroy();
+    $17d11d58618cc814$var$closeAllConnections();
+    $17d11d58618cc814$var$peer.destroy();
 });
 window.addEventListener("pagehide", function(event) {
     console.log("Page is being hidden or unloaded.");
-    $78f2cb3ec8734e95$var$closeAllConnections();
-    $78f2cb3ec8734e95$var$peer.destroy();
+    $17d11d58618cc814$var$closeAllConnections();
+    $17d11d58618cc814$var$peer.destroy();
 });
 //start ping interval in service worker
 //channel.postMessage("startInterval");
-$78f2cb3ec8734e95$var$channel.addEventListener("message", function(event) {
+$17d11d58618cc814$var$channel.addEventListener("message", function(event) {
     if (event.data === "intervalTriggered") {
-        if ($78f2cb3ec8734e95$var$connectedPeers > 0) $78f2cb3ec8734e95$var$sendMessageToAll({
-            userlist: $78f2cb3ec8734e95$var$connectedPeers,
-            nickname: $78f2cb3ec8734e95$export$a5a6e0b888b2c992.nickname
+        if ($17d11d58618cc814$var$connectedPeers > 0) $17d11d58618cc814$var$sendMessageToAll({
+            userlist: $17d11d58618cc814$var$connectedPeers,
+            nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname
         });
     }
 });
 
-
+})();

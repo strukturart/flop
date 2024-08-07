@@ -1,6 +1,6 @@
 "use strict";
 
-import { status } from "../../index.js";
+import { status, settings } from "../../index.js";
 
 export const month = [
   "January",
@@ -173,7 +173,8 @@ export const geolocation = function (
 
 export let clipboard = function () {
   try {
-    let text = window.location.origin + "/#!/intro?id=" + status.current_room;
+    let text =
+      window.location.origin + "/#!/intro?id=" + settings.custom_peer_id;
 
     let input = document.createElement("input");
     input.setAttribute("value", text);
