@@ -136,6 +136,7 @@ function elementExists(chat_data, criteria) {
   });
 }
 
+//connect all users
 let compareUserList = (userlist) => {
   const filteredUserList = userlist.filter((userId) => userId !== peer.id);
   userlist = filteredUserList;
@@ -222,6 +223,17 @@ let addUserToAddressBook = (a, b) => {
 //track single connections
 //to update connections list
 function setupConnectionEvents(conn) {
+  if (status.userOnline > 0) {
+    console.log("to mutch users");
+
+    conn.send({
+      nickname: settings.nickname,
+      userId: settings.custom_peer_id,
+      type: "notification",
+      content: "full-house",
+    });
+  }
+  //todo block user if is !group chat
   if (connectedPeers.includes(conn.peer)) {
     return false;
   }
@@ -232,7 +244,7 @@ function setupConnectionEvents(conn) {
 
   connectedPeers.push(conn.peer);
 
-  const userId = conn.peer;
+  let userId = conn.peer;
 
   let pc = conn.peerConnection;
 
@@ -253,11 +265,22 @@ function setupConnectionEvents(conn) {
         updateConnections();
       }
 
+      if (pc.iceConnectionState === "close") {
+        side_toaster(`User has left the chat`, 1000);
+        connectedPeers = connectedPeers.filter((c) => c !== userId);
+        updateConnections();
+      }
+
       if (pc.iceConnectionState === "connected") {
+        remove_no_user_online();
+
+        updateConnections();
+      }
+
+      if (pc.iceConnectionState === "open") {
         side_toaster(`User has entered`, 1000);
         remove_no_user_online();
 
-        setupConnectionEvents(conn);
         updateConnections();
       }
     });
@@ -272,8 +295,17 @@ function setupConnectionEvents(conn) {
       data.type == "text" ||
       data.type == "gps_live" ||
       data.type == "gps" ||
-      data.type == "audio"
+      data.type == "audio" ||
+      data.type == "notification"
     ) {
+      if (!connectedPeers.includes(conn.peer)) connectedPeers.push(conn.peer);
+
+      //todo ask for connection
+      if (data.type == "notification") {
+        if (data.content == "full-house") {
+          console.log("full house");
+        }
+      }
       if (data.type == "image") {
         if (!status.visibility) pushLocalNotification("flop", "new message");
 
@@ -407,12 +439,14 @@ function setupConnectionEvents(conn) {
     side_toaster("remote connection", 4000);
   });
 
-  conn.on("disconnected", () => {});
+  conn.on("disconnected", () => {
+    connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
+  });
   // Event handler for connection errors
 
   conn.on("error", () => {
     side_toaster(`User has been disconnected`, 1000);
-    connectedPeers = connectedPeers.filter((c) => c !== userId);
+    connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
     updateConnections();
   });
 }
@@ -433,21 +467,6 @@ const remove_no_user_online = () => {
 
   m.redraw();
 };
-
-let get_manifest_callback = (e) => {
-  console.log(e);
-  let version;
-
-  if (navigator.mozApps) {
-    version = e.manifest.version;
-  } else {
-    version = e.b2g_features.version;
-  }
-
-  status.version = version;
-  localStorage.setItem("version", version);
-};
-getManifest(get_manifest_callback);
 
 getIceServers().then(() => {
   console.log("peer created");
@@ -499,37 +518,43 @@ async function getIceServers() {
       document.querySelector(".loading-spinner").style.display = "none";
       status.ownPeerId = peer.id;
       remove_no_user_online();
+
+      //setupConnectionEvents(c);
+      side_toaster(`User has entered`, 1000);
     });
 
     peer.on("connection", function (c) {
       //store all connections
       //document.querySelector(".loading-spinner").style.display = "none";
-      setupConnectionEvents(c);
-      side_toaster(`User has entered`, 1000);
       console.log("allow user?");
+      setupConnectionEvents(c);
 
       status.user_does_not_exist = false;
       var x = document.querySelector("div#side-toast");
       x.style.transform = "translate(-100vw,0px)";
     });
 
-    peer.on("disconnected", function () {
-      try {
-        //side_toaster("disconnected", 2000);
-        //  m.route.set("/start");
-      } catch (e) {
-        console.log("reconnect error: " + e);
-      }
+    peer.on("disconnected", function (c) {
+      //setupConnectionEvents(c);
     });
 
-    peer.on("close", function () {
+    peer.on("close", function (c) {
       document.querySelector(".loading-spinner").style.display = "none";
+      //setupConnectionEvents(c);
     });
 
     peer.on("error", function (err) {
+      console.log(err.type);
+
       switch (err.type) {
         case "server-error":
           side_toaster("The connection server is not reachable", 4000);
+          m.route.set("/start");
+          break;
+
+        case "socket-closed":
+          side_toaster("The connection server is not reachable", 4000);
+          m.route.set("/start");
           break;
 
         case "peer-unavailable":
@@ -540,8 +565,6 @@ async function getIceServers() {
         default:
           break;
       }
-
-      //document.querySelector(".loading-spinner").style.display = "none";
     });
   } catch (error) {
     document.querySelector(".loading-spinner").style.display = "none";
@@ -584,7 +607,7 @@ localforage
 
 let warning_leave_chat = function () {
   status.action = "confirm";
-  if (confirm("Do you really want leave the room?")) {
+  if (confirm("Do you really want leave the chat?")) {
     m.route.set("/start");
     setTimeout(function () {
       status.action = "";
@@ -910,6 +933,11 @@ let connect_to_peer = function (id, route_target) {
     alert("Device is offline");
     return false;
   }
+
+  try {
+    localforage.removeItem("connect_to_id");
+  } catch (e) {}
+
   m.route.set("/waiting");
 
   getIceServers()
@@ -938,15 +966,17 @@ let connect_to_peer = function (id, route_target) {
             console.log("Connection object created:", conn);
 
             conn.on("open", () => {
-              console.log("Connection opened with peer:", id);
               setupConnectionEvents(conn);
+              side_toaster(`User has entered`, 1000);
+              console.log("Connection opened with peer:", id);
               status.current_room = id;
               m.route.set("/chat?id=" + id);
             });
 
             conn.on("connection", (e) => {
-              console.log("would you open connection with :", e);
               setupConnectionEvents(conn);
+
+              console.log("would you open connection with :", e);
             });
 
             conn.on("error", (e) => {
@@ -1089,26 +1119,14 @@ let connect_to_peer = function (id, route_target) {
 //create room
 // and create qr-code with peer id
 let create_peer = function () {
-  //close connection before create peer
-  chat_data = [];
-  connectedPeers = [];
+  //  chat_data = [];
+  // connectedPeers = [];
 
   if (!status.deviceOnline) {
     alert("Device is offline");
     return false;
   }
   document.querySelector(".loading-spinner").style.display = "block";
-
-  //getIceServers().then(() => {
-  /*
-  peer.on("open", function () {
-    // Workaround for peer.reconnect deleting previous id
-    if (peer.id === null) {
-      peer.id = lastPeerId;
-    } else {
-      lastPeerId = peer.id;
-    }
-    */
 
   status.current_room = peer.id;
 
@@ -1164,8 +1182,6 @@ let create_peer = function () {
   m.redraw();
   focus_last_article();
   document.querySelector(".loading-spinner").style.display = "none";
-  // });
-  // });
 };
 
 let handleImage = function (t) {
@@ -1469,6 +1485,8 @@ var root = document.getElementById("app");
 
 var waiting = {
   view: function () {
+    let timer1 = "";
+
     return m(
       "div",
       {
@@ -1477,6 +1495,12 @@ var waiting = {
           "width-100 height-100 flex align-item-center justify-content-center",
         oninit: () => {
           top_bar("", "", "");
+          timer1 = setTimeout(() => {
+            m.route.set("/start");
+          }, 60000);
+        },
+        onremove: () => {
+          clearTimeout(timer1);
         },
       },
       [
@@ -2183,11 +2207,9 @@ var start = {
                 let params = e.data.split("?id=");
                 if (params.length > 1) {
                   let id = params[1];
-                  setTimeout(() => {
-                    localforage.removeItem("connect_to_id").then(() => {
-                      connect_to_peer(id, "/start");
-                    });
-                  }, 2000);
+                  localforage.removeItem("connect_to_id").then(() => {
+                    connect_to_peer(id, "/start");
+                  });
                 } else {
                   console.error("Invalid data format"); // Handle invalid data format
                 }
@@ -2232,6 +2254,8 @@ var start = {
             class: "item",
 
             oncreate: (vnode) => {
+              vnode.dom.style.display = "none";
+
               if (
                 status.current_room == null ||
                 status.current_room == "" ||
@@ -2431,6 +2455,7 @@ var chat = {
             "<img src='assets/image/option.svg'>"
           );
           user_check = setInterval(() => {
+            console.log(status.userOnline);
             if (connectedPeers) {
               status.userOnline = connectedPeers.length;
               document
@@ -2730,23 +2755,11 @@ var intro = {
                   e.manifest.version;
               } catch (e) {}
 
-              if ("b2g" in navigator) {
+              if ("b2g" in navigator || status.notKaiOS) {
                 fetch("/manifest.webmanifest")
                   .then((r) => r.json())
                   .then((parsedResponse) => {
                     status.version = parsedResponse.b2g_features.version;
-                    document.querySelector("#version").textContent =
-                      parsedResponse.b2g_features.version;
-                  });
-              }
-
-              if (status.notKaiOS) {
-                fetch("/manifest.webmanifest")
-                  .then((r) => r.json())
-                  .then((parsedResponse) => {
-                    status.version = parsedResponse.b2g_features.version;
-                    document.querySelector("#version").textContent =
-                      parsedResponse.b2g_features.version;
                   });
               }
             };
@@ -3187,9 +3200,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
         }
 
         if (route == "/start") {
-          chat_data = [];
+          // chat_data = [];
           create_peer();
-          // m.route.set("/chat?id=" + settings.custom_peer_id);
         }
         //addressbook open peer
         if (route == "/open_peer_menu") {
@@ -3321,7 +3333,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
         m.route.get() == "/settings_page" ||
         m.route.get() == "/open_peer_menu" ||
         m.route.get() == "/about" ||
-        route.startsWith("/map_view")
+        route.startsWith("/map_view") ||
+        route.startsWith("/waiting")
       ) {
         evt.preventDefault();
         status.action = "";
