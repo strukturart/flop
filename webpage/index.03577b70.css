@@ -112,8 +112,8 @@ button {
   color: #000;
   background: #fff;
   border: 2px solid gray;
-  -moz-border-radius: 1px;
-  border-radius: 1px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
   min-width: 93%;
   max-width: 90%;
   min-height: 40px;
@@ -134,8 +134,8 @@ a.button-style {
   text-align: center;
   background: #fff;
   border: 2px solid gray;
-  -moz-border-radius: 1px;
-  border-radius: 1px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
   width: 95%;
   min-height: 40px;
   margin: 10px 0 15px;
@@ -516,10 +516,6 @@ div#bottom-bar div.button-left {
   display: flex;
 }
 
-div#bottom-bar div.button-left:hover img {
-  width: 35px;
-}
-
 div#bottom-bar div.button-left img, div#bottom-bar div.button-right img {
   width: 30px;
 }
@@ -531,10 +527,6 @@ div#bottom-bar div.button-right {
   width: 32%;
   padding: 2px;
   display: flex;
-}
-
-div#bottom-bar div.button-right:hover img {
-  width: 35px;
 }
 
 div#bottom-bar div.button-center {
@@ -549,10 +541,6 @@ div#bottom-bar div.button-center {
 
 div#bottom-bar div.button-center img {
   width: 30px;
-}
-
-div#bottom-bar div.button-center:hover img {
-  width: 35px;
 }
 
 div#top-bar {
@@ -589,10 +577,6 @@ div#top-bar div.button-left {
   display: flex;
 }
 
-div#top-bar div.button-left:hover img {
-  width: 35px;
-}
-
 div#top-bar div.button-left img, div#top-bar div.button-right img {
   width: 30px;
 }
@@ -606,10 +590,6 @@ div#top-bar div.button-right {
   display: flex;
 }
 
-div#top-bar div.button-right:hover img {
-  max-width: 30px;
-}
-
 div#top-bar div.button-center {
   color: #fff;
   background: none;
@@ -620,7 +600,7 @@ div#top-bar div.button-center {
   display: flex;
 }
 
-div#top-bar div.button-center img, div#top-bar div.button-center:hover img {
+div#top-bar div.button-center img {
   width: 30px;
 }
 
@@ -839,6 +819,10 @@ div#message-input input {
   margin-bottom: 50px;
 }
 
+div#top-bar div.button-left:hover, div#top-bar div.button-right:hover, div#top-bar div.button-center:hover, div#bottom-bar div.button-left:hover, div#bottom-bar div.button-right:hover, div#bottom-bar div.button-center:hover {
+  cursor: pointer;
+}
+
 @media screen and (width >= 400px) and (width <= 2000px) {
   #app {
     padding: 50px 0 0;
@@ -890,6 +874,10 @@ div#message-input input {
 
   div#top-bar div.button-left img, div#top-bar div.button-right img, div#top-bar div.button-center img {
     width: 50px;
+  }
+
+  div#top-bar div.button-left:hover, div#top-bar div.button-right:hover, div#top-bar div.button-center:hover {
+    cursor: pointer;
   }
 
   html, body {
@@ -970,8 +958,12 @@ div#message-input input {
     margin: 0 0 20px;
   }
 
-  div#bottom-bar div.button-left img, div#bottom-bar div.button-right img, div#bottom-bar div.button-center img, div#bottom-bar div.button-left:hover img, div#bottom-bar div.button-right:hover img, div#bottom-bar div.button-center:hover img, div#top-bar div.button-left img, div#top-bar div.button-right img, div#top-bar div.button-center img, div#top-bar div.button-left:hover img, div#top-bar div.button-right:hover img, div#top-bar div.button-center:hover img {
+  div#bottom-bar div.button-left img, div#bottom-bar div.button-right img, div#bottom-bar div.button-center img, div#top-bar div.button-left img, div#top-bar div.button-right img, div#top-bar div.button-center img {
     width: 50px;
+  }
+
+  div#top-bar div.button-left:hover, div#top-bar div.button-right:hover, div#top-bar div.button-center:hover {
+    cursor: pointer;
   }
 
   html, body {

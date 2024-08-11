@@ -133,7 +133,7 @@ button {
   padding: 5px;
   margin: 0px 0 15px 5px;
   color: black;
-  border-radius: 1px;
+  border-radius: 10px;
   border: 2px solid gray;
   font-weight: 700;
   min-height: 40px;
@@ -156,7 +156,7 @@ a.button-style {
   padding: 5px;
   margin: 10px 0 15px 0px;
   color: black;
-  border-radius: 1px;
+  border-radius: 10px;
   border: 2px solid gray;
   font-weight: 700;
   min-height: 40px;
@@ -551,10 +551,6 @@ div#bottom-bar div.button-left {
   justify-content: flex-start;
 }
 
-div#bottom-bar div.button-left:hover img {
-  width: 35px;
-}
-
 div#bottom-bar div.button-left img {
   width: 30px;
 }
@@ -572,10 +568,6 @@ div#bottom-bar div.button-right {
   justify-content: flex-end;
 }
 
-div#bottom-bar div.button-right:hover img {
-  width: 35px;
-}
-
 div#bottom-bar div.button-center {
   display: flex; /* Enable flexbox for the button-center div */
   justify-content: center; /* Horizontally center the image */
@@ -588,10 +580,6 @@ div#bottom-bar div.button-center {
 
 div#bottom-bar div.button-center img {
   width: 30px;
-}
-
-div#bottom-bar div.button-center:hover img {
-  width: 35px;
 }
 
 /*/ ////////////////
@@ -636,10 +624,6 @@ div#top-bar div.button-left {
   justify-content: flex-start;
 }
 
-div#top-bar div.button-left:hover img {
-  width: 35px;
-}
-
 div#top-bar div.button-left img {
   width: 30px;
 }
@@ -657,10 +641,6 @@ div#top-bar div.button-right {
   justify-content: flex-end;
 }
 
-div#top-bar div.button-right:hover img {
-  max-width: 30px;
-}
-
 div#top-bar div.button-center {
   display: flex; /* Enable flexbox for the button-center div */
   justify-content: center; /* Horizontally center the image */
@@ -672,10 +652,6 @@ div#top-bar div.button-center {
 }
 
 div#top-bar div.button-center img {
-  width: 30px;
-}
-
-div#top-bar div.button-center:hover img {
   width: 30px;
 }
 
@@ -888,6 +864,30 @@ div#message-input input {
   margin-bottom: 50px;
 }
 
+div#top-bar div.button-left:hover {
+  cursor: pointer;
+}
+
+div#top-bar div.button-right:hover {
+  cursor: pointer;
+}
+
+div#top-bar div.button-center:hover {
+  cursor: pointer;
+}
+
+div#bottom-bar div.button-left:hover {
+  cursor: pointer;
+}
+
+div#bottom-bar div.button-right:hover {
+  cursor: pointer;
+}
+
+div#bottom-bar div.button-center:hover {
+  cursor: pointer;
+}
+
 @media screen and (min-width: 400px) and (max-width: 2000px) {
   #app {
     overflow: scroll;
@@ -954,6 +954,18 @@ div#message-input input {
 
   div#top-bar div.button-center img {
     width: 50px;
+  }
+
+  div#top-bar div.button-left:hover {
+    cursor: pointer;
+  }
+
+  div#top-bar div.button-right:hover {
+    cursor: pointer;
+  }
+
+  div#top-bar div.button-center:hover {
+    cursor: pointer;
   }
 
   html,
@@ -1047,18 +1059,6 @@ div#message-input input {
     width: 50px;
   }
 
-  div#bottom-bar div.button-left:hover img {
-    width: 50px;
-  }
-
-  div#bottom-bar div.button-right:hover img {
-    width: 50px;
-  }
-
-  div#bottom-bar div.button-center:hover img {
-    width: 50px;
-  }
-
   div#top-bar div.button-left img {
     width: 50px;
   }
@@ -1071,16 +1071,16 @@ div#message-input input {
     width: 50px;
   }
 
-  div#top-bar div.button-left:hover img {
-    width: 50px;
+  div#top-bar div.button-left:hover {
+    cursor: pointer;
   }
 
-  div#top-bar div.button-right:hover img {
-    width: 50px;
+  div#top-bar div.button-right:hover {
+    cursor: pointer;
   }
 
-  div#top-bar div.button-center:hover img {
-    width: 50px;
+  div#top-bar div.button-center:hover {
+    cursor: pointer;
   }
 
   html,

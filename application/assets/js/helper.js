@@ -477,8 +477,17 @@ export let pushLocalNotification = function (title, body) {
   window.Notification.requestPermission().then((result) => {
     var notification = new window.Notification(title, {
       body: body,
-      //requireInteraction: true,
     });
+
+    if (Notification.permission === "denied") {
+      console.error("Notification permission is denied");
+    } else if (Notification.permission === "default") {
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          // Proceed to create a notification
+        }
+      });
+    }
 
     notification.onerror = function (err) {
       console.log(err);

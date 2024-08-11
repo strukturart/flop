@@ -5580,6 +5580,10 @@ var $162001cafa2b40fd$export$75525525b38ea7b3 = function pushLocalNotification(t
         var notification = new window.Notification(title, {
             body: body
         });
+        if (Notification.permission === "denied") console.error("Notification permission is denied");
+        else if (Notification.permission === "default") Notification.requestPermission().then(function(permission) {
+            permission;
+        });
         notification.onerror = function(err) {
             console.log(err);
         };
@@ -34644,7 +34648,7 @@ var $17d11d58618cc814$var$addUserToAddressBook = function(a, b) {
 //track single connections
 //to update connections list
 function $17d11d58618cc814$var$setupConnectionEvents(conn) {
-    if ($17d11d58618cc814$export$471f7ae5c4103ae1.userOnline > 0) {
+    if ($17d11d58618cc814$export$471f7ae5c4103ae1.userOnline > 1) {
         console.log("to mutch users");
         conn.send({
             nickname: $17d11d58618cc814$export$a5a6e0b888b2c992.nickname,
@@ -34690,7 +34694,14 @@ function $17d11d58618cc814$var$setupConnectionEvents(conn) {
                 $17d11d58618cc814$var$updateConnections();
             }
             if (pc.iceConnectionState === "open") {
-                (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User has entered", 1000);
+                var route = (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get();
+                if (route.startsWith("/start")) {
+                    (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User wants to chat with you, if you want to join, press enter", 10000);
+                    if (!$17d11d58618cc814$export$471f7ae5c4103ae1.visibility) (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User wants to chat with you, if you want to join, press enter", 10000);
+                } else {
+                    (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User has entered", 2000);
+                    if (!$17d11d58618cc814$export$471f7ae5c4103ae1.visibility) (0, $162001cafa2b40fd$export$75525525b38ea7b3)("flop", "User has entered");
+                }
                 $17d11d58618cc814$var$remove_no_user_online();
                 $17d11d58618cc814$var$updateConnections();
             }
@@ -34701,12 +34712,14 @@ function $17d11d58618cc814$var$setupConnectionEvents(conn) {
         $17d11d58618cc814$var$remove_no_user_online();
         if (data.type == "image" || data.type == "text" || data.type == "gps_live" || data.type == "gps" || data.type == "audio" || data.type == "notification") {
             if (!$17d11d58618cc814$var$connectedPeers.includes(conn.peer)) $17d11d58618cc814$var$connectedPeers.push(conn.peer);
+            var route = (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get();
+            if (route.startsWith("/start")) (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User wants to chat with you, if you want to join, press enter", 10000);
             //todo ask for connection
             if (data.type == "notification") {
                 if (data.content == "full-house") console.log("full house");
             }
             if (data.type == "image") {
-                if (!$17d11d58618cc814$export$471f7ae5c4103ae1.visibility) (0, $162001cafa2b40fd$export$75525525b38ea7b3)("flop", "new message");
+                if (!$17d11d58618cc814$export$471f7ae5c4103ae1.visibility) (0, $162001cafa2b40fd$export$75525525b38ea7b3)("flop", "new image");
                 $17d11d58618cc814$var$chat_data.push({
                     nickname: data.nickname,
                     userId: data.userId,
@@ -34798,7 +34811,6 @@ function $17d11d58618cc814$var$setupConnectionEvents(conn) {
     // Event handler for successful connection
     conn.on("open", function() {
         document.querySelector(".loading-spinner").style.display = "none";
-        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User has entered", 5000);
         (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
         (0, $2b0cc46421a6d3fe$export$55e6c60a43cc74e2)();
         $17d11d58618cc814$var$remove_no_user_online();
@@ -34897,16 +34909,14 @@ function $17d11d58618cc814$var$_getIceServers() {
                         referrerPolicy: "no-referrer"
                     });
                     $17d11d58618cc814$var$peer.on("open", function(c) {
-                        if ($17d11d58618cc814$var$peer.id == null) $17d11d58618cc814$var$peer.id = $17d11d58618cc814$export$a5a6e0b888b2c992.custom_peer_id;
-                        document.querySelector(".loading-spinner").style.display = "none";
-                        $17d11d58618cc814$export$471f7ae5c4103ae1.ownPeerId = $17d11d58618cc814$var$peer.id;
+                        /*
+      if (peer.id == null) peer.id = settings.custom_peer_id;
+      status.ownPeerId = peer.id;
+      */ document.querySelector(".loading-spinner").style.display = "none";
                         $17d11d58618cc814$var$remove_no_user_online();
-                        //setupConnectionEvents(c);
-                        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User has entered", 1000);
+                    //setupConnectionEvents(c);
                     });
                     $17d11d58618cc814$var$peer.on("connection", function(c) {
-                        //store all connections
-                        //document.querySelector(".loading-spinner").style.display = "none";
                         console.log("allow user?");
                         $17d11d58618cc814$var$setupConnectionEvents(c);
                         $17d11d58618cc814$export$471f7ae5c4103ae1.user_does_not_exist = false;
@@ -35011,6 +35021,8 @@ var $17d11d58618cc814$var$write = function write() {
     }
 };
 var $17d11d58618cc814$var$focus_last_article = function focus_last_article() {
+    var j = (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.get();
+    if (!j.startsWith("/chat")) return false;
     setTimeout(function() {
         var a = document.querySelectorAll("div#app article");
         a[a.length - 1].focus();
@@ -35235,23 +35247,19 @@ var $17d11d58618cc814$var$peer_is_online = function() {
                                         });
                                         if (tempConn) {
                                             tempConn.on("open", function() {
-                                                console.log("Connection established" + entry.id);
                                                 $17d11d58618cc814$var$addressbook[index].live = true;
                                                 document.querySelector("button[data-id='" + entry.id + "']").classList.add("live");
                                                 tempConn.close();
                                             });
                                             tempConn.on("error", function() {
-                                                console.log("Connection could not be established");
                                                 $17d11d58618cc814$var$addressbook[index].live = false;
                                                 document.querySelector("button[data-id='" + entry.id + "']").classList.add("offline");
                                             });
                                         } else {
-                                            console.log("Could not connect to peer with id: ".concat(entry.id));
                                             $17d11d58618cc814$var$addressbook[index].live = false;
                                             document.querySelector("button[data-id='" + entry.id + "']").classList.add("offline");
                                         }
                                     } catch (error) {
-                                        console.log("Error connecting to peer with id: ".concat(entry.id, ". Error: ").concat(error.message));
                                         $17d11d58618cc814$var$addressbook[index].live = false;
                                         document.querySelector("button[data-id='" + entry.id + "']").classList.add("offline");
                                     }
@@ -35311,7 +35319,6 @@ var $17d11d58618cc814$var$connect_to_peer = function connect_to_peer(id, route_t
                     console.log("Connection object created:", $17d11d58618cc814$var$conn);
                     $17d11d58618cc814$var$conn.on("open", function() {
                         $17d11d58618cc814$var$setupConnectionEvents($17d11d58618cc814$var$conn);
-                        (0, $162001cafa2b40fd$export$6593825dc0f3a767)("User has entered", 1000);
                         console.log("Connection opened with peer:", id);
                         $17d11d58618cc814$export$471f7ae5c4103ae1.current_room = id;
                         (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/chat?id=" + id);
@@ -35706,10 +35713,12 @@ var $17d11d58618cc814$var$waiting = {
                 (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "");
                 timer1 = setTimeout(function() {
                     (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).route.set("/start");
+                    console.log("timer executed");
                 }, 60000);
             },
             onremove: function() {
                 clearTimeout(timer1);
+                console.log("timer killed");
             }
         }, [
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("span", {
@@ -36173,7 +36182,7 @@ var $17d11d58618cc814$var$start = {
                     document.querySelector("#start p").focus();
                     vnode.dom.focus();
                 }
-            }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images, audio and your position with your chat partner. To create a peer, press enter.<br><br>")),
+            }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images, audio and your position with your chat partner. To start chatting, press enter.<br><br>")),
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("button", {
                 tabIndex: 1,
                 class: "item",
@@ -36228,9 +36237,6 @@ var $17d11d58618cc814$var$open_peer_menu = {
             },
             oncreate: function() {
                 $17d11d58618cc814$var$peer_is_online();
-                setTimeout(function() {
-                    (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).redraw();
-                }, 10000);
                 $17d11d58618cc814$export$471f7ae5c4103ae1.addressbook_in_focus = "";
                 (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img  src='assets/image/qr.svg'>", "", "<img  src='assets/image/id.svg'>");
                 if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS == true) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
@@ -36238,10 +36244,22 @@ var $17d11d58618cc814$var$open_peer_menu = {
         }, [
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 class: "text item",
+                style: {
+                    display: $17d11d58618cc814$var$addressbook.length == 0 ? "" : "none"
+                },
                 onfocus: function() {
                     (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img  src='assets/image/qr.svg'>", "", "<img  src='assets/image/id.svg'>");
                 }
             }, "You can join a chat when someone invites you with a link. If you don't have this link, you can also enter the chat ID here or scan the QR code."),
+            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+                class: "item text",
+                style: {
+                    display: $17d11d58618cc814$var$addressbook.length == 0 ? "" : "none"
+                },
+                oncreate: function(vnode) {
+                    (0, $162001cafa2b40fd$export$6c04b58eee2a9a32)();
+                }
+            }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("You don't have any users in your address book yet. If you chat with a user, you can add them to your address book and contact them more quickly.<br><br>")),
             (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 class: "width-100 flex justify-content-center",
                 style: {
@@ -36264,6 +36282,7 @@ var $17d11d58618cc814$var$open_peer_menu = {
                             $17d11d58618cc814$export$471f7ae5c4103ae1.addressbook_in_focus = e.id;
                             (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img  src='assets/image/select.svg'>", "<img  src='assets/image/delete.svg'>");
                         },
+                        onhover: function() {},
                         onblur: function() {
                             $17d11d58618cc814$export$471f7ae5c4103ae1.addressbook_in_focus = "";
                         },
@@ -36273,7 +36292,19 @@ var $17d11d58618cc814$var$open_peer_menu = {
                         }
                     }, [
                         (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("span", (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img class='online' src='/assets/image/online.svg'><img class='offline' src='/assets/image/offline.svg'>")),
-                        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("span", e.nickname)
+                        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("span", e.nickname),
+                        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("span", {
+                            oninit: function(vnode) {
+                                $17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS || (vnode.dom.style.display = "none");
+                            },
+                            onclick: function(event) {
+                                var button = event.currentTarget.closest("button[data-id]");
+                                if (button) {
+                                    var dataId = button.getAttribute("data-id");
+                                    $17d11d58618cc814$var$delete_addressbook_item(dataId);
+                                } else console.error("Button with data-id not found");
+                            }
+                        }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img class='delete-button' src='/assets/image/delete.svg'>"))
                     ]);
                 })
             ])
@@ -36443,6 +36474,9 @@ var $17d11d58618cc814$var$intro = {
         return (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
             class: "width-100 height-100",
             id: "intro",
+            onremove: function() {
+                localStorage.setItem("version", $17d11d58618cc814$export$471f7ae5c4103ae1.version);
+            },
             oninit: function oninit() {
                 var protocol = window.location.protocol;
                 var host = window.location.host;
@@ -36489,7 +36523,7 @@ var $17d11d58618cc814$var$intro = {
             }, [
                 (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("kbd", {
                     id: "version"
-                }, $17d11d58618cc814$export$471f7ae5c4103ae1.version)
+                }, localStorage.getItem("version") || 0)
             ])
         ]);
     }

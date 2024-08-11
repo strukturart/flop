@@ -223,7 +223,7 @@ let addUserToAddressBook = (a, b) => {
 //track single connections
 //to update connections list
 function setupConnectionEvents(conn) {
-  if (status.userOnline > 0) {
+  if (status.userOnline > 1) {
     console.log("to mutch users");
 
     conn.send({
@@ -278,7 +278,24 @@ function setupConnectionEvents(conn) {
       }
 
       if (pc.iceConnectionState === "open") {
-        side_toaster(`User has entered`, 1000);
+        let route = m.route.get();
+        if (route.startsWith("/start")) {
+          side_toaster(
+            `User wants to chat with you, if you want to join, press enter`,
+            10000
+          );
+
+          if (!status.visibility)
+            side_toaster(
+              `User wants to chat with you, if you want to join, press enter`,
+              10000
+            );
+        } else {
+          side_toaster(`User has entered`, 2000);
+          if (!status.visibility)
+            pushLocalNotification("flop", "User has entered");
+        }
+
         remove_no_user_online();
 
         updateConnections();
@@ -300,6 +317,14 @@ function setupConnectionEvents(conn) {
     ) {
       if (!connectedPeers.includes(conn.peer)) connectedPeers.push(conn.peer);
 
+      let route = m.route.get();
+      if (route.startsWith("/start")) {
+        side_toaster(
+          `User wants to chat with you, if you want to join, press enter`,
+          10000
+        );
+      }
+
       //todo ask for connection
       if (data.type == "notification") {
         if (data.content == "full-house") {
@@ -307,7 +332,7 @@ function setupConnectionEvents(conn) {
         }
       }
       if (data.type == "image") {
-        if (!status.visibility) pushLocalNotification("flop", "new message");
+        if (!status.visibility) pushLocalNotification("flop", "new image");
 
         chat_data.push({
           nickname: data.nickname,
@@ -421,7 +446,6 @@ function setupConnectionEvents(conn) {
   // Event handler for successful connection
   conn.on("open", function () {
     document.querySelector(".loading-spinner").style.display = "none";
-    side_toaster("User has entered", 5000);
     m.redraw();
     stop_scan();
     remove_no_user_online();
@@ -513,19 +537,19 @@ async function getIceServers() {
     });
 
     peer.on("open", function (c) {
+      /*
       if (peer.id == null) peer.id = settings.custom_peer_id;
+      status.ownPeerId = peer.id;
+      */
 
       document.querySelector(".loading-spinner").style.display = "none";
-      status.ownPeerId = peer.id;
+
       remove_no_user_online();
 
       //setupConnectionEvents(c);
-      side_toaster(`User has entered`, 1000);
     });
 
     peer.on("connection", function (c) {
-      //store all connections
-      //document.querySelector(".loading-spinner").style.display = "none";
       console.log("allow user?");
       setupConnectionEvents(c);
 
@@ -639,6 +663,8 @@ let write = function () {
 };
 
 const focus_last_article = function () {
+  let j = m.route.get();
+  if (!j.startsWith("/chat")) return false;
   setTimeout(function () {
     let a = document.querySelectorAll("div#app article");
     a[a.length - 1].focus();
@@ -874,7 +900,6 @@ let peer_is_online = async function () {
 
                 if (tempConn) {
                   tempConn.on("open", () => {
-                    console.log("Connection established" + entry.id);
                     addressbook[index].live = true;
 
                     document
@@ -885,7 +910,6 @@ let peer_is_online = async function () {
                   });
 
                   tempConn.on("error", () => {
-                    console.log("Connection could not be established");
                     addressbook[index].live = false;
 
                     document
@@ -893,7 +917,6 @@ let peer_is_online = async function () {
                       .classList.add("offline");
                   });
                 } else {
-                  console.log(`Could not connect to peer with id: ${entry.id}`);
                   addressbook[index].live = false;
 
                   document
@@ -901,9 +924,6 @@ let peer_is_online = async function () {
                     .classList.add("offline");
                 }
               } catch (error) {
-                console.log(
-                  `Error connecting to peer with id: ${entry.id}. Error: ${error.message}`
-                );
                 addressbook[index].live = false;
 
                 document
@@ -967,7 +987,6 @@ let connect_to_peer = function (id, route_target) {
 
             conn.on("open", () => {
               setupConnectionEvents(conn);
-              side_toaster(`User has entered`, 1000);
               console.log("Connection opened with peer:", id);
               status.current_room = id;
               m.route.set("/chat?id=" + id);
@@ -1497,10 +1516,12 @@ var waiting = {
           top_bar("", "", "");
           timer1 = setTimeout(() => {
             m.route.set("/start");
+            console.log("timer executed");
           }, 60000);
         },
         onremove: () => {
           clearTimeout(timer1);
+          console.log("timer killed");
         },
       },
       [
@@ -2243,7 +2264,7 @@ var start = {
             },
           },
           m.trust(
-            "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images, audio and your position with your chat partner. To create a peer, press enter.<br><br>"
+            "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images, audio and your position with your chat partner. To start chatting, press enter.<br><br>"
           )
         ),
         m(
@@ -2326,9 +2347,6 @@ var open_peer_menu = {
         },
         oncreate: () => {
           peer_is_online();
-          setTimeout(() => {
-            m.redraw();
-          }, 10000);
 
           status.addressbook_in_focus = "";
           bottom_bar(
@@ -2346,6 +2364,8 @@ var open_peer_menu = {
           "div",
           {
             class: "text item",
+            style: { display: addressbook.length == 0 ? "" : "none" },
+
             onfocus: () => {
               bottom_bar(
                 "<img  src='assets/image/qr.svg'>",
@@ -2356,6 +2376,20 @@ var open_peer_menu = {
           },
           "You can join a chat when someone invites you with a link. If you don't have this link, you can also enter the chat ID here or scan the QR code."
         ),
+
+        m(
+          "div",
+          {
+            class: "item text",
+            style: { display: addressbook.length == 0 ? "" : "none" },
+            oncreate: (vnode) => {
+              setTabindex();
+            },
+          },
+          m.trust(
+            "You don't have any users in your address book yet. If you chat with a user, you can add them to your address book and contact them more quickly.<br><br>"
+          )
+        ),
         m(
           "div",
           {
@@ -2364,6 +2398,7 @@ var open_peer_menu = {
           },
           m.trust("<br><br>Addressbook<br><br>")
         ),
+
         m(
           "div",
           { class: "width-100 flex justify-content-center", id: "addressbook" },
@@ -2386,6 +2421,7 @@ var open_peer_menu = {
                       "<img  src='assets/image/delete.svg'>"
                     );
                   },
+                  onhover: () => {},
                   onblur: () => {
                     status.addressbook_in_focus = "";
                   },
@@ -2407,7 +2443,31 @@ var open_peer_menu = {
                       "<img class='online' src='/assets/image/online.svg'><img class='offline' src='/assets/image/offline.svg'>"
                     )
                   ),
+
                   m("span", e.nickname),
+                  m(
+                    "span",
+                    {
+                      oninit: (vnode) => {
+                        status.notKaiOS
+                          ? ""
+                          : (vnode.dom.style.display = "none");
+                      },
+                      onclick: (event) => {
+                        const button =
+                          event.currentTarget.closest("button[data-id]");
+                        if (button) {
+                          const dataId = button.getAttribute("data-id");
+                          delete_addressbook_item(dataId);
+                        } else {
+                          console.error("Button with data-id not found");
+                        }
+                      },
+                    },
+                    m.trust(
+                      "<img class='delete-button' src='/assets/image/delete.svg'>"
+                    )
+                  ),
                 ]
               );
             }),
@@ -2716,6 +2776,9 @@ var intro = {
       {
         class: "width-100 height-100",
         id: "intro",
+        onremove: () => {
+          localStorage.setItem("version", status.version);
+        },
         oninit: function () {
           const protocol = window.location.protocol;
           const host = window.location.host;
@@ -2778,7 +2841,7 @@ var intro = {
               {
                 id: "version",
               },
-              status.version
+              localStorage.getItem("version") || 0
             ),
           ]
         ),
