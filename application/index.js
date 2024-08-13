@@ -60,14 +60,11 @@ const channel = new BroadcastChannel("sw-messages");
 
 let links = "";
 let chat_data = [];
-let lastPeerId = null;
 let peer = null;
 let conn = "";
-let tempConn = "";
 
 let connectedPeers = [];
 
-//.env turn server
 let debug = false;
 
 if (debug) {
@@ -865,78 +862,75 @@ turn();
 
 //connect to peer
 let peer_is_online = async function () {
-  if (!status.deviceOnline) {
+  if (!status.deviceOnline || addressbook.length == 0) {
     return false;
   }
 
   try {
     setTimeout(() => {
-      // Uncomment and refactor this part if needed
-      if (addressbook.length > 0) {
-        document.querySelector(".loading-spinner").style.display = "block";
+      document.querySelector(".loading-spinner").style.display = "block";
 
-        if (ppeer) {
-          ppeer.destroy();
-          console.log("Existing peer instance destroyed");
-        }
+      if (ppeer) {
+        ppeer.destroy();
+        console.log("Existing peer instance destroyed");
+      }
 
-        const ppeer = new Peer({
-          debug: 0,
-          secure: false,
-          config: ice_servers,
-          referrerPolicy: "no-referrer",
-        });
+      const ppeer = new Peer({
+        debug: 0,
+        secure: false,
+        config: ice_servers,
+        referrerPolicy: "no-referrer",
+      });
 
-        setTimeout(() => {
-          addressbook.forEach((entry, index) => {
-            if (ppeer && !ppeer.disconnected) {
-              addressbook[index].live = false;
+      setTimeout(() => {
+        addressbook.forEach((entry, index) => {
+          if (ppeer && !ppeer.disconnected) {
+            addressbook[index].live = false;
 
-              try {
-                const tempConn = ppeer.connect(entry.id, {
-                  label: "ping",
-                  reliable: true,
+            try {
+              const tempConn = ppeer.connect(entry.id, {
+                label: "ping",
+                reliable: true,
+              });
+
+              if (tempConn) {
+                tempConn.on("open", () => {
+                  addressbook[index].live = true;
+
+                  document
+                    .querySelector("button[data-id='" + entry.id + "']")
+                    .classList.add("live");
+
+                  tempConn.close();
                 });
 
-                if (tempConn) {
-                  tempConn.on("open", () => {
-                    addressbook[index].live = true;
-
-                    document
-                      .querySelector("button[data-id='" + entry.id + "']")
-                      .classList.add("live");
-
-                    tempConn.close();
-                  });
-
-                  tempConn.on("error", () => {
-                    addressbook[index].live = false;
-
-                    document
-                      .querySelector("button[data-id='" + entry.id + "']")
-                      .classList.add("offline");
-                  });
-                } else {
+                tempConn.on("error", () => {
                   addressbook[index].live = false;
 
                   document
                     .querySelector("button[data-id='" + entry.id + "']")
                     .classList.add("offline");
-                }
-              } catch (error) {
+                });
+              } else {
                 addressbook[index].live = false;
 
                 document
                   .querySelector("button[data-id='" + entry.id + "']")
                   .classList.add("offline");
               }
-            } else {
-              console.log("Peer instance is disconnected or does not exist");
+            } catch (error) {
+              addressbook[index].live = false;
+
+              document
+                .querySelector("button[data-id='" + entry.id + "']")
+                .classList.add("offline");
             }
-          });
-          document.querySelector(".loading-spinner").style.display = "none";
-        }, 4000);
-      }
+          } else {
+            console.log("Peer instance is disconnected or does not exist");
+          }
+        });
+        document.querySelector(".loading-spinner").style.display = "none";
+      }, 4000);
     }, 1000);
 
     return true;
@@ -1515,11 +1509,11 @@ var waiting = {
         oninit: () => {
           top_bar("", "", "");
           timer1 = setTimeout(() => {
-            m.route.set("/start");
-            console.log("timer executed");
+            let route = m.route.get();
+            route.startsWith("/waiting") ? m.route.set("/start") : null;
           }, 60000);
         },
-        onremove: () => {
+        onbeforeremove: () => {
           clearTimeout(timer1);
           console.log("timer killed");
         },
@@ -2350,129 +2344,139 @@ var open_peer_menu = {
 
           status.addressbook_in_focus = "";
           bottom_bar(
-            "<img  src='assets/image/qr.svg'>",
+            "<img src='assets/image/qr.svg'>",
             "",
-            "<img  src='assets/image/id.svg'>"
+            "<img src='assets/image/id.svg'>"
           );
 
           if (status.notKaiOS == true)
             top_bar("", "", "<img src='assets/image/back.svg'>");
         },
       },
+      addressbook.length == 0
+        ? null
+        : m(
+            "div",
+            {
+              class: "width-100 flex justify-content-center",
+            },
+            m.trust("<br>Addressbook<br><br>")
+          ),
       [
-        m(
-          "div",
-          {
-            class: "text item",
-            style: { display: addressbook.length == 0 ? "" : "none" },
+        addressbook.length > 0
+          ? null
+          : m(
+              "div",
+              {
+                class: "text item",
 
-            onfocus: () => {
-              bottom_bar(
-                "<img  src='assets/image/qr.svg'>",
-                "",
-                "<img  src='assets/image/id.svg'>"
-              );
-            },
-          },
-          "You can join a chat when someone invites you with a link. If you don't have this link, you can also enter the chat ID here or scan the QR code."
-        ),
-
-        m(
-          "div",
-          {
-            class: "item text",
-            style: { display: addressbook.length == 0 ? "" : "none" },
-            oncreate: (vnode) => {
-              setTabindex();
-            },
-          },
-          m.trust(
-            "You don't have any users in your address book yet. If you chat with a user, you can add them to your address book and contact them more quickly.<br><br>"
-          )
-        ),
-        m(
-          "div",
-          {
-            class: "width-100 flex justify-content-center",
-            style: { display: addressbook.length == 0 ? "none" : "" },
-          },
-          m.trust("<br><br>Addressbook<br><br>")
-        ),
-
-        m(
-          "div",
-          { class: "width-100 flex justify-content-center", id: "addressbook" },
-          [
-            addressbook.map((e) => {
-              return m(
-                "button",
-                {
-                  class: "item flex justify-content-center align-item-center",
-                  "data-id": e.id,
-                  "data-online": e.live ? "true" : "false",
-                  oncreate: (vnode) => {
-                    setTabindex();
-                  },
-                  onfocus: () => {
-                    status.addressbook_in_focus = e.id;
-                    bottom_bar(
-                      "",
-                      "<img  src='assets/image/select.svg'>",
-                      "<img  src='assets/image/delete.svg'>"
-                    );
-                  },
-                  onhover: () => {},
-                  onblur: () => {
-                    status.addressbook_in_focus = "";
-                  },
-
-                  onclick: () => {
-                    if (e.live == true) {
-                      connect_to_peer(
-                        document.activeElement.getAttribute("data-id")
-                      );
-                    } else {
-                      side_toaster("user is not online", 3000);
-                    }
-                  },
+                onfocus: () => {
+                  bottom_bar(
+                    "<img src='assets/image/qr.svg'>",
+                    "",
+                    "<img src='assets/image/id.svg'>"
+                  );
                 },
-                [
-                  m(
-                    "span",
-                    m.trust(
-                      "<img class='online' src='/assets/image/online.svg'><img class='offline' src='/assets/image/offline.svg'>"
-                    )
-                  ),
+              },
+              "You can join a chat when someone invites you with a link. If you don't have this link, you can also enter the chat ID here or scan the QR code."
+            ),
 
-                  m("span", e.nickname),
-                  m(
-                    "span",
+        addressbook.length > 0
+          ? null
+          : m(
+              "div",
+              {
+                class: "item text",
+                oncreate: () => {
+                  setTabindex();
+                },
+              },
+              m.trust(
+                "You don't have any users in your address book yet. If you chat with a user, you can add them to your address book and contact them more quickly.<br><br>"
+              )
+            ),
+
+        addressbook.length == 0
+          ? null
+          : m(
+              "div",
+              {
+                class: "width-100 flex justify-content-center",
+                id: "addressbook",
+              },
+              [
+                addressbook.map((e) => {
+                  return m(
+                    "button",
                     {
-                      oninit: (vnode) => {
-                        status.notKaiOS
-                          ? ""
-                          : (vnode.dom.style.display = "none");
+                      class:
+                        "item flex justify-content-center align-item-center",
+                      "data-id": e.id,
+                      "data-online": e.live ? "true" : "false",
+                      oncreate: (vnode) => {
+                        setTabindex();
                       },
-                      onclick: (event) => {
-                        const button =
-                          event.currentTarget.closest("button[data-id]");
-                        if (button) {
-                          const dataId = button.getAttribute("data-id");
-                          delete_addressbook_item(dataId);
+                      onfocus: () => {
+                        status.addressbook_in_focus = e.id;
+                        bottom_bar(
+                          "",
+                          "<img src='assets/image/select.svg'>",
+                          "<img src='assets/image/delete.svg'>"
+                        );
+                      },
+                      onhover: () => {},
+                      onblur: () => {
+                        status.addressbook_in_focus = "";
+                      },
+
+                      onclick: () => {
+                        if (e.live == true) {
+                          connect_to_peer(
+                            document.activeElement.getAttribute("data-id")
+                          );
                         } else {
-                          console.error("Button with data-id not found");
+                          side_toaster("user is not online", 3000);
                         }
                       },
                     },
-                    m.trust(
-                      "<img class='delete-button' src='/assets/image/delete.svg'>"
-                    )
-                  ),
-                ]
-              );
-            }),
-          ]
-        ),
+                    [
+                      m(
+                        "span",
+                        m.trust(
+                          "<img class='online' src='/assets/image/online.svg'><img class='offline' src='/assets/image/offline.svg'>"
+                        )
+                      ),
+
+                      m("span", e.nickname),
+                      /*
+                      m(
+                        "span",
+                        {
+                          oninit: (vnode) => {
+                            status.notKaiOS
+                              ? ""
+                              : (vnode.dom.style.display = "none");
+                          },
+                          onclick: (event) => {
+                            const button =
+                              event.currentTarget.closest("button[data-id]");
+                            if (button) {
+                              const dataId = button.getAttribute("data-id");
+                              delete_addressbook_item(dataId);
+                            } else {
+                              console.error("Button with data-id not found");
+                            }
+                          },
+                        },
+                        m.trust(
+                          "<img class='delete-button' src='/assets/image/delete.svg'>"
+                        )
+                      ),*/
+                    ]
+                  );
+                }),
+              ]
+            ),
       ]
     );
   },
@@ -3477,46 +3481,48 @@ document.addEventListener("DOMContentLoaded", function (e) {
   });
 });
 
-try {
-  navigator.mozSetMessageHandler("activity", function (activityRequest) {
-    var option = activityRequest.source;
-    let params = option.data.split("?id=");
-    let id = params[1];
-    if (id) {
-      setTimeout(() => {
-        connect_to_peer(id, "/start");
-      }, 5000);
-    }
-  });
-} catch (e) {}
-
-//webActivity KaiOS 3
-
-try {
-  navigator.serviceWorker
-    .register(new URL("sw.js", import.meta.url), {
-      type: "module",
-    })
-    .then((registration) => {
-      if (registration.waiting) {
-        // There's a new service worker waiting to activate
-        // You can prompt the user to reload the page to apply the update
-        // For example: show a message to the user
-      } else {
-        // No waiting service worker, registration was successful
+if (status.notKaiOS == false) {
+  try {
+    navigator.mozSetMessageHandler("activity", function (activityRequest) {
+      var option = activityRequest.source;
+      let params = option.data.split("?id=");
+      let id = params[1];
+      if (id) {
+        setTimeout(() => {
+          connect_to_peer(id, "/start");
+        }, 5000);
       }
-
-      registration.systemMessageManager.subscribe("activity").then(
-        (rv) => {
-          console.log(rv);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
     });
-} catch (e) {
-  console.log(e);
+  } catch (e) {}
+
+  //webActivity KaiOS 3
+
+  try {
+    navigator.serviceWorker
+      .register(new URL("sw.js", import.meta.url), {
+        type: "module",
+      })
+      .then((registration) => {
+        if (registration.waiting) {
+          // There's a new service worker waiting to activate
+          // You can prompt the user to reload the page to apply the update
+          // For example: show a message to the user
+        } else {
+          // No waiting service worker, registration was successful
+        }
+
+        registration.systemMessageManager.subscribe("activity").then(
+          (rv) => {
+            console.log(rv);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      });
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 window.addEventListener("beforeunload", function (e) {

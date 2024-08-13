@@ -34531,7 +34531,7 @@ var $17d11d58618cc814$var$conn = "";
 var $17d11d58618cc814$var$tempConn = "";
 var $17d11d58618cc814$var$connectedPeers = [];
 //.env turn server
-var $17d11d58618cc814$var$debug = false;
+var $17d11d58618cc814$var$debug = true;
 if ($17d11d58618cc814$var$debug) window.onerror = function(msg, url, linenumber) {
     alert("Error message: " + msg + "\nURL: " + url + "\nLine Number: " + linenumber);
     return true;
@@ -35217,57 +35217,54 @@ $17d11d58618cc814$var$turn();
 var $17d11d58618cc814$var$peer_is_online = function() {
     var _ref = (0, $ba0748fc6d85beab$export$71511d61b312f219)(function() {
         return (0, $04f2fd83a0b0b7f9$export$67ebef60e6f28a6)(this, function(_state) {
-            if (!$17d11d58618cc814$export$471f7ae5c4103ae1.deviceOnline) return [
+            if (!$17d11d58618cc814$export$471f7ae5c4103ae1.deviceOnline || $17d11d58618cc814$var$addressbook.length == 0) return [
                 2,
                 false
             ];
             try {
                 setTimeout(function() {
-                    // Uncomment and refactor this part if needed
-                    if ($17d11d58618cc814$var$addressbook.length > 0) {
-                        document.querySelector(".loading-spinner").style.display = "block";
-                        if (ppeer) {
-                            ppeer.destroy();
-                            console.log("Existing peer instance destroyed");
-                        }
-                        var ppeer = new Peer({
-                            debug: 0,
-                            secure: false,
-                            config: $17d11d58618cc814$var$ice_servers,
-                            referrerPolicy: "no-referrer"
-                        });
-                        setTimeout(function() {
-                            $17d11d58618cc814$var$addressbook.forEach(function(entry, index) {
-                                if (ppeer && !ppeer.disconnected) {
-                                    $17d11d58618cc814$var$addressbook[index].live = false;
-                                    try {
-                                        var tempConn = ppeer.connect(entry.id, {
-                                            label: "ping",
-                                            reliable: true
+                    document.querySelector(".loading-spinner").style.display = "block";
+                    if (ppeer) {
+                        ppeer.destroy();
+                        console.log("Existing peer instance destroyed");
+                    }
+                    var ppeer = new Peer({
+                        debug: 0,
+                        secure: false,
+                        config: $17d11d58618cc814$var$ice_servers,
+                        referrerPolicy: "no-referrer"
+                    });
+                    setTimeout(function() {
+                        $17d11d58618cc814$var$addressbook.forEach(function(entry, index) {
+                            if (ppeer && !ppeer.disconnected) {
+                                $17d11d58618cc814$var$addressbook[index].live = false;
+                                try {
+                                    var tempConn = ppeer.connect(entry.id, {
+                                        label: "ping",
+                                        reliable: true
+                                    });
+                                    if (tempConn) {
+                                        tempConn.on("open", function() {
+                                            $17d11d58618cc814$var$addressbook[index].live = true;
+                                            document.querySelector("button[data-id='" + entry.id + "']").classList.add("live");
+                                            tempConn.close();
                                         });
-                                        if (tempConn) {
-                                            tempConn.on("open", function() {
-                                                $17d11d58618cc814$var$addressbook[index].live = true;
-                                                document.querySelector("button[data-id='" + entry.id + "']").classList.add("live");
-                                                tempConn.close();
-                                            });
-                                            tempConn.on("error", function() {
-                                                $17d11d58618cc814$var$addressbook[index].live = false;
-                                                document.querySelector("button[data-id='" + entry.id + "']").classList.add("offline");
-                                            });
-                                        } else {
+                                        tempConn.on("error", function() {
                                             $17d11d58618cc814$var$addressbook[index].live = false;
                                             document.querySelector("button[data-id='" + entry.id + "']").classList.add("offline");
-                                        }
-                                    } catch (error) {
+                                        });
+                                    } else {
                                         $17d11d58618cc814$var$addressbook[index].live = false;
                                         document.querySelector("button[data-id='" + entry.id + "']").classList.add("offline");
                                     }
-                                } else console.log("Peer instance is disconnected or does not exist");
-                            });
-                            document.querySelector(".loading-spinner").style.display = "none";
-                        }, 4000);
-                    }
+                                } catch (error) {
+                                    $17d11d58618cc814$var$addressbook[index].live = false;
+                                    document.querySelector("button[data-id='" + entry.id + "']").classList.add("offline");
+                                }
+                            } else console.log("Peer instance is disconnected or does not exist");
+                        });
+                        document.querySelector(".loading-spinner").style.display = "none";
+                    }, 4000);
                 }, 1000);
                 return [
                     2,
@@ -36238,35 +36235,25 @@ var $17d11d58618cc814$var$open_peer_menu = {
             oncreate: function() {
                 $17d11d58618cc814$var$peer_is_online();
                 $17d11d58618cc814$export$471f7ae5c4103ae1.addressbook_in_focus = "";
-                (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img  src='assets/image/qr.svg'>", "", "<img  src='assets/image/id.svg'>");
+                (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/qr.svg'>", "", "<img src='assets/image/id.svg'>");
                 if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS == true) (0, $162001cafa2b40fd$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
             }
-        }, [
-            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+        }, $17d11d58618cc814$var$addressbook.length == 0 ? null : (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+            class: "width-100 flex justify-content-center"
+        }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<br>Addressbook<br><br>")), [
+            $17d11d58618cc814$var$addressbook.length > 0 ? null : (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 class: "text item",
-                style: {
-                    display: $17d11d58618cc814$var$addressbook.length == 0 ? "" : "none"
-                },
                 onfocus: function() {
-                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img  src='assets/image/qr.svg'>", "", "<img  src='assets/image/id.svg'>");
+                    (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("<img src='assets/image/qr.svg'>", "", "<img src='assets/image/id.svg'>");
                 }
             }, "You can join a chat when someone invites you with a link. If you don't have this link, you can also enter the chat ID here or scan the QR code."),
-            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+            $17d11d58618cc814$var$addressbook.length > 0 ? null : (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 class: "item text",
-                style: {
-                    display: $17d11d58618cc814$var$addressbook.length == 0 ? "" : "none"
-                },
-                oncreate: function(vnode) {
+                oncreate: function() {
                     (0, $162001cafa2b40fd$export$6c04b58eee2a9a32)();
                 }
             }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("You don't have any users in your address book yet. If you chat with a user, you can add them to your address book and contact them more quickly.<br><br>")),
-            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
-                class: "width-100 flex justify-content-center",
-                style: {
-                    display: $17d11d58618cc814$var$addressbook.length == 0 ? "none" : ""
-                }
-            }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<br><br>Addressbook<br><br>")),
-            (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
+            $17d11d58618cc814$var$addressbook.length == 0 ? null : (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("div", {
                 class: "width-100 flex justify-content-center",
                 id: "addressbook"
             }, [
@@ -36280,7 +36267,7 @@ var $17d11d58618cc814$var$open_peer_menu = {
                         },
                         onfocus: function() {
                             $17d11d58618cc814$export$471f7ae5c4103ae1.addressbook_in_focus = e.id;
-                            (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img  src='assets/image/select.svg'>", "<img  src='assets/image/delete.svg'>");
+                            (0, $162001cafa2b40fd$export$247be4ede8e3a24a)("", "<img src='assets/image/select.svg'>", "<img src='assets/image/delete.svg'>");
                         },
                         onhover: function() {},
                         onblur: function() {
@@ -36292,19 +36279,7 @@ var $17d11d58618cc814$var$open_peer_menu = {
                         }
                     }, [
                         (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("span", (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img class='online' src='/assets/image/online.svg'><img class='offline' src='/assets/image/offline.svg'>")),
-                        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("span", e.nickname),
-                        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("span", {
-                            oninit: function(vnode) {
-                                $17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS || (vnode.dom.style.display = "none");
-                            },
-                            onclick: function(event) {
-                                var button = event.currentTarget.closest("button[data-id]");
-                                if (button) {
-                                    var dataId = button.getAttribute("data-id");
-                                    $17d11d58618cc814$var$delete_addressbook_item(dataId);
-                                } else console.error("Button with data-id not found");
-                            }
-                        }, (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports))).trust("<img class='delete-button' src='/assets/image/delete.svg'>"))
+                        (0, (/*@__PURE__*/$parcel$interopDefault($fa8308bd2c5b6d7e$exports)))("span", e.nickname)
                     ]);
                 })
             ])
@@ -36904,33 +36879,35 @@ document.addEventListener("DOMContentLoaded", function(e) {
         else $17d11d58618cc814$export$471f7ae5c4103ae1.visibility = false;
     });
 });
-try {
-    navigator.mozSetMessageHandler("activity", function(activityRequest) {
-        var option = activityRequest.source;
-        var params = option.data.split("?id=");
-        var id = params[1];
-        if (id) setTimeout(function() {
-            $17d11d58618cc814$var$connect_to_peer(id, "/start");
-        }, 5000);
-    });
-} catch (e) {}
 var $3f7e6d0ea15d15be$exports = {};
 
 $3f7e6d0ea15d15be$exports = (parcelRequire("xqsiy")).getBundleURL("2D5Ur") + "sw.js";
 
 
-//webActivity KaiOS 3
-try {
-    navigator.serviceWorker.register($3f7e6d0ea15d15be$exports).then(function(registration) {
-        registration.waiting;
-        registration.systemMessageManager.subscribe("activity").then(function(rv) {
-            console.log(rv);
-        }, function(error) {
-            console.log(error);
+if ($17d11d58618cc814$export$471f7ae5c4103ae1.notKaiOS == false) {
+    try {
+        navigator.mozSetMessageHandler("activity", function(activityRequest) {
+            var option = activityRequest.source;
+            var params = option.data.split("?id=");
+            var id = params[1];
+            if (id) setTimeout(function() {
+                $17d11d58618cc814$var$connect_to_peer(id, "/start");
+            }, 5000);
         });
-    });
-} catch (e) {
-    console.log(e);
+    } catch (e) {}
+    //webActivity KaiOS 3
+    try {
+        navigator.serviceWorker.register($3f7e6d0ea15d15be$exports).then(function(registration) {
+            registration.waiting;
+            registration.systemMessageManager.subscribe("activity").then(function(rv) {
+                console.log(rv);
+            }, function(error) {
+                console.log(error);
+            });
+        });
+    } catch (e) {
+        console.log(e);
+    }
 }
 window.addEventListener("beforeunload", function(e) {
     $17d11d58618cc814$var$closeAllConnections();

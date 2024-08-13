@@ -34530,7 +34530,7 @@ var $78f2cb3ec8734e95$var$conn = "";
 var $78f2cb3ec8734e95$var$tempConn = "";
 var $78f2cb3ec8734e95$var$connectedPeers = [];
 //.env turn server
-var $78f2cb3ec8734e95$var$debug = false;
+var $78f2cb3ec8734e95$var$debug = true;
 if ($78f2cb3ec8734e95$var$debug) window.onerror = function(msg, url, linenumber) {
     alert("Error message: " + msg + "\nURL: " + url + "\nLine Number: " + linenumber);
     return true;
@@ -35216,57 +35216,54 @@ $78f2cb3ec8734e95$var$turn();
 var $78f2cb3ec8734e95$var$peer_is_online = function() {
     var _ref = (0, $bdca4d8f0452b8e7$export$71511d61b312f219)(function() {
         return (0, $95fedd77f81839f7$export$67ebef60e6f28a6)(this, function(_state) {
-            if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.deviceOnline) return [
+            if (!$78f2cb3ec8734e95$export$471f7ae5c4103ae1.deviceOnline || $78f2cb3ec8734e95$var$addressbook.length == 0) return [
                 2,
                 false
             ];
             try {
                 setTimeout(function() {
-                    // Uncomment and refactor this part if needed
-                    if ($78f2cb3ec8734e95$var$addressbook.length > 0) {
-                        document.querySelector(".loading-spinner").style.display = "block";
-                        if (ppeer) {
-                            ppeer.destroy();
-                            console.log("Existing peer instance destroyed");
-                        }
-                        var ppeer = new Peer({
-                            debug: 0,
-                            secure: false,
-                            config: $78f2cb3ec8734e95$var$ice_servers,
-                            referrerPolicy: "no-referrer"
-                        });
-                        setTimeout(function() {
-                            $78f2cb3ec8734e95$var$addressbook.forEach(function(entry, index) {
-                                if (ppeer && !ppeer.disconnected) {
-                                    $78f2cb3ec8734e95$var$addressbook[index].live = false;
-                                    try {
-                                        var tempConn = ppeer.connect(entry.id, {
-                                            label: "ping",
-                                            reliable: true
+                    document.querySelector(".loading-spinner").style.display = "block";
+                    if (ppeer) {
+                        ppeer.destroy();
+                        console.log("Existing peer instance destroyed");
+                    }
+                    var ppeer = new Peer({
+                        debug: 0,
+                        secure: false,
+                        config: $78f2cb3ec8734e95$var$ice_servers,
+                        referrerPolicy: "no-referrer"
+                    });
+                    setTimeout(function() {
+                        $78f2cb3ec8734e95$var$addressbook.forEach(function(entry, index) {
+                            if (ppeer && !ppeer.disconnected) {
+                                $78f2cb3ec8734e95$var$addressbook[index].live = false;
+                                try {
+                                    var tempConn = ppeer.connect(entry.id, {
+                                        label: "ping",
+                                        reliable: true
+                                    });
+                                    if (tempConn) {
+                                        tempConn.on("open", function() {
+                                            $78f2cb3ec8734e95$var$addressbook[index].live = true;
+                                            document.querySelector("button[data-id='" + entry.id + "']").classList.add("live");
+                                            tempConn.close();
                                         });
-                                        if (tempConn) {
-                                            tempConn.on("open", function() {
-                                                $78f2cb3ec8734e95$var$addressbook[index].live = true;
-                                                document.querySelector("button[data-id='" + entry.id + "']").classList.add("live");
-                                                tempConn.close();
-                                            });
-                                            tempConn.on("error", function() {
-                                                $78f2cb3ec8734e95$var$addressbook[index].live = false;
-                                                document.querySelector("button[data-id='" + entry.id + "']").classList.add("offline");
-                                            });
-                                        } else {
+                                        tempConn.on("error", function() {
                                             $78f2cb3ec8734e95$var$addressbook[index].live = false;
                                             document.querySelector("button[data-id='" + entry.id + "']").classList.add("offline");
-                                        }
-                                    } catch (error) {
+                                        });
+                                    } else {
                                         $78f2cb3ec8734e95$var$addressbook[index].live = false;
                                         document.querySelector("button[data-id='" + entry.id + "']").classList.add("offline");
                                     }
-                                } else console.log("Peer instance is disconnected or does not exist");
-                            });
-                            document.querySelector(".loading-spinner").style.display = "none";
-                        }, 4000);
-                    }
+                                } catch (error) {
+                                    $78f2cb3ec8734e95$var$addressbook[index].live = false;
+                                    document.querySelector("button[data-id='" + entry.id + "']").classList.add("offline");
+                                }
+                            } else console.log("Peer instance is disconnected or does not exist");
+                        });
+                        document.querySelector(".loading-spinner").style.display = "none";
+                    }, 4000);
                 }, 1000);
                 return [
                     2,
@@ -36237,35 +36234,25 @@ var $78f2cb3ec8734e95$var$open_peer_menu = {
             oncreate: function() {
                 $78f2cb3ec8734e95$var$peer_is_online();
                 $78f2cb3ec8734e95$export$471f7ae5c4103ae1.addressbook_in_focus = "";
-                (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img  src='assets/image/qr.svg'>", "", "<img  src='assets/image/id.svg'>");
+                (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img src='assets/image/qr.svg'>", "", "<img src='assets/image/id.svg'>");
                 if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS == true) (0, $6d3f4b507512327e$export$7ce2ea7c45ae9a07)("", "", "<img src='assets/image/back.svg'>");
             }
-        }, [
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+        }, $78f2cb3ec8734e95$var$addressbook.length == 0 ? null : (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+            "class": "width-100 flex justify-content-center"
+        }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<br>Addressbook<br><br>")), [
+            $78f2cb3ec8734e95$var$addressbook.length > 0 ? null : (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
                 "class": "text item",
-                style: {
-                    display: $78f2cb3ec8734e95$var$addressbook.length == 0 ? "" : "none"
-                },
                 onfocus: function() {
-                    (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img  src='assets/image/qr.svg'>", "", "<img  src='assets/image/id.svg'>");
+                    (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("<img src='assets/image/qr.svg'>", "", "<img src='assets/image/id.svg'>");
                 }
             }, "You can join a chat when someone invites you with a link. If you don't have this link, you can also enter the chat ID here or scan the QR code."),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+            $78f2cb3ec8734e95$var$addressbook.length > 0 ? null : (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
                 "class": "item text",
-                style: {
-                    display: $78f2cb3ec8734e95$var$addressbook.length == 0 ? "" : "none"
-                },
-                oncreate: function(vnode) {
+                oncreate: function() {
                     (0, $6d3f4b507512327e$export$6c04b58eee2a9a32)();
                 }
             }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("You don't have any users in your address book yet. If you chat with a user, you can add them to your address book and contact them more quickly.<br><br>")),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
-                "class": "width-100 flex justify-content-center",
-                style: {
-                    display: $78f2cb3ec8734e95$var$addressbook.length == 0 ? "none" : ""
-                }
-            }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<br><br>Addressbook<br><br>")),
-            (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
+            $78f2cb3ec8734e95$var$addressbook.length == 0 ? null : (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("div", {
                 "class": "width-100 flex justify-content-center",
                 id: "addressbook"
             }, [
@@ -36279,7 +36266,7 @@ var $78f2cb3ec8734e95$var$open_peer_menu = {
                         },
                         onfocus: function() {
                             $78f2cb3ec8734e95$export$471f7ae5c4103ae1.addressbook_in_focus = e.id;
-                            (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img  src='assets/image/select.svg'>", "<img  src='assets/image/delete.svg'>");
+                            (0, $6d3f4b507512327e$export$247be4ede8e3a24a)("", "<img src='assets/image/select.svg'>", "<img src='assets/image/delete.svg'>");
                         },
                         onhover: function() {},
                         onblur: function() {
@@ -36291,19 +36278,7 @@ var $78f2cb3ec8734e95$var$open_peer_menu = {
                         }
                     }, [
                         (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("span", (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<img class='online' src='/assets/image/online.svg'><img class='offline' src='/assets/image/offline.svg'>")),
-                        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("span", e.nickname),
-                        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("span", {
-                            oninit: function(vnode) {
-                                $78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS || (vnode.dom.style.display = "none");
-                            },
-                            onclick: function(event) {
-                                var button = event.currentTarget.closest("button[data-id]");
-                                if (button) {
-                                    var dataId = button.getAttribute("data-id");
-                                    $78f2cb3ec8734e95$var$delete_addressbook_item(dataId);
-                                } else console.error("Button with data-id not found");
-                            }
-                        }, (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports))).trust("<img class='delete-button' src='/assets/image/delete.svg'>"))
+                        (0, (/*@__PURE__*/$parcel$interopDefault($5648d4b0c5d9d32d$exports)))("span", e.nickname)
                     ]);
                 })
             ])
@@ -36903,33 +36878,35 @@ document.addEventListener("DOMContentLoaded", function(e) {
         else $78f2cb3ec8734e95$export$471f7ae5c4103ae1.visibility = false;
     });
 });
-try {
-    navigator.mozSetMessageHandler("activity", function(activityRequest) {
-        var option = activityRequest.source;
-        var params = option.data.split("?id=");
-        var id = params[1];
-        if (id) setTimeout(function() {
-            $78f2cb3ec8734e95$var$connect_to_peer(id, "/start");
-        }, 5000);
-    });
-} catch (e) {}
 var $06aed556e888da04$exports = {};
 
 $06aed556e888da04$exports = (parcelRequire("a5ik5")).getBundleURL("5PBxX") + "sw.js";
 
 
-//webActivity KaiOS 3
-try {
-    navigator.serviceWorker.register($06aed556e888da04$exports).then(function(registration) {
-        registration.waiting;
-        registration.systemMessageManager.subscribe("activity").then(function(rv) {
-            console.log(rv);
-        }, function(error) {
-            console.log(error);
+if ($78f2cb3ec8734e95$export$471f7ae5c4103ae1.notKaiOS == false) {
+    try {
+        navigator.mozSetMessageHandler("activity", function(activityRequest) {
+            var option = activityRequest.source;
+            var params = option.data.split("?id=");
+            var id = params[1];
+            if (id) setTimeout(function() {
+                $78f2cb3ec8734e95$var$connect_to_peer(id, "/start");
+            }, 5000);
         });
-    });
-} catch (e) {
-    console.log(e);
+    } catch (e) {}
+    //webActivity KaiOS 3
+    try {
+        navigator.serviceWorker.register($06aed556e888da04$exports).then(function(registration) {
+            registration.waiting;
+            registration.systemMessageManager.subscribe("activity").then(function(rv) {
+                console.log(rv);
+            }, function(error) {
+                console.log(error);
+            });
+        });
+    } catch (e) {
+        console.log(e);
+    }
 }
 window.addEventListener("beforeunload", function(e) {
     $78f2cb3ec8734e95$var$closeAllConnections();
