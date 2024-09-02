@@ -32,44 +32,37 @@ export let setTabindex = () => {
 };
 
 export let load_ads = function () {
-  var js = document.createElement("script");
-  js.type = "text/javascript";
-  js.src = "assets/js/kaiads.v5.min.js";
+  getKaiAd({
+    publisher: "4408b6fa-4e1d-438f-af4d-f3be2fa97208",
+    app: "flop",
+    slot: "flop",
+    test: 0,
+    timeout: 10000,
+    h: 120,
+    w: 240,
+    container: document.getElementById("KaiOSads-Wrapper"),
+    onerror: (err) => console.error("Error:", err),
+    onready: (ad) => {
+      // user clicked the ad
+      ad.on("click", () => console.log("click event"));
 
-  js.onload = function () {
-    getKaiAd({
-      publisher: "4408b6fa-4e1d-438f-af4d-f3be2fa97208",
-      app: "flop",
-      slot: "flop",
-      test: 0,
-      timeout: 10000,
-      h: 120,
-      w: 240,
-      container: document.getElementById("KaiOSads-Wrapper"),
-      onerror: (err) => console.error("Error:", err),
-      onready: (ad) => {
-        // user clicked the ad
-        ad.on("click", () => console.log("click event"));
+      // user closed the ad (currently only with fullscreen)
+      ad.on("close", () => console.log("close event"));
 
-        // user closed the ad (currently only with fullscreen)
-        ad.on("close", () => console.log("close event"));
+      // the ad succesfully displayed
+      ad.on("display", () => {
+        setTabindex();
+      });
 
-        // the ad succesfully displayed
-        ad.on("display", () => {
-          setTabindex();
-        });
-
-        // Ad is ready to be displayed
-        // calling 'display' will display the ad
-        ad.call("display", {
-          navClass: "item",
-          tabindex: 2,
-          display: "block",
-        });
-      },
-    });
-  };
-  document.head.appendChild(js);
+      // Ad is ready to be displayed
+      // calling 'display' will display the ad
+      ad.call("display", {
+        navClass: "item",
+        tabindex: 3,
+        display: "block",
+      });
+    },
+  });
 };
 
 export function generateRandomString(length) {
@@ -90,29 +83,36 @@ if (window.NodeList && !NodeList.prototype.forEach) {
   NodeList.prototype.forEach = Array.prototype.forEach;
 }
 
-let watchId = null; // Variable to store the watch ID globally
-
-export const geolocation = function (
-  callback,
-  autoupdate = false,
-  stopUpdate = false
-) {
+export const geolocation = function (callback) {
   let n = document.getElementById("side-toast");
   if (n) {
     n.style.transform = "translate(0vw,0px)";
     n.innerHTML = "Determining position...";
   }
 
+  let lastCallbackTime = 0;
+
   let showPosition = function (position) {
-    callback(position, autoupdate);
-    if (n) {
-      n.style.transform = "translate(-100vw,0px)";
-      n.innerHTML = "";
+    console.log(position);
+    const now = Date.now();
+
+    // Only proceed if 20 seconds have passed since the last callback
+    if (now - lastCallbackTime >= 20000) {
+      lastCallbackTime = now;
+      callback(position);
+
+      if (n) {
+        n.style.transform = "translate(-100vw,0px)";
+        n.innerHTML = "";
+      }
     }
   };
 
   let error = function (error) {
-    alert("Current location not available");
+    if (n) {
+      n.style.transform = "translate(-100vw,0px)";
+      n.innerHTML = "";
+    }
 
     switch (error.code) {
       case error.PERMISSION_DENIED:
@@ -128,47 +128,14 @@ export const geolocation = function (
         side_toaster("Current location not available", 5000);
         break;
     }
-
-    if (n) {
-      n.style.transform = "translate(-100vw,0px)";
-      n.innerHTML = "";
-    }
   };
 
-  if (stopUpdate && window.watchId !== undefined) {
-    navigator.geolocation.clearWatch(window.watchId);
-    window.watchId = null;
-    if (n) {
-      n.style.transform = "translate(-100vw,0px)";
-      n.innerHTML = "";
-    }
-  } else {
-    if (navigator.geolocation) {
-      if (autoupdate) {
-        window.watchId = navigator.geolocation.watchPosition(
-          showPosition,
-          error,
-          {
-            enableHighAccuracy: true,
-            timeout: 20000,
-            maximumAge: 1000,
-          }
-        );
-      } else {
-        navigator.geolocation.getCurrentPosition(showPosition, error, {
-          enableHighAccuracy: true,
-          timeout: 20000,
-          maximumAge: 1000,
-        });
-      }
-    } else {
-      side_toaster("Geolocation is not supported by this browser.", 2000);
-      if (n) {
-        n.style.transform = "translate(-100vw,0px)";
-        n.innerHTML = "";
-      }
-    }
-  }
+  // Use watchPosition to continuously monitor location
+  const watchID = navigator.geolocation.watchPosition(showPosition, error, {
+    enableHighAccuracy: true,
+    timeout: 20000,
+    maximumAge: 1000,
+  });
 };
 
 export let clipboard = function () {
@@ -768,83 +735,3 @@ export let downloadFile = function (filename, data, callback) {
       });
   }
 };
-
-export function createAudioRecorder() {
-  let mediaRecorder;
-  let recordedChunks = [];
-  let isInitialized = false;
-  let stream;
-
-  async function init() {
-    try {
-      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
-
-      mediaRecorder.ondataavailable = (event) => {
-        console.log(event);
-
-        if (event.data.size > 0) {
-          recordedChunks.push(event.data);
-          console.log(event.data);
-        }
-      };
-
-      mediaRecorder.addEventListener("error", (event) => {
-        console.error(`Error recording stream: ${event.error.name}`);
-      });
-
-      isInitialized = true; // Set the flag to true when initialization is complete
-    } catch (error) {
-      console.error("Error accessing media devices.", error);
-    }
-  }
-
-  async function startRecording() {
-    if (!isInitialized) {
-      await init(); // Ensure initialization is complete before starting recording
-    }
-    recordedChunks = []; // Clear any previous recordings
-    mediaRecorder.start();
-  }
-
-  function stopRecording() {
-    return new Promise((resolve) => {
-      mediaRecorder.onstop = () => {
-        let mimeType = "";
-
-        if (MediaRecorder.isTypeSupported("audio/webm; codecs=opus")) {
-          mimeType = "audio/webm; codecs=opus";
-        } else if (MediaRecorder.isTypeSupported("audio/ogg; codecs=opus")) {
-          mimeType = "audio/ogg; codecs=opus";
-        } else if (MediaRecorder.isTypeSupported("audio/mpeg")) {
-          mimeType = "audio/mpeg";
-        } else {
-          console.warn("No supported MIME type found for audio recording.");
-        }
-
-        const blob = new Blob(recordedChunks, { type: mimeType });
-
-        recordedChunks = [];
-        resolve(blob);
-      };
-      mediaRecorder.stop();
-    });
-  }
-
-  function cleanup() {
-    if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
-    }
-    mediaRecorder = null;
-    recordedChunks = [];
-    stream = null;
-    isInitialized = false;
-  }
-
-  // Return an object with the methods to start and stop recording
-  return {
-    startRecording,
-    stopRecording,
-    cleanup,
-  };
-}

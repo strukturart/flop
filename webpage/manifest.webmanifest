@@ -53,16 +53,16 @@
   ],
 
   "b2g_features": {
-    "version": "0.3154",
-    "id": "flop",
-    "subtitle": "flop p2p messenger app",
+    "version": "0.3160",
+    "id": "feddolin",
+    "subtitle": "feedolin RSS/ATOM reader",
     "core": true,
     "type": "privileged",
     "display": "fullscreen",
 
     "developer": {
       "name": "strukturart",
-      "url": "https://github.com/strukturart/flop"
+      "url": "https://github.com/strukturart/feedolin"
     },
 
     "dependencies": {

@@ -1,7 +1,5 @@
 "use strict";
 
-import "webrtc-adapter";
-
 import {
   bottom_bar,
   side_toaster,
@@ -15,8 +13,7 @@ import {
   setTabindex,
   downloadFile,
 } from "./assets/js/helper.js";
-import { start_scan } from "./assets/js/scan.js";
-import { stop_scan } from "./assets/js/scan.js";
+import { stop_scan, start_scan } from "./assets/js/scan.js";
 import localforage from "localforage";
 import * as linkify from "linkifyjs";
 import {
@@ -47,14 +44,31 @@ export let status = {
   users_geolocation: [],
   userMarkers: [],
   addressbook_in_focus: "",
+  geolocation_autoupdate: false,
+  debug: false,
 };
 
 const audioRecorder = createAudioRecorder();
+export let settings = {};
 
 if ("b2g" in navigator || "navigator.mozApps" in navigator)
   status.notKaiOS = false;
 
-export let settings = {};
+if (!status.notKaiOS) {
+  const scripts = [
+    "./assets/js/kaiads.v5.min.js",
+    "http://127.0.0.1/api/v1/shared/core.js",
+    "http://127.0.0.1/api/v1/shared/session.js",
+    "http://127.0.0.1/api/v1/apps/service.js",
+  ];
+
+  scripts.forEach((src) => {
+    const js = document.createElement("script");
+    js.type = "text/javascript";
+    js.src = src;
+    document.head.appendChild(js);
+  });
+}
 
 const channel = new BroadcastChannel("sw-messages");
 
@@ -65,9 +79,7 @@ let conn = "";
 
 let connectedPeers = [];
 
-let debug = false;
-
-if (debug) {
+if (status.debug) {
   window.onerror = function (msg, url, linenumber) {
     alert(
       "Error message: " + msg + "\nURL: " + url + "\nLine Number: " + linenumber
@@ -151,7 +163,6 @@ let compareUserList = (userlist) => {
         console.log("try to connect failed" + e);
       }
     } else {
-      console.log(user, "already connected");
     }
   });
 };
@@ -186,19 +197,6 @@ let addUserToAddressBook = (a, b) => {
     console.error("addressbook is not defined or is not an array");
     return;
   }
-
-  function hasEmptyValues(obj) {
-    return (
-      obj.id === undefined ||
-      obj.id === null ||
-      obj.id === "" ||
-      obj.name === undefined ||
-      obj.name === null ||
-      obj.name === ""
-    );
-  }
-
-  //addressbook = addressbook.filter((obj) => !hasEmptyValues(obj));
 
   let exists = addressbook.some((e) => e.id == a);
 
@@ -250,10 +248,7 @@ function setupConnectionEvents(conn) {
       console.log(event);
     });
 
-    pc.addEventListener("icecandidateerror", (event) => {
-      //side_toaster(event.errorText, 5000);
-      //side_toaster(event.url, 5000);
-    });
+    pc.addEventListener("icecandidateerror", (event) => {});
 
     pc.addEventListener("iceconnectionstatechange", () => {
       if (pc.iceConnectionState === "disconnected") {
@@ -419,7 +414,7 @@ function setupConnectionEvents(conn) {
             });
           }
         } else {
-          // Push a new GPS message if not found
+          // Push a new GPS-Live message if not found
 
           chat_data.push({
             nickname: data.nickname,
@@ -679,6 +674,8 @@ const focus_last_article = function () {
 };
 
 function sendMessage(msg, type) {
+  if (msg == "") return false;
+
   if (type == "image") {
     // Encode the file using the FileReader API
     const reader = new FileReader();
@@ -733,7 +730,6 @@ function sendMessage(msg, type) {
   }
 
   if (type == "gps_live") {
-    if (msg == "") return false;
     let existingMsg = chat_data.find((item) => item.type === "gps_live");
 
     let m = JSON.parse(msg);
@@ -1276,66 +1272,28 @@ var AudioComponent = {
   },
 };
 
-// MapComponent
-var MapComponent = {
-  oncreate: function (vnode) {
-    var mapContainer = vnode.dom;
-    var lat = vnode.attrs.lat;
-    var lng = vnode.attrs.lng;
-
-    // Create the map instance
-    let map_box = L.map(mapContainer, {
-      keyboard: false,
-      zoomControl: false,
-    }).setView([lat, lng], 7);
-
-    let myMarker = L.marker([lat, lng]).addTo(map_box);
-    //myMarker._icon.classList.add("myMarker");
-    myMarker.options.shadowSize = [0, 0];
-
-    // Hide the leaflet control container
-    setTimeout(() => {
-      document.querySelector(".leaflet-control-container").style.display =
-        "none";
-    }, 5);
-
-    vnode.state.map = map_box; // Store the map instance in the vnode state
-
-    // Ensure map is properly resized when container size changes
-    window.addEventListener("resize", function () {
-      map_box.invalidateSize();
-    });
-  },
-  onremove: function (vnode) {
-    vnode.state.map.remove(); // Clean up the map instance when the component is removed
-  },
-  view: function () {
-    return m("div", { class: "map-component", style: { height: "100%" } });
-  },
-};
-
 //callback geolocation
 let geolocation_callback = function (e) {
-  if (e.coords) {
-    let latlng = { "lat": e.coords.latitude, "lng": e.coords.longitude };
-    sendMessage(JSON.stringify(latlng), "gps");
-
-    m.route.set("/chat");
-  } else {
-    console.log("error");
-  }
-};
-
-let geolocation_autoupdate_callback = (e) => {
-  if (e.coords) {
-    let latlng = { "lat": e.coords.latitude, "lng": e.coords.longitude };
-    if (!status.geolcation_autoupdate) {
-      m.route.set("/chat");
+  console.log(e.coords);
+  if (
+    status.geolocation_autoupdate == false &&
+    status.geolocation_onTimeRequest == true
+  ) {
+    status.geolocation_onTimeRequest = false;
+    if (e.coords) {
+      let latlng = { "lat": e.coords.latitude, "lng": e.coords.longitude };
+      sendMessage(JSON.stringify(latlng), "gps");
+    } else {
+      console.log("error");
     }
-    status.geolcation_autoupdate = true;
-    sendMessage(JSON.stringify(latlng), "gps_live");
   } else {
-    console.log("error");
+    if (e.coords) {
+      let latlng = { "lat": e.coords.latitude, "lng": e.coords.longitude };
+
+      sendMessage(JSON.stringify(latlng), "gps_live");
+    } else {
+      console.log("error");
+    }
   }
 };
 
@@ -1393,7 +1351,7 @@ function map_function(lat, lng, id) {
   let once = false; // Define 'once' outside the callback to persist its state
   let myMarker; // Define 'myMarker' outside the callback to persist its state
 
-  let geolocation_callback = function (e) {
+  let geolocation_cb = function (e) {
     if (!myMarker) {
       // Create the marker only once
       myMarker = L.marker([e.coords.latitude, e.coords.longitude])
@@ -1401,6 +1359,9 @@ function map_function(lat, lng, id) {
         .bindPopup("It's me")
         .openPopup();
       myMarker._icon.classList.add("myMarker");
+      myMarker.options.shadowUrl = null;
+      myMarker.options.url = "marker-icon.png";
+
       status.userMarkers[0] = myMarker;
 
       if (!once) {
@@ -1414,7 +1375,7 @@ function map_function(lat, lng, id) {
     }
   };
 
-  geolocation(geolocation_callback, false, true);
+  geolocation(geolocation_cb);
 
   if (lat && lng) {
     let m = L.marker([lat, lng]).addTo(map).bindPopup(id).openPopup();
@@ -1424,7 +1385,6 @@ function map_function(lat, lng, id) {
     }, 3000);
   }
 
-  /*
   // Function to update or add markers
   function updateMarkers(status) {
     if (status.users_geolocation) {
@@ -1444,6 +1404,10 @@ function map_function(lat, lng, id) {
             .addTo(map)
             .bindPopup(userId)
             .openPopup();
+
+          marker.options.shadowUrl = null;
+          marker.options.url = "marker-icon.png";
+
           status.userMarkers[userId] = marker; // Store marker in the object with userId as key
         }
       });
@@ -1453,10 +1417,9 @@ function map_function(lat, lng, id) {
   setTimeout(() => {
     updateMarkers(status);
   }, 5000);
-*/
+
   map.on("zoomend", function () {
     let zoom_level = map.getZoom();
-    console.log(zoom_level);
 
     if (zoom_level > 16) {
       step = 0.0005;
@@ -2103,7 +2066,9 @@ var options = {
 
             onclick: function () {
               if (status.userOnline) {
-                geolocation(geolocation_callback, false, false);
+                geolocation(geolocation_callback);
+                status.geolocation_onTimeRequest = true;
+                m.route.set("/chat?id=" + status.ownPeerId);
               } else {
                 side_toaster("no user online", 3000);
               }
@@ -2111,7 +2076,7 @@ var options = {
           },
           "share location"
         ),
-        /*
+
         m(
           "button",
           {
@@ -2137,18 +2102,19 @@ var options = {
 
             onclick: function () {
               if (status.userOnline) {
-                if (status.geolcation_autoupdate) {
-                  geolocation(geolocation_autoupdate_callback, true, true);
+                if (status.geolocation_autoupdate) {
                   status.geolocation_autoupdate = false;
                   document.getElementById(
                     "sharing-live-geolocation"
                   ).innerText = "share live location";
+                  m.route.set("/chat?id=" + status.ownPeerId);
                 } else {
-                  geolocation(geolocation_autoupdate_callback, true, false);
+                  geolocation(geolocation_callback);
                   document.getElementById(
                     "sharing-live-geolocation"
                   ).innerText = "share live location";
                   status.geolocation_autoupdate = true;
+                  m.route.set("/chat?id=" + status.ownPeerId);
                 }
               } else {
                 side_toaster("no user online", 3000);
@@ -2157,7 +2123,7 @@ var options = {
           },
           "start live location"
         ),
-*/
+
         m(
           "button",
           {
@@ -2650,7 +2616,7 @@ var chat = {
                 );
               }
 
-              if (item.type == "gps") {
+              if (item.type == "gps" || item.type == "gps_live") {
                 status.current_article_type = "gps";
 
                 bottom_bar(
@@ -2706,10 +2672,30 @@ var chat = {
                   class: "message-media",
                   src: item.image,
                   "data-filename": item.filename,
+                  onclick: () => {
+                    if (item.content == "invitation link") {
+                      share(
+                        settings.invite_url + "?id=" + settings.custom_peer_id
+                      ).then((success) => {
+                        if (success) {
+                          m.route.set("/chat?id=" + settings.custom_peer_id);
+                        } else {
+                          console.log("Sharing failed.");
+                        }
+                      });
+                    }
+                  },
                 })
               : null,
 
             item.type === "gps"
+              ? m("div", {
+                  class: "message-map",
+                  oncreate: (vnode) => {},
+                })
+              : null,
+
+            item.type === "gps_live"
               ? m("div", {
                   class: "message-map",
                   oncreate: (vnode) => {},
@@ -2737,6 +2723,15 @@ var chat = {
                   style: { display: item.type == "gps" ? "" : "none" },
                 },
                 "  Location"
+              ),
+
+              m(
+                "div",
+                {
+                  class: "type",
+                  style: { display: item.type == "gps_live" ? "" : "none" },
+                },
+                "  Live location"
               ),
             ]),
           ]
@@ -2988,8 +2983,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         m.route.get() == "/settings_page" ||
         m.route.get() == "/scan" ||
         m.route.get() == "/open_peer_menu" ||
-        m.route.get() == "/about" ||
-        route.startsWith("/map_view")
+        m.route.get() == "/about"
       ) {
         status.action = "";
         m.route.set("/start");
@@ -3015,9 +3009,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
         m.route.set("/about");
       }
 
-      if (m.route.get() == "/map_view") {
+      if (route.startsWith("/map_view")) {
+        m.route.set("/chat?id=") + status.ownPeerId;
         status.action = "";
-        m.route.set("/options");
       }
 
       if (m.route.get() == "/options" || m.route.get() == "/links_page") {
@@ -3267,7 +3261,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
         }
 
         if (route == "/start") {
-          // chat_data = [];
           create_peer();
         }
         //addressbook open peer
