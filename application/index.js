@@ -621,21 +621,6 @@ localforage
     console.log(err);
   });
 
-let warning_leave_chat = function () {
-  status.action = "confirm";
-  if (confirm("Do you really want leave the chat?")) {
-    m.route.set("/start");
-    setTimeout(function () {
-      status.action = "";
-      peer.destroy();
-    }, 1000);
-  } else {
-    setTimeout(function () {
-      status.action = "";
-    }, 1000);
-  }
-};
-
 let write = function () {
   if (status.action != "write") {
     if (document.getElementById("message-input") != null) {
@@ -1128,9 +1113,6 @@ let connect_to_peer = function (id, route_target) {
 //create room
 // and create qr-code with peer id
 let create_peer = function () {
-  //  chat_data = [];
-  // connectedPeers = [];
-
   if (!status.deviceOnline) {
     alert("Device is offline");
     return false;
@@ -2414,30 +2396,6 @@ var open_peer_menu = {
                       ),
 
                       m("span", e.nickname),
-                      /*
-                      m(
-                        "span",
-                        {
-                          oninit: (vnode) => {
-                            status.notKaiOS
-                              ? ""
-                              : (vnode.dom.style.display = "none");
-                          },
-                          onclick: (event) => {
-                            const button =
-                              event.currentTarget.closest("button[data-id]");
-                            if (button) {
-                              const dataId = button.getAttribute("data-id");
-                              delete_addressbook_item(dataId);
-                            } else {
-                              console.error("Button with data-id not found");
-                            }
-                          },
-                        },
-                        m.trust(
-                          "<img class='delete-button' src='/assets/image/delete.svg'>"
-                        )
-                      ),*/
                     ]
                   );
                 }),
@@ -2561,6 +2519,7 @@ var chat = {
         }),
       ]),
       chat_data.map(function (item, index) {
+        console.log("something happens");
         //own message
         let ff = { lat: "", lng: "" };
         if (item.type == "gps" || item.type == "gps_live") {
