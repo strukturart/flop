@@ -124,6 +124,17 @@ img[src=" "] {
   display: none;
 }
 
+#svg {
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 20px;
+  width: 100%;
+  height: 100%; /* Responsive height */
+  pointer-events: none;
+  z-index: 400000;
+}
+
 button {
   font-size: 1rem;
   background: rgb(255, 255, 255);

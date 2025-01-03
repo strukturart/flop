@@ -1,6 +1,7 @@
 "use strict";
 
 import { status, settings } from "../../index.js";
+import imageCompression from "browser-image-compression";
 
 export const month = [
   "January",
@@ -655,12 +656,23 @@ export let pick_image = function (callback) {
     fileInput.addEventListener("change", function (event) {
       const file = event.target.files[0];
 
-      if (file) {
-        callback({
-          blob: file,
-          filename: file.name,
-          filetype: file.type,
-        });
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      };
+      try {
+        if (file) {
+          imageCompression(file, options).then((e) => {
+            callback({
+              blob: e,
+              filename: file.name,
+              filetype: file.type,
+            });
+          });
+        }
+      } catch (error) {
+        console.log(error);
       }
     });
   }
@@ -735,3 +747,83 @@ export let downloadFile = function (filename, data, callback) {
       });
   }
 };
+
+export function createAudioRecorder() {
+  let mediaRecorder;
+  let recordedChunks = [];
+  let isInitialized = false;
+  let stream;
+
+  async function init() {
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
+
+      mediaRecorder.ondataavailable = (event) => {
+        console.log(event);
+
+        if (event.data.size > 0) {
+          recordedChunks.push(event.data);
+          console.log(event.data);
+        }
+      };
+
+      mediaRecorder.addEventListener("error", (event) => {
+        console.error(`Error recording stream: ${event.error.name}`);
+      });
+
+      isInitialized = true; // Set the flag to true when initialization is complete
+    } catch (error) {
+      console.error("Error accessing media devices.", error);
+    }
+  }
+
+  async function startRecording() {
+    if (!isInitialized) {
+      await init(); // Ensure initialization is complete before starting recording
+    }
+    recordedChunks = []; // Clear any previous recordings
+    mediaRecorder.start();
+  }
+
+  function stopRecording() {
+    return new Promise((resolve) => {
+      mediaRecorder.onstop = () => {
+        let mimeType = "";
+
+        if (MediaRecorder.isTypeSupported("audio/webm; codecs=opus")) {
+          mimeType = "audio/webm; codecs=opus";
+        } else if (MediaRecorder.isTypeSupported("audio/ogg; codecs=opus")) {
+          mimeType = "audio/ogg; codecs=opus";
+        } else if (MediaRecorder.isTypeSupported("audio/mpeg")) {
+          mimeType = "audio/mpeg";
+        } else {
+          console.warn("No supported MIME type found for audio recording.");
+        }
+
+        const blob = new Blob(recordedChunks, { type: mimeType });
+
+        recordedChunks = [];
+        resolve(blob);
+      };
+      mediaRecorder.stop();
+    });
+  }
+
+  function cleanup() {
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+    }
+    mediaRecorder = null;
+    recordedChunks = [];
+    stream = null;
+    isInitialized = false;
+  }
+
+  // Return an object with the methods to start and stop recording
+  return {
+    startRecording,
+    stopRecording,
+    cleanup,
+  };
+}

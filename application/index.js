@@ -131,13 +131,6 @@ let app_launcher = () => {
   }, 4000);
 };
 
-window.addEventListener("online", () => {
-  status.deviceOnline = true;
-});
-window.addEventListener("offline", () => {
-  status.deviceOnline = false;
-});
-
 // Function to check if an element already exists in chat_data
 function elementExists(chat_data, criteria) {
   return chat_data.some((element) => {
@@ -294,8 +287,10 @@ function setupConnectionEvents(conn) {
       }
     });
   }
-
+  //receive data
   conn.on("data", function (data) {
+    storeChatData();
+
     document.querySelector(".loading-spinner").style.display = "none";
     remove_no_user_online();
 
@@ -478,7 +473,7 @@ let ice_servers = {
 
 const remove_no_user_online = () => {
   chat_data = chat_data.filter((e) => {
-    return e.id !== "no-other-user-online";
+    return e.content !== "invitation link" && e.id !== "no-other-user-online";
   });
 
   m.redraw();
@@ -502,7 +497,10 @@ async function getIceServers() {
 
     if (!response.ok) {
       document.querySelector(".loading-spinner").style.display = "none";
-      alert("can't load turn");
+      top_bar("", "<img src='assets/image/offline.svg'>", "");
+    }
+    if (response.ok && m.route.get() == "/start") {
+      top_bar("", "", "");
     }
 
     const a = await response.json();
@@ -529,16 +527,9 @@ async function getIceServers() {
     });
 
     peer.on("open", function (c) {
-      /*
-      if (peer.id == null) peer.id = settings.custom_peer_id;
-      status.ownPeerId = peer.id;
-      */
-
       document.querySelector(".loading-spinner").style.display = "none";
 
       remove_no_user_online();
-
-      //setupConnectionEvents(c);
     });
 
     peer.on("connection", function (c) {
@@ -588,6 +579,13 @@ async function getIceServers() {
   }
 }
 
+//chat data history
+let chat_data_history = [];
+
+localforage.getItem("chatData").then((e) => {
+  chat_data_history = e || []; // Fallback to an empty array if chatData is null
+});
+
 //load settings
 localforage
   .getItem("settings")
@@ -620,21 +618,6 @@ localforage
   .catch(function (err) {
     console.log(err);
   });
-
-let warning_leave_chat = function () {
-  status.action = "confirm";
-  if (confirm("Do you really want leave the chat?")) {
-    m.route.set("/start");
-    setTimeout(function () {
-      status.action = "";
-      peer.destroy();
-    }, 1000);
-  } else {
-    setTimeout(function () {
-      status.action = "";
-    }, 1000);
-  }
-};
 
 let write = function () {
   if (status.action != "write") {
@@ -858,7 +841,8 @@ turn();
 
 //connect to peer
 let peer_is_online = async function () {
-  if (!status.deviceOnline || addressbook.length == 0) {
+  if (!navigator.onLine || addressbook.length == 0) {
+    top_bar("", "<img src='assets/image/offline.svg'>", "");
     return false;
   }
 
@@ -939,8 +923,9 @@ let peer_is_online = async function () {
 
 //connect to peer
 let connect_to_peer = function (id, route_target) {
-  if (!status.deviceOnline) {
-    alert("Device is offline");
+  if (!navigator.onLine) {
+    top_bar("", "<img src='assets/image/offline.svg'>", "");
+
     return false;
   }
 
@@ -1128,11 +1113,9 @@ let connect_to_peer = function (id, route_target) {
 //create room
 // and create qr-code with peer id
 let create_peer = function () {
-  //  chat_data = [];
-  // connectedPeers = [];
+  if (!navigator.onLine) {
+    top_bar("", "<img src='assets/image/offline.svg'>", "");
 
-  if (!status.deviceOnline) {
-    alert("Device is offline");
     return false;
   }
   document.querySelector(".loading-spinner").style.display = "block";
@@ -1224,6 +1207,90 @@ let scan_callback = function (n) {
   let m = n.split("id=");
   status.action = "";
   connect_to_peer(m[1]);
+};
+
+//backupData
+/*
+let storeChatData = () => {
+  // Filter chat data
+  let data = chat_data.filter((e) => {
+    return e.content !== "invitation link" && e.id !== "no-other-user-online";
+  });
+
+  // Return if no data
+  if (!data || data.length === 0) return false;
+
+  // Ensure only new data is added
+  let newData = data.filter((item) => {
+    return !chat_data_history.some(
+      (historyItem) => JSON.stringify(historyItem) === JSON.stringify(item)
+    );
+  });
+
+  newData.map((e) => {
+    if (e.image) {
+    }
+  });
+
+  if (newData.length > 0) {
+    // Append new data to history
+    chat_data_history.push(...newData);
+
+    // Save updated history to local storage
+    localforage.setItem("chatData", chat_data_history).then((e) => {
+      console.log("Chat data stored");
+    });
+  }
+};
+
+*/
+
+// Function to convert Object URL back to Blob
+const convertObjectURLToBlob = async (objectURL) => {
+  const response = await fetch(objectURL);
+  const blob = await response.blob(); // Retrieve the Blob
+  return blob;
+};
+
+// Function to store chat data
+let storeChatData = async () => {
+  // Filter chat data
+  let data = chat_data.filter((e) => {
+    return e.content !== "invitation link" && e.id !== "no-other-user-online";
+  });
+
+  // Return if no data
+  if (!data || data.length === 0) return false;
+
+  // Ensure only new data is added
+  let newData = data.filter((item) => {
+    return !chat_data_history.some(
+      (historyItem) => JSON.stringify(historyItem) === JSON.stringify(item)
+    );
+  });
+
+  // Process new data
+  for (let e of newData) {
+    if (e.image) {
+      try {
+        // Convert Object URL to Blob and store as e.image_blob
+        e.image_blob = await convertObjectURLToBlob(e.image);
+        //delete e.image; // Remove raw Object URL (optional)
+      } catch (error) {
+        console.error("Error converting Object URL to Blob:", error);
+      }
+    }
+  }
+
+  if (newData.length > 0) {
+    // Append new data to history
+    chat_data_history.push(...newData);
+
+    // Save updated history to local storage
+    localforage.setItem("chatData", chat_data_history).then(() => {
+      console.log("Chat data stored with Blob images");
+    });
+  }
 };
 
 //audio
@@ -1474,7 +1541,7 @@ var waiting = {
           timer1 = setTimeout(() => {
             let route = m.route.get();
             route.startsWith("/waiting") ? m.route.set("/start") : null;
-          }, 60000);
+          }, 10000);
         },
         onbeforeremove: () => {
           clearTimeout(timer1);
@@ -2013,7 +2080,7 @@ var options = {
               );
             },
             onclick: function () {
-              pick_image(handleImage);
+              //  pick_image(handleImage);
 
               if (status.userOnline > 0) {
                 pick_image(handleImage);
@@ -2217,6 +2284,7 @@ var start = {
           "p",
           {
             class: "item scroll",
+            id: "start-text",
             tabIndex: 0,
             oncreate: (vnode) => {
               document.querySelector("#start p").focus();
@@ -2224,7 +2292,7 @@ var start = {
             },
           },
           m.trust(
-            "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images, audio and your position with your chat partner. To start chatting, press enter.<br><br>"
+            "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images, audio and your position with your chat partner. To start chatting, press <span id='start-text-point'>enter</span>.<br><br>"
           )
         ),
         m(
@@ -2294,7 +2362,6 @@ var scan = {
     return m("div");
   },
 };
-
 var open_peer_menu = {
   view: function () {
     return m(
@@ -2308,6 +2375,10 @@ var open_peer_menu = {
         oncreate: () => {
           peer_is_online();
 
+          localforage.getItem("chatData").then((e) => {
+            chat_data_history = e || [];
+          });
+
           status.addressbook_in_focus = "";
           bottom_bar(
             "<img src='assets/image/qr.svg'>",
@@ -2319,6 +2390,19 @@ var open_peer_menu = {
             top_bar("", "", "<img src='assets/image/back.svg'>");
         },
       },
+
+      chat_data_history.length > 0
+        ? m(
+            "button",
+            {
+              onclick: () => {
+                m.route.set("/chatHistory");
+              },
+            },
+            "chat history"
+          )
+        : null,
+
       addressbook.length == 0
         ? null
         : m(
@@ -2414,30 +2498,6 @@ var open_peer_menu = {
                       ),
 
                       m("span", e.nickname),
-                      /*
-                      m(
-                        "span",
-                        {
-                          oninit: (vnode) => {
-                            status.notKaiOS
-                              ? ""
-                              : (vnode.dom.style.display = "none");
-                          },
-                          onclick: (event) => {
-                            const button =
-                              event.currentTarget.closest("button[data-id]");
-                            if (button) {
-                              const dataId = button.getAttribute("data-id");
-                              delete_addressbook_item(dataId);
-                            } else {
-                              console.error("Button with data-id not found");
-                            }
-                          },
-                        },
-                        m.trust(
-                          "<img class='delete-button' src='/assets/image/delete.svg'>"
-                        )
-                      ),*/
                     ]
                   );
                 }),
@@ -2456,6 +2516,7 @@ var chat = {
       {
         id: "chat",
         class: "flex justify-content-center algin-item-start",
+
         onremove: () => {
           clearInterval(user_check);
 
@@ -2485,7 +2546,6 @@ var chat = {
             "<img src='assets/image/option.svg'>"
           );
           user_check = setInterval(() => {
-            console.log(status.userOnline);
             if (connectedPeers) {
               status.userOnline = connectedPeers.length;
               document
@@ -2560,6 +2620,7 @@ var chat = {
           },
         }),
       ]),
+
       chat_data.map(function (item, index) {
         //own message
         let ff = { lat: "", lng: "" };
@@ -2741,6 +2802,199 @@ var chat = {
   },
 };
 
+var chatHistory = {
+  view: function () {
+    return m(
+      "div",
+      {
+        id: "chat",
+        class: "flex justify-content-center algin-item-start",
+
+        oninit: () => {},
+
+        onremove: () => {
+          var x = document.querySelector("div#side-toast");
+          x.style.transform = "translate(-100vw,0px)";
+
+          try {
+            localforage.removeItem("connect_to_id");
+          } catch (e) {}
+        },
+        oncreate: () => {
+          top_bar("", "", "");
+          if (status.notKaiOS)
+            top_bar("", "", "<img src='assets/image/back.svg'>");
+
+          bottom_bar("", "", "");
+        },
+      },
+
+      chat_data_history.map(function (item, index) {
+        //own message
+        let ff = { lat: "", lng: "" };
+        if (item.type == "gps" || item.type == "gps_live") {
+          let n = JSON.parse(item.gps);
+          ff.lat = n.lat;
+          ff.lng = n.lng;
+        }
+
+        let nickname = "me";
+        if (item.nickname != settings.nickname) {
+          nickname = item.nickname;
+        }
+
+        return m(
+          "article",
+          {
+            class: "item " + nickname + " " + item.type,
+            tabindex: index,
+            "data-type": item.type,
+            "data-user-id": item.userId,
+            "data-user-nickname": item.nickname,
+            "data-lat": ff.lat,
+            "data-lng": ff.lng,
+
+            onclick: () => {
+              if (item.type == "gps" || item.type == "gps_live") {
+                let f = JSON.parse(item.gps);
+
+                m.route.set(
+                  "/map_view?lat=" +
+                    f.lat +
+                    "&lng=" +
+                    f.lng +
+                    "&id=" +
+                    item.nickname
+                );
+              }
+            },
+
+            onfocus: () => {
+              status.current_user_id =
+                document.activeElement.getAttribute("data-user-id");
+              status.current_user_nickname =
+                document.activeElement.getAttribute("data-user-nickname");
+
+              links = linkify.find(document.activeElement.textContent);
+              if (links.length > 0 && item.type == "text") {
+                status.current_article_type = "link";
+                bottom_bar(
+                  "",
+                  "<img src='assets/image/link.svg'>",
+                  "<img src='assets/image/option.svg'>"
+                );
+              }
+
+              if (item.type == "gps" || item.type == "gps_live") {
+                status.current_article_type = "gps";
+
+                bottom_bar(
+                  "",
+                  "<img src='assets/image/select.svg'>",
+                  "<img src='assets/image/option.svg'>"
+                );
+              }
+
+              if (item.type == "image") {
+                status.current_article_type = "image";
+                if (status.notKaiOS) return false;
+                bottom_bar(
+                  "",
+                  "<img src='assets/image/save.svg'>",
+                  "<img src='assets/image/option.svg'>"
+                );
+              }
+
+              if (item.type == "audio") {
+                status.current_article_type = "audio";
+                bottom_bar(
+                  "",
+                  "<img src='assets/image/play.svg'>",
+                  "<img src='assets/image/option.svg'>"
+                );
+              }
+
+              if (item.type == "text") {
+                status.current_article_type = "text";
+
+                bottom_bar("", "", "<img src='assets/image/option.svg'>");
+              }
+            },
+          },
+          [
+            item.type === "text"
+              ? m(
+                  "div",
+                  {
+                    class: "message-main",
+                  },
+                  item.content
+                )
+              : null,
+
+            item.type === "image"
+              ? m("img", {
+                  class: "message-media",
+                  src: item.image_blob
+                    ? URL.createObjectURL(item.image_blob)
+                    : null,
+                  "data-filename": item.filename,
+                })
+              : null,
+
+            item.type === "gps"
+              ? m("div", {
+                  class: "message-map",
+                  oncreate: (vnode) => {},
+                })
+              : null,
+
+            item.type === "gps_live"
+              ? m("div", {
+                  class: "message-map",
+                  oncreate: (vnode) => {},
+                })
+              : null,
+
+            item.type === "audio"
+              ? m(
+                  "div",
+                  {
+                    class: "audioplayer",
+                  },
+
+                  m(AudioComponent, { src: item.content })
+                )
+              : null,
+
+            m("div", { class: "flex message-head" }, [
+              m("div", time_parse(item.datetime)),
+              m("div", { class: "nickname" }, nickname),
+              m(
+                "div",
+                {
+                  class: "type",
+                  style: { display: item.type == "gps" ? "" : "none" },
+                },
+                "  Location"
+              ),
+
+              m(
+                "div",
+                {
+                  class: "type",
+                  style: { display: item.type == "gps_live" ? "" : "none" },
+                },
+                "  Live location"
+              ),
+            ]),
+          ]
+        );
+      })
+    );
+  },
+};
+
 let map_view = {
   view: function () {
     return m("div", {
@@ -2855,6 +3109,7 @@ m.route(root, "/intro", {
   "/start": start,
   "/links_page": links_page,
   "/chat": chat,
+  "/chatHistory": chatHistory,
   "/options": options,
   "/settings_page": settings_page,
   "/scan": scan,
@@ -3297,6 +3552,23 @@ document.addEventListener("DOMContentLoaded", function (e) {
           }
         }
 
+        if (route.startsWith("/chatHistory")) {
+          if (status.current_article_type == "image") {
+            let filename = document.activeElement
+              .querySelector("img")
+              .getAttribute("data-filename");
+
+            let data = document.activeElement
+              .querySelector("img")
+              .getAttribute("src");
+
+            let download_successfull = () => {};
+            downloadFile(filename, data, download_successfull);
+          } else {
+            return false;
+          }
+        }
+
         if (route.startsWith("/chat")) {
           if (document.activeElement.tagName == "ARTICLE") {
             if (status.current_article_type == "link") {
@@ -3393,6 +3665,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         m.route.get() == "/settings_page" ||
         m.route.get() == "/open_peer_menu" ||
         m.route.get() == "/about" ||
+        route.startsWith("/chatHistory") ||
         route.startsWith("/map_view") ||
         route.startsWith("/waiting")
       ) {
@@ -3473,6 +3746,24 @@ document.addEventListener("DOMContentLoaded", function (e) {
     }
   });
 });
+
+try {
+  navigator.serviceWorker
+    .register(new URL("sw.js", import.meta.url), {
+      type: "module",
+    })
+    .then((registration) => {
+      if (registration.waiting) {
+        // There's a new service worker waiting to activate
+        // You can prompt the user to reload the page to apply the update
+        // For example: show a message to the user
+      } else {
+        // No waiting service worker, registration was successful
+      }
+    });
+} catch (e) {
+  console.log(e);
+}
 
 if (status.notKaiOS == false) {
   try {
