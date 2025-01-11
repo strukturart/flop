@@ -356,7 +356,7 @@ function setupConnectionEvents(conn) {
         const audioBlob = new Blob([audioBuffer], {
           type: "audio/webm",
         });
-        console.log(audioBlob);
+        console.log("receive" + audioBlob);
         const url = URL.createObjectURL(audioBlob);
 
         chat_data.push({
@@ -773,26 +773,30 @@ function sendMessage(msg, type) {
     sendMessageToAll(msg);
   }
 
-  if (type == "audio") {
-    if (msg == "") return false;
+  if (type === "audio") {
+    if (!msg) return false;
+
+    // Speichere die URL für lokale Verwendung
+    const objectURL = URL.createObjectURL(msg);
 
     chat_data.push({
       nickname: settings.nickname,
-      content: URL.createObjectURL(msg),
+      content: objectURL, // URL für den lokalen Player
       datetime: new Date(),
       type: type,
       userId: settings.custom_peer_id,
     });
-    msg.arrayBuffer().then((buffer) => {
-      // Send the buffer through the WebRTC data channel
 
-      msg = {
-        content: buffer,
+    // Sende die binären Daten über WebRTC
+    msg.arrayBuffer().then((buffer) => {
+      const messageToSend = {
+        content: buffer, // Binäre Daten
         nickname: settings.nickname,
         type: type,
         userId: settings.custom_peer_id,
       };
-      sendMessageToAll(msg);
+      console.log("send", messageToSend);
+      sendMessageToAll(messageToSend); // Sende die Nachricht
     });
   }
 }
@@ -1299,31 +1303,55 @@ var AudioComponent = {
   oninit: (vnode) => {
     vnode.state.isPlaying = false;
     vnode.state.audio = null;
+
+    if (vnode.attrs.src instanceof Blob) {
+      vnode.state.audioSrc = URL.createObjectURL(vnode.attrs.src);
+    } else {
+      console.error("Invalid src: Expected a Blob.");
+    }
+  },
+  onbeforeupdate: (vnode, old) => {
+    if (vnode.attrs.src !== old.attrs.src) {
+      if (vnode.state.audioSrc) {
+        URL.revokeObjectURL(vnode.state.audioSrc);
+      }
+      if (vnode.attrs.src instanceof Blob) {
+        vnode.state.audioSrc = URL.createObjectURL(vnode.attrs.src);
+      } else {
+        console.error("Invalid src: Expected a Blob.");
+      }
+    }
+  },
+  onremove: (vnode) => {
+    if (vnode.state.audioSrc) {
+      URL.revokeObjectURL(vnode.state.audioSrc);
+    }
   },
   view: (vnode) => {
     return m("div.audio-player", [
       m("audio", {
-        src: vnode.attrs.src,
-        onkeydown: function (e) {
-          if (e.key === "Enter") togglePlayPause();
-        },
+        src: vnode.state.audioSrc,
         oncreate: (audioVnode) => {
           vnode.state.audio = audioVnode.dom;
           audioVnode.dom.controls = false;
-
-          // Add event listener for 'ended' event
-          audioVnode.dom.addEventListener("ended", function () {
+          audioVnode.dom.addEventListener("play", () => {
+            vnode.state.isPlaying = true;
+            m.redraw();
+          });
+          audioVnode.dom.addEventListener("pause", () => {
+            vnode.state.isPlaying = false;
+            m.redraw();
+          });
+          audioVnode.dom.addEventListener("ended", () => {
             vnode.state.isPlaying = false;
             m.redraw();
           });
         },
-        style: { display: "none" }, // Hide the default audio element
+        style: { display: "none" },
       }),
       m(
         "button",
-        {
-          onclick: togglePlayPause,
-        },
+        { onclick: togglePlayPause },
         vnode.state.isPlaying ? "Pause" : "Play"
       ),
     ]);
@@ -1334,7 +1362,6 @@ var AudioComponent = {
       } else {
         vnode.state.audio.play();
       }
-      vnode.state.isPlaying = !vnode.state.isPlaying;
     }
   },
 };
@@ -2395,6 +2422,12 @@ var open_peer_menu = {
         ? m(
             "button",
             {
+              oncreate: (vnode) => {
+                vnode.dom.focus();
+                setTabindex();
+              },
+
+              class: "item",
               onclick: () => {
                 m.route.set("/chatHistory");
               },
@@ -3355,6 +3388,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
             document.getElementById("app").style.opacity = "1";
             document.querySelector(".playing").style.opacity = "0";
 
+            console.log(audioBlob);
             sendMessage(audioBlob, "audio");
             bottom_bar(
               "<img src='assets/image/pencil.svg'>",

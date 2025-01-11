@@ -760,11 +760,8 @@ export function createAudioRecorder() {
       mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
 
       mediaRecorder.ondataavailable = (event) => {
-        console.log(event);
-
         if (event.data.size > 0) {
           recordedChunks.push(event.data);
-          console.log(event.data);
         }
       };
 
