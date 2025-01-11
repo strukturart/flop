@@ -2801,192 +2801,110 @@ var chat = {
     );
   },
 };
-
 var chatHistory = {
+  state: { startIndex: 0, batchSize: 10, renderedItems: [] },
+
+  oninit: function () {
+    chatHistory.state.renderedItems = chat_data_history.slice(
+      0,
+      chatHistory.state.batchSize
+    );
+  },
+
   view: function () {
     return m(
       "div",
       {
         id: "chat",
-        class: "flex justify-content-center algin-item-start",
-
-        oninit: () => {},
-
-        onremove: () => {
-          var x = document.querySelector("div#side-toast");
-          x.style.transform = "translate(-100vw,0px)";
-
-          try {
-            localforage.removeItem("connect_to_id");
-          } catch (e) {}
-        },
+        class: "flex justify-content-center align-item-start",
         oncreate: () => {
-          top_bar("", "", "");
-          if (status.notKaiOS)
-            top_bar("", "", "<img src='assets/image/back.svg'>");
+          const chatElement = document.querySelector("body");
 
-          bottom_bar("", "", "");
+          chatElement.addEventListener("scroll", () => {
+            const scrollTop = chatElement.scrollTop;
+            const clientHeight = chatElement.clientHeight;
+            const scrollHeight = chatElement.scrollHeight;
+
+            // Scroll near bottom: Lade mehr Elemente unten
+            if (scrollTop + clientHeight >= scrollHeight - 100) {
+              console.log("load more");
+
+              const nextStartIndex =
+                chatHistory.state.startIndex + chatHistory.state.batchSize;
+              const nextItems = chat_data_history.slice(
+                nextStartIndex,
+                nextStartIndex + chatHistory.state.batchSize
+              );
+
+              if (nextItems.length > 0) {
+                chatHistory.state.startIndex = nextStartIndex;
+                chatHistory.state.renderedItems =
+                  chatHistory.state.renderedItems.concat(nextItems);
+                m.redraw();
+              }
+            }
+
+            // Scroll near top: Lade mehr Elemente oben
+            if (scrollTop <= 100 && chatHistory.state.startIndex > 0) {
+              console.log("load less");
+
+              // Berechne den neuen Startindex für die oberen Elemente
+              const prevStartIndex = Math.max(
+                0,
+                chatHistory.state.startIndex - chatHistory.state.batchSize
+              );
+
+              // Hole die neuen Elemente aus der Liste
+              const prevItems = chat_data_history.slice(
+                prevStartIndex,
+                chatHistory.state.startIndex
+              );
+
+              // Überprüfe, ob neue Elemente verfügbar sind
+              if (prevItems.length > 0) {
+                // Aktualisiere den Startindex erst nach erfolgreicher Berechnung
+                chatHistory.state.startIndex = prevStartIndex;
+
+                // Nur den sichtbaren Abschnitt des Arrays rendern
+                // Hier wird slice verwendet, um den sichtbaren Bereich zu rendern
+                const allItems = chat_data_history.slice(
+                  chatHistory.state.startIndex,
+                  chatHistory.state.startIndex + chatHistory.state.batchSize
+                );
+                chatHistory.state.renderedItems = allItems;
+
+                // Aktualisiere die Ansicht
+                m.redraw();
+              }
+            }
+          });
         },
       },
-
-      chat_data_history.map(function (item, index) {
-        //own message
-        let ff = { lat: "", lng: "" };
-        if (item.type == "gps" || item.type == "gps_live") {
-          let n = JSON.parse(item.gps);
-          ff.lat = n.lat;
-          ff.lng = n.lng;
-        }
-
-        let nickname = "me";
-        if (item.nickname != settings.nickname) {
-          nickname = item.nickname;
-        }
+      chatHistory.state.renderedItems.map(function (item, index) {
+        let nickname =
+          item.nickname !== settings.nickname ? item.nickname : "me";
 
         return m(
           "article",
           {
             class: "item " + nickname + " " + item.type,
             tabindex: index,
-            "data-type": item.type,
-            "data-user-id": item.userId,
-            "data-user-nickname": item.nickname,
-            "data-lat": ff.lat,
-            "data-lng": ff.lng,
-
-            onclick: () => {
-              if (item.type == "gps" || item.type == "gps_live") {
-                let f = JSON.parse(item.gps);
-
-                m.route.set(
-                  "/map_view?lat=" +
-                    f.lat +
-                    "&lng=" +
-                    f.lng +
-                    "&id=" +
-                    item.nickname
-                );
-              }
-            },
-
-            onfocus: () => {
-              status.current_user_id =
-                document.activeElement.getAttribute("data-user-id");
-              status.current_user_nickname =
-                document.activeElement.getAttribute("data-user-nickname");
-
-              links = linkify.find(document.activeElement.textContent);
-              if (links.length > 0 && item.type == "text") {
-                status.current_article_type = "link";
-                bottom_bar(
-                  "",
-                  "<img src='assets/image/link.svg'>",
-                  "<img src='assets/image/option.svg'>"
-                );
-              }
-
-              if (item.type == "gps" || item.type == "gps_live") {
-                status.current_article_type = "gps";
-
-                bottom_bar(
-                  "",
-                  "<img src='assets/image/select.svg'>",
-                  "<img src='assets/image/option.svg'>"
-                );
-              }
-
-              if (item.type == "image") {
-                status.current_article_type = "image";
-                if (status.notKaiOS) return false;
-                bottom_bar(
-                  "",
-                  "<img src='assets/image/save.svg'>",
-                  "<img src='assets/image/option.svg'>"
-                );
-              }
-
-              if (item.type == "audio") {
-                status.current_article_type = "audio";
-                bottom_bar(
-                  "",
-                  "<img src='assets/image/play.svg'>",
-                  "<img src='assets/image/option.svg'>"
-                );
-              }
-
-              if (item.type == "text") {
-                status.current_article_type = "text";
-
-                bottom_bar("", "", "<img src='assets/image/option.svg'>");
-              }
-            },
           },
           [
             item.type === "text"
-              ? m(
-                  "div",
-                  {
-                    class: "message-main",
-                  },
-                  item.content
-                )
+              ? m("div", { class: "message-main" }, item.content)
               : null,
-
             item.type === "image"
               ? m("img", {
                   class: "message-media",
                   src: item.image_blob
                     ? URL.createObjectURL(item.image_blob)
                     : null,
-                  "data-filename": item.filename,
                 })
               : null,
-
-            item.type === "gps"
-              ? m("div", {
-                  class: "message-map",
-                  oncreate: (vnode) => {},
-                })
-              : null,
-
-            item.type === "gps_live"
-              ? m("div", {
-                  class: "message-map",
-                  oncreate: (vnode) => {},
-                })
-              : null,
-
-            item.type === "audio"
-              ? m(
-                  "div",
-                  {
-                    class: "audioplayer",
-                  },
-
-                  m(AudioComponent, { src: item.content })
-                )
-              : null,
-
-            m("div", { class: "flex message-head" }, [
+            m("div", { class: "message-head" }, [
               m("div", time_parse(item.datetime)),
               m("div", { class: "nickname" }, nickname),
-              m(
-                "div",
-                {
-                  class: "type",
-                  style: { display: item.type == "gps" ? "" : "none" },
-                },
-                "  Location"
-              ),
-
-              m(
-                "div",
-                {
-                  class: "type",
-                  style: { display: item.type == "gps_live" ? "" : "none" },
-                },
-                "  Live location"
-              ),
             ]),
           ]
         );
