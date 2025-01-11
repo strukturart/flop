@@ -356,12 +356,10 @@ function setupConnectionEvents(conn) {
         const audioBlob = new Blob([audioBuffer], {
           type: "audio/webm",
         });
-        console.log(audioBlob);
-        const url = URL.createObjectURL(audioBlob);
 
         chat_data.push({
           nickname: data.nickname,
-          content: url,
+          content: audioBlob,
           datetime: new Date(),
           type: data.type,
           userId: data.userId,
@@ -773,26 +771,26 @@ function sendMessage(msg, type) {
     sendMessageToAll(msg);
   }
 
-  if (type == "audio") {
-    if (msg == "") return false;
+  if (type === "audio") {
+    if (!msg) return false;
 
     chat_data.push({
       nickname: settings.nickname,
-      content: URL.createObjectURL(msg),
+      content: msg,
       datetime: new Date(),
       type: type,
       userId: settings.custom_peer_id,
     });
-    msg.arrayBuffer().then((buffer) => {
-      // Send the buffer through the WebRTC data channel
 
-      msg = {
-        content: buffer,
+    // Sende die binären Daten über WebRTC
+    msg.arrayBuffer().then((buffer) => {
+      const messageToSend = {
+        content: buffer, // Binäre Daten
         nickname: settings.nickname,
         type: type,
         userId: settings.custom_peer_id,
       };
-      sendMessageToAll(msg);
+      sendMessageToAll(messageToSend); // Sende die Nachricht
     });
   }
 }
@@ -1210,40 +1208,6 @@ let scan_callback = function (n) {
 };
 
 //backupData
-/*
-let storeChatData = () => {
-  // Filter chat data
-  let data = chat_data.filter((e) => {
-    return e.content !== "invitation link" && e.id !== "no-other-user-online";
-  });
-
-  // Return if no data
-  if (!data || data.length === 0) return false;
-
-  // Ensure only new data is added
-  let newData = data.filter((item) => {
-    return !chat_data_history.some(
-      (historyItem) => JSON.stringify(historyItem) === JSON.stringify(item)
-    );
-  });
-
-  newData.map((e) => {
-    if (e.image) {
-    }
-  });
-
-  if (newData.length > 0) {
-    // Append new data to history
-    chat_data_history.push(...newData);
-
-    // Save updated history to local storage
-    localforage.setItem("chatData", chat_data_history).then((e) => {
-      console.log("Chat data stored");
-    });
-  }
-};
-
-*/
 
 // Function to convert Object URL back to Blob
 const convertObjectURLToBlob = async (objectURL) => {
@@ -1287,9 +1251,7 @@ let storeChatData = async () => {
     chat_data_history.push(...newData);
 
     // Save updated history to local storage
-    localforage.setItem("chatData", chat_data_history).then(() => {
-      console.log("Chat data stored with Blob images");
-    });
+    localforage.setItem("chatData", chat_data_history).then(() => {});
   }
 };
 
@@ -1299,31 +1261,55 @@ var AudioComponent = {
   oninit: (vnode) => {
     vnode.state.isPlaying = false;
     vnode.state.audio = null;
+
+    if (vnode.attrs.src instanceof Blob) {
+      vnode.state.audioSrc = URL.createObjectURL(vnode.attrs.src);
+    } else {
+      console.error("Invalid src: Expected a Blob.");
+    }
+  },
+  onbeforeupdate: (vnode, old) => {
+    if (vnode.attrs.src !== old.attrs.src) {
+      if (vnode.state.audioSrc) {
+        URL.revokeObjectURL(vnode.state.audioSrc);
+      }
+      if (vnode.attrs.src instanceof Blob) {
+        vnode.state.audioSrc = URL.createObjectURL(vnode.attrs.src);
+      } else {
+        console.error("Invalid src: Expected a Blob.");
+      }
+    }
+  },
+  onremove: (vnode) => {
+    if (vnode.state.audioSrc) {
+      URL.revokeObjectURL(vnode.state.audioSrc);
+    }
   },
   view: (vnode) => {
     return m("div.audio-player", [
       m("audio", {
-        src: vnode.attrs.src,
-        onkeydown: function (e) {
-          if (e.key === "Enter") togglePlayPause();
-        },
+        src: vnode.state.audioSrc,
         oncreate: (audioVnode) => {
           vnode.state.audio = audioVnode.dom;
           audioVnode.dom.controls = false;
-
-          // Add event listener for 'ended' event
-          audioVnode.dom.addEventListener("ended", function () {
+          audioVnode.dom.addEventListener("play", () => {
+            vnode.state.isPlaying = true;
+            m.redraw();
+          });
+          audioVnode.dom.addEventListener("pause", () => {
+            vnode.state.isPlaying = false;
+            m.redraw();
+          });
+          audioVnode.dom.addEventListener("ended", () => {
             vnode.state.isPlaying = false;
             m.redraw();
           });
         },
-        style: { display: "none" }, // Hide the default audio element
+        style: { display: "none" },
       }),
       m(
         "button",
-        {
-          onclick: togglePlayPause,
-        },
+        { onclick: togglePlayPause },
         vnode.state.isPlaying ? "Pause" : "Play"
       ),
     ]);
@@ -1334,7 +1320,6 @@ var AudioComponent = {
       } else {
         vnode.state.audio.play();
       }
-      vnode.state.isPlaying = !vnode.state.isPlaying;
     }
   },
 };
@@ -2395,6 +2380,12 @@ var open_peer_menu = {
         ? m(
             "button",
             {
+              oncreate: (vnode) => {
+                vnode.dom.focus();
+                setTabindex();
+              },
+
+              class: "item",
               onclick: () => {
                 m.route.set("/chatHistory");
               },
@@ -2902,6 +2893,17 @@ var chatHistory = {
                     : null,
                 })
               : null,
+
+            item.type === "audio"
+              ? m(
+                  "div",
+                  {
+                    class: "audioplayer",
+                  },
+
+                  m(AudioComponent, { src: item.content })
+                )
+              : null,
             m("div", { class: "message-head" }, [
               m("div", time_parse(item.datetime)),
               m("div", { class: "nickname" }, nickname),
@@ -3234,31 +3236,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
         peer.destroy();
         window.close();
         break;
-
-      case "Enter":
-        if (
-          route.startsWith("/chat") &&
-          document.activeElement.tagName == "INPUT" &&
-          status.notKaiOS
-        ) {
-          document.activeElement.blur();
-          // Start recording
-          if (status.audio_recording) return false;
-          audioRecorder.startRecording().then(() => {
-            status.audio_recording = true;
-
-            document.getElementById("app").style.opacity = "0";
-            document.querySelector(".playing").style.opacity = "1";
-
-            bottom_bar(
-              "<img src='assets/image/pencil.svg'>",
-              "<img src='assets/image/record-live.svg'>",
-              "<img src='assets/image/option.svg'>"
-            );
-          });
-        }
-
-        break;
     }
   }
 
@@ -3283,14 +3260,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
         }
         break;
       case "ArrowUp":
-        if (
-          route.startsWith("/chat") &&
-          document.activeElement.tagName === "INPUT"
-        ) {
-          status.action == "write";
-          write();
-        }
-
         if (route.startsWith("/map_view")) {
           MoveMap("up");
         } else {
@@ -3355,6 +3324,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
             document.getElementById("app").style.opacity = "1";
             document.querySelector(".playing").style.opacity = "0";
 
+            console.log(audioBlob);
             sendMessage(audioBlob, "audio");
             bottom_bar(
               "<img src='assets/image/pencil.svg'>",
@@ -3397,6 +3367,26 @@ document.addEventListener("DOMContentLoaded", function (e) {
         break;
 
       case "Enter":
+        if (status.notKaiOS) {
+          if (route.startsWith("/chat")) {
+            side_toaster("recordig", 3000);
+            // if (status.audio_recording) return false;
+            audioRecorder.startRecording().then(() => {
+              document.getElementById("app").style.opacity = "0";
+              document.querySelector(".playing").style.opacity = "1";
+
+              status.audio_recording = true;
+              setTimeout(() => {
+                bottom_bar(
+                  "<img src='assets/image/send.svg'>",
+                  "<img src='assets/image/record-live.svg'>",
+                  "<img src='assets/image/cancel.svg'>"
+                );
+              }, 3000);
+            });
+          }
+        }
+
         if (document.activeElement.tagName == "INPUT") {
           if (route.startsWith("/chat" && status.action == "write"))
             if (status.audio_recording) return false;
@@ -3411,11 +3401,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
               "<img src='assets/image/cancel.svg'>"
             );
           });
-        }
-
-        if (status.notKaiOS) {
-          if (route.startsWith("/chat" && status.action == "write")) {
-          }
         }
 
         if (document.activeElement.classList.contains("input-parent")) {
@@ -3726,7 +3711,7 @@ if (status.notKaiOS == false) {
     console.log(e);
   }
 }
-
+/*
 window.addEventListener("beforeunload", function (e) {
   closeAllConnections();
   peer.destroy();
@@ -3742,11 +3727,50 @@ window.addEventListener("pagehide", function (event) {
   closeAllConnections();
   peer.destroy();
 });
+*/
+
+document.addEventListener("visibilitychange", function () {
+  if (document.hidden) {
+    localStorage.setItem("last_connections", JSON.stringify(connectedPeers));
+    let dt = new Date();
+    localStorage.setItem("last_connections_time", dt.toISOString());
+  } else {
+    let r = m.route.get();
+    if (r.startsWith("/chat")) {
+      let dtString = localStorage.getItem("last_connections_time");
+      if (dtString) {
+        let dt = new Date(dtString);
+        let now = new Date();
+
+        // Calculate duration in milliseconds
+        let durationMs = now - dt;
+
+        //> 6min reset
+        if (durationMs > 360000) {
+          m.route.set("/start");
+          closeAllConnections();
+        }
+      } else {
+        console.log("No last_connections_time found in localStorage.");
+      }
+
+      let f = localStorage.getItem("last_connections");
+      if (f) {
+        f = f.split(",");
+        if (f.length > 1) {
+          compareUserList(f);
+          side_toaster("try to connect with " + f.length, 5000);
+        }
+      }
+    }
+  }
+});
 
 //start ping interval in service worker
 //channel.postMessage("startInterval");
 channel.addEventListener("message", (event) => {
   if (event.data === "intervalTriggered") {
+    console.log("keep alive");
     if (connectedPeers > 0)
       sendMessageToAll({
         userlist: connectedPeers,

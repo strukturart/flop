@@ -5,7 +5,7 @@
   "lang": "en-US",
   "start_url": "/index.html",
   "short_name": "flop",
-  "categories": ["utilities"],
+  "categories": ["social"],
   "theme_color": "#ffffff",
   "orientation": "natural",
   "display": "standalone",
@@ -53,9 +53,9 @@
   ],
 
   "b2g_features": {
-    "version": "0.3166",
-    "id": "feddolin",
-    "subtitle": "feedolin RSS/ATOM reader",
+    "version": "0.3171",
+    "id": "flop",
+    "subtitle": "flop WebRTC chat app",
     "core": true,
     "type": "privileged",
     "display": "fullscreen",
