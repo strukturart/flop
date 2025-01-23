@@ -16,11 +16,7 @@ import {
 import { stop_scan, start_scan } from "./assets/js/scan.js";
 import localforage from "localforage";
 import * as linkify from "linkifyjs";
-import {
-  geolocation,
-  pushLocalNotification,
-  detectMobileOS,
-} from "./assets/js/helper.js";
+import { geolocation, pushLocalNotification } from "./assets/js/helper.js";
 import m from "mithril";
 import qrious from "qrious";
 import { v4 as uuidv4 } from "uuid";
@@ -28,14 +24,16 @@ import "webrtc-adapter";
 import { createAudioRecorder } from "./assets/js/helper.js";
 import L from "leaflet";
 
+import markerIcon from "./assets/css/images/marker-icon.png";
+import markerIconRetina from "./assets/css/images/marker-icon-2x.png";
+
 //github.com/laurentpayot/minidenticons#usage
 export let status = {
   visibility: true,
   action: "",
   deviceOnline: true,
   userOnline: 0,
-  notKaiOS: window.innerWidth > 300 ? true : false,
-  os: detectMobileOS(),
+  notKaiOS: true,
   ownPeerId: "",
   current_article_type: "",
   current_user_id: "",
@@ -46,13 +44,18 @@ export let status = {
   addressbook_in_focus: "",
   geolocation_autoupdate: false,
   debug: false,
+  viewReady: false,
 };
 
 const audioRecorder = createAudioRecorder();
+
 export let settings = {};
 
-if ("b2g" in navigator || "navigator.mozApps" in navigator)
+const userAgent = navigator.userAgent || "";
+
+if (userAgent && userAgent.includes("KAIOS")) {
   status.notKaiOS = false;
+}
 
 if (!status.notKaiOS) {
   const scripts = [
@@ -60,6 +63,7 @@ if (!status.notKaiOS) {
     "http://127.0.0.1/api/v1/shared/core.js",
     "http://127.0.0.1/api/v1/shared/session.js",
     "http://127.0.0.1/api/v1/apps/service.js",
+    "http://127.0.0.1/api/v1/audiovolumemanager/service.js",
   ];
 
   scripts.forEach((src) => {
@@ -87,6 +91,13 @@ if (status.debug) {
     return true;
   };
 }
+
+//sometime the key press are delayed
+let key_delay = () => {
+  setTimeout(() => {
+    status.viewReady = !status.viewReady;
+  }, 2000);
+};
 
 //open KaiOS app
 let app_launcher = () => {
@@ -200,7 +211,6 @@ let addUserToAddressBook = (a, b) => {
       .setItem("addressbook", addressbook)
       .then((e) => {
         side_toaster("done", 3000);
-        console.log(e);
       })
       .catch(() => {});
   } else {
@@ -351,11 +361,25 @@ function setupConnectionEvents(conn) {
         stop_scan();
       }
 
-      if (data.type == "audio") {
-        const audioBuffer = new Uint8Array(data.content);
-        const audioBlob = new Blob([audioBuffer], {
-          type: "audio/webm",
-        });
+      if (data.type === "audio") {
+        let audioBlob;
+
+        let mimetype = data.mimeType || "audio/webm";
+
+        if (data.content instanceof Blob) {
+          audioBlob = data.content;
+        } else if (
+          data.content instanceof ArrayBuffer ||
+          data.content instanceof Uint8Array
+        ) {
+          audioBlob = new Blob([data.content], { type: mimetype });
+        } else {
+          console.error(
+            `Error: Unsupported data.content type. Expected Blob, ArrayBuffer, or Uint8Array, but got: ${typeof data.content}`
+          );
+          side_toaster("data type not supported", 4000);
+          return;
+        }
 
         chat_data.push({
           nickname: data.nickname,
@@ -477,13 +501,20 @@ const remove_no_user_online = () => {
   m.redraw();
 };
 
-getIceServers().then(() => {
-  console.log("peer created");
-});
+//create peer on start
+
+getIceServers()
+  .then(() => {
+    console.log("peer created");
+  })
+  .catch((e) => {
+    alert(e);
+  });
 
 //load ICE Server
 async function getIceServers() {
   document.querySelector(".loading-spinner").style.display = "block";
+  let p = m.route.get();
 
   try {
     const response = await fetch(
@@ -495,9 +526,10 @@ async function getIceServers() {
 
     if (!response.ok) {
       document.querySelector(".loading-spinner").style.display = "none";
-      top_bar("", "<img src='assets/image/offline.svg'>", "");
+      if (p.startsWith("/start"))
+        top_bar("", "<img src='assets/image/offline.svg'>", "");
     }
-    if (response.ok && m.route.get() == "/start") {
+    if (response.ok) {
       top_bar("", "", "");
     }
 
@@ -535,8 +567,6 @@ async function getIceServers() {
       setupConnectionEvents(c);
 
       status.user_does_not_exist = false;
-      var x = document.querySelector("div#side-toast");
-      x.style.transform = "translate(-100vw,0px)";
     });
 
     peer.on("disconnected", function (c) {
@@ -553,12 +583,12 @@ async function getIceServers() {
 
       switch (err.type) {
         case "server-error":
-          side_toaster("The connection server is not reachable", 4000);
+          side_toaster("The connection server is not reachable", 6000);
           m.route.set("/start");
           break;
 
         case "socket-closed":
-          side_toaster("The connection server is not reachable", 4000);
+          side_toaster("The connection server is not reachable", 6000);
           m.route.set("/start");
           break;
 
@@ -573,7 +603,8 @@ async function getIceServers() {
     });
   } catch (error) {
     document.querySelector(".loading-spinner").style.display = "none";
-    side_toaster("please retry to connect", 2000);
+    side_toaster("The connection server is not reachable", 6000);
+    m.route.set("/start");
   }
 }
 
@@ -654,8 +685,8 @@ const focus_last_article = function () {
   }, 1000);
 };
 
-function sendMessage(msg, type) {
-  if (msg == "") return false;
+function sendMessage(msg, type, mimeType = "") {
+  if (!msg) return false;
 
   if (type == "image") {
     // Encode the file using the FileReader API
@@ -670,6 +701,7 @@ function sendMessage(msg, type) {
         image: src,
         filename: msg.filename,
         type: type,
+        mimeType: mimeType,
       });
 
       msg = {
@@ -679,6 +711,7 @@ function sendMessage(msg, type) {
         nickname: settings.nickname,
         userId: settings.custom_peer_id,
         type: type,
+        mimeType: mimeType,
       };
       sendMessageToAll(msg);
 
@@ -696,12 +729,14 @@ function sendMessage(msg, type) {
       type: type,
       userId: settings.custom_peer_id,
       content: msg,
+      mimeType: mimeType,
     };
     chat_data.push({
       nickname: settings.nickname,
       content: msg.content,
       datetime: new Date(),
       type: type,
+      mimeType: mimeType,
     });
 
     sendMessageToAll(msg);
@@ -731,6 +766,7 @@ function sendMessage(msg, type) {
         type: type,
         userId: settings.custom_peer_id,
         gps: msg,
+        mimeType: mimeType,
       });
     }
 
@@ -740,6 +776,7 @@ function sendMessage(msg, type) {
       type: type,
       userId: settings.custom_peer_id,
       gps: msg,
+      mimeType: mimeType,
     };
     sendMessageToAll(msg);
   }
@@ -758,6 +795,7 @@ function sendMessage(msg, type) {
       type: type,
       userId: settings.custom_peer_id,
       gps: msg,
+      mimeType: mimeType,
     });
 
     msg = {
@@ -767,47 +805,58 @@ function sendMessage(msg, type) {
       type: type,
       userId: settings.custom_peer_id,
       gps: msg,
+      mimeType: mimeType,
     };
     sendMessageToAll(msg);
   }
 
   if (type === "audio") {
-    if (!msg) return false;
-
     chat_data.push({
       nickname: settings.nickname,
       content: msg,
       datetime: new Date(),
       type: type,
       userId: settings.custom_peer_id,
+      mimeType: mimeType,
     });
 
-    // Sende die binären Daten über WebRTC
-    msg.arrayBuffer().then((buffer) => {
-      const messageToSend = {
-        content: buffer, // Binäre Daten
-        nickname: settings.nickname,
-        type: type,
-        userId: settings.custom_peer_id,
-      };
-      sendMessageToAll(messageToSend); // Sende die Nachricht
-    });
+    focus_last_article();
+
+    msg
+      .arrayBuffer()
+      .then((buffer) => {
+        const messageToSend = {
+          content: buffer,
+          nickname: settings.nickname,
+          type: type,
+          userId: settings.custom_peer_id,
+          mimeType: mimeType,
+        };
+        sendMessageToAll(messageToSend);
+      })
+      .catch((error) => {
+        console.error("Error converting Blob to ArrayBuffer:", error);
+      });
   }
 }
-//send to all connections
+
 function sendMessageToAll(message) {
   m.redraw();
 
   Object.keys(peer.connections).forEach((peerId) => {
-    peer.connections[peerId].forEach((conn) => {
+    // Filter out closed connections
+    peer.connections[peerId] = peer.connections[peerId].filter((conn) => {
       if (conn.open) {
         conn.send(message);
+        return true; // Keep the connection if it's open
       } else {
-        console.log("sending" + conn + "not open ");
+        console.log("Connection to " + peerId + " is not open, removing it.");
+        return false; // Remove the connection if it's not open
       }
     });
   });
 }
+
 //close all connections
 
 function closeAllConnections() {
@@ -956,8 +1005,6 @@ let connect_to_peer = function (id, route_target) {
           });
 
           if (conn) {
-            console.log("Connection object created:", conn);
-
             conn.on("open", () => {
               setupConnectionEvents(conn);
               console.log("Connection opened with peer:", id);
@@ -972,6 +1019,8 @@ let connect_to_peer = function (id, route_target) {
             });
 
             conn.on("error", (e) => {
+              side_toaster("Connection could not be established", 5000);
+
               if (route_target == null || route_target == undefined) {
                 history.back();
               } else {
@@ -1099,7 +1148,6 @@ let connect_to_peer = function (id, route_target) {
       }, 4000);
     })
     .catch((e) => {
-      console.error("Failed to get ICE servers:", e);
       if (status.user_does_not_exist) {
         side_toaster("The user does not exist.", 100000);
       } else {
@@ -1122,7 +1170,7 @@ let create_peer = function () {
 
   m.route.set("/chat?id=" + settings.custom_peer_id);
 
-  //make qr code
+  //create qr code
   var qrs = new qrious();
   qrs.set({
     background: "white",
@@ -1201,7 +1249,6 @@ let time_parse = function (value) {
 
 //callback qr-code scan
 let scan_callback = function (n) {
-  //maybe add new view "try to connect with funny animation"
   let m = n.split("id=");
   status.action = "";
   connect_to_peer(m[1]);
@@ -1266,59 +1313,82 @@ var AudioComponent = {
       vnode.state.audioSrc = URL.createObjectURL(vnode.attrs.src);
     } else {
       console.error("Invalid src: Expected a Blob.");
+      vnode.state.audioSrc = null;
     }
   },
+
   onbeforeupdate: (vnode, old) => {
     if (vnode.attrs.src !== old.attrs.src) {
       if (vnode.state.audioSrc) {
+        console.log(vnode.state.audioSrc.type);
         URL.revokeObjectURL(vnode.state.audioSrc);
       }
       if (vnode.attrs.src instanceof Blob) {
         vnode.state.audioSrc = URL.createObjectURL(vnode.attrs.src);
       } else {
         console.error("Invalid src: Expected a Blob.");
+        vnode.state.audioSrc = null;
       }
     }
   },
+
   onremove: (vnode) => {
     if (vnode.state.audioSrc) {
       URL.revokeObjectURL(vnode.state.audioSrc);
     }
+    if (vnode.state.audio) {
+      vnode.state.audio.pause();
+      vnode.state.audio.src = ""; // Clear the source to release resources
+    }
   },
+
   view: (vnode) => {
     return m("div.audio-player", [
-      m("audio", {
-        src: vnode.state.audioSrc,
-        oncreate: (audioVnode) => {
-          vnode.state.audio = audioVnode.dom;
-          audioVnode.dom.controls = false;
-          audioVnode.dom.addEventListener("play", () => {
-            vnode.state.isPlaying = true;
-            m.redraw();
-          });
-          audioVnode.dom.addEventListener("pause", () => {
-            vnode.state.isPlaying = false;
-            m.redraw();
-          });
-          audioVnode.dom.addEventListener("ended", () => {
-            vnode.state.isPlaying = false;
-            m.redraw();
-          });
-        },
-        style: { display: "none" },
-      }),
+      vnode.state.audioSrc
+        ? m("audio", {
+            src: vnode.state.audioSrc,
+
+            oncreate: (audioVnode) => {
+              vnode.state.audio = audioVnode.dom;
+              audioVnode.dom.controls = false;
+
+              audioVnode.dom.addEventListener("play", () => {
+                vnode.state.isPlaying = true;
+                m.redraw();
+              });
+              audioVnode.dom.addEventListener("pause", () => {
+                vnode.state.isPlaying = false;
+                m.redraw();
+              });
+              audioVnode.dom.addEventListener("ended", () => {
+                vnode.state.isPlaying = false;
+                m.redraw();
+              });
+              audioVnode.dom.addEventListener("error", () => {
+                console.error(
+                  "An error occurred while loading the audio.",
+                  audioVnode.dom.error
+                );
+              });
+            },
+            style: { display: "none" },
+          })
+        : m("p", "Audio source is invalid or not provided."),
       m(
         "button",
-        { onclick: togglePlayPause },
+        {
+          onclick: () => togglePlayPause(vnode),
+          disabled: !vnode.state.audioSrc,
+        },
         vnode.state.isPlaying ? "Pause" : "Play"
       ),
     ]);
 
-    function togglePlayPause() {
-      if (vnode.state.isPlaying) {
-        vnode.state.audio.pause();
-      } else {
-        vnode.state.audio.play();
+    function togglePlayPause(vnode) {
+      if (vnode.state.audio) {
+        vnode.state.isPlaying
+          ? vnode.state.audio.pause()
+          : vnode.state.audio.play();
       }
     }
   },
@@ -1366,25 +1436,6 @@ function ZoomMap(in_out) {
   }
 }
 
-// Function to move the map
-function MoveMap(direction) {
-  let n = map.getCenter();
-
-  mainmarker.current_lat = n.lat;
-  mainmarker.current_lng = n.lng;
-
-  if (direction === "left") {
-    mainmarker.current_lng -= step;
-  } else if (direction === "right") {
-    mainmarker.current_lng += step;
-  } else if (direction === "up") {
-    mainmarker.current_lat += step;
-  } else if (direction === "down") {
-    mainmarker.current_lat -= step;
-  }
-  map.panTo(new L.LatLng(mainmarker.current_lat, mainmarker.current_lng));
-}
-
 // Initialize the map and define the setup
 function map_function(lat, lng, id) {
   map = L.map("map-container", {
@@ -1403,6 +1454,11 @@ function map_function(lat, lng, id) {
   let once = false; // Define 'once' outside the callback to persist its state
   let myMarker; // Define 'myMarker' outside the callback to persist its state
 
+  L.Icon.Default.prototype.options.shadowUrl = "";
+
+  L.Icon.Default.prototype.options.iconUrl = markerIcon;
+  L.Icon.Default.prototype.options.iconRetinaUrl = markerIconRetina;
+
   let geolocation_cb = function (e) {
     if (!myMarker) {
       // Create the marker only once
@@ -1412,7 +1468,6 @@ function map_function(lat, lng, id) {
         .openPopup();
       myMarker._icon.classList.add("myMarker");
       myMarker.options.shadowUrl = null;
-      myMarker.options.url = "marker-icon.png";
 
       status.userMarkers[0] = myMarker;
 
@@ -1469,49 +1524,44 @@ function map_function(lat, lng, id) {
   setTimeout(() => {
     updateMarkers(status);
   }, 5000);
-
-  map.on("zoomend", function () {
-    let zoom_level = map.getZoom();
-
-    if (zoom_level > 16) {
-      step = 0.0005;
-    } else if (zoom_level > 15) {
-      step = 0.001;
-    } else if (zoom_level > 14) {
-      step = 0.002;
-    } else if (zoom_level > 13) {
-      step = 0.004;
-    } else if (zoom_level > 12) {
-      step = 0.01;
-    } else if (zoom_level > 11) {
-      step = 0.02;
-    } else if (zoom_level > 10) {
-      step = 0.04;
-    } else if (zoom_level > 9) {
-      step = 0.075;
-    } else if (zoom_level > 8) {
-      step = 0.15;
-    } else if (zoom_level > 7) {
-      step = 0.3;
-    } else if (zoom_level > 6) {
-      step = 0.5;
-    } else if (zoom_level > 5) {
-      step = 1.2;
-    } else if (zoom_level > 4) {
-      step = 2.75;
-    } else if (zoom_level > 3) {
-      step = 4.5;
-    } else if (zoom_level > 2) {
-      step = 8;
-    } else {
-      step = 20;
-    }
-  });
 }
+
+function MoveMap(direction) {
+  document.querySelector("#map-container").focus();
+  const baseStep = 0.01;
+  const zoomFactor = Math.pow(2, map.getZoom());
+  const step = baseStep / zoomFactor;
+
+  // Aktuelle Mitte der Karte
+  let center = map.getCenter();
+
+  // Verschiebung berechnen
+  if (direction === "left") {
+    center.lng -= step;
+  } else if (direction === "right") {
+    center.lng += step;
+  } else if (direction === "up") {
+    center.lat += step;
+  } else if (direction === "down") {
+    center.lat -= step;
+  }
+  map.panTo(center);
+}
+
+///////////////////////
+/*VIEWS*/
+//////////////////////
 
 var root = document.getElementById("app");
 
 var waiting = {
+  oninit: () => {
+    key_delay();
+  },
+  onremove: () => {
+    key_delay();
+  },
+
   view: function () {
     let timer1 = "";
 
@@ -1531,6 +1581,7 @@ var waiting = {
         onbeforeremove: () => {
           clearTimeout(timer1);
           console.log("timer killed");
+          document.querySelector(".loading-spinner").style.display = "none";
         },
       },
       [
@@ -1550,6 +1601,12 @@ var waiting = {
 };
 
 var about = {
+  oninit: () => {
+    key_delay();
+  },
+  onremove: () => {
+    key_delay();
+  },
   view: function () {
     return m(
       "div",
@@ -1559,7 +1616,7 @@ var about = {
           top_bar("", "", "");
 
           if (status.notKaiOS)
-            top_bar("", "", "<img src='assets/image/back.svg'>");
+            top_bar("<img src='assets/image/back.svg'>", "", "");
 
           bottom_bar(
             "",
@@ -1614,7 +1671,7 @@ var about = {
           class: "width-100",
 
           oncreate: () => {
-            if (status.notKaiOS == false) load_ads();
+            if (!status.notKaiOS) load_ads();
           },
         }),
       ]
@@ -1623,6 +1680,13 @@ var about = {
 };
 
 var about_page = {
+  oninit: () => {
+    key_delay();
+  },
+  onremove: () => {
+    key_delay();
+  },
+
   view: function () {
     return m(
       "div",
@@ -1633,7 +1697,7 @@ var about_page = {
           top_bar("", "", "");
 
           if (status.notKaiOS)
-            top_bar("", "", "<img src='assets/image/back.svg'>");
+            top_bar("<img src='assets/image/back.svg'>", "", "");
         },
       },
       [
@@ -1724,6 +1788,13 @@ var about_page = {
 };
 
 var privacy_policy = {
+  oninit: () => {
+    key_delay();
+  },
+  onremove: () => {
+    key_delay();
+  },
+
   view: function () {
     return m("div", { class: "page" }, [
       m(
@@ -1734,7 +1805,7 @@ var privacy_policy = {
             top_bar("", "", "");
 
             if (status.notKaiOS)
-              top_bar("", "", "<img src='assets/image/back.svg'>");
+              top_bar("<img src='assets/image/back.svg'>", "", "");
           },
           oninit: () => {
             bottom_bar(
@@ -1795,6 +1866,13 @@ var privacy_policy = {
 };
 
 var settings_page = {
+  oninit: () => {
+    key_delay();
+  },
+  onremove: () => {
+    key_delay();
+  },
+
   view: function () {
     return m(
       "div",
@@ -1806,7 +1884,7 @@ var settings_page = {
           top_bar("", "", "");
 
           if (status.notKaiOS)
-            top_bar("", "", "<img src='assets/image/back.svg'>");
+            top_bar("<img src='assets/image/back.svg'>", "", "");
         },
       },
       [
@@ -2026,6 +2104,13 @@ var settings_page = {
 };
 
 var options = {
+  oninit: () => {
+    key_delay();
+  },
+  onremove: () => {
+    key_delay();
+  },
+
   view: function () {
     return m(
       "div",
@@ -2043,7 +2128,7 @@ var options = {
           setTabindex();
 
           if (status.notKaiOS)
-            top_bar("", "", "<img src='assets/image/back.svg'>");
+            top_bar("<img src='assets/image/back.svg'>", "", "");
         },
       },
       [
@@ -2218,6 +2303,13 @@ var options = {
 };
 
 var start = {
+  oninit: () => {
+    key_delay();
+  },
+  onremove: () => {
+    key_delay();
+  },
+
   view: function () {
     return m(
       "div",
@@ -2229,6 +2321,7 @@ var start = {
 
           var x = document.querySelector("div#side-toast");
           x.style.transform = "translate(-100vw,0px)";
+          document.querySelector(".loading-spinner").style.display = "none";
 
           //auto connect if id is given
 
@@ -2246,8 +2339,6 @@ var start = {
                 } else {
                   console.error("Invalid data format"); // Handle invalid data format
                 }
-              } else {
-                console.error("notihing to do!"); // Handle case where e or e.data is null or undefined
               }
             })
             .catch((error) => {
@@ -2311,43 +2402,33 @@ var start = {
   },
 };
 
-var links_page = {
+var scan = {
+  oninit: () => {
+    key_delay();
+  },
+  onremove: () => {
+    key_delay();
+  },
+
   view: function (vnode) {
-    return links.map(function (item, index) {
-      return m(
-        "button",
-        {
-          tabindex: index,
-          class: "item",
-          onclick: function () {
-            window.open(item.href);
-            m.route.set("/chat");
-          },
-          onfocus: () => {
-            bottom_bar(
-              "",
-              "<img class='not-desktop' src='assets/image/select.svg'>",
-              ""
-            );
-          },
-          oncreate: () => {
-            index == 1 ?? item.focus();
-            if (status.notKaiOS == true)
-              top_bar("", "", "<img src='assets/image/back.svg'>");
-          },
-        },
-        item.href
-      );
+    return m("div", {
+      oncreate: () => {
+        start_scan(scan_callback);
+        if (status.notKaiOS == true)
+          top_bar("<img src='assets/image/back.svg'>", "", "");
+      },
     });
   },
 };
 
-var scan = {
-  view: function (vnode) {
-    return m("div");
-  },
-};
 var open_peer_menu = {
+  oninit: () => {
+    key_delay();
+  },
+  onremove: () => {
+    key_delay();
+  },
+
   view: function () {
     return m(
       "div",
@@ -2372,7 +2453,7 @@ var open_peer_menu = {
           );
 
           if (status.notKaiOS == true)
-            top_bar("", "", "<img src='assets/image/back.svg'>");
+            top_bar("<img src='assets/image/back.svg'>", "", "");
         },
       },
 
@@ -2501,6 +2582,13 @@ var open_peer_menu = {
 
 let user_check;
 var chat = {
+  oninit: () => {
+    key_delay();
+  },
+  onremove: () => {
+    key_delay();
+  },
+
   view: function () {
     return m(
       "div",
@@ -2520,15 +2608,15 @@ var chat = {
         },
         oncreate: () => {
           top_bar(
-            "<img  class='users' title='0' 'src='assets/image/no-monster.svg'>",
             "",
-            ""
+            "",
+            "<img  class='users' title='0' 'src='assets/image/no-monster.svg'>"
           );
           if (status.notKaiOS)
             top_bar(
-              "<img class='users' title='0' src='assets/image/no-monster.svg'>",
+              "<img src='assets/image/back.svg'>",
               "",
-              "<img src='assets/image/back.svg'>"
+              "<img class='users' title='0' src='assets/image/no-monster.svg'>"
             );
 
           bottom_bar(
@@ -2551,38 +2639,38 @@ var chat = {
 
               if (!status.notKaiOS && status.userOnline > 0)
                 top_bar(
+                  "",
+                  "",
                   "<img class='users' title='" +
                     status.userOnline +
-                    "' src='assets/image/monster.svg'>",
-                  "",
-                  ""
+                    "' src='assets/image/monster.svg'>"
                 );
 
               if (status.notKaiOS && status.userOnline > 0)
                 top_bar(
+                  "<img src='assets/image/back.svg'>",
+                  "",
                   "<img class='users' title='" +
                     status.userOnline +
-                    "' src='assets/image/monster.svg'>",
-                  "",
-                  "<img src='assets/image/back.svg'>"
+                    "' src='assets/image/monster.svg'>"
                 );
 
               if (status.notKaiOS && status.userOnline == 0)
                 top_bar(
+                  "<img src='assets/image/back.svg'>",
+                  "",
                   "<img class='users' title='" +
                     status.userOnline +
-                    "' src='assets/image/no-monster.svg'>",
-                  "",
-                  "<img src='assets/image/back.svg'>"
+                    "' src='assets/image/no-monster.svg'>"
                 );
 
               if (!status.notKaiOS && status.userOnline == 0)
                 top_bar(
+                  "",
+                  "",
                   "<img class='users' title='" +
                     status.userOnline +
-                    "' src='assets/image/no-monster.svg'>",
-                  "",
-                  ""
+                    "' src='assets/image/no-monster.svg'>"
                 );
             }
           }, 3000);
@@ -2663,7 +2751,7 @@ var chat = {
                 status.current_article_type = "link";
                 bottom_bar(
                   "<img src='assets/image/pencil.svg'>",
-                  "<img src='assets/image/link.svg'>",
+                  "",
                   "<img src='assets/image/option.svg'>"
                 );
               }
@@ -2792,14 +2880,21 @@ var chat = {
     );
   },
 };
+
 var chatHistory = {
   state: { startIndex: 0, batchSize: 10, renderedItems: [] },
 
   oninit: function () {
+    key_delay();
+
     chatHistory.state.renderedItems = chat_data_history.slice(
       0,
       chatHistory.state.batchSize
     );
+  },
+
+  onremove: () => {
+    key_delay();
   },
 
   view: function () {
@@ -2809,6 +2904,7 @@ var chatHistory = {
         id: "chat",
         class: "flex justify-content-center align-item-start",
         oncreate: () => {
+          bottom_bar("", "", "");
           const chatElement = document.querySelector("body");
 
           chatElement.addEventListener("scroll", () => {
@@ -2816,10 +2912,7 @@ var chatHistory = {
             const clientHeight = chatElement.clientHeight;
             const scrollHeight = chatElement.scrollHeight;
 
-            // Scroll near bottom: Lade mehr Elemente unten
             if (scrollTop + clientHeight >= scrollHeight - 100) {
-              console.log("load more");
-
               const nextStartIndex =
                 chatHistory.state.startIndex + chatHistory.state.batchSize;
               const nextItems = chat_data_history.slice(
@@ -2835,36 +2928,26 @@ var chatHistory = {
               }
             }
 
-            // Scroll near top: Lade mehr Elemente oben
             if (scrollTop <= 100 && chatHistory.state.startIndex > 0) {
-              console.log("load less");
-
-              // Berechne den neuen Startindex für die oberen Elemente
               const prevStartIndex = Math.max(
                 0,
                 chatHistory.state.startIndex - chatHistory.state.batchSize
               );
 
-              // Hole die neuen Elemente aus der Liste
               const prevItems = chat_data_history.slice(
                 prevStartIndex,
                 chatHistory.state.startIndex
               );
 
-              // Überprüfe, ob neue Elemente verfügbar sind
               if (prevItems.length > 0) {
-                // Aktualisiere den Startindex erst nach erfolgreicher Berechnung
                 chatHistory.state.startIndex = prevStartIndex;
 
-                // Nur den sichtbaren Abschnitt des Arrays rendern
-                // Hier wird slice verwendet, um den sichtbaren Bereich zu rendern
                 const allItems = chat_data_history.slice(
                   chatHistory.state.startIndex,
                   chatHistory.state.startIndex + chatHistory.state.batchSize
                 );
                 chatHistory.state.renderedItems = allItems;
 
-                // Aktualisiere die Ansicht
                 m.redraw();
               }
             }
@@ -2880,6 +2963,22 @@ var chatHistory = {
           {
             class: "item " + nickname + " " + item.type,
             tabindex: index,
+
+            onfocus: () => {
+              if (item.type == "audio") {
+                status.current_article_type = "audio";
+
+                bottom_bar("", "<img src='assets/image/play.svg'>", "");
+              }
+              if (item.type == "image") {
+                status.current_article_type = "image";
+                bottom_bar("", "<img src='assets/image/save.svg'>", "");
+              }
+            },
+            onblur: () => {
+              status.current_article_type = "";
+              bottom_bar("", "", "");
+            },
           },
           [
             item.type === "text"
@@ -2916,6 +3015,13 @@ var chatHistory = {
 };
 
 let map_view = {
+  oninit: () => {
+    key_delay();
+  },
+  onremove: () => {
+    key_delay();
+  },
+
   view: function () {
     return m("div", {
       class: "width-100 height-100",
@@ -2936,13 +3042,19 @@ let map_view = {
         map_function(lat, lng, id);
 
         if (status.notKaiOS)
-          top_bar("", "", "<img src='assets/image/back.svg'>");
+          top_bar("<img src='assets/image/back.svg'>", "", "");
       },
     });
   },
 };
 
 var intro = {
+  oninit: () => {
+    key_delay();
+  },
+  onremove: () => {
+    key_delay();
+  },
   view: function () {
     return m(
       "div",
@@ -2964,7 +3076,7 @@ var intro = {
           if (fullUrl.includes("?id=")) {
             localforage.setItem("connect_to_id", { data: fullUrl });
             status.launching = true;
-            if (status.notKaiOS == false) {
+            if (!status.notKaiOS) {
               app_launcher();
             } else {
               setTimeout(function () {
@@ -3027,7 +3139,6 @@ m.route(root, "/intro", {
   "/intro": intro,
   "/open_peer_menu": open_peer_menu,
   "/start": start,
-  "/links_page": links_page,
   "/chat": chat,
   "/chatHistory": chatHistory,
   "/options": options,
@@ -3149,12 +3260,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
   //top bar
 
   document
-    .querySelector("#top-bar div div.button-right")
+    .querySelector("#top-bar div div.button-left")
     .addEventListener("click", function (event) {
       let route = m.route.get();
 
       if (
-        route.startsWith("/chat") ||
+        route.startsWith("/chat?") ||
         m.route.get() == "/settings_page" ||
         m.route.get() == "/scan" ||
         m.route.get() == "/open_peer_menu" ||
@@ -3189,7 +3300,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         status.action = "";
       }
 
-      if (m.route.get() == "/options" || m.route.get() == "/links_page") {
+      if (m.route.get() == "/options") {
         m.route.set("/chat?id=") + status.ownPeerId;
       }
     });
@@ -3228,7 +3339,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
   let users_geolocation_count = 0;
 
   function longpress_action(param) {
-    let route = m.route.get();
+    if (!status.viewReady) return false;
 
     switch (param.key) {
       case "Backspace":
@@ -3244,7 +3355,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
   // ////////////
 
   function shortpress_action(param) {
-    if (status.action == "confirm") return false;
+    if (!status.viewReady) {
+      return false;
+    }
+
     let route = m.route.get();
 
     switch (param.key) {
@@ -3278,12 +3392,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
       case "SoftRight":
       case "Alt":
-        if (route.startsWith("/chat") && !status.audio_recording)
+        if (route.startsWith("/chat?") && !status.audio_recording)
           m.route.set("/options");
         if (route == "/start") m.route.set("/about");
 
         if (status.audio_recording && route.startsWith("/chat")) {
-          audioRecorder.stopRecording().then((audioBlob) => {
+          audioRecorder.stopRecording().then(({ audioBlob, mimeType }) => {
             status.audio_recording = false;
 
             document.getElementById("app").style.opacity = "1";
@@ -3314,36 +3428,34 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
       case "SoftLeft":
       case "Control":
-        if (
-          route.startsWith("/chat") &&
-          status.action == "write" &&
-          status.audio_recording
-        ) {
+        if (route.startsWith("/chat?") && status.audio_recording) {
           // Stop recording and get the recorded data
-          audioRecorder.stopRecording().then((audioBlob) => {
+          audioRecorder.stopRecording().then(({ audioBlob, mimeType }) => {
             document.getElementById("app").style.opacity = "1";
             document.querySelector(".playing").style.opacity = "0";
 
-            console.log(audioBlob);
-            sendMessage(audioBlob, "audio");
+            sendMessage(audioBlob, "audio", mimeType);
             bottom_bar(
               "<img src='assets/image/pencil.svg'>",
               "",
               "<img src='assets/image/option.svg'>"
             );
 
-            // Clean up the audio recorder
-            audioRecorder.cleanup();
             status.audio_recording = false;
             write();
+            return;
           });
         }
 
-        if (route.startsWith("/chat") && status.action == "write") {
+        if (route.startsWith("/chat?") && status.action == "write") {
           sendMessage(document.getElementsByTagName("input")[0].value, "text");
           write();
         }
-        if (route.startsWith("/chat") && status.action !== "write") {
+        if (
+          route.startsWith("/chat?") &&
+          status.action !== "write" &&
+          !status.audio_recording
+        ) {
           if (status.userOnline > 0) {
             write();
           } else {
@@ -3360,7 +3472,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
         }
 
         if (route == "/open_peer_menu") {
-          start_scan(scan_callback);
           m.route.set("/scan");
         }
 
@@ -3368,39 +3479,42 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
       case "Enter":
         if (status.notKaiOS) {
-          if (route.startsWith("/chat")) {
-            side_toaster("recordig", 3000);
-            // if (status.audio_recording) return false;
-            audioRecorder.startRecording().then(() => {
-              document.getElementById("app").style.opacity = "0";
-              document.querySelector(".playing").style.opacity = "1";
+          if (route.startsWith("/chat?")) {
+            audioRecorder
+              .startRecording()
+              .then(() => {
+                document.getElementById("app").style.opacity = "0";
+                document.querySelector(".playing").style.opacity = "1";
 
-              status.audio_recording = true;
-              setTimeout(() => {
-                bottom_bar(
-                  "<img src='assets/image/send.svg'>",
-                  "<img src='assets/image/record-live.svg'>",
-                  "<img src='assets/image/cancel.svg'>"
-                );
-              }, 3000);
-            });
+                status.audio_recording = true;
+                setTimeout(() => {
+                  bottom_bar(
+                    "<img src='assets/image/send.svg'>",
+                    "<img src='assets/image/record-live.svg'>",
+                    "<img src='assets/image/cancel.svg'>"
+                  );
+                }, 1000);
+              })
+              .catch((e) => {});
           }
         }
 
         if (document.activeElement.tagName == "INPUT") {
-          if (route.startsWith("/chat" && status.action == "write"))
+          if (route.startsWith("/chat?" && status.action == "write"))
             if (status.audio_recording) return false;
-          audioRecorder.startRecording().then(() => {
-            document.getElementById("app").style.opacity = "0";
-            document.querySelector(".playing").style.opacity = "1";
+          audioRecorder
+            .startRecording()
+            .then(() => {
+              document.getElementById("app").style.opacity = "0";
+              document.querySelector(".playing").style.opacity = "1";
 
-            status.audio_recording = true;
-            bottom_bar(
-              "<img src='assets/image/send.svg'>",
-              "<img src='assets/image/record-live.svg'>",
-              "<img src='assets/image/cancel.svg'>"
-            );
-          });
+              bottom_bar(
+                "<img src='assets/image/send.svg'>",
+                "<img src='assets/image/record-live.svg'>",
+                "<img src='assets/image/cancel.svg'>"
+              );
+            })
+            .catch((e) => {});
         }
 
         if (document.activeElement.classList.contains("input-parent")) {
@@ -3467,17 +3581,24 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
             let download_successfull = () => {};
             downloadFile(filename, data, download_successfull);
-          } else {
-            return false;
+          }
+
+          if (status.current_article_type == "audio") {
+            document.activeElement
+              .querySelectorAll("div.audio-player")
+              .forEach((e) => {
+                var playPauseButton = e.querySelector("button");
+
+                // Check if the play/pause button exists and trigger a click event
+                if (playPauseButton) {
+                  playPauseButton.click();
+                }
+              });
           }
         }
 
         if (route.startsWith("/chat")) {
           if (document.activeElement.tagName == "ARTICLE") {
-            if (status.current_article_type == "link") {
-              m.route.set("/links_page");
-            }
-
             if (status.current_article_type == "audio") {
               document.activeElement
                 .querySelectorAll("div.audio-player")
@@ -3516,8 +3637,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
               let download_successfull = () => {};
               downloadFile(filename, data, download_successfull);
-            } else {
-              return false;
             }
           }
 
@@ -3544,6 +3663,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
   // //////////////////////////////
 
   function handleKeyDown(evt) {
+    if (!status.viewReady) return false;
+
     let route = m.route.get();
 
     if (evt.key === "Backspace" && m.route.get() != "/start") {
@@ -3564,7 +3685,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
       }
 
       if (
-        route.startsWith("/chat") ||
+        route.startsWith("/chat?") ||
         m.route.get() == "/settings_page" ||
         m.route.get() == "/open_peer_menu" ||
         m.route.get() == "/about" ||
@@ -3601,7 +3722,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         m.route.set("/chat?id=") + status.ownPeerId;
       }
 
-      if (m.route.get() == "/options" || m.route.get() == "/links_page") {
+      if (m.route.get() == "/options") {
         m.route.set("/chat?id=") + status.ownPeerId;
       }
     }
@@ -3630,9 +3751,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
   }
 
   function handleKeyUp(evt) {
-    if (status.audio_recording === true) {
-    }
-
     if (status.visibility === false) return false;
 
     clearTimeout(timeout);
@@ -3668,7 +3786,7 @@ try {
   console.log(e);
 }
 
-if (status.notKaiOS == false) {
+if (!status.notKaiOS) {
   try {
     navigator.mozSetMessageHandler("activity", function (activityRequest) {
       var option = activityRequest.source;
@@ -3711,23 +3829,6 @@ if (status.notKaiOS == false) {
     console.log(e);
   }
 }
-/*
-window.addEventListener("beforeunload", function (e) {
-  closeAllConnections();
-  peer.destroy();
-});
-
-window.addEventListener("unload", function () {
-  closeAllConnections();
-  peer.destroy();
-});
-
-window.addEventListener("pagehide", function (event) {
-  console.log("Page is being hidden or unloaded.");
-  closeAllConnections();
-  peer.destroy();
-});
-*/
 
 document.addEventListener("visibilitychange", function () {
   if (document.hidden) {
@@ -3736,7 +3837,7 @@ document.addEventListener("visibilitychange", function () {
     localStorage.setItem("last_connections_time", dt.toISOString());
   } else {
     let r = m.route.get();
-    if (r.startsWith("/chat")) {
+    if (r.startsWith("/chat?")) {
       let dtString = localStorage.getItem("last_connections_time");
       if (dtString) {
         let dt = new Date(dtString);
@@ -3758,7 +3859,10 @@ document.addEventListener("visibilitychange", function () {
       if (f) {
         f = f.split(",");
         if (f.length > 1) {
-          compareUserList(f);
+          f.forEach((e) => {
+            peer.reconnect(e);
+          });
+
           side_toaster("try to connect with " + f.length, 5000);
         }
       }

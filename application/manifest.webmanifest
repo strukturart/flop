@@ -53,7 +53,7 @@
   ],
 
   "b2g_features": {
-    "version": "0.3171",
+    "version": "0.3195",
     "id": "flop",
     "subtitle": "flop WebRTC chat app",
     "core": true,
@@ -62,7 +62,7 @@
 
     "developer": {
       "name": "strukturart",
-      "url": "https://github.com/strukturart/feedolin"
+      "url": "https://github.com/strukturart/flop"
     },
 
     "dependencies": {
