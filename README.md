@@ -32,6 +32,17 @@ In order to establish a connection between 2 peers, you have to know the id of t
 
 <a href="https://flop.bhackers.uber.space/">https://flop.bhackers.uber.space/</a>
 
+### Build your own
+
+Installing the dependencies<br>
+`npm -i`
+
+`run build.sh`<br>
+Two zip files will be created, one for KaiOS 2 and one for KaiOS 3
+
+If you want to create a browser version<br>
+`npm run web`
+
 ### known problems
 
 In certain cases a connection between two peers cannot be established. The solution should be a separate TURN server, which can be specified when establishing the connection. The connection data to the TURN server must be saved in an .env

@@ -196,6 +196,37 @@ let delete_addressbook_item = (userIdToDelete) => {
     });
 };
 
+let update_addressbook_item = (userIdToUpdate) => {
+  // Find the user to update
+  let userIndex = addressbook.findIndex((user) => user.id === userIdToUpdate);
+
+  if (userIndex === -1) {
+    side_toaster("User not found", 3000);
+    return;
+  }
+
+  // Prompt the user for new values
+  let newName = prompt(
+    "Enter the new name of the contact",
+    addressbook[userIndex].name
+  );
+
+  if (newName !== null && newName.trim() !== "") {
+    addressbook[userIndex].name = newName.trim();
+  }
+
+  // Save the updated addressbook to localforage
+  localforage
+    .setItem("addressbook", addressbook)
+    .then(() => {
+      side_toaster("Contact updated successfully", 3000);
+      m.redraw();
+    })
+    .catch((error) => {
+      console.error("Error saving updated address book:", error);
+    });
+};
+
 let addUserToAddressBook = (a, b) => {
   if (!Array.isArray(addressbook)) {
     console.error("addressbook is not defined or is not an array");
@@ -205,7 +236,10 @@ let addUserToAddressBook = (a, b) => {
   let exists = addressbook.some((e) => e.id == a);
 
   if (!exists) {
-    addressbook.push({ id: a, nickname: b });
+    let uname = prompt("enter the name of the contact");
+    if (!uname) uname = "";
+
+    addressbook.push({ id: a, nickname: b, name: uname });
 
     localforage
       .setItem("addressbook", addressbook)
@@ -569,18 +603,13 @@ async function getIceServers() {
       status.user_does_not_exist = false;
     });
 
-    peer.on("disconnected", function (c) {
-      //setupConnectionEvents(c);
-    });
+    peer.on("disconnected", function (c) {});
 
     peer.on("close", function (c) {
       document.querySelector(".loading-spinner").style.display = "none";
-      //setupConnectionEvents(c);
     });
 
     peer.on("error", function (err) {
-      console.log(err.type);
-
       switch (err.type) {
         case "server-error":
           side_toaster("The connection server is not reachable", 6000);
@@ -1030,79 +1059,6 @@ let connect_to_peer = function (id, route_target) {
               console.error("Connection error:", e);
             });
 
-            let pc = conn.peerConnection;
-            if (pc) {
-              pc.addEventListener("icecandidate", (event) => {
-                console.log("ICE candidate event:" + event);
-              });
-
-              pc.addEventListener("icecandidateerror", (event) => {
-                console.error("ICE candidate error:", event);
-              });
-
-              pc.addEventListener("icegatheringstatechange", () => {
-                console.log(
-                  "ICE gathering state changed:",
-                  pc.iceGatheringState
-                );
-                if (pc.iceGatheringState === "complete") {
-                  console.log("ICE gathering state is complete");
-                }
-              });
-
-              pc.addEventListener("iceconnectionstatechange", () => {
-                console.log(
-                  "ICE connection state changed:",
-                  pc.iceConnectionState
-                );
-                if (pc.iceConnectionState === "disconnected") {
-                }
-                if (pc.iceConnectionState === "connected") {
-                }
-                if (
-                  pc.iceConnectionState === "failed" ||
-                  pc.iceConnectionState === "closed"
-                ) {
-                }
-              });
-
-              pc.addEventListener("signalingstatechange", () => {
-                console.log("Signaling state changed:", pc.signalingState);
-              });
-
-              pc.addEventListener("negotiationneeded", (event) => {
-                console.log("Negotiation needed:", event);
-              });
-
-              pc.addEventListener("connectionstatechange", () => {
-                console.log("Connection state changed:", pc.connectionState);
-                if (pc.connectionState === "connected") {
-                  console.log("Peers are fully connected");
-                }
-                if (pc.connectionState === "disconnected") {
-                  console.log("Peers are disconnected");
-                }
-                if (pc.connectionState === "failed") {
-                  console.log("Connection failed");
-                }
-                if (pc.connectionState === "closed") {
-                  console.log("Connection closed");
-                }
-              });
-            } else {
-              console.warn("Peer connection object not available");
-              if (status.user_does_not_exist) {
-                side_toaster("The user does not exist.", 100000);
-              } else {
-                side_toaster("Connection could not be established", 40000);
-              }
-              if (route_target == null || route_target == undefined) {
-                history.back();
-              } else {
-                m.route.set(route_target);
-              }
-            }
-
             // Fallback in case 'open' or 'error' events are not triggered
             setTimeout(() => {
               if (!conn.open) {
@@ -1120,7 +1076,6 @@ let connect_to_peer = function (id, route_target) {
               }
             }, 10000); // Adjust timeout as needed
           } else {
-            console.error("Failed to create connection object");
             if (status.user_does_not_exist) {
               side_toaster("The user does not exist.", 100000);
             } else {
@@ -1249,9 +1204,13 @@ let time_parse = function (value) {
 
 //callback qr-code scan
 let scan_callback = function (n) {
-  let m = n.split("id=");
-  status.action = "";
-  connect_to_peer(m[1]);
+  if (n == "error") {
+    m.route.set("/open_peer_menu");
+  } else {
+    let m = n.split("id=");
+    status.action = "";
+    connect_to_peer(m[1]);
+  }
 };
 
 //backupData
@@ -1971,15 +1930,33 @@ var settings_page = {
           },
           "share"
         ),
-
-        m("H2", { class: "text-center" }, m.trust("<br>Server Settings")),
+        m(
+          "button",
+          {
+            id: "advanced settings",
+            onclick: (e) => {
+              e.target.style.display = "none";
+              document.querySelectorAll(".advanced-settings").forEach((e) => {
+                e.style.visibility = "visible";
+                e.style.height = "auto";
+              });
+            },
+          },
+          "advanced settings"
+        ),
+        m(
+          "H2",
+          { class: "text-center advanced-settings" },
+          m.trust("<br>Server Settings")
+        ),
 
         m(
           "div",
           {
             tabindex: 4,
 
-            class: "item input-parent  flex justify-content-spacearound",
+            class:
+              "item input-parent  flex justify-content-spacearound advanced-settings",
           },
           [
             m(
@@ -2002,7 +1979,8 @@ var settings_page = {
           {
             tabindex: 5,
 
-            class: "item input-parent  flex  justify-content-spacearound",
+            class:
+              "item input-parent  flex  justify-content-spacearound advanced-settings",
           },
           [
             m(
@@ -2025,7 +2003,8 @@ var settings_page = {
           {
             tabindex: 6,
 
-            class: "item input-parent  flex justify-content-spacearound",
+            class:
+              "item input-parent  flex justify-content-spacearound advanced-settings",
           },
           [
             m(
@@ -2048,7 +2027,8 @@ var settings_page = {
           {
             tabindex: 7,
 
-            class: "item input-parent  flex justify-content-spacearound",
+            class:
+              "item input-parent  flex justify-content-spacearound advanced-settings",
           },
           [
             m(
@@ -2150,8 +2130,6 @@ var options = {
               );
             },
             onclick: function () {
-              //  pick_image(handleImage);
-
               if (status.userOnline > 0) {
                 pick_image(handleImage);
               } else {
@@ -2162,35 +2140,36 @@ var options = {
           "share image"
         ),
 
-        m(
-          "button",
-          {
-            oncreate: () =>
-              setTimeout(function () {
-                setTabindex();
-              }, 500),
-            class: "item",
-            id: "button-add-user",
-            style: { display: status.userOnline ? "" : "none" },
+        status.current_user_id !== ""
+          ? m(
+              "button",
+              {
+                oncreate: () =>
+                  setTimeout(function () {
+                    setTabindex();
+                  }, 500),
+                class: "item",
+                id: "button-add-user",
+                style: { display: status.userOnline ? "" : "none" },
 
-            onfocus: () => {
-              bottom_bar("", "<img  src='./assets/image/select.svg'>", "");
-            },
-            onclick: function () {
-              if (
-                status.current_user_id !== "" &&
-                status.user_nickname !== ""
-              ) {
-                addUserToAddressBook(
-                  status.current_user_id,
-                  status.current_user_nickname
-                );
-              } else {
-              }
-            },
-          },
-          "add user to addressbook"
-        ),
+                onfocus: () => {
+                  bottom_bar("", "<img  src='./assets/image/select.svg'>", "");
+                },
+                onclick: function () {
+                  if (
+                    status.current_user_id !== "" &&
+                    status.user_nickname !== ""
+                  ) {
+                    addUserToAddressBook(
+                      status.current_user_id,
+                      status.current_user_nickname
+                    );
+                  }
+                },
+              },
+              "add user to addressbook"
+            )
+          : null,
 
         m(
           "button",
@@ -2541,14 +2520,14 @@ var open_peer_menu = {
                       onfocus: () => {
                         status.addressbook_in_focus = e.id;
                         bottom_bar(
-                          "",
+                          "<img src='assets/image/pencil.svg'>",
                           "<img src='assets/image/select.svg'>",
                           "<img src='assets/image/delete.svg'>"
                         );
                       },
                       onhover: () => {},
                       onblur: () => {
-                        status.addressbook_in_focus = "";
+                        //status.addressbook_in_focus = "";
                       },
 
                       onclick: () => {
@@ -2569,7 +2548,7 @@ var open_peer_menu = {
                         )
                       ),
 
-                      m("span", e.nickname),
+                      m("span", !e.name ? e.nickname : e.name),
                     ]
                   );
                 }),
@@ -3447,6 +3426,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
           });
         }
 
+        if (route == "/open_peer_menu") {
+          if (status.addressbook_in_focus != "") {
+            update_addressbook_item(status.addressbook_in_focus);
+          }
+        }
+
         if (route.startsWith("/chat?") && status.action == "write") {
           sendMessage(document.getElementsByTagName("input")[0].value, "text");
           write();
@@ -3472,7 +3457,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         }
 
         if (route == "/open_peer_menu") {
-          m.route.set("/scan");
+          if (status.addressbook_in_focus == "") m.route.set("/scan");
         }
 
         break;
@@ -3525,11 +3510,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
           m.route.get() == "/options" &&
           document.activeElement.id == "button-add-user"
         ) {
-          if (status.current_user_id !== "" && status.user_nickname !== "")
+          if (status.current_user_id !== "" && status.user_nickname !== "") {
             addUserToAddressBook(
               status.current_user_id,
               status.current_user_nickname
             );
+          }
         }
 
         if (route == "/start") {

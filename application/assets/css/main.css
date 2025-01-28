@@ -746,6 +746,11 @@ article .message-map {
  SETTINGS
  */
 
+.advanced-settings {
+  visibility: hidden;
+  height: 0px;
+}
+
 #about-text {
   margin: 15px 0 0 0;
 }

@@ -77,7 +77,10 @@ export let start_scan = function (callback) {
         };
       })
       .catch(function (err) {
-        alert("The following error occurred: " + err.name);
+        console.error("The following error occurred: " + err.name);
+        callback("error");
+
+        stop_scan();
       });
   } else {
     alert("getUserMedia not supported");
