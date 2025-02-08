@@ -24,6 +24,8 @@ import "webrtc-adapter";
 import { createAudioRecorder } from "./assets/js/helper.js";
 import L from "leaflet";
 
+import "swiped-events";
+
 import markerIcon from "./assets/css/images/marker-icon.png";
 import markerIconRetina from "./assets/css/images/marker-icon-2x.png";
 
@@ -173,7 +175,16 @@ let compareUserList = (userlist) => {
 
 //add to addressbook
 
-let addressbook = [];
+let addressbook = [
+  {
+    id: "123",
+    name: "test",
+  },
+  {
+    id: "123",
+    name: "test2",
+  },
+];
 localforage
   .getItem("addressbook")
   .then((e) => {
@@ -2511,7 +2522,7 @@ var open_peer_menu = {
                     "button",
                     {
                       class:
-                        "item flex justify-content-center align-item-center",
+                        "item flex justify-content-center align-item-center addressbook-item",
                       "data-id": e.id,
                       "data-online": e.live ? "true" : "false",
                       oncreate: (vnode) => {
@@ -2524,10 +2535,6 @@ var open_peer_menu = {
                           "<img src='assets/image/select.svg'>",
                           "<img src='assets/image/delete.svg'>"
                         );
-                      },
-                      onhover: () => {},
-                      onblur: () => {
-                        //status.addressbook_in_focus = "";
                       },
 
                       onclick: () => {
@@ -3217,6 +3224,38 @@ document.addEventListener("DOMContentLoaded", function (e) {
     scrollToCenter();
   };
 
+  document.addEventListener("swiped", function (e) {
+    e.preventDefault();
+
+    let a = e.target.closest("button.addressbook-item");
+
+    if (a && e.detail.dir === "left") {
+      a.classList.add("swipe-left"); // Move the button to the right
+
+      setTimeout(() => {
+        let ask0 = confirm("Do you want to delete this contact?");
+        if (ask0) {
+          delete_addressbook_item(a.getAttribute("data-id"));
+        } else {
+          a.classList.remove("swipe-left"); // Revert if canceled
+        }
+      }, 500); // Reduced delay for better UX
+    }
+
+    if (a && e.detail.dir === "right") {
+      a.classList.add("swipe-right"); // Move the button to the left
+
+      setTimeout(() => {
+        let ask1 = confirm("Do you want to edit this contact?");
+        if (ask1) {
+          update_addressbook_item(a.getAttribute("data-id"));
+        }
+        // Revert position regardless of the choice
+        a.classList.remove("swipe-right");
+      }, 500); // Consistent shorter delay
+    }
+  });
+
   // Add click listeners to simulate key events
   document
     .querySelector("div.button-left")
@@ -3255,6 +3294,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
       }
 
       if (m.route.get() == "/scan") {
+        status.action = "";
+        m.route.set("/open_peer_menu");
+      }
+
+      if (route.startsWith("/chatHistory")) {
         status.action = "";
         m.route.set("/open_peer_menu");
       }

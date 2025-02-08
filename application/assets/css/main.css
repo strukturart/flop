@@ -149,6 +149,8 @@ button {
   font-weight: 700;
   min-height: 40px;
   font-family: "Roboto" !important;
+
+  touch-action: none;
 }
 button:focus {
   background: orange;
@@ -158,6 +160,18 @@ button:focus {
 button:hover {
   background: orange;
   border: 0px solid gray;
+}
+
+button.addressbook-item {
+  transition: transform 0.3s ease;
+}
+
+button.addressbook-item.swipe-left {
+  transform: translateX(20%);
+}
+
+button.addressbook-item.swipe-right {
+  transform: translateX(-20%);
 }
 
 a.button-style {

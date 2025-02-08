@@ -43,6 +43,7 @@
     "qrious": "^4.0.2",
     "url-search-params-polyfill": "^8.1.1",
     "uuid": "^9.0.0",
-    "webrtc-adapter": "^9.0.1"
+    "webrtc-adapter": "^9.0.1",
+    "swiped-events": "^1.2.0"
   }
 }
