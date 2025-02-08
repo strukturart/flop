@@ -631,7 +631,7 @@ div#top-bar div#inner {
 
 div#top-bar div {
   background: none;
-  color: white;
+  color: black;
   padding: 2px;
   font-size: 0.8rem;
 }
@@ -642,7 +642,6 @@ div#top-bar div.button-center img {
 
 div#top-bar div.button-left {
   background: none;
-  color: white;
   padding: 2px;
   width: 32%;
   display: flex;
@@ -659,7 +658,6 @@ div#top-bar div.button-right img {
 
 div#top-bar div.button-right {
   background: none;
-  color: white;
   padding: 2px;
   width: 32%;
   display: flex;
@@ -671,7 +669,6 @@ div#top-bar div.button-center {
   justify-content: center; /* Horizontally center the image */
   align-items: center; /* Vertically center the image */
   background: none;
-  color: white;
   padding: 2px;
   width: 32%;
 }
