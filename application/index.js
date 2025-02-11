@@ -179,8 +179,6 @@ localforage
   .getItem("addressbook")
   .then((e) => {
     if (e !== null) addressbook = e;
-
-    console.log(e);
   })
   .catch(() => {});
 
@@ -2316,6 +2314,7 @@ var options = {
 
 var start = {
   oninit: () => {
+    if(addressbook.length>0)m.route.set("/open_peer_menu");
     key_delay();
   },
   onremove: () => {
@@ -2331,12 +2330,10 @@ var start = {
         oncreate: () => {
           top_bar("", "", "");
 
-          var x = document.querySelector("div#side-toast");
-          x.style.transform = "translate(-100vw,0px)";
+        
           document.querySelector(".loading-spinner").style.display = "none";
 
           //auto connect if id is given
-
           localforage
             .getItem("connect_to_id")
             .then((e) => {
@@ -2346,7 +2343,7 @@ var start = {
                 if (params.length > 1) {
                   let id = params[1];
                   localforage.removeItem("connect_to_id").then(() => {
-                    connect_to_peer(id, "/start");
+                    connect_to_peer(id, "/chat");
                   });
                 } else {
                   console.error("Invalid data format"); // Handle invalid data format
@@ -2354,7 +2351,7 @@ var start = {
               }
             })
             .catch((error) => {
-              console.error("Error retrieving data:", error); // Handle error retrieving data
+              console.error("Error retrieving data:", error);
             });
 
           bottom_bar(
@@ -2442,7 +2439,7 @@ var open_peer_menu = {
             top_bar("<img src='assets/image/back.svg'>", "", "");
         },
       },
-
+      /*
       chat_data_history.length > 0
         ? m(
             "button",
@@ -2460,6 +2457,8 @@ var open_peer_menu = {
             "chat history"
           )
         : null,
+        */
+
 
       addressbook.length == 0
         ? null
@@ -2468,8 +2467,13 @@ var open_peer_menu = {
             {
               class: "width-100 flex justify-content-center",
             },
-            m.trust("<br>Addressbook<br><br>")
+            [  m("img", {
+              src: "assets/icons/intro.svg",
+              class:"logo-addressbook"
+            })]
           ),
+
+        
       [
         addressbook.length > 0
           ? null
