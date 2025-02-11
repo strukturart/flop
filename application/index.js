@@ -161,12 +161,9 @@ let compareUserList = (userlist) => {
   userlist.forEach((user) => {
     if (!connectedPeers.includes(user)) {
       try {
-        conn = peer.connect(user, {
+        peer.connect(user, {
           label: "flop",
           reliable: true,
-        });
-        conn.on("open", () => {
-          setupConnectionEvents(conn);
         });
       } catch (e) {
         console.log("try to connect failed" + e);
@@ -277,7 +274,6 @@ function setupConnectionEvents(conn) {
     console.log("ping");
     console.log("online check");
     console.log("allow user? id: " + conn.peer);
-    side_toaster("allow user? id: " + conn.peer, 3000);
 
     conn.send({
       nickname: settings.nickname,
@@ -311,11 +307,8 @@ function setupConnectionEvents(conn) {
     //to access data chanel
     return false;
   }
-  side_toaster(conn.label, 3000);
 
-  if (!connectedPeers.includes(conn.peer)) {
-    connectedPeers.push(conn.peer);
-  }
+  connectedPeers.push(conn.peer);
 
   let pc = conn.peerConnection;
 
@@ -344,14 +337,11 @@ function setupConnectionEvents(conn) {
         updateConnections();
         break;
     }
-
-    updateConnections();
   });
 
   //receive data
   conn.on("data", function (data) {
-    if (!data.from || !data.to) console.log(data);
-
+    //if (!data.from || !data.to) console.log(data);
     remove_no_user_online();
 
     if (
@@ -370,6 +360,10 @@ function setupConnectionEvents(conn) {
           `User wants to chat with you, if you want to join, press enter`,
           10000
         );
+      }
+
+      if (data.type == "notification") {
+        console.log(data);
       }
 
       if (data.type == "image") {
@@ -502,6 +496,7 @@ function setupConnectionEvents(conn) {
 
       storeChatData();
     } else {
+      console.log("userlist: " + data.userlist);
       if (data.userlist && status.groupchat) {
         //connect all users
         //groupchat
@@ -559,16 +554,6 @@ const remove_no_user_online = () => {
   m.redraw();
 };
 
-//create peer on start
-
-getIceServers()
-  .then(() => {
-    console.log("peer created");
-  })
-  .catch((e) => {
-    alert(e);
-  });
-
 //load ICE Server
 async function getIceServers() {
   document.querySelector(".loading-spinner").style.display = "block";
@@ -588,7 +573,7 @@ async function getIceServers() {
         top_bar("", "<img src='assets/image/offline.svg'>", "");
     }
     if (response.ok) {
-      top_bar("", "", "");
+      if (p.startsWith("/start")) top_bar("", "", "");
     }
 
     const a = await response.json();
@@ -614,20 +599,35 @@ async function getIceServers() {
       referrerPolicy: "no-referrer",
     });
 
-    peer.on("open", function (c) {
-      document.querySelector(".loading-spinner").style.display = "none";
-
-      remove_no_user_online();
-    });
-
     peer.on("connection", function (c) {
       setupConnectionEvents(c);
-
-      status.user_does_not_exist = false;
     });
 
     peer.on("close", function (c) {
       document.querySelector(".loading-spinner").style.display = "none";
+    });
+
+    peer.on("open", function (id) {
+      document.querySelector(".loading-spinner").style.display = "none";
+
+      console.log("PeerJS connected with server ID:", id);
+      side_toaster("open", 8000);
+      // Zugriff auf den internen WebSocket
+      if (peer.socket && peer.socket._socket) {
+        peer.socket._socket.addEventListener("error", function (event) {
+          console.error("WebSocket Error:", event);
+          //side_toaster("WebSocket connection failed", 12000);
+          attemptReconnect();
+        });
+
+        peer.socket._socket.addEventListener("close", function (event) {
+          console.warn("WebSocket closed:", event);
+          //side_toaster("WebSocket connection closed", 12000);
+          attemptReconnect();
+        });
+      } else {
+        console.warn("WebSocket not initialized yet.");
+      }
     });
 
     peer.on("error", function (err) {
@@ -636,17 +636,16 @@ async function getIceServers() {
       switch (err.type) {
         case "server-error":
           side_toaster("The connection server is not reachable", 6000);
-          m.route.set("/start");
+          // m.route.set("/start");
           break;
 
         case "socket-closed":
           side_toaster("The connection server is not reachable", 6000);
-          m.route.set("/start");
+          // m.route.set("/start");
           break;
 
         case "peer-unavailable":
           //side_toaster("peer unavailable", 50000);
-          status.user_does_not_exist = true;
           return false;
 
         default:
@@ -656,7 +655,15 @@ async function getIceServers() {
   } catch (error) {
     document.querySelector(".loading-spinner").style.display = "none";
     side_toaster("The connection server is not reachable", 6000);
-    m.route.set("/start");
+  }
+}
+
+function attemptReconnect() {
+  if (peer.disconnected) {
+    console.log("Attempting to reconnect...");
+    peer.reconnect();
+  } else {
+    console.log("Peer is still connected. No need to reconnect.");
   }
 }
 
@@ -737,8 +744,20 @@ const focus_last_article = function () {
   }, 1000);
 };
 
-function sendMessage(msg, type, mimeType = "", to = connectedPeers[0]) {
+function sendMessage(msg, type, mimeType = "", to = connectedPeers[0] || "") {
   if (!msg) return false;
+
+  if (type == "notification") {
+    msg = {
+      nickname: settings.nickname,
+      type: type,
+      userId: settings.custom_peer_id,
+      content: msg,
+      mimeType: mimeType,
+    };
+
+    sendMessageToAll(msg);
+  }
 
   if (type == "image") {
     // Encode the file using the FileReader API
@@ -777,7 +796,6 @@ function sendMessage(msg, type, mimeType = "", to = connectedPeers[0]) {
     reader.readAsDataURL(msg.blob);
   }
   if (type == "text") {
-    if (msg == "") return false;
     msg = {
       nickname: settings.nickname,
       type: type,
@@ -840,8 +858,6 @@ function sendMessage(msg, type, mimeType = "", to = connectedPeers[0]) {
   }
 
   if (type == "gps") {
-    if (msg == "") return false;
-
     let m = JSON.parse(msg);
     let link_url =
       "https://www.openstreetmap.org/#map=19/" + m.lat + "/" + m.lng;
@@ -905,8 +921,6 @@ function sendMessage(msg, type, mimeType = "", to = connectedPeers[0]) {
 function sendMessageToAll(message) {
   message.from = settings.custom_peer_id;
 
-  m.redraw();
-
   Object.keys(peer.connections).forEach((peerId) => {
     // Filter out closed connections
     peer.connections[peerId] = peer.connections[peerId].filter((conn) => {
@@ -918,6 +932,7 @@ function sendMessageToAll(message) {
     });
   });
 
+  m.redraw();
   storeChatData();
 }
 
@@ -1070,7 +1085,7 @@ let connect_to_peer = function (id, route_target) {
           if (conn) {
             conn.on("open", () => {
               setupConnectionEvents(conn);
-              side_toaster("Connection opened with peer:" + id, 6000);
+              //side_toaster("Connection opened with peer:" + id, 6000);
               m.route.set("/chat?id=" + id);
             });
 
@@ -1094,11 +1109,7 @@ let connect_to_peer = function (id, route_target) {
             setTimeout(() => {
               if (!conn.open) {
                 console.warn("Connection timeout");
-                if (status.user_does_not_exist) {
-                  side_toaster("The user does not exist.", 100000);
-                } else {
-                  side_toaster("Connection could not be established", 40000);
-                }
+
                 if (route_target == null || route_target == undefined) {
                   history.back();
                 } else {
@@ -1120,21 +1131,10 @@ let connect_to_peer = function (id, route_target) {
           } else {
             m.route.set(route_target);
           }
-          if (status.user_does_not_exist) {
-            //side_toaster("The user does not exist.", 100000);
-          } else {
-            side_toaster("Connection could not be established", 40000);
-          }
         }
       }, 4000);
     })
-    .catch((e) => {
-      if (status.user_does_not_exist) {
-        side_toaster("The user does not exist.", 100000);
-      } else {
-        side_toaster("Connection could not be established", 40000);
-      }
-    });
+    .catch((e) => {});
 };
 
 //create room
@@ -1142,7 +1142,6 @@ let connect_to_peer = function (id, route_target) {
 let create_peer = function () {
   if (!navigator.onLine) {
     top_bar("", "<img src='assets/image/offline.svg'>", "");
-
     return false;
   }
   document.querySelector(".loading-spinner").style.display = "block";
@@ -2384,28 +2383,6 @@ var start = {
             "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images, audio and your position with your chat partner. To start chatting, press <span id='start-text-point'>enter</span>.<br><br>"
           )
         ),
-        m(
-          "button",
-          {
-            tabIndex: 1,
-
-            class: "item",
-
-            oncreate: (vnode) => {
-              vnode.dom.style.display = "none";
-
-              if (status.user_does_not_exist) {
-                vnode.dom.style.display = "none";
-                status.user_does_not_exist = false;
-              }
-            },
-            onclick: (e) => {
-              m.route.set("/chat?id=" + settings.custom_peer);
-              peer.reconnect();
-            },
-          },
-          "reopen chat"
-        ),
       ]
     );
   },
@@ -2639,17 +2616,18 @@ var chat = {
               document
                 .querySelector("img.users")
                 .setAttribute("title", status.online);
-
+              /*
               sendMessageToAll({
                 userlist: connectedPeers,
                 nickname: settings.nickname,
                 userId: settings.custom_peer_id,
               });
+              */
 
               if (!status.notKaiOS && status.userOnline > 0)
                 top_bar(
                   "",
-                  "",
+                  connectedPeers.length,
                   "<img class='users' title='" +
                     status.userOnline +
                     "' src='assets/image/monster.svg'>"
@@ -2658,7 +2636,7 @@ var chat = {
               if (status.notKaiOS && status.userOnline > 0)
                 top_bar(
                   "<img src='assets/image/back.svg'>",
-                  "",
+                  connectedPeers.length,
                   "<img class='users' title='" +
                     status.userOnline +
                     "' src='assets/image/monster.svg'>"
@@ -2667,7 +2645,7 @@ var chat = {
               if (status.notKaiOS && status.userOnline == 0)
                 top_bar(
                   "<img src='assets/image/back.svg'>",
-                  "",
+                  connectedPeers.length,
                   "<img class='users' title='" +
                     status.userOnline +
                     "' src='assets/image/no-monster.svg'>"
@@ -2676,7 +2654,7 @@ var chat = {
               if (!status.notKaiOS && status.userOnline == 0)
                 top_bar(
                   "",
-                  "",
+                  connectedPeers.length,
                   "<img class='users' title='" +
                     "<span>" +
                     status.userOnline +
@@ -3069,6 +3047,8 @@ var intro = {
   },
   onremove: () => {
     key_delay();
+    //create peer on start
+    getIceServers();
   },
   view: function () {
     return m(
@@ -3898,14 +3878,6 @@ document.addEventListener("visibilitychange", function () {
     let dt = new Date();
     localStorage.setItem("last_connections_time", dt.toISOString());
   } else {
-    //reset peer
-    peer = new Peer(settings.custom_peer_id, {
-      debug: 0,
-      secure: false,
-      config: ice_servers,
-      referrerPolicy: "no-referrer",
-    });
-
     let r = m.route.get();
     if (r.startsWith("/chat?")) {
       let dtString = localStorage.getItem("last_connections_time");
@@ -3922,15 +3894,18 @@ document.addEventListener("visibilitychange", function () {
           closeAllConnections();
         } else {
           //try to reconnect
-          let f = localStorage.getItem("last_connections");
-          if (f) {
-            f = f.split(",");
-            if (f.length > 1) {
-              f.forEach((e) => {
-                connect_to_peer(e);
-              });
+          peer.destroy();
+          getIceServers().then(() => {
+            let f = localStorage.getItem("last_connections");
+            if (f) {
+              f = f.split(",");
+              if (f.length > 1) {
+                f.forEach((e) => {
+                  connect_to_peer(e);
+                });
+              }
             }
-          }
+          });
         }
       } else {
         console.log("No last_connections_time found in localStorage.");
@@ -3940,7 +3915,8 @@ document.addEventListener("visibilitychange", function () {
 });
 
 //start ping interval in service worker
-//channel.postMessage("startInterval");
+/*
+channel.postMessage("startInterval");
 channel.addEventListener("message", (event) => {
   if (event.data === "intervalTriggered") {
     console.log("keep alive");
@@ -3951,3 +3927,4 @@ channel.addEventListener("message", (event) => {
       });
   }
 });
+*/
