@@ -12,6 +12,7 @@ import {
   getManifest,
   setTabindex,
   downloadFile,
+  info_badge,
 } from "./assets/js/helper.js";
 import { stop_scan, start_scan } from "./assets/js/scan.js";
 import localforage from "localforage";
@@ -97,6 +98,11 @@ if (status.debug) {
   };
 }
 
+//store previous view
+let previousView = () => {
+  status.previousView = m.route.get();
+};
+
 //sometime the key press are delayed
 let key_delay = () => {
   setTimeout(() => {
@@ -175,10 +181,13 @@ let compareUserList = (userlist) => {
 //add to addressbook
 
 let addressbook = [];
+
 localforage
   .getItem("addressbook")
   .then((e) => {
     if (e !== null) addressbook = e;
+
+    if (e.length == 0) addressbook = [{ name: "dd" }, { name: "dd" }];
   })
   .catch(() => {});
 
@@ -272,6 +281,13 @@ function setupConnectionEvents(conn) {
     console.log("ping");
     console.log("online check");
     console.log("allow user? id: " + conn.peer);
+    if (addressbook.length > 0) {
+      const entry = addressbook.find((e) => e.id === conn.peer);
+
+      if (entry) {
+        //console.log("User in :", entry);
+      }
+    }
 
     conn.send({
       nickname: settings.nickname,
@@ -281,7 +297,7 @@ function setupConnectionEvents(conn) {
     });
   }
 
-  if (status.userOnline > 0) {
+  if (status.userOnline > 0 && !connectedPeers.includes(conn.peer)) {
     conn.send({
       nickname: settings.nickname,
       userId: settings.custom_peer_id,
@@ -339,7 +355,6 @@ function setupConnectionEvents(conn) {
 
   //receive data
   conn.on("data", function (data) {
-    //if (!data.from || !data.to) console.log(data);
     remove_no_user_online();
 
     if (
@@ -379,7 +394,6 @@ function setupConnectionEvents(conn) {
           to: data.to,
         });
 
-        m.redraw();
         focus_last_article();
         stop_scan();
       }
@@ -396,7 +410,6 @@ function setupConnectionEvents(conn) {
           from: data.from,
           to: data.to,
         });
-        m.redraw();
         focus_last_article();
         stop_scan();
       }
@@ -488,11 +501,13 @@ function setupConnectionEvents(conn) {
             to: data.to,
           });
         }
-
-        m.redraw();
       }
 
-      storeChatData();
+      m.redraw();
+
+      setTimeout(() => {
+        storeChatData();
+      }, 1000);
     } else {
       console.log("userlist: " + data.userlist);
       if (data.userlist && status.groupchat) {
@@ -545,11 +560,14 @@ let ice_servers = {
 };
 
 const remove_no_user_online = () => {
-  chat_data = chat_data.filter((e) => {
-    return e.content !== "invitation link" && e.id !== "no-other-user-online";
-  });
+  let m = m.route.get();
+  if (m.startsWith("/chat")) {
+    chat_data = chat_data.filter((e) => {
+      return e.content !== "invitation link" && e.id !== "no-other-user-online";
+    });
 
-  m.redraw();
+    m.redraw();
+  }
 };
 
 //load ICE Server
@@ -582,7 +600,7 @@ async function getIceServers() {
 
     if (peer) {
       try {
-        closeAllConnections();
+        //closeAllConnections();
       } catch (e) {
         console.log(e);
       }
@@ -609,7 +627,6 @@ async function getIceServers() {
       document.querySelector(".loading-spinner").style.display = "none";
 
       console.log("PeerJS connected with server ID:", id);
-      side_toaster("open", 8000);
       // Zugriff auf den internen WebSocket
       if (peer.socket && peer.socket._socket) {
         peer.socket._socket.addEventListener("error", function (event) {
@@ -630,20 +647,20 @@ async function getIceServers() {
 
     peer.on("error", function (err) {
       //retry to connect
-      console.log("error" + err.type);
+      console.log("error " + err.type);
       switch (err.type) {
         case "server-error":
           side_toaster("The connection server is not reachable", 6000);
-          // m.route.set("/start");
           break;
 
         case "socket-closed":
           side_toaster("The connection server is not reachable", 6000);
-          // m.route.set("/start");
           break;
 
         case "peer-unavailable":
-          //side_toaster("peer unavailable", 50000);
+          //recreate peer
+          console.log(peer);
+          getIceServers();
           return false;
 
         default:
@@ -661,7 +678,7 @@ function attemptReconnect() {
     console.log("Attempting to reconnect...");
     peer.reconnect();
   } else {
-    console.log("Peer is still connected. No need to reconnect.");
+    //console.log("Peer is still connected. No need to reconnect.");
   }
 }
 
@@ -972,76 +989,35 @@ let peer_is_online = async function () {
   }
 
   try {
-    setTimeout(() => {
-      document.querySelector(".loading-spinner").style.display = "block";
-
-      setTimeout(() => {
-        addressbook.forEach((entry, index) => {
-          if (peer && !peer.disconnected) {
-            addressbook[index].live = false;
-
-            try {
-              let tempConn = peer.connect(entry.id, {
-                label: "ping",
-                reliable: true,
-              });
-
-              if (tempConn) {
-                tempConn.on("connection", () => {
-                  addressbook[index].live = true;
-
-                  document
-                    .querySelector("button[data-id='" + entry.id + "']")
-                    .classList.add("live");
-
-                  // tempConn.close();
-                });
-
-                tempConn.on("open", () => {
-                  addressbook[index].live = true;
-
-                  document
-                    .querySelector("button[data-id='" + entry.id + "']")
-                    .classList.add("live");
-
-                  // tempConn.close();
-                });
-
-                tempConn.on("error", (error) => {
-                  alert(error);
-
-                  addressbook[index].live = false;
-
-                  document
-                    .querySelector("button[data-id='" + entry.id + "']")
-                    .classList.add("offline");
-                });
-              } else {
-                addressbook[index].live = false;
-
-                document
-                  .querySelector("button[data-id='" + entry.id + "']")
-                  .classList.add("offline");
-              }
-            } catch (error) {
-              alert(error);
-              addressbook[index].live = false;
-
-              document
-                .querySelector("button[data-id='" + entry.id + "']")
-                .classList.add("offline");
-            }
-          } else {
-          }
+    addressbook.forEach((entry) => {
+      entry.live = false;
+      try {
+        let tempConn = peer.connect(entry.id, {
+          label: "ping",
+          reliable: true,
         });
-        document.querySelector(".loading-spinner").style.display = "none";
-      }, 4000);
-    }, 1000);
+
+        if (tempConn) {
+          tempConn.on("open", () => {
+            entry.live = true;
+            m.redraw(); // UI aktualisieren
+          });
+
+          tempConn.on("error", () => {
+            entry.live = false;
+            m.redraw(); // UI aktualisieren
+          });
+        }
+      } catch (error) {
+        entry.live = false;
+        m.redraw(); // Falls ein Fehler auftritt
+      }
+    });
+    console.log("check" + JSON.stringify(addressbook));
+    m.redraw();
 
     return true;
   } catch (error) {
-    document.querySelector(".loading-spinner").style.display = "none";
-    alert(`Error: ${error.message}`);
     return false;
   }
 };
@@ -1066,7 +1042,7 @@ let connect_to_peer = function (id, route_target) {
       setTimeout(() => {
         if (!peer) {
           if (route_target == null || route_target == undefined) {
-            history.back();
+            m.route.set("/start");
           } else {
             m.route.set(route_target);
           }
@@ -1083,7 +1059,6 @@ let connect_to_peer = function (id, route_target) {
           if (conn) {
             conn.on("open", () => {
               setupConnectionEvents(conn);
-              //side_toaster("Connection opened with peer:" + id, 6000);
               m.route.set("/chat?id=" + id);
             });
 
@@ -1092,10 +1067,11 @@ let connect_to_peer = function (id, route_target) {
             });
 
             conn.on("error", (e) => {
+              alert(e);
               side_toaster("Connection could not be established", 5000);
 
               if (route_target == null || route_target == undefined) {
-                history.back();
+                m.route.set("/start");
               } else {
                 m.route.set(route_target);
               }
@@ -1109,7 +1085,7 @@ let connect_to_peer = function (id, route_target) {
                 console.warn("Connection timeout");
 
                 if (route_target == null || route_target == undefined) {
-                  history.back();
+                  m.route.set("/start");
                 } else {
                   m.route.set(route_target);
                 }
@@ -1117,22 +1093,20 @@ let connect_to_peer = function (id, route_target) {
             }, 10000); // Adjust timeout as needed
           } else {
             if (route_target == null || route_target == undefined) {
-              history.back();
+              m.route.set("/start");
             } else {
               m.route.set(route_target);
             }
           }
         } catch (e) {
-          console.error("An error occurred during connection attempt:", e);
-          if (route_target == null || route_target == undefined) {
-            history.back();
-          } else {
-            m.route.set(route_target);
-          }
+          m.route.set("/start");
+          alert(e);
         }
       }, 4000);
     })
-    .catch((e) => {});
+    .catch((e) => {
+      alert("peer no onlime");
+    });
 };
 
 //create room
@@ -1548,8 +1522,7 @@ var waiting = {
       "div",
       {
         id: "waiting",
-        class:
-          "width-100 height-100 flex align-item-center justify-content-center",
+        class: "width-100 height-100 flex align-item-center justify-center",
         oninit: () => {
           top_bar("", "", "");
           timer1 = setTimeout(() => {
@@ -1594,6 +1567,8 @@ var about = {
         oncreate: () => {
           top_bar("", "", "");
 
+          setTabindex();
+
           if (status.notKaiOS)
             top_bar("<img src='assets/image/back.svg'>", "", "");
 
@@ -1608,8 +1583,6 @@ var about = {
         m(
           "button",
           {
-            tabindex: 0,
-
             class: "item",
             oncreate: ({ dom }) => {
               dom.focus();
@@ -1623,8 +1596,6 @@ var about = {
         m(
           "button",
           {
-            tabindex: 1,
-
             class: "item",
             onclick: () => {
               m.route.set("/settings_page");
@@ -1636,14 +1607,39 @@ var about = {
         m(
           "button",
           {
-            tabindex: 2,
-
             class: "item",
             onclick: () => {
               m.route.set("/privacy_policy");
             },
           },
           "Privacy Policy"
+        ),
+
+        m(
+          "button",
+          {
+            class: "item",
+            onclick: () => {
+              m.route.set("/scan");
+            },
+          },
+          "Scan"
+        ),
+
+        m(
+          "button",
+          {
+            class: "item",
+            onclick: () => {
+              let prp = prompt("Enter the chat ID");
+              if (prp !== null && prp !== "") {
+                connect_to_peer(prp);
+              } else {
+                m.route.set("/start");
+              }
+            },
+          },
+          "Enter ID"
         ),
         m("div", {
           id: "KaiOSads-Wrapper",
@@ -1856,11 +1852,12 @@ var settings_page = {
     return m(
       "div",
       {
-        class: "flex justify-content-center page",
+        class: "flex justify-center page",
         id: "settings_page",
         oncreate: () => {
           bottom_bar("", "", "");
           top_bar("", "", "");
+          setTabindex();
 
           if (status.notKaiOS)
             top_bar("<img src='assets/image/back.svg'>", "", "");
@@ -1870,7 +1867,6 @@ var settings_page = {
         m(
           "div",
           {
-            tabindex: 0,
             oncreate: ({ dom }) => {
               dom.focus();
             },
@@ -1899,8 +1895,6 @@ var settings_page = {
         m(
           "div",
           {
-            tabindex: 1,
-
             class: "item input-parent  flex justify-content-spacearound",
           },
           [
@@ -1922,7 +1916,6 @@ var settings_page = {
           "button",
           {
             class: "item",
-            tabindex: 2,
             onclick: () => {
               settings.custom_peer_id = "flop-" + uuidv4(16);
               m.redraw();
@@ -1935,7 +1928,6 @@ var settings_page = {
           "button",
           {
             class: "item",
-            tabindex: 3,
             onclick: () => {
               share(
                 settings.invite_url + "?id=" + settings.custom_peer_id
@@ -1954,12 +1946,16 @@ var settings_page = {
           "button",
           {
             id: "advanced settings",
+            class: "item",
             onclick: (e) => {
-              e.target.style.display = "none";
-              document.querySelectorAll(".advanced-settings").forEach((e) => {
-                e.style.visibility = "visible";
-                e.style.height = "auto";
+              e.target.remove();
+
+              document.querySelectorAll(".advanced-settings").forEach((el) => {
+                el.style.display = "block";
+                el.style.visibility = "visible";
               });
+
+              setTabindex();
             },
           },
           "advanced settings"
@@ -1973,8 +1969,6 @@ var settings_page = {
         m(
           "div",
           {
-            tabindex: 4,
-
             class:
               "item input-parent  flex justify-content-spacearound advanced-settings",
           },
@@ -1997,8 +1991,6 @@ var settings_page = {
         m(
           "div",
           {
-            tabindex: 5,
-
             class:
               "item input-parent  flex  justify-content-spacearound advanced-settings",
           },
@@ -2021,8 +2013,6 @@ var settings_page = {
         m(
           "div",
           {
-            tabindex: 6,
-
             class:
               "item input-parent  flex justify-content-spacearound advanced-settings",
           },
@@ -2045,8 +2035,6 @@ var settings_page = {
         m(
           "div",
           {
-            tabindex: 7,
-
             class:
               "item input-parent  flex justify-content-spacearound advanced-settings",
           },
@@ -2069,9 +2057,7 @@ var settings_page = {
         m(
           "button",
           {
-            tabindex: 8,
-
-            class: "item",
+            class: "item vip-button",
             "data-function": "save-settings",
             onclick: function () {
               settings.nickname = document.getElementById("nickname").value;
@@ -2087,11 +2073,9 @@ var settings_page = {
               localforage
                 .setItem("settings", settings)
                 .then(function (value) {
-                  // Do other things once the value has been saved.
                   side_toaster("settings saved", 2000);
                 })
                 .catch(function (err) {
-                  // This code runs if there were any errors
                   console.log(err);
                 });
             },
@@ -2115,7 +2099,7 @@ var options = {
     return m(
       "div",
       {
-        class: "flex justify-content-center algin-item-start page",
+        class: "flex justify-center align-start page",
         oncreate: () => {
           top_bar("", "", "");
 
@@ -2275,7 +2259,7 @@ var options = {
           "button",
           {
             class: "item share-id-button",
-            oninit: ({ dom }) => {
+            oninit: () => {
               setTabindex();
 
               if (status.userOnline == 0) {
@@ -2311,26 +2295,26 @@ var options = {
     );
   },
 };
-
+let ucheck;
 var start = {
   oninit: () => {
-    if(addressbook.length>0)m.route.set("/open_peer_menu");
     key_delay();
+    previousView();
   },
   onremove: () => {
     key_delay();
+    clearInterval(ucheck);
   },
 
   view: function () {
     return m(
       "div",
       {
-        class: "flex justify-content-center algin-item-start page",
+        class: "flex justify-center align-start page",
         id: "start",
         oncreate: () => {
           top_bar("", "", "");
 
-        
           document.querySelector(".loading-spinner").style.display = "none";
 
           //auto connect if id is given
@@ -2355,7 +2339,7 @@ var start = {
             });
 
           bottom_bar(
-            "<img src='assets/image/person.svg'>",
+            "",
             "<img src='assets/image/plus.svg'>",
             "<img src='assets/image/option.svg'>"
           );
@@ -2365,21 +2349,93 @@ var start = {
         m("img", {
           src: "assets/icons/intro.svg",
         }),
-        m(
-          "p",
-          {
-            class: "item scroll",
-            id: "start-text",
-            tabIndex: 0,
-            oncreate: (vnode) => {
-              document.querySelector("#start p").focus();
-              vnode.dom.focus();
-            },
-          },
-          m.trust(
-            "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images, audio and your position with your chat partner. To start chatting, press <span id='start-text-point'>enter</span>.<br><br>"
-          )
-        ),
+        addressbook.length == 0
+          ? m(
+              "p",
+              {
+                class: "item scroll",
+                id: "start-text",
+                tabIndex: 0,
+                oncreate: (vnode) => {
+                  document.querySelector("#start p").focus();
+                  vnode.dom.focus();
+                },
+              },
+              m.trust(
+                "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images, audio and your position with your chat partner. To start chatting, press <span id='start-text-point'>enter</span>.<br><br>"
+              )
+            )
+          : null,
+
+        addressbook.length > 0
+          ? m(
+              "div",
+              {
+                class: "addressbook-box  flex justify-center",
+                id: "addressbook",
+                oncreate: () => {
+                  peer_is_online();
+                },
+              },
+              [
+                addressbook.map((e) => {
+                  return m(
+                    "button",
+                    {
+                      class:
+                        "item flex justify-center align-item-center addressbook-item ",
+                      "data-id": e.id,
+                      "data-online": e.live ? "true" : "false",
+                      oncreate: () => {
+                        setTabindex();
+
+                        ucheck = setInterval(() => {
+                          peer_is_online();
+                        }, 20000);
+                      },
+                      onfocus: () => {
+                        status.addressbook_in_focus = e.id;
+                        if (!status.notKaiOS) info_badge(true);
+                      },
+
+                      onblur: () => {
+                        status.addressbook_in_focus = "";
+                        if (!status.notKaiOS) info_badge(false);
+                      },
+
+                      onremove: () => {
+                        status.addressbook_in_focus = "";
+                        if (!status.notKaiOS) info_badge(false);
+                      },
+
+                      onclick: () => {
+                        if (e.live == true) {
+                          connect_to_peer(
+                            document.activeElement.getAttribute("data-id")
+                          );
+                        } else {
+                          side_toaster("user is not online", 3000);
+                        }
+                      },
+                    },
+                    [
+                      m("span", [
+                        e.live == true
+                          ? m("img", {
+                              src: "/assets/image/online.svg",
+                            })
+                          : m("img", {
+                              src: "/assets/image/offline.svg",
+                            }),
+                      ]),
+
+                      m("span", !e.name ? e.nickname : e.name),
+                    ]
+                  );
+                }),
+              ]
+            )
+          : null,
       ]
     );
   },
@@ -2404,168 +2460,6 @@ var scan = {
   },
 };
 
-var open_peer_menu = {
-  oninit: () => {
-    key_delay();
-  },
-  onremove: () => {
-    key_delay();
-  },
-
-  view: function () {
-    return m(
-      "div",
-      {
-        class: "flex justify-content-center algin-item-start page",
-
-        onremove: () => {
-          document.querySelector(".loading-spinner").style.display = "none";
-        },
-        oncreate: () => {
-          peer_is_online();
-
-          localforage.getItem("chatData").then((e) => {
-            chat_data_history = e || [];
-          });
-
-          status.addressbook_in_focus = "";
-          bottom_bar(
-            "<img src='assets/image/qr.svg'>",
-            "",
-            "<img src='assets/image/id.svg'>"
-          );
-
-          if (status.notKaiOS == true)
-            top_bar("<img src='assets/image/back.svg'>", "", "");
-        },
-      },
-      /*
-      chat_data_history.length > 0
-        ? m(
-            "button",
-            {
-              oncreate: (vnode) => {
-                vnode.dom.focus();
-                setTabindex();
-              },
-
-              class: "item",
-              onclick: () => {
-                m.route.set("/chatHistory");
-              },
-            },
-            "chat history"
-          )
-        : null,
-        */
-
-
-      addressbook.length == 0
-        ? null
-        : m(
-            "div",
-            {
-              class: "width-100 flex justify-content-center",
-            },
-            [  m("img", {
-              src: "assets/icons/intro.svg",
-              class:"logo-addressbook"
-            })]
-          ),
-
-        
-      [
-        addressbook.length > 0
-          ? null
-          : m(
-              "div",
-              {
-                class: "text item",
-
-                onfocus: () => {
-                  bottom_bar(
-                    "<img src='assets/image/qr.svg'>",
-                    "",
-                    "<img src='assets/image/id.svg'>"
-                  );
-                },
-              },
-              "You can join a chat when someone invites you with a link. If you don't have this link, you can also enter the chat ID here or scan the QR code."
-            ),
-
-        addressbook.length > 0
-          ? null
-          : m(
-              "div",
-              {
-                class: "item text",
-                oncreate: () => {
-                  setTabindex();
-                },
-              },
-              m.trust(
-                "You don't have any users in your address book yet. If you chat with a user, you can add them to your address book and contact them more quickly.<br><br>"
-              )
-            ),
-
-        addressbook.length == 0
-          ? null
-          : m(
-              "div",
-              {
-                class: "width-100 flex justify-content-center",
-                id: "addressbook",
-              },
-              [
-                addressbook.map((e) => {
-                  return m(
-                    "button",
-                    {
-                      class:
-                        "item flex justify-content-center align-item-center addressbook-item",
-                      "data-id": e.id,
-                      "data-online": e.live ? "true" : "false",
-                      oncreate: () => {
-                        setTabindex();
-                      },
-                      onfocus: () => {
-                        status.addressbook_in_focus = e.id;
-                        bottom_bar(
-                          "<img src='assets/image/pencil.svg'>",
-                          "<img src='assets/image/select.svg'>",
-                          "<img src='assets/image/delete.svg'>"
-                        );
-                      },
-
-                      onclick: () => {
-                        if (e.live == true) {
-                          connect_to_peer(
-                            document.activeElement.getAttribute("data-id")
-                          );
-                        } else {
-                          side_toaster("user is not online", 3000);
-                        }
-                      },
-                    },
-                    [
-                      m(
-                        "span",
-                        m.trust(
-                          "<img class='online' src='/assets/image/online.svg'><img class='offline' src='/assets/image/offline.svg'>"
-                        )
-                      ),
-
-                      m("span", !e.name ? e.nickname : e.name),
-                    ]
-                  );
-                }),
-              ]
-            ),
-      ]
-    );
-  },
-};
-
 let user_check;
 var chat = {
   oninit: () => {
@@ -2584,7 +2478,7 @@ var chat = {
       "div",
       {
         id: "chat",
-        class: "flex justify-content-center algin-item-start",
+        class: "flex justify-center align-start page",
 
         onremove: () => {
           clearInterval(user_check);
@@ -2620,13 +2514,6 @@ var chat = {
               document
                 .querySelector("img.users")
                 .setAttribute("title", status.online);
-              /*
-              sendMessageToAll({
-                userlist: connectedPeers,
-                nickname: settings.nickname,
-                userId: settings.custom_peer_id,
-              });
-              */
 
               if (!status.notKaiOS && status.userOnline > 0)
                 top_bar(
@@ -2899,7 +2786,7 @@ var chatHistory = {
       "div",
       {
         id: "chat",
-        class: "flex justify-content-center align-item-start",
+        class: "flex justify-center align-start",
         oncreate: () => {
           bottom_bar("", "", "");
           const chatElement = document.querySelector("body");
@@ -3116,7 +3003,7 @@ var intro = {
         m(
           "div",
           {
-            class: "flex width-100  justify-content-center ",
+            class: "flex width-100  justify-center ",
             id: "version-box",
           },
           [
@@ -3136,7 +3023,6 @@ var intro = {
 
 m.route(root, "/intro", {
   "/intro": intro,
-  "/open_peer_menu": open_peer_menu,
   "/start": start,
   "/chat": chat,
   "/chatHistory": chatHistory,
@@ -3250,9 +3136,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
         if (ask0) {
           delete_addressbook_item(a.getAttribute("data-id"));
         } else {
-          a.classList.remove("swipe-left"); // Revert if canceled
+          a.classList.remove("swipe-left");
         }
-      }, 500); // Reduced delay for better UX
+      }, 500);
     }
 
     if (a && e.detail.dir === "right") {
@@ -3299,7 +3185,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
         route.startsWith("/chat?") ||
         m.route.get() == "/settings_page" ||
         m.route.get() == "/scan" ||
-        m.route.get() == "/open_peer_menu" ||
         m.route.get() == "/about"
       ) {
         status.action = "";
@@ -3308,12 +3193,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
       if (m.route.get() == "/scan") {
         status.action = "";
-        m.route.set("/open_peer_menu");
-      }
-
-      if (route.startsWith("/chatHistory")) {
-        status.action = "";
-        m.route.set("/open_peer_menu");
+        m.route.set("/start");
       }
 
       if (m.route.get() == "/settings") {
@@ -3379,8 +3259,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
     switch (param.key) {
       case "Backspace":
-        closeAllConnections();
-        peer.destroy();
         window.close();
         break;
     }
@@ -3402,11 +3280,28 @@ document.addEventListener("DOMContentLoaded", function (e) {
         if (route == "/map_view") {
           MoveMap("right");
         }
+
+        if (route == "/start" && status.addressbook_in_focus !== "") {
+          let ask0 = confirm("Do you want to delete this contact?");
+          if (ask0) {
+            delete_addressbook_item(status.addressbook_in_focus);
+          }
+        }
+
         break;
 
       case "ArrowLeft":
         if (route == "/map_view") {
           MoveMap("left");
+        }
+
+        if (route == "/start") {
+          if (status.addressbook_in_focus != "") {
+            let ask1 = confirm("Do you want to edit this contact?");
+            if (ask1) {
+              update_addressbook_item(status.addressbook_in_focus);
+            }
+          }
         }
         break;
       case "ArrowUp":
@@ -3428,9 +3323,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
       case "SoftRight":
       case "Alt":
+        if (route.startsWith("/start")) {
+          m.route.set("/about");
+        }
+
         if (route.startsWith("/chat?") && !status.audio_recording)
           m.route.set("/options");
-        if (route == "/start") m.route.set("/about");
 
         if (status.audio_recording && route.startsWith("/chat")) {
           audioRecorder.stopRecording().then(({ audioBlob, mimeType }) => {
@@ -3445,19 +3343,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
         if (route.startsWith("/map_view")) {
           ZoomMap("out");
-        }
-
-        if (route == "/open_peer_menu") {
-          if (status.addressbook_in_focus == "") {
-            let prp = prompt("Enter the chat ID");
-            if (prp !== null && prp !== "") {
-              connect_to_peer(prp);
-            } else {
-              m.route.set("/open_peer_menu");
-            }
-          } else {
-            delete_addressbook_item(status.addressbook_in_focus);
-          }
         }
 
         break;
@@ -3483,12 +3368,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
           });
         }
 
-        if (route == "/open_peer_menu") {
-          if (status.addressbook_in_focus != "") {
-            update_addressbook_item(status.addressbook_in_focus);
-          }
-        }
-
         if (route.startsWith("/chat?") && status.action == "write") {
           sendMessage(document.getElementsByTagName("input")[0].value, "text");
           write();
@@ -3507,14 +3386,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
         if (route.startsWith("/map_view")) {
           ZoomMap("in");
-        }
-
-        if (route == "/start") {
-          m.route.set("/open_peer_menu");
-        }
-
-        if (route == "/open_peer_menu") {
-          if (status.addressbook_in_focus == "") m.route.set("/scan");
         }
 
         break;
@@ -3578,17 +3449,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
           }
         }
 
-        if (route == "/start") {
+        if (route == "/start" && status.addressbook_in_focus === "") {
           create_peer();
         }
-        //addressbook open peer
-        if (route == "/open_peer_menu") {
-          if (document.activeElement.getAttribute("data-online") == "true") {
-            connect_to_peer(document.activeElement.getAttribute("data-id"));
-          } else {
-            side_toaster("user is not online", 3000);
-          }
-        }
+
         if (route.startsWith("/map_view")) {
           // Ensure users_geolocation_count is within bounds
           if (
@@ -3695,7 +3559,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         if (m.route.get() == "/scan") {
           stop_scan();
 
-          m.route.set("/open_peer_menu");
+          m.route.set("/start");
 
           status.action = "";
         }
@@ -3725,7 +3589,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
       if (m.route.get() == "/scan") {
         stop_scan();
 
-        m.route.set("/open_peer_menu");
+        m.route.set("/start");
 
         status.action = "";
       }
@@ -3733,7 +3597,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
       if (
         route.startsWith("/chat?") ||
         m.route.get() == "/settings_page" ||
-        m.route.get() == "/open_peer_menu" ||
         m.route.get() == "/about" ||
         route.startsWith("/chatHistory") ||
         route.startsWith("/map_view") ||
@@ -3883,6 +3746,11 @@ document.addEventListener("visibilitychange", function () {
     localStorage.setItem("last_connections_time", dt.toISOString());
   } else {
     let r = m.route.get();
+
+    if (r.startsWith("/start")) {
+      peer_is_online();
+    }
+
     if (r.startsWith("/chat?")) {
       let dtString = localStorage.getItem("last_connections_time");
       if (dtString) {

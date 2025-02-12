@@ -18,6 +18,11 @@ export const month = [
   "December",
 ];
 
+export let info_badge = (show) => {
+  let badge = document.getElementById("info-badge");
+  show ? badge.classList.add("show") : badge.classList.remove("show");
+};
+
 export let setTabindex = () => {
   let visibleElements = document.querySelectorAll(
     '.item:not([style*="display: none"])'
@@ -658,7 +663,7 @@ export let pick_image = function (callback) {
 
       const options = {
         maxSizeMB: 1,
-        maxWidthOrHeight: 1920,
+        maxWidthOrHeight: 640,
         useWebWorker: true,
       };
       try {

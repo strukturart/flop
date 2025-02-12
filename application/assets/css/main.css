@@ -32,6 +32,7 @@
   -ms-hyphens: auto;
   -moz-hyphens: auto;
   hyphens: auto;
+  scrollbar-width: none;
 }
 
 ::-webkit-scrollbar {
@@ -76,7 +77,6 @@ video {
 #app {
   position: relative;
   height: 100%;
-
   width: 100%;
 }
 
@@ -85,7 +85,7 @@ video {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  overflow: scroll;
+  overflow: hidden;
 }
 
 h1 {
@@ -135,21 +135,29 @@ img[src=" "] {
   z-index: 400000;
 }
 
+button.vip-button {
+  background: rgb(207, 61, 4);
+  color: white;
+  border: 0px solid gray;
+}
+
+button.vip-button:hover {
+  background: rgb(207, 61, 4) !important;
+  color: white;
+}
+
 button {
   font-size: 1rem;
   background: rgb(255, 255, 255);
-  min-width: 93%;
-  max-width: 90%;
-
-  padding: 5px;
-  margin: 0px 0 15px 5px;
+  width: 100%;
+  padding: 15px;
+  margin: 0px 0 15px 0px;
   color: black;
   border-radius: 10px;
   border: 2px solid gray;
   font-weight: 700;
-  min-height: 40px;
+  height: auto;
   font-family: "Roboto" !important;
-
   touch-action: none;
 }
 button:focus {
@@ -162,16 +170,34 @@ button:hover {
   border: 0px solid gray;
 }
 
-button.addressbook-item {
-  transition: transform 0.3s ease;
+.addressbook-box {
+  width: 100%;
 }
 
-button.addressbook-item.swipe-left {
+#addressbook button.addressbook-item {
+  transition: transform 0.3s ease;
+  padding: 10px;
+}
+
+#addressbook button.addressbook-item.swipe-left {
   transform: translateX(20%);
 }
 
-button.addressbook-item.swipe-right {
+#addressbook button.addressbook-item.swipe-right {
   transform: translateX(-20%);
+}
+
+#addressbook button.addressbook-item img {
+  width: 20px;
+  height: 20px; /* Fixiere die Höhe */
+  margin: 0;
+  padding: 0;
+  display: block; /* Falls display:none nicht erwünscht ist */
+  vertical-align: middle; /* Vertikal ausrichten */
+}
+
+#addressbook button.addressbook-item:last-child {
+  margin-bottom: 50px;
 }
 
 a.button-style {
@@ -427,12 +453,10 @@ div#intro img {
 
 .page {
   padding: 10px;
-  max-width: 100vw;
-  min-width: 100vw;
-}
-
-#app {
-  max-width: 500px;
+  width: 100%;
+  position: relative;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 /*///////////////////////////
@@ -474,6 +498,34 @@ div#side-toast {
 
 div#side-toast img {
   width: 60px;
+}
+
+div#info-badge {
+  position: fixed;
+  height: auto;
+  overflow: hidden;
+  background: orange;
+  color: white;
+  z-index: 10;
+  padding: 8px;
+  top: 70vh;
+  right: 0px;
+  border-bottom-left-radius: 15px;
+  border-top-left-radius: 15px;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  transform-origin: left top;
+  max-width: 100vw;
+
+  /* Animationseigenschaften */
+  transform: translateX(100%);
+  opacity: 0;
+  visibility: hidden;
+}
+
+div#info-badge.show {
+  transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
 }
 
 div.nickname {
@@ -706,10 +758,6 @@ article .message-map {
   background-size: cover;
 }
 
-[id*="page-"] {
-  padding: 5px;
-}
-
 .loading-spinner {
   display: none;
   position: fixed;
@@ -758,8 +806,8 @@ article .message-map {
  */
 
 .advanced-settings {
+  display: none;
   visibility: hidden;
-  height: 0px;
 }
 
 #about-text {
@@ -780,10 +828,6 @@ div.text {
 }
 article {
   padding: 10px;
-}
-
-article.nickname {
-  color: blue;
 }
 
 article div.message-head {
@@ -862,35 +906,6 @@ div#message-input input {
   padding: 0 0 20px 0;
 }
 
-#start .button-create-peer {
-  margin: 5px 0 150px 0;
-}
-
-#open-peer-menu {
-  padding: 10px;
-}
-
-#addressbook button img {
-  width: 30px;
-  display: none;
-}
-
-#addressbook button.live img.online {
-  display: inline-block;
-}
-
-#addressbook button.live img.offline {
-  display: none;
-}
-
-#addressbook button img.offline {
-  display: inline-block;
-}
-
-#addressbook button:last-child {
-  margin-bottom: 50px;
-}
-
 div#top-bar div.button-left:hover {
   cursor: pointer;
 }
@@ -915,14 +930,10 @@ div#bottom-bar div.button-center:hover {
   cursor: pointer;
 }
 
-@media screen and (min-width: 400px) and (max-width: 2000px) {
+@media screen and (min-width: 400px) and (max-width: 1000px) {
   #app {
     overflow: scroll;
     padding: 50px 0 0 0;
-  }
-
-  #chat {
-    max-width: 400px;
   }
 
   article {
@@ -945,10 +956,7 @@ div#bottom-bar div.button-center:hover {
   .page {
     min-width: 100%;
     max-width: 100%;
-    overflow: scroll;
-  }
-  .not-desktop {
-    display: none !important;
+    padding: 10px;
   }
 
   div#bottom-bar {
@@ -1035,13 +1043,11 @@ div#bottom-bar div.button-center:hover {
   }
 }
 
-.logo-addressbook{margin:0 0 20px 0;
-width:200px;}
-
-@media screen and (min-width: 1500px) and (max-width: 3000px) {
+@media screen and (min-width: 1000px) and (max-width: 3000px) {
   #app {
     overflow: scroll;
-    padding: 50px 0 0 0;
+    padding: 0px 0 0 0;
+    min-height: 100vh;
   }
 
   article {
@@ -1053,7 +1059,7 @@ width:200px;}
   }
 
   #chat {
-    max-width: 400px;
+    max-width: 30vw;
   }
 
   #wrapper {
@@ -1062,19 +1068,27 @@ width:200px;}
     justify-content: center;
     align-items: flex-start;
     overflow: scroll;
+    background: pink;
+    height: 100vh;
   }
 
   .page {
-    min-width: 50%;
-    max-width: 50%;
-    overflow: scroll;
-  }
-  .not-desktop {
-    display: none !important;
+    min-width: 30%;
+    max-width: 30%;
+    position: relative;
+    background: white;
   }
 
   div#bottom-bar {
     margin: 0 0 20px 0;
+    max-width: 100vw;
+    min-width: 100vw;
+  }
+
+  div#bottom-bar div#inner {
+    position: relative;
+    max-width: 30vw !important;
+    min-width: 30vw !important;
   }
 
   div#bottom-bar div.button-left img {
