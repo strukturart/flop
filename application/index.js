@@ -263,11 +263,11 @@ let addUserToAddressBook = (a, b) => {
 };
 
 //reproduce chatHistory
-let load_chat_history = () => {
+let load_chat_history = (id) => {
   let c = chat_data_history.filter((e) => {
     return (
-      (e.from === settings.custom_peer_id && e.to === connectedPeers[0]) ||
-      (e.from === connectedPeers[0] && e.to === settings.custom_peer_id)
+      (e.from === settings.custom_peer_id && e.to === id) ||
+      (e.from === id && e.to === settings.custom_peer_id)
     );
   });
 
@@ -279,60 +279,20 @@ let load_chat_history = () => {
 function setupConnectionEvents(conn) {
   if (conn.label == "ping") {
     console.log("ping");
-    console.log("online check");
     console.log("allow user? id: " + conn.peer);
-    if (addressbook.length > 0) {
-      const entry = addressbook.find((e) => e.id === conn.peer);
+    //conn.close();
 
-      if (entry) {
-        //console.log("User in :", entry);
-      }
-    }
-
-    conn.send({
-      nickname: settings.nickname,
-      userId: settings.custom_peer_id,
-      type: "notification",
-      content: "user is online",
-    });
-  }
-
-  if (status.userOnline > 0 && !connectedPeers.includes(conn.peer)) {
-    conn.send({
-      nickname: settings.nickname,
-      userId: settings.custom_peer_id,
-      type: "notification",
-      content: "full-house",
-    });
-    console.log("full house");
-
-    conn.close();
-    return;
-  }
-
-  if (conn.label == "ping") {
-    conn.on("data", function (data) {
-      console.log(data);
-    });
-  }
-
-  if (conn.label !== "flop") {
-    //only allow users with connection label "flop"
-    //to access data chanel
-    return false;
+    // return;
   }
 
   connectedPeers.push(conn.peer);
+  console.log(connectedPeers);
 
   let pc = conn.peerConnection;
 
   pc.addEventListener("iceconnectionstatechange", () => {
+    console.log("state: " + pc.iceConnectionState);
     switch (pc.iceConnectionState) {
-      case "connected":
-        remove_no_user_online();
-        updateConnections();
-        break;
-
       case "disconnected":
         side_toaster("Connection failed. User might be offline.", 5000);
         connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
@@ -355,6 +315,9 @@ function setupConnectionEvents(conn) {
 
   //receive data
   conn.on("data", function (data) {
+    console.log(conn.label);
+    if (conn.label !== "flop") return;
+
     remove_no_user_online();
 
     if (
@@ -503,10 +466,9 @@ function setupConnectionEvents(conn) {
         }
       }
 
-      m.redraw();
-
       setTimeout(() => {
         storeChatData();
+        m.redraw();
       }, 1000);
     } else {
       console.log("userlist: " + data.userlist);
@@ -520,10 +482,8 @@ function setupConnectionEvents(conn) {
 
   // Event handler for successful connection
   conn.on("open", function () {
-    document.querySelector(".loading-spinner").style.display = "none";
-
     //reproduce chat data
-    load_chat_history();
+    //load_chat_history();
 
     stop_scan();
     remove_no_user_online();
@@ -533,12 +493,6 @@ function setupConnectionEvents(conn) {
 
   conn.on("close", () => {
     side_toaster(`User has left the chat`, 1000);
-    connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
-    updateConnections();
-  });
-
-  conn.on("disconnected", () => {
-    side_toaster(`User is disconnectd the chat`, 1000);
     connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
     updateConnections();
   });
@@ -560,6 +514,7 @@ let ice_servers = {
 };
 
 const remove_no_user_online = () => {
+  return;
   let m = m.route.get();
   if (m.startsWith("/chat")) {
     chat_data = chat_data.filter((e) => {
@@ -572,7 +527,12 @@ const remove_no_user_online = () => {
 
 //load ICE Server
 async function getIceServers() {
-  document.querySelector(".loading-spinner").style.display = "block";
+  //only set new peer if no peer exist
+  if (peer) {
+    console.log("peer exist");
+    return;
+  }
+
   let p = m.route.get();
 
   try {
@@ -615,29 +575,28 @@ async function getIceServers() {
       referrerPolicy: "no-referrer",
     });
 
+    //connection from peer
     peer.on("connection", function (c) {
       setupConnectionEvents(c);
     });
 
-    peer.on("close", function (c) {
-      document.querySelector(".loading-spinner").style.display = "none";
+    peer.on("disconnected", () => {
+      console.log(`User is disconnectd the server`);
+      attemptReconnect();
     });
 
+    //connection to peer-server
     peer.on("open", function (id) {
-      document.querySelector(".loading-spinner").style.display = "none";
-
       console.log("PeerJS connected with server ID:", id);
       // Zugriff auf den internen WebSocket
       if (peer.socket && peer.socket._socket) {
         peer.socket._socket.addEventListener("error", function (event) {
           console.error("WebSocket Error:", event);
-          //side_toaster("WebSocket connection failed", 12000);
           attemptReconnect();
         });
 
         peer.socket._socket.addEventListener("close", function (event) {
           console.warn("WebSocket closed:", event);
-          //side_toaster("WebSocket connection closed", 12000);
           attemptReconnect();
         });
       } else {
@@ -659,8 +618,7 @@ async function getIceServers() {
 
         case "peer-unavailable":
           //recreate peer
-          console.log(peer);
-          getIceServers();
+          //console.log(peer);
           return false;
 
         default:
@@ -677,8 +635,6 @@ function attemptReconnect() {
   if (peer.disconnected) {
     console.log("Attempting to reconnect...");
     peer.reconnect();
-  } else {
-    //console.log("Peer is still connected. No need to reconnect.");
   }
 }
 
@@ -947,8 +903,8 @@ function sendMessageToAll(message) {
     });
   });
 
-  m.redraw();
   storeChatData();
+  m.redraw();
 }
 
 //close all connections
@@ -989,41 +945,56 @@ let peer_is_online = async function () {
   }
 
   try {
-    addressbook.forEach((entry) => {
+    // Verwende for-Schleife, um mit 'continue' die Iteration zu überspringen
+    for (let i = 0; i < addressbook.length; i++) {
+      let entry = addressbook[i];
       entry.live = false;
+
+      // Prüfe, ob der Peer schon in connectedPeers ist
+      if (connectedPeers.includes(entry.id)) {
+        entry.live = true;
+        console.log("already connected");
+        m.redraw();
+        continue; // Überspringe die restlichen Logik für diesen Peer
+      }
+
       try {
         let tempConn = peer.connect(entry.id, {
           label: "ping",
           reliable: true,
         });
 
+        console.log("test" + entry.id);
+
         if (tempConn) {
           tempConn.on("open", () => {
             entry.live = true;
-            m.redraw(); // UI aktualisieren
+            console.log("check" + JSON.stringify(addressbook));
+            m.redraw();
           });
 
           tempConn.on("error", () => {
             entry.live = false;
-            m.redraw(); // UI aktualisieren
+            console.log("check" + JSON.stringify(addressbook));
+            m.redraw();
           });
         }
       } catch (error) {
+        console.log(error);
         entry.live = false;
-        m.redraw(); // Falls ein Fehler auftritt
+        m.redraw();
       }
-    });
-    console.log("check" + JSON.stringify(addressbook));
+    }
     m.redraw();
-
     return true;
   } catch (error) {
+    console.log(error);
     return false;
   }
 };
 
 //connect to peer
-let connect_to_peer = function (id, route_target) {
+let connect_to_peer = function (id, route_target = "/start") {
   if (!navigator.onLine) {
     top_bar("", "<img src='assets/image/offline.svg'>", "");
     return false;
@@ -1037,15 +1008,18 @@ let connect_to_peer = function (id, route_target) {
 
   getIceServers()
     .then(() => {
+      if (connectedPeers.includes(id)) {
+        m.route.set("/chat?id=" + id);
+
+        return;
+      }
       chat_data = [];
 
       setTimeout(() => {
         if (!peer) {
-          if (route_target == null || route_target == undefined) {
-            m.route.set("/start");
-          } else {
-            m.route.set(route_target);
-          }
+          m.route.set("/start");
+
+          console.log("peer not set");
           return;
         }
 
@@ -1057,17 +1031,13 @@ let connect_to_peer = function (id, route_target) {
           });
 
           if (conn) {
+            //successfull connected with peer
             conn.on("open", () => {
               setupConnectionEvents(conn);
               m.route.set("/chat?id=" + id);
             });
 
-            conn.on("connection", (e) => {
-              setupConnectionEvents(conn);
-            });
-
             conn.on("error", (e) => {
-              alert(e);
               side_toaster("Connection could not be established", 5000);
 
               if (route_target == null || route_target == undefined) {
@@ -1104,9 +1074,7 @@ let connect_to_peer = function (id, route_target) {
         }
       }, 4000);
     })
-    .catch((e) => {
-      alert("peer no onlime");
-    });
+    .catch((e) => {});
 };
 
 //create room
@@ -1116,7 +1084,6 @@ let create_peer = function () {
     top_bar("", "<img src='assets/image/offline.svg'>", "");
     return false;
   }
-  document.querySelector(".loading-spinner").style.display = "block";
 
   m.route.set("/chat?id=" + settings.custom_peer_id);
 
@@ -1200,7 +1167,7 @@ let time_parse = function (value) {
 //callback qr-code scan
 let scan_callback = function (n) {
   if (n == "error") {
-    m.route.set("/open_peer_menu");
+    m.route.set("/start");
   } else {
     let m = n.split("id=");
     status.action = "";
@@ -1522,7 +1489,7 @@ var waiting = {
       "div",
       {
         id: "waiting",
-        class: "width-100 height-100 flex align-item-center justify-center",
+        class: "width-100 height-100 flex align-center justify-center",
         oninit: () => {
           top_bar("", "", "");
           timer1 = setTimeout(() => {
@@ -1533,17 +1500,13 @@ var waiting = {
         onbeforeremove: () => {
           clearTimeout(timer1);
           console.log("timer killed");
-          document.querySelector(".loading-spinner").style.display = "none";
         },
       },
       [
         m(
           "span",
           {
-            oncreate: () => {
-              document.querySelector(".loading-spinner").style.display =
-                "block";
-            },
+            oncreate: () => {},
           },
           "connecting"
         ),
@@ -2374,7 +2337,9 @@ var start = {
                 class: "addressbook-box  flex justify-center",
                 id: "addressbook",
                 oncreate: () => {
-                  peer_is_online();
+                  setTimeout(() => {
+                    peer_is_online();
+                  }, 2000);
                 },
               },
               [
@@ -2390,8 +2355,8 @@ var start = {
                         setTabindex();
 
                         ucheck = setInterval(() => {
-                          peer_is_online();
-                        }, 20000);
+                          //peer_is_online();
+                        }, 10000);
                       },
                       onfocus: () => {
                         status.addressbook_in_focus = e.id;
@@ -2413,6 +2378,8 @@ var start = {
                           connect_to_peer(
                             document.activeElement.getAttribute("data-id")
                           );
+                          status.chat_with_id =
+                            document.activeElement.getAttribute("data-id");
                         } else {
                           side_toaster("user is not online", 3000);
                         }
@@ -2460,17 +2427,32 @@ var scan = {
   },
 };
 
+let filter_chat_by_id = (id) => {
+  let c = chat_data.filter((e) => {
+    return (
+      (e.from === settings.custom_peer_id && e.to === id) ||
+      (e.from === id && e.to === settings.custom_peer_id)
+    );
+  });
+
+  if (c.length > 0) chat_data = c;
+};
+
 let user_check;
 var chat = {
   oninit: () => {
     key_delay();
-    if (connectedPeers.length > 0) {
-      //reproduce chat data
-      load_chat_history();
-    }
+    //reproduce chat data
+    load_chat_history(status.chat_with_id);
   },
   onremove: () => {
     key_delay();
+  },
+
+  onupdate: () => {
+    //reproduce chat data
+    console.log("view updated");
+    load_chat_history(status.chat_with_id);
   },
 
   view: function () {
@@ -2935,11 +2917,11 @@ let map_view = {
 var intro = {
   oninit: () => {
     key_delay();
+    //create peer on start
+    getIceServers();
   },
   onremove: () => {
     key_delay();
-    //create peer on start
-    getIceServers();
   },
   view: function () {
     return m(
