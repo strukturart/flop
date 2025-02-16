@@ -340,6 +340,12 @@ div#intro img {
   height: 20px;
 }
 
+#invite img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 @keyframes intro_img {
   0% {
     filter: hue-rotate(-0.25turn);
@@ -594,10 +600,11 @@ div#bottom-bar {
   z-index: 2000;
   bottom: 30px;
   left: 0px;
+  right: 0px;
   height: 18px;
   z-index: 6;
   background: none;
-  min-width: 100vw;
+  min-width: 10vw;
 
   display: flex;
   justify-content: center; /* Horizontally center all child elements */
@@ -623,7 +630,7 @@ div#bottom-bar div.button-left {
   background: none;
   color: white;
   padding: 2px;
-  width: 32%;
+  width: 33.33%;
   display: flex;
   justify-content: flex-start;
 }
@@ -640,7 +647,7 @@ div#bottom-bar div.button-right {
   background: none;
   color: white;
   padding: 2px;
-  width: 32%;
+  width: 33.33%;
   display: flex;
   justify-content: flex-end;
 }
@@ -652,7 +659,7 @@ div#bottom-bar div.button-center {
   background: none;
   color: white;
   padding: 2px;
-  width: 32%;
+  width: 33.33%;
 }
 
 div#bottom-bar div.button-center img {
@@ -838,7 +845,6 @@ article div.message-head {
 }
 
 article div.message-main {
-  background: pink;
   border-radius: 7px;
   padding: 5px 5px 5px 5px;
 }
@@ -1068,7 +1074,6 @@ div#bottom-bar div.button-center:hover {
     justify-content: center;
     align-items: flex-start;
     overflow: scroll;
-    background: pink;
     height: 100vh;
   }
 
@@ -1087,8 +1092,7 @@ div#bottom-bar div.button-center:hover {
 
   div#bottom-bar div#inner {
     position: relative;
-    max-width: 30vw !important;
-    min-width: 30vw !important;
+    background: green;
   }
 
   div#bottom-bar div.button-left img {
