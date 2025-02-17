@@ -276,11 +276,7 @@ let load_chat_history = (id) => {
 //to update connections list
 function setupConnectionEvents(conn) {
   if (conn.label == "ping") {
-    console.log("ping");
     console.log("allow user? id: " + conn.peer);
-    //conn.close();
-
-    // return;
   }
 
   connectedPeers.push(conn.peer);
@@ -326,17 +322,19 @@ function setupConnectionEvents(conn) {
       data.type == "notification"
     ) {
       let route = m.route.get();
-      if (route.startsWith("/start")) {
-        let ask = confirm("do you want chat with" + data.nickname);
-        if (ask) {
-          connect_to_peer(data.userId);
-        } else {
-        }
-      }
 
-      if (route.startsWith("/chat") && status.current_user_id !== conn.peer) {
-        //to do notification
-        //if user not current user
+      //is not in addressbook - ask
+      //is in addressbook - notify
+      let inAddressbook = addressbook.find((e) => e.id === data.from);
+      if (!inAddressbook) {
+        let ask = confirm("Do you want to chat with " + data.nickname + "?");
+        if (ask) {
+          connect_to_peer(data.from);
+        } else {
+          conn.close();
+        }
+      } else {
+        pushLocalNotification("New message from " + inAddressbook.name);
       }
 
       if (data.type == "notification") {
@@ -348,7 +346,6 @@ function setupConnectionEvents(conn) {
 
         chat_data.push({
           nickname: data.nickname,
-          userId: data.userId,
           content: "",
           datetime: new Date(),
           image: data.file,
@@ -370,7 +367,6 @@ function setupConnectionEvents(conn) {
           content: data.content,
           datetime: new Date(),
           type: data.type,
-          userId: data.userId,
           from: data.from,
           to: data.to,
         });
@@ -403,7 +399,6 @@ function setupConnectionEvents(conn) {
           content: audioBlob,
           datetime: new Date(),
           type: data.type,
-          userId: data.userId,
           from: data.from,
           to: data.to,
         });
@@ -420,7 +415,6 @@ function setupConnectionEvents(conn) {
           content: link_url,
           datetime: new Date(),
           type: data.type,
-          userId: data.userId,
           gps: data.content,
           from: data.from,
           to: data.to,
@@ -441,13 +435,13 @@ function setupConnectionEvents(conn) {
           //store different users location
           //to create/update markers on map
           let e = status.users_geolocation.find(
-            (item) => item.userId === data.userId
+            (item) => item.userId === data.from
           );
           if (e) {
             e.gps = data.content;
           } else {
             status.users_geolocation.push({
-              userId: data.userId,
+              userId: data.from,
               gps: data.content,
             });
           }
@@ -459,7 +453,6 @@ function setupConnectionEvents(conn) {
             content: link_url,
             datetime: new Date(),
             type: data.type,
-            userId: data.userId,
             gps: data.content,
             from: data.from,
             to: data.to,
@@ -482,9 +475,6 @@ function setupConnectionEvents(conn) {
 
   // Event handler for successful connection
   conn.on("open", function () {
-    //reproduce chat data
-    //load_chat_history();
-
     stop_scan();
     remove_no_user_online();
   });
@@ -715,16 +705,22 @@ const focus_last_article = function () {
   }, 1000);
 };
 
-function sendMessage(msg, type, mimeType = "", to = connectedPeers[0] || "") {
+function sendMessage(
+  msg,
+  type,
+  mimeType = "",
+  to = status.current_user_id || ""
+) {
   if (!msg) return false;
 
   if (type == "notification") {
     msg = {
       nickname: settings.nickname,
       type: type,
-      userId: settings.custom_peer_id,
       content: msg,
       mimeType: mimeType,
+      from: settings.custom_peer_id,
+      to: to,
     };
 
     sendMessageToAll(msg);
@@ -753,7 +749,6 @@ function sendMessage(msg, type, mimeType = "", to = connectedPeers[0] || "") {
         filename: msg.filename,
         filetype: msg.type,
         nickname: settings.nickname,
-        userId: settings.custom_peer_id,
         type: type,
         mimeType: mimeType,
       };
@@ -770,7 +765,6 @@ function sendMessage(msg, type, mimeType = "", to = connectedPeers[0] || "") {
     msg = {
       nickname: settings.nickname,
       type: type,
-      userId: settings.custom_peer_id,
       content: msg,
       mimeType: mimeType,
     };
@@ -809,7 +803,6 @@ function sendMessage(msg, type, mimeType = "", to = connectedPeers[0] || "") {
         content: link_url,
         datetime: new Date(),
         type: type,
-        userId: settings.custom_peer_id,
         gps: msg,
         mimeType: mimeType,
         from: settings.custom_peer_id,
@@ -821,7 +814,6 @@ function sendMessage(msg, type, mimeType = "", to = connectedPeers[0] || "") {
       content: msg,
       nickname: settings.nickname,
       type: type,
-      userId: settings.custom_peer_id,
       gps: msg,
       mimeType: mimeType,
     };
@@ -838,7 +830,6 @@ function sendMessage(msg, type, mimeType = "", to = connectedPeers[0] || "") {
       content: link_url,
       datetime: new Date(),
       type: type,
-      userId: settings.custom_peer_id,
       gps: msg,
       mimeType: mimeType,
       from: settings.custom_peer_id,
@@ -850,7 +841,6 @@ function sendMessage(msg, type, mimeType = "", to = connectedPeers[0] || "") {
       content: msg,
       nickname: settings.nickname,
       type: type,
-      userId: settings.custom_peer_id,
       gps: msg,
       mimeType: mimeType,
     };
@@ -863,7 +853,6 @@ function sendMessage(msg, type, mimeType = "", to = connectedPeers[0] || "") {
       content: msg,
       datetime: new Date(),
       type: type,
-      userId: settings.custom_peer_id,
       mimeType: mimeType,
       from: settings.custom_peer_id,
       to: to,
@@ -878,7 +867,6 @@ function sendMessage(msg, type, mimeType = "", to = connectedPeers[0] || "") {
           content: buffer,
           nickname: settings.nickname,
           type: type,
-          userId: settings.custom_peer_id,
           mimeType: mimeType,
         };
         sendMessageToAll(messageToSend);
@@ -965,8 +953,6 @@ let peer_is_online = async function () {
           reliable: true,
         });
 
-        console.log("test" + entry.id);
-
         if (tempConn) {
           tempConn.on("open", () => {
             entry.live = true;
@@ -1014,7 +1000,7 @@ let connect_to_peer = function (
   getIceServers()
     .then(() => {
       if (connectedPeers.includes(id)) {
-        m.route.set("/chat?id=" + status.custom_peer_id);
+        m.route.set("/chat?id=" + status.custom_peer_id + "&peer=" + id);
         status.current_user_id = id;
         status.current_user_nickname = nickname;
 
@@ -1040,10 +1026,11 @@ let connect_to_peer = function (
           if (conn) {
             //successfull connected with peer
             conn.on("open", () => {
-              setupConnectionEvents(conn);
-              m.route.set("/chat?id=" + settings.custom_peer);
               status.current_user_id = id;
               status.current_user_nickname = nickname;
+
+              setupConnectionEvents(conn);
+              m.route.set("/chat?id=" + status.custom_peer_id + "&peer=" + id);
             });
 
             conn.on("error", (e) => {
@@ -2094,7 +2081,7 @@ var options = {
         m(
           "button",
           {
-            oncreate: ({ dom }) =>
+            oncreate: () =>
               setTimeout(function () {
                 setTabindex();
               }, 500),
@@ -2119,7 +2106,7 @@ var options = {
           "share image"
         ),
 
-        status.current_user_id !== ""
+        status.current_user_id
           ? m(
               "button",
               {
@@ -2135,7 +2122,7 @@ var options = {
                   bottom_bar("", "<img  src='./assets/image/select.svg'>", "");
                 },
                 onclick: function () {
-                  if (status.current_user_id && status.current_user_nickname) {
+                  if (status.current_user_id) {
                     addUserToAddressBook(
                       status.current_user_id,
                       status.current_user_nickname
@@ -2369,8 +2356,6 @@ var start = {
                           connect_to_peer(
                             document.activeElement.getAttribute("data-id")
                           );
-                          status.current_user_id =
-                            document.activeElement.getAttribute("data-id");
                         } else {
                           side_toaster("user is not online", 3000);
                         }
@@ -2566,7 +2551,7 @@ var chat = {
             class: "item " + nickname + " " + item.type,
             tabindex: index,
             "data-type": item.type,
-            "data-user-id": item.userId,
+            "data-user-id": item.from,
             "data-user-nickname": item.nickname,
             "data-lat": ff.lat,
             "data-lng": ff.lng,
@@ -2591,8 +2576,6 @@ var chat = {
             },
 
             onfocus: () => {
-              status.current_user_id =
-                document.activeElement.getAttribute("data-user-id");
               status.current_user_nickname =
                 document.activeElement.getAttribute("data-user-nickname");
 
@@ -3735,10 +3718,8 @@ document.addEventListener("visibilitychange", function () {
         //> 6min reset
         if (durationMs > 360000) {
           m.route.set("/start");
-          closeAllConnections();
         } else {
           //try to reconnect
-          peer.destroy();
           getIceServers().then(() => {
             let f = localStorage.getItem("last_connections");
             if (f) {
