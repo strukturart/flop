@@ -286,6 +286,8 @@ function setupConnectionEvents(conn) {
 
   pc.addEventListener("iceconnectionstatechange", () => {
     console.log("state: " + pc.iceConnectionState);
+    let r = m.route.get();
+
     switch (pc.iceConnectionState) {
       case "disconnected":
         side_toaster("Connection failed. User might be offline.", 5000);
@@ -304,14 +306,18 @@ function setupConnectionEvents(conn) {
         connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
         updateConnections();
         break;
+      case "checking":
+        if (r.startsWith("/start")) {
+          peer_is_online();
+          m.redraw();
+        }
+        break;
     }
   });
 
   //receive data
   conn.on("data", function (data) {
     if (conn.label !== "flop") return;
-
-    remove_no_user_online();
 
     if (
       data.type == "image" ||
@@ -321,8 +327,6 @@ function setupConnectionEvents(conn) {
       data.type == "audio" ||
       data.type == "notification"
     ) {
-      let route = m.route.get();
-
       //is not in addressbook - ask
       //is in addressbook - notify
       let inAddressbook = addressbook.find((e) => e.id === data.from);
@@ -335,6 +339,11 @@ function setupConnectionEvents(conn) {
         }
       } else {
         pushLocalNotification("New message from " + inAddressbook.name);
+        let r = m.route.get();
+        if (r.startsWith("/start")) {
+          peer_is_online();
+          m.redraw();
+        }
       }
 
       if (data.type == "notification") {
@@ -476,7 +485,6 @@ function setupConnectionEvents(conn) {
   // Event handler for successful connection
   conn.on("open", function () {
     stop_scan();
-    remove_no_user_online();
   });
 
   // Event handler for connection closure
@@ -496,23 +504,10 @@ function setupConnectionEvents(conn) {
 
 function updateConnections() {
   status.userOnline = connectedPeers.length;
-  remove_no_user_online();
 }
 
 let ice_servers = {
   "iceServers": [],
-};
-
-const remove_no_user_online = () => {
-  return;
-  let m = m.route.get();
-  if (m.startsWith("/chat")) {
-    chat_data = chat_data.filter((e) => {
-      return e.content !== "invitation link" && e.id !== "no-other-user-online";
-    });
-
-    m.redraw();
-  }
 };
 
 //load ICE Server
@@ -1075,7 +1070,7 @@ let connect_to_peer = function (
 
 //create room
 // and create qr-code with peer id
-let show_contact = function () {
+let generate_contact = function () {
   //create qr code
   var qrs = new qrious();
   qrs.set({
@@ -1089,7 +1084,7 @@ let show_contact = function () {
 
   status.invite_qr = qrs.toDataURL();
 
-  m.route.set("/invite?id=" + settings.custom_peer_id);
+  //m.route.set("/invite?id=" + settings.custom_peer_id);
 };
 
 let handleImage = function (t) {
@@ -1536,6 +1531,17 @@ var about = {
           {
             class: "item",
             onclick: () => {
+              m.route.set("/invite");
+            },
+          },
+          "Invite"
+        ),
+
+        m(
+          "button",
+          {
+            class: "item",
+            onclick: () => {
               m.route.set("/scan");
             },
           },
@@ -1712,7 +1718,18 @@ var about_page = {
 
 var invite = {
   oninit: () => {
-    if (status.notKaiOS) top_bar("<img src='assets/image/back.svg'>", "", "");
+    key_delay();
+  },
+  onremove: () => {
+    key_delay();
+  },
+
+  oncreate: () => {
+    if (status.notKaiOS) {
+      top_bar("<img src='assets/image/back.svg'>", "", "");
+    } else {
+      top_bar("", "", "");
+    }
 
     bottom_bar("<img class='not-desktop' src='assets/image/link.svg'>", "", "");
   },
@@ -1832,7 +1849,7 @@ var settings_page = {
             oncreate: ({ dom }) => {
               dom.focus();
             },
-            class: "item input-parent flex justify-content-spacearound",
+            class: "item input-parent flex justify-spacearound",
           },
           [
             m(
@@ -1857,7 +1874,7 @@ var settings_page = {
         m(
           "div",
           {
-            class: "item input-parent  flex justify-content-spacearound",
+            class: "item input-parent  flex justify-spacearound",
           },
           [
             m(
@@ -1932,7 +1949,7 @@ var settings_page = {
           "div",
           {
             class:
-              "item input-parent  flex justify-content-spacearound advanced-settings",
+              "item input-parent  flex justify-spacearound advanced-settings",
           },
           [
             m(
@@ -1954,7 +1971,7 @@ var settings_page = {
           "div",
           {
             class:
-              "item input-parent  flex  justify-content-spacearound advanced-settings",
+              "item input-parent  flex  justify-spacearound advanced-settings",
           },
           [
             m(
@@ -1976,7 +1993,7 @@ var settings_page = {
           "div",
           {
             class:
-              "item input-parent  flex justify-content-spacearound advanced-settings",
+              "item input-parent  flex justify-spacearound advanced-settings",
           },
           [
             m(
@@ -1998,7 +2015,7 @@ var settings_page = {
           "div",
           {
             class:
-              "item input-parent  flex justify-content-spacearound advanced-settings",
+              "item input-parent  flex justify-spacearound advanced-settings",
           },
           [
             m(
@@ -2246,16 +2263,20 @@ var options = {
     );
   },
 };
-let ucheck;
+
 var start = {
   oninit: () => {
     key_delay();
     previousView();
     status.addressbook_in_focus = "";
+    generate_contact();
   },
   onremove: () => {
     key_delay();
-    clearInterval(ucheck);
+  },
+
+  onupdate: () => {
+    console.log("view updated");
   },
 
   view: function () {
@@ -2281,8 +2302,6 @@ var start = {
                   localforage.removeItem("connect_to_id").then(() => {
                     connect_to_peer(id, "/chat");
                   });
-                } else {
-                  console.error("Invalid data format"); // Handle invalid data format
                 }
               }
             })
@@ -2291,8 +2310,8 @@ var start = {
             });
 
           bottom_bar(
-            "",
             "<img src='assets/image/invite.svg'>",
+            "",
             "<img src='assets/image/option.svg'>"
           );
         },
@@ -2323,7 +2342,7 @@ var start = {
           ? m(
               "div",
               {
-                class: "addressbook-box  flex justify-center",
+                class: "addressbook-box flex justify-center",
                 id: "addressbook",
                 oncreate: () => {
                   setTimeout(() => {
@@ -2336,16 +2355,11 @@ var start = {
                   return m(
                     "button",
                     {
-                      class:
-                        "item flex justify-center align-item-center addressbook-item ",
+                      class: "item flex justify-center addressbook-item",
                       "data-id": e.id,
                       "data-online": e.live ? "true" : "false",
                       oncreate: () => {
                         setTabindex();
-
-                        ucheck = setInterval(() => {
-                          //peer_is_online();
-                        }, 10000);
                       },
                       onfocus: () => {
                         status.addressbook_in_focus = e.id;
@@ -2465,7 +2479,7 @@ var chat = {
               if (!status.notKaiOS && status.userOnline > 0)
                 top_bar(
                   "",
-                  connectedPeers.length,
+                  "",
                   "<img class='users' title='" +
                     status.userOnline +
                     "' src='assets/image/monster.svg'>"
@@ -2474,7 +2488,7 @@ var chat = {
               if (status.notKaiOS && status.userOnline > 0)
                 top_bar(
                   "<img src='assets/image/back.svg'>",
-                  connectedPeers.length,
+                  "",
                   "<img class='users' title='" +
                     status.userOnline +
                     "' src='assets/image/monster.svg'>"
@@ -2483,7 +2497,7 @@ var chat = {
               if (status.notKaiOS && status.userOnline == 0)
                 top_bar(
                   "<img src='assets/image/back.svg'>",
-                  connectedPeers.length,
+                  "",
                   "<img class='users' title='" +
                     status.userOnline +
                     "' src='assets/image/no-monster.svg'>"
@@ -2492,7 +2506,7 @@ var chat = {
               if (!status.notKaiOS && status.userOnline == 0)
                 top_bar(
                   "",
-                  connectedPeers.length,
+                  "",
                   "<img class='users' title='" +
                     "<span>" +
                     status.userOnline +
@@ -3215,6 +3229,22 @@ document.addEventListener("DOMContentLoaded", function (e) {
     let route = m.route.get();
 
     switch (param.key) {
+      case "Backspace":
+        audioRecorder.stopRecording().then(() => {
+          document.getElementById("app").style.opacity = "1";
+          document.querySelector(".playing").style.top = "-1000%";
+        });
+        if (route.startsWith("/invite")) {
+          m.route.set("/start");
+        }
+
+        if (m.route.get() == "/scan") {
+          stop_scan();
+          m.route.set("/start");
+          status.action = "";
+        }
+        break;
+
       case "ArrowRight":
         if (route == "/map_view") {
           MoveMap("right");
@@ -3274,7 +3304,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
             status.audio_recording = false;
 
             document.getElementById("app").style.opacity = "1";
-            document.querySelector(".playing").style.opacity = "0";
+            document.querySelector(".playing").style.top = "-1000%";
 
             write();
           });
@@ -3291,8 +3321,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
         if (route.startsWith("/chat?") && status.audio_recording) {
           // Stop recording and get the recorded data
           audioRecorder.stopRecording().then(({ audioBlob, mimeType }) => {
+            status.audio_recording = false;
             document.getElementById("app").style.opacity = "1";
-            document.querySelector(".playing").style.opacity = "0";
+            document.querySelector(".playing").style.top = "-1000%";
 
             sendMessage(audioBlob, "audio", mimeType);
             bottom_bar(
@@ -3301,7 +3332,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
               "<img src='assets/image/option.svg'>"
             );
 
-            status.audio_recording = false;
             write();
             return;
           });
@@ -3334,42 +3364,43 @@ document.addEventListener("DOMContentLoaded", function (e) {
           }
         }
 
+        if (route.startsWith("/start")) {
+          m.route.set("/invite");
+        }
+
         if (route.startsWith("/map_view")) {
           ZoomMap("in");
         }
 
         break;
 
-      case "Enter":
-        if (status.notKaiOS) {
-          if (route.startsWith("/chat?")) {
-            audioRecorder
-              .startRecording()
-              .then(() => {
-                document.getElementById("app").style.opacity = "0";
-                document.querySelector(".playing").style.opacity = "1";
+      case "Escape":
+        if (route.startsWith("/chat")) {
+          audioRecorder.stopRecording().then(() => {
+            document.getElementById("app").style.opacity = "1";
+            document.querySelector(".playing").style.top = "-1000%";
+            status.audio_recording = false;
 
-                status.audio_recording = true;
-                setTimeout(() => {
-                  bottom_bar(
-                    "<img src='assets/image/send.svg'>",
-                    "<img src='assets/image/record-live.svg'>",
-                    "<img src='assets/image/cancel.svg'>"
-                  );
-                }, 1000);
-              })
-              .catch((e) => {});
-          }
+            bottom_bar(
+              "<img src='assets/image/pencil.svg'>",
+              "",
+              "<img src='assets/image/option.svg'>"
+            );
+          });
         }
+        break;
 
-        if (document.activeElement.tagName == "INPUT") {
-          if (route.startsWith("/chat?" && status.action == "write"))
-            if (status.audio_recording) return false;
+      case "Enter":
+        if (
+          route.startsWith("/chat?") &&
+          document.getElementById("message-input").style.display == "block"
+        ) {
+          if (status.audio_recording) return false;
           audioRecorder
             .startRecording()
             .then(() => {
               document.getElementById("app").style.opacity = "0";
-              document.querySelector(".playing").style.opacity = "1";
+              document.querySelector(".playing").style.top = "50%";
 
               bottom_bar(
                 "<img src='assets/image/send.svg'>",
@@ -3397,10 +3428,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
             console.log(status);
             side_toaster("contact could not be created", 3000);
           }
-        }
-
-        if (route == "/start" && status.addressbook_in_focus === "") {
-          show_contact();
         }
 
         if (route.startsWith("/map_view")) {
@@ -3504,21 +3531,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
         }
 
         break;
-
-      case "Backspace":
-        if (route.startsWith("/invite")) {
-          m.route.set("/start");
-        }
-
-        if (m.route.get() == "/scan") {
-          stop_scan();
-
-          m.route.set("/start");
-
-          status.action = "";
-        }
-
-        break;
     }
   }
 
@@ -3527,13 +3539,13 @@ document.addEventListener("DOMContentLoaded", function (e) {
   // //////////////////////////////
 
   function handleKeyDown(evt) {
+    if (evt.key === "Backspace") {
+      evt.preventDefault();
+    }
+
     if (!status.viewReady) return false;
 
     let route = m.route.get();
-
-    if (evt.key === "Backspace" && m.route.get() != "/start") {
-      evt.preventDefault();
-    }
 
     if (evt.key == "Enter" && route == "/chat") {
       evt.preventDefault();
@@ -3542,9 +3554,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
     if (evt.key === "Backspace") {
       if (m.route.get() == "/scan") {
         stop_scan();
-
         m.route.set("/start");
-
         status.action = "";
       }
 
@@ -3558,8 +3568,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
         route.startsWith("/invite")
       ) {
         evt.preventDefault();
-        status.action = "";
         m.route.set("/start");
+        status.action = "";
       }
 
       if (m.route.get() == "/settings") {
@@ -3592,12 +3602,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
     }
 
     if (evt.key === "EndCall") {
-      evt.preventDefault();
-      if (status.action == "") {
-        closeAllConnections();
-        peer.destroy();
-        window.close();
-      }
     }
     if (!evt.repeat) {
       longpress = false;
@@ -3622,14 +3626,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
       shortpress_action(evt);
     }
   }
-
-  document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") {
-      status.visibility = true;
-    } else {
-      status.visibility = false;
-    }
-  });
 });
 
 try {
@@ -3694,62 +3690,59 @@ if (!status.notKaiOS) {
   }
 }
 
-document.addEventListener("visibilitychange", function () {
+function handleVisibilityChange() {
+  status.visibility = document.visibilityState === "visible";
+
   if (document.hidden) {
-    localStorage.setItem("last_connections", JSON.stringify(connectedPeers));
-    let dt = new Date();
-    localStorage.setItem("last_connections_time", dt.toISOString());
-  } else {
-    let r = m.route.get();
+    localStorage.setItem("last_connection", status.current_user_id);
+    localStorage.setItem("last_connections_time", new Date().toISOString());
+    return;
+  }
 
-    if (r.startsWith("/start")) {
-      peer_is_online();
-    }
+  checkAndReconnect();
+}
 
-    if (r.startsWith("/chat?")) {
-      let dtString = localStorage.getItem("last_connections_time");
-      if (dtString) {
-        let dt = new Date(dtString);
-        let now = new Date();
+function handlePageHide() {
+  localStorage.setItem("last_connection", status.current_user_id);
+  localStorage.setItem("last_connections_time", new Date().toISOString());
+}
 
-        // Calculate duration in milliseconds
-        let durationMs = now - dt;
+function handlePageShow() {
+  status.visibility = true;
+  checkAndReconnect();
+}
 
-        //> 6min reset
-        if (durationMs > 360000) {
-          m.route.set("/start");
-        } else {
-          //try to reconnect
-          getIceServers().then(() => {
-            let f = localStorage.getItem("last_connections");
-            if (f) {
-              f = f.split(",");
-              if (f.length > 1) {
-                f.forEach((e) => {
-                  connect_to_peer(e);
-                });
-              }
-            }
-          });
-        }
+function checkAndReconnect() {
+  let r = m.route.get();
+  if (r.startsWith("/start")) {
+    peer_is_online();
+    return;
+  }
+
+  if (r.startsWith("/chat?")) {
+    let dtString = localStorage.getItem("last_connections_time");
+    if (dtString) {
+      let dt = new Date(dtString);
+      let now = new Date();
+      let durationMs = now - dt;
+
+      if (durationMs > 360000) {
+        m.route.set("/start");
       } else {
-        console.log("No last_connections_time found in localStorage.");
+        getIceServers().then(() => {
+          let f = localStorage.getItem("last_connection");
+          if (f) {
+            connect_to_peer(f);
+          }
+        });
       }
+    } else {
+      console.log("No last_connections_time found in localStorage.");
     }
   }
-});
+}
 
-//start ping interval in service worker
-/*
-channel.postMessage("startInterval");
-channel.addEventListener("message", (event) => {
-  if (event.data === "intervalTriggered") {
-    console.log("keep alive");
-    if (connectedPeers > 0)
-      sendMessageToAll({
-        userlist: connectedPeers,
-        nickname: settings.nickname,
-      });
-  }
-});
-*/
+// Event-Listener iOS & android
+document.addEventListener("visibilitychange", handleVisibilityChange);
+window.addEventListener("pagehide", handlePageHide);
+window.addEventListener("pageshow", handlePageShow);

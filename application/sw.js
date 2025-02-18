@@ -20,24 +20,10 @@ self.onsystemmessage = (evt) => {
   evt.waitUntil(serviceHandler());
 };
 
-//background sync
-
-let intervalId;
-
-channel.addEventListener("message", (event) => {
-  if (event.data === "startInterval") {
-    // Start the interval
-    intervalId = setInterval(() => {
-      // Send a message to the main script
-      channel.postMessage("intervalTriggered");
-    }, 10000); // Adjust the interval duration as needed
-  }
-});
-
 const userAgent = navigator.userAgent || "";
 
 if (userAgent && !userAgent.includes("KAIOS")) {
-  const CACHE_NAME = "pwa-cache-v0.13751";
+  const CACHE_NAME = "pwa-cache-v0.13790";
   const FILE_LIST_URL = "/file-list.json"; // URL of the JSON file containing the array of files
 
   self.addEventListener("install", (event) => {

@@ -136,13 +136,13 @@ img[src=" "] {
 }
 
 button.vip-button {
-  background: rgb(207, 61, 4);
+  background: rgb(45, 100, 208);
   color: white;
   border: 0px solid gray;
 }
 
 button.vip-button:hover {
-  background: rgb(207, 61, 4) !important;
+  background: rgb(45, 100, 208);
   color: white;
 }
 
@@ -150,7 +150,7 @@ button {
   font-size: 1rem;
   background: rgb(255, 255, 255);
   width: 100%;
-  padding: 15px;
+  padding: 10px;
   margin: 0px 0 15px 0px;
   color: black;
   border-radius: 10px;
@@ -255,11 +255,11 @@ textarea {
 
 input {
   width: 95%;
-  height: 30px;
-  padding: 3px;
+  height: 40px;
+  padding: 10px;
   border: 2px solid silver;
   border-radius: 4px;
-  margin: 0 0 0 10px;
+  margin: 0 0 0 0px;
 }
 
 label {
@@ -391,10 +391,9 @@ div#intro img {
   padding: 0.5rem;
   box-sizing: border-box;
   position: fixed;
-  top: 50%;
+  top: -1500%;
   right: calc(50%-2rem);
   z-index: 1000;
-  opacity: 0;
 }
 
 .playing__bar {
@@ -854,9 +853,10 @@ article div.message-main:empty {
 }
 
 article.me div.message-main {
-  background: rgba(167, 172, 164, 0.288);
+  background: rgb(45, 100, 208) !important;
   border-radius: 7px;
   padding: 5px 5px 5px 5px;
+  color: white;
 }
 
 article.image {
@@ -864,7 +864,7 @@ article.image {
 }
 
 article:focus {
-  background: rgba(180, 199, 168, 0.34) !important;
+  background: rgba(180, 199, 168, 0.34);
 }
 
 article div.message-head div:nth-child(2) {
@@ -937,6 +937,10 @@ div#bottom-bar div.button-center:hover {
 }
 
 @media screen and (min-width: 400px) and (max-width: 1000px) {
+  .input-parent:focus {
+    background: none;
+  }
+
   #app {
     overflow: scroll;
     padding: 50px 0 0 0;
@@ -1050,6 +1054,10 @@ div#bottom-bar div.button-center:hover {
 }
 
 @media screen and (min-width: 1000px) and (max-width: 3000px) {
+  .input-parent:focus {
+    background: none;
+  }
+
   #app {
     overflow: scroll;
     padding: 0px 0 0 0;
