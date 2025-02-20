@@ -12,7 +12,6 @@ import {
   getManifest,
   setTabindex,
   downloadFile,
-  info_badge,
 } from "./assets/js/helper.js";
 import { stop_scan, start_scan } from "./assets/js/scan.js";
 import localforage from "localforage";
@@ -24,6 +23,7 @@ import { v4 as uuidv4 } from "uuid";
 import "webrtc-adapter";
 import { createAudioRecorder } from "./assets/js/helper.js";
 import L from "leaflet";
+import dayjs from "dayjs";
 
 import "swiped-events";
 
@@ -994,10 +994,17 @@ let connect_to_peer = function (
 
   getIceServers()
     .then(() => {
+      let inAddressbook = addressbook.find((e) => e.id === id);
+
+      if (inAddressbook) {
+        status.current_user_nickname = inAddressbook.name;
+      } else {
+        status.current_user_nickname = nickname;
+      }
+
       if (connectedPeers.includes(id)) {
         m.route.set("/chat?id=" + status.custom_peer_id + "&peer=" + id);
         status.current_user_id = id;
-        status.current_user_nickname = nickname;
 
         return;
       }
@@ -1022,7 +1029,12 @@ let connect_to_peer = function (
             //successfull connected with peer
             conn.on("open", () => {
               status.current_user_id = id;
-              status.current_user_nickname = nickname;
+
+              if (inAddressbook) {
+                status.current_user_nickname = inAddressbook.name;
+              } else {
+                status.current_user_nickname = nickname;
+              }
 
               setupConnectionEvents(conn);
               m.route.set("/chat?id=" + status.custom_peer_id + "&peer=" + id);
@@ -1450,15 +1462,7 @@ var waiting = {
           console.log("timer killed");
         },
       },
-      [
-        m(
-          "span",
-          {
-            oncreate: () => {},
-          },
-          "connecting"
-        ),
-      ]
+      [m("span", "connecting")]
     );
   },
 };
@@ -1483,11 +1487,7 @@ var about = {
           if (status.notKaiOS)
             top_bar("<img src='assets/image/back.svg'>", "", "");
 
-          bottom_bar(
-            "",
-            "<img class='not-desktop' src='assets/image/select.svg'>",
-            ""
-          );
+          bottom_bar("", "", "");
         },
       },
       [
@@ -1667,7 +1667,7 @@ var about_page = {
           m(
             "div",
             { class: "flex width-100 item" },
-            m.trust("<img src='assets/image/plus.svg'>open new chat")
+            m.trust("<img src='assets/image/inivite.svg'>open new chat")
           ),
 
           m(
@@ -1734,10 +1734,16 @@ var invite = {
     bottom_bar("<img class='not-desktop' src='assets/image/link.svg'>", "", "");
   },
   view: () => {
-    return m("div", { class: "flex justify-center page", id: "invite" }, [
-      m("img", { src: status.invite_qr }),
-      m("div", settings.nickname),
-    ]);
+    return m(
+      "div",
+      { class: "flex justify-center align-center page", id: "invite" },
+      [
+        m("div", { class: "flex justify-center" }, [
+          m("img", { src: status.invite_qr }),
+          m("div", { class: "" }, settings.nickname),
+        ]),
+      ]
+    );
   },
 };
 
@@ -1762,11 +1768,7 @@ var privacy_policy = {
               top_bar("<img src='assets/image/back.svg'>", "", "");
           },
           oninit: () => {
-            bottom_bar(
-              "",
-              "<img class='not-desktop' src='assets/image/select.svg'>",
-              ""
-            );
+            bottom_bar("", "", "");
           },
           onfocus: () => {
             bottom_bar("", "", "");
@@ -1791,11 +1793,7 @@ var privacy_policy = {
                 );
               },
               onfocus: () => {
-                bottom_bar(
-                  "",
-                  "<img class='not-desktop' src='assets/image/select.svg'>",
-                  ""
-                );
+                bottom_bar("", "", "");
               },
             },
             "Privacy Policy Metered"
@@ -1806,7 +1804,7 @@ var privacy_policy = {
               class: "item",
               tabindex: 3,
               onfocus: () => {
-                bottom_bar("", "<img src='assets/image/select.svg'>", "");
+                bottom_bar("", "", "");
               },
             },
             m.trust(
@@ -1832,7 +1830,7 @@ var settings_page = {
       "div",
       {
         class: "flex justify-center page",
-        id: "settings_page",
+        id: "settings-page",
         oncreate: () => {
           bottom_bar("", "", "");
           top_bar("", "", "");
@@ -1930,8 +1928,7 @@ var settings_page = {
               e.target.remove();
 
               document.querySelectorAll(".advanced-settings").forEach((el) => {
-                el.style.display = "block";
-                el.style.visibility = "visible";
+                el.style.display = "flex";
               });
 
               setTabindex();
@@ -1941,7 +1938,7 @@ var settings_page = {
         ),
         m(
           "H2",
-          { class: "text-center advanced-settings" },
+          { class: "text-center advanced-settings", style: "display:none" },
           m.trust("<br>Server Settings")
         ),
 
@@ -1950,6 +1947,7 @@ var settings_page = {
           {
             class:
               "item input-parent  flex justify-spacearound advanced-settings",
+            style: "display:none",
           },
           [
             m(
@@ -1972,6 +1970,7 @@ var settings_page = {
           {
             class:
               "item input-parent  flex  justify-spacearound advanced-settings",
+            style: "display:none",
           },
           [
             m(
@@ -1994,6 +1993,7 @@ var settings_page = {
           {
             class:
               "item input-parent  flex justify-spacearound advanced-settings",
+            style: "display:none",
           },
           [
             m(
@@ -2015,7 +2015,8 @@ var settings_page = {
           "div",
           {
             class:
-              "item input-parent  flex justify-spacearound advanced-settings",
+              "item input-parent flex justify-spacearound advanced-settings",
+            style: "display:none",
           },
           [
             m(
@@ -2078,15 +2079,11 @@ var options = {
     return m(
       "div",
       {
-        class: "flex justify-center align-start page",
+        class: "page",
         oncreate: () => {
           top_bar("", "", "");
 
-          bottom_bar(
-            "",
-            "<img class='not-desktop' src='./assets/image/select.svg'>",
-            ""
-          );
+          bottom_bar("", "", "");
 
           setTabindex();
 
@@ -2106,11 +2103,7 @@ var options = {
             style: { display: status.userOnline ? "" : "none" },
 
             onfocus: () => {
-              bottom_bar(
-                "",
-                "<img class='not-desktop' src='./assets/image/select.svg'>",
-                ""
-              );
+              bottom_bar("", "", "");
             },
             onclick: function () {
               if (status.userOnline > 0) {
@@ -2136,7 +2129,7 @@ var options = {
                 style: { display: status.userOnline ? "" : "none" },
 
                 onfocus: () => {
-                  bottom_bar("", "<img  src='./assets/image/select.svg'>", "");
+                  bottom_bar("", "", "");
                 },
                 onclick: function () {
                   if (status.current_user_id) {
@@ -2159,7 +2152,7 @@ var options = {
           {
             class: "item",
             onfocus: () => {
-              bottom_bar("", "<img src='assets/image/select.svg'>", "");
+              bottom_bar("", "", "");
             },
             style: { display: status.userOnline ? "" : "none" },
 
@@ -2191,11 +2184,7 @@ var options = {
               }
             },
             onfocus: () => {
-              bottom_bar(
-                "",
-                "<img class='not-desktop' src='assets/image/select.svg'>",
-                ""
-              );
+              bottom_bar("", "", "");
             },
             style: { display: status.userOnline ? "" : "none" },
 
@@ -2250,11 +2239,7 @@ var options = {
               });
             },
             onfocus: () => {
-              bottom_bar(
-                "",
-                "<img class='not-desktop' src='assets/image/select.svg'>",
-                ""
-              );
+              bottom_bar("", "", "");
             },
           },
           "Invite users"
@@ -2275,15 +2260,11 @@ var start = {
     key_delay();
   },
 
-  onupdate: () => {
-    console.log("view updated");
-  },
-
   view: function () {
     return m(
       "div",
       {
-        class: "flex justify-center align-start page",
+        class: "flex justify-center align-center page",
         id: "start",
         oncreate: () => {
           top_bar("", "", "");
@@ -2317,23 +2298,18 @@ var start = {
         },
       },
       [
-        m("img", {
-          src: "assets/icons/intro.svg",
-        }),
         addressbook.length == 0
           ? m(
               "p",
               {
-                class: "item scroll",
                 id: "start-text",
-                tabIndex: 0,
                 oncreate: (vnode) => {
-                  document.querySelector("#start p").focus();
                   vnode.dom.focus();
+                  setTabindex();
                 },
               },
               m.trust(
-                "flop is a webRTC chat app with which you can communicate directly with someone (p2p). You can currently exchange text, images, audio and your position with your chat partner. To invite another person press enter. <br>You can also save a person's contact so you can open the chat with them more quickly..<br><br>"
+                "Flop is a webRTC chat app that allows you to communicate directly with someone (p2p). You can currently exchange text, images, audio and your location with your chat partner. <div class='item'></div><br>To chat with a person you have to invite them or you will be invited.<div class='item'></div><br><br>"
               )
             )
           : null,
@@ -2372,6 +2348,17 @@ var start = {
                           );
                         } else {
                           side_toaster("user is not online", 3000);
+                          status.current_user_id =
+                            document.activeElement.getAttribute("data-id");
+
+                          status.current_user_nickname =
+                            document.activeElement.innerText;
+                          m.route.set(
+                            "/chat?id=" +
+                              status.custom_peer_id +
+                              "&peer=" +
+                              status.current_user_id
+                          );
                         }
                       },
                     },
@@ -2430,7 +2417,6 @@ var chat = {
 
   onupdate: () => {
     //reproduce chat data
-    console.log("view updated");
     load_chat_history(status.current_user_id);
   },
 
@@ -2439,7 +2425,7 @@ var chat = {
       "div",
       {
         id: "chat",
-        class: "flex justify-center align-start page",
+        class: "page",
 
         onremove: () => {
           clearInterval(user_check);
@@ -2454,14 +2440,14 @@ var chat = {
         oncreate: () => {
           top_bar(
             "",
-            "",
-            "<img  class='users' title='0' 'src='assets/image/no-monster.svg'>"
+            "<div id='name'>" + status.current_user_nickname + "</div>",
+            "<img class='users' 'src='assets/image/no-monster.svg'>"
           );
           if (status.notKaiOS)
             top_bar(
               "<img src='assets/image/back.svg'>",
-              "",
-              "<img class='users' title='0' src='assets/image/no-monster.svg'>"
+              "<div id='name'>" + status.current_user_nickname + "</div>",
+              "<img class='users' src='assets/image/no-monster.svg'>"
             );
 
           bottom_bar(
@@ -2472,51 +2458,38 @@ var chat = {
           user_check = setInterval(() => {
             if (connectedPeers) {
               status.userOnline = connectedPeers.length;
-              document
-                .querySelector("img.users")
-                .setAttribute("title", status.online);
 
               if (!status.notKaiOS && status.userOnline > 0)
                 top_bar(
                   "",
-                  "",
-                  "<img class='users' title='" +
-                    status.userOnline +
-                    "' src='assets/image/monster.svg'>"
+                  "<div id='name'>" + status.current_user_nickname + "</div>",
+                  "<img class='users' src='assets/image/monster.svg'>"
                 );
 
               if (status.notKaiOS && status.userOnline > 0)
                 top_bar(
                   "<img src='assets/image/back.svg'>",
-                  "",
-                  "<img class='users' title='" +
-                    status.userOnline +
-                    "' src='assets/image/monster.svg'>"
+                  "<div id='name'>" + status.current_user_nickname + "</div>",
+                  "<img class='users' src='assets/image/monster.svg'>"
                 );
 
               if (status.notKaiOS && status.userOnline == 0)
                 top_bar(
                   "<img src='assets/image/back.svg'>",
-                  "",
-                  "<img class='users' title='" +
-                    status.userOnline +
-                    "' src='assets/image/no-monster.svg'>"
+                  "<div id='name'>" + status.current_user_nickname + "</div>",
+                  "<img class='users' src='assets/image/no-monster.svg'>"
                 );
 
               if (!status.notKaiOS && status.userOnline == 0)
                 top_bar(
                   "",
-                  "",
-                  "<img class='users' title='" +
-                    "<span>" +
-                    status.userOnline +
-                    "</span>" +
-                    "' src='assets/image/no-monster.svg'>"
+                  "<div id='name'>" + status.current_user_nickname + "</div>",
+                  "<img class='users' src='assets/image/no-monster.svg'>"
                 );
             } else {
               console.log("user check not possible");
             }
-          }, 3000);
+          }, 2000);
         },
       },
 
@@ -2544,8 +2517,10 @@ var chat = {
       ]),
 
       chat_data.map(function (item, index) {
-        //for non KaiOS devices
-        //to add user to adressbook
+        let last = false;
+        if (index === chat_data.length - 1) {
+          last = true;
+        }
 
         let ff = { lat: "", lng: "" };
         if (item.type == "gps" || item.type == "gps_live") {
@@ -2562,7 +2537,7 @@ var chat = {
         return m(
           "article",
           {
-            class: "item " + nickname + " " + item.type,
+            class: "flex item " + nickname + " " + item.type,
             tabindex: index,
             "data-type": item.type,
             "data-user-id": item.from,
@@ -2571,7 +2546,10 @@ var chat = {
             "data-lng": ff.lng,
 
             oncreate: (vnode) => {
-              vnode.dom.scrollIntoView({ behavior: "smooth", block: "end" });
+              if (last) {
+                vnode.dom.focus();
+                vnode.dom.scrollIntoView({ behavior: "smooth", block: "end" });
+              }
             },
 
             onclick: () => {
@@ -2590,9 +2568,6 @@ var chat = {
             },
 
             onfocus: () => {
-              status.current_user_nickname =
-                document.activeElement.getAttribute("data-user-nickname");
-
               links = linkify.find(document.activeElement.textContent);
               if (links.length > 0 && item.type == "text") {
                 status.current_article_type = "link";
@@ -2608,7 +2583,7 @@ var chat = {
 
                 bottom_bar(
                   "<img src='assets/image/pencil.svg'>",
-                  "<img src='assets/image/select.svg'>",
+                  "",
                   "<img src='assets/image/option.svg'>"
                 );
               }
@@ -2644,6 +2619,16 @@ var chat = {
             },
           },
           [
+            index === 0 ||
+            dayjs(item.datetime).format("MM.DD.YYYY") !==
+              dayjs(chat_data[index - 1].datetime).format("MM.DD.YYYY")
+              ? m(
+                  "div",
+                  { class: "flex new-date" },
+                  dayjs(item.datetime).format("DD MMM YYYY")
+                )
+              : null,
+
             item.type === "text"
               ? m(
                   "div",
@@ -2689,8 +2674,7 @@ var chat = {
               : null,
 
             m("div", { class: "flex message-head" }, [
-              m("div", time_parse(item.datetime)),
-              m("div", { class: "nickname" }, nickname),
+              m("div", dayjs(item.datetime).format("hh:mm")),
               m(
                 "div",
                 {
@@ -2839,7 +2823,7 @@ var chatHistory = {
                 )
               : null,
             m("div", { class: "message-head" }, [
-              m("div", time_parse(item.datetime)),
+              m("div", dayjs(item.datetime).format("hh:mm")),
               m("div", { class: "nickname" }, nickname),
             ]),
           ]
@@ -3047,6 +3031,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
       } else {
         scrollableElement.scrollBy({ left: 0, top: -10 });
       }
+
+      return;
     }
 
     const currentIndex = document.activeElement.tabIndex;
@@ -3054,6 +3040,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
     let items = 0;
 
     items = document.getElementById("app").querySelectorAll(".item");
+    items = Array.from(items).filter(
+      (item) => getComputedStyle(item).display !== "none"
+    );
 
     if (document.activeElement.parentNode.classList.contains("input-parent")) {
       document.activeElement.parentNode.focus();

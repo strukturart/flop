@@ -67,6 +67,9 @@ body {
   max-width: 100vw;
   overflow: hidden;
   background: white;
+
+  background-image: radial-gradient(circle, #e2dddd 10%, transparent 11%);
+  background-size: 5px 5px;
 }
 
 video {
@@ -107,9 +110,6 @@ label {
 
 article img {
   width: 100%;
-  height: auto;
-  display: block;
-  padding: 10px;
 }
 
 #chat {
@@ -124,17 +124,6 @@ img[src=" "] {
   display: none;
 }
 
-#svg {
-  position: absolute;
-  left: 0;
-  top: 10px;
-  bottom: 20px;
-  width: 100%;
-  height: 100%; /* Responsive height */
-  pointer-events: none;
-  z-index: 400000;
-}
-
 button.vip-button {
   background: rgb(45, 100, 208);
   color: white;
@@ -143,6 +132,11 @@ button.vip-button {
 
 button.vip-button:hover {
   background: rgb(45, 100, 208);
+  color: white;
+}
+
+button.vip-button:focus {
+  background: rgb(45, 100, 208) !important;
   color: white;
 }
 
@@ -156,7 +150,7 @@ button {
   border-radius: 10px;
   border: 2px solid gray;
   font-weight: 700;
-  height: auto;
+  max-height: 40px;
   font-family: "Roboto" !important;
   touch-action: none;
 }
@@ -168,6 +162,10 @@ button:focus {
 button:hover {
   background: orange;
   border: 0px solid gray;
+}
+
+button:visited {
+  background: rgb(255, 255, 255);
 }
 
 .addressbook-box {
@@ -278,11 +276,23 @@ label {
   background: orange;
 }
 
+.input-parent input {
+  margin: 20px 0 0px 0;
+}
+
+#svg {
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 20px;
+  width: 100%;
+  height: 100%; /* Responsive height */
+  pointer-events: none;
+  z-index: 400000;
+}
+
 #waiting {
   background: rgb(228, 100, 14);
-  position: fixed;
-  z-index: 1000;
-  top: 0px;
 }
 
 #waiting span {
@@ -445,15 +455,19 @@ div#intro img {
 
 #KaiOSAd {
   height: 200px;
-  width: 240px;
+  width: 220px;
 }
 
-#KaiOSAds-Wrapper {
+#KaiOSads-Wrapper {
   padding: 0px;
+  height: 200px !important;
+  width: 240px;
+  overflow: hidden;
+  margin: 0 0 0 -10px;
 }
 
 #KaiOSAds-Wrapper iframe {
-  width: 240px;
+  width: 220px;
 }
 
 .page {
@@ -675,12 +689,13 @@ div#top-bar {
   left: 0px;
   height: 18px;
   z-index: 6;
-  background: none;
+  background: white;
   min-width: 100vw;
 
   display: flex;
-  justify-content: center; /* Horizontally center all child elements */
-  align-items: center; /* Vertically center all child elements */
+  justify-content: center;
+  align-items: center;
+  height: 38px;
 }
 
 div#top-bar div#inner {
@@ -733,6 +748,14 @@ div#top-bar div.button-center {
 
 div#top-bar div.button-center img {
   width: 30px;
+}
+
+div#top-bar #name {
+  width: fit-content;
+  background: silver !important;
+  border-radius: 10px;
+  padding: 3px 7px 3px 7px !important;
+  font-size: 1.2rem !important;
 }
 
 article {
@@ -813,7 +836,6 @@ article .message-map {
 
 .advanced-settings {
   display: none;
-  visibility: hidden;
 }
 
 #about-text {
@@ -829,9 +851,6 @@ div.text {
   padding: 20px;
 }
 
-#chat {
-  background: white;
-}
 article {
   padding: 10px;
 }
@@ -841,9 +860,22 @@ article div.message-head {
   color: gray;
   background: none;
   padding: 3px;
+  width: 100%;
+}
+
+article div.new-date {
+  font-size: 0.7rem;
+  color: rgb(0, 0, 0);
+  background: none;
+  padding: 3px;
+  width: 100%;
+  font-weight: bold;
 }
 
 article div.message-main {
+  background: rgb(196, 199, 206);
+  width: fit-content;
+
   border-radius: 7px;
   padding: 5px 5px 5px 5px;
 }
@@ -852,11 +884,23 @@ article div.message-main:empty {
   display: none;
 }
 
+article.me {
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+}
+
 article.me div.message-main {
   background: rgb(45, 100, 208) !important;
   border-radius: 7px;
-  padding: 5px 5px 5px 5px;
+  padding: 5px 10px 5px 5px;
   color: white;
+  width: fit-content;
+}
+
+article.me div.message-head {
+  width: 100%;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
 }
 
 article.image {
@@ -891,24 +935,26 @@ div#message-input input {
 }
 
 #start {
-  max-width: 700px;
-  padding: 10px;
-  min-height: 50vh;
+  padding: 10px 10px 10px 10px;
+  overflow-y: scroll !important;
 }
 
 #start p {
-  overflow-y: auto;
+  overflow-y: scroll;
   max-width: 700px;
 }
 
+#start-text {
+  overflow-y: scroll !important;
+  padding: 0 0 50px 0;
+}
 #start p:focus {
   background: none;
 }
 
 #start img {
   width: 40%;
-  display: block;
-  margin: 10px 0 0px 0;
+  margin: 60px 0 0px 0;
   padding: 0 0 20px 0;
 }
 
@@ -936,11 +982,131 @@ div#bottom-bar div.button-center:hover {
   cursor: pointer;
 }
 
-@media screen and (min-width: 400px) and (max-width: 1000px) {
+@media screen and (min-width: 400px) and (max-width: 3000px) {
   .input-parent:focus {
     background: none;
   }
 
+  #app {
+    overflow: scroll;
+    padding: 0px 0 0 0;
+    min-height: 100vh;
+  }
+
+  article {
+    overflow: hidden;
+  }
+
+  article img {
+    width: 100%;
+  }
+
+  #chat {
+    max-width: 30vw;
+  }
+
+  #chat article {
+    min-width: 100%;
+  }
+
+  #wrapper {
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow: scroll;
+    height: 100vh;
+  }
+
+  #invite div img {
+    width: 100%;
+    aspect-ratio: 1/1;
+  }
+
+  .page {
+    min-width: 30%;
+    max-width: 30%;
+    position: relative;
+    background: none;
+  }
+
+  div#bottom-bar {
+    margin: 0 0 20px 0;
+    max-width: 100vw;
+    min-width: 100vw;
+  }
+
+  div#bottom-bar div#inner {
+    position: relative;
+  }
+
+  div#bottom-bar div.button-left img {
+    width: 50px;
+  }
+
+  div#bottom-bar div.button-right img {
+    width: 50px;
+  }
+
+  div#top-bar {
+    height: 55px;
+  }
+
+  div#bottom-bar div.button-center img {
+    width: 50px;
+  }
+
+  div#top-bar div.button-left img {
+    width: 50px;
+  }
+
+  div#top-bar div.button-right img {
+    width: 50px;
+  }
+
+  div#top-bar div.button-center img {
+    width: 50px;
+  }
+
+  html,
+  body {
+    font-family: "Roboto" !important;
+    font-weight: 400;
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    font-size: 1.2rem;
+    line-height: 1.4rem;
+    max-height: 100%;
+    max-width: 100%;
+    height: 100%;
+    width: 100%;
+    max-width: 100vw;
+    overflow: scroll;
+    background: white;
+
+    background-image: radial-gradient(circle, #e2dddd 10%, transparent 11%);
+    background-size: 5px 5px;
+  }
+
+  div#message-input {
+    position: fixed;
+    z-index: 5;
+    background: none;
+    height: 40px;
+    padding: 5px;
+    bottom: 65px;
+    max-width: 99vw !important;
+    min-width: 99vw !important;
+    display: none;
+  }
+
+  div#intro img {
+    top: 150px;
+  }
+}
+
+@media screen and (min-width: 360px) and (max-width: 1000px) {
   #app {
     overflow: scroll;
     padding: 50px 0 0 0;
@@ -949,10 +1115,6 @@ div#bottom-bar div.button-center:hover {
   article {
     display: block;
     overflow: hidden;
-  }
-
-  article img {
-    width: 100%;
   }
 
   #wrapper {
@@ -987,6 +1149,7 @@ div#bottom-bar div.button-center:hover {
 
   div#top-bar {
     margin: 0 0 20px 0;
+    height: 55px;
   }
 
   div#top-bar div.button-left img {
@@ -999,18 +1162,6 @@ div#bottom-bar div.button-center:hover {
 
   div#top-bar div.button-center img {
     width: 50px;
-  }
-
-  div#top-bar div.button-left:hover {
-    cursor: pointer;
-  }
-
-  div#top-bar div.button-right:hover {
-    cursor: pointer;
-  }
-
-  div#top-bar div.button-center:hover {
-    cursor: pointer;
   }
 
   html,
@@ -1029,6 +1180,9 @@ div#bottom-bar div.button-center:hover {
     max-width: 100vw;
     overflow: scroll;
     background: white;
+
+    background-image: radial-gradient(circle, #e2dddd 10%, transparent 11%);
+    background-size: 5px 5px;
   }
 
   div#message-input {
@@ -1053,123 +1207,8 @@ div#bottom-bar div.button-center:hover {
   }
 }
 
-@media screen and (min-width: 1000px) and (max-width: 3000px) {
-  .input-parent:focus {
-    background: none;
-  }
-
-  #app {
-    overflow: scroll;
-    padding: 0px 0 0 0;
-    min-height: 100vh;
-  }
-
-  article {
-    overflow: hidden;
-  }
-
-  article img {
-    width: 100%;
-  }
-
-  #chat {
-    max-width: 30vw;
-  }
-
-  #wrapper {
-    min-width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    overflow: scroll;
-    height: 100vh;
-  }
-
-  .page {
-    min-width: 30%;
-    max-width: 30%;
-    position: relative;
-    background: white;
-  }
-
-  div#bottom-bar {
-    margin: 0 0 20px 0;
-    max-width: 100vw;
-    min-width: 100vw;
-  }
-
-  div#bottom-bar div#inner {
-    position: relative;
-    background: green;
-  }
-
-  div#bottom-bar div.button-left img {
-    width: 50px;
-  }
-
-  div#bottom-bar div.button-right img {
-    width: 50px;
-  }
-
-  div#bottom-bar div.button-center img {
-    width: 50px;
-  }
-
-  div#top-bar div.button-left img {
-    width: 50px;
-  }
-
-  div#top-bar div.button-right img {
-    width: 50px;
-  }
-
-  div#top-bar div.button-center img {
-    width: 50px;
-  }
-
-  div#top-bar div.button-left:hover {
-    cursor: pointer;
-  }
-
-  div#top-bar div.button-right:hover {
-    cursor: pointer;
-  }
-
-  div#top-bar div.button-center:hover {
-    cursor: pointer;
-  }
-
-  html,
-  body {
-    font-family: "Roboto" !important;
-    font-weight: 400;
-    position: relative;
-    margin: 0px;
-    padding: 0px;
-    font-size: 1.2rem;
-    line-height: 1.4rem;
-    max-height: 100%;
-    max-width: 100%;
-    height: 100%;
-    width: 100%;
-    max-width: 100vw;
-    overflow: scroll;
-    background: white;
-  }
-
-  div#message-input {
-    position: fixed;
-    z-index: 5;
-    background: none;
-    height: 40px;
-    padding: 5px;
-    bottom: 65px;
-    max-width: 99vw !important;
-    min-width: 99vw !important;
-    display: none;
-  }
-
-  div#intro img {
-    top: 150px;
+@media screen and (min-width: 0px) and (max-width: 300px) {
+  #start {
+    padding: 40px 10px;
   }
 }
