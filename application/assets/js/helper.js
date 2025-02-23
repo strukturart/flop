@@ -614,39 +614,41 @@ let screenlock = function (stat) {
 
 //pick image
 export let pick_image = function (callback) {
-  try {
-    let pick = new MozActivity({
-      name: "pick",
-      data: {
-        type: ["image/png", "image/jpg", "image/jpeg"],
-      },
-    });
+  if (!status.notKaiOS) {
+    try {
+      let pick = new MozActivity({
+        name: "pick",
+        data: {
+          type: ["image/png", "image/jpg", "image/jpeg"],
+        },
+      });
 
-    pick.onsuccess = function (e) {
-      console.log("success" + this.result);
-      callback(this.result);
-    };
+      pick.onsuccess = function (e) {
+        console.log("success" + this.result);
+        callback(this.result);
+      };
 
-    pick.onerror = function () {
-      console.log("The activity encounter en error: " + this.error);
-    };
-  } catch (e) {
-    console.log(e);
-  }
+      pick.onerror = function () {
+        console.log("The activity encounter en error: " + this.error);
+      };
+    } catch (e) {
+      console.log(e);
+    }
 
-  if ("b2g" in navigator) {
-    let pick = new WebActivity("pick", {
-      type: "image/*",
-    });
+    if ("b2g" in navigator) {
+      let pick = new WebActivity("pick", {
+        type: "image/*",
+      });
 
-    pick.start().then(
-      (rv) => {
-        callback(rv);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+      pick.start().then(
+        (rv) => {
+          callback(rv);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
   }
   if (status.notKaiOS) {
     const fileInput = document.createElement("input");
@@ -663,7 +665,7 @@ export let pick_image = function (callback) {
       const options = {
         maxSizeMB: 1,
         maxWidthOrHeight: 640,
-        useWebWorker: true,
+        useWebWorker: false,
       };
       try {
         if (file) {

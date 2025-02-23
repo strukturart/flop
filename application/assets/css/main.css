@@ -187,11 +187,10 @@ button:visited {
 
 #addressbook button.addressbook-item img {
   width: 20px;
-  height: 20px; /* Fixiere die Höhe */
+  height: 20px;
   margin: 0;
   padding: 0;
-  display: block; /* Falls display:none nicht erwünscht ist */
-  vertical-align: middle; /* Vertikal ausrichten */
+  display: block;
 }
 
 #addressbook button.addressbook-item:last-child {

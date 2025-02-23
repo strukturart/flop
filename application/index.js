@@ -544,12 +544,6 @@ async function getIceServers() {
     });
 
     if (peer) {
-      try {
-        //closeAllConnections();
-      } catch (e) {
-        console.log(e);
-      }
-
       peer.destroy();
     }
 
@@ -601,11 +595,6 @@ async function getIceServers() {
           side_toaster("The connection server is not reachable", 6000);
           break;
 
-        case "peer-unavailable":
-          //recreate peer
-          //console.log(peer);
-          return false;
-
         default:
           break;
       }
@@ -619,6 +608,10 @@ async function getIceServers() {
 function attemptReconnect() {
   if (peer.disconnected) {
     console.log("Attempting to reconnect...");
+    peer.on("open", (id) => {
+      console.log("Reconnected successfully with ID:", id);
+    });
+
     peer.reconnect();
   }
 }
@@ -708,8 +701,11 @@ function sendMessage(
 ) {
   if (!msg) return false;
 
+  let message = {};
+
+  //silent message
   if (type == "notification") {
-    msg = {
+    message = {
       nickname: settings.nickname,
       type: type,
       content: msg,
@@ -721,6 +717,7 @@ function sendMessage(
     sendMessageToAll(msg);
   }
 
+  //image
   if (type == "image") {
     // Encode the file using the FileReader API
     const reader = new FileReader();
@@ -739,7 +736,7 @@ function sendMessage(
         to: to,
       });
 
-      msg = {
+      message = {
         file: reader.result,
         filename: msg.filename,
         filetype: msg.type,
@@ -747,7 +744,7 @@ function sendMessage(
         type: type,
         mimeType: mimeType,
       };
-      sendMessageToAll(msg);
+      sendMessageToAll(message);
 
       focus_last_article();
     };
@@ -756,8 +753,10 @@ function sendMessage(
     };
     reader.readAsDataURL(msg.blob);
   }
+
+  //text
   if (type == "text") {
-    msg = {
+    message = {
       nickname: settings.nickname,
       type: type,
       content: msg,
@@ -765,7 +764,7 @@ function sendMessage(
     };
     chat_data.push({
       nickname: settings.nickname,
-      content: msg.content,
+      content: msg,
       datetime: new Date(),
       type: type,
       mimeType: mimeType,
@@ -773,12 +772,13 @@ function sendMessage(
       to: to,
     });
 
-    sendMessageToAll(msg);
+    sendMessageToAll(message);
 
     focus_last_article();
     write();
   }
 
+  //live gps
   if (type == "gps_live") {
     let existingMsg = chat_data.find((item) => item.type === "gps_live");
 
@@ -805,16 +805,17 @@ function sendMessage(
       });
     }
 
-    msg = {
+    message = {
       content: msg,
       nickname: settings.nickname,
       type: type,
       gps: msg,
       mimeType: mimeType,
     };
-    sendMessageToAll(msg);
+    sendMessageToAll(message);
   }
 
+  //gps
   if (type == "gps") {
     let m = JSON.parse(msg);
     let link_url =
@@ -831,7 +832,7 @@ function sendMessage(
       to: to,
     });
 
-    msg = {
+    message = {
       text: "",
       content: msg,
       nickname: settings.nickname,
@@ -839,9 +840,11 @@ function sendMessage(
       gps: msg,
       mimeType: mimeType,
     };
-    sendMessageToAll(msg);
+
+    sendMessageToAll(message);
   }
 
+  //audio
   if (type === "audio") {
     chat_data.push({
       nickname: settings.nickname,
@@ -872,23 +875,33 @@ function sendMessage(
   }
 }
 
-function sendMessageToAll(message) {
+async function sendMessageToAll(message) {
   message.from = settings.custom_peer_id;
+  message.to = status.current_user_id;
 
-  Object.keys(peer.connections).forEach((peerId) => {
-    // Filter out closed connections
-    peer.connections[peerId] = peer.connections[peerId].filter((conn) => {
-      if (conn.open) {
-        message.to = peerId;
-        conn.send(message);
-        return true;
-      }
-    });
-  });
+  if (!status.current_user_id || !peer.connections[status.current_user_id]) {
+    console.warn("no valid peer to send");
+    return;
+  }
 
-  storeChatData().then(() => {
+  //test is peer open
+  const connections = peer.connections[status.current_user_id].filter(
+    (conn) => conn.open
+  );
+
+  if (connections.length === 0) {
+    console.warn("Keine offene Verbindung zu diesem Peer.");
+    return;
+  }
+
+  connections.forEach((conn) => conn.send(message));
+
+  try {
+    await storeChatData();
     m.redraw();
-  });
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }
 
 //close all connections
@@ -1163,7 +1176,7 @@ let storeChatData = async () => {
 
   // Process new data
   for (let e of newData) {
-    if (e.image) {
+    if (e.type == "image") {
       try {
         // Convert Object URL to Blob and store as e.image_blob
         e.image_blob = await convertObjectURLToBlob(e.image);
@@ -1452,6 +1465,8 @@ var waiting = {
         class: "width-100 height-100 flex align-center justify-center",
         oninit: () => {
           top_bar("", "", "");
+          bottom_bar("", "", "");
+
           timer1 = setTimeout(() => {
             let route = m.route.get();
             route.startsWith("/waiting") ? m.route.set("/start") : null;
@@ -2276,7 +2291,6 @@ var start = {
             .getItem("connect_to_id")
             .then((e) => {
               if (e && e.data) {
-                // Check if e and e.data are not null or undefined
                 let params = e.data.split("?id=");
                 if (params.length > 1) {
                   let id = params[1];
@@ -2459,14 +2473,20 @@ var chat = {
             if (connectedPeers) {
               status.userOnline = connectedPeers.length;
 
-              if (!status.notKaiOS && status.userOnline > 0)
+              if (
+                !status.notKaiOS &&
+                connectedPeers.includes(status.current_user_id)
+              )
                 top_bar(
                   "",
                   "<div id='name'>" + status.current_user_nickname + "</div>",
                   "<img class='users' src='assets/image/monster.svg'>"
                 );
 
-              if (status.notKaiOS && status.userOnline > 0)
+              if (
+                status.notKaiOS &&
+                connectedPeers.includes(status.current_user_id)
+              )
                 top_bar(
                   "<img src='assets/image/back.svg'>",
                   "<div id='name'>" + status.current_user_nickname + "</div>",
@@ -2642,9 +2662,8 @@ var chat = {
             item.type === "image"
               ? m("img", {
                   class: "message-media",
-                  src: item.image,
+                  src: URL.createObjectURL(item.image_blob),
                   "data-filename": item.filename,
-                  onclick: () => {},
                 })
               : null,
 
@@ -3346,7 +3365,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
           status.action !== "write" &&
           !status.audio_recording
         ) {
-          if (status.userOnline > 0) {
+          if (
+            status.userOnline > 0 &&
+            connectedPeers.includes(status.current_user_id)
+          ) {
             write();
           } else {
             side_toaster("no user online", 3000);
