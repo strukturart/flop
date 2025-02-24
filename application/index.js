@@ -44,6 +44,7 @@ export let status = {
   userMarkers: [],
   addressbook_in_focus: "",
   geolocation_autoupdate: false,
+  geolocation_autoupdate_id:"",
   debug: false,
   viewReady: false,
   groupchat: false,
@@ -697,9 +698,11 @@ function sendMessage(
   msg,
   type,
   mimeType = "",
-  to = status.current_user_id || ""
+  to = status.current_user_id || "",
+  messageId = uuidv4(16)
 ) {
   if (!msg) return false;
+
 
   let message = {};
 
@@ -734,6 +737,7 @@ function sendMessage(
         mimeType: mimeType,
         from: settings.custom_peer_id,
         to: to,
+        id:messageId,
       });
 
       message = {
@@ -743,6 +747,7 @@ function sendMessage(
         nickname: settings.nickname,
         type: type,
         mimeType: mimeType,
+        id:messageId,
       };
       sendMessageToAll(message);
 
@@ -761,6 +766,7 @@ function sendMessage(
       type: type,
       content: msg,
       mimeType: mimeType,
+      id:messageId,
     };
     chat_data.push({
       nickname: settings.nickname,
@@ -770,6 +776,7 @@ function sendMessage(
       mimeType: mimeType,
       from: settings.custom_peer_id,
       to: to,
+      id:messageId,
     });
 
     sendMessageToAll(message);
@@ -780,65 +787,56 @@ function sendMessage(
 
   //live gps
   if (type == "gps_live") {
-    let existingMsg = chat_data.find((item) => item.type === "gps_live");
 
-    let m = JSON.parse(msg);
-    let link_url =
-      "https://www.openstreetmap.org/#map=19/" + m.lat + "/" + m.lng;
-
-    if (existingMsg) {
-      // Update the existing GPS message
-      existingMsg.content = link_url;
-      existingMsg.datetime = new Date();
-    } else {
-      // Push a new GPS message if not found
-
-      chat_data.push({
-        nickname: settings.nickname,
-        content: link_url,
-        datetime: new Date(),
-        type: type,
-        gps: msg,
-        mimeType: mimeType,
-        from: settings.custom_peer_id,
-        to: to,
-      });
-    }
-
-    message = {
-      content: msg,
-      nickname: settings.nickname,
-      type: type,
-      gps: msg,
-      mimeType: mimeType,
-    };
-    sendMessageToAll(message);
-  }
-
-  //gps
-  if (type == "gps") {
-    let m = JSON.parse(msg);
-    let link_url =
-      "https://www.openstreetmap.org/#map=19/" + m.lat + "/" + m.lng;
 
     chat_data.push({
       nickname: settings.nickname,
-      content: link_url,
+      content: '',
       datetime: new Date(),
       type: type,
       gps: msg,
       mimeType: mimeType,
       from: settings.custom_peer_id,
       to: to,
+      id:messageId,
     });
 
     message = {
       text: "",
-      content: msg,
+      content: '',
       nickname: settings.nickname,
       type: type,
       gps: msg,
       mimeType: mimeType,
+      id:messageId,
+    };
+
+    sendMessageToAll(message);
+  }
+
+  //gps
+  if (type == "gps") {
+
+
+    chat_data.push({
+      nickname: settings.nickname,
+      content: msg,
+      datetime: new Date(),
+      type: type,
+      mimeType: mimeType,
+      from: settings.custom_peer_id,
+      to: to,
+      id:messageId,
+    });
+
+    message = {
+      content: msg,
+      nickname: settings.nickname,
+      type: type,
+      mimeType: mimeType,
+      id:messageId,
+      datetime: new Date(),
+
     };
 
     sendMessageToAll(message);
@@ -854,6 +852,7 @@ function sendMessage(
       mimeType: mimeType,
       from: settings.custom_peer_id,
       to: to,
+      id:messageId,
     });
 
     focus_last_article();
@@ -866,6 +865,7 @@ function sendMessage(
           nickname: settings.nickname,
           type: type,
           mimeType: mimeType,
+          id:messageId,
         };
         sendMessageToAll(messageToSend);
       })
@@ -1114,7 +1114,7 @@ let generate_contact = function () {
 
 let handleImage = function (t) {
   m.route.set("/chat");
-  if (t != "") sendMessage(t, "image");
+  if (t != "") sendMessage(t, "image",undefined,undefined,undefined);
 
   let a = document.querySelectorAll("div#app article");
   a[a.length - 1].focus();
@@ -1297,7 +1297,7 @@ let geolocation_callback = function (e) {
     status.geolocation_onTimeRequest = false;
     if (e.coords) {
       let latlng = { "lat": e.coords.latitude, "lng": e.coords.longitude };
-      sendMessage(JSON.stringify(latlng), "gps");
+      sendMessage(JSON.stringify(latlng), "gps",undefined,undefined,undefined);
     } else {
       console.log("error");
     }
@@ -1305,7 +1305,7 @@ let geolocation_callback = function (e) {
     if (e.coords) {
       let latlng = { "lat": e.coords.latitude, "lng": e.coords.longitude };
 
-      sendMessage(JSON.stringify(latlng), "gps_live");
+      sendMessage(JSON.stringify(latlng), "gps_live",undefined,undefined,status.geolocation_autoupdate_id);
     } else {
       console.log("error");
     }
@@ -1313,9 +1313,6 @@ let geolocation_callback = function (e) {
 };
 
 let map;
-let step = 0.004;
-const userMarkers = {};
-const mainmarker = { current_lat: 0, current_lng: 0 }; // Example mainmarker object
 
 // Function to zoom the map
 function ZoomMap(in_out) {
@@ -2217,6 +2214,7 @@ var options = {
                     "sharing-live-geolocation"
                   ).innerText = "share live location";
                   status.geolocation_autoupdate = true;
+                  status.geolocation_autoupdate_id = uuidv4(16)
                   m.route.set("/chat?id=" + settings.custom_peer);
                 }
               } else {
@@ -2574,7 +2572,7 @@ var chat = {
 
             onclick: () => {
               if (item.type == "gps" || item.type == "gps_live") {
-                let f = JSON.parse(item.gps);
+                let f = JSON.parse(item.content);
 
                 m.route.set(
                   "/map_view?lat=" +
@@ -2670,14 +2668,12 @@ var chat = {
             item.type === "gps"
               ? m("div", {
                   class: "message-map",
-                  oncreate: (vnode) => {},
                 })
               : null,
 
             item.type === "gps_live"
               ? m("div", {
                   class: "message-map",
-                  oncreate: (vnode) => {},
                 })
               : null,
 
@@ -3333,7 +3329,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
             document.getElementById("app").style.opacity = "1";
             document.querySelector(".playing").style.top = "-1000%";
 
-            sendMessage(audioBlob, "audio", mimeType);
+            sendMessage(audioBlob, "audio", mimeType,undefined,undefined);
             bottom_bar(
               "<img src='assets/image/pencil.svg'>",
               "",
@@ -3357,7 +3353,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         }
 
         if (route.startsWith("/chat?") && status.action == "write") {
-          sendMessage(document.getElementsByTagName("input")[0].value, "text");
+          sendMessage(document.getElementsByTagName("input")[0].value, "text",undefined,undefined);
           write();
         }
         if (
