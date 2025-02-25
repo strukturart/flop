@@ -121,16 +121,16 @@ export const geolocation = function (callback) {
 
     switch (error.code) {
       case error.PERMISSION_DENIED:
-        side_toaster("Location not provided", 5000);
+        //side_toaster("Location not provided", 5000);
         break;
       case error.POSITION_UNAVAILABLE:
-        side_toaster("Current location not available", 5000);
+        //side_toaster("Current location not available", 5000);
         break;
       case error.TIMEOUT:
-        side_toaster("Current location not available", 5000);
+        // side_toaster("Current location not available", 5000);
         break;
       default:
-        side_toaster("Current location not available", 5000);
+        //side_toaster("Current location not available", 5000);
         break;
     }
   };
