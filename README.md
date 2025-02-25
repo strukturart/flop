@@ -6,7 +6,7 @@
 [![badge-bhackers](https://img.shields.io/badge/bHackers-bHackerStore-orange)](https://store.bananahackers.net/#watermelon)
 ![badge-downloads](https://img.shields.io/github/downloads/strukturart/watermelon/total)
 
-Is a <a href="https://en.wikipedia.org/wiki/WebRTC">WebRTC</a> chat-client, for the KaiOs.
+Is a <a href="https://en.wikipedia.org/wiki/WebRTC">WebRTC</a> chat-client, for the KaiOS.
 Currently you can exchange text messages, pictures and your location with each other. You can create new chats and join chats.
 
 ### Features
@@ -16,7 +16,7 @@ Currently you can exchange text messages, pictures and your location with each o
 - share location
 - share live location
 - share image
-- audio message (coming soon)
+- audio message
   ![image-4](/images/mockup.png)
 
 ## yes, but
@@ -57,6 +57,7 @@ https://www.metered.ca/tools/openrelay/
 - peerJS MIT License
 - mithril
 - leaflet
+- dayJS
 
 ## Donation
 
