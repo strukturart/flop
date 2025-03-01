@@ -25,6 +25,8 @@ import { createAudioRecorder } from "./assets/js/helper.js";
 import L from "leaflet";
 import dayjs from "dayjs";
 
+import DOMPurify from "dompurify";
+
 import "swiped-events";
 
 import markerIcon from "./assets/css/images/marker-icon.png";
@@ -283,7 +285,6 @@ function setupConnectionEvents(conn) {
   }
 
   connectedPeers.push(conn.peer);
-  console.log(connectedPeers);
 
   let pc = conn.peerConnection;
 
@@ -322,8 +323,6 @@ function setupConnectionEvents(conn) {
   conn.on("data", function (data) {
     if (conn.label !== "flop") return;
 
-    console.log(data);
-
     if (
       data.type == "image" ||
       data.type == "text" ||
@@ -332,6 +331,17 @@ function setupConnectionEvents(conn) {
       data.type == "audio" ||
       data.type == "notification"
     ) {
+      if (data.type == "text") {
+        let originalContent = data.content;
+        let sanitizedContent = DOMPurify.sanitize(originalContent);
+
+        if (originalContent !== sanitizedContent) {
+          alert(
+            "The message was blocked because it contains dangerous content"
+          );
+          return;
+        }
+      }
       //is not in addressbook - ask
       //is in addressbook - notify
       let inAddressbook = addressbook.find((e) => e.id === data.from);
@@ -385,8 +395,23 @@ function setupConnectionEvents(conn) {
           from: data.from,
           to: data.to,
         });
+
         focus_last_article();
         stop_scan();
+
+        if (inAddressbook) {
+          inAddressbook.last_conversation_message = data.content;
+          inAddressbook.last_conversation_datetime = Date.now();
+
+          localforage
+            .setItem("addressbook", addressbook)
+            .then(() => {
+              console.log("Contact updated successfully");
+            })
+            .catch((error) => {
+              console.error("Error saving updated address book:", error);
+            });
+        }
       }
 
       if (data.type === "audio") {
@@ -1162,6 +1187,23 @@ let scan_callback = function (n) {
   }
 };
 
+async function checkStorageUsage() {
+  if ("storage" in navigator && "estimate" in navigator.storage) {
+    let { usage, quota } = await navigator.storage.estimate();
+
+    let usedMB = (usage / (1024 * 1024)).toFixed(2);
+    let totalMB = (quota / (1024 * 1024)).toFixed(2);
+
+    console.log(`Verwendeter Speicher: ${usedMB} MB`);
+    console.log(`Gesamter verfügbarer Speicher: ${totalMB} MB`);
+  } else {
+    console.log("Die Storage API wird nicht unterstützt.");
+  }
+}
+
+// Aufruf der Funktion
+checkStorageUsage();
+
 //backupData
 
 // Function to convert Object URL back to Blob
@@ -1209,6 +1251,40 @@ let storeChatData = async () => {
     localforage.setItem("chatData", chat_data_history).then(() => {});
   }
 };
+
+//delete old data
+
+async function deleteOldChatData(days = 30) {
+  let now = new Date();
+  let threshold = new Date(now.setDate(now.getDate() - days));
+
+  try {
+    let chatData = await localforage.getItem("chatData");
+    if (!chatData || chatData.length === 0) {
+      console.log("No chat data found. Nothing to delete.");
+      return;
+    }
+
+    // Daten filtern
+    let updatedChatData = chatData.filter(
+      (e) => new Date(e.datetime) > threshold
+    );
+
+    // Prüfen, ob sich etwas geändert hat
+    if (updatedChatData.length === chatData.length) {
+      console.log("No data older than 30 days. Nothing to delete.");
+      return;
+    }
+
+    // Falls alte Daten entfernt wurden, aktualisierte Liste speichern
+    await localforage.setItem("chatData", updatedChatData);
+    console.log("Old chat data deleted.");
+  } catch (error) {
+    console.error("Error deleting old chat data:", error);
+  }
+}
+
+deleteOldChatData();
 
 //audio
 
@@ -2366,9 +2442,11 @@ var start = {
                   return m(
                     "button",
                     {
-                      class: "item flex justify-center addressbook-item",
+                      class: "item  addressbook-item",
                       "data-id": e.id,
+                      "data-nickname": !e.name ? e.nickname : e.name,
                       "data-online": e.live ? "true" : "false",
+
                       oncreate: () => {
                         setTabindex();
                       },
@@ -2387,7 +2465,10 @@ var start = {
                             document.activeElement.getAttribute("data-id");
 
                           status.current_user_nickname =
-                            document.activeElement.innerText;
+                            document.activeElement.getAttribute(
+                              "data-nickname"
+                            );
+
                           m.route.set(
                             "/chat?id=" +
                               status.custom_peer_id +
@@ -2398,17 +2479,29 @@ var start = {
                       },
                     },
                     [
-                      m("span", [
-                        e.live == true
-                          ? m("img", {
-                              src: "/assets/image/online.svg",
-                            })
-                          : m("img", {
-                              src: "/assets/image/offline.svg",
-                            }),
+                      m(
+                        "div",
+                        { class: "flex justify-spacebetweenm width-100" },
+                        !e.name ? e.nickname : e.name
+                      ),
+                      m("div", { class: "flex justify-spacebetween" }, [
+                        e.last_conversation_message
+                          ? m(
+                              "small",
+                              { class: "last-conversation-meesage" },
+                              e.last_conversation_message
+                            )
+                          : null,
+                        e.last_conversation_datetime
+                          ? m(
+                              "small",
+                              { class: "last-conversation-date" },
+                              dayjs(e.last_conversation_datetime * 1000).format(
+                                "HH:mm"
+                              )
+                            )
+                          : null,
                       ]),
-
-                      m("span", !e.name ? e.nickname : e.name),
                     ]
                   );
                 }),

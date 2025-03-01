@@ -77,6 +77,10 @@ video {
   min-width: 100vw;
 }
 
+small {
+  font-size: 0.8rem;
+}
+
 #app {
   position: relative;
   height: 100%;
@@ -174,7 +178,54 @@ button:visited {
 
 #addressbook button.addressbook-item {
   transition: transform 0.3s ease;
+  transition: background 0.3s ease-in-out;
   padding: 10px;
+  border-radius: 0px;
+  min-height: 65px !important;
+  background: rgb(45, 100, 208);
+  color: white;
+}
+
+#addressbook button.addressbook-item:hover {
+  background: rgba(45, 100, 208, 0.6);
+}
+
+#addressbook button.addressbook-item:focus {
+  background: rgba(45, 100, 208, 0.6);
+}
+
+#addressbook button.addressbook-item .last-conversation-meesage {
+  width: 50%;
+  max-width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  color: white;
+  margin: 10px 0 0 0;
+}
+
+#addressbook button.addressbook-item .last-conversation-date {
+  width: fit-content;
+  color: white;
+  margin: 10px 0 0 0;
+}
+
+#addressbook button[data-online="true"] {
+  border-left: 8px solid rgb(45, 100, 208) !important;
+  border-top: 0px;
+  border-bottom: 0px;
+  border-right: 0px;
+}
+
+#addressbook button[data-online="false"] {
+  border-left: 8px solid rgb(253, 10, 31) !important;
+  border-top: 0px;
+  border-bottom: 0px;
+  border-right: 0px;
+}
+
+#addressbook button.addressbook-item small {
+  color: gray;
 }
 
 #addressbook button.addressbook-item.swipe-left {
@@ -183,14 +234,6 @@ button:visited {
 
 #addressbook button.addressbook-item.swipe-right {
   transform: translateX(-20%);
-}
-
-#addressbook button.addressbook-item img {
-  width: 20px;
-  height: 20px;
-  margin: 0;
-  padding: 0;
-  display: block;
 }
 
 #addressbook button.addressbook-item:last-child {
@@ -695,6 +738,8 @@ div#top-bar {
   justify-content: center;
   align-items: center;
   height: 38px;
+
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
 
 div#top-bar div#inner {
@@ -1209,5 +1254,9 @@ div#bottom-bar div.button-center:hover {
 @media screen and (min-width: 0px) and (max-width: 300px) {
   #start {
     padding: 40px 10px;
+  }
+
+  #addressbook button.addressbook-item .last-conversation-meesage {
+    width: 40%;
   }
 }

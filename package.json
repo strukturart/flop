@@ -34,6 +34,8 @@
   "dependencies": {
     "@parcel/service-worker": "^2.8.0",
     "browser-image-compression": "^2.0.2",
+    "dayjs": "^1.11.13",
+    "dompurify": "^3.2.4",
     "dotenv": "^16.4.1",
     "jsqr": "^1.4.0",
     "leaflet": "^1.9.4",
@@ -41,10 +43,9 @@
     "localforage": "^1.10.0",
     "mithril": "^2.0.4",
     "qrious": "^4.0.2",
+    "swiped-events": "^1.2.0",
     "url-search-params-polyfill": "^8.1.1",
     "uuid": "^9.0.0",
-    "webrtc-adapter": "^9.0.1",
-    "swiped-events": "^1.2.0",
-    "dayjs": "^1.11.13"
+    "webrtc-adapter": "^9.0.1"
   }
 }
