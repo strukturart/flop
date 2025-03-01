@@ -907,6 +907,11 @@ article div.message-head {
   width: 100%;
 }
 
+article div.message-head img.pod-icon {
+  width: 12px;
+  padding: 0 4px 0 4px 0;
+}
+
 article div.new-date {
   font-size: 0.7rem;
   color: rgb(0, 0, 0);
@@ -1139,7 +1144,7 @@ div#bottom-bar div.button-center:hover {
     background: none;
     height: 40px;
     padding: 5px;
-    bottom: 65px;
+    bottom: 70px;
     max-width: 99vw !important;
     min-width: 99vw !important;
     display: none;
@@ -1235,7 +1240,7 @@ div#bottom-bar div.button-center:hover {
     background: none;
     height: 40px;
     padding: 5px;
-    bottom: 65px;
+    bottom: 70px;
     max-width: 99vw !important;
     min-width: 99vw !important;
     display: none;

@@ -816,7 +816,6 @@ export function createAudioRecorder() {
 
         // Clean up resources after recording is stopped
         cleanup();
-        status.audio_recording = false;
 
         // resolve(blob);
 
@@ -830,6 +829,8 @@ export function createAudioRecorder() {
   function cleanup() {
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
+      status.audio_recording = false;
+
       console.log("Stream stopped.");
     }
     mediaRecorder = null;

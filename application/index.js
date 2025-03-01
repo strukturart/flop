@@ -4,7 +4,6 @@ import {
   bottom_bar,
   side_toaster,
   pick_image,
-  month,
   generateRandomString,
   load_ads,
   share,
@@ -323,25 +322,28 @@ function setupConnectionEvents(conn) {
   conn.on("data", function (data) {
     if (conn.label !== "flop") return;
 
+    //Message-POD
+    if (data.type == "pod") {
+      let a = chat_data.find((e) => {
+        return e.id == data.id;
+      });
+      if (a) {
+        a.pod = true;
+        console.log("pod");
+
+        storeChatData().then(() => {
+          m.redraw();
+        });
+      }
+    }
+
     if (
       data.type == "image" ||
       data.type == "text" ||
       data.type == "gps_live" ||
       data.type == "gps" ||
-      data.type == "audio" ||
-      data.type == "notification"
+      data.type == "audio"
     ) {
-      if (data.type == "text") {
-        let originalContent = data.content;
-        let sanitizedContent = DOMPurify.sanitize(originalContent);
-
-        if (originalContent !== sanitizedContent) {
-          alert(
-            "The message was blocked because it contains dangerous content"
-          );
-          return;
-        }
-      }
       //is not in addressbook - ask
       //is in addressbook - notify
       let inAddressbook = addressbook.find((e) => e.id === data.from);
@@ -361,13 +363,7 @@ function setupConnectionEvents(conn) {
         }
       }
 
-      if (data.type == "notification") {
-        console.log(data);
-      }
-
       if (data.type == "image") {
-        if (!status.visibility) pushLocalNotification("flop", "new image");
-
         chat_data.push({
           nickname: data.nickname,
           content: "",
@@ -379,13 +375,26 @@ function setupConnectionEvents(conn) {
           to: data.to,
         });
 
+        sendMessage(data.id, "pod", "", data.from, data.id);
+
         focus_last_article();
         stop_scan();
       }
 
+      //sanitize text
       if (data.type == "text") {
-        if (!status.visibility) pushLocalNotification("flop", data.content);
+        let originalContent = data.content;
+        let sanitizedContent = DOMPurify.sanitize(originalContent);
 
+        if (originalContent !== sanitizedContent) {
+          alert(
+            "The message was blocked because it contains dangerous content"
+          );
+          return;
+        }
+      }
+
+      if (data.type == "text") {
         chat_data.push({
           id: data.id,
           nickname: data.nickname,
@@ -396,8 +405,12 @@ function setupConnectionEvents(conn) {
           to: data.to,
         });
 
+        sendMessage(data.id, "pod", "", data.from, data.id);
+
         focus_last_article();
         stop_scan();
+
+        //Last conversation
 
         if (inAddressbook) {
           inAddressbook.last_conversation_message = data.content;
@@ -406,7 +419,7 @@ function setupConnectionEvents(conn) {
           localforage
             .setItem("addressbook", addressbook)
             .then(() => {
-              console.log("Contact updated successfully");
+              console.log("Last conversation");
             })
             .catch((error) => {
               console.error("Error saving updated address book:", error);
@@ -443,6 +456,8 @@ function setupConnectionEvents(conn) {
           from: data.from,
           to: data.to,
         });
+
+        sendMessage(data.id, "pod", "", data.from, data.id);
       }
 
       if (data.type == "gps") {
@@ -461,6 +476,8 @@ function setupConnectionEvents(conn) {
           from: data.from,
           to: data.to,
         });
+
+        sendMessage(data.id, "pod", "", data.from, data.id);
       }
       //to do not stable
       if (data.type == "gps_live") {
@@ -506,6 +523,7 @@ function setupConnectionEvents(conn) {
 
       storeChatData().then(() => {
         m.redraw();
+        console.log("data stored");
       });
     } else {
       console.log("userlist: " + data.userlist);
@@ -564,6 +582,8 @@ async function getIceServers() {
     );
 
     if (!response.ok) {
+      //retry get turn
+      getIceServers();
       document.querySelector(".loading-spinner").style.display = "none";
       if (p.startsWith("/start"))
         top_bar("", "<img src='assets/image/offline.svg'>", "");
@@ -595,14 +615,13 @@ async function getIceServers() {
     });
 
     peer.on("disconnected", () => {
-      console.log(`User is disconnectd the server`);
+      console.log(`server error`);
       attemptReconnect();
     });
 
     //connection to peer-server
     peer.on("open", function (id) {
       console.log("PeerJS connected with server ID:", id);
-      // Zugriff auf den internen WebSocket
       if (peer.socket && peer.socket._socket) {
         peer.socket._socket.addEventListener("error", function (event) {
           console.error("WebSocket Error:", event);
@@ -651,11 +670,11 @@ function attemptReconnect() {
   }
 }
 
-//chat data history
+//load chat data
 let chat_data_history = [];
 
 localforage.getItem("chatData").then((e) => {
-  chat_data_history = e || []; // Fallback to an empty array if chatData is null
+  chat_data_history = e || [];
 });
 
 //load settings
@@ -725,7 +744,7 @@ const focus_last_article = function () {
       top: elY - window.innerHeight / 2,
       behavior: "smooth",
     });
-  }, 1000);
+  }, 1500);
 };
 
 function sendMessage(
@@ -739,18 +758,19 @@ function sendMessage(
 
   let message = {};
 
-  //silent message
-  if (type == "notification") {
+  //POD
+  if (type == "pod") {
     message = {
       nickname: settings.nickname,
       type: type,
       content: msg,
-      mimeType: mimeType,
+      mimeType: "",
       from: settings.custom_peer_id,
       to: to,
+      id: messageId,
     };
 
-    sendMessageToAll(msg);
+    sendMessageToAll(message);
   }
 
   //image
@@ -758,13 +778,13 @@ function sendMessage(
     // Encode the file using the FileReader API
     const reader = new FileReader();
     reader.onloadend = () => {
-      let src = URL.createObjectURL(msg.blob);
+      //  let src = msg.blob ? URL.createObjectURL(msg.blob) : null;
 
       chat_data.push({
         nickname: settings.nickname,
         content: "",
         datetime: new Date(),
-        image: src,
+        image: reader.result,
         filename: msg.filename,
         type: type,
         mimeType: mimeType,
@@ -929,30 +949,18 @@ async function sendMessageToAll(message) {
   );
 
   if (connections.length === 0) {
-    console.warn("Keine offene Verbindung zu diesem Peer.");
+    alert("The user is not online. Message couldn't be sent.");
     return;
   }
 
+  //connections.send(message);
+
   connections.forEach((conn) => conn.send(message));
-
-  try {
-    await storeChatData();
+  storeChatData().then(() => {
     m.redraw();
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
-
-//close all connections
-
-function closeAllConnections() {
-  if (peer.connections == null) return;
-  Object.keys(peer.connections).forEach((peerId) => {
-    peer.connections[peerId].forEach((conn) => {
-      conn.close();
-    });
   });
 }
+
 let turn = async function () {
   const response = await fetch(
     `https://${process.env.TURN_APP_NAME}.metered.live/api/v1/turn/credentials?apiKey=${process.env.TURN_APP_KEY}`
@@ -1003,13 +1011,11 @@ let peer_is_online = async function () {
         if (tempConn) {
           tempConn.on("open", () => {
             entry.live = true;
-            console.log("check" + JSON.stringify(addressbook));
             m.redraw();
           });
 
           tempConn.on("error", () => {
             entry.live = false;
-            console.log("check" + JSON.stringify(addressbook));
             m.redraw();
           });
         }
@@ -1152,28 +1158,11 @@ let generate_contact = function () {
 };
 
 let handleImage = function (t) {
-  m.route.set("/chat");
+  m.route.set("/chat?id=" + settings.custom_peer);
   if (t != "") sendMessage(t, "image", undefined, undefined, undefined);
-
   let a = document.querySelectorAll("div#app article");
   a[a.length - 1].focus();
   status.action = "";
-};
-
-let time_parse = function (value) {
-  let t = new Date(value);
-
-  return (
-    t.getDate() +
-    " " +
-    month[t.getMonth()] +
-    " " +
-    t.getFullYear() +
-    ", " +
-    t.getHours() +
-    ":" +
-    t.getMinutes()
-  );
 };
 
 //callback qr-code scan
@@ -1215,40 +1204,24 @@ const convertObjectURLToBlob = async (objectURL) => {
 
 // Function to store chat data
 let storeChatData = async () => {
-  // Filter chat data
-  let data = chat_data.filter((e) => {
-    return e.content !== "invitation link" && e.id !== "no-other-user-online";
-  });
-
   // Return if no data
-  if (!data || data.length === 0) return false;
+  //if (!chat_data || chat_data.length === 0) return false;
 
   // Ensure only new data is added
-  let newData = data.filter((item) => {
+  let newData = chat_data.filter((item) => {
     return !chat_data_history.some(
       (historyItem) => JSON.stringify(historyItem) === JSON.stringify(item)
     );
   });
-
-  // Process new data
-  for (let e of newData) {
-    if (e.type == "image") {
-      try {
-        // Convert Object URL to Blob and store as e.image_blob
-        e.image_blob = await convertObjectURLToBlob(e.image);
-        //delete e.image; // Remove raw Object URL (optional)
-      } catch (error) {
-        console.error("Error converting Object URL to Blob:", error);
-      }
-    }
-  }
 
   if (newData.length > 0) {
     // Append new data to history
     chat_data_history.push(...newData);
 
     // Save updated history to local storage
-    localforage.setItem("chatData", chat_data_history).then(() => {});
+    localforage.setItem("chatData", chat_data_history).then(() => {
+      console.log("data stored");
+    });
   }
 };
 
@@ -1304,7 +1277,6 @@ var AudioComponent = {
   onbeforeupdate: (vnode, old) => {
     if (vnode.attrs.src !== old.attrs.src) {
       if (vnode.state.audioSrc) {
-        console.log(vnode.state.audioSrc.type);
         URL.revokeObjectURL(vnode.state.audioSrc);
       }
       if (vnode.attrs.src instanceof Blob) {
@@ -1545,6 +1517,18 @@ function MoveMap(direction) {
 //////////////////////
 
 var root = document.getElementById("app");
+
+var audiorecorder = {
+  oninit: () => {
+    key_delay();
+  },
+  onremove: () => {
+    key_delay();
+  },
+  view: function () {
+    return m("div");
+  },
+};
 
 var waiting = {
   oninit: () => {
@@ -2214,7 +2198,6 @@ var options = {
                 setTabindex();
               }, 500),
             class: "item",
-            style: { display: status.userOnline ? "" : "none" },
 
             onfocus: () => {
               bottom_bar("", "", "");
@@ -2382,6 +2365,8 @@ var start = {
           top_bar("", "", "");
 
           document.querySelector(".loading-spinner").style.display = "none";
+          document.getElementById("app").style.opacity = "1";
+          document.querySelector(".playing").style.top = "-1000%";
 
           //auto connect if id is given
           localforage
@@ -2460,7 +2445,7 @@ var start = {
                             document.activeElement.getAttribute("data-id")
                           );
                         } else {
-                          side_toaster("user is not online", 3000);
+                          side_toaster("The user is not online", 3000);
                           status.current_user_id =
                             document.activeElement.getAttribute("data-id");
 
@@ -2647,6 +2632,7 @@ var chat = {
               "<img src='assets/image/option.svg'>"
             );
           },
+          oninput: () => {},
         }),
       ]),
 
@@ -2675,6 +2661,7 @@ var chat = {
             tabindex: index,
             "data-type": item.type,
             "data-user-id": item.from,
+            "data-message-id": item.id,
             "data-user-nickname": item.nickname,
             "data-lat": ff.lat,
             "data-lng": ff.lng,
@@ -2776,7 +2763,7 @@ var chat = {
             item.type === "image"
               ? m("img", {
                   class: "message-media",
-                  src: URL.createObjectURL(item.image_blob),
+                  src: item.image,
                   "data-filename": item.filename,
                 })
               : null,
@@ -2805,7 +2792,7 @@ var chat = {
               : null,
 
             m("div", { class: "flex message-head" }, [
-              m("div", dayjs(item.datetime).format("hh:mm")),
+              m("div", dayjs(item.datetime).format("HH:mm")),
               m(
                 "div",
                 {
@@ -2823,6 +2810,9 @@ var chat = {
                 },
                 "  Live location"
               ),
+              item.pod
+                ? m("img", { class: "pod-icon", src: "./assets/image/ok.svg" })
+                : null,
             ]),
           ]
         );
@@ -3104,6 +3094,7 @@ m.route(root, "/intro", {
   "/map_view": map_view,
   "/waiting": waiting,
   "/invite": invite,
+  "/audiorecorder": audiorecorder,
 });
 
 function scrollToCenter() {
@@ -3353,10 +3344,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
     switch (param.key) {
       case "Backspace":
-        audioRecorder.stopRecording().then(() => {
-          document.getElementById("app").style.opacity = "1";
-          document.querySelector(".playing").style.top = "-1000%";
-        });
+        if (status.audio_recording)
+          audioRecorder.stopRecording().then(() => {
+            document.getElementById("app").style.opacity = "1";
+            document.querySelector(".playing").style.top = "-1000%";
+          });
         if (route.startsWith("/invite")) {
           m.route.set("/start");
         }
@@ -3419,8 +3411,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
           m.route.set("/about");
         }
 
-        if (route.startsWith("/chat?") && !status.audio_recording)
+        if (route.startsWith("/chat?") && !status.audio_recording) {
           m.route.set("/options");
+          return;
+        }
 
         if (status.audio_recording && route.startsWith("/chat")) {
           audioRecorder.stopRecording().then(({ audioBlob, mimeType }) => {
@@ -3441,6 +3435,16 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
       case "SoftLeft":
       case "Control":
+        if (route.startsWith("/chat?") && status.action == "write") {
+          sendMessage(
+            document.getElementsByTagName("input")[0].value,
+            "text",
+            undefined,
+            undefined
+          );
+          write();
+        }
+
         if (route.startsWith("/chat?") && status.audio_recording) {
           // Stop recording and get the recorded data
           audioRecorder.stopRecording().then(({ audioBlob, mimeType }) => {
@@ -3471,15 +3475,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
           );
         }
 
-        if (route.startsWith("/chat?") && status.action == "write") {
-          sendMessage(
-            document.getElementsByTagName("input")[0].value,
-            "text",
-            undefined,
-            undefined
-          );
-          write();
-        }
         if (
           route.startsWith("/chat?") &&
           status.action !== "write" &&
@@ -3491,7 +3486,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
           ) {
             write();
           } else {
-            side_toaster("no user online", 3000);
+            side_toaster("The user is not online.", 3000);
           }
         }
 
@@ -3532,12 +3527,19 @@ document.addEventListener("DOMContentLoaded", function (e) {
             .then(() => {
               document.getElementById("app").style.opacity = "0";
               document.querySelector(".playing").style.top = "50%";
-
               bottom_bar(
                 "<img src='assets/image/send.svg'>",
                 "<img src='assets/image/record-live.svg'>",
                 "<img src='assets/image/cancel.svg'>"
               );
+
+              setTimeout(() => {
+                bottom_bar(
+                  "<img src='assets/image/send.svg'>",
+                  "<img src='assets/image/record-live.svg'>",
+                  "<img src='assets/image/cancel.svg'>"
+                );
+              }, 2000);
             })
             .catch((e) => {});
         }
@@ -3844,6 +3846,7 @@ function handlePageShow() {
 }
 
 function checkAndReconnect() {
+  peer_is_online();
   let r = m.route.get();
   if (r.startsWith("/start")) {
     peer_is_online();
@@ -3851,6 +3854,12 @@ function checkAndReconnect() {
   }
 
   if (r.startsWith("/chat?")) {
+    let target =
+      "/chat?id=" + status.custom_peer_id + "&peer=" + status.current_user_id;
+
+    connect_to_peer(status.current_user_id, target);
+    return;
+
     let dtString = localStorage.getItem("last_connections_time");
     if (dtString) {
       let dt = new Date(dtString);
