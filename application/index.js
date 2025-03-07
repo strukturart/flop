@@ -279,12 +279,7 @@ let load_chat_history = (id) => {
 //track single connections
 //to update connections list
 function setupConnectionEvents(conn) {
-  if (conn.label == "ping") {
-    console.log("allow user? id: " + conn.peer);
-  }
-
   connectedPeers.push(conn.peer);
-
   let pc = conn.peerConnection;
 
   pc.addEventListener("iceconnectionstatechange", () => {
@@ -293,19 +288,9 @@ function setupConnectionEvents(conn) {
 
     switch (pc.iceConnectionState) {
       case "disconnected":
-        side_toaster("Connection failed. User might be offline.", 5000);
-        connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
-        updateConnections();
-        break;
-
       case "failed":
-        side_toaster("Connection failed. User might be offline.", 5000);
-        connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
-        updateConnections();
-        break;
-
       case "closed":
-        side_toaster("User has left the chat.", 3000);
+        side_toaster("Connection lost or closed.", 5000);
         connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
         updateConnections();
         break;
@@ -939,26 +924,32 @@ async function sendMessageToAll(message) {
   message.to = status.current_user_id;
 
   if (!status.current_user_id || !peer.connections[status.current_user_id]) {
-    console.warn("no valid peer to send");
+    console.warn("No valid peer to send");
     return;
   }
 
-  //test is peer open
-  const connections = peer.connections[status.current_user_id].filter(
+  // Finde eine offene Verbindung (die erste in der Liste)
+  const openConnections = peer.connections[status.current_user_id].filter(
     (conn) => conn.open
   );
 
-  if (connections.length === 0) {
+  if (openConnections.length === 0) {
     alert("The user is not online. Message couldn't be sent.");
     return;
   }
 
-  //connections.send(message);
+  // Sende die Nachricht nur über eine Verbindung (die erste offene)
+  openConnections[0].send(message);
 
-  connections.forEach((conn) => conn.send(message));
-  storeChatData().then(() => {
-    m.redraw();
-  });
+  if (message.type == "pod") {
+    console.log("send pod");
+    openConnections.forEach((e) => {
+      e.send(message);
+    });
+  }
+
+  await storeChatData();
+  m.redraw();
 }
 
 let turn = async function () {
@@ -989,22 +980,20 @@ let peer_is_online = async function () {
   }
 
   try {
-    // Verwende for-Schleife, um mit 'continue' die Iteration zu überspringen
     for (let i = 0; i < addressbook.length; i++) {
       let entry = addressbook[i];
       entry.live = false;
 
-      // Prüfe, ob der Peer schon in connectedPeers ist
       if (connectedPeers.includes(entry.id)) {
         entry.live = true;
         console.log("already connected");
         m.redraw();
-        continue; // Überspringe die restlichen Logik für diesen Peer
+        continue;
       }
 
       try {
         let tempConn = peer.connect(entry.id, {
-          label: "ping",
+          label: "flop",
           reliable: true,
         });
 
@@ -2553,13 +2542,17 @@ var chat = {
         oncreate: () => {
           top_bar(
             "",
-            "<div id='name'>" + status.current_user_nickname + "</div>",
+            "<div id='name'>" +
+              status.current_user_nickname.slice(0, 8) +
+              "</div>",
             "<img class='users' 'src='assets/image/no-monster.svg'>"
           );
           if (status.notKaiOS)
             top_bar(
               "<img src='assets/image/back.svg'>",
-              "<div id='name'>" + status.current_user_nickname + "</div>",
+              "<div id='name'>" +
+                status.current_user_nickname.slice(0, 8) +
+                "</div>",
               "<img class='users' src='assets/image/no-monster.svg'>"
             );
 
@@ -2578,7 +2571,9 @@ var chat = {
               )
                 top_bar(
                   "",
-                  "<div id='name'>" + status.current_user_nickname + "</div>",
+                  "<div id='name'>" +
+                    status.current_user_nickname.slice(0, 8) +
+                    "</div>",
                   "<img class='users' src='assets/image/monster.svg'>"
                 );
 
@@ -2588,7 +2583,9 @@ var chat = {
               )
                 top_bar(
                   "<img src='assets/image/back.svg'>",
-                  "<div id='name'>" + status.current_user_nickname + "</div>",
+                  "<div id='name'>" +
+                    status.current_user_nickname.slice(0, 8) +
+                    "</div>",
                   "<img class='users' src='assets/image/monster.svg'>"
                 );
 
@@ -2602,7 +2599,9 @@ var chat = {
               if (!status.notKaiOS && status.userOnline == 0)
                 top_bar(
                   "",
-                  "<div id='name'>" + status.current_user_nickname + "</div>",
+                  "<div id='name'>" +
+                    status.current_user_nickname.slice(0, 8) +
+                    "</div>",
                   "<img class='users' src='assets/image/no-monster.svg'>"
                 );
             } else {
@@ -2632,7 +2631,13 @@ var chat = {
               "<img src='assets/image/option.svg'>"
             );
           },
-          oninput: () => {},
+          oninput: () => {
+            bottom_bar(
+              "<img src='assets/image/send.svg'>",
+              "",
+              "<img src='assets/image/option.svg'>"
+            );
+          },
         }),
       ]),
 
@@ -3522,6 +3527,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
           document.getElementById("message-input").style.display == "block"
         ) {
           if (status.audio_recording) return false;
+          if (document.querySelector("div#message-input input").value !== "")
+            return false;
           audioRecorder
             .startRecording()
             .then(() => {
@@ -3672,8 +3679,23 @@ document.addEventListener("DOMContentLoaded", function (e) {
   // //////////////////////////////
 
   function handleKeyDown(evt) {
-    if (evt.key === "Backspace") {
-      evt.preventDefault();
+    if (evt.key === "Backspace" && document.activeElement) {
+      const activeElement = document.activeElement;
+
+      const isInputField =
+        activeElement.tagName === "INPUT" ||
+        activeElement.tagName === "TEXTAREA" ||
+        activeElement.isContentEditable;
+
+      // test if field empty
+      const isEmpty =
+        activeElement.value !== undefined && activeElement.value.length === 0;
+
+      if (!isInputField || isEmpty) {
+        evt.preventDefault();
+      } else {
+        return;
+      }
     }
 
     if (!status.viewReady) return false;
@@ -3734,8 +3756,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
       }
     }
 
-    if (evt.key === "EndCall") {
-    }
     if (!evt.repeat) {
       longpress = false;
       timeout = setTimeout(() => {

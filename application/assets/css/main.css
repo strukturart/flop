@@ -803,7 +803,7 @@ div#top-bar #name {
 }
 
 article {
-  margin: 0 0 10px 0;
+  margin: 0 0 5px 0;
   padding: 3px;
   width: 100%;
   position: relative;
@@ -1056,6 +1056,7 @@ div#bottom-bar div.button-center:hover {
 
   #chat article {
     min-width: 100%;
+    margin: 0 0 5px 0;
   }
 
   #wrapper {
@@ -1080,9 +1081,13 @@ div#bottom-bar div.button-center:hover {
   }
 
   div#bottom-bar {
-    margin: 0 0 20px 0;
+    margin: 0 0 0px 0;
+    padding: 0 0 10px 0;
     max-width: 100vw;
     min-width: 100vw;
+    height: 70px;
+    background: white;
+    bottom: 0px !important;
   }
 
   div#bottom-bar div#inner {
@@ -1144,14 +1149,16 @@ div#bottom-bar div.button-center:hover {
     background: none;
     height: 40px;
     padding: 5px;
-    bottom: 70px;
+    bottom: 75px;
     max-width: 99vw !important;
     min-width: 99vw !important;
     display: none;
   }
 
   div#intro img {
-    top: 150px;
+    top: 180px;
+    min-width: 240px;
+    margin-left: -120px;
   }
 }
 
@@ -1181,7 +1188,7 @@ div#bottom-bar div.button-center:hover {
   }
 
   div#bottom-bar {
-    margin: 0 0 20px 0;
+    margin: 0 0 0px 0;
   }
 
   div#bottom-bar div.button-left img {
@@ -1232,22 +1239,6 @@ div#bottom-bar div.button-center:hover {
 
     background-image: radial-gradient(circle, #e2dddd 10%, transparent 11%);
     background-size: 5px 5px;
-  }
-
-  div#message-input {
-    position: fixed;
-    z-index: 5;
-    background: none;
-    height: 40px;
-    padding: 5px;
-    bottom: 70px;
-    max-width: 99vw !important;
-    min-width: 99vw !important;
-    display: none;
-  }
-
-  div#intro img {
-    top: 150px;
   }
 
   article .map-component {
