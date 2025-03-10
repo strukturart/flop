@@ -51,6 +51,8 @@ export let status = {
   debug: false,
   viewReady: false,
   groupchat: false,
+  history_of_ids: [],
+  readyToClose: false,
 };
 
 // not KaiOS
@@ -156,13 +158,6 @@ let app_launcher = () => {
     }
   }, 4000);
 };
-
-// Function to check if an element already exists in chat_data
-function elementExists(chat_data, criteria) {
-  return chat_data.some((element) => {
-    return Object.keys(criteria).every((key) => element[key] === criteria[key]);
-  });
-}
 
 //connect all users
 let compareUserList = (userlist) => {
@@ -278,6 +273,7 @@ let load_chat_history = (id) => {
 
 //track single connections
 //to update connections list
+let restrict_same_id = [];
 function setupConnectionEvents(conn) {
   connectedPeers.push(conn.peer);
   let pc = conn.peerConnection;
@@ -291,7 +287,17 @@ function setupConnectionEvents(conn) {
       case "failed":
       case "closed":
         side_toaster("Connection lost or closed.", 5000);
+
         connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
+
+        //get name
+        if (addressbook) {
+          let a = addressbook.find((e) => {
+            return e.id == conn.peer;
+          });
+          if (a) side_toaster("closed:" + a.name, 3000);
+        }
+
         updateConnections();
         break;
       case "checking":
@@ -300,12 +306,56 @@ function setupConnectionEvents(conn) {
           m.redraw();
         }
         break;
+
+      case "connected":
+        //user has changed id
+        //update useres id
+        try {
+          let k = JSON.parse(conn.metadata);
+
+          if (Array.isArray(k) && k.length > 1) {
+            addressbook.forEach((e) => {
+              if (k.includes(e.id)) {
+                console.log("user in addressbook");
+                if (e.id == k[k.length - 1]) {
+                  console.log("id is at last postion, no update needed");
+                } else {
+                  console.log("id is not at last postion, update needed");
+                  let old_id = e.id;
+                  e.id = k[k.length - 1];
+                  localforage
+                    .setItem("addressbook", addressbook)
+                    .then(() => {
+                      console.log("Addressbook updated!");
+                      updateChatData(old_id, k[k.length - 1]).then(() => {
+                        "chatData updated";
+                      });
+                    })
+                    .catch((error) => {
+                      console.error(
+                        "Error saving updated address book:",
+                        error
+                      );
+                    });
+                }
+              }
+            });
+          } else {
+            console.log("only one ids history item");
+          }
+        } catch (e) {
+          console.log("JSON-Parsing-Fehler:", e);
+        }
+
+        break;
     }
   });
 
   //receive data
   conn.on("data", function (data) {
     if (conn.label !== "flop") return;
+
+    if (restrict_same_id.includes(data.id)) return;
 
     //Message-POD
     if (data.type == "pod") {
@@ -403,9 +453,7 @@ function setupConnectionEvents(conn) {
 
           localforage
             .setItem("addressbook", addressbook)
-            .then(() => {
-              console.log("Last conversation");
-            })
+            .then(() => {})
             .catch((error) => {
               console.error("Error saving updated address book:", error);
             });
@@ -505,13 +553,14 @@ function setupConnectionEvents(conn) {
           });
         }
       }
+      restrict_same_id.push(data.id);
 
       storeChatData().then(() => {
         m.redraw();
         console.log("data stored");
       });
     } else {
-      console.log("userlist: " + data.userlist);
+      console.log("error?" + JSON.stringify(data));
       if (data.userlist && status.groupchat) {
         //connect all users
         //groupchat
@@ -627,11 +676,21 @@ async function getIceServers() {
       console.log("error " + err.type);
       switch (err.type) {
         case "server-error":
-          side_toaster("The connection server is not reachable", 6000);
+          side_toaster(
+            "The connection server is not reachable: server error",
+            6000
+          );
           break;
 
         case "socket-closed":
-          side_toaster("The connection server is not reachable", 6000);
+          side_toaster(
+            "The connection server is not reachable: socket close",
+            6000
+          );
+          break;
+
+        case "network":
+          side_toaster("PeerJS server might be blocked!", 6000);
           break;
 
         default:
@@ -640,7 +699,7 @@ async function getIceServers() {
     });
   } catch (error) {
     document.querySelector(".loading-spinner").style.display = "none";
-    side_toaster("The connection server is not reachable", 6000);
+    side_toaster("The connection server is not reachable " + error, 6000);
   }
 }
 
@@ -694,6 +753,23 @@ localforage
   .catch(function (err) {
     console.log(err);
   });
+
+//peer id history
+
+localforage
+  .getItem("history_of_ids")
+  .then((e) => {
+    if (e == null) {
+      localforage
+        .setItem("history_of_ids", [settings.custom_peer_id])
+        .then((e) => {
+          console.log("done");
+        });
+    } else {
+      status.history_of_ids = e;
+    }
+  })
+  .catch(() => {});
 
 let write = function () {
   if (status.action != "write") {
@@ -918,7 +994,6 @@ function sendMessage(
       });
   }
 }
-
 async function sendMessageToAll(message) {
   message.from = settings.custom_peer_id;
   message.to = status.current_user_id;
@@ -938,8 +1013,11 @@ async function sendMessageToAll(message) {
     return;
   }
 
-  // Sende die Nachricht nur über eine Verbindung (die erste offene)
-  openConnections[0].send(message);
+  // openConnections[0].send(message);
+
+  openConnections.forEach((e) => {
+    e.send(message);
+  });
 
   if (message.type == "pod") {
     console.log("send pod");
@@ -995,6 +1073,7 @@ let peer_is_online = async function () {
         let tempConn = peer.connect(entry.id, {
           label: "flop",
           reliable: true,
+          metadata: JSON.stringify(status.history_of_ids),
         });
 
         if (tempConn) {
@@ -1048,13 +1127,30 @@ let connect_to_peer = function (
       } else {
         status.current_user_nickname = nickname;
       }
-
+      /*
       if (connectedPeers.includes(id)) {
-        m.route.set("/chat?id=" + status.custom_peer_id + "&peer=" + id);
+        m.route.set("/chat?id=" + settings.custom_peer_id + "&peer=" + id);
         status.current_user_id = id;
 
         return;
       }
+        */
+
+      // Finde eine offene Verbindung (die erste in der Liste)
+      const openConnections = peer.connections[id].filter((conn) => conn.open);
+
+      if (openConnections.length > 0) {
+        status.current_user_id = id;
+        m.route.set(
+          "/chat?id=" +
+            settings.custom_peer_id +
+            "&peer=" +
+            status.current_user_id
+        );
+        connectedPeers.push(id);
+        console.log("connection still open");
+      }
+
       chat_data = [];
 
       setTimeout(() => {
@@ -1070,6 +1166,7 @@ let connect_to_peer = function (
           conn = peer.connect(id, {
             label: "flop",
             reliable: true,
+            metadata: JSON.stringify(status.history_of_ids),
           });
 
           if (conn) {
@@ -1084,7 +1181,9 @@ let connect_to_peer = function (
               }
 
               setupConnectionEvents(conn);
-              m.route.set("/chat?id=" + status.custom_peer_id + "&peer=" + id);
+              m.route.set(
+                "/chat?id=" + settings.custom_peer_id + "&peer=" + id
+              );
             });
 
             conn.on("error", (e) => {
@@ -1182,15 +1281,6 @@ async function checkStorageUsage() {
 // Aufruf der Funktion
 checkStorageUsage();
 
-//backupData
-
-// Function to convert Object URL back to Blob
-const convertObjectURLToBlob = async (objectURL) => {
-  const response = await fetch(objectURL);
-  const blob = await response.blob(); // Retrieve the Blob
-  return blob;
-};
-
 // Function to store chat data
 let storeChatData = async () => {
   // Return if no data
@@ -1213,6 +1303,33 @@ let storeChatData = async () => {
     });
   }
 };
+
+//update id in data
+
+async function updateChatData(targetValue, newValue) {
+  try {
+    // Load chatData
+    let chatData = await localforage.getItem("chatData");
+
+    if (!chatData || !Array.isArray(chatData)) {
+      console.warn("No chat data found.");
+      return;
+    }
+
+    // update values
+    let updatedChatData = chatData.map((obj) => ({
+      ...obj,
+      from: obj.from === targetValue ? newValue : obj.from,
+      to: obj.to === targetValue ? newValue : obj.to,
+    }));
+
+    // Store updated data
+    await localforage.setItem("chatData", updatedChatData);
+    console.log("Chat data updated successfully.");
+  } catch (error) {
+    console.error("Error updating chat data:", error);
+  }
+}
 
 //delete old data
 
@@ -1981,8 +2098,33 @@ var settings_page = {
           {
             class: "item",
             onclick: () => {
-              settings.custom_peer_id = "flop-" + uuidv4(16);
-              m.redraw();
+              localforage
+                .getItem("history_of_ids")
+                .then((e) => {
+                  // Sicherstellen, dass es ein Array ist
+                  status.history_of_ids = Array.isArray(e) ? e : [];
+
+                  // Neue ID generieren
+                  const newId = "flop-" + uuidv4(16);
+
+                  // ID ins Array hinzufügen
+                  status.history_of_ids.push(newId);
+
+                  // In localForage speichern
+                  return localforage
+                    .setItem("history_of_ids", status.history_of_ids)
+                    .then(() => newId);
+                })
+                .then((newId) => {
+                  // Neue ID in settings speichern
+                  settings.custom_peer_id = newId;
+
+                  // Mithril neu rendern
+                  m.redraw();
+                })
+                .catch(() => {
+                  console.error("Fehler beim Zugriff auf localForage.");
+                });
             },
           },
           "generate new ID"
@@ -2342,6 +2484,7 @@ var start = {
   },
   onremove: () => {
     key_delay();
+    status.readyToClose = false;
   },
 
   view: function () {
@@ -2350,7 +2493,17 @@ var start = {
       {
         class: "flex justify-center align-center page",
         id: "start",
+
+        onkeyup: (evt) => {
+          if (evt.key === "Backspace") {
+            if (status.readyToClose) window.close();
+          }
+        },
+
         oncreate: () => {
+          setTimeout(() => {
+            status.readyToClose = true;
+          }, 4000);
           top_bar("", "", "");
 
           document.querySelector(".loading-spinner").style.display = "none";
@@ -2445,7 +2598,7 @@ var start = {
 
                           m.route.set(
                             "/chat?id=" +
-                              status.custom_peer_id +
+                              settings.custom_peer_id +
                               "&peer=" +
                               status.current_user_id
                           );
@@ -3875,30 +4028,9 @@ function checkAndReconnect() {
 
   if (r.startsWith("/chat?")) {
     let target =
-      "/chat?id=" + status.custom_peer_id + "&peer=" + status.current_user_id;
+      "/chat?id=" + settings.custom_peer_id + "&peer=" + status.current_user_id;
 
     connect_to_peer(status.current_user_id, target);
-    return;
-
-    let dtString = localStorage.getItem("last_connections_time");
-    if (dtString) {
-      let dt = new Date(dtString);
-      let now = new Date();
-      let durationMs = now - dt;
-
-      if (durationMs > 360000) {
-        m.route.set("/start");
-      } else {
-        getIceServers().then(() => {
-          let f = localStorage.getItem("last_connection");
-          if (f) {
-            connect_to_peer(f);
-          }
-        });
-      }
-    } else {
-      console.log("No last_connections_time found in localStorage.");
-    }
   }
 }
 
