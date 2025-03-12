@@ -308,8 +308,24 @@ function setupConnectionEvents(conn) {
         break;
 
       case "connected":
+        //Que
+        try {
+          messageQueue();
+          console.log("Queue " + messageQueueStorage.length);
+          if (messageQueueStorage.length > 0) {
+            console.log("should send to " + conn.peer);
+
+            messageQueueStorage.map((e) => {
+              if (e.to == conn.peer) {
+                console.log("try to send");
+                sendMessageToAll(e);
+              }
+            });
+          }
+        } catch (e) {}
         //user has changed id
         //update useres id
+
         try {
           let k = JSON.parse(conn.metadata);
 
@@ -369,6 +385,12 @@ function setupConnectionEvents(conn) {
         storeChatData().then(() => {
           m.redraw();
         });
+      }
+      //delete message from messageQueue
+      let index = messageQueueStorage.findIndex((e) => e.id === data.id);
+      if (index !== -1) {
+        messageQueueStorage.splice(index, 1);
+        localforage.setItem("messageQueue", messageQueueStorage);
       }
     }
 
@@ -690,7 +712,7 @@ async function getIceServers() {
           break;
 
         case "network":
-          side_toaster("PeerJS server might be blocked!", 6000);
+          side_toaster("Network error", 6000);
           break;
 
         default:
@@ -994,26 +1016,50 @@ function sendMessage(
       });
   }
 }
+
+let messageQueueStorage = [];
+
+let messageQueue = (m) => {
+  localforage
+    .getItem("messageQueue")
+    .then((e) => {
+      messageQueueStorage = e || [];
+      if (m) {
+        let test = messageQueueStorage.find((e) => {
+          return e.id == m.id;
+        });
+        if (!test) {
+          messageQueueStorage.push(m);
+          localforage.setItem("messageQueue", messageQueueStorage);
+        }
+      }
+    })
+    .catch((err) => {
+      console.error("Error accessing localForage:", err);
+    });
+};
+
 async function sendMessageToAll(message) {
   message.from = settings.custom_peer_id;
-  message.to = status.current_user_id;
+  message.to = message.to ?? status.current_user_id;
 
-  if (!status.current_user_id || !peer.connections[status.current_user_id]) {
+  if (!peer.connections[message.to]) {
     console.warn("No valid peer to send");
     return;
   }
 
-  // Finde eine offene Verbindung (die erste in der Liste)
-  const openConnections = peer.connections[status.current_user_id].filter(
+  const openConnections = peer.connections[message.to].filter(
     (conn) => conn.open
   );
 
   if (openConnections.length === 0) {
-    alert("The user is not online. Message couldn't be sent.");
+    console.log("The user is not online. Message couldn't be sent.");
+
+    messageQueue(message);
+    await storeChatData();
+    m.redraw();
     return;
   }
-
-  // openConnections[0].send(message);
 
   openConnections.forEach((e) => {
     e.send(message);
@@ -1021,9 +1067,25 @@ async function sendMessageToAll(message) {
 
   if (message.type == "pod") {
     console.log("send pod");
-    openConnections.forEach((e) => {
-      e.send(message);
-    });
+  } else {
+    setTimeout(() => {
+      const result = chat_data.find(
+        (e) => e.id === message.id && e.pod == true
+      );
+      if (!result) {
+        console.log("POD not OK");
+        messageQueue(message);
+      }
+    }, 5000);
+
+    setTimeout(() => {
+      const result = messageQueueStorage.find((e) => e.id === message.id);
+      if (result) {
+        console.log("POD  OK");
+      } else {
+        console.log("POD not OK:");
+      }
+    }, 5000);
   }
 
   await storeChatData();
@@ -1127,28 +1189,23 @@ let connect_to_peer = function (
       } else {
         status.current_user_nickname = nickname;
       }
-      /*
-      if (connectedPeers.includes(id)) {
-        m.route.set("/chat?id=" + settings.custom_peer_id + "&peer=" + id);
-        status.current_user_id = id;
 
-        return;
-      }
-        */
-
-      // Finde eine offene Verbindung (die erste in der Liste)
-      const openConnections = peer.connections[id].filter((conn) => conn.open);
-
-      if (openConnections.length > 0) {
-        status.current_user_id = id;
-        m.route.set(
-          "/chat?id=" +
-            settings.custom_peer_id +
-            "&peer=" +
-            status.current_user_id
+      if (connectedPeers > 0) {
+        const openConnections = peer.connections[id].filter(
+          (conn) => conn.open
         );
-        connectedPeers.push(id);
-        console.log("connection still open");
+
+        if (openConnections.length > 0) {
+          status.current_user_id = id;
+          m.route.set(
+            "/chat?id=" +
+              settings.custom_peer_id +
+              "&peer=" +
+              status.current_user_id
+          );
+          connectedPeers.push(id);
+          console.log("connection still open");
+        }
       }
 
       chat_data = [];
@@ -1156,8 +1213,8 @@ let connect_to_peer = function (
       setTimeout(() => {
         if (!peer) {
           m.route.set("/start");
+          side_toaster("Peer mo set", 3000);
 
-          console.log("peer not set");
           return;
         }
 
@@ -1201,21 +1258,12 @@ let connect_to_peer = function (
             // Fallback in case 'open' or 'error' events are not triggered
             setTimeout(() => {
               if (!conn.open) {
-                console.warn("Connection timeout");
-
-                if (route_target == null || route_target == undefined) {
-                  m.route.set("/start");
-                } else {
-                  m.route.set(route_target);
-                }
+                side_toaster("Connection timeout", 3000);
+                m.route.set("/start");
               }
             }, 10000); // Adjust timeout as needed
           } else {
-            if (route_target == null || route_target == undefined) {
-              m.route.set("/start");
-            } else {
-              m.route.set(route_target);
-            }
+            m.route.set("/start");
           }
         } catch (e) {
           m.route.set("/start");
@@ -3645,6 +3693,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
             write();
           } else {
             side_toaster("The user is not online.", 3000);
+            write();
           }
         }
 
