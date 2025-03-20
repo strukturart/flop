@@ -117,7 +117,7 @@ article img {
 }
 
 #chat {
-  padding: 40px 0 40px 0;
+  padding: 40px 10px 50px 10px;
 }
 
 img[src=""] {
@@ -177,8 +177,6 @@ button:visited {
 }
 
 #addressbook button.addressbook-item {
-  transition: transform 0.3s ease;
-  transition: background 0.3s ease-in-out;
   padding: 10px;
   border-radius: 0px;
   min-height: 65px !important;
@@ -187,11 +185,11 @@ button:visited {
 }
 
 #addressbook button.addressbook-item:hover {
-  background: rgba(45, 100, 208, 0.6);
+  background: rgba(45, 100, 208, 0.6) !important;
 }
 
 #addressbook button.addressbook-item:focus {
-  background: rgba(45, 100, 208, 0.6);
+  background: rgba(45, 100, 208, 0.6) !important;
 }
 
 #addressbook button.addressbook-item .last-conversation-meesage {
@@ -895,15 +893,11 @@ div.text {
   padding: 20px;
 }
 
-article {
-  padding: 10px;
-}
-
 article div.message-head {
   font-size: 0.7rem;
   color: gray;
   background: none;
-  padding: 3px;
+  padding: 3px 3px 0px 3px;
   width: 100%;
 }
 
@@ -924,7 +918,6 @@ article div.new-date {
 article div.message-main {
   background: rgb(196, 199, 206);
   width: fit-content;
-
   border-radius: 7px;
   padding: 5px 5px 5px 5px;
 }
@@ -941,7 +934,7 @@ article.me {
 article.me div.message-main {
   background: rgb(45, 100, 208) !important;
   border-radius: 7px;
-  padding: 5px 10px 5px 5px;
+  padding: 5px 5px 5px 5px;
   color: white;
   width: fit-content;
 }
@@ -1056,7 +1049,13 @@ div#bottom-bar div.button-center:hover {
 
   #chat article {
     min-width: 100%;
-    margin: 0 0 5px 0;
+    max-width: 100vw;
+    margin: 0 0 0px 0;
+    padding: 0px;
+  }
+
+  #chat article:focus {
+    background: none;
   }
 
   #wrapper {
@@ -1247,9 +1246,17 @@ div#bottom-bar div.button-center:hover {
   }
 }
 
-@media screen and (min-width: 0px) and (max-width: 300px) {
+@media screen and (min-width: 0px) and (max-width: 400px) {
+  body {
+    background-image: radial-gradient(circle, #e2dddd 10%, transparent 11%);
+    background-size: 3px 3px;
+  }
+
+  #chat article:focus {
+    background: silver !important;
+  }
   #start {
-    padding: 40px 10px;
+    padding: 40px 10px 10px 10px;
   }
 
   #addressbook button.addressbook-item .last-conversation-meesage {

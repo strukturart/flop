@@ -282,11 +282,15 @@ function setupConnectionEvents(conn) {
     console.log("state: " + pc.iceConnectionState);
     let r = m.route.get();
 
+    if (!status.notKaiOS) console.log("hello");
+
     switch (pc.iceConnectionState) {
       case "disconnected":
       case "failed":
       case "closed":
-        side_toaster("Connection lost or closed.", 5000);
+        peer_is_online();
+
+        side_toaster("Connection closed.", 5000);
 
         connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
 
@@ -301,17 +305,17 @@ function setupConnectionEvents(conn) {
         updateConnections();
         break;
       case "checking":
-        if (r.startsWith("/start")) {
-          peer_is_online();
-          m.redraw();
-        }
+        if (!status.notKaiOS) side_toaster("checking", 2000);
+        peer_is_online();
+
         break;
 
       case "connected":
+        if (!status.notKaiOS) side_toaster("connected", 2000);
+
         //Que
         try {
           messageQueue();
-          console.log("Queue " + messageQueueStorage.length);
           if (messageQueueStorage.length > 0) {
             console.log("should send to " + conn.peer);
 
@@ -380,7 +384,6 @@ function setupConnectionEvents(conn) {
       });
       if (a) {
         a.pod = true;
-        console.log("pod");
 
         storeChatData().then(() => {
           m.redraw();
@@ -391,6 +394,7 @@ function setupConnectionEvents(conn) {
       if (index !== -1) {
         messageQueueStorage.splice(index, 1);
         localforage.setItem("messageQueue", messageQueueStorage);
+        storeChatData().then(() => {});
       }
     }
 
@@ -407,7 +411,11 @@ function setupConnectionEvents(conn) {
       if (!inAddressbook) {
         let ask = confirm("Do you want to chat with " + data.nickname + "?");
         if (ask) {
-          connect_to_peer(data.from);
+          status.current_user_id = data.from;
+
+          m.route.set(
+            "/chat?id=" + settings.custom_peer_id + "&peer=" + data.from
+          );
         } else {
           conn.close();
         }
@@ -638,9 +646,9 @@ async function getIceServers() {
     );
 
     if (!response.ok) {
+      side_toaster("Server not reachable", 5000);
       //retry get turn
       getIceServers();
-      document.querySelector(".loading-spinner").style.display = "none";
       if (p.startsWith("/start"))
         top_bar("", "<img src='assets/image/offline.svg'>", "");
     }
@@ -650,8 +658,14 @@ async function getIceServers() {
 
     const a = await response.json();
 
-    a.forEach((e) => {
-      ice_servers.iceServers.push(e);
+    a.forEach((credential) => {
+      if (
+        !ice_servers.iceServers.some(
+          (server) => server.urls === credential.urls
+        )
+      ) {
+        ice_servers.iceServers.push(credential);
+      }
     });
 
     if (peer) {
@@ -693,15 +707,44 @@ async function getIceServers() {
       }
     });
 
+    let h;
+    let hh;
+    peer.on("connection", (conn) => {
+      console.log("Neue Verbindung von:", conn.peer);
+      h = conn.peer;
+      hh = conn;
+    });
+
+    let webrtcCounter = false;
+
     peer.on("error", function (err) {
       //retry to connect
-      console.log("error " + err.type);
+      // console.log("error " + err.type);
       switch (err.type) {
         case "server-error":
           side_toaster(
             "The connection server is not reachable: server error",
             6000
           );
+          break;
+
+        case "webrtc":
+          if (!status.notKaiOS) {
+            hh.close();
+
+            //There are difficulties connecting to a KaiOS 2 device,
+            //  but KaiOS devices can connect to other devices;
+            // the webrtc error is an indication of this.
+            setTimeout(() => {
+              if (!webrtcCounter) {
+                webrtcCounter = true;
+
+                console.log("try to connect" + h);
+                connect_to_peer(h, undefined, undefined, false);
+              }
+            }, 15000);
+          }
+
           break;
 
         case "socket-closed":
@@ -720,7 +763,6 @@ async function getIceServers() {
       }
     });
   } catch (error) {
-    document.querySelector(".loading-spinner").style.display = "none";
     side_toaster("The connection server is not reachable " + error, 6000);
   }
 }
@@ -728,11 +770,11 @@ async function getIceServers() {
 function attemptReconnect() {
   if (peer.disconnected) {
     console.log("Attempting to reconnect...");
+    peer.reconnect();
+
     peer.on("open", (id) => {
       console.log("Reconnected successfully with ID:", id);
     });
-
-    peer.reconnect();
   }
 }
 
@@ -1038,6 +1080,7 @@ let messageQueue = (m) => {
       console.error("Error accessing localForage:", err);
     });
 };
+messageQueue();
 
 async function sendMessageToAll(message) {
   message.from = settings.custom_peer_id;
@@ -1098,14 +1141,19 @@ let turn = async function () {
   );
 
   if (!response.ok) {
-    alert("Can't load TURN credentials");
+    alert("Can't load TURN");
     return false;
   }
 
   const credentials = await response.json();
+  console.log(credentials);
 
   credentials.forEach((credential) => {
-    ice_servers.iceServers.push(credential);
+    if (
+      !ice_servers.iceServers.some((server) => server.urls === credential.urls)
+    ) {
+      ice_servers.iceServers.push(credential);
+    }
   });
 };
 
@@ -1122,11 +1170,12 @@ let peer_is_online = async function () {
   try {
     for (let i = 0; i < addressbook.length; i++) {
       let entry = addressbook[i];
+      if (!entry.id || entry.id == "") continue;
       entry.live = false;
 
       if (connectedPeers.includes(entry.id)) {
         entry.live = true;
-        console.log("already connected");
+        console.log("allready connected");
         m.redraw();
         continue;
       }
@@ -1141,6 +1190,8 @@ let peer_is_online = async function () {
         if (tempConn) {
           tempConn.on("open", () => {
             entry.live = true;
+            setupConnectionEvents(tempConn);
+
             m.redraw();
           });
 
@@ -1150,15 +1201,14 @@ let peer_is_online = async function () {
           });
         }
       } catch (error) {
-        console.log(error);
+        console.log("peer is online error: " + error);
         entry.live = false;
         m.redraw();
       }
     }
-    m.redraw();
     return true;
   } catch (error) {
-    console.log(error);
+    console.log("peer is online error: " + error);
     return false;
   }
 };
@@ -1167,7 +1217,8 @@ let peer_is_online = async function () {
 let connect_to_peer = function (
   id,
   route_target = "/start",
-  nickname = generateRandomString(10)
+  nickname = generateRandomString(10),
+  waiting = true
 ) {
   if (!navigator.onLine) {
     top_bar("", "<img src='assets/image/offline.svg'>", "");
@@ -1178,16 +1229,18 @@ let connect_to_peer = function (
     localforage.removeItem("connect_to_id");
   } catch (e) {}
 
-  m.route.set("/waiting");
+  if (waiting) m.route.set("/waiting");
 
   getIceServers()
     .then(() => {
-      let inAddressbook = addressbook.find((e) => e.id === id);
+      if (addressbook.length > 0) {
+        let inAddressbook = addressbook.find((e) => e.id === id);
 
-      if (inAddressbook) {
-        status.current_user_nickname = inAddressbook.name;
-      } else {
-        status.current_user_nickname = nickname;
+        if (inAddressbook) {
+          status.current_user_nickname = inAddressbook.name;
+        } else {
+          status.current_user_nickname = nickname;
+        }
       }
 
       if (connectedPeers > 0) {
@@ -1213,7 +1266,7 @@ let connect_to_peer = function (
       setTimeout(() => {
         if (!peer) {
           m.route.set("/start");
-          side_toaster("Peer mo set", 3000);
+          side_toaster("Peer mo set", 5000);
 
           return;
         }
@@ -1230,6 +1283,7 @@ let connect_to_peer = function (
             //successfull connected with peer
             conn.on("open", () => {
               status.current_user_id = id;
+              let inAddressbook = addressbook.find((e) => e.id === id);
 
               if (inAddressbook) {
                 status.current_user_nickname = inAddressbook.name;
@@ -1244,34 +1298,38 @@ let connect_to_peer = function (
             });
 
             conn.on("error", (e) => {
-              side_toaster("Connection could not be established", 5000);
-
               if (route_target == null || route_target == undefined) {
-                m.route.set("/start");
+                side_toaster("Connection could not be established", 5000);
+                if (waiting) m.route.set("/start");
               } else {
-                m.route.set(route_target);
+                side_toaster("Connection could not be established", 5000);
+                if (waiting) m.route.set(route_target);
               }
-
-              console.error("Connection error:", e);
             });
 
             // Fallback in case 'open' or 'error' events are not triggered
             setTimeout(() => {
               if (!conn.open) {
                 side_toaster("Connection timeout", 3000);
-                m.route.set("/start");
+                if (waiting) m.route.set("/start");
               }
-            }, 10000); // Adjust timeout as needed
+            }, 10000);
           } else {
-            m.route.set("/start");
+            side_toaster("Connection could not be established", 5000);
+            if (waiting) m.route.set("/start");
           }
         } catch (e) {
-          m.route.set("/start");
-          alert(e);
+          side_toaster("Connection could not be established", 5000);
+
+          if (waiting) m.route.set("/start");
         }
       }, 4000);
     })
-    .catch((e) => {});
+    .catch((e) => {
+      side_toaster("Connection could not be established", 5000);
+
+      m.route.set("/start");
+    });
 };
 
 //create room
@@ -1707,7 +1765,7 @@ var waiting = {
           timer1 = setTimeout(() => {
             let route = m.route.get();
             route.startsWith("/waiting") ? m.route.set("/start") : null;
-          }, 10000);
+          }, 30000);
         },
         onbeforeremove: () => {
           clearTimeout(timer1);
@@ -2554,7 +2612,6 @@ var start = {
           }, 4000);
           top_bar("", "", "");
 
-          document.querySelector(".loading-spinner").style.display = "none";
           document.getElementById("app").style.opacity = "1";
           document.querySelector(".playing").style.top = "-1000%";
 
@@ -2609,24 +2666,26 @@ var start = {
                 oncreate: () => {
                   setTimeout(() => {
                     peer_is_online();
-                  }, 2000);
+                  }, 4000);
                 },
               },
               [
-                addressbook.map((e) => {
+                addressbook.map((e, i) => {
                   return m(
                     "button",
                     {
-                      class: "item  addressbook-item",
+                      class: "item addressbook-item",
                       "data-id": e.id,
                       "data-nickname": !e.name ? e.nickname : e.name,
                       "data-online": e.live ? "true" : "false",
 
-                      oncreate: () => {
+                      oncreate: (vnode) => {
                         setTabindex();
+                        if (i == 0) vnode.dom.focus();
                       },
-                      onfocus: () => {
+                      onfocus: (vnode) => {
                         status.addressbook_in_focus = e.id;
+                        console.log("yeah");
                       },
 
                       onclick: () => {
@@ -4071,7 +4130,6 @@ function checkAndReconnect() {
   peer_is_online();
   let r = m.route.get();
   if (r.startsWith("/start")) {
-    peer_is_online();
     return;
   }
 
