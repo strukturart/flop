@@ -280,17 +280,12 @@ function setupConnectionEvents(conn) {
 
   pc.addEventListener("iceconnectionstatechange", () => {
     console.log("state: " + pc.iceConnectionState);
-    let r = m.route.get();
-
-    if (!status.notKaiOS) console.log("hello");
 
     switch (pc.iceConnectionState) {
       case "disconnected":
       case "failed":
       case "closed":
         peer_is_online();
-
-        side_toaster("Connection closed.", 5000);
 
         connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
 
@@ -305,14 +300,11 @@ function setupConnectionEvents(conn) {
         updateConnections();
         break;
       case "checking":
-        if (!status.notKaiOS) side_toaster("checking", 2000);
         peer_is_online();
 
         break;
 
       case "connected":
-        if (!status.notKaiOS) side_toaster("connected", 2000);
-
         //Que
         try {
           messageQueue();
@@ -613,7 +605,7 @@ function setupConnectionEvents(conn) {
   });
 
   conn.on("error", () => {
-    side_toaster(`User has been disconnected`, 1000);
+    // side_toaster(`User has been disconnected`, 1000);
     connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
     updateConnections();
   });
@@ -710,7 +702,6 @@ async function getIceServers() {
     let h;
     let hh;
     peer.on("connection", (conn) => {
-      console.log("Neue Verbindung von:", conn.peer);
       h = conn.peer;
       hh = conn;
     });
@@ -730,17 +721,16 @@ async function getIceServers() {
 
         case "webrtc":
           if (!status.notKaiOS) {
-            hh.close();
-
             //There are difficulties connecting to a KaiOS 2 device,
             //  but KaiOS devices can connect to other devices;
             // the webrtc error is an indication of this.
+
             setTimeout(() => {
               if (!webrtcCounter) {
                 webrtcCounter = true;
-
+                hh.close();
                 console.log("try to connect" + h);
-                connect_to_peer(h, undefined, undefined, false);
+                // connect_to_peer(h, undefined, undefined, false);
               }
             }, 15000);
           }
@@ -748,14 +738,11 @@ async function getIceServers() {
           break;
 
         case "socket-closed":
-          side_toaster(
-            "The connection server is not reachable: socket close",
-            6000
-          );
+          side_toaster("The connection server is not reachable.", 6000);
           break;
 
         case "network":
-          side_toaster("Network error", 6000);
+          console.log("Network error");
           break;
 
         default:
@@ -1162,8 +1149,12 @@ turn();
 //connect to peer
 //test is other peer is online
 let peer_is_online = async function () {
-  if (!navigator.onLine || addressbook.length == 0) {
+  if (!navigator.onLine) {
     top_bar("", "<img src='assets/image/offline.svg'>", "");
+    return false;
+  }
+
+  if (addressbook.length == 0) {
     return false;
   }
 
@@ -1265,7 +1256,7 @@ let connect_to_peer = function (
 
       setTimeout(() => {
         if (!peer) {
-          m.route.set("/start");
+          if (waiting) m.route.set("/start");
           side_toaster("Peer mo set", 5000);
 
           return;
@@ -1300,7 +1291,7 @@ let connect_to_peer = function (
             conn.on("error", (e) => {
               if (route_target == null || route_target == undefined) {
                 side_toaster("Connection could not be established", 5000);
-                if (waiting) m.route.set("/start");
+                // if (waiting) m.route.set("/start");
               } else {
                 side_toaster("Connection could not be established", 5000);
                 if (waiting) m.route.set(route_target);
@@ -1311,7 +1302,7 @@ let connect_to_peer = function (
             setTimeout(() => {
               if (!conn.open) {
                 side_toaster("Connection timeout", 3000);
-                if (waiting) m.route.set("/start");
+                // if (waiting) m.route.set("/start");
               }
             }, 10000);
           } else {
@@ -1321,14 +1312,14 @@ let connect_to_peer = function (
         } catch (e) {
           side_toaster("Connection could not be established", 5000);
 
-          if (waiting) m.route.set("/start");
+          // if (waiting) m.route.set("/start");
         }
       }, 4000);
     })
     .catch((e) => {
       side_toaster("Connection could not be established", 5000);
 
-      m.route.set("/start");
+      // m.route.set("/start");
     });
 };
 
@@ -4113,7 +4104,7 @@ function handleVisibilityChange() {
     return;
   }
 
-  checkAndReconnect();
+  peer_is_online();
 }
 
 function handlePageHide() {
@@ -4123,22 +4114,7 @@ function handlePageHide() {
 
 function handlePageShow() {
   status.visibility = true;
-  checkAndReconnect();
-}
-
-function checkAndReconnect() {
   peer_is_online();
-  let r = m.route.get();
-  if (r.startsWith("/start")) {
-    return;
-  }
-
-  if (r.startsWith("/chat?")) {
-    let target =
-      "/chat?id=" + settings.custom_peer_id + "&peer=" + status.current_user_id;
-
-    connect_to_peer(status.current_user_id, target);
-  }
 }
 
 // Event-Listener iOS & android

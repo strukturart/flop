@@ -117,7 +117,7 @@ article img {
 }
 
 #chat {
-  padding: 40px 10px 50px 10px;
+  padding: 40px 0px 50px 0px;
 }
 
 img[src=""] {
@@ -1051,7 +1051,7 @@ div#bottom-bar div.button-center:hover {
     min-width: 100%;
     max-width: 100vw;
     margin: 0 0 0px 0;
-    padding: 0px;
+    padding: 0px 10px 0 10px;
   }
 
   #chat article:focus {
@@ -1253,7 +1253,7 @@ div#bottom-bar div.button-center:hover {
   }
 
   #chat article:focus {
-    background: silver !important;
+    background: rgb(233, 213, 213) !important;
   }
   #start {
     padding: 40px 10px 10px 10px;
