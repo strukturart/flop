@@ -446,42 +446,48 @@ let notify = function (param_title, param_text, param_silent) {
 //https://notifications.spec.whatwg.org/#dictdef-notificationaction
 
 export let pushLocalNotification = function (title, body) {
-  window.Notification.requestPermission().then((result) => {
-    var notification = new window.Notification(title, {
-      body: body,
-    });
+  window.Notification.requestPermission().then(() => {
+    var notification = new window.Notification(title, { body: body });
 
-    if (Notification.permission === "denied") {
-      console.error("Notification permission is denied");
-    } else if (Notification.permission === "default") {
-      Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          // Proceed to create a notification
-        }
-      });
-    }
+    notification.onclick = function () {
+      notification.close(); // Schließt die Benachrichtigung nach dem Klick
 
-    notification.onerror = function (err) {
-      console.log(err);
-    };
-    notification.onclick = function (event) {
-      if (window.navigator.mozApps) {
-        var request = window.navigator.mozApps.getSelf();
+      if (navigator.mozApps) {
+        // KaiOS 2: App starten mit mozApps
+        var request = navigator.mozApps.getSelf();
         request.onsuccess = function () {
           if (request.result) {
-            notification.close();
             request.result.launch();
           }
         };
+        request.onerror = function () {
+          console.error("Fehler beim Öffnen der App:", request.error);
+        };
       } else {
-        window.open(document.location.origin, "_blank");
+        // KaiOS 3: App in den Vordergrund holen oder neues Fenster öffnen
+        if (document.visibilityState === "hidden") {
+          window.location.href = "index.html"; // Falls App im Hintergrund läuft
+        } else if ("clients" in navigator) {
+          navigator.clients
+            .matchAll({ type: "window", includeUncontrolled: true })
+            .then((clients) => {
+              if (clients.length > 0) {
+                clients[0].focus(); // Falls App läuft, in den Vordergrund holen
+              } else {
+                navigator.clients.openWindow("index.html"); // Falls nicht, neu öffnen
+              }
+            });
+        } else {
+          // Fallback für ältere Geräte
+          if (!window.location.href.includes("index.html")) {
+            window.location.href = "index.html";
+          }
+        }
       }
-    };
-    notification.onshow = function () {
-      // notification.close();
     };
   });
 };
+
 if (navigator.mozSetMessageHandler) {
   navigator.mozSetMessageHandler("alarm", function (message) {
     pushLocalNotification("Flop", message.data.note);

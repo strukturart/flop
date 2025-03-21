@@ -2,7 +2,7 @@
   "name": "flop",
   "version": "1.0.1",
   "source": "application/index.html",
-  "browserslist": "Firefox <= 48",
+  "browserslist": "Firefox <= 44",
   "scripts": {
     "build": "rm -rf dist/* && parcel build --no-source-maps --no-optimize application/index.html  && cp application/manifest.webapp dist && mkdir dist/assets && cp -r application/assets/icons dist/assets/ && cp -r application/assets/image dist/assets/  && mkdir -p dist/assets/js/ && cp application/assets/js/kaiads.v5.min.js dist/assets/js/",
     "run": "parcel",
