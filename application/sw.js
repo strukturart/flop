@@ -23,7 +23,7 @@ self.onsystemmessage = (evt) => {
 const userAgent = navigator.userAgent || "";
 
 if (userAgent && !userAgent.includes("KAIOS")) {
-  const CACHE_NAME = "pwa-cache-v0.19770";
+  const CACHE_NAME = "pwa-cache-v0.19808";
   const FILE_LIST_URL = "/file-list.json"; // URL of the JSON file containing the array of files
 
   self.addEventListener("install", (event) => {
@@ -87,3 +87,28 @@ if (userAgent && !userAgent.includes("KAIOS")) {
     );
   });
 }
+
+self.addEventListener("push", function (event) {
+  if (!event.data) {
+    console.log("Push event but no data");
+    return;
+  }
+
+  let data;
+  try {
+    data = event.data.json();
+  } catch (e) {
+    console.error("Push event data is not JSON:", e);
+    return;
+  }
+
+  const options = {
+    body: data.body || "No content",
+    icon: data.icon || "/default-icon.png",
+    badge: data.badge || "/default-badge.png",
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(data.title || "New Message", options)
+  );
+});
