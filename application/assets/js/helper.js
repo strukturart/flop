@@ -791,6 +791,8 @@ export function createAudioRecorder() {
     }
   }
 
+  let recordingTimeout = null;
+
   async function startRecording() {
     if (mediaRecorder === null) {
       await init(); // Initialize when starting recording
@@ -807,6 +809,14 @@ export function createAudioRecorder() {
 
     recordedChunks = []; // Clear previous recordings
     mediaRecorder.start();
+
+    // Stop recording after 2 minutes (120000 ms)
+    recordingTimeout = setTimeout(() => {
+      if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        stopRecording();
+        console.log("Recording stopped after 2 minutes.");
+      }
+    }, 120000);
   }
 
   function stopRecording() {
@@ -822,8 +832,6 @@ export function createAudioRecorder() {
 
         // Clean up resources after recording is stopped
         cleanup();
-
-        // resolve(blob);
 
         resolve({ audioBlob, mimeType });
       };
@@ -842,6 +850,7 @@ export function createAudioRecorder() {
     mediaRecorder = null;
     recordedChunks = [];
     stream = null;
+    clearTimeout(recordingTimeout);
   }
 
   return {

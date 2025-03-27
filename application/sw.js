@@ -20,10 +20,79 @@ self.onsystemmessage = (evt) => {
   evt.waitUntil(serviceHandler());
 };
 
+self.addEventListener("push", function (event) {
+  if (!event.data) {
+    console.log("Push event but no data");
+    return;
+  }
+
+  let data;
+  try {
+    data = event.data.json();
+  } catch (e) {
+    console.error("Push event data is not JSON:", e);
+    return;
+  }
+
+  const options = {
+    body: data.body || "No content",
+    icon: "/assets/icons/icon-512.png",
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(data.title || "New Message", options)
+  );
+});
+/*
+self.addEventListener("notificationclick", function (event) {
+  event.notification.close();
+
+  event.waitUntil(
+    clients
+      .matchAll({ type: "window", includeUncontrolled: true })
+      .then((clientList) => {
+        for (let client of clientList) {
+          if ("focus" in client) return client.focus();
+        }
+        if (event.notification.data && event.notification.data.url) {
+          return clients.openWindow(event.notification.data.url);
+        }
+        return clients.openWindow("/");
+      })
+  );
+});
+
+*/
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  event.waitUntil(
+    clients
+      .matchAll({ type: "window", includeUncontrolled: true })
+      .then((clientList) => {
+        for (var i = 0; i < clientList.length; i++) {
+          let client = clientList[i];
+          if (client.url == "/" && "focus" in client) return client.focus();
+        }
+        if (clients.openWindow) {
+          return clients
+            .openWindow(new URL("/", self.location.origin))
+            .then((w) => w.focus());
+        }
+        if (clients.openApp) {
+          return clients.openApp();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  );
+});
+
 const userAgent = navigator.userAgent || "";
 
 if (userAgent && !userAgent.includes("KAIOS")) {
-  const CACHE_NAME = "pwa-cache-v0.19770";
+  const CACHE_NAME = "pwa-cache-v0.19840";
   const FILE_LIST_URL = "/file-list.json"; // URL of the JSON file containing the array of files
 
   self.addEventListener("install", (event) => {

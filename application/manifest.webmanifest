@@ -5,7 +5,7 @@
   "lang": "en-US",
   "start_url": "/index.html",
   "short_name": "flop",
-  "categories": ["social"],
+  "categories": ["social", "utilities"],
   "theme_color": "#ffffff",
   "orientation": "natural",
   "display": "standalone",
@@ -53,7 +53,7 @@
   ],
 
   "b2g_features": {
-    "version": "0.3275",
+    "version": "0.3283",
     "id": "flop",
     "subtitle": "flop WebRTC chat app",
     "core": true,
