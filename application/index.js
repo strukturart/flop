@@ -233,7 +233,7 @@ let update_addressbook_item = (userIdToUpdate) => {
     });
 };
 
-let addUserToAddressBook = (a, b) => {
+let addUserToAddressBook = (a, b, c = "") => {
   if (!Array.isArray(addressbook)) {
     console.error("addressbook is not defined or is not an array");
     return;
@@ -245,7 +245,7 @@ let addUserToAddressBook = (a, b) => {
     let uname = prompt("enter the name of the contact");
     if (!uname) uname = "";
 
-    addressbook.push({ id: a, nickname: b, name: uname });
+    addressbook.push({ id: a, nickname: b, name: uname, client_id: c });
 
     localforage
       .setItem("addressbook", addressbook)
@@ -315,6 +315,7 @@ function setupConnectionEvents(conn) {
 
         try {
           let k = JSON.parse(conn.metadata);
+          k = k.history_of_ids;
 
           if (Array.isArray(k) && k.length > 1) {
             addressbook.forEach((e) => {
@@ -359,6 +360,23 @@ function setupConnectionEvents(conn) {
     if (conn.label !== "flop") return;
 
     if (restrict_same_id.includes(data.id)) return;
+
+    //get clientID from peer
+    let clientID = JSON.parse(conn.metadata);
+    clientID = clientID.unique_id;
+    console.log("clientID " + clientID);
+
+    addressbook.forEach((e) => {
+      if (e.id == data.from) {
+        console.log("user in addressbook");
+        if (!e.client_id) {
+          e.client_id = clientID;
+          localforage.setItem("addressbook", addressbook).then(() => {
+            console.log("addressbook updated");
+          });
+        }
+      }
+    });
 
     //Message-POD
     if (data.type == "pod") {
@@ -573,7 +591,6 @@ function setupConnectionEvents(conn) {
         console.log("data stored");
       });
     } else {
-      console.log("error?" + JSON.stringify(data));
       if (data.userlist && status.groupchat) {
         //connect all users
         //groupchat
@@ -763,6 +780,7 @@ localforage.getItem("chatData").then((e) => {
 });
 
 //load settings
+
 localforage
   .getItem("settings")
   .then(function (value) {
@@ -776,6 +794,7 @@ localforage
       server_port: "443",
       invite_url: "https://flop.bhackers.uber.space/",
       custom_peer_id: "flop-" + uuidv4(16),
+      unique_id: "flop-" + uuidv4(16),
     };
 
     for (const key in defaultValues) {
@@ -784,10 +803,17 @@ localforage
       }
     }
 
+    if (!settings.unique_id) {
+      settings.unique_id = "flop-" + uuidv4(16);
+      localforage.setItem("settings", settings).then(() => {});
+    }
+
     if (value == null) {
       settings = defaultValues;
       localforage.setItem("settings", settings).then(() => {});
     }
+
+    console.log(settings);
   })
   .catch(function (err) {
     console.log(err);
@@ -1133,6 +1159,94 @@ let turn = async function () {
 
 turn();
 
+//webPush
+const webPush_reg = async (action) => {
+  // VAPID Public Key (Austausch gegen deinen eigenen)
+  const publicKey = process.env.VAPID_PUBLIC;
+  console.log(publicKey);
+
+  // Überprüfen, ob der Service Worker und Push API verfügbar sind
+  if ("serviceWorker" in navigator && "PushManager" in window) {
+    try {
+      // Service Worker registrieren
+      const registration = await navigator.serviceWorker.register(
+        new URL("sw.js", import.meta.url),
+        {
+          type: "module",
+        }
+      );
+
+      console.log("Service Worker registriert", registration);
+
+      // Push-Subscription anfordern
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: publicKey,
+      });
+
+      // Senden der Subscription-Daten an den Server
+
+      fetch(process.env.WEBPUSH_SUBSCRIPE + "?action=" + action, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: settings.unique_id,
+          subscription: subscription,
+        }),
+      })
+        .then((response) => response.text()) // Die Antwort als Text zuerst erhalten
+        .then((text) => {
+          console.log("Antwort des Servers:", text); // Text-Antwort loggen
+          return JSON.parse(text); // Versuche, den Text in JSON zu parsen
+        })
+        .then((data) => {
+          console.log("JSON-Daten:", data);
+        })
+        .catch((error) => {
+          console.error("Fehler:", error);
+        });
+    } catch (error) {
+      console.error(
+        "Fehler bei der Registrierung der Push-Subscription:",
+        error
+      );
+    }
+  } else {
+    alert("Push-Notifications oder Service Worker sind nicht verfügbar!");
+  }
+};
+
+// send webPush
+function sendPushMessage(userId, message) {
+  fetch(process.env.WEBPUSH_SEND, {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      "user_id": userId,
+      "message": message,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(
+          `Server returned ${response.status} ${response.statusText}`
+        );
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("JSON-Daten:", data);
+    })
+    .catch((error) => {
+      console.error("Fehler:", error);
+    });
+}
+
 //connect to peer
 //test is other peer is online
 let peer_is_online = async function () {
@@ -1148,8 +1262,9 @@ let peer_is_online = async function () {
   try {
     for (let i = 0; i < addressbook.length; i++) {
       let entry = addressbook[i];
-      if (!entry.id || entry.id == "") continue;
       entry.live = false;
+
+      if (!entry.id || entry.id == "") continue;
 
       if (connectedPeers.includes(entry.id)) {
         entry.live = true;
@@ -1159,17 +1274,21 @@ let peer_is_online = async function () {
       }
 
       try {
+        console.log("try to connect");
+        let user_meta = {
+          "history_of_ids": status.history_of_ids,
+          "unique_id": settings.unique_id,
+        };
         let tempConn = peer.connect(entry.id, {
           label: "flop",
           reliable: true,
-          metadata: JSON.stringify(status.history_of_ids),
+          metadata: JSON.stringify(user_meta),
         });
 
         if (tempConn) {
           tempConn.on("open", () => {
             entry.live = true;
             setupConnectionEvents(tempConn);
-
             m.redraw();
           });
 
@@ -1245,16 +1364,19 @@ let connect_to_peer = function (
         if (!peer) {
           if (waiting) m.route.set("/start");
           side_toaster("Peer mo set", 5000);
-
           return;
         }
 
         try {
           console.log("Attempting to connect to peer with ID:", id);
+          let user_meta = {
+            "history_of_ids": status.history_of_ids,
+            "unique_id": settings.unique_id,
+          };
           conn = peer.connect(id, {
             label: "flop",
             reliable: true,
-            metadata: JSON.stringify(status.history_of_ids),
+            metadata: JSON.stringify(user_meta),
           });
 
           if (conn) {
@@ -1278,7 +1400,6 @@ let connect_to_peer = function (
             conn.on("error", (e) => {
               if (route_target == null || route_target == undefined) {
                 side_toaster("Connection could not be established", 5000);
-                // if (waiting) m.route.set("/start");
               } else {
                 side_toaster("Connection could not be established", 5000);
                 if (waiting) m.route.set(route_target);
@@ -1289,7 +1410,7 @@ let connect_to_peer = function (
             setTimeout(() => {
               if (!conn.open) {
                 side_toaster("Connection timeout", 3000);
-                // if (waiting) m.route.set("/start");
+                if (waiting) m.route.set("/start");
               }
             }, 10000);
           } else {
@@ -1298,15 +1419,11 @@ let connect_to_peer = function (
           }
         } catch (e) {
           side_toaster("Connection could not be established", 5000);
-
-          // if (waiting) m.route.set("/start");
         }
       }, 4000);
     })
     .catch((e) => {
       side_toaster("Connection could not be established", 5000);
-
-      // m.route.set("/start");
     });
 };
 
@@ -1325,8 +1442,6 @@ let generate_contact = function () {
   });
 
   status.invite_qr = qrs.toDataURL();
-
-  //m.route.set("/invite?id=" + settings.custom_peer_id);
 };
 
 let handleImage = function (t) {
@@ -1367,9 +1482,6 @@ checkStorageUsage();
 
 // Function to store chat data
 let storeChatData = async () => {
-  // Return if no data
-  //if (!chat_data || chat_data.length === 0) return false;
-
   // Ensure only new data is added
   let newData = chat_data.filter((item) => {
     return !chat_data_history.some(
@@ -2232,6 +2344,37 @@ var settings_page = {
           },
           "share"
         ),
+
+        m(
+          "button",
+          {
+            class: "item",
+            onclick: () => {
+              if (!settings.webpush) {
+                webPush_reg("add")
+                  .then(() => {
+                    side_toaster("registration successful", 3000);
+                    settings.webpush = true;
+                    localforage.setItem("settings", settings).then(() => {});
+                  })
+                  .catch((e) => {
+                    side_toaster("registration not successful", 3000);
+                  });
+              } else {
+                webPush_reg("delete")
+                  .then(() => {
+                    side_toaster("delete successful", 3000);
+                    settings.webpush = false;
+                    localforage.setItem("settings", settings).then(() => {});
+                  })
+                  .catch((e) => {
+                    side_toaster("registration not successful", 3000);
+                  });
+              }
+            },
+          },
+          settings.webpush ? "Delete WebPush" : "Activate WebPush"
+        ),
         m(
           "button",
           {
@@ -2644,6 +2787,7 @@ var start = {
                     {
                       class: "item addressbook-item",
                       "data-id": e.id,
+                      "data-client-id": e.client_id,
                       "data-nickname": !e.name ? e.nickname : e.name,
                       "data-online": e.live ? "true" : "false",
 
@@ -2675,6 +2819,13 @@ var start = {
                               settings.custom_peer_id +
                               "&peer=" +
                               status.current_user_id
+                          );
+
+                          sendPushMessage(
+                            document.activeElement.getAttribute(
+                              "data-client-id"
+                            ),
+                            "Flop"
                           );
                         }
                       },
