@@ -808,6 +808,46 @@ article div.user-date {
   margin: 0 0 5px 0;
 }
 
+#typing-indicator {
+  max-height: 20px;
+  display: block;
+  margin: 10px 0 60px 0;
+  padding: 10px;
+  visibility: hidden;
+  position: relative;
+}
+
+#typing-indicator.typing {
+  visibility: visible;
+}
+
+#typing-indicator.typing::after {
+  content: " ";
+  animation: dots 1s steps(3, end) infinite;
+  display: inline-block;
+  white-space: pre;
+  background: rgb(196, 199, 206);
+  width: fit-content;
+  height: 30px;
+  border-radius: 7px;
+  padding: 5px 5px 5px 5px;
+}
+
+@keyframes dots {
+  0% {
+    content: " ";
+  }
+  33% {
+    content: ".";
+  }
+  66% {
+    content: "..";
+  }
+  100% {
+    content: "...";
+  }
+}
+
 article div.user-date span {
   font-weight: bold;
 }

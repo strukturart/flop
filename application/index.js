@@ -308,11 +308,11 @@ function setupConnectionEvents(conn) {
         try {
           messageQueue();
           if (messageQueueStorage.length > 0) {
-            console.log("should send to " + conn.peer);
+            // console.log("should send to " + conn.peer);
 
             messageQueueStorage.map((e) => {
-              if (e.to == conn.peer) {
-                console.log("try to send");
+              if (e.to == conn.peer && e.type != "typing") {
+                // console.log("try to send");
                 sendMessageToAll(e);
               }
             });
@@ -370,6 +370,18 @@ function setupConnectionEvents(conn) {
   conn.on("data", function (data) {
     if (conn.label !== "flop") return;
 
+    if (data.type === "typing") {
+      const chat = document.querySelector("#chat");
+      const typingIndicator = document.querySelector("#typing-indicator");
+      typingIndicator.classList.add("typing");
+
+      if (chat && typingIndicator) {
+        setTimeout(() => {
+          typingIndicator.classList.remove("typing");
+        }, 3000);
+      }
+    }
+
     //to prevent to post same message
     if (restrict_same_id.includes(data.id)) return;
 
@@ -382,13 +394,13 @@ function setupConnectionEvents(conn) {
 
       addressbook.forEach((e) => {
         if (e.id == data.from) {
-          if (clientID == settings.clientID) return;
+          if (clientID == settings.clientID) {
+            e.client_id = "null";
+            localforage.setItem("addressbook", addressbook).then(() => {});
+            return;
+          }
 
-          if (
-            !e.client_id ||
-            e.client_id != clientID ||
-            e.client_id == "null"
-          ) {
+          if (!e.client_id || e.client_id == "null") {
             e.client_id = clientID;
             localforage.setItem("addressbook", addressbook).then(() => {
               console.log("addressbook updated with clientID");
@@ -750,10 +762,11 @@ async function getIceServers() {
 
         case "webrtc":
           if (!status.notKaiOS) {
+            //TO DO
             //There are difficulties connecting to a KaiOS 2 device,
             //  but KaiOS devices can connect to other devices;
             // the webrtc error is an indication of this.
-
+            /*
             setTimeout(() => {
               if (!webrtcCounter) {
                 webrtcCounter = true;
@@ -762,6 +775,7 @@ async function getIceServers() {
                 // connect_to_peer(h, undefined, undefined, false);
               }
             }, 15000);
+            */
           }
 
           break;
@@ -896,14 +910,12 @@ const focus_last_article = function () {
 };
 
 function sendMessage(
-  msg,
+  msg = "",
   type,
   mimeType = "",
   to = status.current_user_id || "",
   messageId = uuidv4(16)
 ) {
-  if (!msg) return false;
-
   let message = {};
 
   //POD
@@ -913,6 +925,20 @@ function sendMessage(
       type: type,
       content: msg,
       mimeType: "",
+      from: settings.custom_peer_id,
+      to: to,
+      id: messageId,
+    };
+
+    sendMessageToAll(message);
+  }
+
+  // If the chat partner is currently typing, send a "typing" message to  peer
+  // to trigger a "user is typing..." animation or indicator in the UI.
+  if (type == "typing") {
+    message = {
+      nickname: settings.nickname,
+      type: type,
       from: settings.custom_peer_id,
       to: to,
       id: messageId,
@@ -962,6 +988,9 @@ function sendMessage(
 
   //text
   if (type == "text") {
+    //do not send empty message
+    if (!msg) return false;
+
     message = {
       nickname: settings.nickname,
       type: type,
@@ -1123,7 +1152,9 @@ async function sendMessageToAll(message) {
     // send webPush
     if (status.current_clientId != "") {
       if (!status.webpush_do_not_annoy.includes(status.current_clientId)) {
-        sendPushMessage(status.current_clientId, "Flop");
+        if (message.type !== "typing")
+          sendPushMessage(status.current_clientId, "Flop");
+
         status.webpush_do_not_annoy.push(status.current_clientId);
 
         // remove id after 5min
@@ -1142,7 +1173,6 @@ async function sendMessageToAll(message) {
     } else {
       console.log("no clientID");
     }
-
     messageQueue(message);
     await storeChatData();
     m.redraw();
@@ -1161,19 +1191,21 @@ async function sendMessageToAll(message) {
         (e) => e.id === message.id && e.pod == true
       );
       if (!result) {
-        console.log("store it to send it later");
+        //store and send later
+        if (message.type != "typing") {
+          console.log("store it to send it later");
 
-        //send later
-        messageQueue(message);
+          messageQueue(message);
+        }
       }
     }, 5000);
 
     setTimeout(() => {
       const result = messageQueueStorage.find((e) => e.id === message.id);
       if (result) {
-        console.log("POD  OK");
+        //console.log("POD  OK");
       } else {
-        console.log("POD not OK:");
+        //console.log("POD not OK:");
       }
     }, 5000);
   }
@@ -1296,10 +1328,18 @@ function sendPushMessage(userId, message) {
 
 //connect to peer
 //test is other peer is online
+let lastCheck = 0;
+
 let peer_is_online = async function () {
   if (!navigator.onLine) {
     top_bar("", "<img src='assets/image/offline.svg'>", "");
     return false;
+  }
+
+  let now = Date.now();
+
+  if (now - lastCheck < 5000) {
+    return;
   }
 
   if (addressbook.length == 0) {
@@ -1321,7 +1361,7 @@ let peer_is_online = async function () {
       }
 
       try {
-        console.log("try to connect");
+        console.log("addressbook chk: try to connect");
         let user_meta = {
           "history_of_ids": status.history_of_ids,
           "unique_id": settings.unique_id,
@@ -2759,6 +2799,10 @@ var start = {
     previousView();
     status.addressbook_in_focus = "";
     generate_contact();
+
+    setTimeout(() => {
+      peer_is_online();
+    }, 6000);
   },
   onremove: () => {
     key_delay();
@@ -2840,10 +2884,6 @@ var start = {
                       oncreate: (vnode) => {
                         setTabindex();
                         if (i == 0) vnode.dom.focus();
-
-                        setTimeout(() => {
-                          peer_is_online();
-                        }, 10000);
                       },
                       onfocus: () => {
                         status.addressbook_in_focus = e.id;
@@ -3068,6 +3108,12 @@ var chat = {
               "<img src='assets/image/option.svg'>"
             );
           },
+          onkeyup: (e) => {
+            const value = e.target.value.trim();
+            if (value !== "" && status.action === "write") {
+              sendMessage(undefined, "typing", undefined, undefined, undefined);
+            }
+          },
         }),
       ]),
 
@@ -3104,7 +3150,10 @@ var chat = {
             oncreate: (vnode) => {
               if (last) {
                 vnode.dom.focus();
-                vnode.dom.scrollIntoView({ behavior: "smooth", block: "end" });
+                vnode.dom.scrollIntoView({
+                  behavior: "smooth",
+                  block: "end",
+                });
               }
             },
 
@@ -3246,12 +3295,16 @@ var chat = {
                 "  Live location"
               ),
               item.pod
-                ? m("img", { class: "pod-icon", src: "./assets/image/ok.svg" })
+                ? m("img", {
+                    class: "pod-icon",
+                    src: "./assets/image/ok.svg",
+                  })
                 : null,
             ]),
           ]
         );
-      })
+      }),
+      m("div", { id: "typing-indicator" }, "")
     );
   },
 };
@@ -3922,6 +3975,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
             write();
           } else {
             side_toaster("The user is not online.", 3000);
+            top_bar(
+              "<img src='assets/image/back.svg'>",
+              "<div id='name'>" + status.current_user_nickname + "</div>",
+              "<img class='users' src='assets/image/no-monster.svg'>"
+            );
             write();
           }
         }
