@@ -128,6 +128,27 @@ img[src=" "] {
   display: none;
 }
 
+.avatar {
+  overflow: hidden;
+  margin: 20px 0 0 0;
+  width: 50px;
+  height: 50px;
+  background: rgb(7, 7, 7);
+}
+
+#top-bar .avatar {
+  margin: 5px 0 0 0;
+
+  min-height: 35px;
+  min-width: 35px;
+
+  max-height: 35px;
+  max-width: 35px;
+
+  background: rgb(7, 7, 7);
+  border-radius: 50%;
+}
+
 button.vip-button {
   background: rgb(45, 100, 208);
   color: white;
@@ -175,45 +196,76 @@ button:hover {
 }
 
 #addressbook button.addressbook-item {
-  padding: 5px;
   border-radius: 0px;
-  min-height: 60px !important;
-  background: rgb(45, 100, 208);
-  color: white;
+  min-height: 60px;
+  color: black;
+  outline: 0px;
+  border: 0px;
+  margin: 0 0 30px 0;
+  position: relative;
+}
+
+#addressbook button.addressbook-item img {
+  height: 50px;
+  width: 50px;
+  background: rgb(7, 7, 7);
+  border-radius: 50%;
+}
+
+#addressbook button.addressbook-item .inner {
+  width: 90%;
+  padding: 0 0 15px 10px !important;
 }
 
 #addressbook button.addressbook-item:hover {
-  background: rgba(45, 100, 208, 0.6) !important;
+  background: rgba(45, 100, 208, 0) !important;
 }
 
-#addressbook button.addressbook-item .last-conversation-meesage {
-  width: 50%;
+#addressbook button.addressbook-item:focus {
+  background: none;
+}
+
+#addressbook button.addressbook-item:focus .inner {
+  background: none;
+}
+
+#addressbook button.addressbook-item .last-conversation-message {
+  min-width: 50%;
   max-width: 50%;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: left;
-  color: white;
+  color: black;
   margin: 10px 0 0 0;
+  font-size: small;
+  font-weight: 100;
 }
 
 #addressbook button.addressbook-item .last-conversation-date {
   width: fit-content;
-  color: white;
+  color: black;
   margin: 10px 0 0 0;
+  font-size: small;
+  font-weight: 100;
 }
 
-#addressbook button[data-online="true"] {
-  border-left: 8px solid rgb(45, 100, 208) !important;
-  border-top: 0px;
-  border-bottom: 0px;
-  border-right: 0px;
+#addressbook button.addressbook-item .online-indicator {
+  border-radius: 50%;
+  background: red;
+  border: 2px solid white;
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  left: 10px;
+  display: block;
 }
 
-#addressbook button[data-online="false"] {
-  border-left: 8px solid rgb(253, 10, 31) !important;
-  border-top: 0px;
-  border-bottom: 0px;
-  border-right: 0px;
+#addressbook button[data-online="true"] .online-indicator {
+  background: rgb(81, 236, 9);
+}
+
+#addressbook button[data-online="false"] .online-indicator {
+  background: red;
 }
 
 #addressbook button.addressbook-item small {
@@ -715,6 +767,14 @@ div#bottom-bar div.button-center img {
 
 /*/ ////////////////
 ///TOP-BAR///////*/
+
+body.user-online div#top-bar {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+body.user-offline div#top-bar {
+  box-shadow: 0px 0px 10px rgba(233, 6, 6, 0.5);
+}
 
 div#top-bar {
   position: fixed;
@@ -1287,9 +1347,27 @@ div#bottom-bar div.button-center:hover {
   div#message-input input {
     width: 95vw;
   }
+
+  #addressbook button.addressbook-item .inner {
+    width: 80%;
+    padding: 0 0 15px 10px !important;
+  }
 }
 
 @media screen and (min-width: 0px) and (max-width: 400px) {
+  #top-bar .avatar {
+    margin: 2px 0 0 0;
+
+    min-height: 27px;
+    min-width: 27px;
+
+    max-height: 27px;
+    max-width: 27px;
+
+    background: rgb(7, 7, 7);
+    border-radius: 50%;
+  }
+
   div#message-input input {
     width: 95vw;
   }
@@ -1317,8 +1395,18 @@ div#bottom-bar div.button-center:hover {
     height: 100vh;
   }
 
-  #addressbook button.addressbook-item .last-conversation-meesage {
+  #addressbook button.addressbook-item .last-conversation-message {
     width: 40%;
+  }
+
+  #addressbook button.addressbook-item .inner {
+    width: 80%;
+    padding: 0 0 8px 0 !important;
+  }
+
+  #addressbook button.addressbook-item img {
+    height: 30px;
+    width: 30px;
   }
 
   .addressbook-box {

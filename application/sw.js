@@ -43,26 +43,6 @@ self.addEventListener("push", function (event) {
     self.registration.showNotification(data.title || "New Message", options)
   );
 });
-/*
-self.addEventListener("notificationclick", function (event) {
-  event.notification.close();
-
-  event.waitUntil(
-    clients
-      .matchAll({ type: "window", includeUncontrolled: true })
-      .then((clientList) => {
-        for (let client of clientList) {
-          if ("focus" in client) return client.focus();
-        }
-        if (event.notification.data && event.notification.data.url) {
-          return clients.openWindow(event.notification.data.url);
-        }
-        return clients.openWindow("/");
-      })
-  );
-});
-
-*/
 
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
@@ -92,7 +72,7 @@ self.addEventListener("notificationclick", (event) => {
 const userAgent = navigator.userAgent || "";
 
 if (userAgent && !userAgent.includes("KAIOS")) {
-  const CACHE_NAME = "pwa-cache-v0.19901";
+  const CACHE_NAME = "pwa-cache-v0.19995";
   const FILE_LIST_URL = "/file-list.json"; // URL of the JSON file containing the array of files
 
   self.addEventListener("install", (event) => {

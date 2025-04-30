@@ -32,6 +32,9 @@
     "stream-browserify": "^3.0.0"
   },
   "dependencies": {
+    "@dicebear/core": "^9.2.2",
+    "@dicebear/identicon": "^9.2.2",
+    "@dicebear/initials": "^9.2.2",
     "@parcel/service-worker": "^2.8.0",
     "browser-image-compression": "^2.0.2",
     "dayjs": "^1.11.13",

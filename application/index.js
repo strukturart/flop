@@ -1,6 +1,7 @@
 "use strict";
 
 import {
+  data_export,
   bottom_bar,
   side_toaster,
   pick_image,
@@ -31,6 +32,11 @@ import "swiped-events";
 import markerIcon from "./assets/css/images/marker-icon.png";
 import markerIconRetina from "./assets/css/images/marker-icon-2x.png";
 
+import { createAvatar } from "@dicebear/core";
+
+import { createAvatar } from "@dicebear/core";
+import * as style from "@dicebear/identicon";
+
 //github.com/laurentpayot/minidenticons#usage
 export let status = {
   visibility: true,
@@ -41,6 +47,7 @@ export let status = {
   current_article_type: "",
   current_user_id: "",
   current_user_nickname: "",
+  current_user_name: "",
   current_clientId: "",
   users_geolocation: [],
   userMarkers: [],
@@ -118,6 +125,15 @@ let key_delay = () => {
   }, 2000);
 };
 
+let create_avatar = (string, size) => {
+  const avatar = createAvatar(style, {
+    seed: string,
+    size: size,
+  });
+
+  return avatar.toDataUri();
+};
+
 //open KaiOS app
 let app_launcher = () => {
   var currentUrl = window.location.href;
@@ -181,6 +197,27 @@ let compareUserList = (userlist) => {
 
 //add to addressbook
 let addressbook = [];
+/*
+setTimeout(() => {
+  addressbook = [
+    {
+      name: "jj",
+      nickname: "xdd",
+      id: "112",
+      last_conversation_message: "test last xcccxxc",
+      last_conversation_datetime: 1741625898228,
+    },
+    {
+      name: "jj",
+      nickname: "xdd",
+      id: "112",
+      last_conversation_message: "test last xcccxxc",
+      last_conversation_datetime: 1741625898228,
+    },
+  ];
+}, 1000);
+
+*/
 
 localforage
   .getItem("addressbook")
@@ -1152,8 +1189,9 @@ async function sendMessageToAll(message) {
     // send webPush
     if (status.current_clientId != "") {
       if (!status.webpush_do_not_annoy.includes(status.current_clientId)) {
-        if (message.type !== "typing")
-          sendPushMessage(status.current_clientId, "Flop");
+        if (message.type == "typing") return;
+        console.log("try to send webpush");
+        sendPushMessage(status.current_clientId, "Flop");
 
         status.webpush_do_not_annoy.push(status.current_clientId);
 
@@ -1169,6 +1207,8 @@ async function sendMessageToAll(message) {
             );
           }
         }, 5 * 60 * 1000);
+      } else {
+        console.log("come on d'not annoy!");
       }
     } else {
       console.log("no clientID");
@@ -1241,7 +1281,6 @@ turn();
 const webPush_reg = async (action) => {
   // VAPID Public Key (Austausch gegen deinen eigenen)
   const publicKey = process.env.VAPID_PUBLIC;
-  console.log(publicKey);
 
   // Überprüfen, ob der Service Worker und Push API verfügbar sind
   if ("serviceWorker" in navigator && "PushManager" in window) {
@@ -1298,7 +1337,7 @@ const webPush_reg = async (action) => {
 
 // send webPush
 function sendPushMessage(userId, message) {
-  console.log("webPush");
+  console.log("webPush sent!");
   fetch(process.env.WEBPUSH_SEND, {
     method: "POST",
     mode: "cors",
@@ -1441,7 +1480,6 @@ let connect_to_peer = function (
               status.current_user_id
           );
           connectedPeers.push(id);
-          console.log("connection still open");
         }
       }
 
@@ -2051,6 +2089,32 @@ var about = {
           "Enter ID"
         ),
 
+        m(
+          "button",
+          {
+            class: "item",
+            onclick: () => {
+              data_export("flop", chat_data_history, () => {
+                side_toaster("download finished", 3000);
+              });
+            },
+          },
+          "download chat data"
+        ),
+
+        m(
+          "button",
+          {
+            class: "item",
+            onclick: () => {
+              data_export("flop-addressbook", addressbook, () => {
+                side_toaster("download finished", 3000);
+              });
+            },
+          },
+          "download addressbook"
+        ),
+
         status.addressbook_in_focus !== ""
           ? m(
               "button",
@@ -2125,19 +2189,6 @@ var about_page = {
 
         m("div", { id: "description" }, [
           m("h2", {}, "Icons"),
-          m(
-            "div",
-            { class: "flex width-100 item" },
-            m.trust(
-              "<img src='assets/image/no-monster.svg'> no other user online"
-            )
-          ),
-
-          m(
-            "div",
-            { class: "flex width-100 item" },
-            m.trust("<img src='assets/image/monster.svg'>user online")
-          ),
 
           m(
             "div",
@@ -2149,12 +2200,6 @@ var about_page = {
             "div",
             { class: "flex width-100 item" },
             m.trust("<img src='assets/image/send.svg'>send")
-          ),
-
-          m(
-            "div",
-            { class: "flex width-100 item" },
-            m.trust("<img src='assets/image/inivite.svg'>open new chat")
           ),
 
           m(
@@ -2349,9 +2394,30 @@ var settings_page = {
               id: "nickname",
               placeholder: "nickname",
               value: settings.nickname,
+
+              oncreate: (vnode) => {
+                const avatar = createAvatar(style, {
+                  seed: settings.nickname,
+                  size: 100,
+                });
+
+                document.querySelector(".avatar").src = avatar.toDataUri();
+              },
+
               oninput: (vnode) => {
                 settings.nickname = vnode.target.value;
+
+                const avatar = createAvatar(style, {
+                  seed: settings.nickname,
+                  size: 100,
+                });
+
+                document.querySelector(".avatar").src = avatar.toDataUri();
               },
+            }),
+            m("img", {
+              class: "avatar",
+              src: "",
             }),
           ]
         ),
@@ -2370,6 +2436,7 @@ var settings_page = {
               "Custom ID"
             ),
             m("input", {
+              readonly: true,
               id: "custom-peer-id",
               placeholder: "ID",
               value: settings.custom_peer_id,
@@ -2875,10 +2942,10 @@ var start = {
                   return m(
                     "button",
                     {
-                      class: "item addressbook-item",
+                      class: "item addressbook-item  flex justify-spacebetween",
                       "data-id": e.id,
                       "data-client-id": e.client_id || "null",
-                      "data-nickname": !e.name ? e.nickname : e.name,
+                      "data-nickname": e.nickname,
                       "data-online": e.live ? "true" : "false",
 
                       oncreate: (vnode) => {
@@ -2899,10 +2966,8 @@ var start = {
                           status.current_user_id =
                             document.activeElement.getAttribute("data-id");
 
-                          status.current_user_nickname =
-                            document.activeElement.getAttribute(
-                              "data-nickname"
-                            );
+                          status.current_user_nickname = e.nickname;
+                          status.current_user_name = e.name;
 
                           m.route.set(
                             "/chat?id=" +
@@ -2923,28 +2988,32 @@ var start = {
                       },
                     },
                     [
-                      m(
-                        "div",
-                        { class: "flex justify-spacebetweenm width-100" },
-                        !e.name ? e.nickname : e.name
-                      ),
-                      m("div", { class: "flex justify-spacebetween" }, [
-                        e.last_conversation_message
-                          ? m(
-                              "small",
-                              { class: "last-conversation-meesage" },
-                              e.last_conversation_message
-                            )
-                          : null,
-                        e.last_conversation_datetime
-                          ? m(
-                              "small",
-                              { class: "last-conversation-date" },
-                              dayjs(e.last_conversation_datetime * 1000).format(
-                                "HH:mm"
+                      m("div", { class: "online-indicator" }, ""),
+                      m("img", { src: create_avatar(e.nickname, 30) }),
+                      m("div", { class: "inner" }, [
+                        m(
+                          "div",
+                          { class: "flex justify-spacebetweenm" },
+                          !e.name ? e.nickname : e.name
+                        ),
+                        m("div", { class: "flex justify-spacebetween" }, [
+                          e.last_conversation_message
+                            ? m(
+                                "small",
+                                { class: "last-conversation-message" },
+                                e.last_conversation_message
                               )
-                            )
-                          : null,
+                            : null,
+                          e.last_conversation_datetime
+                            ? m(
+                                "small",
+                                { class: "last-conversation-date" },
+                                dayjs(
+                                  e.last_conversation_datetime * 1000
+                                ).format("HH:mm")
+                              )
+                            : null,
+                        ]),
                       ]),
                     ]
                   );
@@ -3005,25 +3074,28 @@ var chat = {
           var x = document.querySelector("div#side-toast");
           x.style.transform = "translate(-100vw,0px)";
 
+          document.querySelector("body").classList.add("user-online");
+          document.querySelector("body").classList.remove("user-offline");
+
           try {
             localforage.removeItem("connect_to_id");
           } catch (e) {}
         },
         oncreate: () => {
+          let username =
+            status.current_user_name || status.current_user_nickname;
           top_bar(
             "",
-            "<div id='name'>" +
-              status.current_user_nickname.slice(0, 8) +
-              "</div>",
-            "<img class='users' 'src='assets/image/no-monster.svg'>"
+            "<div id='name'>" + username.slice(0, 6) + "</div>",
+            "<img class='avatar' src=" + create_avatar(username, 30) + ">"
           );
           if (status.notKaiOS)
             top_bar(
               "<img src='assets/image/back.svg'>",
-              "<div id='name'>" +
-                status.current_user_nickname.slice(0, 8) +
-                "</div>",
-              "<img class='users' src='assets/image/no-monster.svg'>"
+              "<div id='name'>" + username.slice(0, 8) + "</div>",
+              "<img class='avatar' src=" +
+                create_avatar(status.current_user_nickname, 30) +
+                ">"
             );
 
           bottom_bar(
@@ -3035,45 +3107,47 @@ var chat = {
             if (connectedPeers) {
               status.userOnline = connectedPeers.length;
 
-              if (
-                !status.notKaiOS &&
-                connectedPeers.includes(status.current_user_id)
-              )
+              if (connectedPeers.includes(status.current_user_id)) {
+                document.querySelector("body").classList.add("user-online");
+                document.querySelector("body").classList.remove("user-offline");
+
                 top_bar(
                   "",
-                  "<div id='name'>" +
-                    status.current_user_nickname.slice(0, 8) +
-                    "</div>",
-                  "<img class='users' src='assets/image/monster.svg'>"
+                  "<div id='name'>" + username.slice(0, 6) + "</div>",
+                  "<img class='avatar' src=" +
+                    create_avatar(status.current_user_nickname, 30) +
+                    ">"
                 );
 
-              if (
-                status.notKaiOS &&
-                connectedPeers.includes(status.current_user_id)
-              )
-                top_bar(
-                  "<img src='assets/image/back.svg'>",
-                  "<div id='name'>" +
-                    status.current_user_nickname.slice(0, 8) +
-                    "</div>",
-                  "<img class='users' src='assets/image/monster.svg'>"
-                );
+                if (status.notKaiOS)
+                  top_bar(
+                    "<img src='assets/image/back.svg'>",
+                    "<div id='name'>" + username.slice(0, 8) + "</div>",
+                    "<img class='avatar' src=" +
+                      create_avatar(status.current_user_nickname, 30) +
+                      ">"
+                  );
+              } else {
+                document.querySelector("body").classList.add("user-offline");
+                document.querySelector("body").classList.remove("user-online");
 
-              if (status.notKaiOS && status.userOnline == 0)
-                top_bar(
-                  "<img src='assets/image/back.svg'>",
-                  "<div id='name'>" + status.current_user_nickname + "</div>",
-                  "<img class='users' src='assets/image/no-monster.svg'>"
-                );
-
-              if (!status.notKaiOS && status.userOnline == 0)
                 top_bar(
                   "",
-                  "<div id='name'>" +
-                    status.current_user_nickname.slice(0, 8) +
-                    "</div>",
-                  "<img class='users' src='assets/image/no-monster.svg'>"
+                  "<div id='name'>" + username.slice(0, 8) + "</div>",
+                  "<img class='avatar' src=" +
+                    create_avatar(status.current_user_nickname, 30) +
+                    ">"
                 );
+
+                if (status.notKaiOS)
+                  top_bar(
+                    "<img src='assets/image/back.svg'>",
+                    "<div id='name'>" + username.slice(0, 8) + "</div>",
+                    "<img class='avatar' src=" +
+                      create_avatar(status.current_user_nickname, 30) +
+                      ">"
+                  );
+              }
             } else {
               console.log("user check not possible");
             }
@@ -3309,139 +3383,6 @@ var chat = {
   },
 };
 
-var chatHistory = {
-  state: { startIndex: 0, batchSize: 10, renderedItems: [] },
-
-  oninit: function () {
-    key_delay();
-
-    chatHistory.state.renderedItems = chat_data_history.slice(
-      0,
-      chatHistory.state.batchSize
-    );
-  },
-
-  onremove: () => {
-    key_delay();
-  },
-
-  view: function () {
-    return m(
-      "div",
-      {
-        id: "chat",
-        class: "flex justify-center align-start",
-        oncreate: () => {
-          bottom_bar("", "", "");
-          const chatElement = document.querySelector("body");
-
-          chatElement.addEventListener("scroll", () => {
-            const scrollTop = chatElement.scrollTop;
-            const clientHeight = chatElement.clientHeight;
-            const scrollHeight = chatElement.scrollHeight;
-
-            if (scrollTop + clientHeight >= scrollHeight - 100) {
-              const nextStartIndex =
-                chatHistory.state.startIndex + chatHistory.state.batchSize;
-              const nextItems = chat_data_history.slice(
-                nextStartIndex,
-                nextStartIndex + chatHistory.state.batchSize
-              );
-
-              if (nextItems.length > 0) {
-                chatHistory.state.startIndex = nextStartIndex;
-                chatHistory.state.renderedItems =
-                  chatHistory.state.renderedItems.concat(nextItems);
-                m.redraw();
-              }
-            }
-
-            if (scrollTop <= 100 && chatHistory.state.startIndex > 0) {
-              const prevStartIndex = Math.max(
-                0,
-                chatHistory.state.startIndex - chatHistory.state.batchSize
-              );
-
-              const prevItems = chat_data_history.slice(
-                prevStartIndex,
-                chatHistory.state.startIndex
-              );
-
-              if (prevItems.length > 0) {
-                chatHistory.state.startIndex = prevStartIndex;
-
-                const allItems = chat_data_history.slice(
-                  chatHistory.state.startIndex,
-                  chatHistory.state.startIndex + chatHistory.state.batchSize
-                );
-                chatHistory.state.renderedItems = allItems;
-
-                m.redraw();
-              }
-            }
-          });
-        },
-      },
-      chatHistory.state.renderedItems.map(function (item, index) {
-        let nickname =
-          item.nickname !== settings.nickname ? item.nickname : "me";
-
-        return m(
-          "article",
-          {
-            class: "item " + nickname + " " + item.type,
-            tabindex: index,
-
-            onfocus: () => {
-              if (item.type == "audio") {
-                status.current_article_type = "audio";
-
-                bottom_bar("", "<img src='assets/image/play.svg'>", "");
-              }
-              if (item.type == "image") {
-                status.current_article_type = "image";
-                bottom_bar("", "<img src='assets/image/save.svg'>", "");
-              }
-            },
-            onblur: () => {
-              status.current_article_type = "";
-              bottom_bar("", "", "");
-            },
-          },
-          [
-            item.type === "text"
-              ? m("div", { class: "message-main" }, item.content)
-              : null,
-            item.type === "image"
-              ? m("img", {
-                  class: "message-media",
-                  src: item.image_blob
-                    ? URL.createObjectURL(item.image_blob)
-                    : null,
-                })
-              : null,
-
-            item.type === "audio"
-              ? m(
-                  "div",
-                  {
-                    class: "audioplayer",
-                  },
-
-                  m(AudioComponent, { src: item.content })
-                )
-              : null,
-            m("div", { class: "message-head" }, [
-              m("div", dayjs(item.datetime).format("hh:mm")),
-              m("div", { class: "nickname" }, nickname),
-            ]),
-          ]
-        );
-      })
-    );
-  },
-};
-
 let map_view = {
   oninit: () => {
     key_delay();
@@ -3572,7 +3513,6 @@ m.route(root, "/intro", {
   "/intro": intro,
   "/start": start,
   "/chat": chat,
-  "/chatHistory": chatHistory,
   "/options": options,
   "/settings_page": settings_page,
   "/scan": scan,
@@ -3767,12 +3707,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
       }
 
       if (route.startsWith("/map_view")) {
-        m.route.set("/chat?id=") + settings.custom_peer;
+        m.route.set("/chat?id=" + settings.custom_peer);
         status.action = "";
       }
 
       if (m.route.get() == "/options") {
-        m.route.set("/chat?id=") + settings.custom_peer;
+        m.route.set("/chat?id=" + settings.custom_peer);
       }
     });
 
@@ -3978,7 +3918,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
             top_bar(
               "<img src='assets/image/back.svg'>",
               "<div id='name'>" + status.current_user_nickname + "</div>",
-              "<img class='users' src='assets/image/no-monster.svg'>"
+              ""
             );
             write();
           }
@@ -4085,34 +4025,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
           }
         }
 
-        if (route.startsWith("/chatHistory")) {
-          if (status.current_article_type == "image") {
-            let filename = document.activeElement
-              .querySelector("img")
-              .getAttribute("data-filename");
-
-            let data = document.activeElement
-              .querySelector("img")
-              .getAttribute("src");
-
-            let download_successfull = () => {};
-            downloadFile(filename, data, download_successfull);
-          }
-
-          if (status.current_article_type == "audio") {
-            document.activeElement
-              .querySelectorAll("div.audio-player")
-              .forEach((e) => {
-                var playPauseButton = e.querySelector("button");
-
-                // Check if the play/pause button exists and trigger a click event
-                if (playPauseButton) {
-                  playPauseButton.click();
-                }
-              });
-          }
-        }
-
         if (route.startsWith("/chat")) {
           if (document.activeElement.tagName == "ARTICLE") {
             if (status.current_article_type == "audio") {
@@ -4175,7 +4087,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
       route.startsWith("/start") &&
       status.viewReady
     ) {
-      console.log(route);
       return true;
     }
 
@@ -4220,7 +4131,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
         route.startsWith("/chat?") ||
         m.route.get() == "/settings_page" ||
         m.route.get() == "/about" ||
-        route.startsWith("/chatHistory") ||
         route.startsWith("/map_view") ||
         route.startsWith("/waiting") ||
         route.startsWith("/invite")
@@ -4251,11 +4161,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
       if (route.startsWith("/map_view")) {
         evt.preventDefault();
         status.action = "";
-        m.route.set("/chat?id=") + settings.custom_peer;
+        m.route.set("/chat?id=" + settings.custom_peer_id);
       }
 
       if (m.route.get() == "/options") {
-        m.route.set("/chat?id=") + settings.custom_peer;
+        m.route.set("/chat?id=" + settings.custom_peer_id);
       }
     }
 

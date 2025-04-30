@@ -1,5 +1,6 @@
 "use strict";
 
+import dayjs from "dayjs";
 import { status, settings } from "../../index.js";
 import imageCompression from "browser-image-compression";
 
@@ -743,6 +744,62 @@ export let downloadFile = function (filename, data, callback) {
       .then((res) => res.blob())
       .then((blob) => {
         let request = sdcard.addNamed(blob, filename);
+        request.onsuccess = function () {
+          side_toaster("file downloaded", 2000);
+        };
+
+        request.onerror = function () {
+          side_toaster(
+            "Unable to download the file, the file probably already exists.",
+            4000
+          );
+        };
+      })
+      .catch((error) => {
+        side_toaster("Unable to download the file", 2000);
+      });
+  }
+};
+
+export let data_export = function (filename, data, callback) {
+  const fn = filename + "-" + dayjs().format("YYYY-MM-DD_HH-mm-ss") + ".json";
+  if (status.notKaiOS) {
+    // Konvertiere das Array in JSON und dann in einen Blob
+    const jsonString = JSON.stringify(data, null, 2); // schön formatiert
+    const blob = new Blob([jsonString], { type: "application/json" });
+
+    // Erstelle einen temporären Blob-Link
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fn;
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    // Speicher freigeben
+    URL.revokeObjectURL(url);
+
+    if (typeof callback === "function") callback();
+  } else {
+    let sdcard = "";
+
+    try {
+      sdcard = navigator.getDeviceStorage("sdcard");
+    } catch (e) {}
+
+    if ("b2g" in navigator) {
+      try {
+        sdcard = navigator.b2g.getDeviceStorage("sdcard");
+      } catch (e) {}
+    }
+
+    fetch(data)
+      .then((res) => res.blob())
+      .then((blob) => {
+        let request = sdcard.addNamed(blob, "downloads/" + fn);
         request.onsuccess = function () {
           side_toaster("file downloaded", 2000);
         };
