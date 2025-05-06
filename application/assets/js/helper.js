@@ -4,21 +4,6 @@ import dayjs from "dayjs";
 import { status, settings } from "../../index.js";
 import imageCompression from "browser-image-compression";
 
-export const month = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
 export let info_badge = (show) => {
   let badge = document.getElementById("info-badge");
   show ? badge.classList.add("show") : badge.classList.remove("show");
@@ -242,27 +227,6 @@ export function share(url) {
   });
 }
 
-export function detectMobileOS() {
-  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-  // iOS detection
-  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-    return "iOS";
-  }
-
-  // Android detection
-  if (/android/i.test(userAgent)) {
-    return "Android";
-  }
-
-  if ("b2g" in navigator || "b2g" in navigator) {
-    // return "KaiOS";
-  }
-
-  // Other mobile OS or not a mobile device
-  return false;
-}
-
 export function open(url) {
   try {
     var activity = new MozActivity({
@@ -408,14 +372,6 @@ export let sort_array = function (arr, item_key, type) {
       return 0;
     });
   }
-};
-
-let uid = function () {
-  function _p8(s) {
-    var p = (Math.random().toString(16) + "000000000").substr(2, 8);
-    return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
-  }
-  return "greg@" + _p8() + _p8(true) + _p8(true) + _p8();
 };
 
 let notification = "";
@@ -595,27 +551,7 @@ export let top_bar = function (left, center, right) {
   if (left == "" && center == "" && right == "") {
     document.querySelector("div#top-bar").style.display = "none";
   } else {
-    document.querySelector("div#top-bar").style.display = "block";
-  }
-};
-
-let lock;
-let screenlock = function (stat) {
-  if (typeof window.navigator.requestWakeLock === "undefined") {
-    return false;
-  }
-  if (stat == "lock") {
-    lock = window.navigator.requestWakeLock("screen");
-    lock.onsuccess = function () {};
-    lock.onerror = function () {
-      alert("An error occurred: " + this.error.name);
-    };
-  }
-
-  if (stat == "unlock") {
-    if (lock.topic == "screen") {
-      lock.unlock();
-    }
+    document.querySelector("div#top-bar").style.display = "flex";
   }
 };
 
@@ -862,8 +798,6 @@ export function createAudioRecorder() {
 
     status.audio_recording = true;
 
-    side_toaster("recording", 4000);
-
     recordedChunks = []; // Clear previous recordings
     mediaRecorder.start();
 
@@ -901,8 +835,6 @@ export function createAudioRecorder() {
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
       status.audio_recording = false;
-
-      console.log("Stream stopped.");
     }
     mediaRecorder = null;
     recordedChunks = [];

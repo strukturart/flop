@@ -12,16 +12,17 @@ import {
   getManifest,
   setTabindex,
   downloadFile,
+  createAudioRecorder,
 } from "./assets/js/helper.js";
 import { stop_scan, start_scan } from "./assets/js/scan.js";
 import localforage from "localforage";
+
 import * as linkify from "linkifyjs";
 import { geolocation, pushLocalNotification } from "./assets/js/helper.js";
 import m from "mithril";
 import qrious from "qrious";
 import { v4 as uuidv4 } from "uuid";
 import "webrtc-adapter";
-import { createAudioRecorder } from "./assets/js/helper.js";
 import L from "leaflet";
 import dayjs from "dayjs";
 
@@ -33,11 +34,12 @@ import markerIcon from "./assets/css/images/marker-icon.png";
 import markerIconRetina from "./assets/css/images/marker-icon-2x.png";
 
 import { createAvatar } from "@dicebear/core";
-
-import { createAvatar } from "@dicebear/core";
 import * as style from "@dicebear/identicon";
 
-//github.com/laurentpayot/minidenticons#usage
+import Peer from "peerjs";
+
+const audioRecorder = createAudioRecorder();
+
 export let status = {
   visibility: true,
   action: "",
@@ -68,8 +70,6 @@ export let status = {
 //todo get own peer nickname
 //to set the right nickname when storing contact in addressbook
 
-const audioRecorder = createAudioRecorder();
-
 export let settings = {};
 
 const userAgent = navigator.userAgent || "";
@@ -95,13 +95,11 @@ if (!status.notKaiOS) {
   });
 }
 
-const channel = new BroadcastChannel("sw-messages");
-
 let links = "";
 let chat_data = [];
 let peer = null;
-let conn = "";
 
+let conn = "";
 let connectedPeers = [];
 
 if (status.debug) {
@@ -216,7 +214,6 @@ setTimeout(() => {
     },
   ];
 }, 1000);
-
 */
 
 localforage
@@ -744,7 +741,7 @@ async function getIceServers() {
     }
 
     peer = new Peer(settings.custom_peer_id, {
-      debug: 0,
+      debug: 2,
       secure: false,
       config: ice_servers,
       referrerPolicy: "no-referrer",
@@ -798,21 +795,20 @@ async function getIceServers() {
           break;
 
         case "webrtc":
-          if (!status.notKaiOS) {
+          if (!status.notKaiOS && navigator.userAgent.includes("KaiOS/2")) {
             //TO DO
             //There are difficulties connecting to a KaiOS 2 device,
             //  but KaiOS devices can connect to other devices;
             // the webrtc error is an indication of this.
-            /*
+
             setTimeout(() => {
               if (!webrtcCounter) {
                 webrtcCounter = true;
                 hh.close();
                 console.log("try to connect" + h);
-                // connect_to_peer(h, undefined, undefined, false);
+                connect_to_peer(h, undefined, undefined, false);
               }
             }, 15000);
-            */
           }
 
           break;
@@ -1537,7 +1533,7 @@ let connect_to_peer = function (
                 side_toaster("Connection timeout", 3000);
                 if (waiting) m.route.set("/start");
               }
-            }, 10000);
+            }, 12000);
           } else {
             side_toaster("Connection could not be established", 5000);
             if (waiting) m.route.set("/start");
@@ -1545,7 +1541,7 @@ let connect_to_peer = function (
         } catch (e) {
           side_toaster("Connection could not be established", 5000);
         }
-      }, 4000);
+      }, 6000);
     })
     .catch((e) => {
       side_toaster("Connection could not be established", 5000);
@@ -1944,18 +1940,6 @@ function MoveMap(direction) {
 //////////////////////
 
 var root = document.getElementById("app");
-
-var audiorecorder = {
-  oninit: () => {
-    key_delay();
-  },
-  onremove: () => {
-    key_delay();
-  },
-  view: function () {
-    return m("div");
-  },
-};
 
 var waiting = {
   oninit: () => {
@@ -2989,7 +2973,10 @@ var start = {
                     },
                     [
                       m("div", { class: "online-indicator" }, ""),
-                      m("img", { src: create_avatar(e.nickname, 30) }),
+                      m("img", {
+                        class: "aavatar",
+                        src: create_avatar(e.nickname, 30),
+                      }),
                       m("div", { class: "inner" }, [
                         m(
                           "div",
@@ -3093,7 +3080,7 @@ var chat = {
             top_bar(
               "<img src='assets/image/back.svg'>",
               "<div id='name'>" + username.slice(0, 8) + "</div>",
-              "<img class='avatar' src=" +
+              "</div><img class='avatar' src=" +
                 create_avatar(status.current_user_nickname, 30) +
                 ">"
             );
@@ -3114,7 +3101,7 @@ var chat = {
                 top_bar(
                   "",
                   "<div id='name'>" + username.slice(0, 6) + "</div>",
-                  "<img class='avatar' src=" +
+                  "<span class='online-indicator'></span><img class='avatar is-online' src=" +
                     create_avatar(status.current_user_nickname, 30) +
                     ">"
                 );
@@ -3123,10 +3110,18 @@ var chat = {
                   top_bar(
                     "<img src='assets/image/back.svg'>",
                     "<div id='name'>" + username.slice(0, 8) + "</div>",
-                    "<img class='avatar' src=" +
+                    "<span class='online-indicator'>k</span><img class='avatar' src=" +
                       create_avatar(status.current_user_nickname, 30) +
                       ">"
                   );
+
+                document
+                  .querySelector("span.online-indicator")
+                  .classList.remove("user-offline");
+
+                document
+                  .querySelector("span.online-indicator")
+                  .classList.add("user-online");
               } else {
                 document.querySelector("body").classList.add("user-offline");
                 document.querySelector("body").classList.remove("user-online");
@@ -3134,7 +3129,7 @@ var chat = {
                 top_bar(
                   "",
                   "<div id='name'>" + username.slice(0, 8) + "</div>",
-                  "<img class='avatar' src=" +
+                  "<span class='online-indicator'></span><img class='avatar' src=" +
                     create_avatar(status.current_user_nickname, 30) +
                     ">"
                 );
@@ -3143,10 +3138,18 @@ var chat = {
                   top_bar(
                     "<img src='assets/image/back.svg'>",
                     "<div id='name'>" + username.slice(0, 8) + "</div>",
-                    "<img class='avatar' src=" +
+                    "<span class='online-indicator'>k</span><img class='avatar' src=" +
                       create_avatar(status.current_user_nickname, 30) +
                       ">"
                   );
+
+                document
+                  .querySelector("span.online-indicator")
+                  .classList.add("user-offline");
+
+                document
+                  .querySelector("span.online-indicator")
+                  .classList.remove("user-online");
               }
             } else {
               console.log("user check not possible");
@@ -3160,6 +3163,8 @@ var chat = {
           type: "text",
           onblur: () => {
             setTimeout(() => {
+              if (status.audio_recording) return false;
+
               bottom_bar(
                 "<img src='assets/image/pencil.svg'>",
                 "",
@@ -3491,7 +3496,7 @@ var intro = {
         m(
           "div",
           {
-            class: "flex width-100  justify-center ",
+            class: "flex width-100 justify-center",
             id: "version-box",
           },
           [
@@ -3522,7 +3527,6 @@ m.route(root, "/intro", {
   "/map_view": map_view,
   "/waiting": waiting,
   "/invite": invite,
-  "/audiorecorder": audiorecorder,
 });
 
 function scrollToCenter() {
@@ -3764,6 +3768,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
   // ////////////
 
   function shortpress_action(param) {
+    console.log(param.key);
+
     if (!status.viewReady) {
       return false;
     }
@@ -3845,7 +3851,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         }
 
         if (status.audio_recording && route.startsWith("/chat")) {
-          audioRecorder.stopRecording().then(({ audioBlob, mimeType }) => {
+          audioRecorder.stopRecording().then(() => {
             status.audio_recording = false;
 
             document.getElementById("app").style.opacity = "1";
@@ -3908,19 +3914,13 @@ document.addEventListener("DOMContentLoaded", function (e) {
           status.action !== "write" &&
           !status.audio_recording
         ) {
+          write();
+
           if (
-            status.userOnline > 0 &&
-            connectedPeers.includes(status.current_user_id)
+            status.userOnline == 0 &&
+            !connectedPeers.includes(status.current_user_id)
           ) {
-            write();
-          } else {
             side_toaster("The user is not online.", 3000);
-            top_bar(
-              "<img src='assets/image/back.svg'>",
-              "<div id='name'>" + status.current_user_nickname + "</div>",
-              ""
-            );
-            write();
           }
         }
 
@@ -3955,12 +3955,16 @@ document.addEventListener("DOMContentLoaded", function (e) {
           route.startsWith("/chat?") &&
           document.getElementById("message-input").style.display == "block"
         ) {
+          //still runnig
           if (status.audio_recording) return false;
+          //write
           if (document.querySelector("div#message-input input").value !== "")
             return false;
+
           audioRecorder
             .startRecording()
             .then(() => {
+              status.audio_recording = true;
               document.getElementById("app").style.opacity = "0";
               document.querySelector(".playing").style.top = "50%";
               bottom_bar(
@@ -3968,14 +3972,13 @@ document.addEventListener("DOMContentLoaded", function (e) {
                 "<img src='assets/image/record-live.svg'>",
                 "<img src='assets/image/cancel.svg'>"
               );
-
               setTimeout(() => {
                 bottom_bar(
                   "<img src='assets/image/send.svg'>",
                   "<img src='assets/image/record-live.svg'>",
                   "<img src='assets/image/cancel.svg'>"
                 );
-              }, 2000);
+              }, 3000);
             })
             .catch((e) => {});
         }
@@ -3994,7 +3997,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
               status.current_user_nickname
             );
           } else {
-            console.log(status);
             side_toaster("contact could not be created", 3000);
           }
         }

@@ -1,7 +1,5 @@
 import localforage from "localforage";
 
-const channel = new BroadcastChannel("sw-messages");
-
 //KaiOS 3 open app
 self.onsystemmessage = (evt) => {
   const serviceHandler = () => {
@@ -72,7 +70,7 @@ self.addEventListener("notificationclick", (event) => {
 const userAgent = navigator.userAgent || "";
 
 if (userAgent && !userAgent.includes("KAIOS")) {
-  const CACHE_NAME = "pwa-cache-v0.19995";
+  const CACHE_NAME = "pwa-cache-v0.2105";
   const FILE_LIST_URL = "/file-list.json"; // URL of the JSON file containing the array of files
 
   self.addEventListener("install", (event) => {
