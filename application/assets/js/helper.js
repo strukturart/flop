@@ -242,27 +242,6 @@ export function share(url) {
   });
 }
 
-export function detectMobileOS() {
-  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-  // iOS detection
-  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-    return "iOS";
-  }
-
-  // Android detection
-  if (/android/i.test(userAgent)) {
-    return "Android";
-  }
-
-  if ("b2g" in navigator || "b2g" in navigator) {
-    // return "KaiOS";
-  }
-
-  // Other mobile OS or not a mobile device
-  return false;
-}
-
 export function open(url) {
   try {
     var activity = new MozActivity({
@@ -595,7 +574,7 @@ export let top_bar = function (left, center, right) {
   if (left == "" && center == "" && right == "") {
     document.querySelector("div#top-bar").style.display = "none";
   } else {
-    document.querySelector("div#top-bar").style.display = "block";
+    document.querySelector("div#top-bar").style.display = "flex";
   }
 };
 
