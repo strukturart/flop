@@ -215,7 +215,6 @@ setTimeout(() => {
   ];
 }, 1000);
 */
-
 localforage
   .getItem("addressbook")
   .then((e) => {
@@ -741,7 +740,7 @@ async function getIceServers() {
     }
 
     peer = new Peer(settings.custom_peer_id, {
-      debug: 2,
+      debug: 0,
       secure: false,
       config: ice_servers,
       referrerPolicy: "no-referrer",
@@ -3013,6 +3012,45 @@ var start = {
   },
 };
 
+var audiorecorder_view = {
+  oninit: () => {
+    key_delay();
+    previousView();
+  },
+  onremove: () => {
+    key_delay();
+  },
+  view: function () {
+    return m("div", { id: "audiorecorder", class: "page" }, [
+      m(
+        "div",
+        {
+          class: "playing",
+          oninit: () => {
+            audioRecorder.startRecording().then(() => {});
+          },
+          onremove: () => {
+            audioRecorder.stopRecording(() => {});
+          },
+          oncreate: () => {
+            bottom_bar(
+              "<img src='assets/image/send.svg'>",
+              "<img src='assets/image/record-live.svg'>",
+              "<img src='assets/image/cancel.svg'>"
+            );
+            top_bar("", "", "");
+          },
+        },
+        [
+          m("span", { class: "playing__bar playing__bar1" }),
+          m("span", { class: "playing__bar playing__bar2" }),
+          m("span", { class: "playing__bar playing__bar3" }),
+        ]
+      ),
+    ]);
+  },
+};
+
 var scan = {
   oninit: () => {
     key_delay();
@@ -3163,13 +3201,13 @@ var chat = {
           type: "text",
           onblur: () => {
             setTimeout(() => {
-              if (status.audio_recording) return false;
-
-              bottom_bar(
-                "<img src='assets/image/pencil.svg'>",
-                "",
-                "<img src='assets/image/option.svg'>"
-              );
+              let a = m.route.get();
+              if (a.startsWith("/chat"))
+                bottom_bar(
+                  "<img src='assets/image/pencil.svg'>",
+                  "",
+                  "<img src='assets/image/option.svg'>"
+                );
               if (status.action === "write") write();
             }, 1000);
           },
@@ -3527,6 +3565,7 @@ m.route(root, "/intro", {
   "/map_view": map_view,
   "/waiting": waiting,
   "/invite": invite,
+  "/audiorecorder_view": audiorecorder_view,
 });
 
 function scrollToCenter() {
@@ -3768,8 +3807,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
   // ////////////
 
   function shortpress_action(param) {
-    console.log(param.key);
-
     if (!status.viewReady) {
       return false;
     }
@@ -3778,11 +3815,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
     switch (param.key) {
       case "Backspace":
-        if (status.audio_recording)
-          audioRecorder.stopRecording().then(() => {
-            document.getElementById("app").style.opacity = "1";
-            document.querySelector(".playing").style.top = "-1000%";
-          });
+        if (route.startsWith("audiorecorder_view")) {
+          history.back();
+          return;
+        }
+
         if (route.startsWith("/invite")) {
           m.route.set("/start");
         }
@@ -3850,19 +3887,17 @@ document.addEventListener("DOMContentLoaded", function (e) {
           return;
         }
 
-        if (status.audio_recording && route.startsWith("/chat")) {
-          audioRecorder.stopRecording().then(() => {
-            status.audio_recording = false;
-
-            document.getElementById("app").style.opacity = "1";
-            document.querySelector(".playing").style.top = "-1000%";
-
-            write();
-          });
+        if (route.startsWith("audiorecorder_view")) {
+          history.back();
+          return;
         }
 
         if (route.startsWith("/map_view")) {
           ZoomMap("out");
+        }
+
+        if (route.startsWith("/audio")) {
+          history.back();
         }
 
         break;
@@ -3879,12 +3914,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
           write();
         }
 
-        if (route.startsWith("/chat?") && status.audio_recording) {
+        if (route.startsWith("audiorecorder_view")) {
           // Stop recording and get the recorded data
           audioRecorder.stopRecording().then(({ audioBlob, mimeType }) => {
             status.audio_recording = false;
-            document.getElementById("app").style.opacity = "1";
-            document.querySelector(".playing").style.top = "-1000%";
 
             sendMessage(audioBlob, "audio", mimeType, undefined, undefined);
             bottom_bar(
@@ -3892,8 +3925,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
               "",
               "<img src='assets/image/option.svg'>"
             );
+            history.back();
 
-            write();
             return;
           });
         }
@@ -3935,19 +3968,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
         break;
 
       case "Escape":
-        if (route.startsWith("/chat")) {
-          audioRecorder.stopRecording().then(() => {
-            document.getElementById("app").style.opacity = "1";
-            document.querySelector(".playing").style.top = "-1000%";
-            status.audio_recording = false;
-
-            bottom_bar(
-              "<img src='assets/image/pencil.svg'>",
-              "",
-              "<img src='assets/image/option.svg'>"
-            );
-          });
+        if (route.startsWith("audiorecorder_view")) {
+          history.back();
         }
+
         break;
 
       case "Enter":
@@ -3955,32 +3979,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
           route.startsWith("/chat?") &&
           document.getElementById("message-input").style.display == "block"
         ) {
-          //still runnig
-          if (status.audio_recording) return false;
           //write
           if (document.querySelector("div#message-input input").value !== "")
             return false;
 
-          audioRecorder
-            .startRecording()
-            .then(() => {
-              status.audio_recording = true;
-              document.getElementById("app").style.opacity = "0";
-              document.querySelector(".playing").style.top = "50%";
-              bottom_bar(
-                "<img src='assets/image/send.svg'>",
-                "<img src='assets/image/record-live.svg'>",
-                "<img src='assets/image/cancel.svg'>"
-              );
-              setTimeout(() => {
-                bottom_bar(
-                  "<img src='assets/image/send.svg'>",
-                  "<img src='assets/image/record-live.svg'>",
-                  "<img src='assets/image/cancel.svg'>"
-                );
-              }, 3000);
-            })
-            .catch((e) => {});
+          m.route.set("audiorecorder_view");
         }
 
         if (document.activeElement.classList.contains("input-parent")) {
@@ -4093,7 +4096,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
     }
 
     if (evt.key === "EndCall" && route.startsWith("/start")) {
-      console.log(route);
       return true;
     }
 

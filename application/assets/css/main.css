@@ -487,7 +487,7 @@ div#intro img {
   padding: 0.5rem;
   box-sizing: border-box;
   position: fixed;
-  top: -1500%;
+  top: 50%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;

@@ -45531,7 +45531,7 @@ function $739f45b10c9a265e$var$_getIceServers() {
                     });
                     if ($739f45b10c9a265e$var$peer) $739f45b10c9a265e$var$peer.destroy();
                     $739f45b10c9a265e$var$peer = new (0, $e3d39f7182a6433b$export$2e2bcd8739ae039)($739f45b10c9a265e$export$a5a6e0b888b2c992.custom_peer_id, {
-                        debug: 2,
+                        debug: 0,
                         secure: false,
                         config: $739f45b10c9a265e$var$ice_servers,
                         referrerPolicy: "no-referrer"
@@ -47399,6 +47399,45 @@ var $739f45b10c9a265e$var$start = {
         ]);
     }
 };
+var $739f45b10c9a265e$var$audiorecorder_view = {
+    oninit: ()=>{
+        $739f45b10c9a265e$var$key_delay();
+        $739f45b10c9a265e$var$previousView();
+    },
+    onremove: ()=>{
+        $739f45b10c9a265e$var$key_delay();
+    },
+    view: function view() {
+        return (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
+            id: "audiorecorder",
+            class: "page"
+        }, [
+            (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
+                class: "playing",
+                oninit: ()=>{
+                    $739f45b10c9a265e$var$audioRecorder.startRecording().then(()=>{});
+                },
+                onremove: ()=>{
+                    $739f45b10c9a265e$var$audioRecorder.stopRecording(()=>{});
+                },
+                oncreate: ()=>{
+                    (0, $35ef01a7e6390a1e$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "<img src='assets/image/record-live.svg'>", "<img src='assets/image/cancel.svg'>");
+                    (0, $35ef01a7e6390a1e$export$7ce2ea7c45ae9a07)("", "", "");
+                }
+            }, [
+                (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("span", {
+                    class: "playing__bar playing__bar1"
+                }),
+                (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("span", {
+                    class: "playing__bar playing__bar2"
+                }),
+                (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("span", {
+                    class: "playing__bar playing__bar3"
+                })
+            ])
+        ]);
+    }
+};
 var $739f45b10c9a265e$var$scan = {
     oninit: ()=>{
         $739f45b10c9a265e$var$key_delay();
@@ -47478,8 +47517,8 @@ var $739f45b10c9a265e$var$chat = {
                 type: "text",
                 onblur: ()=>{
                     setTimeout(()=>{
-                        if ($739f45b10c9a265e$export$471f7ae5c4103ae1.audio_recording) return false;
-                        (0, $35ef01a7e6390a1e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
+                        var a = (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.get();
+                        if (a.startsWith("/chat")) (0, $35ef01a7e6390a1e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
                         if ($739f45b10c9a265e$export$471f7ae5c4103ae1.action === "write") $739f45b10c9a265e$var$write();
                     }, 1000);
                 },
@@ -47707,7 +47746,8 @@ var $739f45b10c9a265e$var$intro = {
     "/privacy_policy": $739f45b10c9a265e$var$privacy_policy,
     "/map_view": $739f45b10c9a265e$var$map_view,
     "/waiting": $739f45b10c9a265e$var$waiting,
-    "/invite": $739f45b10c9a265e$var$invite
+    "/invite": $739f45b10c9a265e$var$invite,
+    "/audiorecorder_view": $739f45b10c9a265e$var$audiorecorder_view
 });
 function $739f45b10c9a265e$var$scrollToCenter() {
     var activeElement = document.activeElement;
@@ -47874,15 +47914,14 @@ document.addEventListener("DOMContentLoaded", function(e) {
     // //SHORTPRESS
     // ////////////
     function shortpress_action(param) {
-        console.log(param.key);
         if (!$739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady) return false;
         var route = (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.get();
         switch(param.key){
             case "Backspace":
-                if ($739f45b10c9a265e$export$471f7ae5c4103ae1.audio_recording) $739f45b10c9a265e$var$audioRecorder.stopRecording().then(()=>{
-                    document.getElementById("app").style.opacity = "1";
-                    document.querySelector(".playing").style.top = "-1000%";
-                });
+                if (route.startsWith("audiorecorder_view")) {
+                    history.back();
+                    return;
+                }
                 if (route.startsWith("/invite")) (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("/start");
                 if ((0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.get() == "/scan") {
                     (0, $1360c39828d19466$export$55e6c60a43cc74e2)();
@@ -47921,13 +47960,12 @@ document.addEventListener("DOMContentLoaded", function(e) {
                     (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("/options");
                     return;
                 }
-                if ($739f45b10c9a265e$export$471f7ae5c4103ae1.audio_recording && route.startsWith("/chat")) $739f45b10c9a265e$var$audioRecorder.stopRecording().then(()=>{
-                    $739f45b10c9a265e$export$471f7ae5c4103ae1.audio_recording = false;
-                    document.getElementById("app").style.opacity = "1";
-                    document.querySelector(".playing").style.top = "-1000%";
-                    $739f45b10c9a265e$var$write();
-                });
+                if (route.startsWith("audiorecorder_view")) {
+                    history.back();
+                    return;
+                }
                 if (route.startsWith("/map_view")) $739f45b10c9a265e$var$ZoomMap("out");
+                if (route.startsWith("/audio")) history.back();
                 break;
             case "SoftLeft":
             case "Control":
@@ -47935,15 +47973,13 @@ document.addEventListener("DOMContentLoaded", function(e) {
                     $739f45b10c9a265e$var$sendMessage(document.getElementsByTagName("input")[0].value, "text", undefined, undefined);
                     $739f45b10c9a265e$var$write();
                 }
-                if (route.startsWith("/chat?") && $739f45b10c9a265e$export$471f7ae5c4103ae1.audio_recording) // Stop recording and get the recorded data
+                if (route.startsWith("audiorecorder_view")) // Stop recording and get the recorded data
                 $739f45b10c9a265e$var$audioRecorder.stopRecording().then((param)=>{
                     var audioBlob = param.audioBlob, mimeType = param.mimeType;
                     $739f45b10c9a265e$export$471f7ae5c4103ae1.audio_recording = false;
-                    document.getElementById("app").style.opacity = "1";
-                    document.querySelector(".playing").style.top = "-1000%";
                     $739f45b10c9a265e$var$sendMessage(audioBlob, "audio", mimeType, undefined, undefined);
                     (0, $35ef01a7e6390a1e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
-                    $739f45b10c9a265e$var$write();
+                    history.back();
                     return;
                 });
                 if (route.startsWith("/invite")) (0, $35ef01a7e6390a1e$export$ed80d9de1d9df928)($739f45b10c9a265e$export$a5a6e0b888b2c992.invite_url + "?id=" + $739f45b10c9a265e$export$a5a6e0b888b2c992.custom_peer_id).then((success)=>{
@@ -47958,28 +47994,13 @@ document.addEventListener("DOMContentLoaded", function(e) {
                 if (route.startsWith("/map_view")) $739f45b10c9a265e$var$ZoomMap("in");
                 break;
             case "Escape":
-                if (route.startsWith("/chat")) $739f45b10c9a265e$var$audioRecorder.stopRecording().then(()=>{
-                    document.getElementById("app").style.opacity = "1";
-                    document.querySelector(".playing").style.top = "-1000%";
-                    $739f45b10c9a265e$export$471f7ae5c4103ae1.audio_recording = false;
-                    (0, $35ef01a7e6390a1e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
-                });
+                if (route.startsWith("audiorecorder_view")) history.back();
                 break;
             case "Enter":
                 if (route.startsWith("/chat?") && document.getElementById("message-input").style.display == "block") {
-                    //still runnig
-                    if ($739f45b10c9a265e$export$471f7ae5c4103ae1.audio_recording) return false;
                     //write
                     if (document.querySelector("div#message-input input").value !== "") return false;
-                    $739f45b10c9a265e$var$audioRecorder.startRecording().then(()=>{
-                        $739f45b10c9a265e$export$471f7ae5c4103ae1.audio_recording = true;
-                        document.getElementById("app").style.opacity = "0";
-                        document.querySelector(".playing").style.top = "50%";
-                        (0, $35ef01a7e6390a1e$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "<img src='assets/image/record-live.svg'>", "<img src='assets/image/cancel.svg'>");
-                        setTimeout(()=>{
-                            (0, $35ef01a7e6390a1e$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "<img src='assets/image/record-live.svg'>", "<img src='assets/image/cancel.svg'>");
-                        }, 3000);
-                    }).catch((e)=>{});
+                    (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("audiorecorder_view");
                 }
                 if (document.activeElement.classList.contains("input-parent")) document.activeElement.children[0].focus();
                 if ((0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.get() == "/options" && document.activeElement.id == "button-add-user") {
@@ -48025,10 +48046,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
     function handleKeyDown(evt) {
         var route = (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.get();
         if (evt.key === "Backspace" && route.startsWith("/start") && $739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady) return true;
-        if (evt.key === "EndCall" && route.startsWith("/start")) {
-            console.log(route);
-            return true;
-        }
+        if (evt.key === "EndCall" && route.startsWith("/start")) return true;
         if (evt.key === "Backspace" && document.activeElement) {
             var activeElement = document.activeElement;
             var isInputField = activeElement.tagName === "INPUT" || activeElement.tagName === "TEXTAREA" || activeElement.isContentEditable;
