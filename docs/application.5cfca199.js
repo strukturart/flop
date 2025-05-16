@@ -6806,6 +6806,71 @@ var $e3f93859bd66fa1e$export$6714d0f9237d35de = function pick_image(callback) {
         });
     }
 };
+var $e3f93859bd66fa1e$export$174eed84b3e9654b = function pick_file(callback) {
+    if (!(0, $2f28d269c6e274ea$export$471f7ae5c4103ae1).notKaiOS) {
+        try {
+            var pick = new MozActivity({
+                name: "pick",
+                data: {
+                    type: [
+                        "application/json"
+                    ]
+                }
+            });
+            pick.onsuccess = function() {
+                console.log("success", this.result);
+                callback(this.result);
+            };
+            pick.onerror = function() {
+                console.log("The activity encountered an error: " + this.error);
+            };
+        } catch (e) {
+            console.log(e);
+        }
+        if ("b2g" in navigator) {
+            var pick1 = new WebActivity("pick", {
+                type: "application/json"
+            });
+            pick1.start().then(function(rv) {
+                callback(rv);
+            }, function(err) {
+                console.log(err);
+            });
+        }
+    }
+    if ((0, $2f28d269c6e274ea$export$471f7ae5c4103ae1).notKaiOS) {
+        var fileInput = document.createElement("input");
+        fileInput.type = "file";
+        fileInput.accept = "application/json";
+        fileInput.style.display = "none";
+        document.body.appendChild(fileInput);
+        fileInput.click();
+        fileInput.addEventListener("change", function(event) {
+            var file = event.target.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        var json = JSON.parse(e.target.result);
+                        callback({
+                            json: json,
+                            blob: new Blob([
+                                e.target.result
+                            ], {
+                                type: "application/json"
+                            }),
+                            filename: file.name,
+                            filetype: file.type
+                        });
+                    } catch (err) {
+                        console.error("Invalid JSON:", err);
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+    }
+};
 function $e3f93859bd66fa1e$export$dccb98b97a3cb8be(storage, path, notification) {
     var sdcard = navigator.getDeviceStorages("sdcard");
     var requestDel = sdcard[storage]["delete"](path);
@@ -6853,6 +6918,50 @@ var $e3f93859bd66fa1e$export$bb3b75778e3e272 = function downloadFile(filename, d
     }
 };
 var $e3f93859bd66fa1e$export$f32267c926f4f63e = function data_export(filename, data, callback) {
+    var fn = filename + "-" + (0, (/*@__PURE__*/$parcel$interopDefault($10a4de8d5473dc7d$exports)))().format("YYYY-MM-DD_HH-mm-ss") + ".json";
+    if ((0, $2f28d269c6e274ea$export$471f7ae5c4103ae1).notKaiOS) {
+        // Konvertiere das Array in JSON und dann in einen Blob
+        var jsonString = JSON.stringify(data, null, 2); // schön formatiert
+        var blob = new Blob([
+            jsonString
+        ], {
+            type: "application/json"
+        });
+        // Erstelle einen temporären Blob-Link
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = fn;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        // Speicher freigeben
+        URL.revokeObjectURL(url);
+        if (typeof callback === "function") callback();
+    } else {
+        var sdcard = "";
+        try {
+            sdcard = navigator.getDeviceStorage("sdcard");
+        } catch (e) {}
+        if ("b2g" in navigator) try {
+            sdcard = navigator.b2g.getDeviceStorage("sdcard");
+        } catch (e) {}
+        fetch(data).then(function(res) {
+            return res.blob();
+        }).then(function(blob) {
+            var request = sdcard.addNamed(blob, "downloads/" + fn);
+            request.onsuccess = function() {
+                $e3f93859bd66fa1e$export$6593825dc0f3a767("file downloaded", 2000);
+            };
+            request.onerror = function() {
+                $e3f93859bd66fa1e$export$6593825dc0f3a767("Unable to download the file, the file probably already exists.", 4000);
+            };
+        })["catch"](function(error) {
+            $e3f93859bd66fa1e$export$6593825dc0f3a767("Unable to download the file", 2000);
+        });
+    }
+};
+var $e3f93859bd66fa1e$export$1405905b32e60d59 = function data_import(filename, data, callback) {
     var fn = filename + "-" + (0, (/*@__PURE__*/$parcel$interopDefault($10a4de8d5473dc7d$exports)))().format("YYYY-MM-DD_HH-mm-ss") + ".json";
     if ((0, $2f28d269c6e274ea$export$471f7ae5c4103ae1).notKaiOS) {
         // Konvertiere das Array in JSON und dann in einen Blob
@@ -47965,6 +48074,31 @@ var $2f28d269c6e274ea$var$about = {
                     });
                 }
             }, "download addressbook"),
+            (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports)))("button", {
+                "class": "item",
+                onclick: function() {
+                    var cb = function(e) {
+                        var counter = 0;
+                        console.log(e);
+                        e.json.forEach(function(n) {
+                            if (!$2f28d269c6e274ea$var$addressbook.find(function(item) {
+                                return item.id === n.id;
+                            })) {
+                                $2f28d269c6e274ea$var$addressbook.push(n);
+                                counter++;
+                            }
+                            if (counter > 0) // Save the updated addressbook to localforage
+                            (0, (/*@__PURE__*/$parcel$interopDefault($bdfc69295b6cf103$exports))).setItem("addressbook", $2f28d269c6e274ea$var$addressbook).then(function() {
+                                (0, $e3f93859bd66fa1e$export$6593825dc0f3a767)(counter + " users imported", 3000);
+                            })["catch"](function(error) {
+                                console.error("Error saving updated address book:", error);
+                            });
+                            else (0, $e3f93859bd66fa1e$export$6593825dc0f3a767)("nothing to import", 3000);
+                        });
+                    };
+                    (0, $e3f93859bd66fa1e$export$174eed84b3e9654b)(cb);
+                }
+            }, "import addressbook"),
             $2f28d269c6e274ea$export$471f7ae5c4103ae1.addressbook_in_focus !== "" ? (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports)))("button", {
                 "class": "item",
                 onclick: function() {
@@ -48472,8 +48606,6 @@ var $2f28d269c6e274ea$var$start = {
             id: "start",
             oncreate: function() {
                 (0, $e3f93859bd66fa1e$export$7ce2ea7c45ae9a07)("", "", "");
-                document.getElementById("app").style.opacity = "1";
-                document.querySelector(".playing").style.top = "-1000%";
                 //auto connect if id is given
                 (0, (/*@__PURE__*/$parcel$interopDefault($bdfc69295b6cf103$exports))).getItem("connect_to_id").then(function(e) {
                     if (e && e.data) {

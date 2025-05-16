@@ -1,6 +1,7 @@
 "use strict";
 
 import {
+  pick_file,
   data_export,
   bottom_bar,
   side_toaster,
@@ -2098,6 +2099,44 @@ var about = {
           "download addressbook"
         ),
 
+        m(
+          "button",
+          {
+            class: "item",
+            onclick: () => {
+              let cb = (e) => {
+                let counter = 0;
+                console.log(e);
+                e.json.forEach((n) => {
+                  if (!addressbook.find((item) => item.id === n.id)) {
+                    addressbook.push(n);
+                    counter++;
+                  }
+                  if (counter > 0) {
+                    // Save the updated addressbook to localforage
+                    localforage
+                      .setItem("addressbook", addressbook)
+                      .then(() => {
+                        side_toaster(counter + " users imported", 3000);
+                      })
+                      .catch((error) => {
+                        console.error(
+                          "Error saving updated address book:",
+                          error
+                        );
+                      });
+                  } else {
+                    side_toaster("nothing to import", 3000);
+                  }
+                });
+              };
+
+              pick_file(cb);
+            },
+          },
+          "import addressbook"
+        ),
+
         status.addressbook_in_focus !== ""
           ? m(
               "button",
@@ -2867,9 +2906,6 @@ var start = {
 
         oncreate: () => {
           top_bar("", "", "");
-
-          document.getElementById("app").style.opacity = "1";
-          document.querySelector(".playing").style.top = "-1000%";
 
           //auto connect if id is given
           localforage

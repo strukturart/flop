@@ -627,6 +627,78 @@ export let pick_image = function (callback) {
   }
 };
 
+// Pick JSON file
+export let pick_file = function (callback) {
+  if (!status.notKaiOS) {
+    try {
+      let pick = new MozActivity({
+        name: "pick",
+        data: {
+          type: ["application/json"],
+        },
+      });
+
+      pick.onsuccess = function () {
+        console.log("success", this.result);
+        callback(this.result);
+      };
+
+      pick.onerror = function () {
+        console.log("The activity encountered an error: " + this.error);
+      };
+    } catch (e) {
+      console.log(e);
+    }
+
+    if ("b2g" in navigator) {
+      let pick = new WebActivity("pick", {
+        type: "application/json",
+      });
+
+      pick.start().then(
+        (rv) => {
+          callback(rv);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
+  }
+
+  if (status.notKaiOS) {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "application/json";
+    fileInput.style.display = "none";
+    document.body.appendChild(fileInput);
+
+    fileInput.click();
+
+    fileInput.addEventListener("change", function (event) {
+      const file = event.target.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          try {
+            const json = JSON.parse(e.target.result);
+            callback({
+              json,
+              blob: new Blob([e.target.result], { type: "application/json" }),
+              filename: file.name,
+              filetype: file.type,
+            });
+          } catch (err) {
+            console.error("Invalid JSON:", err);
+          }
+        };
+        reader.readAsText(file);
+      }
+    });
+  }
+};
+
 //delete file
 export function deleteFile(storage, path, notification) {
   let sdcard = navigator.getDeviceStorages("sdcard");
@@ -698,6 +770,62 @@ export let downloadFile = function (filename, data, callback) {
 };
 
 export let data_export = function (filename, data, callback) {
+  const fn = filename + "-" + dayjs().format("YYYY-MM-DD_HH-mm-ss") + ".json";
+  if (status.notKaiOS) {
+    // Konvertiere das Array in JSON und dann in einen Blob
+    const jsonString = JSON.stringify(data, null, 2); // schön formatiert
+    const blob = new Blob([jsonString], { type: "application/json" });
+
+    // Erstelle einen temporären Blob-Link
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fn;
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    // Speicher freigeben
+    URL.revokeObjectURL(url);
+
+    if (typeof callback === "function") callback();
+  } else {
+    let sdcard = "";
+
+    try {
+      sdcard = navigator.getDeviceStorage("sdcard");
+    } catch (e) {}
+
+    if ("b2g" in navigator) {
+      try {
+        sdcard = navigator.b2g.getDeviceStorage("sdcard");
+      } catch (e) {}
+    }
+
+    fetch(data)
+      .then((res) => res.blob())
+      .then((blob) => {
+        let request = sdcard.addNamed(blob, "downloads/" + fn);
+        request.onsuccess = function () {
+          side_toaster("file downloaded", 2000);
+        };
+
+        request.onerror = function () {
+          side_toaster(
+            "Unable to download the file, the file probably already exists.",
+            4000
+          );
+        };
+      })
+      .catch((error) => {
+        side_toaster("Unable to download the file", 2000);
+      });
+  }
+};
+
+export let data_import = function (filename, data, callback) {
   const fn = filename + "-" + dayjs().format("YYYY-MM-DD_HH-mm-ss") + ".json";
   if (status.notKaiOS) {
     // Konvertiere das Array in JSON und dann in einen Blob
