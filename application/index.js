@@ -1,6 +1,7 @@
 "use strict";
 
 import {
+  pick_file,
   data_export,
   bottom_bar,
   side_toaster,
@@ -13,6 +14,9 @@ import {
   setTabindex,
   downloadFile,
   createAudioRecorder,
+  list_files,
+  get_file,
+  arrayBufferToBase64,
 } from "./assets/js/helper.js";
 import { stop_scan, start_scan } from "./assets/js/scan.js";
 import localforage from "localforage";
@@ -64,6 +68,7 @@ export let status = {
   history_of_ids: [],
   readyToClose: false,
   webpush_do_not_annoy: [],
+  files: [],
 };
 
 // not KaiOS
@@ -345,7 +350,6 @@ function setupConnectionEvents(conn) {
 
             messageQueueStorage.map((e) => {
               if (e.to == conn.peer && e.type != "typing") {
-                // console.log("try to send");
                 sendMessageToAll(e);
               }
             });
@@ -564,16 +568,13 @@ function setupConnectionEvents(conn) {
         let mimetype = data.mimeType || "audio/webm";
 
         if (data.content instanceof Blob) {
-          audioBlob = data.content;
+          audioBlob = data.audio;
         } else if (
-          data.content instanceof ArrayBuffer ||
-          data.content instanceof Uint8Array
+          data.audio instanceof ArrayBuffer ||
+          data.audio instanceof Uint8Array
         ) {
-          audioBlob = new Blob([data.content], { type: mimetype });
+          audioBlob = new Blob([data.audio], { type: mimetype });
         } else {
-          console.error(
-            `Error: Unsupported data.content type. Expected Blob, ArrayBuffer, or Uint8Array, but got: ${typeof data.content}`
-          );
           side_toaster("data type not supported", 4000);
           return;
         }
@@ -581,7 +582,8 @@ function setupConnectionEvents(conn) {
         chat_data.push({
           id: data.id,
           nickname: data.nickname,
-          content: audioBlob,
+          content: "",
+          audio: audioBlob,
           datetime: new Date(),
           type: data.type,
           from: data.from,
@@ -922,6 +924,13 @@ let write = function () {
   }
 };
 
+//list files
+list_files("json", (e) => {
+  status.files.push(e);
+});
+
+if (!status.notKaiOS) list_files();
+
 const focus_last_article = function () {
   let j = m.route.get();
   if (!j.startsWith("/chat")) return false;
@@ -941,13 +950,36 @@ const focus_last_article = function () {
   }, 1500);
 };
 
-function sendMessage(
+let import_addressbook = (e) => {
+  let counter = 0;
+  e.forEach((n) => {
+    if (!addressbook.find((item) => item.id === n.id)) {
+      addressbook.push(n);
+      counter++;
+    }
+  });
+  if (counter > 0) {
+    // Save the updated addressbook to localforage
+    localforage
+      .setItem("addressbook", addressbook)
+      .then(() => {
+        side_toaster(counter + " users imported", 3000);
+      })
+      .catch((error) => {
+        console.error("Error saving updated address book:", error);
+      });
+  } else {
+    side_toaster("nothing to import", 3000);
+  }
+};
+
+let sendMessage = (
   msg = "",
   type,
   mimeType = "",
   to = status.current_user_id || "",
   messageId = uuidv4(16)
-) {
+) => {
   let message = {};
 
   //POD
@@ -984,8 +1016,6 @@ function sendMessage(
     // Encode the file using the FileReader API
     const reader = new FileReader();
     reader.onloadend = () => {
-      //  let src = msg.blob ? URL.createObjectURL(msg.blob) : null;
-
       chat_data.push({
         nickname: settings.nickname,
         content: "",
@@ -1115,6 +1145,7 @@ function sendMessage(
     chat_data.push({
       nickname: settings.nickname,
       content: msg,
+      audio: msg,
       datetime: new Date(),
       type: type,
       mimeType: mimeType,
@@ -1130,6 +1161,7 @@ function sendMessage(
       .then((buffer) => {
         const messageToSend = {
           content: buffer,
+          audio: buffer,
           nickname: settings.nickname,
           type: type,
           mimeType: mimeType,
@@ -1141,7 +1173,7 @@ function sendMessage(
         console.error("Error converting Blob to ArrayBuffer:", error);
       });
   }
-}
+};
 
 let messageQueueStorage = [];
 
@@ -1975,6 +2007,68 @@ var waiting = {
   },
 };
 
+var filelist = {
+  oninit: () => {
+    key_delay();
+    top_bar("", "", "");
+    bottom_bar("", "", "");
+  },
+
+  onremove: () => {
+    key_delay();
+  },
+
+  view: function () {
+    return m(
+      "div",
+      {
+        id: "filelist",
+        class: "width-100 height-100 page",
+      },
+      status.files.map((e, i) => {
+        if (e.includes("flop-addressbook")) {
+          return m(
+            "button",
+            {
+              class: "item button-marquee",
+              oncreate: ({ dom }) => {
+                setTabindex();
+                if (i == 0) {
+                  dom.focus();
+                }
+              },
+              onclick: () => {
+                let cb = (a) => {
+                  const reader = new FileReader();
+                  reader.onload = () => {
+                    const text = reader.result;
+                    try {
+                      const data = JSON.parse(text);
+
+                      import_addressbook(data);
+
+                      m.route.set("/start");
+                    } catch (e) {
+                      alert("Ungültiges JSON:\n" + e.message);
+                    }
+                  };
+
+                  reader.onerror = () => {
+                    alert("can't read file");
+                  };
+                  reader.readAsText(a);
+                };
+                get_file(e, cb);
+              },
+            },
+            [m("span", e.split("/").pop())]
+          );
+        }
+      })
+    );
+  },
+};
+
 var about = {
   oninit: () => {
     key_delay();
@@ -2077,7 +2171,15 @@ var about = {
           {
             class: "item",
             onclick: () => {
-              data_export("flop", chat_data_history, () => {
+              //convert to base64
+              let a = chat_data_history.map((e) => {
+                return {
+                  ...e,
+                  audio: e.audio ? arrayBufferToBase64(e.audio) : undefined,
+                };
+              });
+
+              data_export("flop", a, () => {
                 side_toaster("download finished", 3000);
               });
             },
@@ -2096,6 +2198,24 @@ var about = {
             },
           },
           "download addressbook"
+        ),
+
+        m(
+          "button",
+          {
+            class: "item",
+            onclick: () => {
+              let cb = (e) => {
+                import_addressbook(e.json);
+              };
+              if (status.notKaiOS) {
+                pick_file(cb);
+              } else {
+                m.route.set("/filelist");
+              }
+            },
+          },
+          "import addressbook"
         ),
 
         status.addressbook_in_focus !== ""
@@ -2702,11 +2822,7 @@ var options = {
               bottom_bar("", "", "");
             },
             onclick: function () {
-              if (status.userOnline > 0) {
-                pick_image(handleImage);
-              } else {
-                side_toaster("no user online", 3000);
-              }
+              pick_image(handleImage);
             },
           },
           "share image"
@@ -2867,9 +2983,6 @@ var start = {
 
         oncreate: () => {
           top_bar("", "", "");
-
-          document.getElementById("app").style.opacity = "1";
-          document.querySelector(".playing").style.top = "-1000%";
 
           //auto connect if id is given
           localforage
@@ -3566,6 +3679,7 @@ m.route(root, "/intro", {
   "/waiting": waiting,
   "/invite": invite,
   "/audiorecorder_view": audiorecorder_view,
+  "/filelist": filelist,
 });
 
 function scrollToCenter() {
@@ -4129,6 +4243,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
         stop_scan();
         m.route.set("/start");
         status.action = "";
+      }
+
+      if (m.route.get() == "/filelist") {
+        m.route.set("/about");
       }
 
       if (

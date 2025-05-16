@@ -129,6 +129,58 @@ export const geolocation = function (callback) {
   });
 };
 
+export let list_files = function (filetype, callback) {
+  try {
+    var d = navigator.getDeviceStorage("sdcard");
+    var t = false;
+    var cursor = d.enumerate();
+
+    cursor.onsuccess = function () {
+      if (!this.result) {
+        console.log("finished");
+      }
+
+      if (cursor.result.name !== null) {
+        var file = cursor.result;
+        let n = file.name.split(".");
+        let file_type = n[n.length - 1];
+
+        if (file_type == filetype) {
+          callback(file.name);
+          t = true;
+        }
+        this.continue();
+      }
+    };
+
+    cursor.onerror = function () {
+      console.warn("No file found: " + this.error);
+    };
+  } catch (e) {
+    console.log(e);
+  }
+  if ("b2g" in navigator) {
+    try {
+      var sdcard = navigator.b2g.getDeviceStorage("sdcard");
+      var iterable = sdcard.enumerate();
+      async function printAllFiles() {
+        for await (let file of iterable) {
+          let n = file.name.split(".");
+          let file_type = n[n.length - 1];
+
+          if (file_type == filetype) {
+            callback(file.name);
+            t = true;
+          }
+        }
+      }
+      printAllFiles();
+    } catch (e) {
+      console.log(e);
+    }
+  }
+};
+
 export let clipboard = function () {
   try {
     let text =
@@ -310,17 +362,26 @@ function delete_file(filename) {
   };
 }
 
-function get_file(filename) {
-  var sdcard = navigator.getDeviceStorages("sdcard");
-  var request = sdcard[1].get(filename);
+export function get_file(filename, callback) {
+  let sdcard = "";
+
+  try {
+    sdcard = navigator.getDeviceStorage("sdcard");
+  } catch (e) {}
+
+  if ("b2g" in navigator) {
+    try {
+      sdcard = navigator.b2g.getDeviceStorage("sdcard");
+    } catch (e) {}
+  }
+  var request = sdcard.get(filename);
 
   request.onsuccess = function () {
-    var file = this.result;
-    //alert("Get the file: " + file.name);
+    callback(this.result);
   };
 
   request.onerror = function () {
-    //alert("Unable to get the file: " + this.error);
+    alert("Unable to get the file: " + this.error);
   };
 }
 
@@ -556,7 +617,33 @@ export let top_bar = function (left, center, right) {
 };
 
 //pick image
+//return blob
 export let pick_image = function (callback) {
+  const compressImage = (fileOrBlob, filename, filetype) => {
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 640,
+      useWebWorker: false,
+    };
+
+    imageCompression(fileOrBlob, options)
+      .then((compressedBlob) => {
+        callback({
+          blob: compressedBlob,
+          filename: filename || null,
+          filetype: filetype || "image/jpeg",
+        });
+      })
+      .catch((error) => {
+        console.log("Image compression failed:", error);
+        callback({
+          blob: fileOrBlob,
+          filename: filename || null,
+          filetype: filetype || "image/jpeg",
+        });
+      });
+  };
+
   if (!status.notKaiOS) {
     try {
       let pick = new MozActivity({
@@ -566,13 +653,74 @@ export let pick_image = function (callback) {
         },
       });
 
-      pick.onsuccess = function (e) {
-        console.log("success" + this.result);
+      pick.onsuccess = function () {
+        const result = this.result;
+        const blob = result.blob || result;
+        compressImage(blob, result.name, result.type);
+      };
+
+      pick.onerror = function () {
+        console.log("The activity encountered an error: " + this.error);
+      };
+    } catch (e) {
+      console.log(e);
+    }
+
+    // fallback für WebActivity
+    if ("b2g" in navigator) {
+      let pick = new WebActivity("pick", {
+        type: "image/*",
+      });
+
+      pick.start().then(
+        (rv) => {
+          const blob = rv.blob || rv;
+          compressImage(blob, rv.name, rv.type);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
+
+    return;
+  }
+
+  // Desktop / Android Browser
+  const fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.accept = "image/*";
+  fileInput.style.display = "none";
+  document.body.appendChild(fileInput);
+
+  fileInput.click();
+
+  fileInput.addEventListener("change", function (event) {
+    const file = event.target.files[0];
+    if (file) {
+      compressImage(file, file.name, file.type);
+    }
+  });
+};
+
+// Pick JSON file
+export let pick_file = function (callback) {
+  if (!status.notKaiOS) {
+    try {
+      let pick = new MozActivity({
+        name: "pick",
+        data: {
+          type: ["application/json"],
+        },
+      });
+
+      pick.onsuccess = function () {
+        console.log("success", this.result);
         callback(this.result);
       };
 
       pick.onerror = function () {
-        console.log("The activity encounter en error: " + this.error);
+        console.log("The activity encountered an error: " + this.error);
       };
     } catch (e) {
       console.log(e);
@@ -580,7 +728,7 @@ export let pick_image = function (callback) {
 
     if ("b2g" in navigator) {
       let pick = new WebActivity("pick", {
-        type: "image/*",
+        type: "application/json",
       });
 
       pick.start().then(
@@ -593,10 +741,11 @@ export let pick_image = function (callback) {
       );
     }
   }
+
   if (status.notKaiOS) {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
-    fileInput.accept = "image/*";
+    fileInput.accept = "application/json";
     fileInput.style.display = "none";
     document.body.appendChild(fileInput);
 
@@ -605,23 +754,22 @@ export let pick_image = function (callback) {
     fileInput.addEventListener("change", function (event) {
       const file = event.target.files[0];
 
-      const options = {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 640,
-        useWebWorker: false,
-      };
-      try {
-        if (file) {
-          imageCompression(file, options).then((e) => {
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          try {
+            const json = JSON.parse(e.target.result);
             callback({
-              blob: e,
+              json,
+              blob: new Blob([e.target.result], { type: "application/json" }),
               filename: file.name,
               filetype: file.type,
             });
-          });
-        }
-      } catch (error) {
-        console.log(error);
+          } catch (err) {
+            console.error("Invalid JSON:", err);
+          }
+        };
+        reader.readAsText(file);
       }
     });
   }
@@ -700,6 +848,56 @@ export let downloadFile = function (filename, data, callback) {
 export let data_export = function (filename, data, callback) {
   const fn = filename + "-" + dayjs().format("YYYY-MM-DD_HH-mm-ss") + ".json";
   if (status.notKaiOS) {
+    const jsonString = JSON.stringify(data, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fn;
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    URL.revokeObjectURL(url);
+
+    if (typeof callback === "function") callback();
+  } else {
+    let sdcard = "";
+
+    try {
+      sdcard = navigator.getDeviceStorage("sdcard");
+    } catch (e) {}
+
+    if ("b2g" in navigator) {
+      try {
+        sdcard = navigator.b2g.getDeviceStorage("sdcard");
+      } catch (e) {}
+    }
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: "application/json",
+    });
+
+    let request = sdcard.addNamed(blob, "downloads/" + fn);
+    request.onsuccess = function () {
+      side_toaster("file downloaded", 2000);
+    };
+
+    request.onerror = function () {
+      side_toaster(
+        "Unable to download the file, the file probably already exists.",
+        4000
+      );
+    };
+  }
+};
+
+export let data_import = function (filename, data, callback) {
+  const fn = filename + "-" + dayjs().format("YYYY-MM-DD_HH-mm-ss") + ".json";
+  if (status.notKaiOS) {
     // Konvertiere das Array in JSON und dann in einen Blob
     const jsonString = JSON.stringify(data, null, 2); // schön formatiert
     const blob = new Blob([jsonString], { type: "application/json" });
@@ -776,8 +974,6 @@ export function createAudioRecorder() {
       mediaRecorder.addEventListener("error", (event) => {
         alert(`Error recording stream: ${event.error.name}`);
       });
-
-      console.log("MediaRecorder initialized successfully.");
     } catch (error) {
       alert("Error initializing MediaRecorder:", error);
       console.error(error);
@@ -821,6 +1017,12 @@ export function createAudioRecorder() {
         const audioBlob = new Blob(recordedChunks, { type: mimeType });
         recordedChunks = []; // Clear recorded chunks
 
+        /*
+         blob: audioBlob,
+            filename: "",
+            filetype: mimeType,
+            */
+
         // Clean up resources after recording is stopped
         cleanup();
 
@@ -846,4 +1048,19 @@ export function createAudioRecorder() {
     startRecording,
     stopRecording,
   };
+}
+
+export function arrayBufferToBase64(buffer) {
+  const bytes = new Uint8Array(buffer);
+  const binary = [...bytes].map((b) => String.fromCharCode(b)).join("");
+  return btoa(binary);
+}
+
+export function base64ToArrayBuffer(base64) {
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes.buffer;
 }

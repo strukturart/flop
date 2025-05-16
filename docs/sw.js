@@ -98,7 +98,7 @@ self.addEventListener("notificationclick", (event)=>{
 });
 var $857385147de8908e$var$userAgent = navigator.userAgent || "";
 if ($857385147de8908e$var$userAgent && !$857385147de8908e$var$userAgent.includes("KAIOS")) {
-    var $857385147de8908e$var$CACHE_NAME = "pwa-cache-v0.2119";
+    var $857385147de8908e$var$CACHE_NAME = "pwa-cache-v0.2130";
     var $857385147de8908e$var$FILE_LIST_URL = "/file-list.json"; // URL of the JSON file containing the array of files
     self.addEventListener("install", (event)=>{
         event.waitUntil(caches.open($857385147de8908e$var$CACHE_NAME).then((cache)=>{

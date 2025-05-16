@@ -151,12 +151,33 @@ button {
   padding: 10px;
   font-size: 1rem;
   font-weight: 700;
+  overflow: hidden;
   font-family: Roboto !important;
 }
 
 button:focus, button:hover {
   background: orange;
   border: 0 solid gray;
+}
+
+.button-marquee span {
+  white-space: nowrap;
+  transition: transform 10s linear;
+  display: inline-block;
+}
+
+.button-marquee:focus span {
+  animation: 5s linear infinite scrollText;
+}
+
+@keyframes scrollText {
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 .addressbook-box {

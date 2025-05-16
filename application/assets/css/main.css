@@ -178,6 +178,7 @@ button {
   max-height: 40px;
   font-family: "Roboto" !important;
   touch-action: none;
+  overflow: hidden;
 }
 button:focus {
   background: orange;
@@ -187,6 +188,25 @@ button:focus {
 button:hover {
   background: orange;
   border: 0px solid gray;
+}
+
+.button-marquee span {
+  display: inline-block;
+  white-space: nowrap;
+  transition: transform 10s linear;
+}
+
+.button-marquee:focus span {
+  animation: scrollText 5s linear infinite;
+}
+
+@keyframes scrollText {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 .addressbook-box {

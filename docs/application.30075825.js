@@ -2516,6 +2516,49 @@ function $84195635a8675dae$export$71511d61b312f219(target, source) {
 
 
 var $7rZYk = parcelRequire("7rZYk");
+function $05938ccb80026880$export$71511d61b312f219(iterable) {
+    var method, async, sync, retry = 2;
+    for("undefined" != typeof Symbol && (async = Symbol.asyncIterator, sync = Symbol.iterator); retry--;){
+        if (async && null != (method = iterable[async])) return method.call(iterable);
+        if (sync && null != (method = iterable[sync])) return new $05938ccb80026880$var$AsyncFromSyncIterator(method.call(iterable));
+        async = "@@asyncIterator", sync = "@@iterator";
+    }
+    throw new TypeError("Object is not async iterable");
+}
+function $05938ccb80026880$var$AsyncFromSyncIterator(s) {
+    function AsyncFromSyncIteratorContinuation(r) {
+        if (Object(r) !== r) return Promise.reject(new TypeError(r + " is not an object."));
+        var done = r.done;
+        return Promise.resolve(r.value).then(function(value) {
+            return {
+                value: value,
+                done: done
+            };
+        });
+    }
+    return $05938ccb80026880$var$AsyncFromSyncIterator = function(s) {
+        this.s = s, this.n = s.next;
+    }, $05938ccb80026880$var$AsyncFromSyncIterator.prototype = {
+        s: null,
+        n: null,
+        next: function() {
+            return AsyncFromSyncIteratorContinuation(this.n.apply(this.s, arguments));
+        },
+        return: function(value) {
+            var ret = this.s.return;
+            return void 0 === ret ? Promise.resolve({
+                value: value,
+                done: !0
+            }) : AsyncFromSyncIteratorContinuation(ret.apply(this.s, arguments));
+        },
+        throw: function(value) {
+            var thr = this.s.return;
+            return void 0 === thr ? Promise.reject(value) : AsyncFromSyncIteratorContinuation(thr.apply(this.s, arguments));
+        }
+    }, new $05938ccb80026880$var$AsyncFromSyncIterator(s);
+}
+
+
 
 
 var $7rZYk = parcelRequire("7rZYk");
@@ -5669,6 +5712,139 @@ var $35ef01a7e6390a1e$export$33d904bed5c25b69 = function geolocation(callback) {
         maximumAge: 1000
     });
 };
+var $35ef01a7e6390a1e$export$99c802f9c0aea792 = function list_files(filetype, callback) {
+    try {
+        var d = navigator.getDeviceStorage("sdcard");
+        var t = false;
+        var cursor = d.enumerate();
+        cursor.onsuccess = function() {
+            if (!this.result) console.log("finished");
+            if (cursor.result.name !== null) {
+                var file = cursor.result;
+                var n = file.name.split(".");
+                var file_type = n[n.length - 1];
+                if (file_type == filetype) {
+                    callback(file.name);
+                    t = true;
+                }
+                this.continue();
+            }
+        };
+        cursor.onerror = function() {
+            console.warn("No file found: " + this.error);
+        };
+    } catch (e) {
+        console.log(e);
+    }
+    if ("b2g" in navigator) try {
+        var sdcard = navigator.b2g.getDeviceStorage("sdcard");
+        var iterable = sdcard.enumerate();
+        function printAllFiles() {
+            return _printAllFiles.apply(this, arguments);
+        }
+        function _printAllFiles() {
+            _printAllFiles = (0, $034ee189aafc6ae8$export$71511d61b312f219)(function() {
+                var _iteratorAbruptCompletion, _didIteratorError, _iteratorError, _iterator, _step, _value, file, n, file_type, err;
+                return (0, $7rZYk.__generator)(this, function(_state) {
+                    switch(_state.label){
+                        case 0:
+                            _iteratorAbruptCompletion = false, _didIteratorError = false;
+                            _state.label = 1;
+                        case 1:
+                            _state.trys.push([
+                                1,
+                                6,
+                                7,
+                                12
+                            ]);
+                            _iterator = (0, $05938ccb80026880$export$71511d61b312f219)(iterable);
+                            _state.label = 2;
+                        case 2:
+                            return [
+                                4,
+                                _iterator.next()
+                            ];
+                        case 3:
+                            if (!(_iteratorAbruptCompletion = !(_step = _state.sent()).done)) return [
+                                3,
+                                5
+                            ];
+                            _value = _step.value;
+                            file = _value;
+                            n = file.name.split(".");
+                            file_type = n[n.length - 1];
+                            if (file_type == filetype) {
+                                callback(file.name);
+                                t = true;
+                            }
+                            _state.label = 4;
+                        case 4:
+                            _iteratorAbruptCompletion = false;
+                            return [
+                                3,
+                                2
+                            ];
+                        case 5:
+                            return [
+                                3,
+                                12
+                            ];
+                        case 6:
+                            err = _state.sent();
+                            _didIteratorError = true;
+                            _iteratorError = err;
+                            return [
+                                3,
+                                12
+                            ];
+                        case 7:
+                            _state.trys.push([
+                                7,
+                                ,
+                                10,
+                                11
+                            ]);
+                            if (!(_iteratorAbruptCompletion && _iterator.return != null)) return [
+                                3,
+                                9
+                            ];
+                            return [
+                                4,
+                                _iterator.return()
+                            ];
+                        case 8:
+                            _state.sent();
+                            _state.label = 9;
+                        case 9:
+                            return [
+                                3,
+                                11
+                            ];
+                        case 10:
+                            if (_didIteratorError) {
+                                throw _iteratorError;
+                            }
+                            return [
+                                7
+                            ];
+                        case 11:
+                            return [
+                                7
+                            ];
+                        case 12:
+                            return [
+                                2
+                            ];
+                    }
+                });
+            });
+            return _printAllFiles.apply(this, arguments);
+        }
+        printAllFiles();
+    } catch (e) {
+        console.log(e);
+    }
+};
 var $35ef01a7e6390a1e$export$113cec1d2aba8489 = function clipboard() {
     try {
         var text = window.location.origin + "/#!/intro?id=" + (0, $739f45b10c9a265e$export$a5a6e0b888b2c992).custom_peer_id;
@@ -5813,15 +5989,20 @@ function $35ef01a7e6390a1e$var$delete_file(filename) {
     //toaster("Unable to delete the file: " + this.error, 2000);
     };
 }
-function $35ef01a7e6390a1e$var$get_file(filename) {
-    var sdcard = navigator.getDeviceStorages("sdcard");
-    var request = sdcard[1].get(filename);
+function $35ef01a7e6390a1e$export$16146fefff7e9a3b(filename, callback) {
+    var sdcard = "";
+    try {
+        sdcard = navigator.getDeviceStorage("sdcard");
+    } catch (e) {}
+    if ("b2g" in navigator) try {
+        sdcard = navigator.b2g.getDeviceStorage("sdcard");
+    } catch (e) {}
+    var request = sdcard.get(filename);
     request.onsuccess = function() {
-        var file = this.result;
-    //alert("Get the file: " + file.name);
+        callback(this.result);
     };
     request.onerror = function() {
-    //alert("Unable to get the file: " + this.error);
+        alert("Unable to get the file: " + this.error);
     };
 }
 function $35ef01a7e6390a1e$var$write_file(data, filename) {
@@ -5983,6 +6164,27 @@ var $35ef01a7e6390a1e$export$7ce2ea7c45ae9a07 = function top_bar(left, center, r
     else document.querySelector("div#top-bar").style.display = "flex";
 };
 var $35ef01a7e6390a1e$export$6714d0f9237d35de = function pick_image(callback) {
+    var compressImage = (fileOrBlob, filename, filetype)=>{
+        var options = {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 640,
+            useWebWorker: false
+        };
+        (0, $6f92c26df6f42d73$export$2e2bcd8739ae039)(fileOrBlob, options).then((compressedBlob)=>{
+            callback({
+                blob: compressedBlob,
+                filename: filename || null,
+                filetype: filetype || "image/jpeg"
+            });
+        }).catch((error)=>{
+            console.log("Image compression failed:", error);
+            callback({
+                blob: fileOrBlob,
+                filename: filename || null,
+                filetype: filetype || "image/jpeg"
+            });
+        });
+    };
     if (!(0, $739f45b10c9a265e$export$471f7ae5c4103ae1).notKaiOS) {
         try {
             var pick = new MozActivity({
@@ -5995,19 +6197,67 @@ var $35ef01a7e6390a1e$export$6714d0f9237d35de = function pick_image(callback) {
                     ]
                 }
             });
-            pick.onsuccess = function(e) {
-                console.log("success" + this.result);
+            pick.onsuccess = function() {
+                var result = this.result;
+                var blob = result.blob || result;
+                compressImage(blob, result.name, result.type);
+            };
+            pick.onerror = function() {
+                console.log("The activity encountered an error: " + this.error);
+            };
+        } catch (e) {
+            console.log(e);
+        }
+        // fallback für WebActivity
+        if ("b2g" in navigator) {
+            var pick1 = new WebActivity("pick", {
+                type: "image/*"
+            });
+            pick1.start().then((rv)=>{
+                var blob = rv.blob || rv;
+                compressImage(blob, rv.name, rv.type);
+            }, (err)=>{
+                console.log(err);
+            });
+        }
+        return;
+    }
+    // Desktop / Android Browser
+    var fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/*";
+    fileInput.style.display = "none";
+    document.body.appendChild(fileInput);
+    fileInput.click();
+    fileInput.addEventListener("change", function(event) {
+        var file = event.target.files[0];
+        if (file) compressImage(file, file.name, file.type);
+    });
+};
+var $35ef01a7e6390a1e$export$174eed84b3e9654b = function pick_file(callback) {
+    if (!(0, $739f45b10c9a265e$export$471f7ae5c4103ae1).notKaiOS) {
+        try {
+            var pick = new MozActivity({
+                name: "pick",
+                data: {
+                    type: [
+                        "application/json"
+                    ]
+                }
+            });
+            pick.onsuccess = function() {
+                console.log("success", this.result);
                 callback(this.result);
             };
             pick.onerror = function() {
-                console.log("The activity encounter en error: " + this.error);
+                console.log("The activity encountered an error: " + this.error);
             };
         } catch (e) {
             console.log(e);
         }
         if ("b2g" in navigator) {
             var pick1 = new WebActivity("pick", {
-                type: "image/*"
+                type: "application/json"
             });
             pick1.start().then((rv)=>{
                 callback(rv);
@@ -6019,27 +6269,32 @@ var $35ef01a7e6390a1e$export$6714d0f9237d35de = function pick_image(callback) {
     if ((0, $739f45b10c9a265e$export$471f7ae5c4103ae1).notKaiOS) {
         var fileInput = document.createElement("input");
         fileInput.type = "file";
-        fileInput.accept = "image/*";
+        fileInput.accept = "application/json";
         fileInput.style.display = "none";
         document.body.appendChild(fileInput);
         fileInput.click();
         fileInput.addEventListener("change", function(event) {
             var file = event.target.files[0];
-            var options = {
-                maxSizeMB: 1,
-                maxWidthOrHeight: 640,
-                useWebWorker: false
-            };
-            try {
-                if (file) (0, $6f92c26df6f42d73$export$2e2bcd8739ae039)(file, options).then((e)=>{
-                    callback({
-                        blob: e,
-                        filename: file.name,
-                        filetype: file.type
-                    });
-                });
-            } catch (error) {
-                console.log(error);
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        var json = JSON.parse(e.target.result);
+                        callback({
+                            json: json,
+                            blob: new Blob([
+                                e.target.result
+                            ], {
+                                type: "application/json"
+                            }),
+                            filename: file.name,
+                            filetype: file.type
+                        });
+                    } catch (err) {
+                        console.error("Invalid JSON:", err);
+                    }
+                };
+                reader.readAsText(file);
             }
         });
     }
@@ -6089,6 +6344,46 @@ var $35ef01a7e6390a1e$export$bb3b75778e3e272 = function downloadFile(filename, d
     }
 };
 var $35ef01a7e6390a1e$export$f32267c926f4f63e = function data_export(filename, data, callback) {
+    var fn = filename + "-" + (0, (/*@__PURE__*/$parcel$interopDefault($d389c6496b2a2360$exports)))().format("YYYY-MM-DD_HH-mm-ss") + ".json";
+    if ((0, $739f45b10c9a265e$export$471f7ae5c4103ae1).notKaiOS) {
+        var jsonString = JSON.stringify(data, null, 2);
+        var blob = new Blob([
+            jsonString
+        ], {
+            type: "application/json"
+        });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = fn;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        if (typeof callback === "function") callback();
+    } else {
+        var sdcard = "";
+        try {
+            sdcard = navigator.getDeviceStorage("sdcard");
+        } catch (e) {}
+        if ("b2g" in navigator) try {
+            sdcard = navigator.b2g.getDeviceStorage("sdcard");
+        } catch (e) {}
+        var blob1 = new Blob([
+            JSON.stringify(data, null, 2)
+        ], {
+            type: "application/json"
+        });
+        var request = sdcard.addNamed(blob1, "downloads/" + fn);
+        request.onsuccess = function() {
+            $35ef01a7e6390a1e$export$6593825dc0f3a767("file downloaded", 2000);
+        };
+        request.onerror = function() {
+            $35ef01a7e6390a1e$export$6593825dc0f3a767("Unable to download the file, the file probably already exists.", 4000);
+        };
+    }
+};
+var $35ef01a7e6390a1e$export$1405905b32e60d59 = function data_import(filename, data, callback) {
     var fn = filename + "-" + (0, (/*@__PURE__*/$parcel$interopDefault($d389c6496b2a2360$exports)))().format("YYYY-MM-DD_HH-mm-ss") + ".json";
     if ((0, $739f45b10c9a265e$export$471f7ae5c4103ae1).notKaiOS) {
         // Konvertiere das Array in JSON und dann in einen Blob
@@ -6166,7 +6461,6 @@ function $35ef01a7e6390a1e$export$637fd9537164f29b() {
                         mediaRecorder.addEventListener("error", (event)=>{
                             alert(`Error recording stream: ${event.error.name}`);
                         });
-                        console.log("MediaRecorder initialized successfully.");
                         return [
                             3,
                             3
@@ -6242,7 +6536,11 @@ function $35ef01a7e6390a1e$export$637fd9537164f29b() {
                     type: mimeType
                 });
                 recordedChunks = []; // Clear recorded chunks
-                // Clean up resources after recording is stopped
+                /*
+         blob: audioBlob,
+            filename: "",
+            filetype: mimeType,
+            */ // Clean up resources after recording is stopped
                 cleanup();
                 resolve({
                     audioBlob: audioBlob,
@@ -6266,6 +6564,19 @@ function $35ef01a7e6390a1e$export$637fd9537164f29b() {
         startRecording: startRecording,
         stopRecording: stopRecording
     };
+}
+function $35ef01a7e6390a1e$export$70c4ae293293ca1e(buffer) {
+    var bytes = new Uint8Array(buffer);
+    var binary = [
+        ...bytes
+    ].map((b)=>String.fromCharCode(b)).join("");
+    return btoa(binary);
+}
+function $35ef01a7e6390a1e$export$a7a17e76664e3e44(base64) {
+    var binary = atob(base64);
+    var bytes = new Uint8Array(binary.length);
+    for(var i = 0; i < binary.length; i++)bytes[i] = binary.charCodeAt(i);
+    return bytes.buffer;
 }
 
 
@@ -39971,48 +40282,6 @@ var $115d9b3c3926db97$export$185802fd694ee1f5 = (param)=>{
 };
 
 
-function $05938ccb80026880$export$71511d61b312f219(iterable) {
-    var method, async, sync, retry = 2;
-    for("undefined" != typeof Symbol && (async = Symbol.asyncIterator, sync = Symbol.iterator); retry--;){
-        if (async && null != (method = iterable[async])) return method.call(iterable);
-        if (sync && null != (method = iterable[sync])) return new $05938ccb80026880$var$AsyncFromSyncIterator(method.call(iterable));
-        async = "@@asyncIterator", sync = "@@iterator";
-    }
-    throw new TypeError("Object is not async iterable");
-}
-function $05938ccb80026880$var$AsyncFromSyncIterator(s) {
-    function AsyncFromSyncIteratorContinuation(r) {
-        if (Object(r) !== r) return Promise.reject(new TypeError(r + " is not an object."));
-        var done = r.done;
-        return Promise.resolve(r.value).then(function(value) {
-            return {
-                value: value,
-                done: done
-            };
-        });
-    }
-    return $05938ccb80026880$var$AsyncFromSyncIterator = function(s) {
-        this.s = s, this.n = s.next;
-    }, $05938ccb80026880$var$AsyncFromSyncIterator.prototype = {
-        s: null,
-        n: null,
-        next: function() {
-            return AsyncFromSyncIteratorContinuation(this.n.apply(this.s, arguments));
-        },
-        return: function(value) {
-            var ret = this.s.return;
-            return void 0 === ret ? Promise.resolve({
-                value: value,
-                done: !0
-            }) : AsyncFromSyncIteratorContinuation(ret.apply(this.s, arguments));
-        },
-        throw: function(value) {
-            var thr = this.s.return;
-            return void 0 === thr ? Promise.reject(value) : AsyncFromSyncIteratorContinuation(thr.apply(this.s, arguments));
-        }
-    }, new $05938ccb80026880$var$AsyncFromSyncIterator(s);
-}
-
 
 
 
@@ -45021,7 +45290,8 @@ var $739f45b10c9a265e$export$471f7ae5c4103ae1 = {
     groupchat: false,
     history_of_ids: [],
     readyToClose: false,
-    webpush_do_not_annoy: []
+    webpush_do_not_annoy: [],
+    files: []
 };
 var $739f45b10c9a265e$export$a5a6e0b888b2c992 = {};
 var $739f45b10c9a265e$var$userAgent = navigator.userAgent || "";
@@ -45222,8 +45492,7 @@ function $739f45b10c9a265e$var$setupConnectionEvents(conn) {
                     $739f45b10c9a265e$var$messageQueue();
                     if ($739f45b10c9a265e$var$messageQueueStorage.length > 0) // console.log("should send to " + conn.peer);
                     $739f45b10c9a265e$var$messageQueueStorage.map((e)=>{
-                        if (e.to == conn.peer && e.type != "typing") // console.log("try to send");
-                        $739f45b10c9a265e$var$sendMessageToAll(e);
+                        if (e.to == conn.peer && e.type != "typing") $739f45b10c9a265e$var$sendMessageToAll(e);
                     });
                 } catch (e) {}
                 /*
@@ -45382,21 +45651,21 @@ function $739f45b10c9a265e$var$setupConnectionEvents(conn) {
             if (data.type === "audio") {
                 var audioBlob;
                 var mimetype = data.mimeType || "audio/webm";
-                if (data.content instanceof Blob) audioBlob = data.content;
-                else if (data.content instanceof ArrayBuffer || data.content instanceof Uint8Array) audioBlob = new Blob([
-                    data.content
+                if (data.content instanceof Blob) audioBlob = data.audio;
+                else if (data.audio instanceof ArrayBuffer || data.audio instanceof Uint8Array) audioBlob = new Blob([
+                    data.audio
                 ], {
                     type: mimetype
                 });
                 else {
-                    console.error(`Error: Unsupported data.content type. Expected Blob, ArrayBuffer, or Uint8Array, but got: ${typeof data.content}`);
                     (0, $35ef01a7e6390a1e$export$6593825dc0f3a767)("data type not supported", 4000);
                     return;
                 }
                 $739f45b10c9a265e$var$chat_data.push({
                     id: data.id,
                     nickname: data.nickname,
-                    content: audioBlob,
+                    content: "",
+                    audio: audioBlob,
                     datetime: new Date(),
                     type: data.type,
                     from: data.from,
@@ -45678,6 +45947,11 @@ var $739f45b10c9a265e$var$write = function write() {
         $739f45b10c9a265e$export$471f7ae5c4103ae1.action = "";
     }
 };
+//list files
+(0, $35ef01a7e6390a1e$export$99c802f9c0aea792)("json", (e)=>{
+    $739f45b10c9a265e$export$471f7ae5c4103ae1.files.push(e);
+});
+if (!$739f45b10c9a265e$export$471f7ae5c4103ae1.notKaiOS) (0, $35ef01a7e6390a1e$export$99c802f9c0aea792)();
 var $739f45b10c9a265e$var$focus_last_article = function focus_last_article() {
     var j = (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.get();
     if (!j.startsWith("/chat")) return false;
@@ -45693,7 +45967,23 @@ var $739f45b10c9a265e$var$focus_last_article = function focus_last_article() {
         });
     }, 1500);
 };
-function $739f45b10c9a265e$var$sendMessage() {
+var $739f45b10c9a265e$var$import_addressbook = (e)=>{
+    var counter = 0;
+    e.forEach((n)=>{
+        if (!$739f45b10c9a265e$var$addressbook.find((item)=>item.id === n.id)) {
+            $739f45b10c9a265e$var$addressbook.push(n);
+            counter++;
+        }
+    });
+    if (counter > 0) // Save the updated addressbook to localforage
+    (0, (/*@__PURE__*/$parcel$interopDefault($d45e15dd9864d0fd$exports))).setItem("addressbook", $739f45b10c9a265e$var$addressbook).then(()=>{
+        (0, $35ef01a7e6390a1e$export$6593825dc0f3a767)(counter + " users imported", 3000);
+    }).catch((error)=>{
+        console.error("Error saving updated address book:", error);
+    });
+    else (0, $35ef01a7e6390a1e$export$6593825dc0f3a767)("nothing to import", 3000);
+};
+var $739f45b10c9a265e$var$sendMessage = function() {
     var msg = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : "", type = arguments.length > 1 ? arguments[1] : void 0, mimeType = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : "", to = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : $739f45b10c9a265e$export$471f7ae5c4103ae1.current_user_id || "", messageId = arguments.length > 4 && arguments[4] !== void 0 ? arguments[4] : (0, $4a38b578aabfb762$export$2e2bcd8739ae039)(16);
     var message = {};
     //POD
@@ -45726,7 +46016,6 @@ function $739f45b10c9a265e$var$sendMessage() {
         // Encode the file using the FileReader API
         var reader = new FileReader();
         reader.onloadend = ()=>{
-            //  let src = msg.blob ? URL.createObjectURL(msg.blob) : null;
             $739f45b10c9a265e$var$chat_data.push({
                 nickname: $739f45b10c9a265e$export$a5a6e0b888b2c992.nickname,
                 content: "",
@@ -45838,6 +46127,7 @@ function $739f45b10c9a265e$var$sendMessage() {
         $739f45b10c9a265e$var$chat_data.push({
             nickname: $739f45b10c9a265e$export$a5a6e0b888b2c992.nickname,
             content: msg,
+            audio: msg,
             datetime: new Date(),
             type: type,
             mimeType: mimeType,
@@ -45849,6 +46139,7 @@ function $739f45b10c9a265e$var$sendMessage() {
         msg.arrayBuffer().then((buffer)=>{
             var messageToSend = {
                 content: buffer,
+                audio: buffer,
                 nickname: $739f45b10c9a265e$export$a5a6e0b888b2c992.nickname,
                 type: type,
                 mimeType: mimeType,
@@ -45859,7 +46150,7 @@ function $739f45b10c9a265e$var$sendMessage() {
             console.error("Error converting Blob to ArrayBuffer:", error);
         });
     }
-}
+};
 var $739f45b10c9a265e$var$messageQueueStorage = [];
 var $739f45b10c9a265e$var$messageQueue = (m)=>{
     (0, (/*@__PURE__*/$parcel$interopDefault($d45e15dd9864d0fd$exports))).getItem("messageQueue").then((e)=>{
@@ -46736,6 +47027,53 @@ var $739f45b10c9a265e$var$waiting = {
         ]);
     }
 };
+var $739f45b10c9a265e$var$filelist = {
+    oninit: ()=>{
+        $739f45b10c9a265e$var$key_delay();
+        (0, $35ef01a7e6390a1e$export$7ce2ea7c45ae9a07)("", "", "");
+        (0, $35ef01a7e6390a1e$export$247be4ede8e3a24a)("", "", "");
+    },
+    onremove: ()=>{
+        $739f45b10c9a265e$var$key_delay();
+    },
+    view: function view() {
+        return (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
+            id: "filelist",
+            class: "width-100 height-100 page"
+        }, $739f45b10c9a265e$export$471f7ae5c4103ae1.files.map((e, i)=>{
+            if (e.includes("flop-addressbook")) return (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("button", {
+                class: "item button-marquee",
+                oncreate: (param)=>{
+                    var dom = param.dom;
+                    (0, $35ef01a7e6390a1e$export$6c04b58eee2a9a32)();
+                    if (i == 0) dom.focus();
+                },
+                onclick: ()=>{
+                    var cb = (a)=>{
+                        var reader = new FileReader();
+                        reader.onload = ()=>{
+                            var text = reader.result;
+                            try {
+                                var data = JSON.parse(text);
+                                $739f45b10c9a265e$var$import_addressbook(data);
+                                (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("/start");
+                            } catch (e) {
+                                alert("Ung\xfcltiges JSON:\n" + e.message);
+                            }
+                        };
+                        reader.onerror = ()=>{
+                            alert("can't read file");
+                        };
+                        reader.readAsText(a);
+                    };
+                    (0, $35ef01a7e6390a1e$export$16146fefff7e9a3b)(e, cb);
+                }
+            }, [
+                (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("span", e.split("/").pop())
+            ]);
+        }));
+    }
+};
 var $739f45b10c9a265e$var$about = {
     oninit: ()=>{
         $739f45b10c9a265e$var$key_delay();
@@ -46798,7 +47136,13 @@ var $739f45b10c9a265e$var$about = {
             (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("button", {
                 class: "item",
                 onclick: ()=>{
-                    (0, $35ef01a7e6390a1e$export$f32267c926f4f63e)("flop", $739f45b10c9a265e$var$chat_data_history, ()=>{
+                    //convert to base64
+                    var a = $739f45b10c9a265e$var$chat_data_history.map((e)=>{
+                        return (0, $84195635a8675dae$export$71511d61b312f219)((0, $2a96eb02b266e888$export$71511d61b312f219)({}, e), {
+                            audio: e.audio ? (0, $35ef01a7e6390a1e$export$70c4ae293293ca1e)(e.audio) : undefined
+                        });
+                    });
+                    (0, $35ef01a7e6390a1e$export$f32267c926f4f63e)("flop", a, ()=>{
                         (0, $35ef01a7e6390a1e$export$6593825dc0f3a767)("download finished", 3000);
                     });
                 }
@@ -46811,6 +47155,16 @@ var $739f45b10c9a265e$var$about = {
                     });
                 }
             }, "download addressbook"),
+            (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("button", {
+                class: "item",
+                onclick: ()=>{
+                    var cb = (e)=>{
+                        $739f45b10c9a265e$var$import_addressbook(e.json);
+                    };
+                    if ($739f45b10c9a265e$export$471f7ae5c4103ae1.notKaiOS) (0, $35ef01a7e6390a1e$export$174eed84b3e9654b)(cb);
+                    else (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("/filelist");
+                }
+            }, "import addressbook"),
             $739f45b10c9a265e$export$471f7ae5c4103ae1.addressbook_in_focus !== "" ? (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("button", {
                 class: "item",
                 onclick: ()=>{
@@ -47200,8 +47554,7 @@ var $739f45b10c9a265e$var$options = {
                     (0, $35ef01a7e6390a1e$export$247be4ede8e3a24a)("", "", "");
                 },
                 onclick: function onclick() {
-                    if ($739f45b10c9a265e$export$471f7ae5c4103ae1.userOnline > 0) (0, $35ef01a7e6390a1e$export$6714d0f9237d35de)($739f45b10c9a265e$var$handleImage);
-                    else (0, $35ef01a7e6390a1e$export$6593825dc0f3a767)("no user online", 3000);
+                    (0, $35ef01a7e6390a1e$export$6714d0f9237d35de)($739f45b10c9a265e$var$handleImage);
                 }
             }, "share image"),
             $739f45b10c9a265e$export$471f7ae5c4103ae1.current_user_id ? (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("button", {
@@ -47312,8 +47665,6 @@ var $739f45b10c9a265e$var$start = {
             id: "start",
             oncreate: ()=>{
                 (0, $35ef01a7e6390a1e$export$7ce2ea7c45ae9a07)("", "", "");
-                document.getElementById("app").style.opacity = "1";
-                document.querySelector(".playing").style.top = "-1000%";
                 //auto connect if id is given
                 (0, (/*@__PURE__*/$parcel$interopDefault($d45e15dd9864d0fd$exports))).getItem("connect_to_id").then((e)=>{
                     if (e && e.data) {
@@ -47747,7 +48098,8 @@ var $739f45b10c9a265e$var$intro = {
     "/map_view": $739f45b10c9a265e$var$map_view,
     "/waiting": $739f45b10c9a265e$var$waiting,
     "/invite": $739f45b10c9a265e$var$invite,
-    "/audiorecorder_view": $739f45b10c9a265e$var$audiorecorder_view
+    "/audiorecorder_view": $739f45b10c9a265e$var$audiorecorder_view,
+    "/filelist": $739f45b10c9a265e$var$filelist
 });
 function $739f45b10c9a265e$var$scrollToCenter() {
     var activeElement = document.activeElement;
@@ -48063,6 +48415,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
                 (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("/start");
                 $739f45b10c9a265e$export$471f7ae5c4103ae1.action = "";
             }
+            if ((0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.get() == "/filelist") (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("/about");
             if (route.startsWith("/chat?") || (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.get() == "/settings_page" || (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.get() == "/about" || route.startsWith("/map_view") || route.startsWith("/waiting") || route.startsWith("/invite")) {
                 evt.preventDefault();
                 (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("/start");
