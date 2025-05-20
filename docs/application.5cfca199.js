@@ -3179,6 +3179,7 @@ function $576d0b8f9c289535$export$71511d61b312f219(obj, key, value) {
 }
 
 
+
 function $7d9dc0a4a5ea26ca$export$71511d61b312f219(target) {
     for(var i = 1; i < arguments.length; i++){
         var source = arguments[i] != null ? arguments[i] : {};
@@ -46679,6 +46680,7 @@ function $2f28d269c6e274ea$var$setupConnectionEvents(conn) {
         } catch (err) {
             console.error(err);
         }
+        console.log(data);
         //Message-POD
         if (data.type == "pod") {
             var a = $2f28d269c6e274ea$var$chat_data.find(function(e) {
@@ -46724,7 +46726,7 @@ function $2f28d269c6e274ea$var$setupConnectionEvents(conn) {
                 $2f28d269c6e274ea$var$chat_data.push({
                     nickname: data.nickname,
                     content: "",
-                    datetime: new Date(),
+                    datetime: data.datetime || new Date(),
                     image: data.file,
                     filename: data.filename,
                     type: data.type,
@@ -46749,7 +46751,7 @@ function $2f28d269c6e274ea$var$setupConnectionEvents(conn) {
                     id: data.id,
                     nickname: data.nickname,
                     content: data.content,
-                    datetime: new Date(),
+                    datetime: data.datetime || new Date(),
                     type: data.type,
                     from: data.from,
                     to: data.to
@@ -46784,7 +46786,7 @@ function $2f28d269c6e274ea$var$setupConnectionEvents(conn) {
                     nickname: data.nickname,
                     content: "",
                     audio: audioBlob,
-                    datetime: new Date(),
+                    datetime: data.datetime || new Date(),
                     type: data.type,
                     from: data.from,
                     to: data.to
@@ -46798,7 +46800,7 @@ function $2f28d269c6e274ea$var$setupConnectionEvents(conn) {
                     id: data.id,
                     nickname: data.nickname,
                     content: link_url,
-                    datetime: new Date(),
+                    datetime: data.datetime || new Date(),
                     type: data.type,
                     gps: data.content,
                     from: data.from,
@@ -46832,7 +46834,7 @@ function $2f28d269c6e274ea$var$setupConnectionEvents(conn) {
                     id: data.id,
                     nickname: data.nickname,
                     content: link_url1,
-                    datetime: new Date(),
+                    datetime: data.datetime || new Date(),
                     type: data.type,
                     gps: data.content,
                     from: data.from,
@@ -47165,7 +47167,8 @@ var $2f28d269c6e274ea$var$sendMessage = function() {
                 nickname: $2f28d269c6e274ea$export$a5a6e0b888b2c992.nickname,
                 type: type,
                 mimeType: mimeType,
-                id: messageId
+                id: messageId,
+                datetime: new Date()
             };
             $2f28d269c6e274ea$var$sendMessageToAll(message);
             $2f28d269c6e274ea$var$focus_last_article();
@@ -47184,9 +47187,10 @@ var $2f28d269c6e274ea$var$sendMessage = function() {
             type: type,
             content: msg,
             mimeType: mimeType,
-            id: messageId
+            id: messageId,
+            datetime: new Date()
         };
-        $2f28d269c6e274ea$var$chat_data.push({
+        $2f28d269c6e274ea$var$chat_data.push((0, $576d0b8f9c289535$export$71511d61b312f219)({
             nickname: $2f28d269c6e274ea$export$a5a6e0b888b2c992.nickname,
             content: msg,
             datetime: new Date(),
@@ -47195,7 +47199,7 @@ var $2f28d269c6e274ea$var$sendMessage = function() {
             from: $2f28d269c6e274ea$export$a5a6e0b888b2c992.custom_peer_id,
             to: to,
             id: messageId
-        });
+        }, "datetime", new Date()));
         $2f28d269c6e274ea$var$sendMessageToAll(message);
         $2f28d269c6e274ea$var$focus_last_article();
         $2f28d269c6e274ea$var$write();
@@ -47223,7 +47227,8 @@ var $2f28d269c6e274ea$var$sendMessage = function() {
             type: type,
             gps: msg,
             mimeType: mimeType,
-            id: messageId
+            id: messageId,
+            datetime: new Date()
         };
         $2f28d269c6e274ea$var$sendMessageToAll(message);
     }
@@ -47267,15 +47272,16 @@ var $2f28d269c6e274ea$var$sendMessage = function() {
         });
         $2f28d269c6e274ea$var$focus_last_article();
         msg.arrayBuffer().then(function(buffer) {
-            var messageToSend = {
+            message = {
                 content: buffer,
                 audio: buffer,
                 nickname: $2f28d269c6e274ea$export$a5a6e0b888b2c992.nickname,
                 type: type,
                 mimeType: mimeType,
-                id: messageId
+                id: messageId,
+                datetime: new Date()
             };
-            $2f28d269c6e274ea$var$sendMessageToAll(messageToSend);
+            $2f28d269c6e274ea$var$sendMessageToAll(message);
         })["catch"](function(error) {
             console.error("Error converting Blob to ArrayBuffer:", error);
         });
@@ -47359,26 +47365,18 @@ function $2f28d269c6e274ea$var$_sendMessageToAll() {
                         e.send(message);
                     });
                     if (message.type == "pod") console.log("send pod");
-                    else {
-                        setTimeout(function() {
-                            var result = $2f28d269c6e274ea$var$chat_data.find(function(e) {
-                                return e.id === message.id && e.pod == true;
-                            });
-                            if (!result) //store and send later
-                            {
-                                if (message.type != "typing") {
-                                    console.log("store it to send it later");
-                                    $2f28d269c6e274ea$var$messageQueue(message);
-                                }
+                    else setTimeout(function() {
+                        var result = $2f28d269c6e274ea$var$chat_data.find(function(e) {
+                            return e.id === message.id && e.pod == true;
+                        });
+                        if (!result) //store and send later
+                        {
+                            if (message.type != "typing") {
+                                console.log("store it to send it later");
+                                $2f28d269c6e274ea$var$messageQueue(message);
                             }
-                        }, 5000);
-                        setTimeout(function() {
-                            var result = $2f28d269c6e274ea$var$messageQueueStorage.find(function(e) {
-                                return e.id === message.id;
-                            });
-                            result;
-                        }, 5000);
-                    }
+                        }
+                    }, 5000);
                     return [
                         4,
                         $2f28d269c6e274ea$var$storeChatData()
@@ -47788,7 +47786,7 @@ function $2f28d269c6e274ea$var$_checkStorageUsage() {
 }
 // Aufruf der Funktion
 $2f28d269c6e274ea$var$checkStorageUsage();
-// Function to store chat data
+//store chat data
 var $2f28d269c6e274ea$var$storeChatData = /*#__PURE__*/ function() {
     var _ref = (0, $3369150ff013c19a$export$71511d61b312f219)(function() {
         var newData, // Append new data to history
@@ -47803,7 +47801,11 @@ var $2f28d269c6e274ea$var$storeChatData = /*#__PURE__*/ function() {
             if (newData.length > 0) {
                 ;
                 (_chat_data_history = $2f28d269c6e274ea$var$chat_data_history).push.apply(_chat_data_history, (0, $2f989756f431e05e$export$71511d61b312f219)(newData));
-                // Save updated history to local storage
+                // Sort by datetime
+                $2f28d269c6e274ea$var$chat_data_history.sort(function(a, b) {
+                    return new Date(a.datetime) - new Date(b.datetime);
+                });
+                // Save to localForage
                 (0, (/*@__PURE__*/$parcel$interopDefault($bdfc69295b6cf103$exports))).setItem("chatData", $2f28d269c6e274ea$var$chat_data_history).then(function() {
                     console.log("data stored");
                 });
@@ -48212,9 +48214,7 @@ var $2f28d269c6e274ea$var$filelist = {
                                 var data = JSON.parse(text);
                                 $2f28d269c6e274ea$var$import_addressbook(data);
                                 (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports))).route.set("/start");
-                            } catch (e) {
-                                alert("Ung\xfcltiges JSON:\n" + e.message);
-                            }
+                            } catch (e) {}
                         };
                         reader.onerror = function() {
                             alert("can't read file");

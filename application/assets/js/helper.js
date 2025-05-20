@@ -1013,15 +1013,10 @@ export function createAudioRecorder() {
       }
 
       mediaRecorder.onstop = () => {
-        const mimeType = mediaRecorder.mimeType || "audio/wav"; // Fallback MIME type
+        const mimeType = recordedChunks[0]?.type || mediaRecorder.mimeType;
+
         const audioBlob = new Blob(recordedChunks, { type: mimeType });
         recordedChunks = []; // Clear recorded chunks
-
-        /*
-         blob: audioBlob,
-            filename: "",
-            filetype: mimeType,
-            */
 
         // Clean up resources after recording is stopped
         cleanup();

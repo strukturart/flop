@@ -449,6 +449,8 @@ function setupConnectionEvents(conn) {
       console.error(err);
     }
 
+    console.log(data);
+
     //Message-POD
     if (data.type == "pod") {
       let a = chat_data.find((e) => {
@@ -504,7 +506,7 @@ function setupConnectionEvents(conn) {
         chat_data.push({
           nickname: data.nickname,
           content: "",
-          datetime: new Date(),
+          datetime: data.datetime || new Date(),
           image: data.file,
           filename: data.filename,
           type: data.type,
@@ -536,7 +538,7 @@ function setupConnectionEvents(conn) {
           id: data.id,
           nickname: data.nickname,
           content: data.content,
-          datetime: new Date(),
+          datetime: data.datetime || new Date(),
           type: data.type,
           from: data.from,
           to: data.to,
@@ -584,7 +586,7 @@ function setupConnectionEvents(conn) {
           nickname: data.nickname,
           content: "",
           audio: audioBlob,
-          datetime: new Date(),
+          datetime: data.datetime || new Date(),
           type: data.type,
           from: data.from,
           to: data.to,
@@ -603,7 +605,7 @@ function setupConnectionEvents(conn) {
           id: data.id,
           nickname: data.nickname,
           content: link_url,
-          datetime: new Date(),
+          datetime: data.datetime || new Date(),
           type: data.type,
           gps: data.content,
           from: data.from,
@@ -645,7 +647,7 @@ function setupConnectionEvents(conn) {
             id: data.id,
             nickname: data.nickname,
             content: link_url,
-            datetime: new Date(),
+            datetime: data.datetime || new Date(),
             type: data.type,
             gps: data.content,
             from: data.from,
@@ -1037,6 +1039,7 @@ let sendMessage = (
         type: type,
         mimeType: mimeType,
         id: messageId,
+        datetime: new Date(),
       };
       sendMessageToAll(message);
 
@@ -1059,6 +1062,7 @@ let sendMessage = (
       content: msg,
       mimeType: mimeType,
       id: messageId,
+      datetime: new Date(),
     };
     chat_data.push({
       nickname: settings.nickname,
@@ -1069,6 +1073,7 @@ let sendMessage = (
       from: settings.custom_peer_id,
       to: to,
       id: messageId,
+      datetime: new Date(),
     });
 
     sendMessageToAll(message);
@@ -1106,6 +1111,7 @@ let sendMessage = (
       gps: msg,
       mimeType: mimeType,
       id: messageId,
+      datetime: new Date(),
     };
 
     sendMessageToAll(message);
@@ -1144,7 +1150,7 @@ let sendMessage = (
   if (type === "audio") {
     chat_data.push({
       nickname: settings.nickname,
-      content: msg,
+      content: "",
       audio: msg,
       datetime: new Date(),
       type: type,
@@ -1159,15 +1165,16 @@ let sendMessage = (
     msg
       .arrayBuffer()
       .then((buffer) => {
-        const messageToSend = {
-          content: buffer,
+        message = {
+          content: "",
           audio: buffer,
           nickname: settings.nickname,
           type: type,
           mimeType: mimeType,
           id: messageId,
+          datetime: new Date(),
         };
-        sendMessageToAll(messageToSend);
+        sendMessageToAll(message);
       })
       .catch((error) => {
         console.error("Error converting Blob to ArrayBuffer:", error);
@@ -1264,15 +1271,6 @@ async function sendMessageToAll(message) {
 
           messageQueue(message);
         }
-      }
-    }, 5000);
-
-    setTimeout(() => {
-      const result = messageQueueStorage.find((e) => e.id === message.id);
-      if (result) {
-        //console.log("POD  OK");
-      } else {
-        //console.log("POD not OK:");
       }
     }, 5000);
   }
@@ -1632,7 +1630,7 @@ async function checkStorageUsage() {
 // Aufruf der Funktion
 checkStorageUsage();
 
-// Function to store chat data
+//store chat data
 let storeChatData = async () => {
   // Ensure only new data is added
   let newData = chat_data.filter((item) => {
@@ -1645,7 +1643,12 @@ let storeChatData = async () => {
     // Append new data to history
     chat_data_history.push(...newData);
 
-    // Save updated history to local storage
+    // Sort by datetime
+    chat_data_history.sort(
+      (a, b) => new Date(a.datetime) - new Date(b.datetime)
+    );
+
+    // Save to localForage
     localforage.setItem("chatData", chat_data_history).then(() => {
       console.log("data stored");
     });
@@ -2048,9 +2051,7 @@ var filelist = {
                       import_addressbook(data);
 
                       m.route.set("/start");
-                    } catch (e) {
-                      alert("Ungültiges JSON:\n" + e.message);
-                    }
+                    } catch (e) {}
                   };
 
                   reader.onerror = () => {
@@ -3501,7 +3502,7 @@ var chat = {
                     class: "audioplayer",
                   },
 
-                  m(AudioComponent, { src: item.content })
+                  m(AudioComponent, { src: item.audio })
                 )
               : null,
 

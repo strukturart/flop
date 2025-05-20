@@ -45565,6 +45565,7 @@ function $739f45b10c9a265e$var$setupConnectionEvents(conn) {
         } catch (err) {
             console.error(err);
         }
+        console.log(data);
         //Message-POD
         if (data.type == "pod") {
             var a = $739f45b10c9a265e$var$chat_data.find((e)=>{
@@ -45606,7 +45607,7 @@ function $739f45b10c9a265e$var$setupConnectionEvents(conn) {
                 $739f45b10c9a265e$var$chat_data.push({
                     nickname: data.nickname,
                     content: "",
-                    datetime: new Date(),
+                    datetime: data.datetime || new Date(),
                     image: data.file,
                     filename: data.filename,
                     type: data.type,
@@ -45631,7 +45632,7 @@ function $739f45b10c9a265e$var$setupConnectionEvents(conn) {
                     id: data.id,
                     nickname: data.nickname,
                     content: data.content,
-                    datetime: new Date(),
+                    datetime: data.datetime || new Date(),
                     type: data.type,
                     from: data.from,
                     to: data.to
@@ -45666,7 +45667,7 @@ function $739f45b10c9a265e$var$setupConnectionEvents(conn) {
                     nickname: data.nickname,
                     content: "",
                     audio: audioBlob,
-                    datetime: new Date(),
+                    datetime: data.datetime || new Date(),
                     type: data.type,
                     from: data.from,
                     to: data.to
@@ -45680,7 +45681,7 @@ function $739f45b10c9a265e$var$setupConnectionEvents(conn) {
                     id: data.id,
                     nickname: data.nickname,
                     content: link_url,
-                    datetime: new Date(),
+                    datetime: data.datetime || new Date(),
                     type: data.type,
                     gps: data.content,
                     from: data.from,
@@ -45710,7 +45711,7 @@ function $739f45b10c9a265e$var$setupConnectionEvents(conn) {
                     id: data.id,
                     nickname: data.nickname,
                     content: link_url1,
-                    datetime: new Date(),
+                    datetime: data.datetime || new Date(),
                     type: data.type,
                     gps: data.content,
                     from: data.from,
@@ -46035,7 +46036,8 @@ var $739f45b10c9a265e$var$sendMessage = function() {
                 nickname: $739f45b10c9a265e$export$a5a6e0b888b2c992.nickname,
                 type: type,
                 mimeType: mimeType,
-                id: messageId
+                id: messageId,
+                datetime: new Date()
             };
             $739f45b10c9a265e$var$sendMessageToAll(message);
             $739f45b10c9a265e$var$focus_last_article();
@@ -46054,7 +46056,8 @@ var $739f45b10c9a265e$var$sendMessage = function() {
             type: type,
             content: msg,
             mimeType: mimeType,
-            id: messageId
+            id: messageId,
+            datetime: new Date()
         };
         $739f45b10c9a265e$var$chat_data.push({
             nickname: $739f45b10c9a265e$export$a5a6e0b888b2c992.nickname,
@@ -46064,7 +46067,8 @@ var $739f45b10c9a265e$var$sendMessage = function() {
             mimeType: mimeType,
             from: $739f45b10c9a265e$export$a5a6e0b888b2c992.custom_peer_id,
             to: to,
-            id: messageId
+            id: messageId,
+            datetime: new Date()
         });
         $739f45b10c9a265e$var$sendMessageToAll(message);
         $739f45b10c9a265e$var$focus_last_article();
@@ -46093,7 +46097,8 @@ var $739f45b10c9a265e$var$sendMessage = function() {
             type: type,
             gps: msg,
             mimeType: mimeType,
-            id: messageId
+            id: messageId,
+            datetime: new Date()
         };
         $739f45b10c9a265e$var$sendMessageToAll(message);
     }
@@ -46137,15 +46142,16 @@ var $739f45b10c9a265e$var$sendMessage = function() {
         });
         $739f45b10c9a265e$var$focus_last_article();
         msg.arrayBuffer().then((buffer)=>{
-            var messageToSend = {
+            message = {
                 content: buffer,
                 audio: buffer,
                 nickname: $739f45b10c9a265e$export$a5a6e0b888b2c992.nickname,
                 type: type,
                 mimeType: mimeType,
-                id: messageId
+                id: messageId,
+                datetime: new Date()
             };
-            $739f45b10c9a265e$var$sendMessageToAll(messageToSend);
+            $739f45b10c9a265e$var$sendMessageToAll(message);
         }).catch((error)=>{
             console.error("Error converting Blob to ArrayBuffer:", error);
         });
@@ -46227,22 +46233,16 @@ function $739f45b10c9a265e$var$_sendMessageToAll() {
                         e.send(message);
                     });
                     if (message.type == "pod") console.log("send pod");
-                    else {
-                        setTimeout(()=>{
-                            var result = $739f45b10c9a265e$var$chat_data.find((e)=>e.id === message.id && e.pod == true);
-                            if (!result) //store and send later
-                            {
-                                if (message.type != "typing") {
-                                    console.log("store it to send it later");
-                                    $739f45b10c9a265e$var$messageQueue(message);
-                                }
+                    else setTimeout(()=>{
+                        var result = $739f45b10c9a265e$var$chat_data.find((e)=>e.id === message.id && e.pod == true);
+                        if (!result) //store and send later
+                        {
+                            if (message.type != "typing") {
+                                console.log("store it to send it later");
+                                $739f45b10c9a265e$var$messageQueue(message);
                             }
-                        }, 5000);
-                        setTimeout(()=>{
-                            var result = $739f45b10c9a265e$var$messageQueueStorage.find((e)=>e.id === message.id);
-                            result;
-                        }, 5000);
-                    }
+                        }
+                    }, 5000);
                     return [
                         4,
                         $739f45b10c9a265e$var$storeChatData()
@@ -46642,7 +46642,7 @@ function $739f45b10c9a265e$var$_checkStorageUsage() {
 }
 // Aufruf der Funktion
 $739f45b10c9a265e$var$checkStorageUsage();
-// Function to store chat data
+//store chat data
 var $739f45b10c9a265e$var$storeChatData = /*#__PURE__*/ function() {
     var _ref = (0, $034ee189aafc6ae8$export$71511d61b312f219)(function() {
         var newData;
@@ -46654,7 +46654,9 @@ var $739f45b10c9a265e$var$storeChatData = /*#__PURE__*/ function() {
             if (newData.length > 0) {
                 // Append new data to history
                 $739f45b10c9a265e$var$chat_data_history.push(...newData);
-                // Save updated history to local storage
+                // Sort by datetime
+                $739f45b10c9a265e$var$chat_data_history.sort((a, b)=>new Date(a.datetime) - new Date(b.datetime));
+                // Save to localForage
                 (0, (/*@__PURE__*/$parcel$interopDefault($d45e15dd9864d0fd$exports))).setItem("chatData", $739f45b10c9a265e$var$chat_data_history).then(()=>{
                     console.log("data stored");
                 });
@@ -47057,9 +47059,7 @@ var $739f45b10c9a265e$var$filelist = {
                                 var data = JSON.parse(text);
                                 $739f45b10c9a265e$var$import_addressbook(data);
                                 (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("/start");
-                            } catch (e) {
-                                alert("Ung\xfcltiges JSON:\n" + e.message);
-                            }
+                            } catch (e) {}
                         };
                         reader.onerror = ()=>{
                             alert("can't read file");
