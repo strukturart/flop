@@ -2516,6 +2516,9070 @@ function $84195635a8675dae$export$71511d61b312f219(target, source) {
 
 
 var $7rZYk = parcelRequire("7rZYk");
+'use strict';
+'use strict';
+var $a4386f1de3d17f70$exports = {};
+'use strict';
+var $6bb4f585dbcccb10$exports = {};
+'use strict';
+var $6bb4f585dbcccb10$var$check = function check(it) {
+    return it && it.Math === Math && it;
+};
+// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+$6bb4f585dbcccb10$exports = // eslint-disable-next-line es/no-global-this -- safe
+$6bb4f585dbcccb10$var$check(typeof globalThis == 'object' && globalThis) || $6bb4f585dbcccb10$var$check(typeof window == 'object' && window) || // eslint-disable-next-line no-restricted-globals -- safe
+$6bb4f585dbcccb10$var$check(typeof self == 'object' && self) || $6bb4f585dbcccb10$var$check(typeof $parcel$global == 'object' && $parcel$global) || $6bb4f585dbcccb10$var$check(typeof $6bb4f585dbcccb10$exports == 'object' && $6bb4f585dbcccb10$exports) || // eslint-disable-next-line no-new-func -- fallback
+function() {
+    return this;
+}() || Function('return this')();
+
+
+var $efb277c423a0f6b2$exports = {};
+
+$parcel$export($efb277c423a0f6b2$exports, "f", () => $efb277c423a0f6b2$export$2d1720544b23b823, (v) => $efb277c423a0f6b2$export$2d1720544b23b823 = v);
+// `Object.getOwnPropertyDescriptor` method
+// https://tc39.es/ecma262/#sec-object.getownpropertydescriptor
+var $efb277c423a0f6b2$export$2d1720544b23b823;
+'use strict';
+var $9ad58a245a9ea542$exports = {};
+'use strict';
+var $8d47fb0f9458aed6$exports = {};
+'use strict';
+$8d47fb0f9458aed6$exports = function(exec) {
+    try {
+        return !!exec();
+    } catch (error) {
+        return true;
+    }
+};
+
+
+// Detect IE8's incomplete defineProperty implementation
+$9ad58a245a9ea542$exports = !$8d47fb0f9458aed6$exports(function() {
+    // eslint-disable-next-line es/no-object-defineproperty -- required for testing
+    return Object.defineProperty({}, 1, {
+        get: function get() {
+            return 7;
+        }
+    })[1] !== 7;
+});
+
+
+var $b51eee67d287dc0c$exports = {};
+'use strict';
+var $929ca55955eb4ac3$exports = {};
+'use strict';
+
+$929ca55955eb4ac3$exports = !$8d47fb0f9458aed6$exports(function() {
+    // eslint-disable-next-line es/no-function-prototype-bind -- safe
+    var test = (function() {}).bind();
+    // eslint-disable-next-line no-prototype-builtins -- safe
+    return typeof test != 'function' || test.hasOwnProperty('prototype');
+});
+
+
+var $b51eee67d287dc0c$var$call = Function.prototype.call;
+// eslint-disable-next-line es/no-function-prototype-bind -- safe
+$b51eee67d287dc0c$exports = $929ca55955eb4ac3$exports ? $b51eee67d287dc0c$var$call.bind($b51eee67d287dc0c$var$call) : function() {
+    return $b51eee67d287dc0c$var$call.apply($b51eee67d287dc0c$var$call, arguments);
+};
+
+
+var $eeef746029dc98c3$exports = {};
+
+$parcel$export($eeef746029dc98c3$exports, "f", () => $eeef746029dc98c3$export$2d1720544b23b823, (v) => $eeef746029dc98c3$export$2d1720544b23b823 = v);
+// `Object.prototype.propertyIsEnumerable` method implementation
+// https://tc39.es/ecma262/#sec-object.prototype.propertyisenumerable
+var $eeef746029dc98c3$export$2d1720544b23b823;
+'use strict';
+var $eeef746029dc98c3$var$$propertyIsEnumerable = {}.propertyIsEnumerable;
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var $eeef746029dc98c3$var$getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+// Nashorn ~ JDK8 bug
+var $eeef746029dc98c3$var$NASHORN_BUG = $eeef746029dc98c3$var$getOwnPropertyDescriptor && !$eeef746029dc98c3$var$$propertyIsEnumerable.call({
+    1: 2
+}, 1);
+$eeef746029dc98c3$export$2d1720544b23b823 = $eeef746029dc98c3$var$NASHORN_BUG ? function propertyIsEnumerable(V) {
+    var descriptor = $eeef746029dc98c3$var$getOwnPropertyDescriptor(this, V);
+    return !!descriptor && descriptor.enumerable;
+} : $eeef746029dc98c3$var$$propertyIsEnumerable;
+
+
+var $28b05b782a3d40a0$exports = {};
+'use strict';
+$28b05b782a3d40a0$exports = function(bitmap, value) {
+    return {
+        enumerable: !(bitmap & 1),
+        configurable: !(bitmap & 2),
+        writable: !(bitmap & 4),
+        value: value
+    };
+};
+
+
+var $c4c6f95ea09874f7$exports = {};
+'use strict';
+var $f3be2955fe886944$exports = {};
+'use strict';
+var $a6ad1e8ada886a6e$exports = {};
+'use strict';
+
+var $a6ad1e8ada886a6e$var$FunctionPrototype = Function.prototype;
+var $a6ad1e8ada886a6e$var$call = $a6ad1e8ada886a6e$var$FunctionPrototype.call;
+// eslint-disable-next-line es/no-function-prototype-bind -- safe
+var $a6ad1e8ada886a6e$var$uncurryThisWithBind = $929ca55955eb4ac3$exports && $a6ad1e8ada886a6e$var$FunctionPrototype.bind.bind($a6ad1e8ada886a6e$var$call, $a6ad1e8ada886a6e$var$call);
+$a6ad1e8ada886a6e$exports = $929ca55955eb4ac3$exports ? $a6ad1e8ada886a6e$var$uncurryThisWithBind : function(fn) {
+    return function() {
+        return $a6ad1e8ada886a6e$var$call.apply(fn, arguments);
+    };
+};
+
+
+
+var $46b0c974b8e64b7f$exports = {};
+'use strict';
+
+var $46b0c974b8e64b7f$var$toString = $a6ad1e8ada886a6e$exports({}.toString);
+var $46b0c974b8e64b7f$var$stringSlice = $a6ad1e8ada886a6e$exports(''.slice);
+$46b0c974b8e64b7f$exports = function(it) {
+    return $46b0c974b8e64b7f$var$stringSlice($46b0c974b8e64b7f$var$toString(it), 8, -1);
+};
+
+
+var $f3be2955fe886944$var$$Object = Object;
+var $f3be2955fe886944$var$split = $a6ad1e8ada886a6e$exports(''.split);
+// fallback for non-array-like ES3 and non-enumerable old V8 strings
+$f3be2955fe886944$exports = $8d47fb0f9458aed6$exports(function() {
+    // throws an error in rhino, see https://github.com/mozilla/rhino/issues/346
+    // eslint-disable-next-line no-prototype-builtins -- safe
+    return !$f3be2955fe886944$var$$Object('z').propertyIsEnumerable(0);
+}) ? function(it) {
+    return $46b0c974b8e64b7f$exports(it) === 'String' ? $f3be2955fe886944$var$split(it, '') : $f3be2955fe886944$var$$Object(it);
+} : $f3be2955fe886944$var$$Object;
+
+
+var $fa9aece4d6f487b9$exports = {};
+'use strict';
+var $57696a8ecf346488$exports = {};
+'use strict';
+// we can't use just `it == null` since of `document.all` special case
+// https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot-aec
+$57696a8ecf346488$exports = function(it) {
+    return it === null || it === undefined;
+};
+
+
+var $fa9aece4d6f487b9$var$$TypeError = TypeError;
+// `RequireObjectCoercible` abstract operation
+// https://tc39.es/ecma262/#sec-requireobjectcoercible
+$fa9aece4d6f487b9$exports = function(it) {
+    if ($57696a8ecf346488$exports(it)) throw new $fa9aece4d6f487b9$var$$TypeError("Can't call method on " + it);
+    return it;
+};
+
+
+$c4c6f95ea09874f7$exports = function(it) {
+    return $f3be2955fe886944$exports($fa9aece4d6f487b9$exports(it));
+};
+
+
+var $5048c15693b2c826$exports = {};
+'use strict';
+var $0f8c94f35612cc25$exports = {};
+'use strict';
+
+var $a5247cee30afd31c$exports = {};
+'use strict';
+var $56269d2914fd05c7$exports = {};
+'use strict';
+// https://tc39.es/ecma262/#sec-IsHTMLDDA-internal-slot
+var $56269d2914fd05c7$var$documentAll = typeof document == 'object' && document.all;
+// `IsCallable` abstract operation
+// https://tc39.es/ecma262/#sec-iscallable
+// eslint-disable-next-line unicorn/no-typeof-undefined -- required for testing
+$56269d2914fd05c7$exports = typeof $56269d2914fd05c7$var$documentAll == 'undefined' && $56269d2914fd05c7$var$documentAll !== undefined ? function(argument) {
+    return typeof argument == 'function' || argument === $56269d2914fd05c7$var$documentAll;
+} : function(argument) {
+    return typeof argument == 'function';
+};
+
+
+$a5247cee30afd31c$exports = function(it) {
+    return typeof it == 'object' ? it !== null : $56269d2914fd05c7$exports(it);
+};
+
+
+var $5f60f1f0b0535210$exports = {};
+'use strict';
+var $7ab1ca27f8995b05$exports = {};
+'use strict';
+
+
+var $7ab1ca27f8995b05$var$aFunction = function aFunction(argument) {
+    return $56269d2914fd05c7$exports(argument) ? argument : undefined;
+};
+$7ab1ca27f8995b05$exports = function(namespace, method) {
+    return arguments.length < 2 ? $7ab1ca27f8995b05$var$aFunction($6bb4f585dbcccb10$exports[namespace]) : $6bb4f585dbcccb10$exports[namespace] && $6bb4f585dbcccb10$exports[namespace][method];
+};
+
+
+
+var $c4802cfd914fa45d$exports = {};
+'use strict';
+
+$c4802cfd914fa45d$exports = $a6ad1e8ada886a6e$exports({}.isPrototypeOf);
+
+
+var $2789ea6069d7c10d$exports = {};
+'use strict';
+var $ff32005ee87cc127$exports = {};
+'use strict';
+var $9029b6c7cf623b88$exports = {};
+'use strict';
+
+var $4bf0b512ef614c5f$exports = {};
+'use strict';
+
+var $4bf0b512ef614c5f$var$navigator = $6bb4f585dbcccb10$exports.navigator;
+var $4bf0b512ef614c5f$var$userAgent = $4bf0b512ef614c5f$var$navigator && $4bf0b512ef614c5f$var$navigator.userAgent;
+$4bf0b512ef614c5f$exports = $4bf0b512ef614c5f$var$userAgent ? String($4bf0b512ef614c5f$var$userAgent) : '';
+
+
+var $9029b6c7cf623b88$var$process = $6bb4f585dbcccb10$exports.process;
+var $9029b6c7cf623b88$var$Deno = $6bb4f585dbcccb10$exports.Deno;
+var $9029b6c7cf623b88$var$versions = $9029b6c7cf623b88$var$process && $9029b6c7cf623b88$var$process.versions || $9029b6c7cf623b88$var$Deno && $9029b6c7cf623b88$var$Deno.version;
+var $9029b6c7cf623b88$var$v8 = $9029b6c7cf623b88$var$versions && $9029b6c7cf623b88$var$versions.v8;
+var $9029b6c7cf623b88$var$match, $9029b6c7cf623b88$var$version;
+if ($9029b6c7cf623b88$var$v8) {
+    $9029b6c7cf623b88$var$match = $9029b6c7cf623b88$var$v8.split('.');
+    // in old Chrome, versions of V8 isn't V8 = Chrome / 10
+    // but their correct versions are not interesting for us
+    $9029b6c7cf623b88$var$version = $9029b6c7cf623b88$var$match[0] > 0 && $9029b6c7cf623b88$var$match[0] < 4 ? 1 : +($9029b6c7cf623b88$var$match[0] + $9029b6c7cf623b88$var$match[1]);
+}
+// BrowserFS NodeJS `process` polyfill incorrectly set `.v8` to `0.0`
+// so check `userAgent` even if `.v8` exists, but 0
+if (!$9029b6c7cf623b88$var$version && $4bf0b512ef614c5f$exports) {
+    $9029b6c7cf623b88$var$match = $4bf0b512ef614c5f$exports.match(/Edge\/(\d+)/);
+    if (!$9029b6c7cf623b88$var$match || $9029b6c7cf623b88$var$match[1] >= 74) {
+        $9029b6c7cf623b88$var$match = $4bf0b512ef614c5f$exports.match(/Chrome\/(\d+)/);
+        if ($9029b6c7cf623b88$var$match) $9029b6c7cf623b88$var$version = +$9029b6c7cf623b88$var$match[1];
+    }
+}
+$9029b6c7cf623b88$exports = $9029b6c7cf623b88$var$version;
+
+
+
+
+var $ff32005ee87cc127$var$$String = $6bb4f585dbcccb10$exports.String;
+// eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing
+$ff32005ee87cc127$exports = !!Object.getOwnPropertySymbols && !$8d47fb0f9458aed6$exports(function() {
+    var symbol = Symbol('symbol detection');
+    // Chrome 38 Symbol has incorrect toString conversion
+    // `get-own-property-symbols` polyfill symbols converted to object are not Symbol instances
+    // nb: Do not call `String` directly to avoid this being optimized out to `symbol+''` which will,
+    // of course, fail.
+    return !$ff32005ee87cc127$var$$String(symbol) || !(Object(symbol) instanceof Symbol) || // Chrome 38-40 symbols are not inherited from DOM collections prototypes to instances
+    !Symbol.sham && $9029b6c7cf623b88$exports && $9029b6c7cf623b88$exports < 41;
+});
+
+
+$2789ea6069d7c10d$exports = $ff32005ee87cc127$exports && !Symbol.sham && typeof Symbol.iterator == 'symbol';
+
+
+var $5f60f1f0b0535210$var$$Object = Object;
+$5f60f1f0b0535210$exports = $2789ea6069d7c10d$exports ? function(it) {
+    return typeof it == 'symbol';
+} : function(it) {
+    var $Symbol = $7ab1ca27f8995b05$exports('Symbol');
+    return $56269d2914fd05c7$exports($Symbol) && $c4802cfd914fa45d$exports($Symbol.prototype, $5f60f1f0b0535210$var$$Object(it));
+};
+
+
+var $27891215304c60c4$exports = {};
+'use strict';
+var $1b86631bcbde2dff$exports = {};
+'use strict';
+
+var $661acc3934c51a51$exports = {};
+'use strict';
+var $661acc3934c51a51$var$$String = String;
+$661acc3934c51a51$exports = function(argument) {
+    try {
+        return $661acc3934c51a51$var$$String(argument);
+    } catch (error) {
+        return 'Object';
+    }
+};
+
+
+var $1b86631bcbde2dff$var$$TypeError = TypeError;
+// `Assert: IsCallable(argument) is true`
+$1b86631bcbde2dff$exports = function(argument) {
+    if ($56269d2914fd05c7$exports(argument)) return argument;
+    throw new $1b86631bcbde2dff$var$$TypeError($661acc3934c51a51$exports(argument) + ' is not a function');
+};
+
+
+
+// `GetMethod` abstract operation
+// https://tc39.es/ecma262/#sec-getmethod
+$27891215304c60c4$exports = function(V, P) {
+    var func = V[P];
+    return $57696a8ecf346488$exports(func) ? undefined : $1b86631bcbde2dff$exports(func);
+};
+
+
+var $6f0f8932913638fd$exports = {};
+'use strict';
+
+
+
+var $6f0f8932913638fd$var$$TypeError = TypeError;
+// `OrdinaryToPrimitive` abstract operation
+// https://tc39.es/ecma262/#sec-ordinarytoprimitive
+$6f0f8932913638fd$exports = function(input, pref) {
+    var fn, val;
+    if (pref === 'string' && $56269d2914fd05c7$exports(fn = input.toString) && !$a5247cee30afd31c$exports(val = $b51eee67d287dc0c$exports(fn, input))) return val;
+    if ($56269d2914fd05c7$exports(fn = input.valueOf) && !$a5247cee30afd31c$exports(val = $b51eee67d287dc0c$exports(fn, input))) return val;
+    if (pref !== 'string' && $56269d2914fd05c7$exports(fn = input.toString) && !$a5247cee30afd31c$exports(val = $b51eee67d287dc0c$exports(fn, input))) return val;
+    throw new $6f0f8932913638fd$var$$TypeError("Can't convert object to primitive value");
+};
+
+
+var $1c371bdde30cc6f2$exports = {};
+'use strict';
+
+var $ec572ecbee7dcfb1$exports = {};
+'use strict';
+var $485a03a46242b5c6$exports = {};
+'use strict';
+var $2a942138f69f24b8$exports = {};
+'use strict';
+$2a942138f69f24b8$exports = false;
+
+
+
+var $ec7a898a462b4181$exports = {};
+'use strict';
+
+// eslint-disable-next-line es/no-object-defineproperty -- safe
+var $ec7a898a462b4181$var$defineProperty = Object.defineProperty;
+$ec7a898a462b4181$exports = function(key, value) {
+    try {
+        $ec7a898a462b4181$var$defineProperty($6bb4f585dbcccb10$exports, key, {
+            value: value,
+            configurable: true,
+            writable: true
+        });
+    } catch (error) {
+        $6bb4f585dbcccb10$exports[key] = value;
+    }
+    return value;
+};
+
+
+var $485a03a46242b5c6$var$SHARED = '__core-js_shared__';
+var $485a03a46242b5c6$var$store = $485a03a46242b5c6$exports = $6bb4f585dbcccb10$exports[$485a03a46242b5c6$var$SHARED] || $ec7a898a462b4181$exports($485a03a46242b5c6$var$SHARED, {});
+($485a03a46242b5c6$var$store.versions || ($485a03a46242b5c6$var$store.versions = [])).push({
+    version: '3.42.0',
+    mode: $2a942138f69f24b8$exports ? 'pure' : 'global',
+    copyright: "\xa9 2014-2025 Denis Pushkarev (zloirock.ru)",
+    license: 'https://github.com/zloirock/core-js/blob/v3.42.0/LICENSE',
+    source: 'https://github.com/zloirock/core-js'
+});
+
+
+$ec572ecbee7dcfb1$exports = function(key, value) {
+    return $485a03a46242b5c6$exports[key] || ($485a03a46242b5c6$exports[key] = value || {});
+};
+
+
+var $88fb7bd6b0cac2a7$exports = {};
+'use strict';
+
+var $e81ad450342cdca8$exports = {};
+'use strict';
+
+var $e81ad450342cdca8$var$$Object = Object;
+// `ToObject` abstract operation
+// https://tc39.es/ecma262/#sec-toobject
+$e81ad450342cdca8$exports = function(argument) {
+    return $e81ad450342cdca8$var$$Object($fa9aece4d6f487b9$exports(argument));
+};
+
+
+var $88fb7bd6b0cac2a7$var$hasOwnProperty = $a6ad1e8ada886a6e$exports({}.hasOwnProperty);
+// `HasOwnProperty` abstract operation
+// https://tc39.es/ecma262/#sec-hasownproperty
+// eslint-disable-next-line es/no-object-hasown -- safe
+$88fb7bd6b0cac2a7$exports = Object.hasOwn || function hasOwn(it, key) {
+    return $88fb7bd6b0cac2a7$var$hasOwnProperty($e81ad450342cdca8$exports(it), key);
+};
+
+
+var $dc4ef02874cda19f$exports = {};
+'use strict';
+
+var $dc4ef02874cda19f$var$id = 0;
+var $dc4ef02874cda19f$var$postfix = Math.random();
+var $dc4ef02874cda19f$var$toString = $a6ad1e8ada886a6e$exports(1.0.toString);
+$dc4ef02874cda19f$exports = function(key) {
+    return 'Symbol(' + (key === undefined ? '' : key) + ')_' + $dc4ef02874cda19f$var$toString(++$dc4ef02874cda19f$var$id + $dc4ef02874cda19f$var$postfix, 36);
+};
+
+
+
+
+var $1c371bdde30cc6f2$var$Symbol = $6bb4f585dbcccb10$exports.Symbol;
+var $1c371bdde30cc6f2$var$WellKnownSymbolsStore = $ec572ecbee7dcfb1$exports('wks');
+var $1c371bdde30cc6f2$var$createWellKnownSymbol = $2789ea6069d7c10d$exports ? $1c371bdde30cc6f2$var$Symbol['for'] || $1c371bdde30cc6f2$var$Symbol : $1c371bdde30cc6f2$var$Symbol && $1c371bdde30cc6f2$var$Symbol.withoutSetter || $dc4ef02874cda19f$exports;
+$1c371bdde30cc6f2$exports = function(name) {
+    if (!$88fb7bd6b0cac2a7$exports($1c371bdde30cc6f2$var$WellKnownSymbolsStore, name)) $1c371bdde30cc6f2$var$WellKnownSymbolsStore[name] = $ff32005ee87cc127$exports && $88fb7bd6b0cac2a7$exports($1c371bdde30cc6f2$var$Symbol, name) ? $1c371bdde30cc6f2$var$Symbol[name] : $1c371bdde30cc6f2$var$createWellKnownSymbol('Symbol.' + name);
+    return $1c371bdde30cc6f2$var$WellKnownSymbolsStore[name];
+};
+
+
+var $0f8c94f35612cc25$var$$TypeError = TypeError;
+var $0f8c94f35612cc25$var$TO_PRIMITIVE = $1c371bdde30cc6f2$exports('toPrimitive');
+// `ToPrimitive` abstract operation
+// https://tc39.es/ecma262/#sec-toprimitive
+$0f8c94f35612cc25$exports = function(input, pref) {
+    if (!$a5247cee30afd31c$exports(input) || $5f60f1f0b0535210$exports(input)) return input;
+    var exoticToPrim = $27891215304c60c4$exports(input, $0f8c94f35612cc25$var$TO_PRIMITIVE);
+    var result;
+    if (exoticToPrim) {
+        if (pref === undefined) pref = 'default';
+        result = $b51eee67d287dc0c$exports(exoticToPrim, input, pref);
+        if (!$a5247cee30afd31c$exports(result) || $5f60f1f0b0535210$exports(result)) return result;
+        throw new $0f8c94f35612cc25$var$$TypeError("Can't convert object to primitive value");
+    }
+    if (pref === undefined) pref = 'number';
+    return $6f0f8932913638fd$exports(input, pref);
+};
+
+
+
+// `ToPropertyKey` abstract operation
+// https://tc39.es/ecma262/#sec-topropertykey
+$5048c15693b2c826$exports = function(argument) {
+    var key = $0f8c94f35612cc25$exports(argument, 'string');
+    return $5f60f1f0b0535210$exports(key) ? key : key + '';
+};
+
+
+
+var $ef474d30333fcf2e$exports = {};
+'use strict';
+
+
+var $2f700ee53523f24b$exports = {};
+'use strict';
+
+
+var $2f700ee53523f24b$var$document = $6bb4f585dbcccb10$exports.document;
+// typeof document.createElement is 'object' in old IE
+var $2f700ee53523f24b$var$EXISTS = $a5247cee30afd31c$exports($2f700ee53523f24b$var$document) && $a5247cee30afd31c$exports($2f700ee53523f24b$var$document.createElement);
+$2f700ee53523f24b$exports = function(it) {
+    return $2f700ee53523f24b$var$EXISTS ? $2f700ee53523f24b$var$document.createElement(it) : {};
+};
+
+
+// Thanks to IE8 for its funny defineProperty
+$ef474d30333fcf2e$exports = !$9ad58a245a9ea542$exports && !$8d47fb0f9458aed6$exports(function() {
+    // eslint-disable-next-line es/no-object-defineproperty -- required for testing
+    return Object.defineProperty($2f700ee53523f24b$exports('div'), 'a', {
+        get: function get() {
+            return 7;
+        }
+    }).a !== 7;
+});
+
+
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var $efb277c423a0f6b2$var$$getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+$efb277c423a0f6b2$export$2d1720544b23b823 = $9ad58a245a9ea542$exports ? $efb277c423a0f6b2$var$$getOwnPropertyDescriptor : function getOwnPropertyDescriptor(O, P) {
+    O = $c4c6f95ea09874f7$exports(O);
+    P = $5048c15693b2c826$exports(P);
+    if ($ef474d30333fcf2e$exports) try {
+        return $efb277c423a0f6b2$var$$getOwnPropertyDescriptor(O, P);
+    } catch (error) {}
+    if ($88fb7bd6b0cac2a7$exports(O, P)) return $28b05b782a3d40a0$exports(!$b51eee67d287dc0c$exports($eeef746029dc98c3$export$2d1720544b23b823, O, P), O[P]);
+};
+
+
+var $a4386f1de3d17f70$require$getOwnPropertyDescriptor = $efb277c423a0f6b2$export$2d1720544b23b823;
+var $542c4a1412d7b12f$exports = {};
+'use strict';
+
+var $b7cf4c6cb85b0365$exports = {};
+
+$parcel$export($b7cf4c6cb85b0365$exports, "f", () => $b7cf4c6cb85b0365$export$2d1720544b23b823, (v) => $b7cf4c6cb85b0365$export$2d1720544b23b823 = v);
+// `Object.defineProperty` method
+// https://tc39.es/ecma262/#sec-object.defineproperty
+var $b7cf4c6cb85b0365$export$2d1720544b23b823;
+'use strict';
+
+
+var $39199a02ca894977$exports = {};
+'use strict';
+
+
+// V8 ~ Chrome 36-
+// https://bugs.chromium.org/p/v8/issues/detail?id=3334
+$39199a02ca894977$exports = $9ad58a245a9ea542$exports && $8d47fb0f9458aed6$exports(function() {
+    // eslint-disable-next-line es/no-object-defineproperty -- required for testing
+    return Object.defineProperty(function() {}, 'prototype', {
+        value: 42,
+        writable: false
+    }).prototype !== 42;
+});
+
+
+var $fbf8b6f89693dc96$exports = {};
+'use strict';
+
+var $fbf8b6f89693dc96$var$$String = String;
+var $fbf8b6f89693dc96$var$$TypeError = TypeError;
+// `Assert: Type(argument) is Object`
+$fbf8b6f89693dc96$exports = function(argument) {
+    if ($a5247cee30afd31c$exports(argument)) return argument;
+    throw new $fbf8b6f89693dc96$var$$TypeError($fbf8b6f89693dc96$var$$String(argument) + ' is not an object');
+};
+
+
+
+var $b7cf4c6cb85b0365$var$$TypeError = TypeError;
+// eslint-disable-next-line es/no-object-defineproperty -- safe
+var $b7cf4c6cb85b0365$var$$defineProperty = Object.defineProperty;
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var $b7cf4c6cb85b0365$var$$getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+var $b7cf4c6cb85b0365$var$ENUMERABLE = 'enumerable';
+var $b7cf4c6cb85b0365$var$CONFIGURABLE = 'configurable';
+var $b7cf4c6cb85b0365$var$WRITABLE = 'writable';
+$b7cf4c6cb85b0365$export$2d1720544b23b823 = $9ad58a245a9ea542$exports ? $39199a02ca894977$exports ? function defineProperty(O, P, Attributes) {
+    $fbf8b6f89693dc96$exports(O);
+    P = $5048c15693b2c826$exports(P);
+    $fbf8b6f89693dc96$exports(Attributes);
+    if (typeof O === 'function' && P === 'prototype' && 'value' in Attributes && $b7cf4c6cb85b0365$var$WRITABLE in Attributes && !Attributes[$b7cf4c6cb85b0365$var$WRITABLE]) {
+        var current = $b7cf4c6cb85b0365$var$$getOwnPropertyDescriptor(O, P);
+        if (current && current[$b7cf4c6cb85b0365$var$WRITABLE]) {
+            O[P] = Attributes.value;
+            Attributes = {
+                configurable: $b7cf4c6cb85b0365$var$CONFIGURABLE in Attributes ? Attributes[$b7cf4c6cb85b0365$var$CONFIGURABLE] : current[$b7cf4c6cb85b0365$var$CONFIGURABLE],
+                enumerable: $b7cf4c6cb85b0365$var$ENUMERABLE in Attributes ? Attributes[$b7cf4c6cb85b0365$var$ENUMERABLE] : current[$b7cf4c6cb85b0365$var$ENUMERABLE],
+                writable: false
+            };
+        }
+    }
+    return $b7cf4c6cb85b0365$var$$defineProperty(O, P, Attributes);
+} : $b7cf4c6cb85b0365$var$$defineProperty : function defineProperty(O, P, Attributes) {
+    $fbf8b6f89693dc96$exports(O);
+    P = $5048c15693b2c826$exports(P);
+    $fbf8b6f89693dc96$exports(Attributes);
+    if ($ef474d30333fcf2e$exports) try {
+        return $b7cf4c6cb85b0365$var$$defineProperty(O, P, Attributes);
+    } catch (error) {}
+    if ('get' in Attributes || 'set' in Attributes) throw new $b7cf4c6cb85b0365$var$$TypeError('Accessors not supported');
+    if ('value' in Attributes) O[P] = Attributes.value;
+    return O;
+};
+
+
+
+$542c4a1412d7b12f$exports = $9ad58a245a9ea542$exports ? function(object, key, value) {
+    return $b7cf4c6cb85b0365$export$2d1720544b23b823(object, key, $28b05b782a3d40a0$exports(1, value));
+} : function(object, key, value) {
+    object[key] = value;
+    return object;
+};
+
+
+var $cd1d0929e9f3f134$exports = {};
+'use strict';
+
+
+var $72611dfb775c63ee$exports = {};
+'use strict';
+
+
+
+
+
+var $924615bee2ea1aa8$exports = {};
+'use strict';
+
+
+var $924615bee2ea1aa8$var$FunctionPrototype = Function.prototype;
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var $924615bee2ea1aa8$var$getDescriptor = $9ad58a245a9ea542$exports && Object.getOwnPropertyDescriptor;
+var $924615bee2ea1aa8$var$EXISTS = $88fb7bd6b0cac2a7$exports($924615bee2ea1aa8$var$FunctionPrototype, 'name');
+// additional protection from minified / mangled / dropped function names
+var $924615bee2ea1aa8$var$PROPER = $924615bee2ea1aa8$var$EXISTS && (function something() {}).name === 'something';
+var $924615bee2ea1aa8$var$CONFIGURABLE = $924615bee2ea1aa8$var$EXISTS && (!$9ad58a245a9ea542$exports || $9ad58a245a9ea542$exports && $924615bee2ea1aa8$var$getDescriptor($924615bee2ea1aa8$var$FunctionPrototype, 'name').configurable);
+$924615bee2ea1aa8$exports = {
+    EXISTS: $924615bee2ea1aa8$var$EXISTS,
+    PROPER: $924615bee2ea1aa8$var$PROPER,
+    CONFIGURABLE: $924615bee2ea1aa8$var$CONFIGURABLE
+};
+
+
+var $72611dfb775c63ee$require$CONFIGURABLE_FUNCTION_NAME = $924615bee2ea1aa8$exports.CONFIGURABLE;
+var $941686ccb49a13c9$exports = {};
+'use strict';
+
+
+
+var $941686ccb49a13c9$var$functionToString = $a6ad1e8ada886a6e$exports(Function.toString);
+// this helper broken in `core-js@3.4.1-3.4.4`, so we can't use `shared` helper
+if (!$56269d2914fd05c7$exports($485a03a46242b5c6$exports.inspectSource)) $485a03a46242b5c6$exports.inspectSource = function(it) {
+    return $941686ccb49a13c9$var$functionToString(it);
+};
+$941686ccb49a13c9$exports = $485a03a46242b5c6$exports.inspectSource;
+
+
+var $3863900a8f1508e7$exports = {};
+'use strict';
+var $072c5e1da16b621f$exports = {};
+'use strict';
+
+
+var $072c5e1da16b621f$var$WeakMap = $6bb4f585dbcccb10$exports.WeakMap;
+$072c5e1da16b621f$exports = $56269d2914fd05c7$exports($072c5e1da16b621f$var$WeakMap) && /native code/.test(String($072c5e1da16b621f$var$WeakMap));
+
+
+
+
+
+
+
+var $bea024550bfba45a$exports = {};
+'use strict';
+
+
+var $bea024550bfba45a$var$keys = $ec572ecbee7dcfb1$exports('keys');
+$bea024550bfba45a$exports = function(key) {
+    return $bea024550bfba45a$var$keys[key] || ($bea024550bfba45a$var$keys[key] = $dc4ef02874cda19f$exports(key));
+};
+
+
+var $f39f553c696da03a$exports = {};
+'use strict';
+$f39f553c696da03a$exports = {};
+
+
+var $3863900a8f1508e7$var$OBJECT_ALREADY_INITIALIZED = 'Object already initialized';
+var $3863900a8f1508e7$var$TypeError = $6bb4f585dbcccb10$exports.TypeError;
+var $3863900a8f1508e7$var$WeakMap = $6bb4f585dbcccb10$exports.WeakMap;
+var $3863900a8f1508e7$var$set, $3863900a8f1508e7$var$get, $3863900a8f1508e7$var$has;
+var $3863900a8f1508e7$var$enforce = function enforce(it) {
+    return $3863900a8f1508e7$var$has(it) ? $3863900a8f1508e7$var$get(it) : $3863900a8f1508e7$var$set(it, {});
+};
+var $3863900a8f1508e7$var$getterFor = function getterFor(TYPE) {
+    return function(it) {
+        var state;
+        if (!$a5247cee30afd31c$exports(it) || (state = $3863900a8f1508e7$var$get(it)).type !== TYPE) throw new $3863900a8f1508e7$var$TypeError('Incompatible receiver, ' + TYPE + ' required');
+        return state;
+    };
+};
+if ($072c5e1da16b621f$exports || $485a03a46242b5c6$exports.state) {
+    var $3863900a8f1508e7$var$store = $485a03a46242b5c6$exports.state || ($485a03a46242b5c6$exports.state = new $3863900a8f1508e7$var$WeakMap());
+    /* eslint-disable no-self-assign -- prototype methods protection */ $3863900a8f1508e7$var$store.get = $3863900a8f1508e7$var$store.get;
+    $3863900a8f1508e7$var$store.has = $3863900a8f1508e7$var$store.has;
+    $3863900a8f1508e7$var$store.set = $3863900a8f1508e7$var$store.set;
+    /* eslint-enable no-self-assign -- prototype methods protection */ $3863900a8f1508e7$var$set = function set(it, metadata) {
+        if ($3863900a8f1508e7$var$store.has(it)) throw new $3863900a8f1508e7$var$TypeError($3863900a8f1508e7$var$OBJECT_ALREADY_INITIALIZED);
+        metadata.facade = it;
+        $3863900a8f1508e7$var$store.set(it, metadata);
+        return metadata;
+    };
+    $3863900a8f1508e7$var$get = function get(it) {
+        return $3863900a8f1508e7$var$store.get(it) || {};
+    };
+    $3863900a8f1508e7$var$has = function has(it) {
+        return $3863900a8f1508e7$var$store.has(it);
+    };
+} else {
+    var $3863900a8f1508e7$var$STATE = $bea024550bfba45a$exports('state');
+    $f39f553c696da03a$exports[$3863900a8f1508e7$var$STATE] = true;
+    $3863900a8f1508e7$var$set = function set(it, metadata) {
+        if ($88fb7bd6b0cac2a7$exports(it, $3863900a8f1508e7$var$STATE)) throw new $3863900a8f1508e7$var$TypeError($3863900a8f1508e7$var$OBJECT_ALREADY_INITIALIZED);
+        metadata.facade = it;
+        $542c4a1412d7b12f$exports(it, $3863900a8f1508e7$var$STATE, metadata);
+        return metadata;
+    };
+    $3863900a8f1508e7$var$get = function get(it) {
+        return $88fb7bd6b0cac2a7$exports(it, $3863900a8f1508e7$var$STATE) ? it[$3863900a8f1508e7$var$STATE] : {};
+    };
+    $3863900a8f1508e7$var$has = function has(it) {
+        return $88fb7bd6b0cac2a7$exports(it, $3863900a8f1508e7$var$STATE);
+    };
+}
+$3863900a8f1508e7$exports = {
+    set: $3863900a8f1508e7$var$set,
+    get: $3863900a8f1508e7$var$get,
+    has: $3863900a8f1508e7$var$has,
+    enforce: $3863900a8f1508e7$var$enforce,
+    getterFor: $3863900a8f1508e7$var$getterFor
+};
+
+
+var $72611dfb775c63ee$var$enforceInternalState = $3863900a8f1508e7$exports.enforce;
+var $72611dfb775c63ee$var$getInternalState = $3863900a8f1508e7$exports.get;
+var $72611dfb775c63ee$var$$String = String;
+// eslint-disable-next-line es/no-object-defineproperty -- safe
+var $72611dfb775c63ee$var$defineProperty = Object.defineProperty;
+var $72611dfb775c63ee$var$stringSlice = $a6ad1e8ada886a6e$exports(''.slice);
+var $72611dfb775c63ee$var$replace = $a6ad1e8ada886a6e$exports(''.replace);
+var $72611dfb775c63ee$var$join = $a6ad1e8ada886a6e$exports([].join);
+var $72611dfb775c63ee$var$CONFIGURABLE_LENGTH = $9ad58a245a9ea542$exports && !$8d47fb0f9458aed6$exports(function() {
+    return $72611dfb775c63ee$var$defineProperty(function() {}, 'length', {
+        value: 8
+    }).length !== 8;
+});
+var $72611dfb775c63ee$var$TEMPLATE = String(String).split('String');
+var $72611dfb775c63ee$var$makeBuiltIn = $72611dfb775c63ee$exports = function makeBuiltIn(value, name, options) {
+    if ($72611dfb775c63ee$var$stringSlice($72611dfb775c63ee$var$$String(name), 0, 7) === 'Symbol(') name = '[' + $72611dfb775c63ee$var$replace($72611dfb775c63ee$var$$String(name), /^Symbol\(([^)]*)\).*$/, '$1') + ']';
+    if (options && options.getter) name = 'get ' + name;
+    if (options && options.setter) name = 'set ' + name;
+    if (!$88fb7bd6b0cac2a7$exports(value, 'name') || $72611dfb775c63ee$require$CONFIGURABLE_FUNCTION_NAME && value.name !== name) {
+        if ($9ad58a245a9ea542$exports) $72611dfb775c63ee$var$defineProperty(value, 'name', {
+            value: name,
+            configurable: true
+        });
+        else value.name = name;
+    }
+    if ($72611dfb775c63ee$var$CONFIGURABLE_LENGTH && options && $88fb7bd6b0cac2a7$exports(options, 'arity') && value.length !== options.arity) $72611dfb775c63ee$var$defineProperty(value, 'length', {
+        value: options.arity
+    });
+    try {
+        if (options && $88fb7bd6b0cac2a7$exports(options, 'constructor') && options.constructor) {
+            if ($9ad58a245a9ea542$exports) $72611dfb775c63ee$var$defineProperty(value, 'prototype', {
+                writable: false
+            });
+        } else if (value.prototype) value.prototype = undefined;
+    } catch (error) {}
+    var state = $72611dfb775c63ee$var$enforceInternalState(value);
+    if (!$88fb7bd6b0cac2a7$exports(state, 'source')) state.source = $72611dfb775c63ee$var$join($72611dfb775c63ee$var$TEMPLATE, typeof name == 'string' ? name : '');
+    return value;
+};
+// add fake Function#toString for correct work wrapped methods / constructors with methods like LoDash isNative
+// eslint-disable-next-line no-extend-native -- required
+Function.prototype.toString = $72611dfb775c63ee$var$makeBuiltIn(function toString() {
+    return $56269d2914fd05c7$exports(this) && $72611dfb775c63ee$var$getInternalState(this).source || $941686ccb49a13c9$exports(this);
+}, 'toString');
+
+
+
+$cd1d0929e9f3f134$exports = function(O, key, value, options) {
+    if (!options) options = {};
+    var simple = options.enumerable;
+    var name = options.name !== undefined ? options.name : key;
+    if ($56269d2914fd05c7$exports(value)) $72611dfb775c63ee$exports(value, name, options);
+    if (options.global) {
+        if (simple) O[key] = value;
+        else $ec7a898a462b4181$exports(key, value);
+    } else {
+        try {
+            if (!options.unsafe) delete O[key];
+            else if (O[key]) simple = true;
+        } catch (error) {}
+        if (simple) O[key] = value;
+        else $b7cf4c6cb85b0365$export$2d1720544b23b823(O, key, {
+            value: value,
+            enumerable: false,
+            configurable: !options.nonConfigurable,
+            writable: !options.nonWritable
+        });
+    }
+    return O;
+};
+
+
+
+var $4c111657203b3886$exports = {};
+'use strict';
+
+var $58573bfb5a98d9fc$exports = {};
+'use strict';
+
+
+var $e18868c91f9bee5e$exports = {};
+
+$parcel$export($e18868c91f9bee5e$exports, "f", () => $e18868c91f9bee5e$export$2d1720544b23b823, (v) => $e18868c91f9bee5e$export$2d1720544b23b823 = v);
+// `Object.getOwnPropertyNames` method
+// https://tc39.es/ecma262/#sec-object.getownpropertynames
+// eslint-disable-next-line es/no-object-getownpropertynames -- safe
+var $e18868c91f9bee5e$export$2d1720544b23b823;
+'use strict';
+var $da1223f238909fb2$exports = {};
+'use strict';
+
+
+
+var $f9d7b22bed864c8a$exports = {};
+'use strict';
+
+var $a165d4ed9d5b72e1$exports = {};
+'use strict';
+var $e65bc32c76079804$exports = {};
+'use strict';
+var $f52d54f997bbe6ad$exports = {};
+'use strict';
+var $f52d54f997bbe6ad$var$ceil = Math.ceil;
+var $f52d54f997bbe6ad$var$floor = Math.floor;
+// `Math.trunc` method
+// https://tc39.es/ecma262/#sec-math.trunc
+// eslint-disable-next-line es/no-math-trunc -- safe
+$f52d54f997bbe6ad$exports = Math.trunc || function trunc(x) {
+    var n = +x;
+    return (n > 0 ? $f52d54f997bbe6ad$var$floor : $f52d54f997bbe6ad$var$ceil)(n);
+};
+
+
+// `ToIntegerOrInfinity` abstract operation
+// https://tc39.es/ecma262/#sec-tointegerorinfinity
+$e65bc32c76079804$exports = function(argument) {
+    var number = +argument;
+    // eslint-disable-next-line no-self-compare -- NaN check
+    return number !== number || number === 0 ? 0 : $f52d54f997bbe6ad$exports(number);
+};
+
+
+var $a165d4ed9d5b72e1$var$max = Math.max;
+var $a165d4ed9d5b72e1$var$min = Math.min;
+// Helper for a popular repeating case of the spec:
+// Let integer be ? ToInteger(index).
+// If integer < 0, let result be max((length + integer), 0); else let result be min(integer, length).
+$a165d4ed9d5b72e1$exports = function(index, length) {
+    var integer = $e65bc32c76079804$exports(index);
+    return integer < 0 ? $a165d4ed9d5b72e1$var$max(integer + length, 0) : $a165d4ed9d5b72e1$var$min(integer, length);
+};
+
+
+var $24cf1f15d34227c0$exports = {};
+'use strict';
+var $4312bcc0b9e43eb2$exports = {};
+'use strict';
+
+var $4312bcc0b9e43eb2$var$min = Math.min;
+// `ToLength` abstract operation
+// https://tc39.es/ecma262/#sec-tolength
+$4312bcc0b9e43eb2$exports = function(argument) {
+    var len = $e65bc32c76079804$exports(argument);
+    return len > 0 ? $4312bcc0b9e43eb2$var$min(len, 0x1FFFFFFFFFFFFF) : 0; // 2 ** 53 - 1 == 9007199254740991
+};
+
+
+// `LengthOfArrayLike` abstract operation
+// https://tc39.es/ecma262/#sec-lengthofarraylike
+$24cf1f15d34227c0$exports = function(obj) {
+    return $4312bcc0b9e43eb2$exports(obj.length);
+};
+
+
+// `Array.prototype.{ indexOf, includes }` methods implementation
+var $f9d7b22bed864c8a$var$createMethod = function createMethod(IS_INCLUDES) {
+    return function($this, el, fromIndex) {
+        var O = $c4c6f95ea09874f7$exports($this);
+        var length = $24cf1f15d34227c0$exports(O);
+        if (length === 0) return !IS_INCLUDES && -1;
+        var index = $a165d4ed9d5b72e1$exports(fromIndex, length);
+        var value;
+        // Array#includes uses SameValueZero equality algorithm
+        // eslint-disable-next-line no-self-compare -- NaN check
+        if (IS_INCLUDES && el !== el) while(length > index){
+            value = O[index++];
+            // eslint-disable-next-line no-self-compare -- NaN check
+            if (value !== value) return true;
+        // Array#indexOf ignores holes, Array#includes - not
+        }
+        else for(; length > index; index++){
+            if ((IS_INCLUDES || index in O) && O[index] === el) return IS_INCLUDES || index || 0;
+        }
+        return !IS_INCLUDES && -1;
+    };
+};
+$f9d7b22bed864c8a$exports = {
+    // `Array.prototype.includes` method
+    // https://tc39.es/ecma262/#sec-array.prototype.includes
+    includes: $f9d7b22bed864c8a$var$createMethod(true),
+    // `Array.prototype.indexOf` method
+    // https://tc39.es/ecma262/#sec-array.prototype.indexof
+    indexOf: $f9d7b22bed864c8a$var$createMethod(false)
+};
+
+
+var $da1223f238909fb2$require$indexOf = $f9d7b22bed864c8a$exports.indexOf;
+
+var $da1223f238909fb2$var$push = $a6ad1e8ada886a6e$exports([].push);
+$da1223f238909fb2$exports = function(object, names) {
+    var O = $c4c6f95ea09874f7$exports(object);
+    var i = 0;
+    var result = [];
+    var key;
+    for(key in O)!$88fb7bd6b0cac2a7$exports($f39f553c696da03a$exports, key) && $88fb7bd6b0cac2a7$exports(O, key) && $da1223f238909fb2$var$push(result, key);
+    // Don't enum bug & hidden keys
+    while(names.length > i)if ($88fb7bd6b0cac2a7$exports(O, key = names[i++])) ~$da1223f238909fb2$require$indexOf(result, key) || $da1223f238909fb2$var$push(result, key);
+    return result;
+};
+
+
+var $cc95548c31dc1b73$exports = {};
+'use strict';
+// IE8- don't enum bug keys
+$cc95548c31dc1b73$exports = [
+    'constructor',
+    'hasOwnProperty',
+    'isPrototypeOf',
+    'propertyIsEnumerable',
+    'toLocaleString',
+    'toString',
+    'valueOf'
+];
+
+
+var $e18868c91f9bee5e$var$hiddenKeys = $cc95548c31dc1b73$exports.concat('length', 'prototype');
+$e18868c91f9bee5e$export$2d1720544b23b823 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
+    return $da1223f238909fb2$exports(O, $e18868c91f9bee5e$var$hiddenKeys);
+};
+
+
+var $c7bc6eb18f26704d$exports = {};
+
+$parcel$export($c7bc6eb18f26704d$exports, "f", () => $c7bc6eb18f26704d$export$2d1720544b23b823, (v) => $c7bc6eb18f26704d$export$2d1720544b23b823 = v);
+// eslint-disable-next-line es/no-object-getownpropertysymbols -- safe
+var $c7bc6eb18f26704d$export$2d1720544b23b823;
+'use strict';
+$c7bc6eb18f26704d$export$2d1720544b23b823 = Object.getOwnPropertySymbols;
+
+
+
+var $58573bfb5a98d9fc$var$concat = $a6ad1e8ada886a6e$exports([].concat);
+// all object keys, includes non-enumerable and symbols
+$58573bfb5a98d9fc$exports = $7ab1ca27f8995b05$exports('Reflect', 'ownKeys') || function ownKeys(it) {
+    var keys = $e18868c91f9bee5e$export$2d1720544b23b823($fbf8b6f89693dc96$exports(it));
+    var getOwnPropertySymbols = $c7bc6eb18f26704d$export$2d1720544b23b823;
+    return getOwnPropertySymbols ? $58573bfb5a98d9fc$var$concat(keys, getOwnPropertySymbols(it)) : keys;
+};
+
+
+
+
+$4c111657203b3886$exports = function(target, source, exceptions) {
+    var keys = $58573bfb5a98d9fc$exports(source);
+    var defineProperty = $b7cf4c6cb85b0365$export$2d1720544b23b823;
+    var getOwnPropertyDescriptor = $efb277c423a0f6b2$export$2d1720544b23b823;
+    for(var i = 0; i < keys.length; i++){
+        var key = keys[i];
+        if (!$88fb7bd6b0cac2a7$exports(target, key) && !(exceptions && $88fb7bd6b0cac2a7$exports(exceptions, key))) defineProperty(target, key, getOwnPropertyDescriptor(source, key));
+    }
+};
+
+
+var $6a9bca21eba1d016$exports = {};
+'use strict';
+
+
+var $6a9bca21eba1d016$var$replacement = /#|\.prototype\./;
+var $6a9bca21eba1d016$var$isForced = function isForced(feature, detection) {
+    var value = $6a9bca21eba1d016$var$data[$6a9bca21eba1d016$var$normalize(feature)];
+    return value === $6a9bca21eba1d016$var$POLYFILL ? true : value === $6a9bca21eba1d016$var$NATIVE ? false : $56269d2914fd05c7$exports(detection) ? $8d47fb0f9458aed6$exports(detection) : !!detection;
+};
+var $6a9bca21eba1d016$var$normalize = $6a9bca21eba1d016$var$isForced.normalize = function normalize(string) {
+    return String(string).replace($6a9bca21eba1d016$var$replacement, '.').toLowerCase();
+};
+var $6a9bca21eba1d016$var$data = $6a9bca21eba1d016$var$isForced.data = {};
+var $6a9bca21eba1d016$var$NATIVE = $6a9bca21eba1d016$var$isForced.NATIVE = 'N';
+var $6a9bca21eba1d016$var$POLYFILL = $6a9bca21eba1d016$var$isForced.POLYFILL = 'P';
+$6a9bca21eba1d016$exports = $6a9bca21eba1d016$var$isForced;
+
+
+/*
+  options.target         - name of the target object
+  options.global         - target is the global object
+  options.stat           - export as static methods of target
+  options.proto          - export as prototype methods of target
+  options.real           - real prototype method for the `pure` version
+  options.forced         - export even if the native feature is available
+  options.bind           - bind methods to the target, required for the `pure` version
+  options.wrap           - wrap constructors to preventing global pollution, required for the `pure` version
+  options.unsafe         - use the simple assignment of property instead of delete + defineProperty
+  options.sham           - add a flag to not completely full polyfills
+  options.enumerable     - export as enumerable property
+  options.dontCallGetSet - prevent calling a getter on target
+  options.name           - the .name of the function if it does not match the key
+*/ $a4386f1de3d17f70$exports = function(options, source) {
+    var TARGET = options.target;
+    var GLOBAL = options.global;
+    var STATIC = options.stat;
+    var FORCED, target, key, targetProperty, sourceProperty, descriptor;
+    if (GLOBAL) target = $6bb4f585dbcccb10$exports;
+    else if (STATIC) target = $6bb4f585dbcccb10$exports[TARGET] || $ec7a898a462b4181$exports(TARGET, {});
+    else target = $6bb4f585dbcccb10$exports[TARGET] && $6bb4f585dbcccb10$exports[TARGET].prototype;
+    if (target) for(key in source){
+        sourceProperty = source[key];
+        if (options.dontCallGetSet) {
+            descriptor = $a4386f1de3d17f70$require$getOwnPropertyDescriptor(target, key);
+            targetProperty = descriptor && descriptor.value;
+        } else targetProperty = target[key];
+        FORCED = $6a9bca21eba1d016$exports(GLOBAL ? key : TARGET + (STATIC ? '.' : '#') + key, options.forced);
+        // contained in target
+        if (!FORCED && targetProperty !== undefined) {
+            if (typeof sourceProperty == typeof targetProperty) continue;
+            $4c111657203b3886$exports(sourceProperty, targetProperty);
+        }
+        // add a flag to not completely full polyfills
+        if (options.sham || targetProperty && targetProperty.sham) $542c4a1412d7b12f$exports(sourceProperty, 'sham', true);
+        $cd1d0929e9f3f134$exports(target, key, sourceProperty, options);
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var $3441418af0b2523d$exports = {};
+'use strict';
+var $31b89c0c3042db21$exports = {};
+'use strict';
+var $fc816788153e3f4b$exports = {};
+'use strict';
+
+var $fc816788153e3f4b$var$TO_STRING_TAG = $1c371bdde30cc6f2$exports('toStringTag');
+var $fc816788153e3f4b$var$test = {};
+$fc816788153e3f4b$var$test[$fc816788153e3f4b$var$TO_STRING_TAG] = 'z';
+$fc816788153e3f4b$exports = String($fc816788153e3f4b$var$test) === '[object z]';
+
+
+
+
+
+var $31b89c0c3042db21$var$TO_STRING_TAG = $1c371bdde30cc6f2$exports('toStringTag');
+var $31b89c0c3042db21$var$$Object = Object;
+// ES3 wrong here
+var $31b89c0c3042db21$var$CORRECT_ARGUMENTS = $46b0c974b8e64b7f$exports(function() {
+    return arguments;
+}()) === 'Arguments';
+// fallback for IE11 Script Access Denied error
+var $31b89c0c3042db21$var$tryGet = function tryGet(it, key) {
+    try {
+        return it[key];
+    } catch (error) {}
+};
+// getting tag from ES6+ `Object.prototype.toString`
+$31b89c0c3042db21$exports = $fc816788153e3f4b$exports ? $46b0c974b8e64b7f$exports : function(it) {
+    var O, tag, result;
+    return it === undefined ? 'Undefined' : it === null ? 'Null' : typeof (tag = $31b89c0c3042db21$var$tryGet(O = $31b89c0c3042db21$var$$Object(it), $31b89c0c3042db21$var$TO_STRING_TAG)) == 'string' ? tag : $31b89c0c3042db21$var$CORRECT_ARGUMENTS ? $46b0c974b8e64b7f$exports(O) : (result = $46b0c974b8e64b7f$exports(O)) === 'Object' && $56269d2914fd05c7$exports(O.callee) ? 'Arguments' : result;
+};
+
+
+var $3441418af0b2523d$var$$String = String;
+$3441418af0b2523d$exports = function(argument) {
+    if ($31b89c0c3042db21$exports(argument) === 'Symbol') throw new TypeError('Cannot convert a Symbol value to a string');
+    return $3441418af0b2523d$var$$String(argument);
+};
+
+
+
+var $6c46fe9371eaab2c$exports = {};
+'use strict';
+
+var $8b43bb879c940b57$exports = {};
+
+$parcel$export($8b43bb879c940b57$exports, "f", () => $8b43bb879c940b57$export$2d1720544b23b823, (v) => $8b43bb879c940b57$export$2d1720544b23b823 = v);
+// `Object.defineProperties` method
+// https://tc39.es/ecma262/#sec-object.defineproperties
+// eslint-disable-next-line es/no-object-defineproperties -- safe
+var $8b43bb879c940b57$export$2d1720544b23b823;
+'use strict';
+
+
+
+
+
+var $ebb453aeb0972523$exports = {};
+'use strict';
+
+
+// `Object.keys` method
+// https://tc39.es/ecma262/#sec-object.keys
+// eslint-disable-next-line es/no-object-keys -- safe
+$ebb453aeb0972523$exports = Object.keys || function keys(O) {
+    return $da1223f238909fb2$exports(O, $cc95548c31dc1b73$exports);
+};
+
+
+$8b43bb879c940b57$export$2d1720544b23b823 = $9ad58a245a9ea542$exports && !$39199a02ca894977$exports ? Object.defineProperties : function defineProperties(O, Properties) {
+    $fbf8b6f89693dc96$exports(O);
+    var props = $c4c6f95ea09874f7$exports(Properties);
+    var keys = $ebb453aeb0972523$exports(Properties);
+    var length = keys.length;
+    var index = 0;
+    var key;
+    while(length > index)$b7cf4c6cb85b0365$export$2d1720544b23b823(O, key = keys[index++], props[key]);
+    return O;
+};
+
+
+
+
+var $c9f1f602ea0a461f$exports = {};
+'use strict';
+
+$c9f1f602ea0a461f$exports = $7ab1ca27f8995b05$exports('document', 'documentElement');
+
+
+
+
+var $6c46fe9371eaab2c$var$GT = '>';
+var $6c46fe9371eaab2c$var$LT = '<';
+var $6c46fe9371eaab2c$var$PROTOTYPE = 'prototype';
+var $6c46fe9371eaab2c$var$SCRIPT = 'script';
+var $6c46fe9371eaab2c$var$IE_PROTO = $bea024550bfba45a$exports('IE_PROTO');
+var $6c46fe9371eaab2c$var$EmptyConstructor = function EmptyConstructor() {};
+var $6c46fe9371eaab2c$var$scriptTag = function scriptTag(content) {
+    return $6c46fe9371eaab2c$var$LT + $6c46fe9371eaab2c$var$SCRIPT + $6c46fe9371eaab2c$var$GT + content + $6c46fe9371eaab2c$var$LT + '/' + $6c46fe9371eaab2c$var$SCRIPT + $6c46fe9371eaab2c$var$GT;
+};
+// Create object with fake `null` prototype: use ActiveX Object with cleared prototype
+var $6c46fe9371eaab2c$var$NullProtoObjectViaActiveX = function NullProtoObjectViaActiveX(activeXDocument) {
+    activeXDocument.write($6c46fe9371eaab2c$var$scriptTag(''));
+    activeXDocument.close();
+    var temp = activeXDocument.parentWindow.Object;
+    // eslint-disable-next-line no-useless-assignment -- avoid memory leak
+    activeXDocument = null;
+    return temp;
+};
+// Create object with fake `null` prototype: use iframe Object with cleared prototype
+var $6c46fe9371eaab2c$var$NullProtoObjectViaIFrame = function NullProtoObjectViaIFrame() {
+    // Thrash, waste and sodomy: IE GC bug
+    var iframe = $2f700ee53523f24b$exports('iframe');
+    var JS = 'java' + $6c46fe9371eaab2c$var$SCRIPT + ':';
+    var iframeDocument;
+    iframe.style.display = 'none';
+    $c9f1f602ea0a461f$exports.appendChild(iframe);
+    // https://github.com/zloirock/core-js/issues/475
+    iframe.src = String(JS);
+    iframeDocument = iframe.contentWindow.document;
+    iframeDocument.open();
+    iframeDocument.write($6c46fe9371eaab2c$var$scriptTag('document.F=Object'));
+    iframeDocument.close();
+    return iframeDocument.F;
+};
+// Check for document.domain and active x support
+// No need to use active x approach when document.domain is not set
+// see https://github.com/es-shims/es5-shim/issues/150
+// variation of https://github.com/kitcambridge/es5-shim/commit/4f738ac066346
+// avoid IE GC bug
+var $6c46fe9371eaab2c$var$activeXDocument;
+var $6c46fe9371eaab2c$var$NullProtoObject = function NullProtoObject1() {
+    try {
+        $6c46fe9371eaab2c$var$activeXDocument = new ActiveXObject('htmlfile');
+    } catch (error) {}
+    $6c46fe9371eaab2c$var$NullProtoObject = typeof document != 'undefined' ? document.domain && $6c46fe9371eaab2c$var$activeXDocument ? $6c46fe9371eaab2c$var$NullProtoObjectViaActiveX($6c46fe9371eaab2c$var$activeXDocument) // old IE
+     : $6c46fe9371eaab2c$var$NullProtoObjectViaIFrame() : $6c46fe9371eaab2c$var$NullProtoObjectViaActiveX($6c46fe9371eaab2c$var$activeXDocument); // WSH
+    var length = $cc95548c31dc1b73$exports.length;
+    while(length--)delete $6c46fe9371eaab2c$var$NullProtoObject[$6c46fe9371eaab2c$var$PROTOTYPE][$cc95548c31dc1b73$exports[length]];
+    return $6c46fe9371eaab2c$var$NullProtoObject();
+};
+$f39f553c696da03a$exports[$6c46fe9371eaab2c$var$IE_PROTO] = true;
+// `Object.create` method
+// https://tc39.es/ecma262/#sec-object.create
+// eslint-disable-next-line es/no-object-create -- safe
+$6c46fe9371eaab2c$exports = Object.create || function create(O, Properties) {
+    var result;
+    if (O !== null) {
+        $6c46fe9371eaab2c$var$EmptyConstructor[$6c46fe9371eaab2c$var$PROTOTYPE] = $fbf8b6f89693dc96$exports(O);
+        result = new $6c46fe9371eaab2c$var$EmptyConstructor();
+        $6c46fe9371eaab2c$var$EmptyConstructor[$6c46fe9371eaab2c$var$PROTOTYPE] = null;
+        // add "__proto__" for Object.getPrototypeOf polyfill
+        result[$6c46fe9371eaab2c$var$IE_PROTO] = O;
+    } else result = $6c46fe9371eaab2c$var$NullProtoObject();
+    return Properties === undefined ? result : $8b43bb879c940b57$export$2d1720544b23b823(result, Properties);
+};
+
+
+
+
+var $ee4e542c8daf7a4b$exports = {};
+
+$parcel$export($ee4e542c8daf7a4b$exports, "f", () => $ee4e542c8daf7a4b$export$2d1720544b23b823, (v) => $ee4e542c8daf7a4b$export$2d1720544b23b823 = v);
+// fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
+var $ee4e542c8daf7a4b$export$2d1720544b23b823;
+'use strict';
+
+
+
+var $ee4e542c8daf7a4b$require$$getOwnPropertyNames = $e18868c91f9bee5e$export$2d1720544b23b823;
+var $6f00017b18ab89e3$exports = {};
+'use strict';
+
+$6f00017b18ab89e3$exports = $a6ad1e8ada886a6e$exports([].slice);
+
+
+var $ee4e542c8daf7a4b$var$windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames ? Object.getOwnPropertyNames(window) : [];
+var $ee4e542c8daf7a4b$var$getWindowNames = function getWindowNames(it) {
+    try {
+        return $ee4e542c8daf7a4b$require$$getOwnPropertyNames(it);
+    } catch (error) {
+        return $6f00017b18ab89e3$exports($ee4e542c8daf7a4b$var$windowNames);
+    }
+};
+$ee4e542c8daf7a4b$export$2d1720544b23b823 = function getOwnPropertyNames(it) {
+    return $ee4e542c8daf7a4b$var$windowNames && $46b0c974b8e64b7f$exports(it) === 'Window' ? $ee4e542c8daf7a4b$var$getWindowNames(it) : $ee4e542c8daf7a4b$require$$getOwnPropertyNames($c4c6f95ea09874f7$exports(it));
+};
+
+
+
+
+
+
+
+
+var $34351ae141e46c37$exports = {};
+'use strict';
+
+
+$34351ae141e46c37$exports = function(target, name, descriptor) {
+    if (descriptor.get) $72611dfb775c63ee$exports(descriptor.get, name, {
+        getter: true
+    });
+    if (descriptor.set) $72611dfb775c63ee$exports(descriptor.set, name, {
+        setter: true
+    });
+    return $b7cf4c6cb85b0365$export$2d1720544b23b823(target, name, descriptor);
+};
+
+
+
+
+
+
+
+var $4a2432315257f676$exports = {};
+
+$parcel$export($4a2432315257f676$exports, "f", () => $4a2432315257f676$export$2d1720544b23b823, (v) => $4a2432315257f676$export$2d1720544b23b823 = v);
+var $4a2432315257f676$export$2d1720544b23b823;
+'use strict';
+
+$4a2432315257f676$export$2d1720544b23b823 = $1c371bdde30cc6f2$exports;
+
+
+var $41c8b8e1fd9dfceb$exports = {};
+'use strict';
+var $8b4d61eac25061e9$exports = {};
+'use strict';
+
+$8b4d61eac25061e9$exports = $6bb4f585dbcccb10$exports;
+
+
+
+
+
+var $41c8b8e1fd9dfceb$require$defineProperty = $b7cf4c6cb85b0365$export$2d1720544b23b823;
+$41c8b8e1fd9dfceb$exports = function(NAME) {
+    var Symbol = $8b4d61eac25061e9$exports.Symbol || ($8b4d61eac25061e9$exports.Symbol = {});
+    if (!$88fb7bd6b0cac2a7$exports(Symbol, NAME)) $41c8b8e1fd9dfceb$require$defineProperty(Symbol, NAME, {
+        value: $4a2432315257f676$export$2d1720544b23b823(NAME)
+    });
+};
+
+
+var $ea67c91bd62061e3$exports = {};
+'use strict';
+
+
+
+
+$ea67c91bd62061e3$exports = function() {
+    var Symbol = $7ab1ca27f8995b05$exports('Symbol');
+    var SymbolPrototype = Symbol && Symbol.prototype;
+    var valueOf = SymbolPrototype && SymbolPrototype.valueOf;
+    var TO_PRIMITIVE = $1c371bdde30cc6f2$exports('toPrimitive');
+    if (SymbolPrototype && !SymbolPrototype[TO_PRIMITIVE]) // `Symbol.prototype[@@toPrimitive]` method
+    // https://tc39.es/ecma262/#sec-symbol.prototype-@@toprimitive
+    // eslint-disable-next-line no-unused-vars -- required for .length
+    $cd1d0929e9f3f134$exports(SymbolPrototype, TO_PRIMITIVE, function(hint) {
+        return $b51eee67d287dc0c$exports(valueOf, this);
+    }, {
+        arity: 1
+    });
+};
+
+
+var $dc8b49a2567d5bf5$exports = {};
+'use strict';
+
+var $dc8b49a2567d5bf5$require$defineProperty = $b7cf4c6cb85b0365$export$2d1720544b23b823;
+
+
+var $dc8b49a2567d5bf5$var$TO_STRING_TAG = $1c371bdde30cc6f2$exports('toStringTag');
+$dc8b49a2567d5bf5$exports = function(target, TAG, STATIC) {
+    if (target && !STATIC) target = target.prototype;
+    if (target && !$88fb7bd6b0cac2a7$exports(target, $dc8b49a2567d5bf5$var$TO_STRING_TAG)) $dc8b49a2567d5bf5$require$defineProperty(target, $dc8b49a2567d5bf5$var$TO_STRING_TAG, {
+        configurable: true,
+        value: TAG
+    });
+};
+
+
+
+var $39b7306fbc8277ed$exports = {};
+'use strict';
+var $47d894db7420029c$exports = {};
+'use strict';
+var $6006cd259676c6be$exports = {};
+'use strict';
+
+
+$6006cd259676c6be$exports = function(fn) {
+    // Nashorn bug:
+    //   https://github.com/zloirock/core-js/issues/1128
+    //   https://github.com/zloirock/core-js/issues/1130
+    if ($46b0c974b8e64b7f$exports(fn) === 'Function') return $a6ad1e8ada886a6e$exports(fn);
+};
+
+
+
+
+var $47d894db7420029c$var$bind = $6006cd259676c6be$exports($6006cd259676c6be$exports.bind);
+// optional / simple context binding
+$47d894db7420029c$exports = function(fn, that) {
+    $1b86631bcbde2dff$exports(fn);
+    return that === undefined ? fn : $929ca55955eb4ac3$exports ? $47d894db7420029c$var$bind(fn, that) : function() {
+        return fn.apply(that, arguments);
+    };
+};
+
+
+
+
+
+
+var $fe53e7a0056d0c35$exports = {};
+'use strict';
+var $52f8e391b805654a$exports = {};
+'use strict';
+var $fb2a670985c00e13$exports = {};
+'use strict';
+
+// `IsArray` abstract operation
+// https://tc39.es/ecma262/#sec-isarray
+// eslint-disable-next-line es/no-array-isarray -- safe
+$fb2a670985c00e13$exports = Array.isArray || function isArray(argument) {
+    return $46b0c974b8e64b7f$exports(argument) === 'Array';
+};
+
+
+var $3b570a3627fd2080$exports = {};
+'use strict';
+
+
+
+
+
+
+var $3b570a3627fd2080$var$noop = function noop() {};
+var $3b570a3627fd2080$var$construct = $7ab1ca27f8995b05$exports('Reflect', 'construct');
+var $3b570a3627fd2080$var$constructorRegExp = /^\s*(?:class|function)\b/;
+var $3b570a3627fd2080$var$exec = $a6ad1e8ada886a6e$exports($3b570a3627fd2080$var$constructorRegExp.exec);
+var $3b570a3627fd2080$var$INCORRECT_TO_STRING = !$3b570a3627fd2080$var$constructorRegExp.test($3b570a3627fd2080$var$noop);
+var $3b570a3627fd2080$var$isConstructorModern = function isConstructor(argument) {
+    if (!$56269d2914fd05c7$exports(argument)) return false;
+    try {
+        $3b570a3627fd2080$var$construct($3b570a3627fd2080$var$noop, [], argument);
+        return true;
+    } catch (error) {
+        return false;
+    }
+};
+var $3b570a3627fd2080$var$isConstructorLegacy = function isConstructor(argument) {
+    if (!$56269d2914fd05c7$exports(argument)) return false;
+    switch($31b89c0c3042db21$exports(argument)){
+        case 'AsyncFunction':
+        case 'GeneratorFunction':
+        case 'AsyncGeneratorFunction':
+            return false;
+    }
+    try {
+        // we can't check .prototype since constructors produced by .bind haven't it
+        // `Function#toString` throws on some built-it function in some legacy engines
+        // (for example, `DOMQuad` and similar in FF41-)
+        return $3b570a3627fd2080$var$INCORRECT_TO_STRING || !!$3b570a3627fd2080$var$exec($3b570a3627fd2080$var$constructorRegExp, $941686ccb49a13c9$exports(argument));
+    } catch (error) {
+        return true;
+    }
+};
+$3b570a3627fd2080$var$isConstructorLegacy.sham = true;
+// `IsConstructor` abstract operation
+// https://tc39.es/ecma262/#sec-isconstructor
+$3b570a3627fd2080$exports = !$3b570a3627fd2080$var$construct || $8d47fb0f9458aed6$exports(function() {
+    var called;
+    return $3b570a3627fd2080$var$isConstructorModern($3b570a3627fd2080$var$isConstructorModern.call) || !$3b570a3627fd2080$var$isConstructorModern(Object) || !$3b570a3627fd2080$var$isConstructorModern(function() {
+        called = true;
+    }) || called;
+}) ? $3b570a3627fd2080$var$isConstructorLegacy : $3b570a3627fd2080$var$isConstructorModern;
+
+
+
+
+var $52f8e391b805654a$var$SPECIES = $1c371bdde30cc6f2$exports('species');
+var $52f8e391b805654a$var$$Array = Array;
+// a part of `ArraySpeciesCreate` abstract operation
+// https://tc39.es/ecma262/#sec-arrayspeciescreate
+$52f8e391b805654a$exports = function(originalArray) {
+    var C;
+    if ($fb2a670985c00e13$exports(originalArray)) {
+        C = originalArray.constructor;
+        // cross-realm fallback
+        if ($3b570a3627fd2080$exports(C) && (C === $52f8e391b805654a$var$$Array || $fb2a670985c00e13$exports(C.prototype))) C = undefined;
+        else if ($a5247cee30afd31c$exports(C)) {
+            C = C[$52f8e391b805654a$var$SPECIES];
+            if (C === null) C = undefined;
+        }
+    }
+    return C === undefined ? $52f8e391b805654a$var$$Array : C;
+};
+
+
+// `ArraySpeciesCreate` abstract operation
+// https://tc39.es/ecma262/#sec-arrayspeciescreate
+$fe53e7a0056d0c35$exports = function(originalArray, length) {
+    return new ($52f8e391b805654a$exports(originalArray))(length === 0 ? 0 : length);
+};
+
+
+var $39b7306fbc8277ed$var$push = $a6ad1e8ada886a6e$exports([].push);
+// `Array.prototype.{ forEach, map, filter, some, every, find, findIndex, filterReject }` methods implementation
+var $39b7306fbc8277ed$var$createMethod = function createMethod(TYPE) {
+    var IS_MAP = TYPE === 1;
+    var IS_FILTER = TYPE === 2;
+    var IS_SOME = TYPE === 3;
+    var IS_EVERY = TYPE === 4;
+    var IS_FIND_INDEX = TYPE === 6;
+    var IS_FILTER_REJECT = TYPE === 7;
+    var NO_HOLES = TYPE === 5 || IS_FIND_INDEX;
+    return function($this, callbackfn, that, specificCreate) {
+        var O = $e81ad450342cdca8$exports($this);
+        var self = $f3be2955fe886944$exports(O);
+        var length = $24cf1f15d34227c0$exports(self);
+        var boundFunction = $47d894db7420029c$exports(callbackfn, that);
+        var index = 0;
+        var create = specificCreate || $fe53e7a0056d0c35$exports;
+        var target = IS_MAP ? create($this, length) : IS_FILTER || IS_FILTER_REJECT ? create($this, 0) : undefined;
+        var value, result;
+        for(; length > index; index++)if (NO_HOLES || index in self) {
+            value = self[index];
+            result = boundFunction(value, index, O);
+            if (TYPE) {
+                if (IS_MAP) target[index] = result; // map
+                else if (result) switch(TYPE){
+                    case 3:
+                        return true; // some
+                    case 5:
+                        return value; // find
+                    case 6:
+                        return index; // findIndex
+                    case 2:
+                        $39b7306fbc8277ed$var$push(target, value); // filter
+                }
+                else switch(TYPE){
+                    case 4:
+                        return false; // every
+                    case 7:
+                        $39b7306fbc8277ed$var$push(target, value); // filterReject
+                }
+            }
+        }
+        return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : target;
+    };
+};
+$39b7306fbc8277ed$exports = {
+    // `Array.prototype.forEach` method
+    // https://tc39.es/ecma262/#sec-array.prototype.foreach
+    forEach: $39b7306fbc8277ed$var$createMethod(0),
+    // `Array.prototype.map` method
+    // https://tc39.es/ecma262/#sec-array.prototype.map
+    map: $39b7306fbc8277ed$var$createMethod(1),
+    // `Array.prototype.filter` method
+    // https://tc39.es/ecma262/#sec-array.prototype.filter
+    filter: $39b7306fbc8277ed$var$createMethod(2),
+    // `Array.prototype.some` method
+    // https://tc39.es/ecma262/#sec-array.prototype.some
+    some: $39b7306fbc8277ed$var$createMethod(3),
+    // `Array.prototype.every` method
+    // https://tc39.es/ecma262/#sec-array.prototype.every
+    every: $39b7306fbc8277ed$var$createMethod(4),
+    // `Array.prototype.find` method
+    // https://tc39.es/ecma262/#sec-array.prototype.find
+    find: $39b7306fbc8277ed$var$createMethod(5),
+    // `Array.prototype.findIndex` method
+    // https://tc39.es/ecma262/#sec-array.prototype.findIndex
+    findIndex: $39b7306fbc8277ed$var$createMethod(6),
+    // `Array.prototype.filterReject` method
+    // https://github.com/tc39/proposal-array-filtering
+    filterReject: $39b7306fbc8277ed$var$createMethod(7)
+};
+
+
+var $951dc091e26a30f4$require$$forEach = $39b7306fbc8277ed$exports.forEach;
+var $951dc091e26a30f4$var$HIDDEN = $bea024550bfba45a$exports('hidden');
+var $951dc091e26a30f4$var$SYMBOL = 'Symbol';
+var $951dc091e26a30f4$var$PROTOTYPE = 'prototype';
+var $951dc091e26a30f4$var$setInternalState = $3863900a8f1508e7$exports.set;
+var $951dc091e26a30f4$var$getInternalState = $3863900a8f1508e7$exports.getterFor($951dc091e26a30f4$var$SYMBOL);
+var $951dc091e26a30f4$var$ObjectPrototype = Object[$951dc091e26a30f4$var$PROTOTYPE];
+var $951dc091e26a30f4$var$$Symbol = $6bb4f585dbcccb10$exports.Symbol;
+var $951dc091e26a30f4$var$SymbolPrototype = $951dc091e26a30f4$var$$Symbol && $951dc091e26a30f4$var$$Symbol[$951dc091e26a30f4$var$PROTOTYPE];
+var $951dc091e26a30f4$var$RangeError = $6bb4f585dbcccb10$exports.RangeError;
+var $951dc091e26a30f4$var$TypeError = $6bb4f585dbcccb10$exports.TypeError;
+var $951dc091e26a30f4$var$QObject = $6bb4f585dbcccb10$exports.QObject;
+var $951dc091e26a30f4$var$nativeGetOwnPropertyDescriptor = $efb277c423a0f6b2$export$2d1720544b23b823;
+var $951dc091e26a30f4$var$nativeDefineProperty = $b7cf4c6cb85b0365$export$2d1720544b23b823;
+var $951dc091e26a30f4$var$nativeGetOwnPropertyNames = $ee4e542c8daf7a4b$export$2d1720544b23b823;
+var $951dc091e26a30f4$var$nativePropertyIsEnumerable = $eeef746029dc98c3$export$2d1720544b23b823;
+var $951dc091e26a30f4$var$push = $a6ad1e8ada886a6e$exports([].push);
+var $951dc091e26a30f4$var$AllSymbols = $ec572ecbee7dcfb1$exports('symbols');
+var $951dc091e26a30f4$var$ObjectPrototypeSymbols = $ec572ecbee7dcfb1$exports('op-symbols');
+var $951dc091e26a30f4$var$WellKnownSymbolsStore = $ec572ecbee7dcfb1$exports('wks');
+// Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
+var $951dc091e26a30f4$var$USE_SETTER = !$951dc091e26a30f4$var$QObject || !$951dc091e26a30f4$var$QObject[$951dc091e26a30f4$var$PROTOTYPE] || !$951dc091e26a30f4$var$QObject[$951dc091e26a30f4$var$PROTOTYPE].findChild;
+// fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
+var $951dc091e26a30f4$var$fallbackDefineProperty = function fallbackDefineProperty(O, P, Attributes) {
+    var ObjectPrototypeDescriptor = $951dc091e26a30f4$var$nativeGetOwnPropertyDescriptor($951dc091e26a30f4$var$ObjectPrototype, P);
+    if (ObjectPrototypeDescriptor) delete $951dc091e26a30f4$var$ObjectPrototype[P];
+    $951dc091e26a30f4$var$nativeDefineProperty(O, P, Attributes);
+    if (ObjectPrototypeDescriptor && O !== $951dc091e26a30f4$var$ObjectPrototype) $951dc091e26a30f4$var$nativeDefineProperty($951dc091e26a30f4$var$ObjectPrototype, P, ObjectPrototypeDescriptor);
+};
+var $951dc091e26a30f4$var$setSymbolDescriptor = $9ad58a245a9ea542$exports && $8d47fb0f9458aed6$exports(function() {
+    return $6c46fe9371eaab2c$exports($951dc091e26a30f4$var$nativeDefineProperty({}, 'a', {
+        get: function get() {
+            return $951dc091e26a30f4$var$nativeDefineProperty(this, 'a', {
+                value: 7
+            }).a;
+        }
+    })).a !== 7;
+}) ? $951dc091e26a30f4$var$fallbackDefineProperty : $951dc091e26a30f4$var$nativeDefineProperty;
+var $951dc091e26a30f4$var$wrap = function wrap(tag, description) {
+    var symbol = $951dc091e26a30f4$var$AllSymbols[tag] = $6c46fe9371eaab2c$exports($951dc091e26a30f4$var$SymbolPrototype);
+    $951dc091e26a30f4$var$setInternalState(symbol, {
+        type: $951dc091e26a30f4$var$SYMBOL,
+        tag: tag,
+        description: description
+    });
+    if (!$9ad58a245a9ea542$exports) symbol.description = description;
+    return symbol;
+};
+var $951dc091e26a30f4$var$$defineProperty = function defineProperty(O, P, Attributes) {
+    if (O === $951dc091e26a30f4$var$ObjectPrototype) $951dc091e26a30f4$var$$defineProperty($951dc091e26a30f4$var$ObjectPrototypeSymbols, P, Attributes);
+    $fbf8b6f89693dc96$exports(O);
+    var key = $5048c15693b2c826$exports(P);
+    $fbf8b6f89693dc96$exports(Attributes);
+    if ($88fb7bd6b0cac2a7$exports($951dc091e26a30f4$var$AllSymbols, key)) {
+        if (!Attributes.enumerable) {
+            if (!$88fb7bd6b0cac2a7$exports(O, $951dc091e26a30f4$var$HIDDEN)) $951dc091e26a30f4$var$nativeDefineProperty(O, $951dc091e26a30f4$var$HIDDEN, $28b05b782a3d40a0$exports(1, $6c46fe9371eaab2c$exports(null)));
+            O[$951dc091e26a30f4$var$HIDDEN][key] = true;
+        } else {
+            if ($88fb7bd6b0cac2a7$exports(O, $951dc091e26a30f4$var$HIDDEN) && O[$951dc091e26a30f4$var$HIDDEN][key]) O[$951dc091e26a30f4$var$HIDDEN][key] = false;
+            Attributes = $6c46fe9371eaab2c$exports(Attributes, {
+                enumerable: $28b05b782a3d40a0$exports(0, false)
+            });
+        }
+        return $951dc091e26a30f4$var$setSymbolDescriptor(O, key, Attributes);
+    }
+    return $951dc091e26a30f4$var$nativeDefineProperty(O, key, Attributes);
+};
+var $951dc091e26a30f4$var$$defineProperties = function defineProperties(O, Properties) {
+    $fbf8b6f89693dc96$exports(O);
+    var properties = $c4c6f95ea09874f7$exports(Properties);
+    var keys = $ebb453aeb0972523$exports(properties).concat($951dc091e26a30f4$var$$getOwnPropertySymbols(properties));
+    $951dc091e26a30f4$require$$forEach(keys, function(key) {
+        if (!$9ad58a245a9ea542$exports || $b51eee67d287dc0c$exports($951dc091e26a30f4$var$$propertyIsEnumerable, properties, key)) $951dc091e26a30f4$var$$defineProperty(O, key, properties[key]);
+    });
+    return O;
+};
+var $951dc091e26a30f4$var$$create = function create(O, Properties) {
+    return Properties === undefined ? $6c46fe9371eaab2c$exports(O) : $951dc091e26a30f4$var$$defineProperties($6c46fe9371eaab2c$exports(O), Properties);
+};
+var $951dc091e26a30f4$var$$propertyIsEnumerable = function propertyIsEnumerable(V) {
+    var P = $5048c15693b2c826$exports(V);
+    var enumerable = $b51eee67d287dc0c$exports($951dc091e26a30f4$var$nativePropertyIsEnumerable, this, P);
+    if (this === $951dc091e26a30f4$var$ObjectPrototype && $88fb7bd6b0cac2a7$exports($951dc091e26a30f4$var$AllSymbols, P) && !$88fb7bd6b0cac2a7$exports($951dc091e26a30f4$var$ObjectPrototypeSymbols, P)) return false;
+    return enumerable || !$88fb7bd6b0cac2a7$exports(this, P) || !$88fb7bd6b0cac2a7$exports($951dc091e26a30f4$var$AllSymbols, P) || $88fb7bd6b0cac2a7$exports(this, $951dc091e26a30f4$var$HIDDEN) && this[$951dc091e26a30f4$var$HIDDEN][P] ? enumerable : true;
+};
+var $951dc091e26a30f4$var$$getOwnPropertyDescriptor = function getOwnPropertyDescriptor(O, P) {
+    var it = $c4c6f95ea09874f7$exports(O);
+    var key = $5048c15693b2c826$exports(P);
+    if (it === $951dc091e26a30f4$var$ObjectPrototype && $88fb7bd6b0cac2a7$exports($951dc091e26a30f4$var$AllSymbols, key) && !$88fb7bd6b0cac2a7$exports($951dc091e26a30f4$var$ObjectPrototypeSymbols, key)) return;
+    var descriptor = $951dc091e26a30f4$var$nativeGetOwnPropertyDescriptor(it, key);
+    if (descriptor && $88fb7bd6b0cac2a7$exports($951dc091e26a30f4$var$AllSymbols, key) && !($88fb7bd6b0cac2a7$exports(it, $951dc091e26a30f4$var$HIDDEN) && it[$951dc091e26a30f4$var$HIDDEN][key])) descriptor.enumerable = true;
+    return descriptor;
+};
+var $951dc091e26a30f4$var$$getOwnPropertyNames = function getOwnPropertyNames(O) {
+    var names = $951dc091e26a30f4$var$nativeGetOwnPropertyNames($c4c6f95ea09874f7$exports(O));
+    var result = [];
+    $951dc091e26a30f4$require$$forEach(names, function(key) {
+        if (!$88fb7bd6b0cac2a7$exports($951dc091e26a30f4$var$AllSymbols, key) && !$88fb7bd6b0cac2a7$exports($f39f553c696da03a$exports, key)) $951dc091e26a30f4$var$push(result, key);
+    });
+    return result;
+};
+var $951dc091e26a30f4$var$$getOwnPropertySymbols = function $getOwnPropertySymbols(O) {
+    var IS_OBJECT_PROTOTYPE = O === $951dc091e26a30f4$var$ObjectPrototype;
+    var names = $951dc091e26a30f4$var$nativeGetOwnPropertyNames(IS_OBJECT_PROTOTYPE ? $951dc091e26a30f4$var$ObjectPrototypeSymbols : $c4c6f95ea09874f7$exports(O));
+    var result = [];
+    $951dc091e26a30f4$require$$forEach(names, function(key) {
+        if ($88fb7bd6b0cac2a7$exports($951dc091e26a30f4$var$AllSymbols, key) && (!IS_OBJECT_PROTOTYPE || $88fb7bd6b0cac2a7$exports($951dc091e26a30f4$var$ObjectPrototype, key))) $951dc091e26a30f4$var$push(result, $951dc091e26a30f4$var$AllSymbols[key]);
+    });
+    return result;
+};
+// `Symbol` constructor
+// https://tc39.es/ecma262/#sec-symbol-constructor
+if (!$ff32005ee87cc127$exports) {
+    $951dc091e26a30f4$var$$Symbol = function Symbol() {
+        if ($c4802cfd914fa45d$exports($951dc091e26a30f4$var$SymbolPrototype, this)) throw new $951dc091e26a30f4$var$TypeError('Symbol is not a constructor');
+        var description = !arguments.length || arguments[0] === undefined ? undefined : $3441418af0b2523d$exports(arguments[0]);
+        var tag = $dc4ef02874cda19f$exports(description);
+        var setter = function setter1(value) {
+            var $this = this === undefined ? $6bb4f585dbcccb10$exports : this;
+            if ($this === $951dc091e26a30f4$var$ObjectPrototype) $b51eee67d287dc0c$exports(setter, $951dc091e26a30f4$var$ObjectPrototypeSymbols, value);
+            if ($88fb7bd6b0cac2a7$exports($this, $951dc091e26a30f4$var$HIDDEN) && $88fb7bd6b0cac2a7$exports($this[$951dc091e26a30f4$var$HIDDEN], tag)) $this[$951dc091e26a30f4$var$HIDDEN][tag] = false;
+            var descriptor = $28b05b782a3d40a0$exports(1, value);
+            try {
+                $951dc091e26a30f4$var$setSymbolDescriptor($this, tag, descriptor);
+            } catch (error) {
+                if (!(error instanceof $951dc091e26a30f4$var$RangeError)) throw error;
+                $951dc091e26a30f4$var$fallbackDefineProperty($this, tag, descriptor);
+            }
+        };
+        if ($9ad58a245a9ea542$exports && $951dc091e26a30f4$var$USE_SETTER) $951dc091e26a30f4$var$setSymbolDescriptor($951dc091e26a30f4$var$ObjectPrototype, tag, {
+            configurable: true,
+            set: setter
+        });
+        return $951dc091e26a30f4$var$wrap(tag, description);
+    };
+    $951dc091e26a30f4$var$SymbolPrototype = $951dc091e26a30f4$var$$Symbol[$951dc091e26a30f4$var$PROTOTYPE];
+    $cd1d0929e9f3f134$exports($951dc091e26a30f4$var$SymbolPrototype, 'toString', function toString() {
+        return $951dc091e26a30f4$var$getInternalState(this).tag;
+    });
+    $cd1d0929e9f3f134$exports($951dc091e26a30f4$var$$Symbol, 'withoutSetter', function(description) {
+        return $951dc091e26a30f4$var$wrap($dc4ef02874cda19f$exports(description), description);
+    });
+    $eeef746029dc98c3$exports.f = $951dc091e26a30f4$var$$propertyIsEnumerable;
+    $b7cf4c6cb85b0365$exports.f = $951dc091e26a30f4$var$$defineProperty;
+    $8b43bb879c940b57$exports.f = $951dc091e26a30f4$var$$defineProperties;
+    $efb277c423a0f6b2$exports.f = $951dc091e26a30f4$var$$getOwnPropertyDescriptor;
+    $e18868c91f9bee5e$exports.f = $ee4e542c8daf7a4b$exports.f = $951dc091e26a30f4$var$$getOwnPropertyNames;
+    $c7bc6eb18f26704d$exports.f = $951dc091e26a30f4$var$$getOwnPropertySymbols;
+    $4a2432315257f676$exports.f = function(name) {
+        return $951dc091e26a30f4$var$wrap($1c371bdde30cc6f2$exports(name), name);
+    };
+    if ($9ad58a245a9ea542$exports) {
+        // https://github.com/tc39/proposal-Symbol-description
+        $34351ae141e46c37$exports($951dc091e26a30f4$var$SymbolPrototype, 'description', {
+            configurable: true,
+            get: function description() {
+                return $951dc091e26a30f4$var$getInternalState(this).description;
+            }
+        });
+        if (!$2a942138f69f24b8$exports) $cd1d0929e9f3f134$exports($951dc091e26a30f4$var$ObjectPrototype, 'propertyIsEnumerable', $951dc091e26a30f4$var$$propertyIsEnumerable, {
+            unsafe: true
+        });
+    }
+}
+$a4386f1de3d17f70$exports({
+    global: true,
+    constructor: true,
+    wrap: true,
+    forced: !$ff32005ee87cc127$exports,
+    sham: !$ff32005ee87cc127$exports
+}, {
+    Symbol: $951dc091e26a30f4$var$$Symbol
+});
+$951dc091e26a30f4$require$$forEach($ebb453aeb0972523$exports($951dc091e26a30f4$var$WellKnownSymbolsStore), function(name) {
+    $41c8b8e1fd9dfceb$exports(name);
+});
+$a4386f1de3d17f70$exports({
+    target: $951dc091e26a30f4$var$SYMBOL,
+    stat: true,
+    forced: !$ff32005ee87cc127$exports
+}, {
+    useSetter: function useSetter() {
+        $951dc091e26a30f4$var$USE_SETTER = true;
+    },
+    useSimple: function useSimple() {
+        $951dc091e26a30f4$var$USE_SETTER = false;
+    }
+});
+$a4386f1de3d17f70$exports({
+    target: 'Object',
+    stat: true,
+    forced: !$ff32005ee87cc127$exports,
+    sham: !$9ad58a245a9ea542$exports
+}, {
+    // `Object.create` method
+    // https://tc39.es/ecma262/#sec-object.create
+    create: $951dc091e26a30f4$var$$create,
+    // `Object.defineProperty` method
+    // https://tc39.es/ecma262/#sec-object.defineproperty
+    defineProperty: $951dc091e26a30f4$var$$defineProperty,
+    // `Object.defineProperties` method
+    // https://tc39.es/ecma262/#sec-object.defineproperties
+    defineProperties: $951dc091e26a30f4$var$$defineProperties,
+    // `Object.getOwnPropertyDescriptor` method
+    // https://tc39.es/ecma262/#sec-object.getownpropertydescriptors
+    getOwnPropertyDescriptor: $951dc091e26a30f4$var$$getOwnPropertyDescriptor
+});
+$a4386f1de3d17f70$exports({
+    target: 'Object',
+    stat: true,
+    forced: !$ff32005ee87cc127$exports
+}, {
+    // `Object.getOwnPropertyNames` method
+    // https://tc39.es/ecma262/#sec-object.getownpropertynames
+    getOwnPropertyNames: $951dc091e26a30f4$var$$getOwnPropertyNames
+});
+// `Symbol.prototype[@@toPrimitive]` method
+// https://tc39.es/ecma262/#sec-symbol.prototype-@@toprimitive
+$ea67c91bd62061e3$exports();
+// `Symbol.prototype[@@toStringTag]` property
+// https://tc39.es/ecma262/#sec-symbol.prototype-@@tostringtag
+$dc8b49a2567d5bf5$exports($951dc091e26a30f4$var$$Symbol, $951dc091e26a30f4$var$SYMBOL);
+$f39f553c696da03a$exports[$951dc091e26a30f4$var$HIDDEN] = true;
+
+
+'use strict';
+
+
+
+
+
+var $510ca828affdaf18$exports = {};
+'use strict';
+
+/* eslint-disable es/no-symbol -- safe */ $510ca828affdaf18$exports = $ff32005ee87cc127$exports && !!Symbol['for'] && !!Symbol.keyFor;
+
+
+var $aaecc3a1ba99c9a3$var$StringToSymbolRegistry = $ec572ecbee7dcfb1$exports('string-to-symbol-registry');
+var $aaecc3a1ba99c9a3$var$SymbolToStringRegistry = $ec572ecbee7dcfb1$exports('symbol-to-string-registry');
+// `Symbol.for` method
+// https://tc39.es/ecma262/#sec-symbol.for
+$a4386f1de3d17f70$exports({
+    target: 'Symbol',
+    stat: true,
+    forced: !$510ca828affdaf18$exports
+}, {
+    'for': function(key) {
+        var string = $3441418af0b2523d$exports(key);
+        if ($88fb7bd6b0cac2a7$exports($aaecc3a1ba99c9a3$var$StringToSymbolRegistry, string)) return $aaecc3a1ba99c9a3$var$StringToSymbolRegistry[string];
+        var symbol = $7ab1ca27f8995b05$exports('Symbol')(string);
+        $aaecc3a1ba99c9a3$var$StringToSymbolRegistry[string] = symbol;
+        $aaecc3a1ba99c9a3$var$SymbolToStringRegistry[symbol] = string;
+        return symbol;
+    }
+});
+
+
+'use strict';
+
+
+
+
+
+
+var $8f44c7c96330baab$var$SymbolToStringRegistry = $ec572ecbee7dcfb1$exports('symbol-to-string-registry');
+// `Symbol.keyFor` method
+// https://tc39.es/ecma262/#sec-symbol.keyfor
+$a4386f1de3d17f70$exports({
+    target: 'Symbol',
+    stat: true,
+    forced: !$510ca828affdaf18$exports
+}, {
+    keyFor: function keyFor(sym) {
+        if (!$5f60f1f0b0535210$exports(sym)) throw new TypeError($661acc3934c51a51$exports(sym) + ' is not a symbol');
+        if ($88fb7bd6b0cac2a7$exports($8f44c7c96330baab$var$SymbolToStringRegistry, sym)) return $8f44c7c96330baab$var$SymbolToStringRegistry[sym];
+    }
+});
+
+
+'use strict';
+
+
+var $4a7de1faa165d753$exports = {};
+'use strict';
+
+var $4a7de1faa165d753$var$FunctionPrototype = Function.prototype;
+var $4a7de1faa165d753$var$apply = $4a7de1faa165d753$var$FunctionPrototype.apply;
+var $4a7de1faa165d753$var$call = $4a7de1faa165d753$var$FunctionPrototype.call;
+// eslint-disable-next-line es/no-function-prototype-bind, es/no-reflect -- safe
+$4a7de1faa165d753$exports = typeof Reflect == 'object' && Reflect.apply || ($929ca55955eb4ac3$exports ? $4a7de1faa165d753$var$call.bind($4a7de1faa165d753$var$apply) : function() {
+    return $4a7de1faa165d753$var$call.apply($4a7de1faa165d753$var$apply, arguments);
+});
+
+
+
+
+
+
+
+
+var $400a67e0a2c6df3d$exports = {};
+'use strict';
+
+
+
+
+
+var $400a67e0a2c6df3d$var$push = $a6ad1e8ada886a6e$exports([].push);
+$400a67e0a2c6df3d$exports = function(replacer) {
+    if ($56269d2914fd05c7$exports(replacer)) return replacer;
+    if (!$fb2a670985c00e13$exports(replacer)) return;
+    var rawLength = replacer.length;
+    var keys = [];
+    for(var i = 0; i < rawLength; i++){
+        var element = replacer[i];
+        if (typeof element == 'string') $400a67e0a2c6df3d$var$push(keys, element);
+        else if (typeof element == 'number' || $46b0c974b8e64b7f$exports(element) === 'Number' || $46b0c974b8e64b7f$exports(element) === 'String') $400a67e0a2c6df3d$var$push(keys, $3441418af0b2523d$exports(element));
+    }
+    var keysLength = keys.length;
+    var root = true;
+    return function(key, value) {
+        if (root) {
+            root = false;
+            return value;
+        }
+        if ($fb2a670985c00e13$exports(this)) return value;
+        for(var j = 0; j < keysLength; j++)if (keys[j] === key) return value;
+    };
+};
+
+
+
+var $167e4ca9034ee377$var$$String = String;
+var $167e4ca9034ee377$var$$stringify = $7ab1ca27f8995b05$exports('JSON', 'stringify');
+var $167e4ca9034ee377$var$exec = $a6ad1e8ada886a6e$exports(/./.exec);
+var $167e4ca9034ee377$var$charAt = $a6ad1e8ada886a6e$exports(''.charAt);
+var $167e4ca9034ee377$var$charCodeAt = $a6ad1e8ada886a6e$exports(''.charCodeAt);
+var $167e4ca9034ee377$var$replace = $a6ad1e8ada886a6e$exports(''.replace);
+var $167e4ca9034ee377$var$numberToString = $a6ad1e8ada886a6e$exports(1.0.toString);
+var $167e4ca9034ee377$var$tester = /[\uD800-\uDFFF]/g;
+var $167e4ca9034ee377$var$low = /^[\uD800-\uDBFF]$/;
+var $167e4ca9034ee377$var$hi = /^[\uDC00-\uDFFF]$/;
+var $167e4ca9034ee377$var$WRONG_SYMBOLS_CONVERSION = !$ff32005ee87cc127$exports || $8d47fb0f9458aed6$exports(function() {
+    var symbol = $7ab1ca27f8995b05$exports('Symbol')('stringify detection');
+    // MS Edge converts symbol values to JSON as {}
+    return $167e4ca9034ee377$var$$stringify([
+        symbol
+    ]) !== '[null]' || $167e4ca9034ee377$var$$stringify({
+        a: symbol
+    }) !== '{}' || $167e4ca9034ee377$var$$stringify(Object(symbol)) !== '{}';
+});
+// https://github.com/tc39/proposal-well-formed-stringify
+var $167e4ca9034ee377$var$ILL_FORMED_UNICODE = $8d47fb0f9458aed6$exports(function() {
+    return $167e4ca9034ee377$var$$stringify('\uDF06\uD834') !== '"\\udf06\\ud834"' || $167e4ca9034ee377$var$$stringify('\uDEAD') !== '"\\udead"';
+});
+var $167e4ca9034ee377$var$stringifyWithSymbolsFix = function stringifyWithSymbolsFix(it, replacer) {
+    var args = $6f00017b18ab89e3$exports(arguments);
+    var $replacer = $400a67e0a2c6df3d$exports(replacer);
+    if (!$56269d2914fd05c7$exports($replacer) && (it === undefined || $5f60f1f0b0535210$exports(it))) return; // IE8 returns string on undefined
+    args[1] = function(key, value) {
+        // some old implementations (like WebKit) could pass numbers as keys
+        if ($56269d2914fd05c7$exports($replacer)) value = $b51eee67d287dc0c$exports($replacer, this, $167e4ca9034ee377$var$$String(key), value);
+        if (!$5f60f1f0b0535210$exports(value)) return value;
+    };
+    return $4a7de1faa165d753$exports($167e4ca9034ee377$var$$stringify, null, args);
+};
+var $167e4ca9034ee377$var$fixIllFormed = function fixIllFormed(match, offset, string) {
+    var prev = $167e4ca9034ee377$var$charAt(string, offset - 1);
+    var next = $167e4ca9034ee377$var$charAt(string, offset + 1);
+    if ($167e4ca9034ee377$var$exec($167e4ca9034ee377$var$low, match) && !$167e4ca9034ee377$var$exec($167e4ca9034ee377$var$hi, next) || $167e4ca9034ee377$var$exec($167e4ca9034ee377$var$hi, match) && !$167e4ca9034ee377$var$exec($167e4ca9034ee377$var$low, prev)) return '\\u' + $167e4ca9034ee377$var$numberToString($167e4ca9034ee377$var$charCodeAt(match, 0), 16);
+    return match;
+};
+if ($167e4ca9034ee377$var$$stringify) // `JSON.stringify` method
+// https://tc39.es/ecma262/#sec-json.stringify
+$a4386f1de3d17f70$exports({
+    target: 'JSON',
+    stat: true,
+    arity: 3,
+    forced: $167e4ca9034ee377$var$WRONG_SYMBOLS_CONVERSION || $167e4ca9034ee377$var$ILL_FORMED_UNICODE
+}, {
+    // eslint-disable-next-line no-unused-vars -- required for `.length`
+    stringify: function stringify(it, replacer, space) {
+        var args = $6f00017b18ab89e3$exports(arguments);
+        var result = $4a7de1faa165d753$exports($167e4ca9034ee377$var$WRONG_SYMBOLS_CONVERSION ? $167e4ca9034ee377$var$stringifyWithSymbolsFix : $167e4ca9034ee377$var$$stringify, null, args);
+        return $167e4ca9034ee377$var$ILL_FORMED_UNICODE && typeof result == 'string' ? $167e4ca9034ee377$var$replace(result, $167e4ca9034ee377$var$tester, $167e4ca9034ee377$var$fixIllFormed) : result;
+    }
+});
+
+
+'use strict';
+
+
+
+
+
+// V8 ~ Chrome 38 and 39 `Object.getOwnPropertySymbols` fails on primitives
+// https://bugs.chromium.org/p/v8/issues/detail?id=3443
+var $9901e46c57425eb0$var$FORCED = !$ff32005ee87cc127$exports || $8d47fb0f9458aed6$exports(function() {
+    $c7bc6eb18f26704d$export$2d1720544b23b823(1);
+});
+// `Object.getOwnPropertySymbols` method
+// https://tc39.es/ecma262/#sec-object.getownpropertysymbols
+$a4386f1de3d17f70$exports({
+    target: 'Object',
+    stat: true,
+    forced: $9901e46c57425eb0$var$FORCED
+}, {
+    getOwnPropertySymbols: function getOwnPropertySymbols(it) {
+        var $getOwnPropertySymbols = $c7bc6eb18f26704d$export$2d1720544b23b823;
+        return $getOwnPropertySymbols ? $getOwnPropertySymbols($e81ad450342cdca8$exports(it)) : [];
+    }
+});
+
+
+
+
+// `Symbol.prototype.description` getter
+// https://tc39.es/ecma262/#sec-symbol.prototype.description
+'use strict';
+
+
+
+
+
+
+
+
+
+
+var $61605ff85709ba5e$var$NativeSymbol = $6bb4f585dbcccb10$exports.Symbol;
+var $61605ff85709ba5e$var$SymbolPrototype = $61605ff85709ba5e$var$NativeSymbol && $61605ff85709ba5e$var$NativeSymbol.prototype;
+if ($9ad58a245a9ea542$exports && $56269d2914fd05c7$exports($61605ff85709ba5e$var$NativeSymbol) && (!('description' in $61605ff85709ba5e$var$SymbolPrototype) || // Safari 12 bug
+$61605ff85709ba5e$var$NativeSymbol().description !== undefined)) {
+    var $61605ff85709ba5e$var$EmptyStringDescriptionStore = {};
+    // wrap Symbol constructor for correct work with undefined description
+    var $61605ff85709ba5e$var$SymbolWrapper = function Symbol() {
+        var description = arguments.length < 1 || arguments[0] === undefined ? undefined : $3441418af0b2523d$exports(arguments[0]);
+        var result = $c4802cfd914fa45d$exports($61605ff85709ba5e$var$SymbolPrototype, this) ? new $61605ff85709ba5e$var$NativeSymbol(description) : description === undefined ? $61605ff85709ba5e$var$NativeSymbol() : $61605ff85709ba5e$var$NativeSymbol(description);
+        if (description === '') $61605ff85709ba5e$var$EmptyStringDescriptionStore[result] = true;
+        return result;
+    };
+    $4c111657203b3886$exports($61605ff85709ba5e$var$SymbolWrapper, $61605ff85709ba5e$var$NativeSymbol);
+    $61605ff85709ba5e$var$SymbolWrapper.prototype = $61605ff85709ba5e$var$SymbolPrototype;
+    $61605ff85709ba5e$var$SymbolPrototype.constructor = $61605ff85709ba5e$var$SymbolWrapper;
+    var $61605ff85709ba5e$var$NATIVE_SYMBOL = String($61605ff85709ba5e$var$NativeSymbol('description detection')) === 'Symbol(description detection)';
+    var $61605ff85709ba5e$var$thisSymbolValue = $a6ad1e8ada886a6e$exports($61605ff85709ba5e$var$SymbolPrototype.valueOf);
+    var $61605ff85709ba5e$var$symbolDescriptiveString = $a6ad1e8ada886a6e$exports($61605ff85709ba5e$var$SymbolPrototype.toString);
+    var $61605ff85709ba5e$var$regexp = /^Symbol\((.*)\)[^)]+$/;
+    var $61605ff85709ba5e$var$replace = $a6ad1e8ada886a6e$exports(''.replace);
+    var $61605ff85709ba5e$var$stringSlice = $a6ad1e8ada886a6e$exports(''.slice);
+    $34351ae141e46c37$exports($61605ff85709ba5e$var$SymbolPrototype, 'description', {
+        configurable: true,
+        get: function description() {
+            var symbol = $61605ff85709ba5e$var$thisSymbolValue(this);
+            if ($88fb7bd6b0cac2a7$exports($61605ff85709ba5e$var$EmptyStringDescriptionStore, symbol)) return '';
+            var string = $61605ff85709ba5e$var$symbolDescriptiveString(symbol);
+            var desc = $61605ff85709ba5e$var$NATIVE_SYMBOL ? $61605ff85709ba5e$var$stringSlice(string, 7, -1) : $61605ff85709ba5e$var$replace(string, $61605ff85709ba5e$var$regexp, '$1');
+            return desc === '' ? undefined : desc;
+        }
+    });
+    $a4386f1de3d17f70$exports({
+        global: true,
+        constructor: true,
+        forced: true
+    }, {
+        Symbol: $61605ff85709ba5e$var$SymbolWrapper
+    });
+}
+
+
+'use strict';
+
+// `Symbol.asyncIterator` well-known symbol
+// https://tc39.es/ecma262/#sec-symbol.asynciterator
+$41c8b8e1fd9dfceb$exports('asyncIterator');
+
+
+'use strict';
+
+// `Symbol.hasInstance` well-known symbol
+// https://tc39.es/ecma262/#sec-symbol.hasinstance
+$41c8b8e1fd9dfceb$exports('hasInstance');
+
+
+'use strict';
+
+// `Symbol.replace` well-known symbol
+// https://tc39.es/ecma262/#sec-symbol.replace
+$41c8b8e1fd9dfceb$exports('replace');
+
+
+'use strict';
+
+// `Symbol.search` well-known symbol
+// https://tc39.es/ecma262/#sec-symbol.search
+$41c8b8e1fd9dfceb$exports('search');
+
+
+'use strict';
+
+// `Symbol.split` well-known symbol
+// https://tc39.es/ecma262/#sec-symbol.split
+$41c8b8e1fd9dfceb$exports('split');
+
+
+'use strict';
+
+
+
+// `Symbol.toStringTag` well-known symbol
+// https://tc39.es/ecma262/#sec-symbol.tostringtag
+$41c8b8e1fd9dfceb$exports('toStringTag');
+// `Symbol.prototype[@@toStringTag]` property
+// https://tc39.es/ecma262/#sec-symbol.prototype-@@tostringtag
+$dc8b49a2567d5bf5$exports($7ab1ca27f8995b05$exports('Symbol'), 'Symbol');
+
+
+'use strict';
+
+var $549cb2832a5d4b6f$exports = {};
+'use strict';
+
+
+var $be667372c860e486$exports = {};
+'use strict';
+var $be667372c860e486$var$$TypeError = TypeError;
+var $be667372c860e486$var$MAX_SAFE_INTEGER = 0x1FFFFFFFFFFFFF; // 2 ** 53 - 1 == 9007199254740991
+$be667372c860e486$exports = function(it) {
+    if (it > $be667372c860e486$var$MAX_SAFE_INTEGER) throw $be667372c860e486$var$$TypeError('Maximum allowed index exceeded');
+    return it;
+};
+
+
+
+// `FlattenIntoArray` abstract operation
+// https://tc39.github.io/proposal-flatMap/#sec-FlattenIntoArray
+var $549cb2832a5d4b6f$var$flattenIntoArray = function flattenIntoArray1(target, original, source, sourceLen, start, depth, mapper, thisArg) {
+    var targetIndex = start;
+    var sourceIndex = 0;
+    var mapFn = mapper ? $47d894db7420029c$exports(mapper, thisArg) : false;
+    var element, elementLen;
+    while(sourceIndex < sourceLen){
+        if (sourceIndex in source) {
+            element = mapFn ? mapFn(source[sourceIndex], sourceIndex, original) : source[sourceIndex];
+            if (depth > 0 && $fb2a670985c00e13$exports(element)) {
+                elementLen = $24cf1f15d34227c0$exports(element);
+                targetIndex = $549cb2832a5d4b6f$var$flattenIntoArray(target, original, element, elementLen, targetIndex, depth - 1) - 1;
+            } else {
+                $be667372c860e486$exports(targetIndex + 1);
+                target[targetIndex] = element;
+            }
+            targetIndex++;
+        }
+        sourceIndex++;
+    }
+    return targetIndex;
+};
+$549cb2832a5d4b6f$exports = $549cb2832a5d4b6f$var$flattenIntoArray;
+
+
+
+
+
+
+// `Array.prototype.flat` method
+// https://tc39.es/ecma262/#sec-array.prototype.flat
+$a4386f1de3d17f70$exports({
+    target: 'Array',
+    proto: true
+}, {
+    flat: function flat() {
+        var depthArg = arguments.length ? arguments[0] : undefined;
+        var O = $e81ad450342cdca8$exports(this);
+        var sourceLen = $24cf1f15d34227c0$exports(O);
+        var A = $fe53e7a0056d0c35$exports(O, 0);
+        A.length = $549cb2832a5d4b6f$exports(A, O, O, sourceLen, 0, depthArg === undefined ? 1 : $e65bc32c76079804$exports(depthArg));
+        return A;
+    }
+});
+
+
+'use strict';
+
+
+
+
+
+
+// `Array.prototype.flatMap` method
+// https://tc39.es/ecma262/#sec-array.prototype.flatmap
+$a4386f1de3d17f70$exports({
+    target: 'Array',
+    proto: true
+}, {
+    flatMap: function flatMap(callbackfn /* , thisArg */ ) {
+        var O = $e81ad450342cdca8$exports(this);
+        var sourceLen = $24cf1f15d34227c0$exports(O);
+        var A;
+        $1b86631bcbde2dff$exports(callbackfn);
+        A = $fe53e7a0056d0c35$exports(O, 0);
+        A.length = $549cb2832a5d4b6f$exports(A, O, O, sourceLen, 0, 1, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+        return A;
+    }
+});
+
+
+'use strict';
+
+var $83146879b5245ffe$exports = {};
+'use strict';
+
+
+
+var $92673d2eebe4f63b$exports = {};
+'use strict';
+
+var $45e8cc8bcbf77fa6$exports = {};
+'use strict';
+
+
+
+$45e8cc8bcbf77fa6$exports = function(iterator, kind, value) {
+    var innerResult, innerError;
+    $fbf8b6f89693dc96$exports(iterator);
+    try {
+        innerResult = $27891215304c60c4$exports(iterator, 'return');
+        if (!innerResult) {
+            if (kind === 'throw') throw value;
+            return value;
+        }
+        innerResult = $b51eee67d287dc0c$exports(innerResult, iterator);
+    } catch (error) {
+        innerError = true;
+        innerResult = error;
+    }
+    if (kind === 'throw') throw value;
+    if (innerError) throw innerResult;
+    $fbf8b6f89693dc96$exports(innerResult);
+    return value;
+};
+
+
+// call something on iterator step with safe closing on error
+$92673d2eebe4f63b$exports = function(iterator, fn, value, ENTRIES) {
+    try {
+        return ENTRIES ? fn($fbf8b6f89693dc96$exports(value)[0], value[1]) : fn(value);
+    } catch (error) {
+        $45e8cc8bcbf77fa6$exports(iterator, 'throw', error);
+    }
+};
+
+
+var $a33ff8f13f06611b$exports = {};
+'use strict';
+
+var $18e9b775794ec29a$exports = {};
+'use strict';
+$18e9b775794ec29a$exports = {};
+
+
+var $a33ff8f13f06611b$var$ITERATOR = $1c371bdde30cc6f2$exports('iterator');
+var $a33ff8f13f06611b$var$ArrayPrototype = Array.prototype;
+// check on default Array iterator
+$a33ff8f13f06611b$exports = function(it) {
+    return it !== undefined && ($18e9b775794ec29a$exports.Array === it || $a33ff8f13f06611b$var$ArrayPrototype[$a33ff8f13f06611b$var$ITERATOR] === it);
+};
+
+
+
+
+var $550e1141cb7c109c$exports = {};
+'use strict';
+
+
+
+$550e1141cb7c109c$exports = function(object, key, value) {
+    if ($9ad58a245a9ea542$exports) $b7cf4c6cb85b0365$export$2d1720544b23b823(object, key, $28b05b782a3d40a0$exports(0, value));
+    else object[key] = value;
+};
+
+
+var $c05fd884bbbf2759$exports = {};
+'use strict';
+
+
+
+
+var $84f0e014133fe133$exports = {};
+'use strict';
+
+
+
+
+
+var $84f0e014133fe133$var$ITERATOR = $1c371bdde30cc6f2$exports('iterator');
+$84f0e014133fe133$exports = function(it) {
+    if (!$57696a8ecf346488$exports(it)) return $27891215304c60c4$exports(it, $84f0e014133fe133$var$ITERATOR) || $27891215304c60c4$exports(it, '@@iterator') || $18e9b775794ec29a$exports[$31b89c0c3042db21$exports(it)];
+};
+
+
+var $c05fd884bbbf2759$var$$TypeError = TypeError;
+$c05fd884bbbf2759$exports = function(argument, usingIterator) {
+    var iteratorMethod = arguments.length < 2 ? $84f0e014133fe133$exports(argument) : usingIterator;
+    if ($1b86631bcbde2dff$exports(iteratorMethod)) return $fbf8b6f89693dc96$exports($b51eee67d287dc0c$exports(iteratorMethod, argument));
+    throw new $c05fd884bbbf2759$var$$TypeError($661acc3934c51a51$exports(argument) + ' is not iterable');
+};
+
+
+
+var $83146879b5245ffe$var$$Array = Array;
+// `Array.from` method implementation
+// https://tc39.es/ecma262/#sec-array.from
+$83146879b5245ffe$exports = function from(arrayLike /* , mapfn = undefined, thisArg = undefined */ ) {
+    var O = $e81ad450342cdca8$exports(arrayLike);
+    var IS_CONSTRUCTOR = $3b570a3627fd2080$exports(this);
+    var argumentsLength = arguments.length;
+    var mapfn = argumentsLength > 1 ? arguments[1] : undefined;
+    var mapping = mapfn !== undefined;
+    if (mapping) mapfn = $47d894db7420029c$exports(mapfn, argumentsLength > 2 ? arguments[2] : undefined);
+    var iteratorMethod = $84f0e014133fe133$exports(O);
+    var index = 0;
+    var length, result, step, iterator, next, value;
+    // if the target is not iterable or it's an array with the default iterator - use a simple case
+    if (iteratorMethod && !(this === $83146879b5245ffe$var$$Array && $a33ff8f13f06611b$exports(iteratorMethod))) {
+        result = IS_CONSTRUCTOR ? new this() : [];
+        iterator = $c05fd884bbbf2759$exports(O, iteratorMethod);
+        next = iterator.next;
+        for(; !(step = $b51eee67d287dc0c$exports(next, iterator)).done; index++){
+            value = mapping ? $92673d2eebe4f63b$exports(iterator, mapfn, [
+                step.value,
+                index
+            ], true) : step.value;
+            $550e1141cb7c109c$exports(result, index, value);
+        }
+    } else {
+        length = $24cf1f15d34227c0$exports(O);
+        result = IS_CONSTRUCTOR ? new this(length) : $83146879b5245ffe$var$$Array(length);
+        for(; length > index; index++){
+            value = mapping ? mapfn(O[index], index) : O[index];
+            $550e1141cb7c109c$exports(result, index, value);
+        }
+    }
+    result.length = index;
+    return result;
+};
+
+
+var $d1fca0b8c3f3e5bf$exports = {};
+'use strict';
+
+var $d1fca0b8c3f3e5bf$var$ITERATOR = $1c371bdde30cc6f2$exports('iterator');
+var $d1fca0b8c3f3e5bf$var$SAFE_CLOSING = false;
+try {
+    var $d1fca0b8c3f3e5bf$var$called = 0;
+    var $d1fca0b8c3f3e5bf$var$iteratorWithReturn = {
+        next: function next() {
+            return {
+                done: !!$d1fca0b8c3f3e5bf$var$called++
+            };
+        },
+        'return': function() {
+            $d1fca0b8c3f3e5bf$var$SAFE_CLOSING = true;
+        }
+    };
+    $d1fca0b8c3f3e5bf$var$iteratorWithReturn[$d1fca0b8c3f3e5bf$var$ITERATOR] = function() {
+        return this;
+    };
+    // eslint-disable-next-line es/no-array-from, no-throw-literal -- required for testing
+    Array.from($d1fca0b8c3f3e5bf$var$iteratorWithReturn, function() {
+        throw 2;
+    });
+} catch (error) {}
+$d1fca0b8c3f3e5bf$exports = function(exec, SKIP_CLOSING) {
+    try {
+        if (!SKIP_CLOSING && !$d1fca0b8c3f3e5bf$var$SAFE_CLOSING) return false;
+    } catch (error) {
+        return false;
+    } // workaround of old WebKit + `eval` bug
+    var ITERATION_SUPPORT = false;
+    try {
+        var object = {};
+        object[$d1fca0b8c3f3e5bf$var$ITERATOR] = function() {
+            return {
+                next: function next() {
+                    return {
+                        done: ITERATION_SUPPORT = true
+                    };
+                }
+            };
+        };
+        exec(object);
+    } catch (error) {}
+    return ITERATION_SUPPORT;
+};
+
+
+var $985775453d28b60a$var$INCORRECT_ITERATION = !$d1fca0b8c3f3e5bf$exports(function(iterable) {
+    // eslint-disable-next-line es/no-array-from -- required for testing
+    Array.from(iterable);
+});
+// `Array.from` method
+// https://tc39.es/ecma262/#sec-array.from
+$a4386f1de3d17f70$exports({
+    target: 'Array',
+    stat: true,
+    forced: $985775453d28b60a$var$INCORRECT_ITERATION
+}, {
+    from: $83146879b5245ffe$exports
+});
+
+
+'use strict';
+
+
+var $b541eec9e9f49e6f$require$$includes = $f9d7b22bed864c8a$exports.includes;
+
+var $0c7d7b10fa1019f0$exports = {};
+'use strict';
+
+
+
+var $0c7d7b10fa1019f0$require$defineProperty = $b7cf4c6cb85b0365$export$2d1720544b23b823;
+var $0c7d7b10fa1019f0$var$UNSCOPABLES = $1c371bdde30cc6f2$exports('unscopables');
+var $0c7d7b10fa1019f0$var$ArrayPrototype = Array.prototype;
+// Array.prototype[@@unscopables]
+// https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
+if ($0c7d7b10fa1019f0$var$ArrayPrototype[$0c7d7b10fa1019f0$var$UNSCOPABLES] === undefined) $0c7d7b10fa1019f0$require$defineProperty($0c7d7b10fa1019f0$var$ArrayPrototype, $0c7d7b10fa1019f0$var$UNSCOPABLES, {
+    configurable: true,
+    value: $6c46fe9371eaab2c$exports(null)
+});
+// add a key to Array.prototype[@@unscopables]
+$0c7d7b10fa1019f0$exports = function(key) {
+    $0c7d7b10fa1019f0$var$ArrayPrototype[$0c7d7b10fa1019f0$var$UNSCOPABLES][key] = true;
+};
+
+
+// FF99+ bug
+var $b541eec9e9f49e6f$var$BROKEN_ON_SPARSE = $8d47fb0f9458aed6$exports(function() {
+    // eslint-disable-next-line es/no-array-prototype-includes -- detection
+    return !Array(1).includes();
+});
+// `Array.prototype.includes` method
+// https://tc39.es/ecma262/#sec-array.prototype.includes
+$a4386f1de3d17f70$exports({
+    target: 'Array',
+    proto: true,
+    forced: $b541eec9e9f49e6f$var$BROKEN_ON_SPARSE
+}, {
+    includes: function includes(el /* , fromIndex = 0 */ ) {
+        return $b541eec9e9f49e6f$require$$includes(this, el, arguments.length > 1 ? arguments[1] : undefined);
+    }
+});
+// https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
+$0c7d7b10fa1019f0$exports('includes');
+
+
+var $cbe9832f71b8fc0d$exports = {};
+'use strict';
+
+
+
+
+
+var $cbe9832f71b8fc0d$require$defineProperty = $b7cf4c6cb85b0365$export$2d1720544b23b823;
+var $31f2843ed23eeb6a$exports = {};
+'use strict';
+
+
+
+
+
+var $2168f1a09eea1d44$exports = {};
+'use strict';
+var $98290c4b18f8d1d9$exports = {};
+'use strict';
+
+
+
+
+var $1628b493c2dd3c32$exports = {};
+'use strict';
+
+
+
+
+var $6289d8e2b54c4e5e$exports = {};
+'use strict';
+
+$6289d8e2b54c4e5e$exports = !$8d47fb0f9458aed6$exports(function() {
+    function F() {}
+    F.prototype.constructor = null;
+    // eslint-disable-next-line es/no-object-getprototypeof -- required for testing
+    return Object.getPrototypeOf(new F()) !== F.prototype;
+});
+
+
+var $1628b493c2dd3c32$var$IE_PROTO = $bea024550bfba45a$exports('IE_PROTO');
+var $1628b493c2dd3c32$var$$Object = Object;
+var $1628b493c2dd3c32$var$ObjectPrototype = $1628b493c2dd3c32$var$$Object.prototype;
+// `Object.getPrototypeOf` method
+// https://tc39.es/ecma262/#sec-object.getprototypeof
+// eslint-disable-next-line es/no-object-getprototypeof -- safe
+$1628b493c2dd3c32$exports = $6289d8e2b54c4e5e$exports ? $1628b493c2dd3c32$var$$Object.getPrototypeOf : function(O) {
+    var object = $e81ad450342cdca8$exports(O);
+    if ($88fb7bd6b0cac2a7$exports(object, $1628b493c2dd3c32$var$IE_PROTO)) return object[$1628b493c2dd3c32$var$IE_PROTO];
+    var constructor = object.constructor;
+    if ($56269d2914fd05c7$exports(constructor) && object instanceof constructor) return constructor.prototype;
+    return object instanceof $1628b493c2dd3c32$var$$Object ? $1628b493c2dd3c32$var$ObjectPrototype : null;
+};
+
+
+
+
+
+var $98290c4b18f8d1d9$var$ITERATOR = $1c371bdde30cc6f2$exports('iterator');
+var $98290c4b18f8d1d9$var$BUGGY_SAFARI_ITERATORS = false;
+// `%IteratorPrototype%` object
+// https://tc39.es/ecma262/#sec-%iteratorprototype%-object
+var $98290c4b18f8d1d9$var$IteratorPrototype, $98290c4b18f8d1d9$var$PrototypeOfArrayIteratorPrototype, $98290c4b18f8d1d9$var$arrayIterator;
+/* eslint-disable es/no-array-prototype-keys -- safe */ if ([].keys) {
+    $98290c4b18f8d1d9$var$arrayIterator = [].keys();
+    // Safari 8 has buggy iterators w/o `next`
+    if (!('next' in $98290c4b18f8d1d9$var$arrayIterator)) $98290c4b18f8d1d9$var$BUGGY_SAFARI_ITERATORS = true;
+    else {
+        $98290c4b18f8d1d9$var$PrototypeOfArrayIteratorPrototype = $1628b493c2dd3c32$exports($1628b493c2dd3c32$exports($98290c4b18f8d1d9$var$arrayIterator));
+        if ($98290c4b18f8d1d9$var$PrototypeOfArrayIteratorPrototype !== Object.prototype) $98290c4b18f8d1d9$var$IteratorPrototype = $98290c4b18f8d1d9$var$PrototypeOfArrayIteratorPrototype;
+    }
+}
+var $98290c4b18f8d1d9$var$NEW_ITERATOR_PROTOTYPE = !$a5247cee30afd31c$exports($98290c4b18f8d1d9$var$IteratorPrototype) || $8d47fb0f9458aed6$exports(function() {
+    var test = {};
+    // FF44- legacy iterators case
+    return $98290c4b18f8d1d9$var$IteratorPrototype[$98290c4b18f8d1d9$var$ITERATOR].call(test) !== test;
+});
+if ($98290c4b18f8d1d9$var$NEW_ITERATOR_PROTOTYPE) $98290c4b18f8d1d9$var$IteratorPrototype = {};
+else if ($2a942138f69f24b8$exports) $98290c4b18f8d1d9$var$IteratorPrototype = $6c46fe9371eaab2c$exports($98290c4b18f8d1d9$var$IteratorPrototype);
+// `%IteratorPrototype%[@@iterator]()` method
+// https://tc39.es/ecma262/#sec-%iteratorprototype%-@@iterator
+if (!$56269d2914fd05c7$exports($98290c4b18f8d1d9$var$IteratorPrototype[$98290c4b18f8d1d9$var$ITERATOR])) $cd1d0929e9f3f134$exports($98290c4b18f8d1d9$var$IteratorPrototype, $98290c4b18f8d1d9$var$ITERATOR, function() {
+    return this;
+});
+$98290c4b18f8d1d9$exports = {
+    IteratorPrototype: $98290c4b18f8d1d9$var$IteratorPrototype,
+    BUGGY_SAFARI_ITERATORS: $98290c4b18f8d1d9$var$BUGGY_SAFARI_ITERATORS
+};
+
+
+var $2168f1a09eea1d44$require$IteratorPrototype = $98290c4b18f8d1d9$exports.IteratorPrototype;
+
+
+
+
+var $2168f1a09eea1d44$var$returnThis = function returnThis() {
+    return this;
+};
+$2168f1a09eea1d44$exports = function(IteratorConstructor, NAME, next, ENUMERABLE_NEXT) {
+    var TO_STRING_TAG = NAME + ' Iterator';
+    IteratorConstructor.prototype = $6c46fe9371eaab2c$exports($2168f1a09eea1d44$require$IteratorPrototype, {
+        next: $28b05b782a3d40a0$exports(+!ENUMERABLE_NEXT, next)
+    });
+    $dc8b49a2567d5bf5$exports(IteratorConstructor, TO_STRING_TAG, false, true);
+    $18e9b775794ec29a$exports[TO_STRING_TAG] = $2168f1a09eea1d44$var$returnThis;
+    return IteratorConstructor;
+};
+
+
+
+var $ffb4c060878cd71a$exports = {};
+'use strict';
+var $d7f138b0413db252$exports = {};
+'use strict';
+
+
+$d7f138b0413db252$exports = function(object, key, method) {
+    try {
+        // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+        return $a6ad1e8ada886a6e$exports($1b86631bcbde2dff$exports(Object.getOwnPropertyDescriptor(object, key)[method]));
+    } catch (error) {}
+};
+
+
+
+
+var $1f18ab7deae9c105$exports = {};
+'use strict';
+var $6f5c5db605763b0e$exports = {};
+'use strict';
+
+$6f5c5db605763b0e$exports = function(argument) {
+    return $a5247cee30afd31c$exports(argument) || argument === null;
+};
+
+
+var $1f18ab7deae9c105$var$$String = String;
+var $1f18ab7deae9c105$var$$TypeError = TypeError;
+$1f18ab7deae9c105$exports = function(argument) {
+    if ($6f5c5db605763b0e$exports(argument)) return argument;
+    throw new $1f18ab7deae9c105$var$$TypeError("Can't set " + $1f18ab7deae9c105$var$$String(argument) + ' as a prototype');
+};
+
+
+// `Object.setPrototypeOf` method
+// https://tc39.es/ecma262/#sec-object.setprototypeof
+// Works with __proto__ only. Old v8 can't work with null proto objects.
+// eslint-disable-next-line es/no-object-setprototypeof -- safe
+$ffb4c060878cd71a$exports = Object.setPrototypeOf || ('__proto__' in {} ? function() {
+    var CORRECT_SETTER = false;
+    var test = {};
+    var setter;
+    try {
+        setter = $d7f138b0413db252$exports(Object.prototype, '__proto__', 'set');
+        setter(test, []);
+        CORRECT_SETTER = test instanceof Array;
+    } catch (error) {}
+    return function setPrototypeOf(O, proto) {
+        $fa9aece4d6f487b9$exports(O);
+        $1f18ab7deae9c105$exports(proto);
+        if (!$a5247cee30afd31c$exports(O)) return O;
+        if (CORRECT_SETTER) setter(O, proto);
+        else O.__proto__ = proto;
+        return O;
+    };
+}() : undefined);
+
+
+
+
+
+
+
+
+var $31f2843ed23eeb6a$var$PROPER_FUNCTION_NAME = $924615bee2ea1aa8$exports.PROPER;
+var $31f2843ed23eeb6a$var$CONFIGURABLE_FUNCTION_NAME = $924615bee2ea1aa8$exports.CONFIGURABLE;
+var $31f2843ed23eeb6a$var$IteratorPrototype = $98290c4b18f8d1d9$exports.IteratorPrototype;
+var $31f2843ed23eeb6a$var$BUGGY_SAFARI_ITERATORS = $98290c4b18f8d1d9$exports.BUGGY_SAFARI_ITERATORS;
+var $31f2843ed23eeb6a$var$ITERATOR = $1c371bdde30cc6f2$exports('iterator');
+var $31f2843ed23eeb6a$var$KEYS = 'keys';
+var $31f2843ed23eeb6a$var$VALUES = 'values';
+var $31f2843ed23eeb6a$var$ENTRIES = 'entries';
+var $31f2843ed23eeb6a$var$returnThis = function returnThis() {
+    return this;
+};
+$31f2843ed23eeb6a$exports = function(Iterable, NAME, IteratorConstructor, next, DEFAULT, IS_SET, FORCED) {
+    $2168f1a09eea1d44$exports(IteratorConstructor, NAME, next);
+    var getIterationMethod = function getIterationMethod(KIND) {
+        if (KIND === DEFAULT && defaultIterator) return defaultIterator;
+        if (!$31f2843ed23eeb6a$var$BUGGY_SAFARI_ITERATORS && KIND && KIND in IterablePrototype) return IterablePrototype[KIND];
+        switch(KIND){
+            case $31f2843ed23eeb6a$var$KEYS:
+                return function keys() {
+                    return new IteratorConstructor(this, KIND);
+                };
+            case $31f2843ed23eeb6a$var$VALUES:
+                return function values() {
+                    return new IteratorConstructor(this, KIND);
+                };
+            case $31f2843ed23eeb6a$var$ENTRIES:
+                return function entries() {
+                    return new IteratorConstructor(this, KIND);
+                };
+        }
+        return function() {
+            return new IteratorConstructor(this);
+        };
+    };
+    var TO_STRING_TAG = NAME + ' Iterator';
+    var INCORRECT_VALUES_NAME = false;
+    var IterablePrototype = Iterable.prototype;
+    var nativeIterator = IterablePrototype[$31f2843ed23eeb6a$var$ITERATOR] || IterablePrototype['@@iterator'] || DEFAULT && IterablePrototype[DEFAULT];
+    var defaultIterator = !$31f2843ed23eeb6a$var$BUGGY_SAFARI_ITERATORS && nativeIterator || getIterationMethod(DEFAULT);
+    var anyNativeIterator = NAME === 'Array' ? IterablePrototype.entries || nativeIterator : nativeIterator;
+    var CurrentIteratorPrototype, methods, KEY;
+    // fix native
+    if (anyNativeIterator) {
+        CurrentIteratorPrototype = $1628b493c2dd3c32$exports(anyNativeIterator.call(new Iterable()));
+        if (CurrentIteratorPrototype !== Object.prototype && CurrentIteratorPrototype.next) {
+            if (!$2a942138f69f24b8$exports && $1628b493c2dd3c32$exports(CurrentIteratorPrototype) !== $31f2843ed23eeb6a$var$IteratorPrototype) {
+                if ($ffb4c060878cd71a$exports) $ffb4c060878cd71a$exports(CurrentIteratorPrototype, $31f2843ed23eeb6a$var$IteratorPrototype);
+                else if (!$56269d2914fd05c7$exports(CurrentIteratorPrototype[$31f2843ed23eeb6a$var$ITERATOR])) $cd1d0929e9f3f134$exports(CurrentIteratorPrototype, $31f2843ed23eeb6a$var$ITERATOR, $31f2843ed23eeb6a$var$returnThis);
+            }
+            // Set @@toStringTag to native iterators
+            $dc8b49a2567d5bf5$exports(CurrentIteratorPrototype, TO_STRING_TAG, true, true);
+            if ($2a942138f69f24b8$exports) $18e9b775794ec29a$exports[TO_STRING_TAG] = $31f2843ed23eeb6a$var$returnThis;
+        }
+    }
+    // fix Array.prototype.{ values, @@iterator }.name in V8 / FF
+    if ($31f2843ed23eeb6a$var$PROPER_FUNCTION_NAME && DEFAULT === $31f2843ed23eeb6a$var$VALUES && nativeIterator && nativeIterator.name !== $31f2843ed23eeb6a$var$VALUES) {
+        if (!$2a942138f69f24b8$exports && $31f2843ed23eeb6a$var$CONFIGURABLE_FUNCTION_NAME) $542c4a1412d7b12f$exports(IterablePrototype, 'name', $31f2843ed23eeb6a$var$VALUES);
+        else {
+            INCORRECT_VALUES_NAME = true;
+            defaultIterator = function values() {
+                return $b51eee67d287dc0c$exports(nativeIterator, this);
+            };
+        }
+    }
+    // export additional methods
+    if (DEFAULT) {
+        methods = {
+            values: getIterationMethod($31f2843ed23eeb6a$var$VALUES),
+            keys: IS_SET ? defaultIterator : getIterationMethod($31f2843ed23eeb6a$var$KEYS),
+            entries: getIterationMethod($31f2843ed23eeb6a$var$ENTRIES)
+        };
+        if (FORCED) {
+            for(KEY in methods)if ($31f2843ed23eeb6a$var$BUGGY_SAFARI_ITERATORS || INCORRECT_VALUES_NAME || !(KEY in IterablePrototype)) $cd1d0929e9f3f134$exports(IterablePrototype, KEY, methods[KEY]);
+        } else $a4386f1de3d17f70$exports({
+            target: NAME,
+            proto: true,
+            forced: $31f2843ed23eeb6a$var$BUGGY_SAFARI_ITERATORS || INCORRECT_VALUES_NAME
+        }, methods);
+    }
+    // define iterator
+    if ((!$2a942138f69f24b8$exports || FORCED) && IterablePrototype[$31f2843ed23eeb6a$var$ITERATOR] !== defaultIterator) $cd1d0929e9f3f134$exports(IterablePrototype, $31f2843ed23eeb6a$var$ITERATOR, defaultIterator, {
+        name: DEFAULT
+    });
+    $18e9b775794ec29a$exports[NAME] = defaultIterator;
+    return methods;
+};
+
+
+var $60603a379ad3a1de$exports = {};
+'use strict';
+// `CreateIterResultObject` abstract operation
+// https://tc39.es/ecma262/#sec-createiterresultobject
+$60603a379ad3a1de$exports = function(value, done) {
+    return {
+        value: value,
+        done: done
+    };
+};
+
+
+
+
+var $cbe9832f71b8fc0d$var$ARRAY_ITERATOR = 'Array Iterator';
+var $cbe9832f71b8fc0d$var$setInternalState = $3863900a8f1508e7$exports.set;
+var $cbe9832f71b8fc0d$var$getInternalState = $3863900a8f1508e7$exports.getterFor($cbe9832f71b8fc0d$var$ARRAY_ITERATOR);
+// `Array.prototype.entries` method
+// https://tc39.es/ecma262/#sec-array.prototype.entries
+// `Array.prototype.keys` method
+// https://tc39.es/ecma262/#sec-array.prototype.keys
+// `Array.prototype.values` method
+// https://tc39.es/ecma262/#sec-array.prototype.values
+// `Array.prototype[@@iterator]` method
+// https://tc39.es/ecma262/#sec-array.prototype-@@iterator
+// `CreateArrayIterator` internal method
+// https://tc39.es/ecma262/#sec-createarrayiterator
+$cbe9832f71b8fc0d$exports = $31f2843ed23eeb6a$exports(Array, 'Array', function(iterated, kind) {
+    $cbe9832f71b8fc0d$var$setInternalState(this, {
+        type: $cbe9832f71b8fc0d$var$ARRAY_ITERATOR,
+        target: $c4c6f95ea09874f7$exports(iterated),
+        index: 0,
+        kind: kind // kind
+    });
+// `%ArrayIteratorPrototype%.next` method
+// https://tc39.es/ecma262/#sec-%arrayiteratorprototype%.next
+}, function() {
+    var state = $cbe9832f71b8fc0d$var$getInternalState(this);
+    var target = state.target;
+    var index = state.index++;
+    if (!target || index >= target.length) {
+        state.target = null;
+        return $60603a379ad3a1de$exports(undefined, true);
+    }
+    switch(state.kind){
+        case 'keys':
+            return $60603a379ad3a1de$exports(index, false);
+        case 'values':
+            return $60603a379ad3a1de$exports(target[index], false);
+    }
+    return $60603a379ad3a1de$exports([
+        index,
+        target[index]
+    ], false);
+}, 'values');
+// argumentsList[@@iterator] is %ArrayProto_values%
+// https://tc39.es/ecma262/#sec-createunmappedargumentsobject
+// https://tc39.es/ecma262/#sec-createmappedargumentsobject
+var $cbe9832f71b8fc0d$var$values = $18e9b775794ec29a$exports.Arguments = $18e9b775794ec29a$exports.Array;
+// https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
+$0c7d7b10fa1019f0$exports('keys');
+$0c7d7b10fa1019f0$exports('values');
+$0c7d7b10fa1019f0$exports('entries');
+// V8 ~ Chrome 45- bug
+if (!$2a942138f69f24b8$exports && $9ad58a245a9ea542$exports && $cbe9832f71b8fc0d$var$values.name !== 'values') try {
+    $cbe9832f71b8fc0d$require$defineProperty($cbe9832f71b8fc0d$var$values, 'name', {
+        value: 'values'
+    });
+} catch (error) {}
+
+
+'use strict';
+
+
+var $569f8177e2231c21$require$$map = $39b7306fbc8277ed$exports.map;
+var $0ac78accabfd5633$exports = {};
+'use strict';
+
+
+
+var $0ac78accabfd5633$var$SPECIES = $1c371bdde30cc6f2$exports('species');
+$0ac78accabfd5633$exports = function(METHOD_NAME) {
+    // We can't use this feature detection in V8 since it causes
+    // deoptimization and serious performance degradation
+    // https://github.com/zloirock/core-js/issues/677
+    return $9029b6c7cf623b88$exports >= 51 || !$8d47fb0f9458aed6$exports(function() {
+        var array = [];
+        var constructor = array.constructor = {};
+        constructor[$0ac78accabfd5633$var$SPECIES] = function() {
+            return {
+                foo: 1
+            };
+        };
+        return array[METHOD_NAME](Boolean).foo !== 1;
+    });
+};
+
+
+var $569f8177e2231c21$var$HAS_SPECIES_SUPPORT = $0ac78accabfd5633$exports('map');
+// `Array.prototype.map` method
+// https://tc39.es/ecma262/#sec-array.prototype.map
+// with adding support of @@species
+$a4386f1de3d17f70$exports({
+    target: 'Array',
+    proto: true,
+    forced: !$569f8177e2231c21$var$HAS_SPECIES_SUPPORT
+}, {
+    map: function map(callbackfn /* , thisArg */ ) {
+        return $569f8177e2231c21$require$$map(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+    }
+});
+
+
+'use strict';
+
+
+
+
+
+var $5995aa39a2995a63$exports = {};
+'use strict';
+
+
+var $5995aa39a2995a63$var$$TypeError = TypeError;
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var $5995aa39a2995a63$var$getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+// Safari < 13 does not throw an error in this case
+var $5995aa39a2995a63$var$SILENT_ON_NON_WRITABLE_LENGTH_SET = $9ad58a245a9ea542$exports && !function() {
+    // makes no sense without proper strict mode support
+    if (this !== undefined) return true;
+    try {
+        // eslint-disable-next-line es/no-object-defineproperty -- safe
+        Object.defineProperty([], 'length', {
+            writable: false
+        }).length = 1;
+    } catch (error) {
+        return error instanceof TypeError;
+    }
+}();
+$5995aa39a2995a63$exports = $5995aa39a2995a63$var$SILENT_ON_NON_WRITABLE_LENGTH_SET ? function(O, length) {
+    if ($fb2a670985c00e13$exports(O) && !$5995aa39a2995a63$var$getOwnPropertyDescriptor(O, 'length').writable) throw new $5995aa39a2995a63$var$$TypeError('Cannot set read only .length');
+    return O.length = length;
+} : function(O, length) {
+    return O.length = length;
+};
+
+
+
+
+
+var $2efae90779de99b1$exports = {};
+'use strict';
+
+var $2efae90779de99b1$var$$TypeError = TypeError;
+$2efae90779de99b1$exports = function(O, P) {
+    if (!delete O[P]) throw new $2efae90779de99b1$var$$TypeError('Cannot delete property ' + $661acc3934c51a51$exports(P) + ' of ' + $661acc3934c51a51$exports(O));
+};
+
+
+
+var $56b248fc22c230a8$var$HAS_SPECIES_SUPPORT = $0ac78accabfd5633$exports('splice');
+var $56b248fc22c230a8$var$max = Math.max;
+var $56b248fc22c230a8$var$min = Math.min;
+// `Array.prototype.splice` method
+// https://tc39.es/ecma262/#sec-array.prototype.splice
+// with adding support of @@species
+$a4386f1de3d17f70$exports({
+    target: 'Array',
+    proto: true,
+    forced: !$56b248fc22c230a8$var$HAS_SPECIES_SUPPORT
+}, {
+    splice: function splice(start, deleteCount /* , ...items */ ) {
+        var O = $e81ad450342cdca8$exports(this);
+        var len = $24cf1f15d34227c0$exports(O);
+        var actualStart = $a165d4ed9d5b72e1$exports(start, len);
+        var argumentsLength = arguments.length;
+        var insertCount, actualDeleteCount, A, k, from, to;
+        if (argumentsLength === 0) insertCount = actualDeleteCount = 0;
+        else if (argumentsLength === 1) {
+            insertCount = 0;
+            actualDeleteCount = len - actualStart;
+        } else {
+            insertCount = argumentsLength - 2;
+            actualDeleteCount = $56b248fc22c230a8$var$min($56b248fc22c230a8$var$max($e65bc32c76079804$exports(deleteCount), 0), len - actualStart);
+        }
+        $be667372c860e486$exports(len + insertCount - actualDeleteCount);
+        A = $fe53e7a0056d0c35$exports(O, actualDeleteCount);
+        for(k = 0; k < actualDeleteCount; k++){
+            from = actualStart + k;
+            if (from in O) $550e1141cb7c109c$exports(A, k, O[from]);
+        }
+        A.length = actualDeleteCount;
+        if (insertCount < actualDeleteCount) {
+            for(k = actualStart; k < len - actualDeleteCount; k++){
+                from = k + actualDeleteCount;
+                to = k + insertCount;
+                if (from in O) O[to] = O[from];
+                else $2efae90779de99b1$exports(O, to);
+            }
+            for(k = len; k > len - actualDeleteCount + insertCount; k--)$2efae90779de99b1$exports(O, k - 1);
+        } else if (insertCount > actualDeleteCount) for(k = len - actualDeleteCount; k > actualStart; k--){
+            from = k + actualDeleteCount - 1;
+            to = k + insertCount - 1;
+            if (from in O) O[to] = O[from];
+            else $2efae90779de99b1$exports(O, to);
+        }
+        for(k = 0; k < insertCount; k++)O[k + actualStart] = arguments[k + 2];
+        $5995aa39a2995a63$exports(O, len - actualDeleteCount + insertCount);
+        return A;
+    }
+});
+
+
+'use strict';
+
+// https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
+$0c7d7b10fa1019f0$exports('flat');
+
+
+'use strict';
+
+// https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
+$0c7d7b10fa1019f0$exports('flatMap');
+
+
+'use strict';
+
+
+
+
+
+
+var $b7f8d55f4909ccb9$var$HAS_INSTANCE = $1c371bdde30cc6f2$exports('hasInstance');
+var $b7f8d55f4909ccb9$var$FunctionPrototype = Function.prototype;
+// `Function.prototype[@@hasInstance]` method
+// https://tc39.es/ecma262/#sec-function.prototype-@@hasinstance
+if (!($b7f8d55f4909ccb9$var$HAS_INSTANCE in $b7f8d55f4909ccb9$var$FunctionPrototype)) $b7cf4c6cb85b0365$export$2d1720544b23b823($b7f8d55f4909ccb9$var$FunctionPrototype, $b7f8d55f4909ccb9$var$HAS_INSTANCE, {
+    value: $72611dfb775c63ee$exports(function(O) {
+        if (!$56269d2914fd05c7$exports(this) || !$a5247cee30afd31c$exports(O)) return false;
+        var P = this.prototype;
+        return $a5247cee30afd31c$exports(P) ? $c4802cfd914fa45d$exports(P, O) : O instanceof this;
+    }, $b7f8d55f4909ccb9$var$HAS_INSTANCE)
+});
+
+
+'use strict';
+
+
+// JSON[@@toStringTag] property
+// https://tc39.es/ecma262/#sec-json-@@tostringtag
+$dc8b49a2567d5bf5$exports($6bb4f585dbcccb10$exports.JSON, 'JSON', true);
+
+
+'use strict';
+'use strict';
+var $9244f0b02d704b0f$exports = {};
+'use strict';
+
+
+
+
+
+var $a5b02de36b5e8ad7$exports = {};
+'use strict';
+
+
+
+
+
+
+var $a5b02de36b5e8ad7$require$defineProperty = $b7cf4c6cb85b0365$export$2d1720544b23b823;
+
+
+var $c896a4137af77686$exports = {};
+'use strict';
+
+
+
+var $c2c45a748b88e6f4$exports = {};
+'use strict';
+
+$c2c45a748b88e6f4$exports = $8d47fb0f9458aed6$exports(function() {
+    if (typeof ArrayBuffer == 'function') {
+        var buffer = new ArrayBuffer(8);
+        // eslint-disable-next-line es/no-object-isextensible, es/no-object-defineproperty -- safe
+        if (Object.isExtensible(buffer)) Object.defineProperty(buffer, 'a', {
+            value: 8
+        });
+    }
+});
+
+
+// eslint-disable-next-line es/no-object-isextensible -- safe
+var $c896a4137af77686$var$$isExtensible = Object.isExtensible;
+var $c896a4137af77686$var$FAILS_ON_PRIMITIVES = $8d47fb0f9458aed6$exports(function() {
+    $c896a4137af77686$var$$isExtensible(1);
+});
+// `Object.isExtensible` method
+// https://tc39.es/ecma262/#sec-object.isextensible
+$c896a4137af77686$exports = $c896a4137af77686$var$FAILS_ON_PRIMITIVES || $c2c45a748b88e6f4$exports ? function isExtensible(it) {
+    if (!$a5247cee30afd31c$exports(it)) return false;
+    if ($c2c45a748b88e6f4$exports && $46b0c974b8e64b7f$exports(it) === 'ArrayBuffer') return false;
+    return $c896a4137af77686$var$$isExtensible ? $c896a4137af77686$var$$isExtensible(it) : true;
+} : $c896a4137af77686$var$$isExtensible;
+
+
+
+var $2914bb1d6a56307d$exports = {};
+'use strict';
+
+$2914bb1d6a56307d$exports = !$8d47fb0f9458aed6$exports(function() {
+    // eslint-disable-next-line es/no-object-isextensible, es/no-object-preventextensions -- required for testing
+    return Object.isExtensible(Object.preventExtensions({}));
+});
+
+
+var $a5b02de36b5e8ad7$var$REQUIRED = false;
+var $a5b02de36b5e8ad7$var$METADATA = $dc4ef02874cda19f$exports('meta');
+var $a5b02de36b5e8ad7$var$id = 0;
+var $a5b02de36b5e8ad7$var$setMetadata = function setMetadata(it) {
+    $a5b02de36b5e8ad7$require$defineProperty(it, $a5b02de36b5e8ad7$var$METADATA, {
+        value: {
+            objectID: 'O' + $a5b02de36b5e8ad7$var$id++,
+            weakData: {} // weak collections IDs
+        }
+    });
+};
+var $a5b02de36b5e8ad7$var$fastKey = function fastKey(it, create) {
+    // return a primitive with prefix
+    if (!$a5247cee30afd31c$exports(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
+    if (!$88fb7bd6b0cac2a7$exports(it, $a5b02de36b5e8ad7$var$METADATA)) {
+        // can't set metadata to uncaught frozen object
+        if (!$c896a4137af77686$exports(it)) return 'F';
+        // not necessary to add metadata
+        if (!create) return 'E';
+        // add missing metadata
+        $a5b02de36b5e8ad7$var$setMetadata(it);
+    // return object ID
+    }
+    return it[$a5b02de36b5e8ad7$var$METADATA].objectID;
+};
+var $a5b02de36b5e8ad7$var$getWeakData = function getWeakData(it, create) {
+    if (!$88fb7bd6b0cac2a7$exports(it, $a5b02de36b5e8ad7$var$METADATA)) {
+        // can't set metadata to uncaught frozen object
+        if (!$c896a4137af77686$exports(it)) return true;
+        // not necessary to add metadata
+        if (!create) return false;
+        // add missing metadata
+        $a5b02de36b5e8ad7$var$setMetadata(it);
+    // return the store of weak collections IDs
+    }
+    return it[$a5b02de36b5e8ad7$var$METADATA].weakData;
+};
+// add metadata on freeze-family methods calling
+var $a5b02de36b5e8ad7$var$onFreeze = function onFreeze(it) {
+    if ($2914bb1d6a56307d$exports && $a5b02de36b5e8ad7$var$REQUIRED && $c896a4137af77686$exports(it) && !$88fb7bd6b0cac2a7$exports(it, $a5b02de36b5e8ad7$var$METADATA)) $a5b02de36b5e8ad7$var$setMetadata(it);
+    return it;
+};
+var $a5b02de36b5e8ad7$var$enable = function enable() {
+    $a5b02de36b5e8ad7$var$meta.enable = function() {};
+    $a5b02de36b5e8ad7$var$REQUIRED = true;
+    var getOwnPropertyNames = $e18868c91f9bee5e$export$2d1720544b23b823;
+    var splice = $a6ad1e8ada886a6e$exports([].splice);
+    var test = {};
+    test[$a5b02de36b5e8ad7$var$METADATA] = 1;
+    // prevent exposing of metadata key
+    if (getOwnPropertyNames(test).length) {
+        $e18868c91f9bee5e$exports.f = function(it) {
+            var result = getOwnPropertyNames(it);
+            for(var i = 0, length = result.length; i < length; i++)if (result[i] === $a5b02de36b5e8ad7$var$METADATA) {
+                splice(result, i, 1);
+                break;
+            }
+            return result;
+        };
+        $a4386f1de3d17f70$exports({
+            target: 'Object',
+            stat: true,
+            forced: true
+        }, {
+            getOwnPropertyNames: $ee4e542c8daf7a4b$export$2d1720544b23b823
+        });
+    }
+};
+var $a5b02de36b5e8ad7$var$meta = $a5b02de36b5e8ad7$exports = {
+    enable: $a5b02de36b5e8ad7$var$enable,
+    fastKey: $a5b02de36b5e8ad7$var$fastKey,
+    getWeakData: $a5b02de36b5e8ad7$var$getWeakData,
+    onFreeze: $a5b02de36b5e8ad7$var$onFreeze
+};
+$f39f553c696da03a$exports[$a5b02de36b5e8ad7$var$METADATA] = true;
+
+
+var $8f3b4edc46b0cdb1$exports = {};
+'use strict';
+
+
+
+
+
+
+
+
+
+
+var $8f3b4edc46b0cdb1$var$$TypeError = TypeError;
+var $8f3b4edc46b0cdb1$var$Result = function Result(stopped, result) {
+    this.stopped = stopped;
+    this.result = result;
+};
+var $8f3b4edc46b0cdb1$var$ResultPrototype = $8f3b4edc46b0cdb1$var$Result.prototype;
+$8f3b4edc46b0cdb1$exports = function(iterable, unboundFunction, options) {
+    var that = options && options.that;
+    var AS_ENTRIES = !!(options && options.AS_ENTRIES);
+    var IS_RECORD = !!(options && options.IS_RECORD);
+    var IS_ITERATOR = !!(options && options.IS_ITERATOR);
+    var INTERRUPTED = !!(options && options.INTERRUPTED);
+    var fn = $47d894db7420029c$exports(unboundFunction, that);
+    var iterator, iterFn, index, length, result, next, step;
+    var stop = function stop(condition) {
+        if (iterator) $45e8cc8bcbf77fa6$exports(iterator, 'normal', condition);
+        return new $8f3b4edc46b0cdb1$var$Result(true, condition);
+    };
+    var callFn = function callFn(value) {
+        if (AS_ENTRIES) {
+            $fbf8b6f89693dc96$exports(value);
+            return INTERRUPTED ? fn(value[0], value[1], stop) : fn(value[0], value[1]);
+        }
+        return INTERRUPTED ? fn(value, stop) : fn(value);
+    };
+    if (IS_RECORD) iterator = iterable.iterator;
+    else if (IS_ITERATOR) iterator = iterable;
+    else {
+        iterFn = $84f0e014133fe133$exports(iterable);
+        if (!iterFn) throw new $8f3b4edc46b0cdb1$var$$TypeError($661acc3934c51a51$exports(iterable) + ' is not iterable');
+        // optimisation for array iterators
+        if ($a33ff8f13f06611b$exports(iterFn)) {
+            for(index = 0, length = $24cf1f15d34227c0$exports(iterable); length > index; index++){
+                result = callFn(iterable[index]);
+                if (result && $c4802cfd914fa45d$exports($8f3b4edc46b0cdb1$var$ResultPrototype, result)) return result;
+            }
+            return new $8f3b4edc46b0cdb1$var$Result(false);
+        }
+        iterator = $c05fd884bbbf2759$exports(iterable, iterFn);
+    }
+    next = IS_RECORD ? iterable.next : iterator.next;
+    while(!(step = $b51eee67d287dc0c$exports(next, iterator)).done){
+        try {
+            result = callFn(step.value);
+        } catch (error) {
+            $45e8cc8bcbf77fa6$exports(iterator, 'throw', error);
+        }
+        if (typeof result == 'object' && result && $c4802cfd914fa45d$exports($8f3b4edc46b0cdb1$var$ResultPrototype, result)) return result;
+    }
+    return new $8f3b4edc46b0cdb1$var$Result(false);
+};
+
+
+var $a84985762d40e844$exports = {};
+'use strict';
+
+var $a84985762d40e844$var$$TypeError = TypeError;
+$a84985762d40e844$exports = function(it, Prototype) {
+    if ($c4802cfd914fa45d$exports(Prototype, it)) return it;
+    throw new $a84985762d40e844$var$$TypeError('Incorrect invocation');
+};
+
+
+
+
+
+
+
+
+var $d7c1c7836696ec90$exports = {};
+'use strict';
+
+
+
+// makes subclassing work correct for wrapped built-ins
+$d7c1c7836696ec90$exports = function($this, dummy, Wrapper) {
+    var NewTarget, NewTargetPrototype;
+    if (// it can work only with native `setPrototypeOf`
+    $ffb4c060878cd71a$exports && // we haven't completely correct pre-ES6 way for getting `new.target`, so use this
+    $56269d2914fd05c7$exports(NewTarget = dummy.constructor) && NewTarget !== Wrapper && $a5247cee30afd31c$exports(NewTargetPrototype = NewTarget.prototype) && NewTargetPrototype !== Wrapper.prototype) $ffb4c060878cd71a$exports($this, NewTargetPrototype);
+    return $this;
+};
+
+
+$9244f0b02d704b0f$exports = function(CONSTRUCTOR_NAME, wrapper, common) {
+    var IS_MAP = CONSTRUCTOR_NAME.indexOf('Map') !== -1;
+    var IS_WEAK = CONSTRUCTOR_NAME.indexOf('Weak') !== -1;
+    var ADDER = IS_MAP ? 'set' : 'add';
+    var NativeConstructor = $6bb4f585dbcccb10$exports[CONSTRUCTOR_NAME];
+    var NativePrototype = NativeConstructor && NativeConstructor.prototype;
+    var Constructor = NativeConstructor;
+    var exported = {};
+    var fixMethod = function fixMethod(KEY) {
+        var uncurriedNativeMethod = $a6ad1e8ada886a6e$exports(NativePrototype[KEY]);
+        $cd1d0929e9f3f134$exports(NativePrototype, KEY, KEY === 'add' ? function add(value) {
+            uncurriedNativeMethod(this, value === 0 ? 0 : value);
+            return this;
+        } : KEY === 'delete' ? function(key) {
+            return IS_WEAK && !$a5247cee30afd31c$exports(key) ? false : uncurriedNativeMethod(this, key === 0 ? 0 : key);
+        } : KEY === 'get' ? function get(key) {
+            return IS_WEAK && !$a5247cee30afd31c$exports(key) ? undefined : uncurriedNativeMethod(this, key === 0 ? 0 : key);
+        } : KEY === 'has' ? function has(key) {
+            return IS_WEAK && !$a5247cee30afd31c$exports(key) ? false : uncurriedNativeMethod(this, key === 0 ? 0 : key);
+        } : function set(key, value) {
+            uncurriedNativeMethod(this, key === 0 ? 0 : key, value);
+            return this;
+        });
+    };
+    var REPLACE = $6a9bca21eba1d016$exports(CONSTRUCTOR_NAME, !$56269d2914fd05c7$exports(NativeConstructor) || !(IS_WEAK || NativePrototype.forEach && !$8d47fb0f9458aed6$exports(function() {
+        new NativeConstructor().entries().next();
+    })));
+    if (REPLACE) {
+        // create collection constructor
+        Constructor = common.getConstructor(wrapper, CONSTRUCTOR_NAME, IS_MAP, ADDER);
+        $a5b02de36b5e8ad7$exports.enable();
+    } else if ($6a9bca21eba1d016$exports(CONSTRUCTOR_NAME, true)) {
+        var instance = new Constructor();
+        // early implementations not supports chaining
+        var HASNT_CHAINING = instance[ADDER](IS_WEAK ? {} : -0, 1) !== instance;
+        // V8 ~ Chromium 40- weak-collections throws on primitives, but should return false
+        var THROWS_ON_PRIMITIVES = $8d47fb0f9458aed6$exports(function() {
+            instance.has(1);
+        });
+        // most early implementations doesn't supports iterables, most modern - not close it correctly
+        // eslint-disable-next-line no-new -- required for testing
+        var ACCEPT_ITERABLES = $d1fca0b8c3f3e5bf$exports(function(iterable) {
+            new NativeConstructor(iterable);
+        });
+        // for early implementations -0 and +0 not the same
+        var BUGGY_ZERO = !IS_WEAK && $8d47fb0f9458aed6$exports(function() {
+            // V8 ~ Chromium 42- fails only with 5+ elements
+            var $instance = new NativeConstructor();
+            var index = 5;
+            while(index--)$instance[ADDER](index, index);
+            return !$instance.has(-0);
+        });
+        if (!ACCEPT_ITERABLES) {
+            Constructor = wrapper(function(dummy, iterable) {
+                $a84985762d40e844$exports(dummy, NativePrototype);
+                var that = $d7c1c7836696ec90$exports(new NativeConstructor(), dummy, Constructor);
+                if (!$57696a8ecf346488$exports(iterable)) $8f3b4edc46b0cdb1$exports(iterable, that[ADDER], {
+                    that: that,
+                    AS_ENTRIES: IS_MAP
+                });
+                return that;
+            });
+            Constructor.prototype = NativePrototype;
+            NativePrototype.constructor = Constructor;
+        }
+        if (THROWS_ON_PRIMITIVES || BUGGY_ZERO) {
+            fixMethod('delete');
+            fixMethod('has');
+            IS_MAP && fixMethod('get');
+        }
+        if (BUGGY_ZERO || HASNT_CHAINING) fixMethod(ADDER);
+        // weak collections should not contains .clear method
+        if (IS_WEAK && NativePrototype.clear) delete NativePrototype.clear;
+    }
+    exported[CONSTRUCTOR_NAME] = Constructor;
+    $a4386f1de3d17f70$exports({
+        global: true,
+        constructor: true,
+        forced: Constructor !== NativeConstructor
+    }, exported);
+    $dc8b49a2567d5bf5$exports(Constructor, CONSTRUCTOR_NAME);
+    if (!IS_WEAK) common.setStrong(Constructor, CONSTRUCTOR_NAME, IS_MAP);
+    return Constructor;
+};
+
+
+var $b5b411d5df108744$exports = {};
+'use strict';
+
+
+var $5eb939720ce3c5be$exports = {};
+'use strict';
+
+$5eb939720ce3c5be$exports = function(target, src, options) {
+    for(var key in src)$cd1d0929e9f3f134$exports(target, key, src[key], options);
+    return target;
+};
+
+
+
+
+
+
+
+
+var $407efffd599c52ff$exports = {};
+'use strict';
+
+
+
+
+var $407efffd599c52ff$var$SPECIES = $1c371bdde30cc6f2$exports('species');
+$407efffd599c52ff$exports = function(CONSTRUCTOR_NAME) {
+    var Constructor = $7ab1ca27f8995b05$exports(CONSTRUCTOR_NAME);
+    if ($9ad58a245a9ea542$exports && Constructor && !Constructor[$407efffd599c52ff$var$SPECIES]) $34351ae141e46c37$exports(Constructor, $407efffd599c52ff$var$SPECIES, {
+        configurable: true,
+        get: function get() {
+            return this;
+        }
+    });
+};
+
+
+
+
+var $b5b411d5df108744$require$fastKey = $a5b02de36b5e8ad7$exports.fastKey;
+
+var $b5b411d5df108744$var$setInternalState = $3863900a8f1508e7$exports.set;
+var $b5b411d5df108744$var$internalStateGetterFor = $3863900a8f1508e7$exports.getterFor;
+$b5b411d5df108744$exports = {
+    getConstructor: function getConstructor(wrapper, CONSTRUCTOR_NAME, IS_MAP, ADDER) {
+        var Constructor = wrapper(function(that, iterable) {
+            $a84985762d40e844$exports(that, Prototype);
+            $b5b411d5df108744$var$setInternalState(that, {
+                type: CONSTRUCTOR_NAME,
+                index: $6c46fe9371eaab2c$exports(null),
+                first: null,
+                last: null,
+                size: 0
+            });
+            if (!$9ad58a245a9ea542$exports) that.size = 0;
+            if (!$57696a8ecf346488$exports(iterable)) $8f3b4edc46b0cdb1$exports(iterable, that[ADDER], {
+                that: that,
+                AS_ENTRIES: IS_MAP
+            });
+        });
+        var Prototype = Constructor.prototype;
+        var getInternalState = $b5b411d5df108744$var$internalStateGetterFor(CONSTRUCTOR_NAME);
+        var define = function define(that, key, value) {
+            var state = getInternalState(that);
+            var entry = getEntry(that, key);
+            var previous, index;
+            // change existing entry
+            if (entry) entry.value = value;
+            else {
+                state.last = entry = {
+                    index: index = $b5b411d5df108744$require$fastKey(key, true),
+                    key: key,
+                    value: value,
+                    previous: previous = state.last,
+                    next: null,
+                    removed: false
+                };
+                if (!state.first) state.first = entry;
+                if (previous) previous.next = entry;
+                if ($9ad58a245a9ea542$exports) state.size++;
+                else that.size++;
+                // add to index
+                if (index !== 'F') state.index[index] = entry;
+            }
+            return that;
+        };
+        var getEntry = function getEntry(that, key) {
+            var state = getInternalState(that);
+            // fast case
+            var index = $b5b411d5df108744$require$fastKey(key);
+            var entry;
+            if (index !== 'F') return state.index[index];
+            // frozen object case
+            for(entry = state.first; entry; entry = entry.next){
+                if (entry.key === key) return entry;
+            }
+        };
+        $5eb939720ce3c5be$exports(Prototype, {
+            // `{ Map, Set }.prototype.clear()` methods
+            // https://tc39.es/ecma262/#sec-map.prototype.clear
+            // https://tc39.es/ecma262/#sec-set.prototype.clear
+            clear: function clear() {
+                var that = this;
+                var state = getInternalState(that);
+                var entry = state.first;
+                while(entry){
+                    entry.removed = true;
+                    if (entry.previous) entry.previous = entry.previous.next = null;
+                    entry = entry.next;
+                }
+                state.first = state.last = null;
+                state.index = $6c46fe9371eaab2c$exports(null);
+                if ($9ad58a245a9ea542$exports) state.size = 0;
+                else that.size = 0;
+            },
+            // `{ Map, Set }.prototype.delete(key)` methods
+            // https://tc39.es/ecma262/#sec-map.prototype.delete
+            // https://tc39.es/ecma262/#sec-set.prototype.delete
+            'delete': function(key) {
+                var that = this;
+                var state = getInternalState(that);
+                var entry = getEntry(that, key);
+                if (entry) {
+                    var next = entry.next;
+                    var prev = entry.previous;
+                    delete state.index[entry.index];
+                    entry.removed = true;
+                    if (prev) prev.next = next;
+                    if (next) next.previous = prev;
+                    if (state.first === entry) state.first = next;
+                    if (state.last === entry) state.last = prev;
+                    if ($9ad58a245a9ea542$exports) state.size--;
+                    else that.size--;
+                }
+                return !!entry;
+            },
+            // `{ Map, Set }.prototype.forEach(callbackfn, thisArg = undefined)` methods
+            // https://tc39.es/ecma262/#sec-map.prototype.foreach
+            // https://tc39.es/ecma262/#sec-set.prototype.foreach
+            forEach: function forEach(callbackfn /* , that = undefined */ ) {
+                var state = getInternalState(this);
+                var boundFunction = $47d894db7420029c$exports(callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+                var entry;
+                while(entry = entry ? entry.next : state.first){
+                    boundFunction(entry.value, entry.key, this);
+                    // revert to the last existing entry
+                    while(entry && entry.removed)entry = entry.previous;
+                }
+            },
+            // `{ Map, Set}.prototype.has(key)` methods
+            // https://tc39.es/ecma262/#sec-map.prototype.has
+            // https://tc39.es/ecma262/#sec-set.prototype.has
+            has: function has(key) {
+                return !!getEntry(this, key);
+            }
+        });
+        $5eb939720ce3c5be$exports(Prototype, IS_MAP ? {
+            // `Map.prototype.get(key)` method
+            // https://tc39.es/ecma262/#sec-map.prototype.get
+            get: function get(key) {
+                var entry = getEntry(this, key);
+                return entry && entry.value;
+            },
+            // `Map.prototype.set(key, value)` method
+            // https://tc39.es/ecma262/#sec-map.prototype.set
+            set: function set(key, value) {
+                return define(this, key === 0 ? 0 : key, value);
+            }
+        } : {
+            // `Set.prototype.add(value)` method
+            // https://tc39.es/ecma262/#sec-set.prototype.add
+            add: function add(value) {
+                return define(this, value = value === 0 ? 0 : value, value);
+            }
+        });
+        if ($9ad58a245a9ea542$exports) $34351ae141e46c37$exports(Prototype, 'size', {
+            configurable: true,
+            get: function get() {
+                return getInternalState(this).size;
+            }
+        });
+        return Constructor;
+    },
+    setStrong: function setStrong(Constructor, CONSTRUCTOR_NAME, IS_MAP) {
+        var ITERATOR_NAME = CONSTRUCTOR_NAME + ' Iterator';
+        var getInternalCollectionState = $b5b411d5df108744$var$internalStateGetterFor(CONSTRUCTOR_NAME);
+        var getInternalIteratorState = $b5b411d5df108744$var$internalStateGetterFor(ITERATOR_NAME);
+        // `{ Map, Set }.prototype.{ keys, values, entries, @@iterator }()` methods
+        // https://tc39.es/ecma262/#sec-map.prototype.entries
+        // https://tc39.es/ecma262/#sec-map.prototype.keys
+        // https://tc39.es/ecma262/#sec-map.prototype.values
+        // https://tc39.es/ecma262/#sec-map.prototype-@@iterator
+        // https://tc39.es/ecma262/#sec-set.prototype.entries
+        // https://tc39.es/ecma262/#sec-set.prototype.keys
+        // https://tc39.es/ecma262/#sec-set.prototype.values
+        // https://tc39.es/ecma262/#sec-set.prototype-@@iterator
+        $31f2843ed23eeb6a$exports(Constructor, CONSTRUCTOR_NAME, function(iterated, kind) {
+            $b5b411d5df108744$var$setInternalState(this, {
+                type: ITERATOR_NAME,
+                target: iterated,
+                state: getInternalCollectionState(iterated),
+                kind: kind,
+                last: null
+            });
+        }, function() {
+            var state = getInternalIteratorState(this);
+            var kind = state.kind;
+            var entry = state.last;
+            // revert to the last existing entry
+            while(entry && entry.removed)entry = entry.previous;
+            // get next entry
+            if (!state.target || !(state.last = entry = entry ? entry.next : state.state.first)) {
+                // or finish the iteration
+                state.target = null;
+                return $60603a379ad3a1de$exports(undefined, true);
+            }
+            // return step by kind
+            if (kind === 'keys') return $60603a379ad3a1de$exports(entry.key, false);
+            if (kind === 'values') return $60603a379ad3a1de$exports(entry.value, false);
+            return $60603a379ad3a1de$exports([
+                entry.key,
+                entry.value
+            ], false);
+        }, IS_MAP ? 'entries' : 'values', !IS_MAP, true);
+        // `{ Map, Set }.prototype[@@species]` accessors
+        // https://tc39.es/ecma262/#sec-get-map-@@species
+        // https://tc39.es/ecma262/#sec-get-set-@@species
+        $407efffd599c52ff$exports(CONSTRUCTOR_NAME);
+    }
+};
+
+
+// `Map` constructor
+// https://tc39.es/ecma262/#sec-map-objects
+$9244f0b02d704b0f$exports('Map', function(init) {
+    return function Map() {
+        return init(this, arguments.length ? arguments[0] : undefined);
+    };
+}, $b5b411d5df108744$exports);
+
+
+
+
+'use strict';
+
+// Math[@@toStringTag] property
+// https://tc39.es/ecma262/#sec-math-@@tostringtag
+$dc8b49a2567d5bf5$exports(Math, 'Math', true);
+
+
+'use strict';
+
+
+
+// `Object.fromEntries` method
+// https://tc39.es/ecma262/#sec-object.fromentries
+$a4386f1de3d17f70$exports({
+    target: 'Object',
+    stat: true
+}, {
+    fromEntries: function fromEntries(iterable) {
+        var obj = {};
+        $8f3b4edc46b0cdb1$exports(iterable, function(k, v) {
+            $550e1141cb7c109c$exports(obj, k, v);
+        }, {
+            AS_ENTRIES: true
+        });
+        return obj;
+    }
+});
+
+
+'use strict';
+
+
+
+
+
+
+// `Object.getOwnPropertyDescriptors` method
+// https://tc39.es/ecma262/#sec-object.getownpropertydescriptors
+$a4386f1de3d17f70$exports({
+    target: 'Object',
+    stat: true,
+    sham: !$9ad58a245a9ea542$exports
+}, {
+    getOwnPropertyDescriptors: function getOwnPropertyDescriptors(object) {
+        var O = $c4c6f95ea09874f7$exports(object);
+        var getOwnPropertyDescriptor = $efb277c423a0f6b2$export$2d1720544b23b823;
+        var keys = $58573bfb5a98d9fc$exports(O);
+        var result = {};
+        var index = 0;
+        var key, descriptor;
+        while(keys.length > index){
+            descriptor = getOwnPropertyDescriptor(O, key = keys[index++]);
+            if (descriptor !== undefined) $550e1141cb7c109c$exports(result, key, descriptor);
+        }
+        return result;
+    }
+});
+
+
+'use strict';
+
+
+var $87377a5eb1461924$exports = {};
+'use strict';
+
+
+// `Object.prototype.toString` method implementation
+// https://tc39.es/ecma262/#sec-object.prototype.tostring
+$87377a5eb1461924$exports = $fc816788153e3f4b$exports ? ({}).toString : function toString() {
+    return '[object ' + $31b89c0c3042db21$exports(this) + ']';
+};
+
+
+// `Object.prototype.toString` method
+// https://tc39.es/ecma262/#sec-object.prototype.tostring
+if (!$fc816788153e3f4b$exports) $cd1d0929e9f3f134$exports(Object.prototype, 'toString', $87377a5eb1461924$exports, {
+    unsafe: true
+});
+
+
+'use strict';
+'use strict';
+
+
+var $9726fdf1f9397c34$exports = {};
+'use strict';
+var $0bc94b3fc07791e8$exports = {};
+'use strict';
+
+
+
+var $0bc94b3fc07791e8$var$userAgentStartsWith = function userAgentStartsWith(string) {
+    return $4bf0b512ef614c5f$exports.slice(0, string.length) === string;
+};
+$0bc94b3fc07791e8$exports = function() {
+    if ($0bc94b3fc07791e8$var$userAgentStartsWith('Bun/')) return 'BUN';
+    if ($0bc94b3fc07791e8$var$userAgentStartsWith('Cloudflare-Workers')) return 'CLOUDFLARE';
+    if ($0bc94b3fc07791e8$var$userAgentStartsWith('Deno/')) return 'DENO';
+    if ($0bc94b3fc07791e8$var$userAgentStartsWith('Node.js/')) return 'NODE';
+    if ($6bb4f585dbcccb10$exports.Bun && typeof Bun.version == 'string') return 'BUN';
+    if ($6bb4f585dbcccb10$exports.Deno && typeof Deno.version == 'object') return 'DENO';
+    if ($46b0c974b8e64b7f$exports($6bb4f585dbcccb10$exports.process) === 'process') return 'NODE';
+    if ($6bb4f585dbcccb10$exports.window && $6bb4f585dbcccb10$exports.document) return 'BROWSER';
+    return 'REST';
+}();
+
+
+$9726fdf1f9397c34$exports = $0bc94b3fc07791e8$exports === 'NODE';
+
+
+
+
+
+
+
+
+
+
+
+
+var $9ef76ee1dd899254$exports = {};
+'use strict';
+
+var $43d62b7f75fe6f96$exports = {};
+'use strict';
+
+
+var $43d62b7f75fe6f96$var$$TypeError = TypeError;
+// `Assert: IsConstructor(argument) is true`
+$43d62b7f75fe6f96$exports = function(argument) {
+    if ($3b570a3627fd2080$exports(argument)) return argument;
+    throw new $43d62b7f75fe6f96$var$$TypeError($661acc3934c51a51$exports(argument) + ' is not a constructor');
+};
+
+
+
+
+var $9ef76ee1dd899254$var$SPECIES = $1c371bdde30cc6f2$exports('species');
+// `SpeciesConstructor` abstract operation
+// https://tc39.es/ecma262/#sec-speciesconstructor
+$9ef76ee1dd899254$exports = function(O, defaultConstructor) {
+    var C = $fbf8b6f89693dc96$exports(O).constructor;
+    var S;
+    return C === undefined || $57696a8ecf346488$exports(S = $fbf8b6f89693dc96$exports(C)[$9ef76ee1dd899254$var$SPECIES]) ? defaultConstructor : $43d62b7f75fe6f96$exports(S);
+};
+
+
+var $1ff07f00948f0a2e$exports = {};
+'use strict';
+
+
+
+
+
+
+
+
+
+var $c8d744b52f18fee1$exports = {};
+'use strict';
+var $c8d744b52f18fee1$var$$TypeError = TypeError;
+$c8d744b52f18fee1$exports = function(passed, required) {
+    if (passed < required) throw new $c8d744b52f18fee1$var$$TypeError('Not enough arguments');
+    return passed;
+};
+
+
+var $bd2a69053eb8666e$exports = {};
+'use strict';
+
+// eslint-disable-next-line redos/no-vulnerable -- safe
+$bd2a69053eb8666e$exports = /(?:ipad|iphone|ipod).*applewebkit/i.test($4bf0b512ef614c5f$exports);
+
+
+
+var $1ff07f00948f0a2e$var$set = $6bb4f585dbcccb10$exports.setImmediate;
+var $1ff07f00948f0a2e$var$clear = $6bb4f585dbcccb10$exports.clearImmediate;
+var $1ff07f00948f0a2e$var$process = $6bb4f585dbcccb10$exports.process;
+var $1ff07f00948f0a2e$var$Dispatch = $6bb4f585dbcccb10$exports.Dispatch;
+var $1ff07f00948f0a2e$var$Function = $6bb4f585dbcccb10$exports.Function;
+var $1ff07f00948f0a2e$var$MessageChannel = $6bb4f585dbcccb10$exports.MessageChannel;
+var $1ff07f00948f0a2e$var$String = $6bb4f585dbcccb10$exports.String;
+var $1ff07f00948f0a2e$var$counter = 0;
+var $1ff07f00948f0a2e$var$queue = {};
+var $1ff07f00948f0a2e$var$ONREADYSTATECHANGE = 'onreadystatechange';
+var $1ff07f00948f0a2e$var$$location, $1ff07f00948f0a2e$var$defer, $1ff07f00948f0a2e$var$channel, $1ff07f00948f0a2e$var$port;
+$8d47fb0f9458aed6$exports(function() {
+    // Deno throws a ReferenceError on `location` access without `--location` flag
+    $1ff07f00948f0a2e$var$$location = $6bb4f585dbcccb10$exports.location;
+});
+var $1ff07f00948f0a2e$var$run = function run(id) {
+    if ($88fb7bd6b0cac2a7$exports($1ff07f00948f0a2e$var$queue, id)) {
+        var fn = $1ff07f00948f0a2e$var$queue[id];
+        delete $1ff07f00948f0a2e$var$queue[id];
+        fn();
+    }
+};
+var $1ff07f00948f0a2e$var$runner = function runner(id) {
+    return function() {
+        $1ff07f00948f0a2e$var$run(id);
+    };
+};
+var $1ff07f00948f0a2e$var$eventListener = function eventListener(event) {
+    $1ff07f00948f0a2e$var$run(event.data);
+};
+var $1ff07f00948f0a2e$var$globalPostMessageDefer = function globalPostMessageDefer(id) {
+    // old engines have not location.origin
+    $6bb4f585dbcccb10$exports.postMessage($1ff07f00948f0a2e$var$String(id), $1ff07f00948f0a2e$var$$location.protocol + '//' + $1ff07f00948f0a2e$var$$location.host);
+};
+// Node.js 0.9+ & IE10+ has setImmediate, otherwise:
+if (!$1ff07f00948f0a2e$var$set || !$1ff07f00948f0a2e$var$clear) {
+    $1ff07f00948f0a2e$var$set = function setImmediate(handler) {
+        $c8d744b52f18fee1$exports(arguments.length, 1);
+        var fn = $56269d2914fd05c7$exports(handler) ? handler : $1ff07f00948f0a2e$var$Function(handler);
+        var args = $6f00017b18ab89e3$exports(arguments, 1);
+        $1ff07f00948f0a2e$var$queue[++$1ff07f00948f0a2e$var$counter] = function() {
+            $4a7de1faa165d753$exports(fn, undefined, args);
+        };
+        $1ff07f00948f0a2e$var$defer($1ff07f00948f0a2e$var$counter);
+        return $1ff07f00948f0a2e$var$counter;
+    };
+    $1ff07f00948f0a2e$var$clear = function clearImmediate(id) {
+        delete $1ff07f00948f0a2e$var$queue[id];
+    };
+    // Node.js 0.8-
+    if ($9726fdf1f9397c34$exports) $1ff07f00948f0a2e$var$defer = function defer(id) {
+        $1ff07f00948f0a2e$var$process.nextTick($1ff07f00948f0a2e$var$runner(id));
+    };
+    else if ($1ff07f00948f0a2e$var$Dispatch && $1ff07f00948f0a2e$var$Dispatch.now) $1ff07f00948f0a2e$var$defer = function defer(id) {
+        $1ff07f00948f0a2e$var$Dispatch.now($1ff07f00948f0a2e$var$runner(id));
+    };
+    else if ($1ff07f00948f0a2e$var$MessageChannel && !$bd2a69053eb8666e$exports) {
+        $1ff07f00948f0a2e$var$channel = new $1ff07f00948f0a2e$var$MessageChannel();
+        $1ff07f00948f0a2e$var$port = $1ff07f00948f0a2e$var$channel.port2;
+        $1ff07f00948f0a2e$var$channel.port1.onmessage = $1ff07f00948f0a2e$var$eventListener;
+        $1ff07f00948f0a2e$var$defer = $47d894db7420029c$exports($1ff07f00948f0a2e$var$port.postMessage, $1ff07f00948f0a2e$var$port);
+    // Browsers with postMessage, skip WebWorkers
+    // IE8 has postMessage, but it's sync & typeof its postMessage is 'object'
+    } else if ($6bb4f585dbcccb10$exports.addEventListener && $56269d2914fd05c7$exports($6bb4f585dbcccb10$exports.postMessage) && !$6bb4f585dbcccb10$exports.importScripts && $1ff07f00948f0a2e$var$$location && $1ff07f00948f0a2e$var$$location.protocol !== 'file:' && !$8d47fb0f9458aed6$exports($1ff07f00948f0a2e$var$globalPostMessageDefer)) {
+        $1ff07f00948f0a2e$var$defer = $1ff07f00948f0a2e$var$globalPostMessageDefer;
+        $6bb4f585dbcccb10$exports.addEventListener('message', $1ff07f00948f0a2e$var$eventListener, false);
+    // IE8-
+    } else if ($1ff07f00948f0a2e$var$ONREADYSTATECHANGE in $2f700ee53523f24b$exports('script')) $1ff07f00948f0a2e$var$defer = function defer(id) {
+        $c9f1f602ea0a461f$exports.appendChild($2f700ee53523f24b$exports('script'))[$1ff07f00948f0a2e$var$ONREADYSTATECHANGE] = function() {
+            $c9f1f602ea0a461f$exports.removeChild(this);
+            $1ff07f00948f0a2e$var$run(id);
+        };
+    };
+    else $1ff07f00948f0a2e$var$defer = function defer(id) {
+        setTimeout($1ff07f00948f0a2e$var$runner(id), 0);
+    };
+}
+$1ff07f00948f0a2e$exports = {
+    set: $1ff07f00948f0a2e$var$set,
+    clear: $1ff07f00948f0a2e$var$clear
+};
+
+
+var $91421508d4784cf9$require$task = $1ff07f00948f0a2e$exports.set;
+var $30d2b16acf23b32d$exports = {};
+'use strict';
+
+var $0b88c7667a83a2a3$exports = {};
+'use strict';
+
+
+// eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+var $0b88c7667a83a2a3$var$getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+// Avoid NodeJS experimental warning
+$0b88c7667a83a2a3$exports = function(name) {
+    if (!$9ad58a245a9ea542$exports) return $6bb4f585dbcccb10$exports[name];
+    var descriptor = $0b88c7667a83a2a3$var$getOwnPropertyDescriptor($6bb4f585dbcccb10$exports, name);
+    return descriptor && descriptor.value;
+};
+
+
+
+
+var $30d2b16acf23b32d$require$macrotask = $1ff07f00948f0a2e$exports.set;
+var $c11f99991ce7e1bf$exports = {};
+'use strict';
+var $c11f99991ce7e1bf$var$Queue = function Queue() {
+    this.head = null;
+    this.tail = null;
+};
+$c11f99991ce7e1bf$var$Queue.prototype = {
+    add: function add(item) {
+        var entry = {
+            item: item,
+            next: null
+        };
+        var tail = this.tail;
+        if (tail) tail.next = entry;
+        else this.head = entry;
+        this.tail = entry;
+    },
+    get: function get() {
+        var entry = this.head;
+        if (entry) {
+            var next = this.head = entry.next;
+            if (next === null) this.tail = null;
+            return entry.item;
+        }
+    }
+};
+$c11f99991ce7e1bf$exports = $c11f99991ce7e1bf$var$Queue;
+
+
+
+var $4ead73e4044f9e5e$exports = {};
+'use strict';
+
+$4ead73e4044f9e5e$exports = /ipad|iphone|ipod/i.test($4bf0b512ef614c5f$exports) && typeof Pebble != 'undefined';
+
+
+var $8f2ce63646690543$exports = {};
+'use strict';
+
+$8f2ce63646690543$exports = /web0s(?!.*chrome)/i.test($4bf0b512ef614c5f$exports);
+
+
+
+var $30d2b16acf23b32d$var$MutationObserver = $6bb4f585dbcccb10$exports.MutationObserver || $6bb4f585dbcccb10$exports.WebKitMutationObserver;
+var $30d2b16acf23b32d$var$document = $6bb4f585dbcccb10$exports.document;
+var $30d2b16acf23b32d$var$process = $6bb4f585dbcccb10$exports.process;
+var $30d2b16acf23b32d$var$Promise = $6bb4f585dbcccb10$exports.Promise;
+var $30d2b16acf23b32d$var$microtask = $0b88c7667a83a2a3$exports('queueMicrotask');
+var $30d2b16acf23b32d$var$notify, $30d2b16acf23b32d$var$toggle, $30d2b16acf23b32d$var$node, $30d2b16acf23b32d$var$promise, $30d2b16acf23b32d$var$then;
+// modern engines have queueMicrotask method
+if (!$30d2b16acf23b32d$var$microtask) {
+    var $30d2b16acf23b32d$var$queue = new $c11f99991ce7e1bf$exports();
+    var $30d2b16acf23b32d$var$flush = function flush() {
+        var parent, fn;
+        if ($9726fdf1f9397c34$exports && (parent = $30d2b16acf23b32d$var$process.domain)) parent.exit();
+        while(fn = $30d2b16acf23b32d$var$queue.get())try {
+            fn();
+        } catch (error) {
+            if ($30d2b16acf23b32d$var$queue.head) $30d2b16acf23b32d$var$notify();
+            throw error;
+        }
+        if (parent) parent.enter();
+    };
+    // browsers with MutationObserver, except iOS - https://github.com/zloirock/core-js/issues/339
+    // also except WebOS Webkit https://github.com/zloirock/core-js/issues/898
+    if (!$bd2a69053eb8666e$exports && !$9726fdf1f9397c34$exports && !$8f2ce63646690543$exports && $30d2b16acf23b32d$var$MutationObserver && $30d2b16acf23b32d$var$document) {
+        $30d2b16acf23b32d$var$toggle = true;
+        $30d2b16acf23b32d$var$node = $30d2b16acf23b32d$var$document.createTextNode('');
+        new $30d2b16acf23b32d$var$MutationObserver($30d2b16acf23b32d$var$flush).observe($30d2b16acf23b32d$var$node, {
+            characterData: true
+        });
+        $30d2b16acf23b32d$var$notify = function notify() {
+            $30d2b16acf23b32d$var$node.data = $30d2b16acf23b32d$var$toggle = !$30d2b16acf23b32d$var$toggle;
+        };
+    // environments with maybe non-completely correct, but existent Promise
+    } else if (!$4ead73e4044f9e5e$exports && $30d2b16acf23b32d$var$Promise && $30d2b16acf23b32d$var$Promise.resolve) {
+        // Promise.resolve without an argument throws an error in LG WebOS 2
+        $30d2b16acf23b32d$var$promise = $30d2b16acf23b32d$var$Promise.resolve(undefined);
+        // workaround of WebKit ~ iOS Safari 10.1 bug
+        $30d2b16acf23b32d$var$promise.constructor = $30d2b16acf23b32d$var$Promise;
+        $30d2b16acf23b32d$var$then = $47d894db7420029c$exports($30d2b16acf23b32d$var$promise.then, $30d2b16acf23b32d$var$promise);
+        $30d2b16acf23b32d$var$notify = function notify() {
+            $30d2b16acf23b32d$var$then($30d2b16acf23b32d$var$flush);
+        };
+    // Node.js without promises
+    } else if ($9726fdf1f9397c34$exports) $30d2b16acf23b32d$var$notify = function notify() {
+        $30d2b16acf23b32d$var$process.nextTick($30d2b16acf23b32d$var$flush);
+    };
+    else {
+        // `webpack` dev server bug on IE global methods - use bind(fn, global)
+        $30d2b16acf23b32d$require$macrotask = $47d894db7420029c$exports($30d2b16acf23b32d$require$macrotask, $6bb4f585dbcccb10$exports);
+        $30d2b16acf23b32d$var$notify = function notify() {
+            $30d2b16acf23b32d$require$macrotask($30d2b16acf23b32d$var$flush);
+        };
+    }
+    $30d2b16acf23b32d$var$microtask = function microtask(fn) {
+        if (!$30d2b16acf23b32d$var$queue.head) $30d2b16acf23b32d$var$notify();
+        $30d2b16acf23b32d$var$queue.add(fn);
+    };
+}
+$30d2b16acf23b32d$exports = $30d2b16acf23b32d$var$microtask;
+
+
+var $f7ddc98fea96bd96$exports = {};
+'use strict';
+$f7ddc98fea96bd96$exports = function(a, b) {
+    try {
+        // eslint-disable-next-line no-console -- safe
+        arguments.length === 1 ? console.error(a) : console.error(a, b);
+    } catch (error) {}
+};
+
+
+var $56f54ed43db5a087$exports = {};
+'use strict';
+$56f54ed43db5a087$exports = function(exec) {
+    try {
+        return {
+            error: false,
+            value: exec()
+        };
+    } catch (error) {
+        return {
+            error: true,
+            value: error
+        };
+    }
+};
+
+
+
+
+var $12384c8e2543e0a5$exports = {};
+'use strict';
+
+$12384c8e2543e0a5$exports = $6bb4f585dbcccb10$exports.Promise;
+
+
+var $95f5e454ce31438c$exports = {};
+'use strict';
+
+
+
+
+
+
+
+
+
+var $95f5e454ce31438c$var$NativePromisePrototype = $12384c8e2543e0a5$exports && $12384c8e2543e0a5$exports.prototype;
+var $95f5e454ce31438c$var$SPECIES = $1c371bdde30cc6f2$exports('species');
+var $95f5e454ce31438c$var$SUBCLASSING = false;
+var $95f5e454ce31438c$var$NATIVE_PROMISE_REJECTION_EVENT = $56269d2914fd05c7$exports($6bb4f585dbcccb10$exports.PromiseRejectionEvent);
+var $95f5e454ce31438c$var$FORCED_PROMISE_CONSTRUCTOR = $6a9bca21eba1d016$exports('Promise', function() {
+    var PROMISE_CONSTRUCTOR_SOURCE = $941686ccb49a13c9$exports($12384c8e2543e0a5$exports);
+    var GLOBAL_CORE_JS_PROMISE = PROMISE_CONSTRUCTOR_SOURCE !== String($12384c8e2543e0a5$exports);
+    // V8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=830565
+    // We can't detect it synchronously, so just check versions
+    if (!GLOBAL_CORE_JS_PROMISE && $9029b6c7cf623b88$exports === 66) return true;
+    // We need Promise#{ catch, finally } in the pure version for preventing prototype pollution
+    if ($2a942138f69f24b8$exports && !($95f5e454ce31438c$var$NativePromisePrototype['catch'] && $95f5e454ce31438c$var$NativePromisePrototype['finally'])) return true;
+    // We can't use @@species feature detection in V8 since it causes
+    // deoptimization and performance degradation
+    // https://github.com/zloirock/core-js/issues/679
+    if (!$9029b6c7cf623b88$exports || $9029b6c7cf623b88$exports < 51 || !/native code/.test(PROMISE_CONSTRUCTOR_SOURCE)) {
+        // Detect correctness of subclassing with @@species support
+        var promise = new $12384c8e2543e0a5$exports(function(resolve) {
+            resolve(1);
+        });
+        var FakePromise = function FakePromise(exec) {
+            exec(function() {}, function() {});
+        };
+        var constructor = promise.constructor = {};
+        constructor[$95f5e454ce31438c$var$SPECIES] = FakePromise;
+        $95f5e454ce31438c$var$SUBCLASSING = promise.then(function() {}) instanceof FakePromise;
+        if (!$95f5e454ce31438c$var$SUBCLASSING) return true;
+    // Unhandled rejections tracking support, NodeJS Promise without it fails @@species test
+    }
+    return !GLOBAL_CORE_JS_PROMISE && ($0bc94b3fc07791e8$exports === 'BROWSER' || $0bc94b3fc07791e8$exports === 'DENO') && !$95f5e454ce31438c$var$NATIVE_PROMISE_REJECTION_EVENT;
+});
+$95f5e454ce31438c$exports = {
+    CONSTRUCTOR: $95f5e454ce31438c$var$FORCED_PROMISE_CONSTRUCTOR,
+    REJECTION_EVENT: $95f5e454ce31438c$var$NATIVE_PROMISE_REJECTION_EVENT,
+    SUBCLASSING: $95f5e454ce31438c$var$SUBCLASSING
+};
+
+
+var $7fe23f347a9e866c$exports = {};
+
+$parcel$export($7fe23f347a9e866c$exports, "f", () => $7fe23f347a9e866c$export$2d1720544b23b823, (v) => $7fe23f347a9e866c$export$2d1720544b23b823 = v);
+// `NewPromiseCapability` abstract operation
+// https://tc39.es/ecma262/#sec-newpromisecapability
+var $7fe23f347a9e866c$export$2d1720544b23b823;
+'use strict';
+
+var $7fe23f347a9e866c$var$$TypeError = TypeError;
+var $7fe23f347a9e866c$var$PromiseCapability = function PromiseCapability(C) {
+    var resolve, reject;
+    this.promise = new C(function($$resolve, $$reject) {
+        if (resolve !== undefined || reject !== undefined) throw new $7fe23f347a9e866c$var$$TypeError('Bad Promise constructor');
+        resolve = $$resolve;
+        reject = $$reject;
+    });
+    this.resolve = $1b86631bcbde2dff$exports(resolve);
+    this.reject = $1b86631bcbde2dff$exports(reject);
+};
+$7fe23f347a9e866c$export$2d1720544b23b823 = function(C) {
+    return new $7fe23f347a9e866c$var$PromiseCapability(C);
+};
+
+
+var $91421508d4784cf9$var$PROMISE = 'Promise';
+var $91421508d4784cf9$var$FORCED_PROMISE_CONSTRUCTOR = $95f5e454ce31438c$exports.CONSTRUCTOR;
+var $91421508d4784cf9$var$NATIVE_PROMISE_REJECTION_EVENT = $95f5e454ce31438c$exports.REJECTION_EVENT;
+var $91421508d4784cf9$var$NATIVE_PROMISE_SUBCLASSING = $95f5e454ce31438c$exports.SUBCLASSING;
+var $91421508d4784cf9$var$getInternalPromiseState = $3863900a8f1508e7$exports.getterFor($91421508d4784cf9$var$PROMISE);
+var $91421508d4784cf9$var$setInternalState = $3863900a8f1508e7$exports.set;
+var $91421508d4784cf9$var$NativePromisePrototype = $12384c8e2543e0a5$exports && $12384c8e2543e0a5$exports.prototype;
+var $91421508d4784cf9$var$PromiseConstructor = $12384c8e2543e0a5$exports;
+var $91421508d4784cf9$var$PromisePrototype = $91421508d4784cf9$var$NativePromisePrototype;
+var $91421508d4784cf9$var$TypeError = $6bb4f585dbcccb10$exports.TypeError;
+var $91421508d4784cf9$var$document = $6bb4f585dbcccb10$exports.document;
+var $91421508d4784cf9$var$process = $6bb4f585dbcccb10$exports.process;
+var $91421508d4784cf9$var$newPromiseCapability = $7fe23f347a9e866c$export$2d1720544b23b823;
+var $91421508d4784cf9$var$newGenericPromiseCapability = $91421508d4784cf9$var$newPromiseCapability;
+var $91421508d4784cf9$var$DISPATCH_EVENT = !!($91421508d4784cf9$var$document && $91421508d4784cf9$var$document.createEvent && $6bb4f585dbcccb10$exports.dispatchEvent);
+var $91421508d4784cf9$var$UNHANDLED_REJECTION = 'unhandledrejection';
+var $91421508d4784cf9$var$REJECTION_HANDLED = 'rejectionhandled';
+var $91421508d4784cf9$var$PENDING = 0;
+var $91421508d4784cf9$var$FULFILLED = 1;
+var $91421508d4784cf9$var$REJECTED = 2;
+var $91421508d4784cf9$var$HANDLED = 1;
+var $91421508d4784cf9$var$UNHANDLED = 2;
+var $91421508d4784cf9$var$Internal, $91421508d4784cf9$var$OwnPromiseCapability, $91421508d4784cf9$var$PromiseWrapper, $91421508d4784cf9$var$nativeThen;
+// helpers
+var $91421508d4784cf9$var$isThenable = function isThenable(it) {
+    var then;
+    return $a5247cee30afd31c$exports(it) && $56269d2914fd05c7$exports(then = it.then) ? then : false;
+};
+var $91421508d4784cf9$var$callReaction = function callReaction(reaction, state) {
+    var value = state.value;
+    var ok = state.state === $91421508d4784cf9$var$FULFILLED;
+    var handler = ok ? reaction.ok : reaction.fail;
+    var resolve = reaction.resolve;
+    var reject = reaction.reject;
+    var domain = reaction.domain;
+    var result, then, exited;
+    try {
+        if (handler) {
+            if (!ok) {
+                if (state.rejection === $91421508d4784cf9$var$UNHANDLED) $91421508d4784cf9$var$onHandleUnhandled(state);
+                state.rejection = $91421508d4784cf9$var$HANDLED;
+            }
+            if (handler === true) result = value;
+            else {
+                if (domain) domain.enter();
+                result = handler(value); // can throw
+                if (domain) {
+                    domain.exit();
+                    exited = true;
+                }
+            }
+            if (result === reaction.promise) reject(new $91421508d4784cf9$var$TypeError('Promise-chain cycle'));
+            else if (then = $91421508d4784cf9$var$isThenable(result)) $b51eee67d287dc0c$exports(then, result, resolve, reject);
+            else resolve(result);
+        } else reject(value);
+    } catch (error) {
+        if (domain && !exited) domain.exit();
+        reject(error);
+    }
+};
+var $91421508d4784cf9$var$notify = function notify(state, isReject) {
+    if (state.notified) return;
+    state.notified = true;
+    $30d2b16acf23b32d$exports(function() {
+        var reactions = state.reactions;
+        var reaction;
+        while(reaction = reactions.get())$91421508d4784cf9$var$callReaction(reaction, state);
+        state.notified = false;
+        if (isReject && !state.rejection) $91421508d4784cf9$var$onUnhandled(state);
+    });
+};
+var $91421508d4784cf9$var$dispatchEvent = function dispatchEvent(name, promise, reason) {
+    var event, handler;
+    if ($91421508d4784cf9$var$DISPATCH_EVENT) {
+        event = $91421508d4784cf9$var$document.createEvent('Event');
+        event.promise = promise;
+        event.reason = reason;
+        event.initEvent(name, false, true);
+        $6bb4f585dbcccb10$exports.dispatchEvent(event);
+    } else event = {
+        promise: promise,
+        reason: reason
+    };
+    if (!$91421508d4784cf9$var$NATIVE_PROMISE_REJECTION_EVENT && (handler = $6bb4f585dbcccb10$exports['on' + name])) handler(event);
+    else if (name === $91421508d4784cf9$var$UNHANDLED_REJECTION) $f7ddc98fea96bd96$exports('Unhandled promise rejection', reason);
+};
+var $91421508d4784cf9$var$onUnhandled = function onUnhandled(state) {
+    $b51eee67d287dc0c$exports($91421508d4784cf9$require$task, $6bb4f585dbcccb10$exports, function() {
+        var promise = state.facade;
+        var value = state.value;
+        var IS_UNHANDLED = $91421508d4784cf9$var$isUnhandled(state);
+        var result;
+        if (IS_UNHANDLED) {
+            result = $56f54ed43db5a087$exports(function() {
+                if ($9726fdf1f9397c34$exports) $91421508d4784cf9$var$process.emit('unhandledRejection', value, promise);
+                else $91421508d4784cf9$var$dispatchEvent($91421508d4784cf9$var$UNHANDLED_REJECTION, promise, value);
+            });
+            // Browsers should not trigger `rejectionHandled` event if it was handled here, NodeJS - should
+            state.rejection = $9726fdf1f9397c34$exports || $91421508d4784cf9$var$isUnhandled(state) ? $91421508d4784cf9$var$UNHANDLED : $91421508d4784cf9$var$HANDLED;
+            if (result.error) throw result.value;
+        }
+    });
+};
+var $91421508d4784cf9$var$isUnhandled = function isUnhandled(state) {
+    return state.rejection !== $91421508d4784cf9$var$HANDLED && !state.parent;
+};
+var $91421508d4784cf9$var$onHandleUnhandled = function onHandleUnhandled(state) {
+    $b51eee67d287dc0c$exports($91421508d4784cf9$require$task, $6bb4f585dbcccb10$exports, function() {
+        var promise = state.facade;
+        if ($9726fdf1f9397c34$exports) $91421508d4784cf9$var$process.emit('rejectionHandled', promise);
+        else $91421508d4784cf9$var$dispatchEvent($91421508d4784cf9$var$REJECTION_HANDLED, promise, state.value);
+    });
+};
+var $91421508d4784cf9$var$bind = function bind(fn, state, unwrap) {
+    return function(value) {
+        fn(state, value, unwrap);
+    };
+};
+var $91421508d4784cf9$var$internalReject = function internalReject(state, value, unwrap) {
+    if (state.done) return;
+    state.done = true;
+    if (unwrap) state = unwrap;
+    state.value = value;
+    state.state = $91421508d4784cf9$var$REJECTED;
+    $91421508d4784cf9$var$notify(state, true);
+};
+var $91421508d4784cf9$var$internalResolve = function internalResolve1(state, value, unwrap) {
+    if (state.done) return;
+    state.done = true;
+    if (unwrap) state = unwrap;
+    try {
+        if (state.facade === value) throw new $91421508d4784cf9$var$TypeError("Promise can't be resolved itself");
+        var then = $91421508d4784cf9$var$isThenable(value);
+        if (then) $30d2b16acf23b32d$exports(function() {
+            var wrapper = {
+                done: false
+            };
+            try {
+                $b51eee67d287dc0c$exports(then, value, $91421508d4784cf9$var$bind($91421508d4784cf9$var$internalResolve, wrapper, state), $91421508d4784cf9$var$bind($91421508d4784cf9$var$internalReject, wrapper, state));
+            } catch (error) {
+                $91421508d4784cf9$var$internalReject(wrapper, error, state);
+            }
+        });
+        else {
+            state.value = value;
+            state.state = $91421508d4784cf9$var$FULFILLED;
+            $91421508d4784cf9$var$notify(state, false);
+        }
+    } catch (error) {
+        $91421508d4784cf9$var$internalReject({
+            done: false
+        }, error, state);
+    }
+};
+// constructor polyfill
+if ($91421508d4784cf9$var$FORCED_PROMISE_CONSTRUCTOR) {
+    // 25.4.3.1 Promise(executor)
+    $91421508d4784cf9$var$PromiseConstructor = function Promise(executor) {
+        $a84985762d40e844$exports(this, $91421508d4784cf9$var$PromisePrototype);
+        $1b86631bcbde2dff$exports(executor);
+        $b51eee67d287dc0c$exports($91421508d4784cf9$var$Internal, this);
+        var state = $91421508d4784cf9$var$getInternalPromiseState(this);
+        try {
+            executor($91421508d4784cf9$var$bind($91421508d4784cf9$var$internalResolve, state), $91421508d4784cf9$var$bind($91421508d4784cf9$var$internalReject, state));
+        } catch (error) {
+            $91421508d4784cf9$var$internalReject(state, error);
+        }
+    };
+    $91421508d4784cf9$var$PromisePrototype = $91421508d4784cf9$var$PromiseConstructor.prototype;
+    // eslint-disable-next-line no-unused-vars -- required for `.length`
+    $91421508d4784cf9$var$Internal = function Promise(executor) {
+        $91421508d4784cf9$var$setInternalState(this, {
+            type: $91421508d4784cf9$var$PROMISE,
+            done: false,
+            notified: false,
+            parent: false,
+            reactions: new $c11f99991ce7e1bf$exports(),
+            rejection: false,
+            state: $91421508d4784cf9$var$PENDING,
+            value: null
+        });
+    };
+    // `Promise.prototype.then` method
+    // https://tc39.es/ecma262/#sec-promise.prototype.then
+    $91421508d4784cf9$var$Internal.prototype = $cd1d0929e9f3f134$exports($91421508d4784cf9$var$PromisePrototype, 'then', function then(onFulfilled, onRejected) {
+        var state = $91421508d4784cf9$var$getInternalPromiseState(this);
+        var reaction = $91421508d4784cf9$var$newPromiseCapability($9ef76ee1dd899254$exports(this, $91421508d4784cf9$var$PromiseConstructor));
+        state.parent = true;
+        reaction.ok = $56269d2914fd05c7$exports(onFulfilled) ? onFulfilled : true;
+        reaction.fail = $56269d2914fd05c7$exports(onRejected) && onRejected;
+        reaction.domain = $9726fdf1f9397c34$exports ? $91421508d4784cf9$var$process.domain : undefined;
+        if (state.state === $91421508d4784cf9$var$PENDING) state.reactions.add(reaction);
+        else $30d2b16acf23b32d$exports(function() {
+            $91421508d4784cf9$var$callReaction(reaction, state);
+        });
+        return reaction.promise;
+    });
+    $91421508d4784cf9$var$OwnPromiseCapability = function OwnPromiseCapability() {
+        var promise = new $91421508d4784cf9$var$Internal();
+        var state = $91421508d4784cf9$var$getInternalPromiseState(promise);
+        this.promise = promise;
+        this.resolve = $91421508d4784cf9$var$bind($91421508d4784cf9$var$internalResolve, state);
+        this.reject = $91421508d4784cf9$var$bind($91421508d4784cf9$var$internalReject, state);
+    };
+    $7fe23f347a9e866c$exports.f = $91421508d4784cf9$var$newPromiseCapability = function newPromiseCapability(C) {
+        return C === $91421508d4784cf9$var$PromiseConstructor || C === $91421508d4784cf9$var$PromiseWrapper ? new $91421508d4784cf9$var$OwnPromiseCapability(C) : $91421508d4784cf9$var$newGenericPromiseCapability(C);
+    };
+    if (!$2a942138f69f24b8$exports && $56269d2914fd05c7$exports($12384c8e2543e0a5$exports) && $91421508d4784cf9$var$NativePromisePrototype !== Object.prototype) {
+        $91421508d4784cf9$var$nativeThen = $91421508d4784cf9$var$NativePromisePrototype.then;
+        if (!$91421508d4784cf9$var$NATIVE_PROMISE_SUBCLASSING) // make `Promise#then` return a polyfilled `Promise` for native promise-based APIs
+        $cd1d0929e9f3f134$exports($91421508d4784cf9$var$NativePromisePrototype, 'then', function then(onFulfilled, onRejected) {
+            var that = this;
+            return new $91421508d4784cf9$var$PromiseConstructor(function(resolve, reject) {
+                $b51eee67d287dc0c$exports($91421508d4784cf9$var$nativeThen, that, resolve, reject);
+            }).then(onFulfilled, onRejected);
+        // https://github.com/zloirock/core-js/issues/640
+        }, {
+            unsafe: true
+        });
+        // make `.constructor === Promise` work for native promise-based APIs
+        try {
+            delete $91421508d4784cf9$var$NativePromisePrototype.constructor;
+        } catch (error) {}
+        // make `instanceof Promise` work for native promise-based APIs
+        if ($ffb4c060878cd71a$exports) $ffb4c060878cd71a$exports($91421508d4784cf9$var$NativePromisePrototype, $91421508d4784cf9$var$PromisePrototype);
+    }
+}
+// `Promise` constructor
+// https://tc39.es/ecma262/#sec-promise-executor
+$a4386f1de3d17f70$exports({
+    global: true,
+    constructor: true,
+    wrap: true,
+    forced: $91421508d4784cf9$var$FORCED_PROMISE_CONSTRUCTOR
+}, {
+    Promise: $91421508d4784cf9$var$PromiseConstructor
+});
+$dc8b49a2567d5bf5$exports($91421508d4784cf9$var$PromiseConstructor, $91421508d4784cf9$var$PROMISE, false, true);
+$407efffd599c52ff$exports($91421508d4784cf9$var$PROMISE);
+
+
+'use strict';
+
+
+
+
+
+
+var $7e1687a9a96e36bc$exports = {};
+'use strict';
+
+
+
+var $7e1687a9a96e36bc$require$FORCED_PROMISE_CONSTRUCTOR = $95f5e454ce31438c$exports.CONSTRUCTOR;
+$7e1687a9a96e36bc$exports = $7e1687a9a96e36bc$require$FORCED_PROMISE_CONSTRUCTOR || !$d1fca0b8c3f3e5bf$exports(function(iterable) {
+    $12384c8e2543e0a5$exports.all(iterable).then(undefined, function() {});
+});
+
+
+// `Promise.all` method
+// https://tc39.es/ecma262/#sec-promise.all
+$a4386f1de3d17f70$exports({
+    target: 'Promise',
+    stat: true,
+    forced: $7e1687a9a96e36bc$exports
+}, {
+    all: function all(iterable) {
+        var C = this;
+        var capability = $7fe23f347a9e866c$export$2d1720544b23b823(C);
+        var resolve = capability.resolve;
+        var reject = capability.reject;
+        var result = $56f54ed43db5a087$exports(function() {
+            var $promiseResolve = $1b86631bcbde2dff$exports(C.resolve);
+            var values = [];
+            var counter = 0;
+            var remaining = 1;
+            $8f3b4edc46b0cdb1$exports(iterable, function(promise) {
+                var index = counter++;
+                var alreadyCalled = false;
+                remaining++;
+                $b51eee67d287dc0c$exports($promiseResolve, C, promise).then(function(value) {
+                    if (alreadyCalled) return;
+                    alreadyCalled = true;
+                    values[index] = value;
+                    --remaining || resolve(values);
+                }, reject);
+            });
+            --remaining || resolve(values);
+        });
+        if (result.error) reject(result.value);
+        return capability.promise;
+    }
+});
+
+
+'use strict';
+
+
+
+var $5900112121e0d800$require$FORCED_PROMISE_CONSTRUCTOR = $95f5e454ce31438c$exports.CONSTRUCTOR;
+
+
+
+
+var $5900112121e0d800$var$NativePromisePrototype = $12384c8e2543e0a5$exports && $12384c8e2543e0a5$exports.prototype;
+// `Promise.prototype.catch` method
+// https://tc39.es/ecma262/#sec-promise.prototype.catch
+$a4386f1de3d17f70$exports({
+    target: 'Promise',
+    proto: true,
+    forced: $5900112121e0d800$require$FORCED_PROMISE_CONSTRUCTOR,
+    real: true
+}, {
+    'catch': function(onRejected) {
+        return this.then(undefined, onRejected);
+    }
+});
+// makes sure that native promise-based APIs `Promise#catch` properly works with patched `Promise#then`
+if (!$2a942138f69f24b8$exports && $56269d2914fd05c7$exports($12384c8e2543e0a5$exports)) {
+    var $5900112121e0d800$var$method = $7ab1ca27f8995b05$exports('Promise').prototype['catch'];
+    if ($5900112121e0d800$var$NativePromisePrototype['catch'] !== $5900112121e0d800$var$method) $cd1d0929e9f3f134$exports($5900112121e0d800$var$NativePromisePrototype, 'catch', $5900112121e0d800$var$method, {
+        unsafe: true
+    });
+}
+
+
+'use strict';
+
+
+
+
+
+
+
+// `Promise.race` method
+// https://tc39.es/ecma262/#sec-promise.race
+$a4386f1de3d17f70$exports({
+    target: 'Promise',
+    stat: true,
+    forced: $7e1687a9a96e36bc$exports
+}, {
+    race: function race(iterable) {
+        var C = this;
+        var capability = $7fe23f347a9e866c$export$2d1720544b23b823(C);
+        var reject = capability.reject;
+        var result = $56f54ed43db5a087$exports(function() {
+            var $promiseResolve = $1b86631bcbde2dff$exports(C.resolve);
+            $8f3b4edc46b0cdb1$exports(iterable, function(promise) {
+                $b51eee67d287dc0c$exports($promiseResolve, C, promise).then(capability.resolve, reject);
+            });
+        });
+        if (result.error) reject(result.value);
+        return capability.promise;
+    }
+});
+
+
+'use strict';
+
+
+
+var $98ed4ecfe337e6ff$require$FORCED_PROMISE_CONSTRUCTOR = $95f5e454ce31438c$exports.CONSTRUCTOR;
+// `Promise.reject` method
+// https://tc39.es/ecma262/#sec-promise.reject
+$a4386f1de3d17f70$exports({
+    target: 'Promise',
+    stat: true,
+    forced: $98ed4ecfe337e6ff$require$FORCED_PROMISE_CONSTRUCTOR
+}, {
+    reject: function reject(r) {
+        var capability = $7fe23f347a9e866c$export$2d1720544b23b823(this);
+        var capabilityReject = capability.reject;
+        capabilityReject(r);
+        return capability.promise;
+    }
+});
+
+
+'use strict';
+
+
+
+
+
+var $f16225e964a89e55$require$FORCED_PROMISE_CONSTRUCTOR = $95f5e454ce31438c$exports.CONSTRUCTOR;
+var $1687c198f84b76ff$exports = {};
+'use strict';
+
+
+
+$1687c198f84b76ff$exports = function(C, x) {
+    $fbf8b6f89693dc96$exports(C);
+    if ($a5247cee30afd31c$exports(x) && x.constructor === C) return x;
+    var promiseCapability = $7fe23f347a9e866c$export$2d1720544b23b823(C);
+    var resolve = promiseCapability.resolve;
+    resolve(x);
+    return promiseCapability.promise;
+};
+
+
+var $f16225e964a89e55$var$PromiseConstructorWrapper = $7ab1ca27f8995b05$exports('Promise');
+var $f16225e964a89e55$var$CHECK_WRAPPER = $2a942138f69f24b8$exports && !$f16225e964a89e55$require$FORCED_PROMISE_CONSTRUCTOR;
+// `Promise.resolve` method
+// https://tc39.es/ecma262/#sec-promise.resolve
+$a4386f1de3d17f70$exports({
+    target: 'Promise',
+    stat: true,
+    forced: $2a942138f69f24b8$exports || $f16225e964a89e55$require$FORCED_PROMISE_CONSTRUCTOR
+}, {
+    resolve: function resolve(x) {
+        return $1687c198f84b76ff$exports($f16225e964a89e55$var$CHECK_WRAPPER && this === $f16225e964a89e55$var$PromiseConstructorWrapper ? $12384c8e2543e0a5$exports : this, x);
+    }
+});
+
+
+
+
+'use strict';
+
+
+
+
+
+
+
+
+
+var $fd3a4be27844dbea$var$NativePromisePrototype = $12384c8e2543e0a5$exports && $12384c8e2543e0a5$exports.prototype;
+// Safari bug https://bugs.webkit.org/show_bug.cgi?id=200829
+var $fd3a4be27844dbea$var$NON_GENERIC = !!$12384c8e2543e0a5$exports && $8d47fb0f9458aed6$exports(function() {
+    // eslint-disable-next-line unicorn/no-thenable -- required for testing
+    $fd3a4be27844dbea$var$NativePromisePrototype['finally'].call({
+        then: function then() {}
+    }, function() {});
+});
+// `Promise.prototype.finally` method
+// https://tc39.es/ecma262/#sec-promise.prototype.finally
+$a4386f1de3d17f70$exports({
+    target: 'Promise',
+    proto: true,
+    real: true,
+    forced: $fd3a4be27844dbea$var$NON_GENERIC
+}, {
+    'finally': function(onFinally) {
+        var C = $9ef76ee1dd899254$exports(this, $7ab1ca27f8995b05$exports('Promise'));
+        var isFunction = $56269d2914fd05c7$exports(onFinally);
+        return this.then(isFunction ? function(x) {
+            return $1687c198f84b76ff$exports(C, onFinally()).then(function() {
+                return x;
+            });
+        } : onFinally, isFunction ? function(e) {
+            return $1687c198f84b76ff$exports(C, onFinally()).then(function() {
+                throw e;
+            });
+        } : onFinally);
+    }
+});
+// makes sure that native promise-based APIs `Promise#finally` properly works with patched `Promise#then`
+if (!$2a942138f69f24b8$exports && $56269d2914fd05c7$exports($12384c8e2543e0a5$exports)) {
+    var $fd3a4be27844dbea$var$method = $7ab1ca27f8995b05$exports('Promise').prototype['finally'];
+    if ($fd3a4be27844dbea$var$NativePromisePrototype['finally'] !== $fd3a4be27844dbea$var$method) $cd1d0929e9f3f134$exports($fd3a4be27844dbea$var$NativePromisePrototype, 'finally', $fd3a4be27844dbea$var$method, {
+        unsafe: true
+    });
+}
+
+
+'use strict';
+
+
+
+
+
+
+
+
+var $2a2a2bf2b05d5497$require$getOwnPropertyNames = $e18868c91f9bee5e$export$2d1720544b23b823;
+
+var $c10072b0676a52b6$exports = {};
+'use strict';
+
+
+
+var $c10072b0676a52b6$var$MATCH = $1c371bdde30cc6f2$exports('match');
+// `IsRegExp` abstract operation
+// https://tc39.es/ecma262/#sec-isregexp
+$c10072b0676a52b6$exports = function(it) {
+    var isRegExp;
+    return $a5247cee30afd31c$exports(it) && ((isRegExp = it[$c10072b0676a52b6$var$MATCH]) !== undefined ? !!isRegExp : $46b0c974b8e64b7f$exports(it) === 'RegExp');
+};
+
+
+
+var $799f38db9240068e$exports = {};
+'use strict';
+
+
+
+var $dee30ef2da69addd$exports = {};
+'use strict';
+
+// `RegExp.prototype.flags` getter implementation
+// https://tc39.es/ecma262/#sec-get-regexp.prototype.flags
+$dee30ef2da69addd$exports = function() {
+    var that = $fbf8b6f89693dc96$exports(this);
+    var result = '';
+    if (that.hasIndices) result += 'd';
+    if (that.global) result += 'g';
+    if (that.ignoreCase) result += 'i';
+    if (that.multiline) result += 'm';
+    if (that.dotAll) result += 's';
+    if (that.unicode) result += 'u';
+    if (that.unicodeSets) result += 'v';
+    if (that.sticky) result += 'y';
+    return result;
+};
+
+
+var $799f38db9240068e$var$RegExpPrototype = RegExp.prototype;
+$799f38db9240068e$exports = function(R) {
+    var flags = R.flags;
+    return flags === undefined && !('flags' in $799f38db9240068e$var$RegExpPrototype) && !$88fb7bd6b0cac2a7$exports(R, 'flags') && $c4802cfd914fa45d$exports($799f38db9240068e$var$RegExpPrototype, R) ? $b51eee67d287dc0c$exports($dee30ef2da69addd$exports, R) : flags;
+};
+
+
+var $383662275c1b8ec0$exports = {};
+'use strict';
+
+
+// babel-minify and Closure Compiler transpiles RegExp('a', 'y') -> /a/y and it causes SyntaxError
+var $383662275c1b8ec0$var$$RegExp = $6bb4f585dbcccb10$exports.RegExp;
+var $383662275c1b8ec0$var$UNSUPPORTED_Y = $8d47fb0f9458aed6$exports(function() {
+    var re = $383662275c1b8ec0$var$$RegExp('a', 'y');
+    re.lastIndex = 2;
+    return re.exec('abcd') !== null;
+});
+// UC Browser bug
+// https://github.com/zloirock/core-js/issues/1008
+var $383662275c1b8ec0$var$MISSED_STICKY = $383662275c1b8ec0$var$UNSUPPORTED_Y || $8d47fb0f9458aed6$exports(function() {
+    return !$383662275c1b8ec0$var$$RegExp('a', 'y').sticky;
+});
+var $383662275c1b8ec0$var$BROKEN_CARET = $383662275c1b8ec0$var$UNSUPPORTED_Y || $8d47fb0f9458aed6$exports(function() {
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=773687
+    var re = $383662275c1b8ec0$var$$RegExp('^r', 'gy');
+    re.lastIndex = 2;
+    return re.exec('str') !== null;
+});
+$383662275c1b8ec0$exports = {
+    BROKEN_CARET: $383662275c1b8ec0$var$BROKEN_CARET,
+    MISSED_STICKY: $383662275c1b8ec0$var$MISSED_STICKY,
+    UNSUPPORTED_Y: $383662275c1b8ec0$var$UNSUPPORTED_Y
+};
+
+
+var $4c2d33011aa50f80$exports = {};
+'use strict';
+
+var $4c2d33011aa50f80$require$defineProperty = $b7cf4c6cb85b0365$export$2d1720544b23b823;
+$4c2d33011aa50f80$exports = function(Target, Source, key) {
+    key in Target || $4c2d33011aa50f80$require$defineProperty(Target, key, {
+        configurable: true,
+        get: function get() {
+            return Source[key];
+        },
+        set: function set(it) {
+            Source[key] = it;
+        }
+    });
+};
+
+
+
+
+
+
+var $2a2a2bf2b05d5497$require$enforceInternalState = $3863900a8f1508e7$exports.enforce;
+
+
+var $c57715799cf968ec$exports = {};
+'use strict';
+
+
+// babel-minify and Closure Compiler transpiles RegExp('.', 's') -> /./s and it causes SyntaxError
+var $c57715799cf968ec$var$$RegExp = $6bb4f585dbcccb10$exports.RegExp;
+$c57715799cf968ec$exports = $8d47fb0f9458aed6$exports(function() {
+    var re = $c57715799cf968ec$var$$RegExp('.', 's');
+    return !(re.dotAll && re.test('\n') && re.flags === 's');
+});
+
+
+var $4ec485e3c9d6605f$exports = {};
+'use strict';
+
+
+// babel-minify and Closure Compiler transpiles RegExp('(?<a>b)', 'g') -> /(?<a>b)/g and it causes SyntaxError
+var $4ec485e3c9d6605f$var$$RegExp = $6bb4f585dbcccb10$exports.RegExp;
+$4ec485e3c9d6605f$exports = $8d47fb0f9458aed6$exports(function() {
+    var re = $4ec485e3c9d6605f$var$$RegExp('(?<a>b)', 'g');
+    return re.exec('b').groups.a !== 'b' || 'b'.replace(re, '$<a>c') !== 'bc';
+});
+
+
+var $2a2a2bf2b05d5497$var$MATCH = $1c371bdde30cc6f2$exports('match');
+var $2a2a2bf2b05d5497$var$NativeRegExp = $6bb4f585dbcccb10$exports.RegExp;
+var $2a2a2bf2b05d5497$var$RegExpPrototype = $2a2a2bf2b05d5497$var$NativeRegExp.prototype;
+var $2a2a2bf2b05d5497$var$SyntaxError = $6bb4f585dbcccb10$exports.SyntaxError;
+var $2a2a2bf2b05d5497$var$exec = $a6ad1e8ada886a6e$exports($2a2a2bf2b05d5497$var$RegExpPrototype.exec);
+var $2a2a2bf2b05d5497$var$charAt = $a6ad1e8ada886a6e$exports(''.charAt);
+var $2a2a2bf2b05d5497$var$replace = $a6ad1e8ada886a6e$exports(''.replace);
+var $2a2a2bf2b05d5497$var$stringIndexOf = $a6ad1e8ada886a6e$exports(''.indexOf);
+var $2a2a2bf2b05d5497$var$stringSlice = $a6ad1e8ada886a6e$exports(''.slice);
+// TODO: Use only proper RegExpIdentifierName
+var $2a2a2bf2b05d5497$var$IS_NCG = /^\?<[^\s\d!#%&*+<=>@^][^\s!#%&*+<=>@^]*>/;
+var $2a2a2bf2b05d5497$var$re1 = /a/g;
+var $2a2a2bf2b05d5497$var$re2 = /a/g;
+// "new" should create a new object, old webkit bug
+var $2a2a2bf2b05d5497$var$CORRECT_NEW = new $2a2a2bf2b05d5497$var$NativeRegExp($2a2a2bf2b05d5497$var$re1) !== $2a2a2bf2b05d5497$var$re1;
+var $2a2a2bf2b05d5497$var$MISSED_STICKY = $383662275c1b8ec0$exports.MISSED_STICKY;
+var $2a2a2bf2b05d5497$var$UNSUPPORTED_Y = $383662275c1b8ec0$exports.UNSUPPORTED_Y;
+var $2a2a2bf2b05d5497$var$BASE_FORCED = $9ad58a245a9ea542$exports && (!$2a2a2bf2b05d5497$var$CORRECT_NEW || $2a2a2bf2b05d5497$var$MISSED_STICKY || $c57715799cf968ec$exports || $4ec485e3c9d6605f$exports || $8d47fb0f9458aed6$exports(function() {
+    $2a2a2bf2b05d5497$var$re2[$2a2a2bf2b05d5497$var$MATCH] = false;
+    // RegExp constructor can alter flags and IsRegExp works correct with @@match
+    // eslint-disable-next-line sonarjs/inconsistent-function-call -- required for testing
+    return $2a2a2bf2b05d5497$var$NativeRegExp($2a2a2bf2b05d5497$var$re1) !== $2a2a2bf2b05d5497$var$re1 || $2a2a2bf2b05d5497$var$NativeRegExp($2a2a2bf2b05d5497$var$re2) === $2a2a2bf2b05d5497$var$re2 || String($2a2a2bf2b05d5497$var$NativeRegExp($2a2a2bf2b05d5497$var$re1, 'i')) !== '/a/i';
+}));
+var $2a2a2bf2b05d5497$var$handleDotAll = function handleDotAll(string) {
+    var length = string.length;
+    var index = 0;
+    var result = '';
+    var brackets = false;
+    var chr;
+    for(; index <= length; index++){
+        chr = $2a2a2bf2b05d5497$var$charAt(string, index);
+        if (chr === '\\') {
+            result += chr + $2a2a2bf2b05d5497$var$charAt(string, ++index);
+            continue;
+        }
+        if (!brackets && chr === '.') result += '[\\s\\S]';
+        else {
+            if (chr === '[') brackets = true;
+            else if (chr === ']') brackets = false;
+            result += chr;
+        }
+    }
+    return result;
+};
+var $2a2a2bf2b05d5497$var$handleNCG = function handleNCG(string) {
+    var length = string.length;
+    var index = 0;
+    var result = '';
+    var named = [];
+    var names = $6c46fe9371eaab2c$exports(null);
+    var brackets = false;
+    var ncg = false;
+    var groupid = 0;
+    var groupname = '';
+    var chr;
+    for(; index <= length; index++){
+        chr = $2a2a2bf2b05d5497$var$charAt(string, index);
+        if (chr === '\\') chr += $2a2a2bf2b05d5497$var$charAt(string, ++index);
+        else if (chr === ']') brackets = false;
+        else if (!brackets) switch(true){
+            case chr === '[':
+                brackets = true;
+                break;
+            case chr === '(':
+                result += chr;
+                // ignore non-capturing groups
+                if ($2a2a2bf2b05d5497$var$stringSlice(string, index + 1, index + 3) === '?:') continue;
+                if ($2a2a2bf2b05d5497$var$exec($2a2a2bf2b05d5497$var$IS_NCG, $2a2a2bf2b05d5497$var$stringSlice(string, index + 1))) {
+                    index += 2;
+                    ncg = true;
+                }
+                groupid++;
+                continue;
+            case chr === '>' && ncg:
+                if (groupname === '' || $88fb7bd6b0cac2a7$exports(names, groupname)) throw new $2a2a2bf2b05d5497$var$SyntaxError('Invalid capture group name');
+                names[groupname] = true;
+                named[named.length] = [
+                    groupname,
+                    groupid
+                ];
+                ncg = false;
+                groupname = '';
+                continue;
+        }
+        if (ncg) groupname += chr;
+        else result += chr;
+    }
+    return [
+        result,
+        named
+    ];
+};
+// `RegExp` constructor
+// https://tc39.es/ecma262/#sec-regexp-constructor
+if ($6a9bca21eba1d016$exports('RegExp', $2a2a2bf2b05d5497$var$BASE_FORCED)) {
+    var $2a2a2bf2b05d5497$var$RegExpWrapper = function RegExp(pattern, flags) {
+        var thisIsRegExp = $c4802cfd914fa45d$exports($2a2a2bf2b05d5497$var$RegExpPrototype, this);
+        var patternIsRegExp = $c10072b0676a52b6$exports(pattern);
+        var flagsAreUndefined = flags === undefined;
+        var groups = [];
+        var rawPattern = pattern;
+        var rawFlags, dotAll, sticky, handled, result, state;
+        if (!thisIsRegExp && patternIsRegExp && flagsAreUndefined && pattern.constructor === $2a2a2bf2b05d5497$var$RegExpWrapper) return pattern;
+        if (patternIsRegExp || $c4802cfd914fa45d$exports($2a2a2bf2b05d5497$var$RegExpPrototype, pattern)) {
+            pattern = pattern.source;
+            if (flagsAreUndefined) flags = $799f38db9240068e$exports(rawPattern);
+        }
+        pattern = pattern === undefined ? '' : $3441418af0b2523d$exports(pattern);
+        flags = flags === undefined ? '' : $3441418af0b2523d$exports(flags);
+        rawPattern = pattern;
+        if ($c57715799cf968ec$exports && 'dotAll' in $2a2a2bf2b05d5497$var$re1) {
+            dotAll = !!flags && $2a2a2bf2b05d5497$var$stringIndexOf(flags, 's') > -1;
+            if (dotAll) flags = $2a2a2bf2b05d5497$var$replace(flags, /s/g, '');
+        }
+        rawFlags = flags;
+        if ($2a2a2bf2b05d5497$var$MISSED_STICKY && 'sticky' in $2a2a2bf2b05d5497$var$re1) {
+            sticky = !!flags && $2a2a2bf2b05d5497$var$stringIndexOf(flags, 'y') > -1;
+            if (sticky && $2a2a2bf2b05d5497$var$UNSUPPORTED_Y) flags = $2a2a2bf2b05d5497$var$replace(flags, /y/g, '');
+        }
+        if ($4ec485e3c9d6605f$exports) {
+            handled = $2a2a2bf2b05d5497$var$handleNCG(pattern);
+            pattern = handled[0];
+            groups = handled[1];
+        }
+        result = $d7c1c7836696ec90$exports($2a2a2bf2b05d5497$var$NativeRegExp(pattern, flags), thisIsRegExp ? this : $2a2a2bf2b05d5497$var$RegExpPrototype, $2a2a2bf2b05d5497$var$RegExpWrapper);
+        if (dotAll || sticky || groups.length) {
+            state = $2a2a2bf2b05d5497$require$enforceInternalState(result);
+            if (dotAll) {
+                state.dotAll = true;
+                state.raw = $2a2a2bf2b05d5497$var$RegExpWrapper($2a2a2bf2b05d5497$var$handleDotAll(pattern), rawFlags);
+            }
+            if (sticky) state.sticky = true;
+            if (groups.length) state.groups = groups;
+        }
+        if (pattern !== rawPattern) try {
+            // fails in old engines, but we have no alternatives for unsupported regex syntax
+            $542c4a1412d7b12f$exports(result, 'source', rawPattern === '' ? '(?:)' : rawPattern);
+        } catch (error) {}
+        return result;
+    };
+    for(var $2a2a2bf2b05d5497$var$keys = $2a2a2bf2b05d5497$require$getOwnPropertyNames($2a2a2bf2b05d5497$var$NativeRegExp), $2a2a2bf2b05d5497$var$index = 0; $2a2a2bf2b05d5497$var$keys.length > $2a2a2bf2b05d5497$var$index;)$4c2d33011aa50f80$exports($2a2a2bf2b05d5497$var$RegExpWrapper, $2a2a2bf2b05d5497$var$NativeRegExp, $2a2a2bf2b05d5497$var$keys[$2a2a2bf2b05d5497$var$index++]);
+    $2a2a2bf2b05d5497$var$RegExpPrototype.constructor = $2a2a2bf2b05d5497$var$RegExpWrapper;
+    $2a2a2bf2b05d5497$var$RegExpWrapper.prototype = $2a2a2bf2b05d5497$var$RegExpPrototype;
+    $cd1d0929e9f3f134$exports($6bb4f585dbcccb10$exports, 'RegExp', $2a2a2bf2b05d5497$var$RegExpWrapper, {
+        constructor: true
+    });
+}
+// https://tc39.es/ecma262/#sec-get-regexp-@@species
+$407efffd599c52ff$exports('RegExp');
+
+
+'use strict';
+
+var $1d84b5c01c1bd411$exports = {};
+'use strict';
+
+
+
+
+
+
+
+
+var $1d84b5c01c1bd411$require$getInternalState = $3863900a8f1508e7$exports.get;
+
+
+var $1d84b5c01c1bd411$var$nativeReplace = $ec572ecbee7dcfb1$exports('native-string-replace', String.prototype.replace);
+var $1d84b5c01c1bd411$var$nativeExec = RegExp.prototype.exec;
+var $1d84b5c01c1bd411$var$patchedExec = $1d84b5c01c1bd411$var$nativeExec;
+var $1d84b5c01c1bd411$var$charAt = $a6ad1e8ada886a6e$exports(''.charAt);
+var $1d84b5c01c1bd411$var$indexOf = $a6ad1e8ada886a6e$exports(''.indexOf);
+var $1d84b5c01c1bd411$var$replace = $a6ad1e8ada886a6e$exports(''.replace);
+var $1d84b5c01c1bd411$var$stringSlice = $a6ad1e8ada886a6e$exports(''.slice);
+var $1d84b5c01c1bd411$var$UPDATES_LAST_INDEX_WRONG = function() {
+    var re1 = /a/;
+    var re2 = /b*/g;
+    $b51eee67d287dc0c$exports($1d84b5c01c1bd411$var$nativeExec, re1, 'a');
+    $b51eee67d287dc0c$exports($1d84b5c01c1bd411$var$nativeExec, re2, 'a');
+    return re1.lastIndex !== 0 || re2.lastIndex !== 0;
+}();
+var $1d84b5c01c1bd411$var$UNSUPPORTED_Y = $383662275c1b8ec0$exports.BROKEN_CARET;
+// nonparticipating capturing group, copied from es5-shim's String#split patch.
+var $1d84b5c01c1bd411$var$NPCG_INCLUDED = /()??/.exec('')[1] !== undefined;
+var $1d84b5c01c1bd411$var$PATCH = $1d84b5c01c1bd411$var$UPDATES_LAST_INDEX_WRONG || $1d84b5c01c1bd411$var$NPCG_INCLUDED || $1d84b5c01c1bd411$var$UNSUPPORTED_Y || $c57715799cf968ec$exports || $4ec485e3c9d6605f$exports;
+if ($1d84b5c01c1bd411$var$PATCH) $1d84b5c01c1bd411$var$patchedExec = function exec(string) {
+    var re = this;
+    var state = $1d84b5c01c1bd411$require$getInternalState(re);
+    var str = $3441418af0b2523d$exports(string);
+    var raw = state.raw;
+    var result, reCopy, lastIndex, match, i, object, group;
+    if (raw) {
+        raw.lastIndex = re.lastIndex;
+        result = $b51eee67d287dc0c$exports($1d84b5c01c1bd411$var$patchedExec, raw, str);
+        re.lastIndex = raw.lastIndex;
+        return result;
+    }
+    var groups = state.groups;
+    var sticky = $1d84b5c01c1bd411$var$UNSUPPORTED_Y && re.sticky;
+    var flags = $b51eee67d287dc0c$exports($dee30ef2da69addd$exports, re);
+    var source = re.source;
+    var charsAdded = 0;
+    var strCopy = str;
+    if (sticky) {
+        flags = $1d84b5c01c1bd411$var$replace(flags, 'y', '');
+        if ($1d84b5c01c1bd411$var$indexOf(flags, 'g') === -1) flags += 'g';
+        strCopy = $1d84b5c01c1bd411$var$stringSlice(str, re.lastIndex);
+        // Support anchored sticky behavior.
+        if (re.lastIndex > 0 && (!re.multiline || re.multiline && $1d84b5c01c1bd411$var$charAt(str, re.lastIndex - 1) !== '\n')) {
+            source = '(?: ' + source + ')';
+            strCopy = ' ' + strCopy;
+            charsAdded++;
+        }
+        // ^(? + rx + ) is needed, in combination with some str slicing, to
+        // simulate the 'y' flag.
+        reCopy = new RegExp('^(?:' + source + ')', flags);
+    }
+    if ($1d84b5c01c1bd411$var$NPCG_INCLUDED) reCopy = new RegExp('^' + source + '$(?!\\s)', flags);
+    if ($1d84b5c01c1bd411$var$UPDATES_LAST_INDEX_WRONG) lastIndex = re.lastIndex;
+    match = $b51eee67d287dc0c$exports($1d84b5c01c1bd411$var$nativeExec, sticky ? reCopy : re, strCopy);
+    if (sticky) {
+        if (match) {
+            match.input = $1d84b5c01c1bd411$var$stringSlice(match.input, charsAdded);
+            match[0] = $1d84b5c01c1bd411$var$stringSlice(match[0], charsAdded);
+            match.index = re.lastIndex;
+            re.lastIndex += match[0].length;
+        } else re.lastIndex = 0;
+    } else if ($1d84b5c01c1bd411$var$UPDATES_LAST_INDEX_WRONG && match) re.lastIndex = re.global ? match.index + match[0].length : lastIndex;
+    if ($1d84b5c01c1bd411$var$NPCG_INCLUDED && match && match.length > 1) // Fix browsers whose `exec` methods don't consistently return `undefined`
+    // for NPCG, like IE8. NOTE: This doesn't work for /(.?)?/
+    $b51eee67d287dc0c$exports($1d84b5c01c1bd411$var$nativeReplace, match[0], reCopy, function() {
+        for(i = 1; i < arguments.length - 2; i++)if (arguments[i] === undefined) match[i] = undefined;
+    });
+    if (match && groups) {
+        match.groups = object = $6c46fe9371eaab2c$exports(null);
+        for(i = 0; i < groups.length; i++){
+            group = groups[i];
+            object[group[0]] = match[group[1]];
+        }
+    }
+    return match;
+};
+$1d84b5c01c1bd411$exports = $1d84b5c01c1bd411$var$patchedExec;
+
+
+// `RegExp.prototype.exec` method
+// https://tc39.es/ecma262/#sec-regexp.prototype.exec
+$a4386f1de3d17f70$exports({
+    target: 'RegExp',
+    proto: true,
+    forced: /./.exec !== $1d84b5c01c1bd411$exports
+}, {
+    exec: $1d84b5c01c1bd411$exports
+});
+
+
+'use strict';
+
+
+
+
+
+// babel-minify and Closure Compiler transpiles RegExp('.', 'd') -> /./d and it causes SyntaxError
+var $4e103c5157d25f87$var$RegExp = $6bb4f585dbcccb10$exports.RegExp;
+var $4e103c5157d25f87$var$RegExpPrototype = $4e103c5157d25f87$var$RegExp.prototype;
+var $4e103c5157d25f87$var$FORCED = $9ad58a245a9ea542$exports && $8d47fb0f9458aed6$exports(function() {
+    var INDICES_SUPPORT = true;
+    try {
+        $4e103c5157d25f87$var$RegExp('.', 'd');
+    } catch (error) {
+        INDICES_SUPPORT = false;
+    }
+    var O = {};
+    // modern V8 bug
+    var calls = '';
+    var expected = INDICES_SUPPORT ? 'dgimsy' : 'gimsy';
+    var addGetter = function addGetter(key, chr) {
+        // eslint-disable-next-line es/no-object-defineproperty -- safe
+        Object.defineProperty(O, key, {
+            get: function get() {
+                calls += chr;
+                return true;
+            }
+        });
+    };
+    var pairs = {
+        dotAll: 's',
+        global: 'g',
+        ignoreCase: 'i',
+        multiline: 'm',
+        sticky: 'y'
+    };
+    if (INDICES_SUPPORT) pairs.hasIndices = 'd';
+    for(var key in pairs)addGetter(key, pairs[key]);
+    // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+    var result = Object.getOwnPropertyDescriptor($4e103c5157d25f87$var$RegExpPrototype, 'flags').get.call(O);
+    return result !== expected || calls !== expected;
+});
+// `RegExp.prototype.flags` getter
+// https://tc39.es/ecma262/#sec-get-regexp.prototype.flags
+if ($4e103c5157d25f87$var$FORCED) $34351ae141e46c37$exports($4e103c5157d25f87$var$RegExpPrototype, 'flags', {
+    configurable: true,
+    get: $dee30ef2da69addd$exports
+});
+
+
+'use strict';
+'use strict';
+
+
+// `Set` constructor
+// https://tc39.es/ecma262/#sec-set-objects
+$9244f0b02d704b0f$exports('Set', function(init) {
+    return function Set() {
+        return init(this, arguments.length ? arguments[0] : undefined);
+    };
+}, $b5b411d5df108744$exports);
+
+
+
+
+'use strict';
+
+var $0c4f1665138c52b3$exports = {};
+'use strict';
+
+
+
+
+
+
+
+var $0c4f1665138c52b3$var$SPECIES = $1c371bdde30cc6f2$exports('species');
+var $0c4f1665138c52b3$var$RegExpPrototype = RegExp.prototype;
+$0c4f1665138c52b3$exports = function(KEY, exec, FORCED, SHAM) {
+    var SYMBOL = $1c371bdde30cc6f2$exports(KEY);
+    var DELEGATES_TO_SYMBOL = !$8d47fb0f9458aed6$exports(function() {
+        // String methods call symbol-named RegExp methods
+        var O = {};
+        O[SYMBOL] = function() {
+            return 7;
+        };
+        return ''[KEY](O) !== 7;
+    });
+    var DELEGATES_TO_EXEC = DELEGATES_TO_SYMBOL && !$8d47fb0f9458aed6$exports(function() {
+        // Symbol-named RegExp methods call .exec
+        var execCalled = false;
+        var re = /a/;
+        if (KEY === 'split') {
+            // We can't use real regex here since it causes deoptimization
+            // and serious performance degradation in V8
+            // https://github.com/zloirock/core-js/issues/306
+            re = {};
+            // RegExp[@@split] doesn't call the regex's exec method, but first creates
+            // a new one. We need to return the patched regex when creating the new one.
+            re.constructor = {};
+            re.constructor[$0c4f1665138c52b3$var$SPECIES] = function() {
+                return re;
+            };
+            re.flags = '';
+            re[SYMBOL] = /./[SYMBOL];
+        }
+        re.exec = function() {
+            execCalled = true;
+            return null;
+        };
+        re[SYMBOL]('');
+        return !execCalled;
+    });
+    if (!DELEGATES_TO_SYMBOL || !DELEGATES_TO_EXEC || FORCED) {
+        var nativeRegExpMethod = /./[SYMBOL];
+        var methods = exec(SYMBOL, ''[KEY], function(nativeMethod, regexp, str, arg2, forceStringMethod) {
+            var $exec = regexp.exec;
+            if ($exec === $1d84b5c01c1bd411$exports || $exec === $0c4f1665138c52b3$var$RegExpPrototype.exec) {
+                if (DELEGATES_TO_SYMBOL && !forceStringMethod) // The native String method already delegates to @@method (this
+                // polyfilled function), leasing to infinite recursion.
+                // We avoid it by directly calling the native @@method method.
+                return {
+                    done: true,
+                    value: $b51eee67d287dc0c$exports(nativeRegExpMethod, regexp, str, arg2)
+                };
+                return {
+                    done: true,
+                    value: $b51eee67d287dc0c$exports(nativeMethod, str, regexp, arg2)
+                };
+            }
+            return {
+                done: false
+            };
+        });
+        $cd1d0929e9f3f134$exports(String.prototype, KEY, methods[0]);
+        $cd1d0929e9f3f134$exports($0c4f1665138c52b3$var$RegExpPrototype, SYMBOL, methods[1]);
+    }
+    if (SHAM) $542c4a1412d7b12f$exports($0c4f1665138c52b3$var$RegExpPrototype[SYMBOL], 'sham', true);
+};
+
+
+
+
+
+
+
+
+var $b161a529eeb733e7$exports = {};
+'use strict';
+var $e71f49d87e6d570f$exports = {};
+'use strict';
+
+
+
+
+var $e71f49d87e6d570f$var$charAt = $a6ad1e8ada886a6e$exports(''.charAt);
+var $e71f49d87e6d570f$var$charCodeAt = $a6ad1e8ada886a6e$exports(''.charCodeAt);
+var $e71f49d87e6d570f$var$stringSlice = $a6ad1e8ada886a6e$exports(''.slice);
+var $e71f49d87e6d570f$var$createMethod = function createMethod(CONVERT_TO_STRING) {
+    return function($this, pos) {
+        var S = $3441418af0b2523d$exports($fa9aece4d6f487b9$exports($this));
+        var position = $e65bc32c76079804$exports(pos);
+        var size = S.length;
+        var first, second;
+        if (position < 0 || position >= size) return CONVERT_TO_STRING ? '' : undefined;
+        first = $e71f49d87e6d570f$var$charCodeAt(S, position);
+        return first < 0xD800 || first > 0xDBFF || position + 1 === size || (second = $e71f49d87e6d570f$var$charCodeAt(S, position + 1)) < 0xDC00 || second > 0xDFFF ? CONVERT_TO_STRING ? $e71f49d87e6d570f$var$charAt(S, position) : first : CONVERT_TO_STRING ? $e71f49d87e6d570f$var$stringSlice(S, position, position + 2) : (first - 0xD800 << 10) + (second - 0xDC00) + 0x10000;
+    };
+};
+$e71f49d87e6d570f$exports = {
+    // `String.prototype.codePointAt` method
+    // https://tc39.es/ecma262/#sec-string.prototype.codepointat
+    codeAt: $e71f49d87e6d570f$var$createMethod(false),
+    // `String.prototype.at` method
+    // https://github.com/mathiasbynens/String.prototype.at
+    charAt: $e71f49d87e6d570f$var$createMethod(true)
+};
+
+
+var $b161a529eeb733e7$require$charAt = $e71f49d87e6d570f$exports.charAt;
+// `AdvanceStringIndex` abstract operation
+// https://tc39.es/ecma262/#sec-advancestringindex
+$b161a529eeb733e7$exports = function(S, index, unicode) {
+    return index + (unicode ? $b161a529eeb733e7$require$charAt(S, index).length : 1);
+};
+
+
+var $4b09c0138de8514c$exports = {};
+'use strict';
+
+
+
+
+
+var $4b09c0138de8514c$var$$TypeError = TypeError;
+// `RegExpExec` abstract operation
+// https://tc39.es/ecma262/#sec-regexpexec
+$4b09c0138de8514c$exports = function(R, S) {
+    var exec = R.exec;
+    if ($56269d2914fd05c7$exports(exec)) {
+        var result = $b51eee67d287dc0c$exports(exec, R, S);
+        if (result !== null) $fbf8b6f89693dc96$exports(result);
+        return result;
+    }
+    if ($46b0c974b8e64b7f$exports(R) === 'RegExp') return $b51eee67d287dc0c$exports($1d84b5c01c1bd411$exports, R, S);
+    throw new $4b09c0138de8514c$var$$TypeError('RegExp#exec called on incompatible receiver');
+};
+
+
+// @@match logic
+$0c4f1665138c52b3$exports('match', function(MATCH, nativeMatch, maybeCallNative) {
+    return [
+        // `String.prototype.match` method
+        // https://tc39.es/ecma262/#sec-string.prototype.match
+        function match(regexp) {
+            var O = $fa9aece4d6f487b9$exports(this);
+            var matcher = $a5247cee30afd31c$exports(regexp) ? $27891215304c60c4$exports(regexp, MATCH) : undefined;
+            return matcher ? $b51eee67d287dc0c$exports(matcher, regexp, O) : new RegExp(regexp)[MATCH]($3441418af0b2523d$exports(O));
+        },
+        // `RegExp.prototype[@@match]` method
+        // https://tc39.es/ecma262/#sec-regexp.prototype-@@match
+        function(string) {
+            var rx = $fbf8b6f89693dc96$exports(this);
+            var S = $3441418af0b2523d$exports(string);
+            var res = maybeCallNative(nativeMatch, rx, S);
+            if (res.done) return res.value;
+            if (!rx.global) return $4b09c0138de8514c$exports(rx, S);
+            var fullUnicode = rx.unicode;
+            rx.lastIndex = 0;
+            var A = [];
+            var n = 0;
+            var result;
+            while((result = $4b09c0138de8514c$exports(rx, S)) !== null){
+                var matchStr = $3441418af0b2523d$exports(result[0]);
+                A[n] = matchStr;
+                if (matchStr === '') rx.lastIndex = $b161a529eeb733e7$exports(S, $4312bcc0b9e43eb2$exports(rx.lastIndex), fullUnicode);
+                n++;
+            }
+            return n === 0 ? null : A;
+        }
+    ];
+});
+
+
+'use strict';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var $836dda9cc5a9c385$exports = {};
+'use strict';
+
+
+var $836dda9cc5a9c385$var$floor = Math.floor;
+var $836dda9cc5a9c385$var$charAt = $a6ad1e8ada886a6e$exports(''.charAt);
+var $836dda9cc5a9c385$var$replace = $a6ad1e8ada886a6e$exports(''.replace);
+var $836dda9cc5a9c385$var$stringSlice = $a6ad1e8ada886a6e$exports(''.slice);
+// eslint-disable-next-line redos/no-vulnerable -- safe
+var $836dda9cc5a9c385$var$SUBSTITUTION_SYMBOLS = /\$([$&'`]|\d{1,2}|<[^>]*>)/g;
+var $836dda9cc5a9c385$var$SUBSTITUTION_SYMBOLS_NO_NAMED = /\$([$&'`]|\d{1,2})/g;
+// `GetSubstitution` abstract operation
+// https://tc39.es/ecma262/#sec-getsubstitution
+$836dda9cc5a9c385$exports = function(matched, str, position, captures, namedCaptures, replacement) {
+    var tailPos = position + matched.length;
+    var m = captures.length;
+    var symbols = $836dda9cc5a9c385$var$SUBSTITUTION_SYMBOLS_NO_NAMED;
+    if (namedCaptures !== undefined) {
+        namedCaptures = $e81ad450342cdca8$exports(namedCaptures);
+        symbols = $836dda9cc5a9c385$var$SUBSTITUTION_SYMBOLS;
+    }
+    return $836dda9cc5a9c385$var$replace(replacement, symbols, function(match, ch) {
+        var capture;
+        switch($836dda9cc5a9c385$var$charAt(ch, 0)){
+            case '$':
+                return '$';
+            case '&':
+                return matched;
+            case '`':
+                return $836dda9cc5a9c385$var$stringSlice(str, 0, position);
+            case "'":
+                return $836dda9cc5a9c385$var$stringSlice(str, tailPos);
+            case '<':
+                capture = namedCaptures[$836dda9cc5a9c385$var$stringSlice(ch, 1, -1)];
+                break;
+            default:
+                var n = +ch;
+                if (n === 0) return match;
+                if (n > m) {
+                    var f = $836dda9cc5a9c385$var$floor(n / 10);
+                    if (f === 0) return match;
+                    if (f <= m) return captures[f - 1] === undefined ? $836dda9cc5a9c385$var$charAt(ch, 1) : captures[f - 1] + $836dda9cc5a9c385$var$charAt(ch, 1);
+                    return match;
+                }
+                capture = captures[n - 1];
+        }
+        return capture === undefined ? '' : capture;
+    });
+};
+
+
+
+
+var $eb89fe64b7844bd6$var$REPLACE = $1c371bdde30cc6f2$exports('replace');
+var $eb89fe64b7844bd6$var$max = Math.max;
+var $eb89fe64b7844bd6$var$min = Math.min;
+var $eb89fe64b7844bd6$var$concat = $a6ad1e8ada886a6e$exports([].concat);
+var $eb89fe64b7844bd6$var$push = $a6ad1e8ada886a6e$exports([].push);
+var $eb89fe64b7844bd6$var$stringIndexOf = $a6ad1e8ada886a6e$exports(''.indexOf);
+var $eb89fe64b7844bd6$var$stringSlice = $a6ad1e8ada886a6e$exports(''.slice);
+var $eb89fe64b7844bd6$var$maybeToString = function maybeToString(it) {
+    return it === undefined ? it : String(it);
+};
+// IE <= 11 replaces $0 with the whole match, as if it was $&
+// https://stackoverflow.com/questions/6024666/getting-ie-to-replace-a-regex-with-the-literal-string-0
+var $eb89fe64b7844bd6$var$REPLACE_KEEPS_$0 = function() {
+    // eslint-disable-next-line regexp/prefer-escape-replacement-dollar-char -- required for testing
+    return 'a'.replace(/./, '$0') === '$0';
+}();
+// Safari <= 13.0.3(?) substitutes nth capture where n>m with an empty string
+var $eb89fe64b7844bd6$var$REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE = function() {
+    if (/./[$eb89fe64b7844bd6$var$REPLACE]) return /./[$eb89fe64b7844bd6$var$REPLACE]('a', '$0') === '';
+    return false;
+}();
+var $eb89fe64b7844bd6$var$REPLACE_SUPPORTS_NAMED_GROUPS = !$8d47fb0f9458aed6$exports(function() {
+    var re = /./;
+    re.exec = function() {
+        var result = [];
+        result.groups = {
+            a: '7'
+        };
+        return result;
+    };
+    // eslint-disable-next-line regexp/no-useless-dollar-replacements -- false positive
+    return ''.replace(re, '$<a>') !== '7';
+});
+// @@replace logic
+$0c4f1665138c52b3$exports('replace', function(_, nativeReplace, maybeCallNative) {
+    var UNSAFE_SUBSTITUTE = $eb89fe64b7844bd6$var$REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE ? '$' : '$0';
+    return [
+        // `String.prototype.replace` method
+        // https://tc39.es/ecma262/#sec-string.prototype.replace
+        function replace(searchValue, replaceValue) {
+            var O = $fa9aece4d6f487b9$exports(this);
+            var replacer = $a5247cee30afd31c$exports(searchValue) ? $27891215304c60c4$exports(searchValue, $eb89fe64b7844bd6$var$REPLACE) : undefined;
+            return replacer ? $b51eee67d287dc0c$exports(replacer, searchValue, O, replaceValue) : $b51eee67d287dc0c$exports(nativeReplace, $3441418af0b2523d$exports(O), searchValue, replaceValue);
+        },
+        // `RegExp.prototype[@@replace]` method
+        // https://tc39.es/ecma262/#sec-regexp.prototype-@@replace
+        function(string, replaceValue) {
+            var rx = $fbf8b6f89693dc96$exports(this);
+            var S = $3441418af0b2523d$exports(string);
+            if (typeof replaceValue == 'string' && $eb89fe64b7844bd6$var$stringIndexOf(replaceValue, UNSAFE_SUBSTITUTE) === -1 && $eb89fe64b7844bd6$var$stringIndexOf(replaceValue, '$<') === -1) {
+                var res = maybeCallNative(nativeReplace, rx, S, replaceValue);
+                if (res.done) return res.value;
+            }
+            var functionalReplace = $56269d2914fd05c7$exports(replaceValue);
+            if (!functionalReplace) replaceValue = $3441418af0b2523d$exports(replaceValue);
+            var global = rx.global;
+            var fullUnicode;
+            if (global) {
+                fullUnicode = rx.unicode;
+                rx.lastIndex = 0;
+            }
+            var results = [];
+            var result;
+            while(true){
+                result = $4b09c0138de8514c$exports(rx, S);
+                if (result === null) break;
+                $eb89fe64b7844bd6$var$push(results, result);
+                if (!global) break;
+                var matchStr = $3441418af0b2523d$exports(result[0]);
+                if (matchStr === '') rx.lastIndex = $b161a529eeb733e7$exports(S, $4312bcc0b9e43eb2$exports(rx.lastIndex), fullUnicode);
+            }
+            var accumulatedResult = '';
+            var nextSourcePosition = 0;
+            for(var i = 0; i < results.length; i++){
+                result = results[i];
+                var matched = $3441418af0b2523d$exports(result[0]);
+                var position = $eb89fe64b7844bd6$var$max($eb89fe64b7844bd6$var$min($e65bc32c76079804$exports(result.index), S.length), 0);
+                var captures = [];
+                var replacement;
+                // NOTE: This is equivalent to
+                //   captures = result.slice(1).map(maybeToString)
+                // but for some reason `nativeSlice.call(result, 1, result.length)` (called in
+                // the slice polyfill when slicing native arrays) "doesn't work" in safari 9 and
+                // causes a crash (https://pastebin.com/N21QzeQA) when trying to debug it.
+                for(var j = 1; j < result.length; j++)$eb89fe64b7844bd6$var$push(captures, $eb89fe64b7844bd6$var$maybeToString(result[j]));
+                var namedCaptures = result.groups;
+                if (functionalReplace) {
+                    var replacerArgs = $eb89fe64b7844bd6$var$concat([
+                        matched
+                    ], captures, position, S);
+                    if (namedCaptures !== undefined) $eb89fe64b7844bd6$var$push(replacerArgs, namedCaptures);
+                    replacement = $3441418af0b2523d$exports($4a7de1faa165d753$exports(replaceValue, undefined, replacerArgs));
+                } else replacement = $836dda9cc5a9c385$exports(matched, S, position, captures, namedCaptures, replaceValue);
+                if (position >= nextSourcePosition) {
+                    accumulatedResult += $eb89fe64b7844bd6$var$stringSlice(S, nextSourcePosition, position) + replacement;
+                    nextSourcePosition = position + matched.length;
+                }
+            }
+            return accumulatedResult + $eb89fe64b7844bd6$var$stringSlice(S, nextSourcePosition);
+        }
+    ];
+}, !$eb89fe64b7844bd6$var$REPLACE_SUPPORTS_NAMED_GROUPS || !$eb89fe64b7844bd6$var$REPLACE_KEEPS_$0 || $eb89fe64b7844bd6$var$REGEXP_REPLACE_SUBSTITUTES_UNDEFINED_CAPTURE);
+
+
+'use strict';
+
+
+
+
+
+var $d3d35e840b9d0d1e$exports = {};
+'use strict';
+// `SameValue` abstract operation
+// https://tc39.es/ecma262/#sec-samevalue
+// eslint-disable-next-line es/no-object-is -- safe
+$d3d35e840b9d0d1e$exports = Object.is || function is(x, y) {
+    // eslint-disable-next-line no-self-compare -- NaN check
+    return x === y ? x !== 0 || 1 / x === 1 / y : x !== x && y !== y;
+};
+
+
+
+
+
+// @@search logic
+$0c4f1665138c52b3$exports('search', function(SEARCH, nativeSearch, maybeCallNative) {
+    return [
+        // `String.prototype.search` method
+        // https://tc39.es/ecma262/#sec-string.prototype.search
+        function search(regexp) {
+            var O = $fa9aece4d6f487b9$exports(this);
+            var searcher = $a5247cee30afd31c$exports(regexp) ? $27891215304c60c4$exports(regexp, SEARCH) : undefined;
+            return searcher ? $b51eee67d287dc0c$exports(searcher, regexp, O) : new RegExp(regexp)[SEARCH]($3441418af0b2523d$exports(O));
+        },
+        // `RegExp.prototype[@@search]` method
+        // https://tc39.es/ecma262/#sec-regexp.prototype-@@search
+        function(string) {
+            var rx = $fbf8b6f89693dc96$exports(this);
+            var S = $3441418af0b2523d$exports(string);
+            var res = maybeCallNative(nativeSearch, rx, S);
+            if (res.done) return res.value;
+            var previousLastIndex = rx.lastIndex;
+            if (!$d3d35e840b9d0d1e$exports(previousLastIndex, 0)) rx.lastIndex = 0;
+            var result = $4b09c0138de8514c$exports(rx, S);
+            if (!$d3d35e840b9d0d1e$exports(rx.lastIndex, previousLastIndex)) rx.lastIndex = previousLastIndex;
+            return result === null ? -1 : result.index;
+        }
+    ];
+});
+
+
+'use strict';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var $50e3ac39e933478b$var$UNSUPPORTED_Y = $383662275c1b8ec0$exports.UNSUPPORTED_Y;
+var $50e3ac39e933478b$var$MAX_UINT32 = 0xFFFFFFFF;
+var $50e3ac39e933478b$var$min = Math.min;
+var $50e3ac39e933478b$var$push = $a6ad1e8ada886a6e$exports([].push);
+var $50e3ac39e933478b$var$stringSlice = $a6ad1e8ada886a6e$exports(''.slice);
+// Chrome 51 has a buggy "split" implementation when RegExp#exec !== nativeExec
+// Weex JS has frozen built-in prototypes, so use try / catch wrapper
+var $50e3ac39e933478b$var$SPLIT_WORKS_WITH_OVERWRITTEN_EXEC = !$8d47fb0f9458aed6$exports(function() {
+    // eslint-disable-next-line regexp/no-empty-group -- required for testing
+    var re = /(?:)/;
+    var originalExec = re.exec;
+    re.exec = function() {
+        return originalExec.apply(this, arguments);
+    };
+    var result = 'ab'.split(re);
+    return result.length !== 2 || result[0] !== 'a' || result[1] !== 'b';
+});
+var $50e3ac39e933478b$var$BUGGY = 'abbc'.split(/(b)*/)[1] === 'c' || // eslint-disable-next-line regexp/no-empty-group -- required for testing
+'test'.split(/(?:)/, -1).length !== 4 || 'ab'.split(/(?:ab)*/).length !== 2 || '.'.split(/(.?)(.?)/).length !== 4 || // eslint-disable-next-line regexp/no-empty-capturing-group, regexp/no-empty-group -- required for testing
+'.'.split(/()()/).length > 1 || ''.split(/.?/).length;
+// @@split logic
+$0c4f1665138c52b3$exports('split', function(SPLIT, nativeSplit, maybeCallNative) {
+    var internalSplit = '0'.split(undefined, 0).length ? function internalSplit(separator, limit) {
+        return separator === undefined && limit === 0 ? [] : $b51eee67d287dc0c$exports(nativeSplit, this, separator, limit);
+    } : nativeSplit;
+    return [
+        // `String.prototype.split` method
+        // https://tc39.es/ecma262/#sec-string.prototype.split
+        function split(separator, limit) {
+            var O = $fa9aece4d6f487b9$exports(this);
+            var splitter = $a5247cee30afd31c$exports(separator) ? $27891215304c60c4$exports(separator, SPLIT) : undefined;
+            return splitter ? $b51eee67d287dc0c$exports(splitter, separator, O, limit) : $b51eee67d287dc0c$exports(internalSplit, $3441418af0b2523d$exports(O), separator, limit);
+        },
+        // `RegExp.prototype[@@split]` method
+        // https://tc39.es/ecma262/#sec-regexp.prototype-@@split
+        //
+        // NOTE: This cannot be properly polyfilled in engines that don't support
+        // the 'y' flag.
+        function(string, limit) {
+            var rx = $fbf8b6f89693dc96$exports(this);
+            var S = $3441418af0b2523d$exports(string);
+            if (!$50e3ac39e933478b$var$BUGGY) {
+                var res = maybeCallNative(internalSplit, rx, S, limit, internalSplit !== nativeSplit);
+                if (res.done) return res.value;
+            }
+            var C = $9ef76ee1dd899254$exports(rx, RegExp);
+            var unicodeMatching = rx.unicode;
+            var flags = (rx.ignoreCase ? 'i' : '') + (rx.multiline ? 'm' : '') + (rx.unicode ? 'u' : '') + ($50e3ac39e933478b$var$UNSUPPORTED_Y ? 'g' : 'y');
+            // ^(? + rx + ) is needed, in combination with some S slicing, to
+            // simulate the 'y' flag.
+            var splitter = new C($50e3ac39e933478b$var$UNSUPPORTED_Y ? '^(?:' + rx.source + ')' : rx, flags);
+            var lim = limit === undefined ? $50e3ac39e933478b$var$MAX_UINT32 : limit >>> 0;
+            if (lim === 0) return [];
+            if (S.length === 0) return $4b09c0138de8514c$exports(splitter, S) === null ? [
+                S
+            ] : [];
+            var p = 0;
+            var q = 0;
+            var A = [];
+            while(q < S.length){
+                splitter.lastIndex = $50e3ac39e933478b$var$UNSUPPORTED_Y ? 0 : q;
+                var z = $4b09c0138de8514c$exports(splitter, $50e3ac39e933478b$var$UNSUPPORTED_Y ? $50e3ac39e933478b$var$stringSlice(S, q) : S);
+                var e;
+                if (z === null || (e = $50e3ac39e933478b$var$min($4312bcc0b9e43eb2$exports(splitter.lastIndex + ($50e3ac39e933478b$var$UNSUPPORTED_Y ? q : 0)), S.length)) === p) q = $b161a529eeb733e7$exports(S, q, unicodeMatching);
+                else {
+                    $50e3ac39e933478b$var$push(A, $50e3ac39e933478b$var$stringSlice(S, p, q));
+                    if (A.length === lim) return A;
+                    for(var i = 1; i <= z.length - 1; i++){
+                        $50e3ac39e933478b$var$push(A, z[i]);
+                        if (A.length === lim) return A;
+                    }
+                    q = p = e;
+                }
+            }
+            $50e3ac39e933478b$var$push(A, $50e3ac39e933478b$var$stringSlice(S, p));
+            return A;
+        }
+    ];
+}, $50e3ac39e933478b$var$BUGGY || !$50e3ac39e933478b$var$SPLIT_WORKS_WITH_OVERWRITTEN_EXEC, $50e3ac39e933478b$var$UNSUPPORTED_Y);
+
+
+'use strict';
+
+var $e3224a57ba1af21c$exports = {};
+'use strict';
+
+
+
+var $ae168f07de2de711$exports = {};
+'use strict';
+// a string of all valid unicode whitespaces
+$ae168f07de2de711$exports = "	\n\v\f\r \xa0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF";
+
+
+var $e3224a57ba1af21c$var$replace = $a6ad1e8ada886a6e$exports(''.replace);
+var $e3224a57ba1af21c$var$ltrim = RegExp('^[' + $ae168f07de2de711$exports + ']+');
+var $e3224a57ba1af21c$var$rtrim = RegExp('(^|[^' + $ae168f07de2de711$exports + '])[' + $ae168f07de2de711$exports + ']+$');
+// `String.prototype.{ trim, trimStart, trimEnd, trimLeft, trimRight }` methods implementation
+var $e3224a57ba1af21c$var$createMethod = function createMethod(TYPE) {
+    return function($this) {
+        var string = $3441418af0b2523d$exports($fa9aece4d6f487b9$exports($this));
+        if (TYPE & 1) string = $e3224a57ba1af21c$var$replace(string, $e3224a57ba1af21c$var$ltrim, '');
+        if (TYPE & 2) string = $e3224a57ba1af21c$var$replace(string, $e3224a57ba1af21c$var$rtrim, '$1');
+        return string;
+    };
+};
+$e3224a57ba1af21c$exports = {
+    // `String.prototype.{ trimLeft, trimStart }` methods
+    // https://tc39.es/ecma262/#sec-string.prototype.trimstart
+    start: $e3224a57ba1af21c$var$createMethod(1),
+    // `String.prototype.{ trimRight, trimEnd }` methods
+    // https://tc39.es/ecma262/#sec-string.prototype.trimend
+    end: $e3224a57ba1af21c$var$createMethod(2),
+    // `String.prototype.trim` method
+    // https://tc39.es/ecma262/#sec-string.prototype.trim
+    trim: $e3224a57ba1af21c$var$createMethod(3)
+};
+
+
+var $28d25a676af3cc19$require$$trim = $e3224a57ba1af21c$exports.trim;
+var $4a197156d128c696$exports = {};
+'use strict';
+
+var $4a197156d128c696$require$PROPER_FUNCTION_NAME = $924615bee2ea1aa8$exports.PROPER;
+
+
+var $4a197156d128c696$var$non = '\u200B\u0085\u180E';
+// check that a method works with the correct list
+// of whitespaces and has a correct name
+$4a197156d128c696$exports = function(METHOD_NAME) {
+    return $8d47fb0f9458aed6$exports(function() {
+        return !!$ae168f07de2de711$exports[METHOD_NAME]() || $4a197156d128c696$var$non[METHOD_NAME]() !== $4a197156d128c696$var$non || $4a197156d128c696$require$PROPER_FUNCTION_NAME && $ae168f07de2de711$exports[METHOD_NAME].name !== METHOD_NAME;
+    });
+};
+
+
+// `String.prototype.trim` method
+// https://tc39.es/ecma262/#sec-string.prototype.trim
+$a4386f1de3d17f70$exports({
+    target: 'String',
+    proto: true,
+    forced: $4a197156d128c696$exports('trim')
+}, {
+    trim: function trim() {
+        return $28d25a676af3cc19$require$$trim(this);
+    }
+});
+
+
+'use strict';
+'use strict';
+
+var $3185e3f4207c82cf$exports = {};
+'use strict';
+
+var $3185e3f4207c82cf$require$$trimEnd = $e3224a57ba1af21c$exports.end;
+
+// `String.prototype.{ trimEnd, trimRight }` method
+// https://tc39.es/ecma262/#sec-string.prototype.trimend
+// https://tc39.es/ecma262/#String.prototype.trimright
+$3185e3f4207c82cf$exports = $4a197156d128c696$exports('trimEnd') ? function trimEnd() {
+    return $3185e3f4207c82cf$require$$trimEnd(this);
+// eslint-disable-next-line es/no-string-prototype-trimstart-trimend -- safe
+} : ''.trimEnd;
+
+
+// `String.prototype.trimRight` method
+// https://tc39.es/ecma262/#sec-string.prototype.trimend
+// eslint-disable-next-line es/no-string-prototype-trimleft-trimright -- safe
+$a4386f1de3d17f70$exports({
+    target: 'String',
+    proto: true,
+    name: 'trimEnd',
+    forced: ''.trimRight !== $3185e3f4207c82cf$exports
+}, {
+    trimRight: $3185e3f4207c82cf$exports
+});
+
+
+
+
+// `String.prototype.trimEnd` method
+// https://tc39.es/ecma262/#sec-string.prototype.trimend
+// eslint-disable-next-line es/no-string-prototype-trimstart-trimend -- safe
+$a4386f1de3d17f70$exports({
+    target: 'String',
+    proto: true,
+    name: 'trimEnd',
+    forced: ''.trimEnd !== $3185e3f4207c82cf$exports
+}, {
+    trimEnd: $3185e3f4207c82cf$exports
+});
+
+
+'use strict';
+'use strict';
+
+var $12794c3add113f6a$exports = {};
+'use strict';
+
+var $12794c3add113f6a$require$$trimStart = $e3224a57ba1af21c$exports.start;
+
+// `String.prototype.{ trimStart, trimLeft }` method
+// https://tc39.es/ecma262/#sec-string.prototype.trimstart
+// https://tc39.es/ecma262/#String.prototype.trimleft
+$12794c3add113f6a$exports = $4a197156d128c696$exports('trimStart') ? function trimStart() {
+    return $12794c3add113f6a$require$$trimStart(this);
+// eslint-disable-next-line es/no-string-prototype-trimstart-trimend -- safe
+} : ''.trimStart;
+
+
+// `String.prototype.trimLeft` method
+// https://tc39.es/ecma262/#sec-string.prototype.trimleft
+// eslint-disable-next-line es/no-string-prototype-trimleft-trimright -- safe
+$a4386f1de3d17f70$exports({
+    target: 'String',
+    proto: true,
+    name: 'trimStart',
+    forced: ''.trimLeft !== $12794c3add113f6a$exports
+}, {
+    trimLeft: $12794c3add113f6a$exports
+});
+
+
+
+
+// `String.prototype.trimStart` method
+// https://tc39.es/ecma262/#sec-string.prototype.trimstart
+// eslint-disable-next-line es/no-string-prototype-trimstart-trimend -- safe
+$a4386f1de3d17f70$exports({
+    target: 'String',
+    proto: true,
+    name: 'trimStart',
+    forced: ''.trimStart !== $12794c3add113f6a$exports
+}, {
+    trimStart: $12794c3add113f6a$exports
+});
+
+
+'use strict';
+var $eaa5071e231b421f$exports = {};
+'use strict';
+
+
+
+
+var $7b92c5a7d6d6d5a3$exports = {};
+'use strict';
+
+
+
+var $08be471ebe6a175a$exports = {};
+'use strict';
+var $74b873576ec47825$exports = {};
+'use strict';
+// eslint-disable-next-line es/no-typed-arrays -- safe
+$74b873576ec47825$exports = typeof ArrayBuffer != 'undefined' && typeof DataView != 'undefined';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var $08be471ebe6a175a$var$enforceInternalState = $3863900a8f1508e7$exports.enforce;
+var $08be471ebe6a175a$var$getInternalState = $3863900a8f1508e7$exports.get;
+var $08be471ebe6a175a$var$Int8Array = $6bb4f585dbcccb10$exports.Int8Array;
+var $08be471ebe6a175a$var$Int8ArrayPrototype = $08be471ebe6a175a$var$Int8Array && $08be471ebe6a175a$var$Int8Array.prototype;
+var $08be471ebe6a175a$var$Uint8ClampedArray = $6bb4f585dbcccb10$exports.Uint8ClampedArray;
+var $08be471ebe6a175a$var$Uint8ClampedArrayPrototype = $08be471ebe6a175a$var$Uint8ClampedArray && $08be471ebe6a175a$var$Uint8ClampedArray.prototype;
+var $08be471ebe6a175a$var$TypedArray = $08be471ebe6a175a$var$Int8Array && $1628b493c2dd3c32$exports($08be471ebe6a175a$var$Int8Array);
+var $08be471ebe6a175a$var$TypedArrayPrototype = $08be471ebe6a175a$var$Int8ArrayPrototype && $1628b493c2dd3c32$exports($08be471ebe6a175a$var$Int8ArrayPrototype);
+var $08be471ebe6a175a$var$ObjectPrototype = Object.prototype;
+var $08be471ebe6a175a$var$TypeError = $6bb4f585dbcccb10$exports.TypeError;
+var $08be471ebe6a175a$var$TO_STRING_TAG = $1c371bdde30cc6f2$exports('toStringTag');
+var $08be471ebe6a175a$var$TYPED_ARRAY_TAG = $dc4ef02874cda19f$exports('TYPED_ARRAY_TAG');
+var $08be471ebe6a175a$var$TYPED_ARRAY_CONSTRUCTOR = 'TypedArrayConstructor';
+// Fixing native typed arrays in Opera Presto crashes the browser, see #595
+var $08be471ebe6a175a$var$NATIVE_ARRAY_BUFFER_VIEWS = $74b873576ec47825$exports && !!$ffb4c060878cd71a$exports && $31b89c0c3042db21$exports($6bb4f585dbcccb10$exports.opera) !== 'Opera';
+var $08be471ebe6a175a$var$TYPED_ARRAY_TAG_REQUIRED = false;
+var $08be471ebe6a175a$var$NAME, $08be471ebe6a175a$var$Constructor, $08be471ebe6a175a$var$Prototype;
+var $08be471ebe6a175a$var$TypedArrayConstructorsList = {
+    Int8Array: 1,
+    Uint8Array: 1,
+    Uint8ClampedArray: 1,
+    Int16Array: 2,
+    Uint16Array: 2,
+    Int32Array: 4,
+    Uint32Array: 4,
+    Float32Array: 4,
+    Float64Array: 8
+};
+var $08be471ebe6a175a$var$BigIntArrayConstructorsList = {
+    BigInt64Array: 8,
+    BigUint64Array: 8
+};
+var $08be471ebe6a175a$var$isView = function isView(it) {
+    if (!$a5247cee30afd31c$exports(it)) return false;
+    var klass = $31b89c0c3042db21$exports(it);
+    return klass === 'DataView' || $88fb7bd6b0cac2a7$exports($08be471ebe6a175a$var$TypedArrayConstructorsList, klass) || $88fb7bd6b0cac2a7$exports($08be471ebe6a175a$var$BigIntArrayConstructorsList, klass);
+};
+var $08be471ebe6a175a$var$getTypedArrayConstructor = function getTypedArrayConstructor1(it) {
+    var proto = $1628b493c2dd3c32$exports(it);
+    if (!$a5247cee30afd31c$exports(proto)) return;
+    var state = $08be471ebe6a175a$var$getInternalState(proto);
+    return state && $88fb7bd6b0cac2a7$exports(state, $08be471ebe6a175a$var$TYPED_ARRAY_CONSTRUCTOR) ? state[$08be471ebe6a175a$var$TYPED_ARRAY_CONSTRUCTOR] : $08be471ebe6a175a$var$getTypedArrayConstructor(proto);
+};
+var $08be471ebe6a175a$var$isTypedArray = function isTypedArray(it) {
+    if (!$a5247cee30afd31c$exports(it)) return false;
+    var klass = $31b89c0c3042db21$exports(it);
+    return $88fb7bd6b0cac2a7$exports($08be471ebe6a175a$var$TypedArrayConstructorsList, klass) || $88fb7bd6b0cac2a7$exports($08be471ebe6a175a$var$BigIntArrayConstructorsList, klass);
+};
+var $08be471ebe6a175a$var$aTypedArray = function aTypedArray(it) {
+    if ($08be471ebe6a175a$var$isTypedArray(it)) return it;
+    throw new $08be471ebe6a175a$var$TypeError('Target is not a typed array');
+};
+var $08be471ebe6a175a$var$aTypedArrayConstructor = function aTypedArrayConstructor(C) {
+    if ($56269d2914fd05c7$exports(C) && (!$ffb4c060878cd71a$exports || $c4802cfd914fa45d$exports($08be471ebe6a175a$var$TypedArray, C))) return C;
+    throw new $08be471ebe6a175a$var$TypeError($661acc3934c51a51$exports(C) + ' is not a typed array constructor');
+};
+var $08be471ebe6a175a$var$exportTypedArrayMethod = function exportTypedArrayMethod(KEY, property, forced, options) {
+    if (!$9ad58a245a9ea542$exports) return;
+    if (forced) for(var ARRAY in $08be471ebe6a175a$var$TypedArrayConstructorsList){
+        var TypedArrayConstructor = $6bb4f585dbcccb10$exports[ARRAY];
+        if (TypedArrayConstructor && $88fb7bd6b0cac2a7$exports(TypedArrayConstructor.prototype, KEY)) try {
+            delete TypedArrayConstructor.prototype[KEY];
+        } catch (error) {
+            // old WebKit bug - some methods are non-configurable
+            try {
+                TypedArrayConstructor.prototype[KEY] = property;
+            } catch (error2) {}
+        }
+    }
+    if (!$08be471ebe6a175a$var$TypedArrayPrototype[KEY] || forced) $cd1d0929e9f3f134$exports($08be471ebe6a175a$var$TypedArrayPrototype, KEY, forced ? property : $08be471ebe6a175a$var$NATIVE_ARRAY_BUFFER_VIEWS && $08be471ebe6a175a$var$Int8ArrayPrototype[KEY] || property, options);
+};
+var $08be471ebe6a175a$var$exportTypedArrayStaticMethod = function exportTypedArrayStaticMethod(KEY, property, forced) {
+    var ARRAY, TypedArrayConstructor;
+    if (!$9ad58a245a9ea542$exports) return;
+    if ($ffb4c060878cd71a$exports) {
+        if (forced) for(ARRAY in $08be471ebe6a175a$var$TypedArrayConstructorsList){
+            TypedArrayConstructor = $6bb4f585dbcccb10$exports[ARRAY];
+            if (TypedArrayConstructor && $88fb7bd6b0cac2a7$exports(TypedArrayConstructor, KEY)) try {
+                delete TypedArrayConstructor[KEY];
+            } catch (error) {}
+        }
+        if (!$08be471ebe6a175a$var$TypedArray[KEY] || forced) // V8 ~ Chrome 49-50 `%TypedArray%` methods are non-writable non-configurable
+        try {
+            return $cd1d0929e9f3f134$exports($08be471ebe6a175a$var$TypedArray, KEY, forced ? property : $08be471ebe6a175a$var$NATIVE_ARRAY_BUFFER_VIEWS && $08be471ebe6a175a$var$TypedArray[KEY] || property);
+        } catch (error) {}
+        else return;
+    }
+    for(ARRAY in $08be471ebe6a175a$var$TypedArrayConstructorsList){
+        TypedArrayConstructor = $6bb4f585dbcccb10$exports[ARRAY];
+        if (TypedArrayConstructor && (!TypedArrayConstructor[KEY] || forced)) $cd1d0929e9f3f134$exports(TypedArrayConstructor, KEY, property);
+    }
+};
+for($08be471ebe6a175a$var$NAME in $08be471ebe6a175a$var$TypedArrayConstructorsList){
+    $08be471ebe6a175a$var$Constructor = $6bb4f585dbcccb10$exports[$08be471ebe6a175a$var$NAME];
+    $08be471ebe6a175a$var$Prototype = $08be471ebe6a175a$var$Constructor && $08be471ebe6a175a$var$Constructor.prototype;
+    if ($08be471ebe6a175a$var$Prototype) $08be471ebe6a175a$var$enforceInternalState($08be471ebe6a175a$var$Prototype)[$08be471ebe6a175a$var$TYPED_ARRAY_CONSTRUCTOR] = $08be471ebe6a175a$var$Constructor;
+    else $08be471ebe6a175a$var$NATIVE_ARRAY_BUFFER_VIEWS = false;
+}
+for($08be471ebe6a175a$var$NAME in $08be471ebe6a175a$var$BigIntArrayConstructorsList){
+    $08be471ebe6a175a$var$Constructor = $6bb4f585dbcccb10$exports[$08be471ebe6a175a$var$NAME];
+    $08be471ebe6a175a$var$Prototype = $08be471ebe6a175a$var$Constructor && $08be471ebe6a175a$var$Constructor.prototype;
+    if ($08be471ebe6a175a$var$Prototype) $08be471ebe6a175a$var$enforceInternalState($08be471ebe6a175a$var$Prototype)[$08be471ebe6a175a$var$TYPED_ARRAY_CONSTRUCTOR] = $08be471ebe6a175a$var$Constructor;
+}
+// WebKit bug - typed arrays constructors prototype is Object.prototype
+if (!$08be471ebe6a175a$var$NATIVE_ARRAY_BUFFER_VIEWS || !$56269d2914fd05c7$exports($08be471ebe6a175a$var$TypedArray) || $08be471ebe6a175a$var$TypedArray === Function.prototype) {
+    // eslint-disable-next-line no-shadow -- safe
+    $08be471ebe6a175a$var$TypedArray = function TypedArray() {
+        throw new $08be471ebe6a175a$var$TypeError('Incorrect invocation');
+    };
+    if ($08be471ebe6a175a$var$NATIVE_ARRAY_BUFFER_VIEWS) {
+        for($08be471ebe6a175a$var$NAME in $08be471ebe6a175a$var$TypedArrayConstructorsList)if ($6bb4f585dbcccb10$exports[$08be471ebe6a175a$var$NAME]) $ffb4c060878cd71a$exports($6bb4f585dbcccb10$exports[$08be471ebe6a175a$var$NAME], $08be471ebe6a175a$var$TypedArray);
+    }
+}
+if (!$08be471ebe6a175a$var$NATIVE_ARRAY_BUFFER_VIEWS || !$08be471ebe6a175a$var$TypedArrayPrototype || $08be471ebe6a175a$var$TypedArrayPrototype === $08be471ebe6a175a$var$ObjectPrototype) {
+    $08be471ebe6a175a$var$TypedArrayPrototype = $08be471ebe6a175a$var$TypedArray.prototype;
+    if ($08be471ebe6a175a$var$NATIVE_ARRAY_BUFFER_VIEWS) {
+        for($08be471ebe6a175a$var$NAME in $08be471ebe6a175a$var$TypedArrayConstructorsList)if ($6bb4f585dbcccb10$exports[$08be471ebe6a175a$var$NAME]) $ffb4c060878cd71a$exports($6bb4f585dbcccb10$exports[$08be471ebe6a175a$var$NAME].prototype, $08be471ebe6a175a$var$TypedArrayPrototype);
+    }
+}
+// WebKit bug - one more object in Uint8ClampedArray prototype chain
+if ($08be471ebe6a175a$var$NATIVE_ARRAY_BUFFER_VIEWS && $1628b493c2dd3c32$exports($08be471ebe6a175a$var$Uint8ClampedArrayPrototype) !== $08be471ebe6a175a$var$TypedArrayPrototype) $ffb4c060878cd71a$exports($08be471ebe6a175a$var$Uint8ClampedArrayPrototype, $08be471ebe6a175a$var$TypedArrayPrototype);
+if ($9ad58a245a9ea542$exports && !$88fb7bd6b0cac2a7$exports($08be471ebe6a175a$var$TypedArrayPrototype, $08be471ebe6a175a$var$TO_STRING_TAG)) {
+    $08be471ebe6a175a$var$TYPED_ARRAY_TAG_REQUIRED = true;
+    $34351ae141e46c37$exports($08be471ebe6a175a$var$TypedArrayPrototype, $08be471ebe6a175a$var$TO_STRING_TAG, {
+        configurable: true,
+        get: function get() {
+            return $a5247cee30afd31c$exports(this) ? this[$08be471ebe6a175a$var$TYPED_ARRAY_TAG] : undefined;
+        }
+    });
+    for($08be471ebe6a175a$var$NAME in $08be471ebe6a175a$var$TypedArrayConstructorsList)if ($6bb4f585dbcccb10$exports[$08be471ebe6a175a$var$NAME]) $542c4a1412d7b12f$exports($6bb4f585dbcccb10$exports[$08be471ebe6a175a$var$NAME], $08be471ebe6a175a$var$TYPED_ARRAY_TAG, $08be471ebe6a175a$var$NAME);
+}
+$08be471ebe6a175a$exports = {
+    NATIVE_ARRAY_BUFFER_VIEWS: $08be471ebe6a175a$var$NATIVE_ARRAY_BUFFER_VIEWS,
+    TYPED_ARRAY_TAG: $08be471ebe6a175a$var$TYPED_ARRAY_TAG_REQUIRED && $08be471ebe6a175a$var$TYPED_ARRAY_TAG,
+    aTypedArray: $08be471ebe6a175a$var$aTypedArray,
+    aTypedArrayConstructor: $08be471ebe6a175a$var$aTypedArrayConstructor,
+    exportTypedArrayMethod: $08be471ebe6a175a$var$exportTypedArrayMethod,
+    exportTypedArrayStaticMethod: $08be471ebe6a175a$var$exportTypedArrayStaticMethod,
+    getTypedArrayConstructor: $08be471ebe6a175a$var$getTypedArrayConstructor,
+    isView: $08be471ebe6a175a$var$isView,
+    isTypedArray: $08be471ebe6a175a$var$isTypedArray,
+    TypedArray: $08be471ebe6a175a$var$TypedArray,
+    TypedArrayPrototype: $08be471ebe6a175a$var$TypedArrayPrototype
+};
+
+
+var $7b92c5a7d6d6d5a3$require$NATIVE_ARRAY_BUFFER_VIEWS = $08be471ebe6a175a$exports.NATIVE_ARRAY_BUFFER_VIEWS;
+var $7b92c5a7d6d6d5a3$var$ArrayBuffer = $6bb4f585dbcccb10$exports.ArrayBuffer;
+var $7b92c5a7d6d6d5a3$var$Int8Array = $6bb4f585dbcccb10$exports.Int8Array;
+$7b92c5a7d6d6d5a3$exports = !$7b92c5a7d6d6d5a3$require$NATIVE_ARRAY_BUFFER_VIEWS || !$8d47fb0f9458aed6$exports(function() {
+    $7b92c5a7d6d6d5a3$var$Int8Array(1);
+}) || !$8d47fb0f9458aed6$exports(function() {
+    new $7b92c5a7d6d6d5a3$var$Int8Array(-1);
+}) || !$d1fca0b8c3f3e5bf$exports(function(iterable) {
+    new $7b92c5a7d6d6d5a3$var$Int8Array();
+    new $7b92c5a7d6d6d5a3$var$Int8Array(null);
+    new $7b92c5a7d6d6d5a3$var$Int8Array(1.5);
+    new $7b92c5a7d6d6d5a3$var$Int8Array(iterable);
+}, true) || $8d47fb0f9458aed6$exports(function() {
+    // Safari (11+) bug - a reason why even Safari 13 should load a typed array polyfill
+    return new $7b92c5a7d6d6d5a3$var$Int8Array(new $7b92c5a7d6d6d5a3$var$ArrayBuffer(2), 1, undefined).length !== 1;
+});
+
+
+
+var $879edb4e96e508c7$exports = {};
+'use strict';
+
+
+
+
+
+
+
+
+
+
+
+
+var $34863ec18b68cd2a$exports = {};
+'use strict';
+
+
+var $34863ec18b68cd2a$var$$RangeError = RangeError;
+// `ToIndex` abstract operation
+// https://tc39.es/ecma262/#sec-toindex
+$34863ec18b68cd2a$exports = function(it) {
+    if (it === undefined) return 0;
+    var number = $e65bc32c76079804$exports(it);
+    var length = $4312bcc0b9e43eb2$exports(number);
+    if (number !== length) throw new $34863ec18b68cd2a$var$$RangeError('Wrong length or index');
+    return length;
+};
+
+
+var $6f9ef742b0743898$exports = {};
+'use strict';
+var $edde20cfab6ebff7$exports = {};
+'use strict';
+var $047a4a5759c468de$exports = {};
+'use strict';
+// `Math.sign` method implementation
+// https://tc39.es/ecma262/#sec-math.sign
+// eslint-disable-next-line es/no-math-sign -- safe
+$047a4a5759c468de$exports = Math.sign || function sign(x) {
+    var n = +x;
+    // eslint-disable-next-line no-self-compare -- NaN check
+    return n === 0 || n !== n ? n : n < 0 ? -1 : 1;
+};
+
+
+var $4f6284f75e39db93$exports = {};
+'use strict';
+var $4f6284f75e39db93$var$EPSILON = 2.220446049250313e-16; // Number.EPSILON
+var $4f6284f75e39db93$var$INVERSE_EPSILON = 1 / $4f6284f75e39db93$var$EPSILON;
+$4f6284f75e39db93$exports = function(n) {
+    return n + $4f6284f75e39db93$var$INVERSE_EPSILON - $4f6284f75e39db93$var$INVERSE_EPSILON;
+};
+
+
+var $edde20cfab6ebff7$var$abs = Math.abs;
+var $edde20cfab6ebff7$var$EPSILON = 2.220446049250313e-16; // Number.EPSILON
+$edde20cfab6ebff7$exports = function(x, FLOAT_EPSILON, FLOAT_MAX_VALUE, FLOAT_MIN_VALUE) {
+    var n = +x;
+    var absolute = $edde20cfab6ebff7$var$abs(n);
+    var s = $047a4a5759c468de$exports(n);
+    if (absolute < FLOAT_MIN_VALUE) return s * $4f6284f75e39db93$exports(absolute / FLOAT_MIN_VALUE / FLOAT_EPSILON) * FLOAT_MIN_VALUE * FLOAT_EPSILON;
+    var a = (1 + FLOAT_EPSILON / $edde20cfab6ebff7$var$EPSILON) * absolute;
+    var result = a - (a - absolute);
+    // eslint-disable-next-line no-self-compare -- NaN check
+    if (result > FLOAT_MAX_VALUE || result !== result) return s * Infinity;
+    return s * result;
+};
+
+
+var $6f9ef742b0743898$var$FLOAT32_EPSILON = 1.1920928955078125e-7; // 2 ** -23;
+var $6f9ef742b0743898$var$FLOAT32_MAX_VALUE = 3.4028234663852886e+38; // 2 ** 128 - 2 ** 104
+var $6f9ef742b0743898$var$FLOAT32_MIN_VALUE = 1.1754943508222875e-38; // 2 ** -126;
+// `Math.fround` method implementation
+// https://tc39.es/ecma262/#sec-math.fround
+// eslint-disable-next-line es/no-math-fround -- safe
+$6f9ef742b0743898$exports = Math.fround || function fround(x) {
+    return $edde20cfab6ebff7$exports(x, $6f9ef742b0743898$var$FLOAT32_EPSILON, $6f9ef742b0743898$var$FLOAT32_MAX_VALUE, $6f9ef742b0743898$var$FLOAT32_MIN_VALUE);
+};
+
+
+var $55db6ac641b60b11$exports = {};
+'use strict';
+// IEEE754 conversions based on https://github.com/feross/ieee754
+var $55db6ac641b60b11$var$$Array = Array;
+var $55db6ac641b60b11$var$abs = Math.abs;
+var $55db6ac641b60b11$var$pow = Math.pow;
+var $55db6ac641b60b11$var$floor = Math.floor;
+var $55db6ac641b60b11$var$log = Math.log;
+var $55db6ac641b60b11$var$LN2 = Math.LN2;
+var $55db6ac641b60b11$var$pack = function pack(number, mantissaLength, bytes) {
+    var buffer = $55db6ac641b60b11$var$$Array(bytes);
+    var exponentLength = bytes * 8 - mantissaLength - 1;
+    var eMax = (1 << exponentLength) - 1;
+    var eBias = eMax >> 1;
+    var rt = mantissaLength === 23 ? $55db6ac641b60b11$var$pow(2, -24) - $55db6ac641b60b11$var$pow(2, -77) : 0;
+    var sign = number < 0 || number === 0 && 1 / number < 0 ? 1 : 0;
+    var index = 0;
+    var exponent, mantissa, c;
+    number = $55db6ac641b60b11$var$abs(number);
+    // eslint-disable-next-line no-self-compare -- NaN check
+    if (number !== number || number === Infinity) {
+        // eslint-disable-next-line no-self-compare -- NaN check
+        mantissa = number !== number ? 1 : 0;
+        exponent = eMax;
+    } else {
+        exponent = $55db6ac641b60b11$var$floor($55db6ac641b60b11$var$log(number) / $55db6ac641b60b11$var$LN2);
+        c = $55db6ac641b60b11$var$pow(2, -exponent);
+        if (number * c < 1) {
+            exponent--;
+            c *= 2;
+        }
+        if (exponent + eBias >= 1) number += rt / c;
+        else number += rt * $55db6ac641b60b11$var$pow(2, 1 - eBias);
+        if (number * c >= 2) {
+            exponent++;
+            c /= 2;
+        }
+        if (exponent + eBias >= eMax) {
+            mantissa = 0;
+            exponent = eMax;
+        } else if (exponent + eBias >= 1) {
+            mantissa = (number * c - 1) * $55db6ac641b60b11$var$pow(2, mantissaLength);
+            exponent += eBias;
+        } else {
+            mantissa = number * $55db6ac641b60b11$var$pow(2, eBias - 1) * $55db6ac641b60b11$var$pow(2, mantissaLength);
+            exponent = 0;
+        }
+    }
+    while(mantissaLength >= 8){
+        buffer[index++] = mantissa & 255;
+        mantissa /= 256;
+        mantissaLength -= 8;
+    }
+    exponent = exponent << mantissaLength | mantissa;
+    exponentLength += mantissaLength;
+    while(exponentLength > 0){
+        buffer[index++] = exponent & 255;
+        exponent /= 256;
+        exponentLength -= 8;
+    }
+    buffer[index - 1] |= sign * 128;
+    return buffer;
+};
+var $55db6ac641b60b11$var$unpack = function unpack(buffer, mantissaLength) {
+    var bytes = buffer.length;
+    var exponentLength = bytes * 8 - mantissaLength - 1;
+    var eMax = (1 << exponentLength) - 1;
+    var eBias = eMax >> 1;
+    var nBits = exponentLength - 7;
+    var index = bytes - 1;
+    var sign = buffer[index--];
+    var exponent = sign & 127;
+    var mantissa;
+    sign >>= 7;
+    while(nBits > 0){
+        exponent = exponent * 256 + buffer[index--];
+        nBits -= 8;
+    }
+    mantissa = exponent & (1 << -nBits) - 1;
+    exponent >>= -nBits;
+    nBits += mantissaLength;
+    while(nBits > 0){
+        mantissa = mantissa * 256 + buffer[index--];
+        nBits -= 8;
+    }
+    if (exponent === 0) exponent = 1 - eBias;
+    else if (exponent === eMax) return mantissa ? NaN : sign ? -Infinity : Infinity;
+    else {
+        mantissa += $55db6ac641b60b11$var$pow(2, mantissaLength);
+        exponent -= eBias;
+    }
+    return (sign ? -1 : 1) * mantissa * $55db6ac641b60b11$var$pow(2, exponent - mantissaLength);
+};
+$55db6ac641b60b11$exports = {
+    pack: $55db6ac641b60b11$var$pack,
+    unpack: $55db6ac641b60b11$var$unpack
+};
+
+
+
+
+var $b86f6c4078be9e3e$exports = {};
+'use strict';
+
+
+
+// `Array.prototype.fill` method implementation
+// https://tc39.es/ecma262/#sec-array.prototype.fill
+$b86f6c4078be9e3e$exports = function fill(value /* , start = 0, end = @length */ ) {
+    var O = $e81ad450342cdca8$exports(this);
+    var length = $24cf1f15d34227c0$exports(O);
+    var argumentsLength = arguments.length;
+    var index = $a165d4ed9d5b72e1$exports(argumentsLength > 1 ? arguments[1] : undefined, length);
+    var end = argumentsLength > 2 ? arguments[2] : undefined;
+    var endPos = end === undefined ? length : $a165d4ed9d5b72e1$exports(end, length);
+    while(endPos > index)O[index++] = value;
+    return O;
+};
+
+
+
+
+
+
+
+var $879edb4e96e508c7$var$PROPER_FUNCTION_NAME = $924615bee2ea1aa8$exports.PROPER;
+var $879edb4e96e508c7$var$CONFIGURABLE_FUNCTION_NAME = $924615bee2ea1aa8$exports.CONFIGURABLE;
+var $879edb4e96e508c7$var$ARRAY_BUFFER = 'ArrayBuffer';
+var $879edb4e96e508c7$var$DATA_VIEW = 'DataView';
+var $879edb4e96e508c7$var$PROTOTYPE = 'prototype';
+var $879edb4e96e508c7$var$WRONG_LENGTH = 'Wrong length';
+var $879edb4e96e508c7$var$WRONG_INDEX = 'Wrong index';
+var $879edb4e96e508c7$var$getInternalArrayBufferState = $3863900a8f1508e7$exports.getterFor($879edb4e96e508c7$var$ARRAY_BUFFER);
+var $879edb4e96e508c7$var$getInternalDataViewState = $3863900a8f1508e7$exports.getterFor($879edb4e96e508c7$var$DATA_VIEW);
+var $879edb4e96e508c7$var$setInternalState = $3863900a8f1508e7$exports.set;
+var $879edb4e96e508c7$var$NativeArrayBuffer = $6bb4f585dbcccb10$exports[$879edb4e96e508c7$var$ARRAY_BUFFER];
+var $879edb4e96e508c7$var$$ArrayBuffer = $879edb4e96e508c7$var$NativeArrayBuffer;
+var $879edb4e96e508c7$var$ArrayBufferPrototype = $879edb4e96e508c7$var$$ArrayBuffer && $879edb4e96e508c7$var$$ArrayBuffer[$879edb4e96e508c7$var$PROTOTYPE];
+var $879edb4e96e508c7$var$$DataView = $6bb4f585dbcccb10$exports[$879edb4e96e508c7$var$DATA_VIEW];
+var $879edb4e96e508c7$var$DataViewPrototype = $879edb4e96e508c7$var$$DataView && $879edb4e96e508c7$var$$DataView[$879edb4e96e508c7$var$PROTOTYPE];
+var $879edb4e96e508c7$var$ObjectPrototype = Object.prototype;
+var $879edb4e96e508c7$var$Array = $6bb4f585dbcccb10$exports.Array;
+var $879edb4e96e508c7$var$RangeError = $6bb4f585dbcccb10$exports.RangeError;
+var $879edb4e96e508c7$var$fill = $a6ad1e8ada886a6e$exports($b86f6c4078be9e3e$exports);
+var $879edb4e96e508c7$var$reverse = $a6ad1e8ada886a6e$exports([].reverse);
+var $879edb4e96e508c7$var$packIEEE754 = $55db6ac641b60b11$exports.pack;
+var $879edb4e96e508c7$var$unpackIEEE754 = $55db6ac641b60b11$exports.unpack;
+var $879edb4e96e508c7$var$packInt8 = function packInt8(number) {
+    return [
+        number & 0xFF
+    ];
+};
+var $879edb4e96e508c7$var$packInt16 = function packInt16(number) {
+    return [
+        number & 0xFF,
+        number >> 8 & 0xFF
+    ];
+};
+var $879edb4e96e508c7$var$packInt32 = function packInt32(number) {
+    return [
+        number & 0xFF,
+        number >> 8 & 0xFF,
+        number >> 16 & 0xFF,
+        number >> 24 & 0xFF
+    ];
+};
+var $879edb4e96e508c7$var$unpackInt32 = function unpackInt32(buffer) {
+    return buffer[3] << 24 | buffer[2] << 16 | buffer[1] << 8 | buffer[0];
+};
+var $879edb4e96e508c7$var$packFloat32 = function packFloat32(number) {
+    return $879edb4e96e508c7$var$packIEEE754($6f9ef742b0743898$exports(number), 23, 4);
+};
+var $879edb4e96e508c7$var$packFloat64 = function packFloat64(number) {
+    return $879edb4e96e508c7$var$packIEEE754(number, 52, 8);
+};
+var $879edb4e96e508c7$var$addGetter = function addGetter(Constructor, key, getInternalState) {
+    $34351ae141e46c37$exports(Constructor[$879edb4e96e508c7$var$PROTOTYPE], key, {
+        configurable: true,
+        get: function get() {
+            return getInternalState(this)[key];
+        }
+    });
+};
+var $879edb4e96e508c7$var$get = function get(view, count, index, isLittleEndian) {
+    var store = $879edb4e96e508c7$var$getInternalDataViewState(view);
+    var intIndex = $34863ec18b68cd2a$exports(index);
+    var boolIsLittleEndian = !!isLittleEndian;
+    if (intIndex + count > store.byteLength) throw new $879edb4e96e508c7$var$RangeError($879edb4e96e508c7$var$WRONG_INDEX);
+    var bytes = store.bytes;
+    var start = intIndex + store.byteOffset;
+    var pack = $6f00017b18ab89e3$exports(bytes, start, start + count);
+    return boolIsLittleEndian ? pack : $879edb4e96e508c7$var$reverse(pack);
+};
+var $879edb4e96e508c7$var$set = function set(view, count, index, conversion, value, isLittleEndian) {
+    var store = $879edb4e96e508c7$var$getInternalDataViewState(view);
+    var intIndex = $34863ec18b68cd2a$exports(index);
+    var pack = conversion(+value);
+    var boolIsLittleEndian = !!isLittleEndian;
+    if (intIndex + count > store.byteLength) throw new $879edb4e96e508c7$var$RangeError($879edb4e96e508c7$var$WRONG_INDEX);
+    var bytes = store.bytes;
+    var start = intIndex + store.byteOffset;
+    for(var i = 0; i < count; i++)bytes[start + i] = pack[boolIsLittleEndian ? i : count - i - 1];
+};
+if (!$74b873576ec47825$exports) {
+    $879edb4e96e508c7$var$$ArrayBuffer = function ArrayBuffer(length) {
+        $a84985762d40e844$exports(this, $879edb4e96e508c7$var$ArrayBufferPrototype);
+        var byteLength = $34863ec18b68cd2a$exports(length);
+        $879edb4e96e508c7$var$setInternalState(this, {
+            type: $879edb4e96e508c7$var$ARRAY_BUFFER,
+            bytes: $879edb4e96e508c7$var$fill($879edb4e96e508c7$var$Array(byteLength), 0),
+            byteLength: byteLength
+        });
+        if (!$9ad58a245a9ea542$exports) {
+            this.byteLength = byteLength;
+            this.detached = false;
+        }
+    };
+    $879edb4e96e508c7$var$ArrayBufferPrototype = $879edb4e96e508c7$var$$ArrayBuffer[$879edb4e96e508c7$var$PROTOTYPE];
+    $879edb4e96e508c7$var$$DataView = function DataView(buffer, byteOffset, byteLength) {
+        $a84985762d40e844$exports(this, $879edb4e96e508c7$var$DataViewPrototype);
+        $a84985762d40e844$exports(buffer, $879edb4e96e508c7$var$ArrayBufferPrototype);
+        var bufferState = $879edb4e96e508c7$var$getInternalArrayBufferState(buffer);
+        var bufferLength = bufferState.byteLength;
+        var offset = $e65bc32c76079804$exports(byteOffset);
+        if (offset < 0 || offset > bufferLength) throw new $879edb4e96e508c7$var$RangeError('Wrong offset');
+        byteLength = byteLength === undefined ? bufferLength - offset : $4312bcc0b9e43eb2$exports(byteLength);
+        if (offset + byteLength > bufferLength) throw new $879edb4e96e508c7$var$RangeError($879edb4e96e508c7$var$WRONG_LENGTH);
+        $879edb4e96e508c7$var$setInternalState(this, {
+            type: $879edb4e96e508c7$var$DATA_VIEW,
+            buffer: buffer,
+            byteLength: byteLength,
+            byteOffset: offset,
+            bytes: bufferState.bytes
+        });
+        if (!$9ad58a245a9ea542$exports) {
+            this.buffer = buffer;
+            this.byteLength = byteLength;
+            this.byteOffset = offset;
+        }
+    };
+    $879edb4e96e508c7$var$DataViewPrototype = $879edb4e96e508c7$var$$DataView[$879edb4e96e508c7$var$PROTOTYPE];
+    if ($9ad58a245a9ea542$exports) {
+        $879edb4e96e508c7$var$addGetter($879edb4e96e508c7$var$$ArrayBuffer, 'byteLength', $879edb4e96e508c7$var$getInternalArrayBufferState);
+        $879edb4e96e508c7$var$addGetter($879edb4e96e508c7$var$$DataView, 'buffer', $879edb4e96e508c7$var$getInternalDataViewState);
+        $879edb4e96e508c7$var$addGetter($879edb4e96e508c7$var$$DataView, 'byteLength', $879edb4e96e508c7$var$getInternalDataViewState);
+        $879edb4e96e508c7$var$addGetter($879edb4e96e508c7$var$$DataView, 'byteOffset', $879edb4e96e508c7$var$getInternalDataViewState);
+    }
+    $5eb939720ce3c5be$exports($879edb4e96e508c7$var$DataViewPrototype, {
+        getInt8: function getInt8(byteOffset) {
+            return $879edb4e96e508c7$var$get(this, 1, byteOffset)[0] << 24 >> 24;
+        },
+        getUint8: function getUint8(byteOffset) {
+            return $879edb4e96e508c7$var$get(this, 1, byteOffset)[0];
+        },
+        getInt16: function getInt16(byteOffset /* , littleEndian */ ) {
+            var bytes = $879edb4e96e508c7$var$get(this, 2, byteOffset, arguments.length > 1 ? arguments[1] : false);
+            return (bytes[1] << 8 | bytes[0]) << 16 >> 16;
+        },
+        getUint16: function getUint16(byteOffset /* , littleEndian */ ) {
+            var bytes = $879edb4e96e508c7$var$get(this, 2, byteOffset, arguments.length > 1 ? arguments[1] : false);
+            return bytes[1] << 8 | bytes[0];
+        },
+        getInt32: function getInt32(byteOffset /* , littleEndian */ ) {
+            return $879edb4e96e508c7$var$unpackInt32($879edb4e96e508c7$var$get(this, 4, byteOffset, arguments.length > 1 ? arguments[1] : false));
+        },
+        getUint32: function getUint32(byteOffset /* , littleEndian */ ) {
+            return $879edb4e96e508c7$var$unpackInt32($879edb4e96e508c7$var$get(this, 4, byteOffset, arguments.length > 1 ? arguments[1] : false)) >>> 0;
+        },
+        getFloat32: function getFloat32(byteOffset /* , littleEndian */ ) {
+            return $879edb4e96e508c7$var$unpackIEEE754($879edb4e96e508c7$var$get(this, 4, byteOffset, arguments.length > 1 ? arguments[1] : false), 23);
+        },
+        getFloat64: function getFloat64(byteOffset /* , littleEndian */ ) {
+            return $879edb4e96e508c7$var$unpackIEEE754($879edb4e96e508c7$var$get(this, 8, byteOffset, arguments.length > 1 ? arguments[1] : false), 52);
+        },
+        setInt8: function setInt8(byteOffset, value) {
+            $879edb4e96e508c7$var$set(this, 1, byteOffset, $879edb4e96e508c7$var$packInt8, value);
+        },
+        setUint8: function setUint8(byteOffset, value) {
+            $879edb4e96e508c7$var$set(this, 1, byteOffset, $879edb4e96e508c7$var$packInt8, value);
+        },
+        setInt16: function setInt16(byteOffset, value /* , littleEndian */ ) {
+            $879edb4e96e508c7$var$set(this, 2, byteOffset, $879edb4e96e508c7$var$packInt16, value, arguments.length > 2 ? arguments[2] : false);
+        },
+        setUint16: function setUint16(byteOffset, value /* , littleEndian */ ) {
+            $879edb4e96e508c7$var$set(this, 2, byteOffset, $879edb4e96e508c7$var$packInt16, value, arguments.length > 2 ? arguments[2] : false);
+        },
+        setInt32: function setInt32(byteOffset, value /* , littleEndian */ ) {
+            $879edb4e96e508c7$var$set(this, 4, byteOffset, $879edb4e96e508c7$var$packInt32, value, arguments.length > 2 ? arguments[2] : false);
+        },
+        setUint32: function setUint32(byteOffset, value /* , littleEndian */ ) {
+            $879edb4e96e508c7$var$set(this, 4, byteOffset, $879edb4e96e508c7$var$packInt32, value, arguments.length > 2 ? arguments[2] : false);
+        },
+        setFloat32: function setFloat32(byteOffset, value /* , littleEndian */ ) {
+            $879edb4e96e508c7$var$set(this, 4, byteOffset, $879edb4e96e508c7$var$packFloat32, value, arguments.length > 2 ? arguments[2] : false);
+        },
+        setFloat64: function setFloat64(byteOffset, value /* , littleEndian */ ) {
+            $879edb4e96e508c7$var$set(this, 8, byteOffset, $879edb4e96e508c7$var$packFloat64, value, arguments.length > 2 ? arguments[2] : false);
+        }
+    });
+} else {
+    var $879edb4e96e508c7$var$INCORRECT_ARRAY_BUFFER_NAME = $879edb4e96e508c7$var$PROPER_FUNCTION_NAME && $879edb4e96e508c7$var$NativeArrayBuffer.name !== $879edb4e96e508c7$var$ARRAY_BUFFER;
+    /* eslint-disable no-new, sonarjs/inconsistent-function-call -- required for testing */ if (!$8d47fb0f9458aed6$exports(function() {
+        $879edb4e96e508c7$var$NativeArrayBuffer(1);
+    }) || !$8d47fb0f9458aed6$exports(function() {
+        new $879edb4e96e508c7$var$NativeArrayBuffer(-1);
+    }) || $8d47fb0f9458aed6$exports(function() {
+        new $879edb4e96e508c7$var$NativeArrayBuffer();
+        new $879edb4e96e508c7$var$NativeArrayBuffer(1.5);
+        new $879edb4e96e508c7$var$NativeArrayBuffer(NaN);
+        return $879edb4e96e508c7$var$NativeArrayBuffer.length !== 1 || $879edb4e96e508c7$var$INCORRECT_ARRAY_BUFFER_NAME && !$879edb4e96e508c7$var$CONFIGURABLE_FUNCTION_NAME;
+    })) {
+        /* eslint-enable no-new, sonarjs/inconsistent-function-call -- required for testing */ $879edb4e96e508c7$var$$ArrayBuffer = function ArrayBuffer(length) {
+            $a84985762d40e844$exports(this, $879edb4e96e508c7$var$ArrayBufferPrototype);
+            return $d7c1c7836696ec90$exports(new $879edb4e96e508c7$var$NativeArrayBuffer($34863ec18b68cd2a$exports(length)), this, $879edb4e96e508c7$var$$ArrayBuffer);
+        };
+        $879edb4e96e508c7$var$$ArrayBuffer[$879edb4e96e508c7$var$PROTOTYPE] = $879edb4e96e508c7$var$ArrayBufferPrototype;
+        $879edb4e96e508c7$var$ArrayBufferPrototype.constructor = $879edb4e96e508c7$var$$ArrayBuffer;
+        $4c111657203b3886$exports($879edb4e96e508c7$var$$ArrayBuffer, $879edb4e96e508c7$var$NativeArrayBuffer);
+    } else if ($879edb4e96e508c7$var$INCORRECT_ARRAY_BUFFER_NAME && $879edb4e96e508c7$var$CONFIGURABLE_FUNCTION_NAME) $542c4a1412d7b12f$exports($879edb4e96e508c7$var$NativeArrayBuffer, 'name', $879edb4e96e508c7$var$ARRAY_BUFFER);
+    // WebKit bug - the same parent prototype for typed arrays and data view
+    if ($ffb4c060878cd71a$exports && $1628b493c2dd3c32$exports($879edb4e96e508c7$var$DataViewPrototype) !== $879edb4e96e508c7$var$ObjectPrototype) $ffb4c060878cd71a$exports($879edb4e96e508c7$var$DataViewPrototype, $879edb4e96e508c7$var$ObjectPrototype);
+    // iOS Safari 7.x bug
+    var $879edb4e96e508c7$var$testView = new $879edb4e96e508c7$var$$DataView(new $879edb4e96e508c7$var$$ArrayBuffer(2));
+    var $879edb4e96e508c7$var$$setInt8 = $a6ad1e8ada886a6e$exports($879edb4e96e508c7$var$DataViewPrototype.setInt8);
+    $879edb4e96e508c7$var$testView.setInt8(0, 2147483648);
+    $879edb4e96e508c7$var$testView.setInt8(1, 2147483649);
+    if ($879edb4e96e508c7$var$testView.getInt8(0) || !$879edb4e96e508c7$var$testView.getInt8(1)) $5eb939720ce3c5be$exports($879edb4e96e508c7$var$DataViewPrototype, {
+        setInt8: function setInt8(byteOffset, value) {
+            $879edb4e96e508c7$var$$setInt8(this, byteOffset, value << 24 >> 24);
+        },
+        setUint8: function setUint8(byteOffset, value) {
+            $879edb4e96e508c7$var$$setInt8(this, byteOffset, value << 24 >> 24);
+        }
+    }, {
+        unsafe: true
+    });
+}
+$dc8b49a2567d5bf5$exports($879edb4e96e508c7$var$$ArrayBuffer, $879edb4e96e508c7$var$ARRAY_BUFFER);
+$dc8b49a2567d5bf5$exports($879edb4e96e508c7$var$$DataView, $879edb4e96e508c7$var$DATA_VIEW);
+$879edb4e96e508c7$exports = {
+    ArrayBuffer: $879edb4e96e508c7$var$$ArrayBuffer,
+    DataView: $879edb4e96e508c7$var$$DataView
+};
+
+
+
+
+
+var $679640672b13dd43$exports = {};
+'use strict';
+
+var $679640672b13dd43$var$floor = Math.floor;
+// `IsIntegralNumber` abstract operation
+// https://tc39.es/ecma262/#sec-isintegralnumber
+// eslint-disable-next-line es/no-number-isinteger -- safe
+$679640672b13dd43$exports = Number.isInteger || function isInteger(it) {
+    return !$a5247cee30afd31c$exports(it) && isFinite(it) && $679640672b13dd43$var$floor(it) === it;
+};
+
+
+
+
+var $e150b5e82533827d$exports = {};
+'use strict';
+var $492517096cebff7b$exports = {};
+'use strict';
+
+var $492517096cebff7b$var$$RangeError = RangeError;
+$492517096cebff7b$exports = function(it) {
+    var result = $e65bc32c76079804$exports(it);
+    if (result < 0) throw new $492517096cebff7b$var$$RangeError("The argument can't be less than 0");
+    return result;
+};
+
+
+var $e150b5e82533827d$var$$RangeError = RangeError;
+$e150b5e82533827d$exports = function(it, BYTES) {
+    var offset = $492517096cebff7b$exports(it);
+    if (offset % BYTES) throw new $e150b5e82533827d$var$$RangeError('Wrong offset');
+    return offset;
+};
+
+
+var $fecf5a8c22ca2393$exports = {};
+'use strict';
+var $fecf5a8c22ca2393$var$round = Math.round;
+$fecf5a8c22ca2393$exports = function(it) {
+    var value = $fecf5a8c22ca2393$var$round(it);
+    return value < 0 ? 0 : value > 0xFF ? 0xFF : value & 0xFF;
+};
+
+
+
+
+
+
+
+
+
+
+
+var $eaa5071e231b421f$require$getOwnPropertyNames = $e18868c91f9bee5e$export$2d1720544b23b823;
+var $7b3934274c330875$exports = {};
+'use strict';
+
+
+
+
+
+
+
+
+var $8895b37de2d065f4$exports = {};
+'use strict';
+
+$8895b37de2d065f4$exports = function(it) {
+    var klass = $31b89c0c3042db21$exports(it);
+    return klass === 'BigInt64Array' || klass === 'BigUint64Array';
+};
+
+
+
+var $7b3934274c330875$require$aTypedArrayConstructor = $08be471ebe6a175a$exports.aTypedArrayConstructor;
+var $d0003ae353003553$exports = {};
+'use strict';
+
+var $d0003ae353003553$var$$TypeError = TypeError;
+// `ToBigInt` abstract operation
+// https://tc39.es/ecma262/#sec-tobigint
+$d0003ae353003553$exports = function(argument) {
+    var prim = $0f8c94f35612cc25$exports(argument, 'number');
+    if (typeof prim == 'number') throw new $d0003ae353003553$var$$TypeError("Can't convert number to bigint");
+    // eslint-disable-next-line es/no-bigint -- safe
+    return BigInt(prim);
+};
+
+
+$7b3934274c330875$exports = function from(source /* , mapfn, thisArg */ ) {
+    var C = $43d62b7f75fe6f96$exports(this);
+    var O = $e81ad450342cdca8$exports(source);
+    var argumentsLength = arguments.length;
+    var mapfn = argumentsLength > 1 ? arguments[1] : undefined;
+    var mapping = mapfn !== undefined;
+    var iteratorMethod = $84f0e014133fe133$exports(O);
+    var i, length, result, thisIsBigIntArray, value, step, iterator, next;
+    if (iteratorMethod && !$a33ff8f13f06611b$exports(iteratorMethod)) {
+        iterator = $c05fd884bbbf2759$exports(O, iteratorMethod);
+        next = iterator.next;
+        O = [];
+        while(!(step = $b51eee67d287dc0c$exports(next, iterator)).done)O.push(step.value);
+    }
+    if (mapping && argumentsLength > 2) mapfn = $47d894db7420029c$exports(mapfn, arguments[2]);
+    length = $24cf1f15d34227c0$exports(O);
+    result = new ($7b3934274c330875$require$aTypedArrayConstructor(C))(length);
+    thisIsBigIntArray = $8895b37de2d065f4$exports(result);
+    for(i = 0; length > i; i++){
+        value = mapping ? mapfn(O[i], i) : O[i];
+        // FF30- typed arrays doesn't properly convert objects to typed array values
+        result[i] = thisIsBigIntArray ? $d0003ae353003553$exports(value) : +value;
+    }
+    return result;
+};
+
+
+
+var $eaa5071e231b421f$require$forEach = $39b7306fbc8277ed$exports.forEach;
+
+
+
+
+var $e033597be8dfff7a$exports = {};
+'use strict';
+
+$e033597be8dfff7a$exports = function(Constructor, list, $length) {
+    var index = 0;
+    var length = arguments.length > 2 ? $length : $24cf1f15d34227c0$exports(list);
+    var result = new Constructor(length);
+    while(length > index)result[index] = list[index++];
+    return result;
+};
+
+
+
+
+var $eaa5071e231b421f$var$getInternalState = $3863900a8f1508e7$exports.get;
+var $eaa5071e231b421f$var$setInternalState = $3863900a8f1508e7$exports.set;
+var $eaa5071e231b421f$var$enforceInternalState = $3863900a8f1508e7$exports.enforce;
+var $eaa5071e231b421f$var$nativeDefineProperty = $b7cf4c6cb85b0365$export$2d1720544b23b823;
+var $eaa5071e231b421f$var$nativeGetOwnPropertyDescriptor = $efb277c423a0f6b2$export$2d1720544b23b823;
+var $eaa5071e231b421f$var$RangeError = $6bb4f585dbcccb10$exports.RangeError;
+var $eaa5071e231b421f$var$ArrayBuffer = $879edb4e96e508c7$exports.ArrayBuffer;
+var $eaa5071e231b421f$var$ArrayBufferPrototype = $eaa5071e231b421f$var$ArrayBuffer.prototype;
+var $eaa5071e231b421f$var$DataView = $879edb4e96e508c7$exports.DataView;
+var $eaa5071e231b421f$var$NATIVE_ARRAY_BUFFER_VIEWS = $08be471ebe6a175a$exports.NATIVE_ARRAY_BUFFER_VIEWS;
+var $eaa5071e231b421f$var$TYPED_ARRAY_TAG = $08be471ebe6a175a$exports.TYPED_ARRAY_TAG;
+var $eaa5071e231b421f$var$TypedArray = $08be471ebe6a175a$exports.TypedArray;
+var $eaa5071e231b421f$var$TypedArrayPrototype = $08be471ebe6a175a$exports.TypedArrayPrototype;
+var $eaa5071e231b421f$var$isTypedArray = $08be471ebe6a175a$exports.isTypedArray;
+var $eaa5071e231b421f$var$BYTES_PER_ELEMENT = 'BYTES_PER_ELEMENT';
+var $eaa5071e231b421f$var$WRONG_LENGTH = 'Wrong length';
+var $eaa5071e231b421f$var$addGetter = function addGetter(it, key) {
+    $34351ae141e46c37$exports(it, key, {
+        configurable: true,
+        get: function get() {
+            return $eaa5071e231b421f$var$getInternalState(this)[key];
+        }
+    });
+};
+var $eaa5071e231b421f$var$isArrayBuffer = function isArrayBuffer(it) {
+    var klass;
+    return $c4802cfd914fa45d$exports($eaa5071e231b421f$var$ArrayBufferPrototype, it) || (klass = $31b89c0c3042db21$exports(it)) === 'ArrayBuffer' || klass === 'SharedArrayBuffer';
+};
+var $eaa5071e231b421f$var$isTypedArrayIndex = function isTypedArrayIndex(target, key) {
+    return $eaa5071e231b421f$var$isTypedArray(target) && !$5f60f1f0b0535210$exports(key) && key in target && $679640672b13dd43$exports(+key) && key >= 0;
+};
+var $eaa5071e231b421f$var$wrappedGetOwnPropertyDescriptor = function getOwnPropertyDescriptor(target, key) {
+    key = $5048c15693b2c826$exports(key);
+    return $eaa5071e231b421f$var$isTypedArrayIndex(target, key) ? $28b05b782a3d40a0$exports(2, target[key]) : $eaa5071e231b421f$var$nativeGetOwnPropertyDescriptor(target, key);
+};
+var $eaa5071e231b421f$var$wrappedDefineProperty = function defineProperty(target, key, descriptor) {
+    key = $5048c15693b2c826$exports(key);
+    if ($eaa5071e231b421f$var$isTypedArrayIndex(target, key) && $a5247cee30afd31c$exports(descriptor) && $88fb7bd6b0cac2a7$exports(descriptor, 'value') && !$88fb7bd6b0cac2a7$exports(descriptor, 'get') && !$88fb7bd6b0cac2a7$exports(descriptor, 'set') && !descriptor.configurable && (!$88fb7bd6b0cac2a7$exports(descriptor, 'writable') || descriptor.writable) && (!$88fb7bd6b0cac2a7$exports(descriptor, 'enumerable') || descriptor.enumerable)) {
+        target[key] = descriptor.value;
+        return target;
+    }
+    return $eaa5071e231b421f$var$nativeDefineProperty(target, key, descriptor);
+};
+if ($9ad58a245a9ea542$exports) {
+    if (!$eaa5071e231b421f$var$NATIVE_ARRAY_BUFFER_VIEWS) {
+        $efb277c423a0f6b2$exports.f = $eaa5071e231b421f$var$wrappedGetOwnPropertyDescriptor;
+        $b7cf4c6cb85b0365$exports.f = $eaa5071e231b421f$var$wrappedDefineProperty;
+        $eaa5071e231b421f$var$addGetter($eaa5071e231b421f$var$TypedArrayPrototype, 'buffer');
+        $eaa5071e231b421f$var$addGetter($eaa5071e231b421f$var$TypedArrayPrototype, 'byteOffset');
+        $eaa5071e231b421f$var$addGetter($eaa5071e231b421f$var$TypedArrayPrototype, 'byteLength');
+        $eaa5071e231b421f$var$addGetter($eaa5071e231b421f$var$TypedArrayPrototype, 'length');
+    }
+    $a4386f1de3d17f70$exports({
+        target: 'Object',
+        stat: true,
+        forced: !$eaa5071e231b421f$var$NATIVE_ARRAY_BUFFER_VIEWS
+    }, {
+        getOwnPropertyDescriptor: $eaa5071e231b421f$var$wrappedGetOwnPropertyDescriptor,
+        defineProperty: $eaa5071e231b421f$var$wrappedDefineProperty
+    });
+    $eaa5071e231b421f$exports = function(TYPE, wrapper, CLAMPED) {
+        var BYTES = TYPE.match(/\d+/)[0] / 8;
+        var CONSTRUCTOR_NAME = TYPE + (CLAMPED ? 'Clamped' : '') + 'Array';
+        var GETTER = 'get' + TYPE;
+        var SETTER = 'set' + TYPE;
+        var NativeTypedArrayConstructor = $6bb4f585dbcccb10$exports[CONSTRUCTOR_NAME];
+        var TypedArrayConstructor = NativeTypedArrayConstructor;
+        var TypedArrayConstructorPrototype = TypedArrayConstructor && TypedArrayConstructor.prototype;
+        var exported = {};
+        var getter = function getter(that, index) {
+            var data = $eaa5071e231b421f$var$getInternalState(that);
+            return data.view[GETTER](index * BYTES + data.byteOffset, true);
+        };
+        var setter = function setter(that, index, value) {
+            var data = $eaa5071e231b421f$var$getInternalState(that);
+            data.view[SETTER](index * BYTES + data.byteOffset, CLAMPED ? $fecf5a8c22ca2393$exports(value) : value, true);
+        };
+        var addElement = function addElement(that, index) {
+            $eaa5071e231b421f$var$nativeDefineProperty(that, index, {
+                get: function get() {
+                    return getter(this, index);
+                },
+                set: function set(value) {
+                    return setter(this, index, value);
+                },
+                enumerable: true
+            });
+        };
+        if (!$eaa5071e231b421f$var$NATIVE_ARRAY_BUFFER_VIEWS) {
+            TypedArrayConstructor = wrapper(function(that, data, offset, $length) {
+                $a84985762d40e844$exports(that, TypedArrayConstructorPrototype);
+                var index = 0;
+                var byteOffset = 0;
+                var buffer, byteLength, length;
+                if (!$a5247cee30afd31c$exports(data)) {
+                    length = $34863ec18b68cd2a$exports(data);
+                    byteLength = length * BYTES;
+                    buffer = new $eaa5071e231b421f$var$ArrayBuffer(byteLength);
+                } else if ($eaa5071e231b421f$var$isArrayBuffer(data)) {
+                    buffer = data;
+                    byteOffset = $e150b5e82533827d$exports(offset, BYTES);
+                    var $len = data.byteLength;
+                    if ($length === undefined) {
+                        if ($len % BYTES) throw new $eaa5071e231b421f$var$RangeError($eaa5071e231b421f$var$WRONG_LENGTH);
+                        byteLength = $len - byteOffset;
+                        if (byteLength < 0) throw new $eaa5071e231b421f$var$RangeError($eaa5071e231b421f$var$WRONG_LENGTH);
+                    } else {
+                        byteLength = $4312bcc0b9e43eb2$exports($length) * BYTES;
+                        if (byteLength + byteOffset > $len) throw new $eaa5071e231b421f$var$RangeError($eaa5071e231b421f$var$WRONG_LENGTH);
+                    }
+                    length = byteLength / BYTES;
+                } else if ($eaa5071e231b421f$var$isTypedArray(data)) return $e033597be8dfff7a$exports(TypedArrayConstructor, data);
+                else return $b51eee67d287dc0c$exports($7b3934274c330875$exports, TypedArrayConstructor, data);
+                $eaa5071e231b421f$var$setInternalState(that, {
+                    buffer: buffer,
+                    byteOffset: byteOffset,
+                    byteLength: byteLength,
+                    length: length,
+                    view: new $eaa5071e231b421f$var$DataView(buffer)
+                });
+                while(index < length)addElement(that, index++);
+            });
+            if ($ffb4c060878cd71a$exports) $ffb4c060878cd71a$exports(TypedArrayConstructor, $eaa5071e231b421f$var$TypedArray);
+            TypedArrayConstructorPrototype = TypedArrayConstructor.prototype = $6c46fe9371eaab2c$exports($eaa5071e231b421f$var$TypedArrayPrototype);
+        } else if ($7b92c5a7d6d6d5a3$exports) {
+            TypedArrayConstructor = wrapper(function(dummy, data, typedArrayOffset, $length) {
+                $a84985762d40e844$exports(dummy, TypedArrayConstructorPrototype);
+                return $d7c1c7836696ec90$exports(function() {
+                    if (!$a5247cee30afd31c$exports(data)) return new NativeTypedArrayConstructor($34863ec18b68cd2a$exports(data));
+                    if ($eaa5071e231b421f$var$isArrayBuffer(data)) return $length !== undefined ? new NativeTypedArrayConstructor(data, $e150b5e82533827d$exports(typedArrayOffset, BYTES), $length) : typedArrayOffset !== undefined ? new NativeTypedArrayConstructor(data, $e150b5e82533827d$exports(typedArrayOffset, BYTES)) : new NativeTypedArrayConstructor(data);
+                    if ($eaa5071e231b421f$var$isTypedArray(data)) return $e033597be8dfff7a$exports(TypedArrayConstructor, data);
+                    return $b51eee67d287dc0c$exports($7b3934274c330875$exports, TypedArrayConstructor, data);
+                }(), dummy, TypedArrayConstructor);
+            });
+            if ($ffb4c060878cd71a$exports) $ffb4c060878cd71a$exports(TypedArrayConstructor, $eaa5071e231b421f$var$TypedArray);
+            $eaa5071e231b421f$require$forEach($eaa5071e231b421f$require$getOwnPropertyNames(NativeTypedArrayConstructor), function(key) {
+                if (!(key in TypedArrayConstructor)) $542c4a1412d7b12f$exports(TypedArrayConstructor, key, NativeTypedArrayConstructor[key]);
+            });
+            TypedArrayConstructor.prototype = TypedArrayConstructorPrototype;
+        }
+        if (TypedArrayConstructorPrototype.constructor !== TypedArrayConstructor) $542c4a1412d7b12f$exports(TypedArrayConstructorPrototype, 'constructor', TypedArrayConstructor);
+        $eaa5071e231b421f$var$enforceInternalState(TypedArrayConstructorPrototype).TypedArrayConstructor = TypedArrayConstructor;
+        if ($eaa5071e231b421f$var$TYPED_ARRAY_TAG) $542c4a1412d7b12f$exports(TypedArrayConstructorPrototype, $eaa5071e231b421f$var$TYPED_ARRAY_TAG, CONSTRUCTOR_NAME);
+        var FORCED = TypedArrayConstructor !== NativeTypedArrayConstructor;
+        exported[CONSTRUCTOR_NAME] = TypedArrayConstructor;
+        $a4386f1de3d17f70$exports({
+            global: true,
+            constructor: true,
+            forced: FORCED,
+            sham: !$eaa5071e231b421f$var$NATIVE_ARRAY_BUFFER_VIEWS
+        }, exported);
+        if (!($eaa5071e231b421f$var$BYTES_PER_ELEMENT in TypedArrayConstructor)) $542c4a1412d7b12f$exports(TypedArrayConstructor, $eaa5071e231b421f$var$BYTES_PER_ELEMENT, BYTES);
+        if (!($eaa5071e231b421f$var$BYTES_PER_ELEMENT in TypedArrayConstructorPrototype)) $542c4a1412d7b12f$exports(TypedArrayConstructorPrototype, $eaa5071e231b421f$var$BYTES_PER_ELEMENT, BYTES);
+        $407efffd599c52ff$exports(CONSTRUCTOR_NAME);
+    };
+} else $eaa5071e231b421f$exports = function() {};
+
+
+// `Float32Array` constructor
+// https://tc39.es/ecma262/#sec-typedarray-objects
+$eaa5071e231b421f$exports('Float32', function(init) {
+    return function Float32Array(data, byteOffset, length) {
+        return init(this, data, byteOffset, length);
+    };
+});
+
+
+'use strict';
+
+// `Float64Array` constructor
+// https://tc39.es/ecma262/#sec-typedarray-objects
+$eaa5071e231b421f$exports('Float64', function(init) {
+    return function Float64Array(data, byteOffset, length) {
+        return init(this, data, byteOffset, length);
+    };
+});
+
+
+'use strict';
+
+// `Int8Array` constructor
+// https://tc39.es/ecma262/#sec-typedarray-objects
+$eaa5071e231b421f$exports('Int8', function(init) {
+    return function Int8Array(data, byteOffset, length) {
+        return init(this, data, byteOffset, length);
+    };
+});
+
+
+'use strict';
+
+// `Int16Array` constructor
+// https://tc39.es/ecma262/#sec-typedarray-objects
+$eaa5071e231b421f$exports('Int16', function(init) {
+    return function Int16Array(data, byteOffset, length) {
+        return init(this, data, byteOffset, length);
+    };
+});
+
+
+'use strict';
+
+// `Int32Array` constructor
+// https://tc39.es/ecma262/#sec-typedarray-objects
+$eaa5071e231b421f$exports('Int32', function(init) {
+    return function Int32Array(data, byteOffset, length) {
+        return init(this, data, byteOffset, length);
+    };
+});
+
+
+'use strict';
+
+// `Uint8Array` constructor
+// https://tc39.es/ecma262/#sec-typedarray-objects
+$eaa5071e231b421f$exports('Uint8', function(init) {
+    return function Uint8Array(data, byteOffset, length) {
+        return init(this, data, byteOffset, length);
+    };
+});
+
+
+'use strict';
+
+// `Uint8ClampedArray` constructor
+// https://tc39.es/ecma262/#sec-typedarray-objects
+$eaa5071e231b421f$exports('Uint8', function(init) {
+    return function Uint8ClampedArray(data, byteOffset, length) {
+        return init(this, data, byteOffset, length);
+    };
+}, true);
+
+
+'use strict';
+
+// `Uint16Array` constructor
+// https://tc39.es/ecma262/#sec-typedarray-objects
+$eaa5071e231b421f$exports('Uint16', function(init) {
+    return function Uint16Array(data, byteOffset, length) {
+        return init(this, data, byteOffset, length);
+    };
+});
+
+
+'use strict';
+
+// `Uint32Array` constructor
+// https://tc39.es/ecma262/#sec-typedarray-objects
+$eaa5071e231b421f$exports('Uint32', function(init) {
+    return function Uint32Array(data, byteOffset, length) {
+        return init(this, data, byteOffset, length);
+    };
+});
+
+
+'use strict';
+
+
+
+
+
+
+
+var $8e7dbdef1c93659a$var$aTypedArray = $08be471ebe6a175a$exports.aTypedArray;
+var $8e7dbdef1c93659a$var$exportTypedArrayMethod = $08be471ebe6a175a$exports.exportTypedArrayMethod;
+var $8e7dbdef1c93659a$var$slice = $a6ad1e8ada886a6e$exports(''.slice);
+// V8 ~ Chrome < 59, Safari < 14.1, FF < 55, Edge <=18
+var $8e7dbdef1c93659a$var$CONVERSION_BUG = $8d47fb0f9458aed6$exports(function() {
+    var count = 0;
+    // eslint-disable-next-line es/no-typed-arrays -- safe
+    new Int8Array(2).fill({
+        valueOf: function valueOf() {
+            return count++;
+        }
+    });
+    return count !== 1;
+});
+// `%TypedArray%.prototype.fill` method
+// https://tc39.es/ecma262/#sec-%typedarray%.prototype.fill
+$8e7dbdef1c93659a$var$exportTypedArrayMethod('fill', function fill(value /* , start, end */ ) {
+    var length = arguments.length;
+    $8e7dbdef1c93659a$var$aTypedArray(this);
+    var actualValue = $8e7dbdef1c93659a$var$slice($31b89c0c3042db21$exports(this), 0, 3) === 'Big' ? $d0003ae353003553$exports(value) : +value;
+    return $b51eee67d287dc0c$exports($b86f6c4078be9e3e$exports, this, actualValue, length > 1 ? arguments[1] : undefined, length > 2 ? arguments[2] : undefined);
+}, $8e7dbdef1c93659a$var$CONVERSION_BUG);
+
+
+'use strict';
+
+
+var $a5d32ed809011ed0$require$exportTypedArrayStaticMethod = $08be471ebe6a175a$exports.exportTypedArrayStaticMethod;
+
+// `%TypedArray%.from` method
+// https://tc39.es/ecma262/#sec-%typedarray%.from
+$a5d32ed809011ed0$require$exportTypedArrayStaticMethod('from', $7b3934274c330875$exports, $7b92c5a7d6d6d5a3$exports);
+
+
+'use strict';
+
+
+var $bc3abcca70621db7$var$aTypedArrayConstructor = $08be471ebe6a175a$exports.aTypedArrayConstructor;
+var $bc3abcca70621db7$var$exportTypedArrayStaticMethod = $08be471ebe6a175a$exports.exportTypedArrayStaticMethod;
+// `%TypedArray%.of` method
+// https://tc39.es/ecma262/#sec-%typedarray%.of
+$bc3abcca70621db7$var$exportTypedArrayStaticMethod('of', function of() {
+    var index = 0;
+    var length = arguments.length;
+    var result = new ($bc3abcca70621db7$var$aTypedArrayConstructor(this))(length);
+    while(length > index)result[index] = arguments[index++];
+    return result;
+}, $7b92c5a7d6d6d5a3$exports);
+
+
+'use strict';
+
+
+
+
+
+
+
+var $aec5284b31fc340c$var$RangeError = $6bb4f585dbcccb10$exports.RangeError;
+var $aec5284b31fc340c$var$Int8Array = $6bb4f585dbcccb10$exports.Int8Array;
+var $aec5284b31fc340c$var$Int8ArrayPrototype = $aec5284b31fc340c$var$Int8Array && $aec5284b31fc340c$var$Int8Array.prototype;
+var $aec5284b31fc340c$var$$set = $aec5284b31fc340c$var$Int8ArrayPrototype && $aec5284b31fc340c$var$Int8ArrayPrototype.set;
+var $aec5284b31fc340c$var$aTypedArray = $08be471ebe6a175a$exports.aTypedArray;
+var $aec5284b31fc340c$var$exportTypedArrayMethod = $08be471ebe6a175a$exports.exportTypedArrayMethod;
+var $aec5284b31fc340c$var$WORKS_WITH_OBJECTS_AND_GENERIC_ON_TYPED_ARRAYS = !$8d47fb0f9458aed6$exports(function() {
+    // eslint-disable-next-line es/no-typed-arrays -- required for testing
+    var array = new Uint8ClampedArray(2);
+    $b51eee67d287dc0c$exports($aec5284b31fc340c$var$$set, array, {
+        length: 1,
+        0: 3
+    }, 1);
+    return array[1] !== 3;
+});
+// https://bugs.chromium.org/p/v8/issues/detail?id=11294 and other
+var $aec5284b31fc340c$var$TO_OBJECT_BUG = $aec5284b31fc340c$var$WORKS_WITH_OBJECTS_AND_GENERIC_ON_TYPED_ARRAYS && $08be471ebe6a175a$exports.NATIVE_ARRAY_BUFFER_VIEWS && $8d47fb0f9458aed6$exports(function() {
+    var array = new $aec5284b31fc340c$var$Int8Array(2);
+    array.set(1);
+    array.set('2', 1);
+    return array[0] !== 0 || array[1] !== 2;
+});
+// `%TypedArray%.prototype.set` method
+// https://tc39.es/ecma262/#sec-%typedarray%.prototype.set
+$aec5284b31fc340c$var$exportTypedArrayMethod('set', function set(arrayLike /* , offset */ ) {
+    $aec5284b31fc340c$var$aTypedArray(this);
+    var offset = $e150b5e82533827d$exports(arguments.length > 1 ? arguments[1] : undefined, 1);
+    var src = $e81ad450342cdca8$exports(arrayLike);
+    if ($aec5284b31fc340c$var$WORKS_WITH_OBJECTS_AND_GENERIC_ON_TYPED_ARRAYS) return $b51eee67d287dc0c$exports($aec5284b31fc340c$var$$set, this, src, offset);
+    var length = this.length;
+    var len = $24cf1f15d34227c0$exports(src);
+    var index = 0;
+    if (len + offset > length) throw new $aec5284b31fc340c$var$RangeError('Wrong length');
+    while(index < len)this[offset + index] = src[index++];
+}, !$aec5284b31fc340c$var$WORKS_WITH_OBJECTS_AND_GENERIC_ON_TYPED_ARRAYS || $aec5284b31fc340c$var$TO_OBJECT_BUG);
+
+
+'use strict';
+
+
+
+
+var $335cf83438b45601$exports = {};
+'use strict';
+
+var $335cf83438b45601$var$floor = Math.floor;
+var $335cf83438b45601$var$sort = function sort1(array, comparefn) {
+    var length = array.length;
+    if (length < 8) {
+        // insertion sort
+        var i = 1;
+        var element, j;
+        while(i < length){
+            j = i;
+            element = array[i];
+            while(j && comparefn(array[j - 1], element) > 0)array[j] = array[--j];
+            if (j !== i++) array[j] = element;
+        }
+    } else {
+        // merge sort
+        var middle = $335cf83438b45601$var$floor(length / 2);
+        var left = $335cf83438b45601$var$sort($6f00017b18ab89e3$exports(array, 0, middle), comparefn);
+        var right = $335cf83438b45601$var$sort($6f00017b18ab89e3$exports(array, middle), comparefn);
+        var llength = left.length;
+        var rlength = right.length;
+        var lindex = 0;
+        var rindex = 0;
+        while(lindex < llength || rindex < rlength)array[lindex + rindex] = lindex < llength && rindex < rlength ? comparefn(left[lindex], right[rindex]) <= 0 ? left[lindex++] : right[rindex++] : lindex < llength ? left[lindex++] : right[rindex++];
+    }
+    return array;
+};
+$335cf83438b45601$exports = $335cf83438b45601$var$sort;
+
+
+
+var $a4e6c1bc5cefacb0$exports = {};
+'use strict';
+
+var $a4e6c1bc5cefacb0$var$firefox = $4bf0b512ef614c5f$exports.match(/firefox\/(\d+)/i);
+$a4e6c1bc5cefacb0$exports = !!$a4e6c1bc5cefacb0$var$firefox && +$a4e6c1bc5cefacb0$var$firefox[1];
+
+
+var $ddcbde0c721b7980$exports = {};
+'use strict';
+
+$ddcbde0c721b7980$exports = /MSIE|Trident/.test($4bf0b512ef614c5f$exports);
+
+
+
+var $520e4c837dd86a83$exports = {};
+'use strict';
+
+var $520e4c837dd86a83$var$webkit = $4bf0b512ef614c5f$exports.match(/AppleWebKit\/(\d+)\./);
+$520e4c837dd86a83$exports = !!$520e4c837dd86a83$var$webkit && +$520e4c837dd86a83$var$webkit[1];
+
+
+var $f7f8e04a79cc0a77$var$aTypedArray = $08be471ebe6a175a$exports.aTypedArray;
+var $f7f8e04a79cc0a77$var$exportTypedArrayMethod = $08be471ebe6a175a$exports.exportTypedArrayMethod;
+var $f7f8e04a79cc0a77$var$Uint16Array = $6bb4f585dbcccb10$exports.Uint16Array;
+var $f7f8e04a79cc0a77$var$nativeSort = $f7f8e04a79cc0a77$var$Uint16Array && $6006cd259676c6be$exports($f7f8e04a79cc0a77$var$Uint16Array.prototype.sort);
+// WebKit
+var $f7f8e04a79cc0a77$var$ACCEPT_INCORRECT_ARGUMENTS = !!$f7f8e04a79cc0a77$var$nativeSort && !($8d47fb0f9458aed6$exports(function() {
+    $f7f8e04a79cc0a77$var$nativeSort(new $f7f8e04a79cc0a77$var$Uint16Array(2), null);
+}) && $8d47fb0f9458aed6$exports(function() {
+    $f7f8e04a79cc0a77$var$nativeSort(new $f7f8e04a79cc0a77$var$Uint16Array(2), {});
+}));
+var $f7f8e04a79cc0a77$var$STABLE_SORT = !!$f7f8e04a79cc0a77$var$nativeSort && !$8d47fb0f9458aed6$exports(function() {
+    // feature detection can be too slow, so check engines versions
+    if ($9029b6c7cf623b88$exports) return $9029b6c7cf623b88$exports < 74;
+    if ($a4e6c1bc5cefacb0$exports) return $a4e6c1bc5cefacb0$exports < 67;
+    if ($ddcbde0c721b7980$exports) return true;
+    if ($520e4c837dd86a83$exports) return $520e4c837dd86a83$exports < 602;
+    var array = new $f7f8e04a79cc0a77$var$Uint16Array(516);
+    var expected = Array(516);
+    var index, mod;
+    for(index = 0; index < 516; index++){
+        mod = index % 4;
+        array[index] = 515 - index;
+        expected[index] = index - 2 * mod + 3;
+    }
+    $f7f8e04a79cc0a77$var$nativeSort(array, function(a, b) {
+        return (a / 4 | 0) - (b / 4 | 0);
+    });
+    for(index = 0; index < 516; index++){
+        if (array[index] !== expected[index]) return true;
+    }
+});
+var $f7f8e04a79cc0a77$var$getSortCompare = function getSortCompare(comparefn) {
+    return function(x, y) {
+        if (comparefn !== undefined) return +comparefn(x, y) || 0;
+        // eslint-disable-next-line no-self-compare -- NaN check
+        if (y !== y) return -1;
+        // eslint-disable-next-line no-self-compare -- NaN check
+        if (x !== x) return 1;
+        if (x === 0 && y === 0) return 1 / x > 0 && 1 / y < 0 ? 1 : -1;
+        return x > y;
+    };
+};
+// `%TypedArray%.prototype.sort` method
+// https://tc39.es/ecma262/#sec-%typedarray%.prototype.sort
+$f7f8e04a79cc0a77$var$exportTypedArrayMethod('sort', function sort(comparefn) {
+    if (comparefn !== undefined) $1b86631bcbde2dff$exports(comparefn);
+    if ($f7f8e04a79cc0a77$var$STABLE_SORT) return $f7f8e04a79cc0a77$var$nativeSort(this, comparefn);
+    return $335cf83438b45601$exports($f7f8e04a79cc0a77$var$aTypedArray(this), $f7f8e04a79cc0a77$var$getSortCompare(comparefn));
+}, !$f7f8e04a79cc0a77$var$STABLE_SORT || $f7f8e04a79cc0a77$var$ACCEPT_INCORRECT_ARGUMENTS);
+
+
+'use strict';
+
+
+
+
+
+var $c5df7cac547c876d$var$Int8Array = $6bb4f585dbcccb10$exports.Int8Array;
+var $c5df7cac547c876d$var$aTypedArray = $08be471ebe6a175a$exports.aTypedArray;
+var $c5df7cac547c876d$var$exportTypedArrayMethod = $08be471ebe6a175a$exports.exportTypedArrayMethod;
+var $c5df7cac547c876d$var$$toLocaleString = [].toLocaleString;
+// iOS Safari 6.x fails here
+var $c5df7cac547c876d$var$TO_LOCALE_STRING_BUG = !!$c5df7cac547c876d$var$Int8Array && $8d47fb0f9458aed6$exports(function() {
+    $c5df7cac547c876d$var$$toLocaleString.call(new $c5df7cac547c876d$var$Int8Array(1));
+});
+var $c5df7cac547c876d$var$FORCED = $8d47fb0f9458aed6$exports(function() {
+    return [
+        1,
+        2
+    ].toLocaleString() !== new $c5df7cac547c876d$var$Int8Array([
+        1,
+        2
+    ]).toLocaleString();
+}) || !$8d47fb0f9458aed6$exports(function() {
+    $c5df7cac547c876d$var$Int8Array.prototype.toLocaleString.call([
+        1,
+        2
+    ]);
+});
+// `%TypedArray%.prototype.toLocaleString` method
+// https://tc39.es/ecma262/#sec-%typedarray%.prototype.tolocalestring
+$c5df7cac547c876d$var$exportTypedArrayMethod('toLocaleString', function toLocaleString() {
+    return $4a7de1faa165d753$exports($c5df7cac547c876d$var$$toLocaleString, $c5df7cac547c876d$var$TO_LOCALE_STRING_BUG ? $6f00017b18ab89e3$exports($c5df7cac547c876d$var$aTypedArray(this)) : $c5df7cac547c876d$var$aTypedArray(this), $6f00017b18ab89e3$exports(arguments));
+}, $c5df7cac547c876d$var$FORCED);
+
+
+'use strict';
+
+var $bc67ff0b6a788bcb$require$exportTypedArrayMethod = $08be471ebe6a175a$exports.exportTypedArrayMethod;
+
+
+
+var $bc67ff0b6a788bcb$var$Uint8Array = $6bb4f585dbcccb10$exports.Uint8Array;
+var $bc67ff0b6a788bcb$var$Uint8ArrayPrototype = $bc67ff0b6a788bcb$var$Uint8Array && $bc67ff0b6a788bcb$var$Uint8Array.prototype || {};
+var $bc67ff0b6a788bcb$var$arrayToString = [].toString;
+var $bc67ff0b6a788bcb$var$join = $a6ad1e8ada886a6e$exports([].join);
+if ($8d47fb0f9458aed6$exports(function() {
+    $bc67ff0b6a788bcb$var$arrayToString.call({});
+})) $bc67ff0b6a788bcb$var$arrayToString = function toString() {
+    return $bc67ff0b6a788bcb$var$join(this);
+};
+var $bc67ff0b6a788bcb$var$IS_NOT_ARRAY_METHOD = $bc67ff0b6a788bcb$var$Uint8ArrayPrototype.toString !== $bc67ff0b6a788bcb$var$arrayToString;
+// `%TypedArray%.prototype.toString` method
+// https://tc39.es/ecma262/#sec-%typedarray%.prototype.tostring
+$bc67ff0b6a788bcb$require$exportTypedArrayMethod('toString', $bc67ff0b6a788bcb$var$arrayToString, $bc67ff0b6a788bcb$var$IS_NOT_ARRAY_METHOD);
+
+
+'use strict';
+'use strict';
+
+
+
+
+
+
+var $1dd1e47a556bbcda$exports = {};
+'use strict';
+
+
+
+var $1dd1e47a556bbcda$require$getWeakData = $a5b02de36b5e8ad7$exports.getWeakData;
+
+
+
+
+
+
+
+
+var $1dd1e47a556bbcda$var$setInternalState = $3863900a8f1508e7$exports.set;
+var $1dd1e47a556bbcda$var$internalStateGetterFor = $3863900a8f1508e7$exports.getterFor;
+var $1dd1e47a556bbcda$var$find = $39b7306fbc8277ed$exports.find;
+var $1dd1e47a556bbcda$var$findIndex = $39b7306fbc8277ed$exports.findIndex;
+var $1dd1e47a556bbcda$var$splice = $a6ad1e8ada886a6e$exports([].splice);
+var $1dd1e47a556bbcda$var$id = 0;
+// fallback for uncaught frozen keys
+var $1dd1e47a556bbcda$var$uncaughtFrozenStore = function uncaughtFrozenStore(state) {
+    return state.frozen || (state.frozen = new $1dd1e47a556bbcda$var$UncaughtFrozenStore());
+};
+var $1dd1e47a556bbcda$var$UncaughtFrozenStore = function UncaughtFrozenStore() {
+    this.entries = [];
+};
+var $1dd1e47a556bbcda$var$findUncaughtFrozen = function findUncaughtFrozen(store, key) {
+    return $1dd1e47a556bbcda$var$find(store.entries, function(it) {
+        return it[0] === key;
+    });
+};
+$1dd1e47a556bbcda$var$UncaughtFrozenStore.prototype = {
+    get: function get(key) {
+        var entry = $1dd1e47a556bbcda$var$findUncaughtFrozen(this, key);
+        if (entry) return entry[1];
+    },
+    has: function has(key) {
+        return !!$1dd1e47a556bbcda$var$findUncaughtFrozen(this, key);
+    },
+    set: function set(key, value) {
+        var entry = $1dd1e47a556bbcda$var$findUncaughtFrozen(this, key);
+        if (entry) entry[1] = value;
+        else this.entries.push([
+            key,
+            value
+        ]);
+    },
+    'delete': function(key) {
+        var index = $1dd1e47a556bbcda$var$findIndex(this.entries, function(it) {
+            return it[0] === key;
+        });
+        if (~index) $1dd1e47a556bbcda$var$splice(this.entries, index, 1);
+        return !!~index;
+    }
+};
+$1dd1e47a556bbcda$exports = {
+    getConstructor: function getConstructor(wrapper, CONSTRUCTOR_NAME, IS_MAP, ADDER) {
+        var Constructor = wrapper(function(that, iterable) {
+            $a84985762d40e844$exports(that, Prototype);
+            $1dd1e47a556bbcda$var$setInternalState(that, {
+                type: CONSTRUCTOR_NAME,
+                id: $1dd1e47a556bbcda$var$id++,
+                frozen: null
+            });
+            if (!$57696a8ecf346488$exports(iterable)) $8f3b4edc46b0cdb1$exports(iterable, that[ADDER], {
+                that: that,
+                AS_ENTRIES: IS_MAP
+            });
+        });
+        var Prototype = Constructor.prototype;
+        var getInternalState = $1dd1e47a556bbcda$var$internalStateGetterFor(CONSTRUCTOR_NAME);
+        var define = function define(that, key, value) {
+            var state = getInternalState(that);
+            var data = $1dd1e47a556bbcda$require$getWeakData($fbf8b6f89693dc96$exports(key), true);
+            if (data === true) $1dd1e47a556bbcda$var$uncaughtFrozenStore(state).set(key, value);
+            else data[state.id] = value;
+            return that;
+        };
+        $5eb939720ce3c5be$exports(Prototype, {
+            // `{ WeakMap, WeakSet }.prototype.delete(key)` methods
+            // https://tc39.es/ecma262/#sec-weakmap.prototype.delete
+            // https://tc39.es/ecma262/#sec-weakset.prototype.delete
+            'delete': function(key) {
+                var state = getInternalState(this);
+                if (!$a5247cee30afd31c$exports(key)) return false;
+                var data = $1dd1e47a556bbcda$require$getWeakData(key);
+                if (data === true) return $1dd1e47a556bbcda$var$uncaughtFrozenStore(state)['delete'](key);
+                return data && $88fb7bd6b0cac2a7$exports(data, state.id) && delete data[state.id];
+            },
+            // `{ WeakMap, WeakSet }.prototype.has(key)` methods
+            // https://tc39.es/ecma262/#sec-weakmap.prototype.has
+            // https://tc39.es/ecma262/#sec-weakset.prototype.has
+            has: function has(key) {
+                var state = getInternalState(this);
+                if (!$a5247cee30afd31c$exports(key)) return false;
+                var data = $1dd1e47a556bbcda$require$getWeakData(key);
+                if (data === true) return $1dd1e47a556bbcda$var$uncaughtFrozenStore(state).has(key);
+                return data && $88fb7bd6b0cac2a7$exports(data, state.id);
+            }
+        });
+        $5eb939720ce3c5be$exports(Prototype, IS_MAP ? {
+            // `WeakMap.prototype.get(key)` method
+            // https://tc39.es/ecma262/#sec-weakmap.prototype.get
+            get: function get(key) {
+                var state = getInternalState(this);
+                if ($a5247cee30afd31c$exports(key)) {
+                    var data = $1dd1e47a556bbcda$require$getWeakData(key);
+                    if (data === true) return $1dd1e47a556bbcda$var$uncaughtFrozenStore(state).get(key);
+                    if (data) return data[state.id];
+                }
+            },
+            // `WeakMap.prototype.set(key, value)` method
+            // https://tc39.es/ecma262/#sec-weakmap.prototype.set
+            set: function set(key, value) {
+                return define(this, key, value);
+            }
+        } : {
+            // `WeakSet.prototype.add(value)` method
+            // https://tc39.es/ecma262/#sec-weakset.prototype.add
+            add: function add(value) {
+                return define(this, value, true);
+            }
+        });
+        return Constructor;
+    }
+};
+
+
+
+
+var $474350f4a61bdca4$require$enforceInternalState = $3863900a8f1508e7$exports.enforce;
+
+
+var $474350f4a61bdca4$var$$Object = Object;
+// eslint-disable-next-line es/no-array-isarray -- safe
+var $474350f4a61bdca4$var$isArray = Array.isArray;
+// eslint-disable-next-line es/no-object-isextensible -- safe
+var $474350f4a61bdca4$var$isExtensible = $474350f4a61bdca4$var$$Object.isExtensible;
+// eslint-disable-next-line es/no-object-isfrozen -- safe
+var $474350f4a61bdca4$var$isFrozen = $474350f4a61bdca4$var$$Object.isFrozen;
+// eslint-disable-next-line es/no-object-issealed -- safe
+var $474350f4a61bdca4$var$isSealed = $474350f4a61bdca4$var$$Object.isSealed;
+// eslint-disable-next-line es/no-object-freeze -- safe
+var $474350f4a61bdca4$var$freeze = $474350f4a61bdca4$var$$Object.freeze;
+// eslint-disable-next-line es/no-object-seal -- safe
+var $474350f4a61bdca4$var$seal = $474350f4a61bdca4$var$$Object.seal;
+var $474350f4a61bdca4$var$IS_IE11 = !$6bb4f585dbcccb10$exports.ActiveXObject && 'ActiveXObject' in $6bb4f585dbcccb10$exports;
+var $474350f4a61bdca4$var$InternalWeakMap;
+var $474350f4a61bdca4$var$wrapper = function wrapper(init) {
+    return function WeakMap() {
+        return init(this, arguments.length ? arguments[0] : undefined);
+    };
+};
+// `WeakMap` constructor
+// https://tc39.es/ecma262/#sec-weakmap-constructor
+var $474350f4a61bdca4$var$$WeakMap = $9244f0b02d704b0f$exports('WeakMap', $474350f4a61bdca4$var$wrapper, $1dd1e47a556bbcda$exports);
+var $474350f4a61bdca4$var$WeakMapPrototype = $474350f4a61bdca4$var$$WeakMap.prototype;
+var $474350f4a61bdca4$var$nativeSet = $a6ad1e8ada886a6e$exports($474350f4a61bdca4$var$WeakMapPrototype.set);
+// Chakra Edge bug: adding frozen arrays to WeakMap unfreeze them
+var $474350f4a61bdca4$var$hasMSEdgeFreezingBug = function hasMSEdgeFreezingBug() {
+    return $2914bb1d6a56307d$exports && $8d47fb0f9458aed6$exports(function() {
+        var frozenArray = $474350f4a61bdca4$var$freeze([]);
+        $474350f4a61bdca4$var$nativeSet(new $474350f4a61bdca4$var$$WeakMap(), frozenArray, 1);
+        return !$474350f4a61bdca4$var$isFrozen(frozenArray);
+    });
+};
+// IE11 WeakMap frozen keys fix
+// We can't use feature detection because it crash some old IE builds
+// https://github.com/zloirock/core-js/issues/485
+if ($072c5e1da16b621f$exports) {
+    if ($474350f4a61bdca4$var$IS_IE11) {
+        $474350f4a61bdca4$var$InternalWeakMap = $1dd1e47a556bbcda$exports.getConstructor($474350f4a61bdca4$var$wrapper, 'WeakMap', true);
+        $a5b02de36b5e8ad7$exports.enable();
+        var $474350f4a61bdca4$var$nativeDelete = $a6ad1e8ada886a6e$exports($474350f4a61bdca4$var$WeakMapPrototype['delete']);
+        var $474350f4a61bdca4$var$nativeHas = $a6ad1e8ada886a6e$exports($474350f4a61bdca4$var$WeakMapPrototype.has);
+        var $474350f4a61bdca4$var$nativeGet = $a6ad1e8ada886a6e$exports($474350f4a61bdca4$var$WeakMapPrototype.get);
+        $5eb939720ce3c5be$exports($474350f4a61bdca4$var$WeakMapPrototype, {
+            'delete': function(key) {
+                if ($a5247cee30afd31c$exports(key) && !$474350f4a61bdca4$var$isExtensible(key)) {
+                    var state = $474350f4a61bdca4$require$enforceInternalState(this);
+                    if (!state.frozen) state.frozen = new $474350f4a61bdca4$var$InternalWeakMap();
+                    return $474350f4a61bdca4$var$nativeDelete(this, key) || state.frozen['delete'](key);
+                }
+                return $474350f4a61bdca4$var$nativeDelete(this, key);
+            },
+            has: function has(key) {
+                if ($a5247cee30afd31c$exports(key) && !$474350f4a61bdca4$var$isExtensible(key)) {
+                    var state = $474350f4a61bdca4$require$enforceInternalState(this);
+                    if (!state.frozen) state.frozen = new $474350f4a61bdca4$var$InternalWeakMap();
+                    return $474350f4a61bdca4$var$nativeHas(this, key) || state.frozen.has(key);
+                }
+                return $474350f4a61bdca4$var$nativeHas(this, key);
+            },
+            get: function get(key) {
+                if ($a5247cee30afd31c$exports(key) && !$474350f4a61bdca4$var$isExtensible(key)) {
+                    var state = $474350f4a61bdca4$require$enforceInternalState(this);
+                    if (!state.frozen) state.frozen = new $474350f4a61bdca4$var$InternalWeakMap();
+                    return $474350f4a61bdca4$var$nativeHas(this, key) ? $474350f4a61bdca4$var$nativeGet(this, key) : state.frozen.get(key);
+                }
+                return $474350f4a61bdca4$var$nativeGet(this, key);
+            },
+            set: function set(key, value) {
+                if ($a5247cee30afd31c$exports(key) && !$474350f4a61bdca4$var$isExtensible(key)) {
+                    var state = $474350f4a61bdca4$require$enforceInternalState(this);
+                    if (!state.frozen) state.frozen = new $474350f4a61bdca4$var$InternalWeakMap();
+                    $474350f4a61bdca4$var$nativeHas(this, key) ? $474350f4a61bdca4$var$nativeSet(this, key, value) : state.frozen.set(key, value);
+                } else $474350f4a61bdca4$var$nativeSet(this, key, value);
+                return this;
+            }
+        });
+    // Chakra Edge frozen keys fix
+    } else if ($474350f4a61bdca4$var$hasMSEdgeFreezingBug()) $5eb939720ce3c5be$exports($474350f4a61bdca4$var$WeakMapPrototype, {
+        set: function set(key, value) {
+            var arrayIntegrityLevel;
+            if ($474350f4a61bdca4$var$isArray(key)) {
+                if ($474350f4a61bdca4$var$isFrozen(key)) arrayIntegrityLevel = $474350f4a61bdca4$var$freeze;
+                else if ($474350f4a61bdca4$var$isSealed(key)) arrayIntegrityLevel = $474350f4a61bdca4$var$seal;
+            }
+            $474350f4a61bdca4$var$nativeSet(this, key, value);
+            if (arrayIntegrityLevel) arrayIntegrityLevel(key);
+            return this;
+        }
+    });
+}
+
+
+
+
+'use strict';
+'use strict';
+
+
+// `WeakSet` constructor
+// https://tc39.es/ecma262/#sec-weakset-constructor
+$9244f0b02d704b0f$exports('WeakSet', function(init) {
+    return function WeakSet() {
+        return init(this, arguments.length ? arguments[0] : undefined);
+    };
+}, $1dd1e47a556bbcda$exports);
+
+
+
+
+'use strict';
+
+var $fee67cd7a7e99c9a$exports = {};
+'use strict';
+// iterable DOM collections
+// flag - `iterable` interface - 'entries', 'keys', 'values', 'forEach' methods
+$fee67cd7a7e99c9a$exports = {
+    CSSRuleList: 0,
+    CSSStyleDeclaration: 0,
+    CSSValueList: 0,
+    ClientRectList: 0,
+    DOMRectList: 0,
+    DOMStringList: 0,
+    DOMTokenList: 1,
+    DataTransferItemList: 0,
+    FileList: 0,
+    HTMLAllCollection: 0,
+    HTMLCollection: 0,
+    HTMLFormElement: 0,
+    HTMLSelectElement: 0,
+    MediaList: 0,
+    MimeTypeArray: 0,
+    NamedNodeMap: 0,
+    NodeList: 1,
+    PaintRequestList: 0,
+    Plugin: 0,
+    PluginArray: 0,
+    SVGLengthList: 0,
+    SVGNumberList: 0,
+    SVGPathSegList: 0,
+    SVGPointList: 0,
+    SVGStringList: 0,
+    SVGTransformList: 0,
+    SourceBufferList: 0,
+    StyleSheetList: 0,
+    TextTrackCueList: 0,
+    TextTrackList: 0,
+    TouchList: 0
+};
+
+
+var $97f26c01b3917a2f$exports = {};
+'use strict';
+
+var $97f26c01b3917a2f$var$classList = $2f700ee53523f24b$exports('span').classList;
+var $97f26c01b3917a2f$var$DOMTokenListPrototype = $97f26c01b3917a2f$var$classList && $97f26c01b3917a2f$var$classList.constructor && $97f26c01b3917a2f$var$classList.constructor.prototype;
+$97f26c01b3917a2f$exports = $97f26c01b3917a2f$var$DOMTokenListPrototype === Object.prototype ? undefined : $97f26c01b3917a2f$var$DOMTokenListPrototype;
+
+
+var $7a192941dffee5c5$exports = {};
+'use strict';
+
+var $7a192941dffee5c5$require$$forEach = $39b7306fbc8277ed$exports.forEach;
+var $dadc23c352a93422$exports = {};
+'use strict';
+
+$dadc23c352a93422$exports = function(METHOD_NAME, argument) {
+    var method = [][METHOD_NAME];
+    return !!method && $8d47fb0f9458aed6$exports(function() {
+        // eslint-disable-next-line no-useless-call -- required for testing
+        method.call(null, argument || function() {
+            return 1;
+        }, 1);
+    });
+};
+
+
+var $7a192941dffee5c5$var$STRICT_METHOD = $dadc23c352a93422$exports('forEach');
+// `Array.prototype.forEach` method implementation
+// https://tc39.es/ecma262/#sec-array.prototype.foreach
+$7a192941dffee5c5$exports = !$7a192941dffee5c5$var$STRICT_METHOD ? function forEach(callbackfn /* , thisArg */ ) {
+    return $7a192941dffee5c5$require$$forEach(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+// eslint-disable-next-line es/no-array-prototype-foreach -- safe
+} : [].forEach;
+
+
+
+var $605e0b108733e71d$var$handlePrototype = function handlePrototype(CollectionPrototype) {
+    // some Chrome versions have non-configurable methods on DOMTokenList
+    if (CollectionPrototype && CollectionPrototype.forEach !== $7a192941dffee5c5$exports) try {
+        $542c4a1412d7b12f$exports(CollectionPrototype, 'forEach', $7a192941dffee5c5$exports);
+    } catch (error) {
+        CollectionPrototype.forEach = $7a192941dffee5c5$exports;
+    }
+};
+for(var $605e0b108733e71d$var$COLLECTION_NAME in $fee67cd7a7e99c9a$exports)if ($fee67cd7a7e99c9a$exports[$605e0b108733e71d$var$COLLECTION_NAME]) $605e0b108733e71d$var$handlePrototype($6bb4f585dbcccb10$exports[$605e0b108733e71d$var$COLLECTION_NAME] && $6bb4f585dbcccb10$exports[$605e0b108733e71d$var$COLLECTION_NAME].prototype);
+$605e0b108733e71d$var$handlePrototype($97f26c01b3917a2f$exports);
+
+
+'use strict';
+
+
+
+
+
+
+
+var $d64cee2c1e04d07c$var$ITERATOR = $1c371bdde30cc6f2$exports('iterator');
+var $d64cee2c1e04d07c$var$ArrayValues = $cbe9832f71b8fc0d$exports.values;
+var $d64cee2c1e04d07c$var$handlePrototype = function handlePrototype(CollectionPrototype, COLLECTION_NAME) {
+    if (CollectionPrototype) {
+        // some Chrome versions have non-configurable methods on DOMTokenList
+        if (CollectionPrototype[$d64cee2c1e04d07c$var$ITERATOR] !== $d64cee2c1e04d07c$var$ArrayValues) try {
+            $542c4a1412d7b12f$exports(CollectionPrototype, $d64cee2c1e04d07c$var$ITERATOR, $d64cee2c1e04d07c$var$ArrayValues);
+        } catch (error) {
+            CollectionPrototype[$d64cee2c1e04d07c$var$ITERATOR] = $d64cee2c1e04d07c$var$ArrayValues;
+        }
+        $dc8b49a2567d5bf5$exports(CollectionPrototype, COLLECTION_NAME, true);
+        if ($fee67cd7a7e99c9a$exports[COLLECTION_NAME]) for(var METHOD_NAME in $cbe9832f71b8fc0d$exports){
+            // some Chrome versions have non-configurable methods on DOMTokenList
+            if (CollectionPrototype[METHOD_NAME] !== $cbe9832f71b8fc0d$exports[METHOD_NAME]) try {
+                $542c4a1412d7b12f$exports(CollectionPrototype, METHOD_NAME, $cbe9832f71b8fc0d$exports[METHOD_NAME]);
+            } catch (error) {
+                CollectionPrototype[METHOD_NAME] = $cbe9832f71b8fc0d$exports[METHOD_NAME];
+            }
+        }
+    }
+};
+for(var $d64cee2c1e04d07c$var$COLLECTION_NAME in $fee67cd7a7e99c9a$exports)$d64cee2c1e04d07c$var$handlePrototype($6bb4f585dbcccb10$exports[$d64cee2c1e04d07c$var$COLLECTION_NAME] && $6bb4f585dbcccb10$exports[$d64cee2c1e04d07c$var$COLLECTION_NAME].prototype, $d64cee2c1e04d07c$var$COLLECTION_NAME);
+$d64cee2c1e04d07c$var$handlePrototype($97f26c01b3917a2f$exports, 'DOMTokenList');
+
+
+'use strict';
+'use strict';
+
+
+
+var $de4fa4dc37ca3218$require$clearImmediate = $1ff07f00948f0a2e$exports.clear;
+// `clearImmediate` method
+// http://w3c.github.io/setImmediate/#si-clearImmediate
+$a4386f1de3d17f70$exports({
+    global: true,
+    bind: true,
+    enumerable: true,
+    forced: $6bb4f585dbcccb10$exports.clearImmediate !== $de4fa4dc37ca3218$require$clearImmediate
+}, {
+    clearImmediate: $de4fa4dc37ca3218$require$clearImmediate
+});
+
+
+'use strict';
+
+
+
+var $adc960323b4725bc$require$setTask = $1ff07f00948f0a2e$exports.set;
+var $f067718f419d34b3$exports = {};
+'use strict';
+
+
+
+
+
+
+
+var $f067718f419d34b3$var$Function = $6bb4f585dbcccb10$exports.Function;
+// dirty IE9- and Bun 0.3.0- checks
+var $f067718f419d34b3$var$WRAP = /MSIE .\./.test($4bf0b512ef614c5f$exports) || $0bc94b3fc07791e8$exports === 'BUN' && function() {
+    var version = $6bb4f585dbcccb10$exports.Bun.version.split('.');
+    return version.length < 3 || version[0] === '0' && (version[1] < 3 || version[1] === '3' && version[2] === '0');
+}();
+// IE9- / Bun 0.3.0- setTimeout / setInterval / setImmediate additional parameters fix
+// https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#timers
+// https://github.com/oven-sh/bun/issues/1633
+$f067718f419d34b3$exports = function(scheduler, hasTimeArg) {
+    var firstParamIndex = hasTimeArg ? 2 : 1;
+    return $f067718f419d34b3$var$WRAP ? function(handler, timeout /* , ...arguments */ ) {
+        var boundArgs = $c8d744b52f18fee1$exports(arguments.length, 1) > firstParamIndex;
+        var fn = $56269d2914fd05c7$exports(handler) ? handler : $f067718f419d34b3$var$Function(handler);
+        var params = boundArgs ? $6f00017b18ab89e3$exports(arguments, firstParamIndex) : [];
+        var callback = boundArgs ? function callback() {
+            $4a7de1faa165d753$exports(fn, this, params);
+        } : fn;
+        return hasTimeArg ? scheduler(callback, timeout) : scheduler(callback);
+    } : scheduler;
+};
+
+
+// https://github.com/oven-sh/bun/issues/1633
+var $adc960323b4725bc$var$setImmediate = $6bb4f585dbcccb10$exports.setImmediate ? $f067718f419d34b3$exports($adc960323b4725bc$require$setTask, false) : $adc960323b4725bc$require$setTask;
+// `setImmediate` method
+// http://w3c.github.io/setImmediate/#si-setImmediate
+$a4386f1de3d17f70$exports({
+    global: true,
+    bind: true,
+    enumerable: true,
+    forced: $6bb4f585dbcccb10$exports.setImmediate !== $adc960323b4725bc$var$setImmediate
+}, {
+    setImmediate: $adc960323b4725bc$var$setImmediate
+});
+
+
+
+
+'use strict';
+
+
+
+
+
+
+
+// Bun ~ 1.0.30 bug
+// https://github.com/oven-sh/bun/issues/9249
+var $fe53ba10f89f4bb8$var$WRONG_ARITY = $8d47fb0f9458aed6$exports(function() {
+    // getOwnPropertyDescriptor for prevent experimental warning in Node 11
+    // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
+    return $9ad58a245a9ea542$exports && Object.getOwnPropertyDescriptor($6bb4f585dbcccb10$exports, 'queueMicrotask').value.length !== 1;
+});
+// `queueMicrotask` method
+// https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#dom-queuemicrotask
+$a4386f1de3d17f70$exports({
+    global: true,
+    enumerable: true,
+    dontCallGetSet: true,
+    forced: $fe53ba10f89f4bb8$var$WRONG_ARITY
+}, {
+    queueMicrotask: function queueMicrotask(fn) {
+        $c8d744b52f18fee1$exports(arguments.length, 1);
+        $30d2b16acf23b32d$exports($1b86631bcbde2dff$exports(fn));
+    }
+});
+
+
+'use strict';
+'use strict';
+'use strict';
+
+var $c7c904889c9d3d9d$require$charAt = $e71f49d87e6d570f$exports.charAt;
+
+
+
+
+var $c7c904889c9d3d9d$var$STRING_ITERATOR = 'String Iterator';
+var $c7c904889c9d3d9d$var$setInternalState = $3863900a8f1508e7$exports.set;
+var $c7c904889c9d3d9d$var$getInternalState = $3863900a8f1508e7$exports.getterFor($c7c904889c9d3d9d$var$STRING_ITERATOR);
+// `String.prototype[@@iterator]` method
+// https://tc39.es/ecma262/#sec-string.prototype-@@iterator
+$31f2843ed23eeb6a$exports(String, 'String', function(iterated) {
+    $c7c904889c9d3d9d$var$setInternalState(this, {
+        type: $c7c904889c9d3d9d$var$STRING_ITERATOR,
+        string: $3441418af0b2523d$exports(iterated),
+        index: 0
+    });
+// `%StringIteratorPrototype%.next` method
+// https://tc39.es/ecma262/#sec-%stringiteratorprototype%.next
+}, function next() {
+    var state = $c7c904889c9d3d9d$var$getInternalState(this);
+    var string = state.string;
+    var index = state.index;
+    var point;
+    if (index >= string.length) return $60603a379ad3a1de$exports(undefined, true);
+    point = $c7c904889c9d3d9d$require$charAt(string, index);
+    state.index += point.length;
+    return $60603a379ad3a1de$exports(point, false);
+});
+
+
+
+
+var $937eb281d2b1db31$exports = {};
+'use strict';
+
+
+
+
+var $937eb281d2b1db31$var$ITERATOR = $1c371bdde30cc6f2$exports('iterator');
+$937eb281d2b1db31$exports = !$8d47fb0f9458aed6$exports(function() {
+    // eslint-disable-next-line unicorn/relative-url-style -- required for testing
+    var url = new URL('b?a=1&b=2&c=3', 'https://a');
+    var params = url.searchParams;
+    var params2 = new URLSearchParams('a=1&a=2&b=3');
+    var result = '';
+    url.pathname = 'c%20d';
+    params.forEach(function(value, key) {
+        params['delete']('b');
+        result += key + value;
+    });
+    params2['delete']('a', 2);
+    // `undefined` case is a Chromium 117 bug
+    // https://bugs.chromium.org/p/v8/issues/detail?id=14222
+    params2['delete']('b', undefined);
+    return $2a942138f69f24b8$exports && (!url.toJSON || !params2.has('a', 1) || params2.has('a', 2) || !params2.has('a', undefined) || params2.has('b')) || !params.size && ($2a942138f69f24b8$exports || !$9ad58a245a9ea542$exports) || !params.sort || url.href !== 'https://a/c%20d?a=1&c=3' || params.get('c') !== '3' || String(new URLSearchParams('?a=1')) !== 'a=1' || !params[$937eb281d2b1db31$var$ITERATOR] || new URL('https://a@b').username !== 'a' || new URLSearchParams(new URLSearchParams('a=b')).get('a') !== 'b' || new URL("https://\u0442\u0435\u0441\u0442").host !== 'xn--e1aybc' || new URL("https://a#\u0431").hash !== '#%D0%B1' || result !== 'a1c3' || new URL('https://x', undefined).host !== 'x';
+});
+
+
+
+
+
+
+
+
+
+var $2d2b5188ee0de8d3$exports = {};
+'use strict';
+
+
+
+
+
+
+
+
+
+// eslint-disable-next-line es/no-object-assign -- safe
+var $2d2b5188ee0de8d3$var$$assign = Object.assign;
+// eslint-disable-next-line es/no-object-defineproperty -- required for testing
+var $2d2b5188ee0de8d3$var$defineProperty = Object.defineProperty;
+var $2d2b5188ee0de8d3$var$concat = $a6ad1e8ada886a6e$exports([].concat);
+// `Object.assign` method
+// https://tc39.es/ecma262/#sec-object.assign
+$2d2b5188ee0de8d3$exports = !$2d2b5188ee0de8d3$var$$assign || $8d47fb0f9458aed6$exports(function() {
+    // should have correct order of operations (Edge bug)
+    if ($9ad58a245a9ea542$exports && $2d2b5188ee0de8d3$var$$assign({
+        b: 1
+    }, $2d2b5188ee0de8d3$var$$assign($2d2b5188ee0de8d3$var$defineProperty({}, 'a', {
+        enumerable: true,
+        get: function get() {
+            $2d2b5188ee0de8d3$var$defineProperty(this, 'b', {
+                value: 3,
+                enumerable: false
+            });
+        }
+    }), {
+        b: 2
+    })).b !== 1) return true;
+    // should work with symbols and should have deterministic property order (V8 bug)
+    var A = {};
+    var B = {};
+    // eslint-disable-next-line es/no-symbol -- safe
+    var symbol = Symbol('assign detection');
+    var alphabet = 'abcdefghijklmnopqrst';
+    A[symbol] = 7;
+    // eslint-disable-next-line es/no-array-prototype-foreach -- safe
+    alphabet.split('').forEach(function(chr) {
+        B[chr] = chr;
+    });
+    return $2d2b5188ee0de8d3$var$$assign({}, A)[symbol] !== 7 || $ebb453aeb0972523$exports($2d2b5188ee0de8d3$var$$assign({}, B)).join('') !== alphabet;
+}) ? function assign(target, source) {
+    var T = $e81ad450342cdca8$exports(target);
+    var argumentsLength = arguments.length;
+    var index = 1;
+    var getOwnPropertySymbols = $c7bc6eb18f26704d$export$2d1720544b23b823;
+    var propertyIsEnumerable = $eeef746029dc98c3$export$2d1720544b23b823;
+    while(argumentsLength > index){
+        var S = $f3be2955fe886944$exports(arguments[index++]);
+        var keys = getOwnPropertySymbols ? $2d2b5188ee0de8d3$var$concat($ebb453aeb0972523$exports(S), getOwnPropertySymbols(S)) : $ebb453aeb0972523$exports(S);
+        var length = keys.length;
+        var j = 0;
+        var key;
+        while(length > j){
+            key = keys[j++];
+            if (!$9ad58a245a9ea542$exports || $b51eee67d287dc0c$exports(propertyIsEnumerable, S, key)) T[key] = S[key];
+        }
+    }
+    return T;
+} : $2d2b5188ee0de8d3$var$$assign;
+
+
+
+
+
+var $34384157a207241e$require$codeAt = $e71f49d87e6d570f$exports.codeAt;
+var $9351a65364026704$exports = {};
+'use strict';
+
+var $9351a65364026704$var$maxInt = 2147483647; // aka. 0x7FFFFFFF or 2^31-1
+var $9351a65364026704$var$base = 36;
+var $9351a65364026704$var$tMin = 1;
+var $9351a65364026704$var$tMax = 26;
+var $9351a65364026704$var$skew = 38;
+var $9351a65364026704$var$damp = 700;
+var $9351a65364026704$var$initialBias = 72;
+var $9351a65364026704$var$initialN = 128; // 0x80
+var $9351a65364026704$var$delimiter = '-'; // '\x2D'
+var $9351a65364026704$var$regexNonASCII = /[^\0-\u007E]/; // non-ASCII chars
+var $9351a65364026704$var$regexSeparators = /[.\u3002\uFF0E\uFF61]/g; // RFC 3490 separators
+var $9351a65364026704$var$OVERFLOW_ERROR = 'Overflow: input needs wider integers to process';
+var $9351a65364026704$var$baseMinusTMin = $9351a65364026704$var$base - $9351a65364026704$var$tMin;
+var $9351a65364026704$var$$RangeError = RangeError;
+var $9351a65364026704$var$exec = $a6ad1e8ada886a6e$exports($9351a65364026704$var$regexSeparators.exec);
+var $9351a65364026704$var$floor = Math.floor;
+var $9351a65364026704$var$fromCharCode = String.fromCharCode;
+var $9351a65364026704$var$charCodeAt = $a6ad1e8ada886a6e$exports(''.charCodeAt);
+var $9351a65364026704$var$join = $a6ad1e8ada886a6e$exports([].join);
+var $9351a65364026704$var$push = $a6ad1e8ada886a6e$exports([].push);
+var $9351a65364026704$var$replace = $a6ad1e8ada886a6e$exports(''.replace);
+var $9351a65364026704$var$split = $a6ad1e8ada886a6e$exports(''.split);
+var $9351a65364026704$var$toLowerCase = $a6ad1e8ada886a6e$exports(''.toLowerCase);
+/**
+ * Creates an array containing the numeric code points of each Unicode
+ * character in the string. While JavaScript uses UCS-2 internally,
+ * this function will convert a pair of surrogate halves (each of which
+ * UCS-2 exposes as separate characters) into a single code point,
+ * matching UTF-16.
+ */ var $9351a65364026704$var$ucs2decode = function ucs2decode(string) {
+    var output = [];
+    var counter = 0;
+    var length = string.length;
+    while(counter < length){
+        var value = $9351a65364026704$var$charCodeAt(string, counter++);
+        if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
+            // It's a high surrogate, and there is a next character.
+            var extra = $9351a65364026704$var$charCodeAt(string, counter++);
+            if ((extra & 0xFC00) === 0xDC00) $9351a65364026704$var$push(output, ((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
+            else {
+                // It's an unmatched surrogate; only append this code unit, in case the
+                // next code unit is the high surrogate of a surrogate pair.
+                $9351a65364026704$var$push(output, value);
+                counter--;
+            }
+        } else $9351a65364026704$var$push(output, value);
+    }
+    return output;
+};
+/**
+ * Converts a digit/integer into a basic code point.
+ */ var $9351a65364026704$var$digitToBasic = function digitToBasic(digit) {
+    //  0..25 map to ASCII a..z or A..Z
+    // 26..35 map to ASCII 0..9
+    return digit + 22 + 75 * (digit < 26);
+};
+/**
+ * Bias adaptation function as per section 3.4 of RFC 3492.
+ * https://tools.ietf.org/html/rfc3492#section-3.4
+ */ var $9351a65364026704$var$adapt = function adapt(delta, numPoints, firstTime) {
+    var k = 0;
+    delta = firstTime ? $9351a65364026704$var$floor(delta / $9351a65364026704$var$damp) : delta >> 1;
+    delta += $9351a65364026704$var$floor(delta / numPoints);
+    while(delta > $9351a65364026704$var$baseMinusTMin * $9351a65364026704$var$tMax >> 1){
+        delta = $9351a65364026704$var$floor(delta / $9351a65364026704$var$baseMinusTMin);
+        k += $9351a65364026704$var$base;
+    }
+    return $9351a65364026704$var$floor(k + ($9351a65364026704$var$baseMinusTMin + 1) * delta / (delta + $9351a65364026704$var$skew));
+};
+/**
+ * Converts a string of Unicode symbols (e.g. a domain name label) to a
+ * Punycode string of ASCII-only symbols.
+ */ var $9351a65364026704$var$encode = function encode(input) {
+    var output = [];
+    // Convert the input in UCS-2 to an array of Unicode code points.
+    input = $9351a65364026704$var$ucs2decode(input);
+    // Cache the length.
+    var inputLength = input.length;
+    // Initialize the state.
+    var n = $9351a65364026704$var$initialN;
+    var delta = 0;
+    var bias = $9351a65364026704$var$initialBias;
+    var i, currentValue;
+    // Handle the basic code points.
+    for(i = 0; i < input.length; i++){
+        currentValue = input[i];
+        if (currentValue < 0x80) $9351a65364026704$var$push(output, $9351a65364026704$var$fromCharCode(currentValue));
+    }
+    var basicLength = output.length; // number of basic code points.
+    var handledCPCount = basicLength; // number of code points that have been handled;
+    // Finish the basic string with a delimiter unless it's empty.
+    if (basicLength) $9351a65364026704$var$push(output, $9351a65364026704$var$delimiter);
+    // Main encoding loop:
+    while(handledCPCount < inputLength){
+        // All non-basic code points < n have been handled already. Find the next larger one:
+        var m = $9351a65364026704$var$maxInt;
+        for(i = 0; i < input.length; i++){
+            currentValue = input[i];
+            if (currentValue >= n && currentValue < m) m = currentValue;
+        }
+        // Increase `delta` enough to advance the decoder's <n,i> state to <m,0>, but guard against overflow.
+        var handledCPCountPlusOne = handledCPCount + 1;
+        if (m - n > $9351a65364026704$var$floor(($9351a65364026704$var$maxInt - delta) / handledCPCountPlusOne)) throw new $9351a65364026704$var$$RangeError($9351a65364026704$var$OVERFLOW_ERROR);
+        delta += (m - n) * handledCPCountPlusOne;
+        n = m;
+        for(i = 0; i < input.length; i++){
+            currentValue = input[i];
+            if (currentValue < n && ++delta > $9351a65364026704$var$maxInt) throw new $9351a65364026704$var$$RangeError($9351a65364026704$var$OVERFLOW_ERROR);
+            if (currentValue === n) {
+                // Represent delta as a generalized variable-length integer.
+                var q = delta;
+                var k = $9351a65364026704$var$base;
+                while(true){
+                    var t = k <= bias ? $9351a65364026704$var$tMin : k >= bias + $9351a65364026704$var$tMax ? $9351a65364026704$var$tMax : k - bias;
+                    if (q < t) break;
+                    var qMinusT = q - t;
+                    var baseMinusT = $9351a65364026704$var$base - t;
+                    $9351a65364026704$var$push(output, $9351a65364026704$var$fromCharCode($9351a65364026704$var$digitToBasic(t + qMinusT % baseMinusT)));
+                    q = $9351a65364026704$var$floor(qMinusT / baseMinusT);
+                    k += $9351a65364026704$var$base;
+                }
+                $9351a65364026704$var$push(output, $9351a65364026704$var$fromCharCode($9351a65364026704$var$digitToBasic(q)));
+                bias = $9351a65364026704$var$adapt(delta, handledCPCountPlusOne, handledCPCount === basicLength);
+                delta = 0;
+                handledCPCount++;
+            }
+        }
+        delta++;
+        n++;
+    }
+    return $9351a65364026704$var$join(output, '');
+};
+$9351a65364026704$exports = function(input) {
+    var encoded = [];
+    var labels = $9351a65364026704$var$split($9351a65364026704$var$replace($9351a65364026704$var$toLowerCase(input), $9351a65364026704$var$regexSeparators, '\u002E'), '.');
+    var i, label;
+    for(i = 0; i < labels.length; i++){
+        label = labels[i];
+        $9351a65364026704$var$push(encoded, $9351a65364026704$var$exec($9351a65364026704$var$regexNonASCII, label) ? 'xn--' + $9351a65364026704$var$encode(label) : label);
+    }
+    return $9351a65364026704$var$join(encoded, '.');
+};
+
+
+
+
+
+var $2f6ba9f26ca8d8d1$exports = {};
+'use strict';
+
+'use strict';
+
+
+
+var $8adcf4d752868196$var$$RangeError = RangeError;
+var $8adcf4d752868196$var$fromCharCode = String.fromCharCode;
+// eslint-disable-next-line es/no-string-fromcodepoint -- required for testing
+var $8adcf4d752868196$var$$fromCodePoint = String.fromCodePoint;
+var $8adcf4d752868196$var$join = $a6ad1e8ada886a6e$exports([].join);
+// length should be 1, old FF problem
+var $8adcf4d752868196$var$INCORRECT_LENGTH = !!$8adcf4d752868196$var$$fromCodePoint && $8adcf4d752868196$var$$fromCodePoint.length !== 1;
+// `String.fromCodePoint` method
+// https://tc39.es/ecma262/#sec-string.fromcodepoint
+$a4386f1de3d17f70$exports({
+    target: 'String',
+    stat: true,
+    arity: 1,
+    forced: $8adcf4d752868196$var$INCORRECT_LENGTH
+}, {
+    // eslint-disable-next-line no-unused-vars -- required for `.length`
+    fromCodePoint: function fromCodePoint(x) {
+        var elements = [];
+        var length = arguments.length;
+        var i = 0;
+        var code;
+        while(length > i){
+            code = +arguments[i++];
+            if ($a165d4ed9d5b72e1$exports(code, 0x10FFFF) !== code) throw new $8adcf4d752868196$var$$RangeError(code + ' is not a valid code point');
+            elements[i] = code < 0x10000 ? $8adcf4d752868196$var$fromCharCode(code) : $8adcf4d752868196$var$fromCharCode(((code -= 0x10000) >> 10) + 0xD800, code % 0x400 + 0xDC00);
+        }
+        return $8adcf4d752868196$var$join(elements, '');
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var $2f6ba9f26ca8d8d1$var$ITERATOR = $1c371bdde30cc6f2$exports('iterator');
+var $2f6ba9f26ca8d8d1$var$URL_SEARCH_PARAMS = 'URLSearchParams';
+var $2f6ba9f26ca8d8d1$var$URL_SEARCH_PARAMS_ITERATOR = $2f6ba9f26ca8d8d1$var$URL_SEARCH_PARAMS + 'Iterator';
+var $2f6ba9f26ca8d8d1$var$setInternalState = $3863900a8f1508e7$exports.set;
+var $2f6ba9f26ca8d8d1$var$getInternalParamsState = $3863900a8f1508e7$exports.getterFor($2f6ba9f26ca8d8d1$var$URL_SEARCH_PARAMS);
+var $2f6ba9f26ca8d8d1$var$getInternalIteratorState = $3863900a8f1508e7$exports.getterFor($2f6ba9f26ca8d8d1$var$URL_SEARCH_PARAMS_ITERATOR);
+var $2f6ba9f26ca8d8d1$var$nativeFetch = $0b88c7667a83a2a3$exports('fetch');
+var $2f6ba9f26ca8d8d1$var$NativeRequest = $0b88c7667a83a2a3$exports('Request');
+var $2f6ba9f26ca8d8d1$var$Headers = $0b88c7667a83a2a3$exports('Headers');
+var $2f6ba9f26ca8d8d1$var$RequestPrototype = $2f6ba9f26ca8d8d1$var$NativeRequest && $2f6ba9f26ca8d8d1$var$NativeRequest.prototype;
+var $2f6ba9f26ca8d8d1$var$HeadersPrototype = $2f6ba9f26ca8d8d1$var$Headers && $2f6ba9f26ca8d8d1$var$Headers.prototype;
+var $2f6ba9f26ca8d8d1$var$TypeError = $6bb4f585dbcccb10$exports.TypeError;
+var $2f6ba9f26ca8d8d1$var$encodeURIComponent = $6bb4f585dbcccb10$exports.encodeURIComponent;
+var $2f6ba9f26ca8d8d1$var$fromCharCode = String.fromCharCode;
+var $2f6ba9f26ca8d8d1$var$fromCodePoint = $7ab1ca27f8995b05$exports('String', 'fromCodePoint');
+var $2f6ba9f26ca8d8d1$var$$parseInt = parseInt;
+var $2f6ba9f26ca8d8d1$var$charAt = $a6ad1e8ada886a6e$exports(''.charAt);
+var $2f6ba9f26ca8d8d1$var$join = $a6ad1e8ada886a6e$exports([].join);
+var $2f6ba9f26ca8d8d1$var$push = $a6ad1e8ada886a6e$exports([].push);
+var $2f6ba9f26ca8d8d1$var$replace = $a6ad1e8ada886a6e$exports(''.replace);
+var $2f6ba9f26ca8d8d1$var$shift = $a6ad1e8ada886a6e$exports([].shift);
+var $2f6ba9f26ca8d8d1$var$splice = $a6ad1e8ada886a6e$exports([].splice);
+var $2f6ba9f26ca8d8d1$var$split = $a6ad1e8ada886a6e$exports(''.split);
+var $2f6ba9f26ca8d8d1$var$stringSlice = $a6ad1e8ada886a6e$exports(''.slice);
+var $2f6ba9f26ca8d8d1$var$exec = $a6ad1e8ada886a6e$exports(/./.exec);
+var $2f6ba9f26ca8d8d1$var$plus = /\+/g;
+var $2f6ba9f26ca8d8d1$var$FALLBACK_REPLACER = '\uFFFD';
+var $2f6ba9f26ca8d8d1$var$VALID_HEX = /^[0-9a-f]+$/i;
+var $2f6ba9f26ca8d8d1$var$parseHexOctet = function parseHexOctet(string, start) {
+    var substr = $2f6ba9f26ca8d8d1$var$stringSlice(string, start, start + 2);
+    if (!$2f6ba9f26ca8d8d1$var$exec($2f6ba9f26ca8d8d1$var$VALID_HEX, substr)) return NaN;
+    return $2f6ba9f26ca8d8d1$var$$parseInt(substr, 16);
+};
+var $2f6ba9f26ca8d8d1$var$getLeadingOnes = function getLeadingOnes(octet) {
+    var count = 0;
+    for(var mask = 0x80; mask > 0 && (octet & mask) !== 0; mask >>= 1)count++;
+    return count;
+};
+var $2f6ba9f26ca8d8d1$var$utf8Decode = function utf8Decode(octets) {
+    var codePoint = null;
+    switch(octets.length){
+        case 1:
+            codePoint = octets[0];
+            break;
+        case 2:
+            codePoint = (octets[0] & 0x1F) << 6 | octets[1] & 0x3F;
+            break;
+        case 3:
+            codePoint = (octets[0] & 0x0F) << 12 | (octets[1] & 0x3F) << 6 | octets[2] & 0x3F;
+            break;
+        case 4:
+            codePoint = (octets[0] & 0x07) << 18 | (octets[1] & 0x3F) << 12 | (octets[2] & 0x3F) << 6 | octets[3] & 0x3F;
+            break;
+    }
+    return codePoint > 0x10FFFF ? null : codePoint;
+};
+var $2f6ba9f26ca8d8d1$var$decode = function decode(input) {
+    input = $2f6ba9f26ca8d8d1$var$replace(input, $2f6ba9f26ca8d8d1$var$plus, ' ');
+    var length = input.length;
+    var result = '';
+    var i = 0;
+    while(i < length){
+        var decodedChar = $2f6ba9f26ca8d8d1$var$charAt(input, i);
+        if (decodedChar === '%') {
+            if ($2f6ba9f26ca8d8d1$var$charAt(input, i + 1) === '%' || i + 3 > length) {
+                result += '%';
+                i++;
+                continue;
+            }
+            var octet = $2f6ba9f26ca8d8d1$var$parseHexOctet(input, i + 1);
+            // eslint-disable-next-line no-self-compare -- NaN check
+            if (octet !== octet) {
+                result += decodedChar;
+                i++;
+                continue;
+            }
+            i += 2;
+            var byteSequenceLength = $2f6ba9f26ca8d8d1$var$getLeadingOnes(octet);
+            if (byteSequenceLength === 0) decodedChar = $2f6ba9f26ca8d8d1$var$fromCharCode(octet);
+            else {
+                if (byteSequenceLength === 1 || byteSequenceLength > 4) {
+                    result += $2f6ba9f26ca8d8d1$var$FALLBACK_REPLACER;
+                    i++;
+                    continue;
+                }
+                var octets = [
+                    octet
+                ];
+                var sequenceIndex = 1;
+                while(sequenceIndex < byteSequenceLength){
+                    i++;
+                    if (i + 3 > length || $2f6ba9f26ca8d8d1$var$charAt(input, i) !== '%') break;
+                    var nextByte = $2f6ba9f26ca8d8d1$var$parseHexOctet(input, i + 1);
+                    // eslint-disable-next-line no-self-compare -- NaN check
+                    if (nextByte !== nextByte) {
+                        i += 3;
+                        break;
+                    }
+                    if (nextByte > 191 || nextByte < 128) break;
+                    $2f6ba9f26ca8d8d1$var$push(octets, nextByte);
+                    i += 2;
+                    sequenceIndex++;
+                }
+                if (octets.length !== byteSequenceLength) {
+                    result += $2f6ba9f26ca8d8d1$var$FALLBACK_REPLACER;
+                    continue;
+                }
+                var codePoint = $2f6ba9f26ca8d8d1$var$utf8Decode(octets);
+                if (codePoint === null) result += $2f6ba9f26ca8d8d1$var$FALLBACK_REPLACER;
+                else decodedChar = $2f6ba9f26ca8d8d1$var$fromCodePoint(codePoint);
+            }
+        }
+        result += decodedChar;
+        i++;
+    }
+    return result;
+};
+var $2f6ba9f26ca8d8d1$var$find = /[!'()~]|%20/g;
+var $2f6ba9f26ca8d8d1$var$replacements = {
+    '!': '%21',
+    "'": '%27',
+    '(': '%28',
+    ')': '%29',
+    '~': '%7E',
+    '%20': '+'
+};
+var $2f6ba9f26ca8d8d1$var$replacer = function replacer(match) {
+    return $2f6ba9f26ca8d8d1$var$replacements[match];
+};
+var $2f6ba9f26ca8d8d1$var$serialize = function serialize(it) {
+    return $2f6ba9f26ca8d8d1$var$replace($2f6ba9f26ca8d8d1$var$encodeURIComponent(it), $2f6ba9f26ca8d8d1$var$find, $2f6ba9f26ca8d8d1$var$replacer);
+};
+var $2f6ba9f26ca8d8d1$var$URLSearchParamsIterator = $2168f1a09eea1d44$exports(function Iterator(params, kind) {
+    $2f6ba9f26ca8d8d1$var$setInternalState(this, {
+        type: $2f6ba9f26ca8d8d1$var$URL_SEARCH_PARAMS_ITERATOR,
+        target: $2f6ba9f26ca8d8d1$var$getInternalParamsState(params).entries,
+        index: 0,
+        kind: kind
+    });
+}, $2f6ba9f26ca8d8d1$var$URL_SEARCH_PARAMS, function next() {
+    var state = $2f6ba9f26ca8d8d1$var$getInternalIteratorState(this);
+    var target = state.target;
+    var index = state.index++;
+    if (!target || index >= target.length) {
+        state.target = null;
+        return $60603a379ad3a1de$exports(undefined, true);
+    }
+    var entry = target[index];
+    switch(state.kind){
+        case 'keys':
+            return $60603a379ad3a1de$exports(entry.key, false);
+        case 'values':
+            return $60603a379ad3a1de$exports(entry.value, false);
+    }
+    return $60603a379ad3a1de$exports([
+        entry.key,
+        entry.value
+    ], false);
+}, true);
+var $2f6ba9f26ca8d8d1$var$URLSearchParamsState = function URLSearchParamsState(init) {
+    this.entries = [];
+    this.url = null;
+    if (init !== undefined) {
+        if ($a5247cee30afd31c$exports(init)) this.parseObject(init);
+        else this.parseQuery(typeof init == 'string' ? $2f6ba9f26ca8d8d1$var$charAt(init, 0) === '?' ? $2f6ba9f26ca8d8d1$var$stringSlice(init, 1) : init : $3441418af0b2523d$exports(init));
+    }
+};
+$2f6ba9f26ca8d8d1$var$URLSearchParamsState.prototype = {
+    type: $2f6ba9f26ca8d8d1$var$URL_SEARCH_PARAMS,
+    bindURL: function bindURL(url) {
+        this.url = url;
+        this.update();
+    },
+    parseObject: function parseObject(object) {
+        var entries = this.entries;
+        var iteratorMethod = $84f0e014133fe133$exports(object);
+        var iterator, next, step, entryIterator, entryNext, first, second;
+        if (iteratorMethod) {
+            iterator = $c05fd884bbbf2759$exports(object, iteratorMethod);
+            next = iterator.next;
+            while(!(step = $b51eee67d287dc0c$exports(next, iterator)).done){
+                entryIterator = $c05fd884bbbf2759$exports($fbf8b6f89693dc96$exports(step.value));
+                entryNext = entryIterator.next;
+                if ((first = $b51eee67d287dc0c$exports(entryNext, entryIterator)).done || (second = $b51eee67d287dc0c$exports(entryNext, entryIterator)).done || !$b51eee67d287dc0c$exports(entryNext, entryIterator).done) throw new $2f6ba9f26ca8d8d1$var$TypeError('Expected sequence with length 2');
+                $2f6ba9f26ca8d8d1$var$push(entries, {
+                    key: $3441418af0b2523d$exports(first.value),
+                    value: $3441418af0b2523d$exports(second.value)
+                });
+            }
+        } else for(var key in object)if ($88fb7bd6b0cac2a7$exports(object, key)) $2f6ba9f26ca8d8d1$var$push(entries, {
+            key: key,
+            value: $3441418af0b2523d$exports(object[key])
+        });
+    },
+    parseQuery: function parseQuery(query) {
+        if (query) {
+            var entries = this.entries;
+            var attributes = $2f6ba9f26ca8d8d1$var$split(query, '&');
+            var index = 0;
+            var attribute, entry;
+            while(index < attributes.length){
+                attribute = attributes[index++];
+                if (attribute.length) {
+                    entry = $2f6ba9f26ca8d8d1$var$split(attribute, '=');
+                    $2f6ba9f26ca8d8d1$var$push(entries, {
+                        key: $2f6ba9f26ca8d8d1$var$decode($2f6ba9f26ca8d8d1$var$shift(entry)),
+                        value: $2f6ba9f26ca8d8d1$var$decode($2f6ba9f26ca8d8d1$var$join(entry, '='))
+                    });
+                }
+            }
+        }
+    },
+    serialize: function serialize1() {
+        var entries = this.entries;
+        var result = [];
+        var index = 0;
+        var entry;
+        while(index < entries.length){
+            entry = entries[index++];
+            $2f6ba9f26ca8d8d1$var$push(result, $2f6ba9f26ca8d8d1$var$serialize(entry.key) + '=' + $2f6ba9f26ca8d8d1$var$serialize(entry.value));
+        }
+        return $2f6ba9f26ca8d8d1$var$join(result, '&');
+    },
+    update: function update() {
+        this.entries.length = 0;
+        this.parseQuery(this.url.query);
+    },
+    updateURL: function updateURL() {
+        if (this.url) this.url.update();
+    }
+};
+// `URLSearchParams` constructor
+// https://url.spec.whatwg.org/#interface-urlsearchparams
+var $2f6ba9f26ca8d8d1$var$URLSearchParamsConstructor = function URLSearchParams() {
+    $a84985762d40e844$exports(this, $2f6ba9f26ca8d8d1$var$URLSearchParamsPrototype);
+    var init = arguments.length > 0 ? arguments[0] : undefined;
+    var state = $2f6ba9f26ca8d8d1$var$setInternalState(this, new $2f6ba9f26ca8d8d1$var$URLSearchParamsState(init));
+    if (!$9ad58a245a9ea542$exports) this.size = state.entries.length;
+};
+var $2f6ba9f26ca8d8d1$var$URLSearchParamsPrototype = $2f6ba9f26ca8d8d1$var$URLSearchParamsConstructor.prototype;
+$5eb939720ce3c5be$exports($2f6ba9f26ca8d8d1$var$URLSearchParamsPrototype, {
+    // `URLSearchParams.prototype.append` method
+    // https://url.spec.whatwg.org/#dom-urlsearchparams-append
+    append: function append(name, value) {
+        var state = $2f6ba9f26ca8d8d1$var$getInternalParamsState(this);
+        $c8d744b52f18fee1$exports(arguments.length, 2);
+        $2f6ba9f26ca8d8d1$var$push(state.entries, {
+            key: $3441418af0b2523d$exports(name),
+            value: $3441418af0b2523d$exports(value)
+        });
+        if (!$9ad58a245a9ea542$exports) this.length++;
+        state.updateURL();
+    },
+    // `URLSearchParams.prototype.delete` method
+    // https://url.spec.whatwg.org/#dom-urlsearchparams-delete
+    'delete': function(name /* , value */ ) {
+        var state = $2f6ba9f26ca8d8d1$var$getInternalParamsState(this);
+        var length = $c8d744b52f18fee1$exports(arguments.length, 1);
+        var entries = state.entries;
+        var key = $3441418af0b2523d$exports(name);
+        var $value = length < 2 ? undefined : arguments[1];
+        var value = $value === undefined ? $value : $3441418af0b2523d$exports($value);
+        var index = 0;
+        while(index < entries.length){
+            var entry = entries[index];
+            if (entry.key === key && (value === undefined || entry.value === value)) {
+                $2f6ba9f26ca8d8d1$var$splice(entries, index, 1);
+                if (value !== undefined) break;
+            } else index++;
+        }
+        if (!$9ad58a245a9ea542$exports) this.size = entries.length;
+        state.updateURL();
+    },
+    // `URLSearchParams.prototype.get` method
+    // https://url.spec.whatwg.org/#dom-urlsearchparams-get
+    get: function get(name) {
+        var entries = $2f6ba9f26ca8d8d1$var$getInternalParamsState(this).entries;
+        $c8d744b52f18fee1$exports(arguments.length, 1);
+        var key = $3441418af0b2523d$exports(name);
+        var index = 0;
+        for(; index < entries.length; index++){
+            if (entries[index].key === key) return entries[index].value;
+        }
+        return null;
+    },
+    // `URLSearchParams.prototype.getAll` method
+    // https://url.spec.whatwg.org/#dom-urlsearchparams-getall
+    getAll: function getAll(name) {
+        var entries = $2f6ba9f26ca8d8d1$var$getInternalParamsState(this).entries;
+        $c8d744b52f18fee1$exports(arguments.length, 1);
+        var key = $3441418af0b2523d$exports(name);
+        var result = [];
+        var index = 0;
+        for(; index < entries.length; index++)if (entries[index].key === key) $2f6ba9f26ca8d8d1$var$push(result, entries[index].value);
+        return result;
+    },
+    // `URLSearchParams.prototype.has` method
+    // https://url.spec.whatwg.org/#dom-urlsearchparams-has
+    has: function has(name /* , value */ ) {
+        var entries = $2f6ba9f26ca8d8d1$var$getInternalParamsState(this).entries;
+        var length = $c8d744b52f18fee1$exports(arguments.length, 1);
+        var key = $3441418af0b2523d$exports(name);
+        var $value = length < 2 ? undefined : arguments[1];
+        var value = $value === undefined ? $value : $3441418af0b2523d$exports($value);
+        var index = 0;
+        while(index < entries.length){
+            var entry = entries[index++];
+            if (entry.key === key && (value === undefined || entry.value === value)) return true;
+        }
+        return false;
+    },
+    // `URLSearchParams.prototype.set` method
+    // https://url.spec.whatwg.org/#dom-urlsearchparams-set
+    set: function set(name, value) {
+        var state = $2f6ba9f26ca8d8d1$var$getInternalParamsState(this);
+        $c8d744b52f18fee1$exports(arguments.length, 1);
+        var entries = state.entries;
+        var found = false;
+        var key = $3441418af0b2523d$exports(name);
+        var val = $3441418af0b2523d$exports(value);
+        var index = 0;
+        var entry;
+        for(; index < entries.length; index++){
+            entry = entries[index];
+            if (entry.key === key) {
+                if (found) $2f6ba9f26ca8d8d1$var$splice(entries, index--, 1);
+                else {
+                    found = true;
+                    entry.value = val;
+                }
+            }
+        }
+        if (!found) $2f6ba9f26ca8d8d1$var$push(entries, {
+            key: key,
+            value: val
+        });
+        if (!$9ad58a245a9ea542$exports) this.size = entries.length;
+        state.updateURL();
+    },
+    // `URLSearchParams.prototype.sort` method
+    // https://url.spec.whatwg.org/#dom-urlsearchparams-sort
+    sort: function sort() {
+        var state = $2f6ba9f26ca8d8d1$var$getInternalParamsState(this);
+        $335cf83438b45601$exports(state.entries, function(a, b) {
+            return a.key > b.key ? 1 : -1;
+        });
+        state.updateURL();
+    },
+    // `URLSearchParams.prototype.forEach` method
+    forEach: function forEach(callback /* , thisArg */ ) {
+        var entries = $2f6ba9f26ca8d8d1$var$getInternalParamsState(this).entries;
+        var boundFunction = $47d894db7420029c$exports(callback, arguments.length > 1 ? arguments[1] : undefined);
+        var index = 0;
+        var entry;
+        while(index < entries.length){
+            entry = entries[index++];
+            boundFunction(entry.value, entry.key, this);
+        }
+    },
+    // `URLSearchParams.prototype.keys` method
+    keys: function keys() {
+        return new $2f6ba9f26ca8d8d1$var$URLSearchParamsIterator(this, 'keys');
+    },
+    // `URLSearchParams.prototype.values` method
+    values: function values() {
+        return new $2f6ba9f26ca8d8d1$var$URLSearchParamsIterator(this, 'values');
+    },
+    // `URLSearchParams.prototype.entries` method
+    entries: function entries() {
+        return new $2f6ba9f26ca8d8d1$var$URLSearchParamsIterator(this, 'entries');
+    }
+}, {
+    enumerable: true
+});
+// `URLSearchParams.prototype[@@iterator]` method
+$cd1d0929e9f3f134$exports($2f6ba9f26ca8d8d1$var$URLSearchParamsPrototype, $2f6ba9f26ca8d8d1$var$ITERATOR, $2f6ba9f26ca8d8d1$var$URLSearchParamsPrototype.entries, {
+    name: 'entries'
+});
+// `URLSearchParams.prototype.toString` method
+// https://url.spec.whatwg.org/#urlsearchparams-stringification-behavior
+$cd1d0929e9f3f134$exports($2f6ba9f26ca8d8d1$var$URLSearchParamsPrototype, 'toString', function toString() {
+    return $2f6ba9f26ca8d8d1$var$getInternalParamsState(this).serialize();
+}, {
+    enumerable: true
+});
+// `URLSearchParams.prototype.size` getter
+// https://github.com/whatwg/url/pull/734
+if ($9ad58a245a9ea542$exports) $34351ae141e46c37$exports($2f6ba9f26ca8d8d1$var$URLSearchParamsPrototype, 'size', {
+    get: function size() {
+        return $2f6ba9f26ca8d8d1$var$getInternalParamsState(this).entries.length;
+    },
+    configurable: true,
+    enumerable: true
+});
+$dc8b49a2567d5bf5$exports($2f6ba9f26ca8d8d1$var$URLSearchParamsConstructor, $2f6ba9f26ca8d8d1$var$URL_SEARCH_PARAMS);
+$a4386f1de3d17f70$exports({
+    global: true,
+    constructor: true,
+    forced: !$937eb281d2b1db31$exports
+}, {
+    URLSearchParams: $2f6ba9f26ca8d8d1$var$URLSearchParamsConstructor
+});
+// Wrap `fetch` and `Request` for correct work with polyfilled `URLSearchParams`
+if (!$937eb281d2b1db31$exports && $56269d2914fd05c7$exports($2f6ba9f26ca8d8d1$var$Headers)) {
+    var $2f6ba9f26ca8d8d1$var$headersHas = $a6ad1e8ada886a6e$exports($2f6ba9f26ca8d8d1$var$HeadersPrototype.has);
+    var $2f6ba9f26ca8d8d1$var$headersSet = $a6ad1e8ada886a6e$exports($2f6ba9f26ca8d8d1$var$HeadersPrototype.set);
+    var $2f6ba9f26ca8d8d1$var$wrapRequestOptions = function wrapRequestOptions(init) {
+        if ($a5247cee30afd31c$exports(init)) {
+            var body = init.body;
+            var headers;
+            if ($31b89c0c3042db21$exports(body) === $2f6ba9f26ca8d8d1$var$URL_SEARCH_PARAMS) {
+                headers = init.headers ? new $2f6ba9f26ca8d8d1$var$Headers(init.headers) : new $2f6ba9f26ca8d8d1$var$Headers();
+                if (!$2f6ba9f26ca8d8d1$var$headersHas(headers, 'content-type')) $2f6ba9f26ca8d8d1$var$headersSet(headers, 'content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+                return $6c46fe9371eaab2c$exports(init, {
+                    body: $28b05b782a3d40a0$exports(0, $3441418af0b2523d$exports(body)),
+                    headers: $28b05b782a3d40a0$exports(0, headers)
+                });
+            }
+        }
+        return init;
+    };
+    if ($56269d2914fd05c7$exports($2f6ba9f26ca8d8d1$var$nativeFetch)) $a4386f1de3d17f70$exports({
+        global: true,
+        enumerable: true,
+        dontCallGetSet: true,
+        forced: true
+    }, {
+        fetch: function fetch(input /* , init */ ) {
+            return $2f6ba9f26ca8d8d1$var$nativeFetch(input, arguments.length > 1 ? $2f6ba9f26ca8d8d1$var$wrapRequestOptions(arguments[1]) : {});
+        }
+    });
+    if ($56269d2914fd05c7$exports($2f6ba9f26ca8d8d1$var$NativeRequest)) {
+        var $2f6ba9f26ca8d8d1$var$RequestConstructor = function Request(input /* , init */ ) {
+            $a84985762d40e844$exports(this, $2f6ba9f26ca8d8d1$var$RequestPrototype);
+            return new $2f6ba9f26ca8d8d1$var$NativeRequest(input, arguments.length > 1 ? $2f6ba9f26ca8d8d1$var$wrapRequestOptions(arguments[1]) : {});
+        };
+        $2f6ba9f26ca8d8d1$var$RequestPrototype.constructor = $2f6ba9f26ca8d8d1$var$RequestConstructor;
+        $2f6ba9f26ca8d8d1$var$RequestConstructor.prototype = $2f6ba9f26ca8d8d1$var$RequestPrototype;
+        $a4386f1de3d17f70$exports({
+            global: true,
+            constructor: true,
+            dontCallGetSet: true,
+            forced: true
+        }, {
+            Request: $2f6ba9f26ca8d8d1$var$RequestConstructor
+        });
+    }
+}
+$2f6ba9f26ca8d8d1$exports = {
+    URLSearchParams: $2f6ba9f26ca8d8d1$var$URLSearchParamsConstructor,
+    getState: $2f6ba9f26ca8d8d1$var$getInternalParamsState
+};
+
+
+
+var $34384157a207241e$var$setInternalState = $3863900a8f1508e7$exports.set;
+var $34384157a207241e$var$getInternalURLState = $3863900a8f1508e7$exports.getterFor('URL');
+var $34384157a207241e$var$URLSearchParams = $2f6ba9f26ca8d8d1$exports.URLSearchParams;
+var $34384157a207241e$var$getInternalSearchParamsState = $2f6ba9f26ca8d8d1$exports.getState;
+var $34384157a207241e$var$NativeURL = $6bb4f585dbcccb10$exports.URL;
+var $34384157a207241e$var$TypeError = $6bb4f585dbcccb10$exports.TypeError;
+var $34384157a207241e$var$parseInt = $6bb4f585dbcccb10$exports.parseInt;
+var $34384157a207241e$var$floor = Math.floor;
+var $34384157a207241e$var$pow = Math.pow;
+var $34384157a207241e$var$charAt = $a6ad1e8ada886a6e$exports(''.charAt);
+var $34384157a207241e$var$exec = $a6ad1e8ada886a6e$exports(/./.exec);
+var $34384157a207241e$var$join = $a6ad1e8ada886a6e$exports([].join);
+var $34384157a207241e$var$numberToString = $a6ad1e8ada886a6e$exports(1.0.toString);
+var $34384157a207241e$var$pop = $a6ad1e8ada886a6e$exports([].pop);
+var $34384157a207241e$var$push = $a6ad1e8ada886a6e$exports([].push);
+var $34384157a207241e$var$replace = $a6ad1e8ada886a6e$exports(''.replace);
+var $34384157a207241e$var$shift = $a6ad1e8ada886a6e$exports([].shift);
+var $34384157a207241e$var$split = $a6ad1e8ada886a6e$exports(''.split);
+var $34384157a207241e$var$stringSlice = $a6ad1e8ada886a6e$exports(''.slice);
+var $34384157a207241e$var$toLowerCase = $a6ad1e8ada886a6e$exports(''.toLowerCase);
+var $34384157a207241e$var$unshift = $a6ad1e8ada886a6e$exports([].unshift);
+var $34384157a207241e$var$INVALID_AUTHORITY = 'Invalid authority';
+var $34384157a207241e$var$INVALID_SCHEME = 'Invalid scheme';
+var $34384157a207241e$var$INVALID_HOST = 'Invalid host';
+var $34384157a207241e$var$INVALID_PORT = 'Invalid port';
+var $34384157a207241e$var$ALPHA = /[a-z]/i;
+// eslint-disable-next-line regexp/no-obscure-range -- safe
+var $34384157a207241e$var$ALPHANUMERIC = /[\d+-.a-z]/i;
+var $34384157a207241e$var$DIGIT = /\d/;
+var $34384157a207241e$var$HEX_START = /^0x/i;
+var $34384157a207241e$var$OCT = /^[0-7]+$/;
+var $34384157a207241e$var$DEC = /^\d+$/;
+var $34384157a207241e$var$HEX = /^[\da-f]+$/i;
+/* eslint-disable regexp/no-control-character -- safe */ var $34384157a207241e$var$FORBIDDEN_HOST_CODE_POINT = /[\0\t\n\r #%/:<>?@[\\\]^|]/;
+var $34384157a207241e$var$FORBIDDEN_HOST_CODE_POINT_EXCLUDING_PERCENT = /[\0\t\n\r #/:<>?@[\\\]^|]/;
+var $34384157a207241e$var$LEADING_C0_CONTROL_OR_SPACE = /^[\u0000-\u0020]+/;
+var $34384157a207241e$var$TRAILING_C0_CONTROL_OR_SPACE = /(^|[^\u0000-\u0020])[\u0000-\u0020]+$/;
+var $34384157a207241e$var$TAB_AND_NEW_LINE = /[\t\n\r]/g;
+/* eslint-enable regexp/no-control-character -- safe */ var $34384157a207241e$var$EOF;
+// https://url.spec.whatwg.org/#ipv4-number-parser
+var $34384157a207241e$var$parseIPv4 = function parseIPv4(input) {
+    var parts = $34384157a207241e$var$split(input, '.');
+    var partsLength, numbers, index, part, radix, number, ipv4;
+    if (parts.length && parts[parts.length - 1] === '') parts.length--;
+    partsLength = parts.length;
+    if (partsLength > 4) return input;
+    numbers = [];
+    for(index = 0; index < partsLength; index++){
+        part = parts[index];
+        if (part === '') return input;
+        radix = 10;
+        if (part.length > 1 && $34384157a207241e$var$charAt(part, 0) === '0') {
+            radix = $34384157a207241e$var$exec($34384157a207241e$var$HEX_START, part) ? 16 : 8;
+            part = $34384157a207241e$var$stringSlice(part, radix === 8 ? 1 : 2);
+        }
+        if (part === '') number = 0;
+        else {
+            if (!$34384157a207241e$var$exec(radix === 10 ? $34384157a207241e$var$DEC : radix === 8 ? $34384157a207241e$var$OCT : $34384157a207241e$var$HEX, part)) return input;
+            number = $34384157a207241e$var$parseInt(part, radix);
+        }
+        $34384157a207241e$var$push(numbers, number);
+    }
+    for(index = 0; index < partsLength; index++){
+        number = numbers[index];
+        if (index === partsLength - 1) {
+            if (number >= $34384157a207241e$var$pow(256, 5 - partsLength)) return null;
+        } else if (number > 255) return null;
+    }
+    ipv4 = $34384157a207241e$var$pop(numbers);
+    for(index = 0; index < numbers.length; index++)ipv4 += numbers[index] * $34384157a207241e$var$pow(256, 3 - index);
+    return ipv4;
+};
+// https://url.spec.whatwg.org/#concept-ipv6-parser
+// eslint-disable-next-line max-statements -- TODO
+var $34384157a207241e$var$parseIPv6 = function parseIPv6(input) {
+    var address = [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+    ];
+    var pieceIndex = 0;
+    var compress = null;
+    var pointer = 0;
+    var value, length, numbersSeen, ipv4Piece, number, swaps, swap;
+    var chr = function chr() {
+        return $34384157a207241e$var$charAt(input, pointer);
+    };
+    if (chr() === ':') {
+        if ($34384157a207241e$var$charAt(input, 1) !== ':') return;
+        pointer += 2;
+        pieceIndex++;
+        compress = pieceIndex;
+    }
+    while(chr()){
+        if (pieceIndex === 8) return;
+        if (chr() === ':') {
+            if (compress !== null) return;
+            pointer++;
+            pieceIndex++;
+            compress = pieceIndex;
+            continue;
+        }
+        value = length = 0;
+        while(length < 4 && $34384157a207241e$var$exec($34384157a207241e$var$HEX, chr())){
+            value = value * 16 + $34384157a207241e$var$parseInt(chr(), 16);
+            pointer++;
+            length++;
+        }
+        if (chr() === '.') {
+            if (length === 0) return;
+            pointer -= length;
+            if (pieceIndex > 6) return;
+            numbersSeen = 0;
+            while(chr()){
+                ipv4Piece = null;
+                if (numbersSeen > 0) {
+                    if (chr() === '.' && numbersSeen < 4) pointer++;
+                    else return;
+                }
+                if (!$34384157a207241e$var$exec($34384157a207241e$var$DIGIT, chr())) return;
+                while($34384157a207241e$var$exec($34384157a207241e$var$DIGIT, chr())){
+                    number = $34384157a207241e$var$parseInt(chr(), 10);
+                    if (ipv4Piece === null) ipv4Piece = number;
+                    else if (ipv4Piece === 0) return;
+                    else ipv4Piece = ipv4Piece * 10 + number;
+                    if (ipv4Piece > 255) return;
+                    pointer++;
+                }
+                address[pieceIndex] = address[pieceIndex] * 256 + ipv4Piece;
+                numbersSeen++;
+                if (numbersSeen === 2 || numbersSeen === 4) pieceIndex++;
+            }
+            if (numbersSeen !== 4) return;
+            break;
+        } else if (chr() === ':') {
+            pointer++;
+            if (!chr()) return;
+        } else if (chr()) return;
+        address[pieceIndex++] = value;
+    }
+    if (compress !== null) {
+        swaps = pieceIndex - compress;
+        pieceIndex = 7;
+        while(pieceIndex !== 0 && swaps > 0){
+            swap = address[pieceIndex];
+            address[pieceIndex--] = address[compress + swaps - 1];
+            address[compress + --swaps] = swap;
+        }
+    } else if (pieceIndex !== 8) return;
+    return address;
+};
+var $34384157a207241e$var$findLongestZeroSequence = function findLongestZeroSequence(ipv6) {
+    var maxIndex = null;
+    var maxLength = 1;
+    var currStart = null;
+    var currLength = 0;
+    var index = 0;
+    for(; index < 8; index++)if (ipv6[index] !== 0) {
+        if (currLength > maxLength) {
+            maxIndex = currStart;
+            maxLength = currLength;
+        }
+        currStart = null;
+        currLength = 0;
+    } else {
+        if (currStart === null) currStart = index;
+        ++currLength;
+    }
+    return currLength > maxLength ? currStart : maxIndex;
+};
+// https://url.spec.whatwg.org/#host-serializing
+var $34384157a207241e$var$serializeHost = function serializeHost(host) {
+    var result, index, compress, ignore0;
+    // ipv4
+    if (typeof host == 'number') {
+        result = [];
+        for(index = 0; index < 4; index++){
+            $34384157a207241e$var$unshift(result, host % 256);
+            host = $34384157a207241e$var$floor(host / 256);
+        }
+        return $34384157a207241e$var$join(result, '.');
+    }
+    // ipv6
+    if (typeof host == 'object') {
+        result = '';
+        compress = $34384157a207241e$var$findLongestZeroSequence(host);
+        for(index = 0; index < 8; index++){
+            if (ignore0 && host[index] === 0) continue;
+            if (ignore0) ignore0 = false;
+            if (compress === index) {
+                result += index ? ':' : '::';
+                ignore0 = true;
+            } else {
+                result += $34384157a207241e$var$numberToString(host[index], 16);
+                if (index < 7) result += ':';
+            }
+        }
+        return '[' + result + ']';
+    }
+    return host;
+};
+var $34384157a207241e$var$C0ControlPercentEncodeSet = {};
+var $34384157a207241e$var$fragmentPercentEncodeSet = $2d2b5188ee0de8d3$exports({}, $34384157a207241e$var$C0ControlPercentEncodeSet, {
+    ' ': 1,
+    '"': 1,
+    '<': 1,
+    '>': 1,
+    '`': 1
+});
+var $34384157a207241e$var$pathPercentEncodeSet = $2d2b5188ee0de8d3$exports({}, $34384157a207241e$var$fragmentPercentEncodeSet, {
+    '#': 1,
+    '?': 1,
+    '{': 1,
+    '}': 1
+});
+var $34384157a207241e$var$userinfoPercentEncodeSet = $2d2b5188ee0de8d3$exports({}, $34384157a207241e$var$pathPercentEncodeSet, {
+    '/': 1,
+    ':': 1,
+    ';': 1,
+    '=': 1,
+    '@': 1,
+    '[': 1,
+    '\\': 1,
+    ']': 1,
+    '^': 1,
+    '|': 1
+});
+var $34384157a207241e$var$percentEncode = function percentEncode(chr, set) {
+    var code = $34384157a207241e$require$codeAt(chr, 0);
+    return code > 0x20 && code < 0x7F && !$88fb7bd6b0cac2a7$exports(set, chr) ? chr : encodeURIComponent(chr);
+};
+// https://url.spec.whatwg.org/#special-scheme
+var $34384157a207241e$var$specialSchemes = {
+    ftp: 21,
+    file: null,
+    http: 80,
+    https: 443,
+    ws: 80,
+    wss: 443
+};
+// https://url.spec.whatwg.org/#windows-drive-letter
+var $34384157a207241e$var$isWindowsDriveLetter = function isWindowsDriveLetter(string, normalized) {
+    var second;
+    return string.length === 2 && $34384157a207241e$var$exec($34384157a207241e$var$ALPHA, $34384157a207241e$var$charAt(string, 0)) && ((second = $34384157a207241e$var$charAt(string, 1)) === ':' || !normalized && second === '|');
+};
+// https://url.spec.whatwg.org/#start-with-a-windows-drive-letter
+var $34384157a207241e$var$startsWithWindowsDriveLetter = function startsWithWindowsDriveLetter(string) {
+    var third;
+    return string.length > 1 && $34384157a207241e$var$isWindowsDriveLetter($34384157a207241e$var$stringSlice(string, 0, 2)) && (string.length === 2 || (third = $34384157a207241e$var$charAt(string, 2)) === '/' || third === '\\' || third === '?' || third === '#');
+};
+// https://url.spec.whatwg.org/#single-dot-path-segment
+var $34384157a207241e$var$isSingleDot = function isSingleDot(segment) {
+    return segment === '.' || $34384157a207241e$var$toLowerCase(segment) === '%2e';
+};
+// https://url.spec.whatwg.org/#double-dot-path-segment
+var $34384157a207241e$var$isDoubleDot = function isDoubleDot(segment) {
+    segment = $34384157a207241e$var$toLowerCase(segment);
+    return segment === '..' || segment === '%2e.' || segment === '.%2e' || segment === '%2e%2e';
+};
+// States:
+var $34384157a207241e$var$SCHEME_START = {};
+var $34384157a207241e$var$SCHEME = {};
+var $34384157a207241e$var$NO_SCHEME = {};
+var $34384157a207241e$var$SPECIAL_RELATIVE_OR_AUTHORITY = {};
+var $34384157a207241e$var$PATH_OR_AUTHORITY = {};
+var $34384157a207241e$var$RELATIVE = {};
+var $34384157a207241e$var$RELATIVE_SLASH = {};
+var $34384157a207241e$var$SPECIAL_AUTHORITY_SLASHES = {};
+var $34384157a207241e$var$SPECIAL_AUTHORITY_IGNORE_SLASHES = {};
+var $34384157a207241e$var$AUTHORITY = {};
+var $34384157a207241e$var$HOST = {};
+var $34384157a207241e$var$HOSTNAME = {};
+var $34384157a207241e$var$PORT = {};
+var $34384157a207241e$var$FILE = {};
+var $34384157a207241e$var$FILE_SLASH = {};
+var $34384157a207241e$var$FILE_HOST = {};
+var $34384157a207241e$var$PATH_START = {};
+var $34384157a207241e$var$PATH = {};
+var $34384157a207241e$var$CANNOT_BE_A_BASE_URL_PATH = {};
+var $34384157a207241e$var$QUERY = {};
+var $34384157a207241e$var$FRAGMENT = {};
+var $34384157a207241e$var$URLState = function URLState1(url, isBase, base) {
+    var urlString = $3441418af0b2523d$exports(url);
+    var baseState, failure, searchParams;
+    if (isBase) {
+        failure = this.parse(urlString);
+        if (failure) throw new $34384157a207241e$var$TypeError(failure);
+        this.searchParams = null;
+    } else {
+        if (base !== undefined) baseState = new $34384157a207241e$var$URLState(base, true);
+        failure = this.parse(urlString, null, baseState);
+        if (failure) throw new $34384157a207241e$var$TypeError(failure);
+        searchParams = $34384157a207241e$var$getInternalSearchParamsState(new $34384157a207241e$var$URLSearchParams());
+        searchParams.bindURL(this);
+        this.searchParams = searchParams;
+    }
+};
+$34384157a207241e$var$URLState.prototype = {
+    type: 'URL',
+    // https://url.spec.whatwg.org/#url-parsing
+    // eslint-disable-next-line max-statements -- TODO
+    parse: function parse(input, stateOverride, base) {
+        var url = this;
+        var state = stateOverride || $34384157a207241e$var$SCHEME_START;
+        var pointer = 0;
+        var buffer = '';
+        var seenAt = false;
+        var seenBracket = false;
+        var seenPasswordToken = false;
+        var codePoints, chr, bufferCodePoints, failure;
+        input = $3441418af0b2523d$exports(input);
+        if (!stateOverride) {
+            url.scheme = '';
+            url.username = '';
+            url.password = '';
+            url.host = null;
+            url.port = null;
+            url.path = [];
+            url.query = null;
+            url.fragment = null;
+            url.cannotBeABaseURL = false;
+            input = $34384157a207241e$var$replace(input, $34384157a207241e$var$LEADING_C0_CONTROL_OR_SPACE, '');
+            input = $34384157a207241e$var$replace(input, $34384157a207241e$var$TRAILING_C0_CONTROL_OR_SPACE, '$1');
+        }
+        input = $34384157a207241e$var$replace(input, $34384157a207241e$var$TAB_AND_NEW_LINE, '');
+        codePoints = $83146879b5245ffe$exports(input);
+        while(pointer <= codePoints.length){
+            chr = codePoints[pointer];
+            switch(state){
+                case $34384157a207241e$var$SCHEME_START:
+                    if (chr && $34384157a207241e$var$exec($34384157a207241e$var$ALPHA, chr)) {
+                        buffer += $34384157a207241e$var$toLowerCase(chr);
+                        state = $34384157a207241e$var$SCHEME;
+                    } else if (!stateOverride) {
+                        state = $34384157a207241e$var$NO_SCHEME;
+                        continue;
+                    } else return $34384157a207241e$var$INVALID_SCHEME;
+                    break;
+                case $34384157a207241e$var$SCHEME:
+                    if (chr && ($34384157a207241e$var$exec($34384157a207241e$var$ALPHANUMERIC, chr) || chr === '+' || chr === '-' || chr === '.')) buffer += $34384157a207241e$var$toLowerCase(chr);
+                    else if (chr === ':') {
+                        if (stateOverride && (url.isSpecial() !== $88fb7bd6b0cac2a7$exports($34384157a207241e$var$specialSchemes, buffer) || buffer === 'file' && (url.includesCredentials() || url.port !== null) || url.scheme === 'file' && !url.host)) return;
+                        url.scheme = buffer;
+                        if (stateOverride) {
+                            if (url.isSpecial() && $34384157a207241e$var$specialSchemes[url.scheme] === url.port) url.port = null;
+                            return;
+                        }
+                        buffer = '';
+                        if (url.scheme === 'file') state = $34384157a207241e$var$FILE;
+                        else if (url.isSpecial() && base && base.scheme === url.scheme) state = $34384157a207241e$var$SPECIAL_RELATIVE_OR_AUTHORITY;
+                        else if (url.isSpecial()) state = $34384157a207241e$var$SPECIAL_AUTHORITY_SLASHES;
+                        else if (codePoints[pointer + 1] === '/') {
+                            state = $34384157a207241e$var$PATH_OR_AUTHORITY;
+                            pointer++;
+                        } else {
+                            url.cannotBeABaseURL = true;
+                            $34384157a207241e$var$push(url.path, '');
+                            state = $34384157a207241e$var$CANNOT_BE_A_BASE_URL_PATH;
+                        }
+                    } else if (!stateOverride) {
+                        buffer = '';
+                        state = $34384157a207241e$var$NO_SCHEME;
+                        pointer = 0;
+                        continue;
+                    } else return $34384157a207241e$var$INVALID_SCHEME;
+                    break;
+                case $34384157a207241e$var$NO_SCHEME:
+                    if (!base || base.cannotBeABaseURL && chr !== '#') return $34384157a207241e$var$INVALID_SCHEME;
+                    if (base.cannotBeABaseURL && chr === '#') {
+                        url.scheme = base.scheme;
+                        url.path = $6f00017b18ab89e3$exports(base.path);
+                        url.query = base.query;
+                        url.fragment = '';
+                        url.cannotBeABaseURL = true;
+                        state = $34384157a207241e$var$FRAGMENT;
+                        break;
+                    }
+                    state = base.scheme === 'file' ? $34384157a207241e$var$FILE : $34384157a207241e$var$RELATIVE;
+                    continue;
+                case $34384157a207241e$var$SPECIAL_RELATIVE_OR_AUTHORITY:
+                    if (chr === '/' && codePoints[pointer + 1] === '/') {
+                        state = $34384157a207241e$var$SPECIAL_AUTHORITY_IGNORE_SLASHES;
+                        pointer++;
+                    } else {
+                        state = $34384157a207241e$var$RELATIVE;
+                        continue;
+                    }
+                    break;
+                case $34384157a207241e$var$PATH_OR_AUTHORITY:
+                    if (chr === '/') {
+                        state = $34384157a207241e$var$AUTHORITY;
+                        break;
+                    } else {
+                        state = $34384157a207241e$var$PATH;
+                        continue;
+                    }
+                case $34384157a207241e$var$RELATIVE:
+                    url.scheme = base.scheme;
+                    if (chr === $34384157a207241e$var$EOF) {
+                        url.username = base.username;
+                        url.password = base.password;
+                        url.host = base.host;
+                        url.port = base.port;
+                        url.path = $6f00017b18ab89e3$exports(base.path);
+                        url.query = base.query;
+                    } else if (chr === '/' || chr === '\\' && url.isSpecial()) state = $34384157a207241e$var$RELATIVE_SLASH;
+                    else if (chr === '?') {
+                        url.username = base.username;
+                        url.password = base.password;
+                        url.host = base.host;
+                        url.port = base.port;
+                        url.path = $6f00017b18ab89e3$exports(base.path);
+                        url.query = '';
+                        state = $34384157a207241e$var$QUERY;
+                    } else if (chr === '#') {
+                        url.username = base.username;
+                        url.password = base.password;
+                        url.host = base.host;
+                        url.port = base.port;
+                        url.path = $6f00017b18ab89e3$exports(base.path);
+                        url.query = base.query;
+                        url.fragment = '';
+                        state = $34384157a207241e$var$FRAGMENT;
+                    } else {
+                        url.username = base.username;
+                        url.password = base.password;
+                        url.host = base.host;
+                        url.port = base.port;
+                        url.path = $6f00017b18ab89e3$exports(base.path);
+                        url.path.length--;
+                        state = $34384157a207241e$var$PATH;
+                        continue;
+                    }
+                    break;
+                case $34384157a207241e$var$RELATIVE_SLASH:
+                    if (url.isSpecial() && (chr === '/' || chr === '\\')) state = $34384157a207241e$var$SPECIAL_AUTHORITY_IGNORE_SLASHES;
+                    else if (chr === '/') state = $34384157a207241e$var$AUTHORITY;
+                    else {
+                        url.username = base.username;
+                        url.password = base.password;
+                        url.host = base.host;
+                        url.port = base.port;
+                        state = $34384157a207241e$var$PATH;
+                        continue;
+                    }
+                    break;
+                case $34384157a207241e$var$SPECIAL_AUTHORITY_SLASHES:
+                    state = $34384157a207241e$var$SPECIAL_AUTHORITY_IGNORE_SLASHES;
+                    if (chr !== '/' || $34384157a207241e$var$charAt(buffer, pointer + 1) !== '/') continue;
+                    pointer++;
+                    break;
+                case $34384157a207241e$var$SPECIAL_AUTHORITY_IGNORE_SLASHES:
+                    if (chr !== '/' && chr !== '\\') {
+                        state = $34384157a207241e$var$AUTHORITY;
+                        continue;
+                    }
+                    break;
+                case $34384157a207241e$var$AUTHORITY:
+                    if (chr === '@') {
+                        if (seenAt) buffer = '%40' + buffer;
+                        seenAt = true;
+                        bufferCodePoints = $83146879b5245ffe$exports(buffer);
+                        for(var i = 0; i < bufferCodePoints.length; i++){
+                            var codePoint = bufferCodePoints[i];
+                            if (codePoint === ':' && !seenPasswordToken) {
+                                seenPasswordToken = true;
+                                continue;
+                            }
+                            var encodedCodePoints = $34384157a207241e$var$percentEncode(codePoint, $34384157a207241e$var$userinfoPercentEncodeSet);
+                            if (seenPasswordToken) url.password += encodedCodePoints;
+                            else url.username += encodedCodePoints;
+                        }
+                        buffer = '';
+                    } else if (chr === $34384157a207241e$var$EOF || chr === '/' || chr === '?' || chr === '#' || chr === '\\' && url.isSpecial()) {
+                        if (seenAt && buffer === '') return $34384157a207241e$var$INVALID_AUTHORITY;
+                        pointer -= $83146879b5245ffe$exports(buffer).length + 1;
+                        buffer = '';
+                        state = $34384157a207241e$var$HOST;
+                    } else buffer += chr;
+                    break;
+                case $34384157a207241e$var$HOST:
+                case $34384157a207241e$var$HOSTNAME:
+                    if (stateOverride && url.scheme === 'file') {
+                        state = $34384157a207241e$var$FILE_HOST;
+                        continue;
+                    } else if (chr === ':' && !seenBracket) {
+                        if (buffer === '') return $34384157a207241e$var$INVALID_HOST;
+                        failure = url.parseHost(buffer);
+                        if (failure) return failure;
+                        buffer = '';
+                        state = $34384157a207241e$var$PORT;
+                        if (stateOverride === $34384157a207241e$var$HOSTNAME) return;
+                    } else if (chr === $34384157a207241e$var$EOF || chr === '/' || chr === '?' || chr === '#' || chr === '\\' && url.isSpecial()) {
+                        if (url.isSpecial() && buffer === '') return $34384157a207241e$var$INVALID_HOST;
+                        if (stateOverride && buffer === '' && (url.includesCredentials() || url.port !== null)) return;
+                        failure = url.parseHost(buffer);
+                        if (failure) return failure;
+                        buffer = '';
+                        state = $34384157a207241e$var$PATH_START;
+                        if (stateOverride) return;
+                        continue;
+                    } else {
+                        if (chr === '[') seenBracket = true;
+                        else if (chr === ']') seenBracket = false;
+                        buffer += chr;
+                    }
+                    break;
+                case $34384157a207241e$var$PORT:
+                    if ($34384157a207241e$var$exec($34384157a207241e$var$DIGIT, chr)) buffer += chr;
+                    else if (chr === $34384157a207241e$var$EOF || chr === '/' || chr === '?' || chr === '#' || chr === '\\' && url.isSpecial() || stateOverride) {
+                        if (buffer !== '') {
+                            var port = $34384157a207241e$var$parseInt(buffer, 10);
+                            if (port > 0xFFFF) return $34384157a207241e$var$INVALID_PORT;
+                            url.port = url.isSpecial() && port === $34384157a207241e$var$specialSchemes[url.scheme] ? null : port;
+                            buffer = '';
+                        }
+                        if (stateOverride) return;
+                        state = $34384157a207241e$var$PATH_START;
+                        continue;
+                    } else return $34384157a207241e$var$INVALID_PORT;
+                    break;
+                case $34384157a207241e$var$FILE:
+                    url.scheme = 'file';
+                    if (chr === '/' || chr === '\\') state = $34384157a207241e$var$FILE_SLASH;
+                    else if (base && base.scheme === 'file') switch(chr){
+                        case $34384157a207241e$var$EOF:
+                            url.host = base.host;
+                            url.path = $6f00017b18ab89e3$exports(base.path);
+                            url.query = base.query;
+                            break;
+                        case '?':
+                            url.host = base.host;
+                            url.path = $6f00017b18ab89e3$exports(base.path);
+                            url.query = '';
+                            state = $34384157a207241e$var$QUERY;
+                            break;
+                        case '#':
+                            url.host = base.host;
+                            url.path = $6f00017b18ab89e3$exports(base.path);
+                            url.query = base.query;
+                            url.fragment = '';
+                            state = $34384157a207241e$var$FRAGMENT;
+                            break;
+                        default:
+                            if (!$34384157a207241e$var$startsWithWindowsDriveLetter($34384157a207241e$var$join($6f00017b18ab89e3$exports(codePoints, pointer), ''))) {
+                                url.host = base.host;
+                                url.path = $6f00017b18ab89e3$exports(base.path);
+                                url.shortenPath();
+                            }
+                            state = $34384157a207241e$var$PATH;
+                            continue;
+                    }
+                    else {
+                        state = $34384157a207241e$var$PATH;
+                        continue;
+                    }
+                    break;
+                case $34384157a207241e$var$FILE_SLASH:
+                    if (chr === '/' || chr === '\\') {
+                        state = $34384157a207241e$var$FILE_HOST;
+                        break;
+                    }
+                    if (base && base.scheme === 'file' && !$34384157a207241e$var$startsWithWindowsDriveLetter($34384157a207241e$var$join($6f00017b18ab89e3$exports(codePoints, pointer), ''))) {
+                        if ($34384157a207241e$var$isWindowsDriveLetter(base.path[0], true)) $34384157a207241e$var$push(url.path, base.path[0]);
+                        else url.host = base.host;
+                    }
+                    state = $34384157a207241e$var$PATH;
+                    continue;
+                case $34384157a207241e$var$FILE_HOST:
+                    if (chr === $34384157a207241e$var$EOF || chr === '/' || chr === '\\' || chr === '?' || chr === '#') {
+                        if (!stateOverride && $34384157a207241e$var$isWindowsDriveLetter(buffer)) state = $34384157a207241e$var$PATH;
+                        else if (buffer === '') {
+                            url.host = '';
+                            if (stateOverride) return;
+                            state = $34384157a207241e$var$PATH_START;
+                        } else {
+                            failure = url.parseHost(buffer);
+                            if (failure) return failure;
+                            if (url.host === 'localhost') url.host = '';
+                            if (stateOverride) return;
+                            buffer = '';
+                            state = $34384157a207241e$var$PATH_START;
+                        }
+                        continue;
+                    } else buffer += chr;
+                    break;
+                case $34384157a207241e$var$PATH_START:
+                    if (url.isSpecial()) {
+                        state = $34384157a207241e$var$PATH;
+                        if (chr !== '/' && chr !== '\\') continue;
+                    } else if (!stateOverride && chr === '?') {
+                        url.query = '';
+                        state = $34384157a207241e$var$QUERY;
+                    } else if (!stateOverride && chr === '#') {
+                        url.fragment = '';
+                        state = $34384157a207241e$var$FRAGMENT;
+                    } else if (chr !== $34384157a207241e$var$EOF) {
+                        state = $34384157a207241e$var$PATH;
+                        if (chr !== '/') continue;
+                    }
+                    break;
+                case $34384157a207241e$var$PATH:
+                    if (chr === $34384157a207241e$var$EOF || chr === '/' || chr === '\\' && url.isSpecial() || !stateOverride && (chr === '?' || chr === '#')) {
+                        if ($34384157a207241e$var$isDoubleDot(buffer)) {
+                            url.shortenPath();
+                            if (chr !== '/' && !(chr === '\\' && url.isSpecial())) $34384157a207241e$var$push(url.path, '');
+                        } else if ($34384157a207241e$var$isSingleDot(buffer)) {
+                            if (chr !== '/' && !(chr === '\\' && url.isSpecial())) $34384157a207241e$var$push(url.path, '');
+                        } else {
+                            if (url.scheme === 'file' && !url.path.length && $34384157a207241e$var$isWindowsDriveLetter(buffer)) {
+                                if (url.host) url.host = '';
+                                buffer = $34384157a207241e$var$charAt(buffer, 0) + ':'; // normalize windows drive letter
+                            }
+                            $34384157a207241e$var$push(url.path, buffer);
+                        }
+                        buffer = '';
+                        if (url.scheme === 'file' && (chr === $34384157a207241e$var$EOF || chr === '?' || chr === '#')) while(url.path.length > 1 && url.path[0] === '')$34384157a207241e$var$shift(url.path);
+                        if (chr === '?') {
+                            url.query = '';
+                            state = $34384157a207241e$var$QUERY;
+                        } else if (chr === '#') {
+                            url.fragment = '';
+                            state = $34384157a207241e$var$FRAGMENT;
+                        }
+                    } else buffer += $34384157a207241e$var$percentEncode(chr, $34384157a207241e$var$pathPercentEncodeSet);
+                    break;
+                case $34384157a207241e$var$CANNOT_BE_A_BASE_URL_PATH:
+                    if (chr === '?') {
+                        url.query = '';
+                        state = $34384157a207241e$var$QUERY;
+                    } else if (chr === '#') {
+                        url.fragment = '';
+                        state = $34384157a207241e$var$FRAGMENT;
+                    } else if (chr !== $34384157a207241e$var$EOF) url.path[0] += $34384157a207241e$var$percentEncode(chr, $34384157a207241e$var$C0ControlPercentEncodeSet);
+                    break;
+                case $34384157a207241e$var$QUERY:
+                    if (!stateOverride && chr === '#') {
+                        url.fragment = '';
+                        state = $34384157a207241e$var$FRAGMENT;
+                    } else if (chr !== $34384157a207241e$var$EOF) {
+                        if (chr === "'" && url.isSpecial()) url.query += '%27';
+                        else if (chr === '#') url.query += '%23';
+                        else url.query += $34384157a207241e$var$percentEncode(chr, $34384157a207241e$var$C0ControlPercentEncodeSet);
+                    }
+                    break;
+                case $34384157a207241e$var$FRAGMENT:
+                    if (chr !== $34384157a207241e$var$EOF) url.fragment += $34384157a207241e$var$percentEncode(chr, $34384157a207241e$var$fragmentPercentEncodeSet);
+                    break;
+            }
+            pointer++;
+        }
+    },
+    // https://url.spec.whatwg.org/#host-parsing
+    parseHost: function parseHost(input) {
+        var result, codePoints, index;
+        if ($34384157a207241e$var$charAt(input, 0) === '[') {
+            if ($34384157a207241e$var$charAt(input, input.length - 1) !== ']') return $34384157a207241e$var$INVALID_HOST;
+            result = $34384157a207241e$var$parseIPv6($34384157a207241e$var$stringSlice(input, 1, -1));
+            if (!result) return $34384157a207241e$var$INVALID_HOST;
+            this.host = result;
+        // opaque host
+        } else if (!this.isSpecial()) {
+            if ($34384157a207241e$var$exec($34384157a207241e$var$FORBIDDEN_HOST_CODE_POINT_EXCLUDING_PERCENT, input)) return $34384157a207241e$var$INVALID_HOST;
+            result = '';
+            codePoints = $83146879b5245ffe$exports(input);
+            for(index = 0; index < codePoints.length; index++)result += $34384157a207241e$var$percentEncode(codePoints[index], $34384157a207241e$var$C0ControlPercentEncodeSet);
+            this.host = result;
+        } else {
+            input = $9351a65364026704$exports(input);
+            if ($34384157a207241e$var$exec($34384157a207241e$var$FORBIDDEN_HOST_CODE_POINT, input)) return $34384157a207241e$var$INVALID_HOST;
+            result = $34384157a207241e$var$parseIPv4(input);
+            if (result === null) return $34384157a207241e$var$INVALID_HOST;
+            this.host = result;
+        }
+    },
+    // https://url.spec.whatwg.org/#cannot-have-a-username-password-port
+    cannotHaveUsernamePasswordPort: function cannotHaveUsernamePasswordPort() {
+        return !this.host || this.cannotBeABaseURL || this.scheme === 'file';
+    },
+    // https://url.spec.whatwg.org/#include-credentials
+    includesCredentials: function includesCredentials() {
+        return this.username !== '' || this.password !== '';
+    },
+    // https://url.spec.whatwg.org/#is-special
+    isSpecial: function isSpecial() {
+        return $88fb7bd6b0cac2a7$exports($34384157a207241e$var$specialSchemes, this.scheme);
+    },
+    // https://url.spec.whatwg.org/#shorten-a-urls-path
+    shortenPath: function shortenPath() {
+        var path = this.path;
+        var pathSize = path.length;
+        if (pathSize && (this.scheme !== 'file' || pathSize !== 1 || !$34384157a207241e$var$isWindowsDriveLetter(path[0], true))) path.length--;
+    },
+    // https://url.spec.whatwg.org/#concept-url-serializer
+    serialize: function serialize() {
+        var url = this;
+        var scheme = url.scheme;
+        var username = url.username;
+        var password = url.password;
+        var host = url.host;
+        var port = url.port;
+        var path = url.path;
+        var query = url.query;
+        var fragment = url.fragment;
+        var output = scheme + ':';
+        if (host !== null) {
+            output += '//';
+            if (url.includesCredentials()) output += username + (password ? ':' + password : '') + '@';
+            output += $34384157a207241e$var$serializeHost(host);
+            if (port !== null) output += ':' + port;
+        } else if (scheme === 'file') output += '//';
+        output += url.cannotBeABaseURL ? path[0] : path.length ? '/' + $34384157a207241e$var$join(path, '/') : '';
+        if (query !== null) output += '?' + query;
+        if (fragment !== null) output += '#' + fragment;
+        return output;
+    },
+    // https://url.spec.whatwg.org/#dom-url-href
+    setHref: function setHref(href) {
+        var failure = this.parse(href);
+        if (failure) throw new $34384157a207241e$var$TypeError(failure);
+        this.searchParams.update();
+    },
+    // https://url.spec.whatwg.org/#dom-url-origin
+    getOrigin: function getOrigin() {
+        var scheme = this.scheme;
+        var port = this.port;
+        if (scheme === 'blob') try {
+            return new $34384157a207241e$var$URLConstructor(scheme.path[0]).origin;
+        } catch (error) {
+            return 'null';
+        }
+        if (scheme === 'file' || !this.isSpecial()) return 'null';
+        return scheme + '://' + $34384157a207241e$var$serializeHost(this.host) + (port !== null ? ':' + port : '');
+    },
+    // https://url.spec.whatwg.org/#dom-url-protocol
+    getProtocol: function getProtocol() {
+        return this.scheme + ':';
+    },
+    setProtocol: function setProtocol(protocol) {
+        this.parse($3441418af0b2523d$exports(protocol) + ':', $34384157a207241e$var$SCHEME_START);
+    },
+    // https://url.spec.whatwg.org/#dom-url-username
+    getUsername: function getUsername() {
+        return this.username;
+    },
+    setUsername: function setUsername(username) {
+        var codePoints = $83146879b5245ffe$exports($3441418af0b2523d$exports(username));
+        if (this.cannotHaveUsernamePasswordPort()) return;
+        this.username = '';
+        for(var i = 0; i < codePoints.length; i++)this.username += $34384157a207241e$var$percentEncode(codePoints[i], $34384157a207241e$var$userinfoPercentEncodeSet);
+    },
+    // https://url.spec.whatwg.org/#dom-url-password
+    getPassword: function getPassword() {
+        return this.password;
+    },
+    setPassword: function setPassword(password) {
+        var codePoints = $83146879b5245ffe$exports($3441418af0b2523d$exports(password));
+        if (this.cannotHaveUsernamePasswordPort()) return;
+        this.password = '';
+        for(var i = 0; i < codePoints.length; i++)this.password += $34384157a207241e$var$percentEncode(codePoints[i], $34384157a207241e$var$userinfoPercentEncodeSet);
+    },
+    // https://url.spec.whatwg.org/#dom-url-host
+    getHost: function getHost() {
+        var host = this.host;
+        var port = this.port;
+        return host === null ? '' : port === null ? $34384157a207241e$var$serializeHost(host) : $34384157a207241e$var$serializeHost(host) + ':' + port;
+    },
+    setHost: function setHost(host) {
+        if (this.cannotBeABaseURL) return;
+        this.parse(host, $34384157a207241e$var$HOST);
+    },
+    // https://url.spec.whatwg.org/#dom-url-hostname
+    getHostname: function getHostname() {
+        var host = this.host;
+        return host === null ? '' : $34384157a207241e$var$serializeHost(host);
+    },
+    setHostname: function setHostname(hostname) {
+        if (this.cannotBeABaseURL) return;
+        this.parse(hostname, $34384157a207241e$var$HOSTNAME);
+    },
+    // https://url.spec.whatwg.org/#dom-url-port
+    getPort: function getPort() {
+        var port = this.port;
+        return port === null ? '' : $3441418af0b2523d$exports(port);
+    },
+    setPort: function setPort(port) {
+        if (this.cannotHaveUsernamePasswordPort()) return;
+        port = $3441418af0b2523d$exports(port);
+        if (port === '') this.port = null;
+        else this.parse(port, $34384157a207241e$var$PORT);
+    },
+    // https://url.spec.whatwg.org/#dom-url-pathname
+    getPathname: function getPathname() {
+        var path = this.path;
+        return this.cannotBeABaseURL ? path[0] : path.length ? '/' + $34384157a207241e$var$join(path, '/') : '';
+    },
+    setPathname: function setPathname(pathname) {
+        if (this.cannotBeABaseURL) return;
+        this.path = [];
+        this.parse(pathname, $34384157a207241e$var$PATH_START);
+    },
+    // https://url.spec.whatwg.org/#dom-url-search
+    getSearch: function getSearch() {
+        var query = this.query;
+        return query ? '?' + query : '';
+    },
+    setSearch: function setSearch(search) {
+        search = $3441418af0b2523d$exports(search);
+        if (search === '') this.query = null;
+        else {
+            if ($34384157a207241e$var$charAt(search, 0) === '?') search = $34384157a207241e$var$stringSlice(search, 1);
+            this.query = '';
+            this.parse(search, $34384157a207241e$var$QUERY);
+        }
+        this.searchParams.update();
+    },
+    // https://url.spec.whatwg.org/#dom-url-searchparams
+    getSearchParams: function getSearchParams() {
+        return this.searchParams.facade;
+    },
+    // https://url.spec.whatwg.org/#dom-url-hash
+    getHash: function getHash() {
+        var fragment = this.fragment;
+        return fragment ? '#' + fragment : '';
+    },
+    setHash: function setHash(hash) {
+        hash = $3441418af0b2523d$exports(hash);
+        if (hash === '') {
+            this.fragment = null;
+            return;
+        }
+        if ($34384157a207241e$var$charAt(hash, 0) === '#') hash = $34384157a207241e$var$stringSlice(hash, 1);
+        this.fragment = '';
+        this.parse(hash, $34384157a207241e$var$FRAGMENT);
+    },
+    update: function update() {
+        this.query = this.searchParams.serialize() || null;
+    }
+};
+// `URL` constructor
+// https://url.spec.whatwg.org/#url-class
+var $34384157a207241e$var$URLConstructor = function URL(url /* , base */ ) {
+    var that = $a84985762d40e844$exports(this, $34384157a207241e$var$URLPrototype);
+    var base = $c8d744b52f18fee1$exports(arguments.length, 1) > 1 ? arguments[1] : undefined;
+    var state = $34384157a207241e$var$setInternalState(that, new $34384157a207241e$var$URLState(url, false, base));
+    if (!$9ad58a245a9ea542$exports) {
+        that.href = state.serialize();
+        that.origin = state.getOrigin();
+        that.protocol = state.getProtocol();
+        that.username = state.getUsername();
+        that.password = state.getPassword();
+        that.host = state.getHost();
+        that.hostname = state.getHostname();
+        that.port = state.getPort();
+        that.pathname = state.getPathname();
+        that.search = state.getSearch();
+        that.searchParams = state.getSearchParams();
+        that.hash = state.getHash();
+    }
+};
+var $34384157a207241e$var$URLPrototype = $34384157a207241e$var$URLConstructor.prototype;
+var $34384157a207241e$var$accessorDescriptor = function accessorDescriptor(getter, setter) {
+    return {
+        get: function get() {
+            return $34384157a207241e$var$getInternalURLState(this)[getter]();
+        },
+        set: setter && function(value) {
+            return $34384157a207241e$var$getInternalURLState(this)[setter](value);
+        },
+        configurable: true,
+        enumerable: true
+    };
+};
+if ($9ad58a245a9ea542$exports) {
+    // `URL.prototype.href` accessors pair
+    // https://url.spec.whatwg.org/#dom-url-href
+    $34351ae141e46c37$exports($34384157a207241e$var$URLPrototype, 'href', $34384157a207241e$var$accessorDescriptor('serialize', 'setHref'));
+    // `URL.prototype.origin` getter
+    // https://url.spec.whatwg.org/#dom-url-origin
+    $34351ae141e46c37$exports($34384157a207241e$var$URLPrototype, 'origin', $34384157a207241e$var$accessorDescriptor('getOrigin'));
+    // `URL.prototype.protocol` accessors pair
+    // https://url.spec.whatwg.org/#dom-url-protocol
+    $34351ae141e46c37$exports($34384157a207241e$var$URLPrototype, 'protocol', $34384157a207241e$var$accessorDescriptor('getProtocol', 'setProtocol'));
+    // `URL.prototype.username` accessors pair
+    // https://url.spec.whatwg.org/#dom-url-username
+    $34351ae141e46c37$exports($34384157a207241e$var$URLPrototype, 'username', $34384157a207241e$var$accessorDescriptor('getUsername', 'setUsername'));
+    // `URL.prototype.password` accessors pair
+    // https://url.spec.whatwg.org/#dom-url-password
+    $34351ae141e46c37$exports($34384157a207241e$var$URLPrototype, 'password', $34384157a207241e$var$accessorDescriptor('getPassword', 'setPassword'));
+    // `URL.prototype.host` accessors pair
+    // https://url.spec.whatwg.org/#dom-url-host
+    $34351ae141e46c37$exports($34384157a207241e$var$URLPrototype, 'host', $34384157a207241e$var$accessorDescriptor('getHost', 'setHost'));
+    // `URL.prototype.hostname` accessors pair
+    // https://url.spec.whatwg.org/#dom-url-hostname
+    $34351ae141e46c37$exports($34384157a207241e$var$URLPrototype, 'hostname', $34384157a207241e$var$accessorDescriptor('getHostname', 'setHostname'));
+    // `URL.prototype.port` accessors pair
+    // https://url.spec.whatwg.org/#dom-url-port
+    $34351ae141e46c37$exports($34384157a207241e$var$URLPrototype, 'port', $34384157a207241e$var$accessorDescriptor('getPort', 'setPort'));
+    // `URL.prototype.pathname` accessors pair
+    // https://url.spec.whatwg.org/#dom-url-pathname
+    $34351ae141e46c37$exports($34384157a207241e$var$URLPrototype, 'pathname', $34384157a207241e$var$accessorDescriptor('getPathname', 'setPathname'));
+    // `URL.prototype.search` accessors pair
+    // https://url.spec.whatwg.org/#dom-url-search
+    $34351ae141e46c37$exports($34384157a207241e$var$URLPrototype, 'search', $34384157a207241e$var$accessorDescriptor('getSearch', 'setSearch'));
+    // `URL.prototype.searchParams` getter
+    // https://url.spec.whatwg.org/#dom-url-searchparams
+    $34351ae141e46c37$exports($34384157a207241e$var$URLPrototype, 'searchParams', $34384157a207241e$var$accessorDescriptor('getSearchParams'));
+    // `URL.prototype.hash` accessors pair
+    // https://url.spec.whatwg.org/#dom-url-hash
+    $34351ae141e46c37$exports($34384157a207241e$var$URLPrototype, 'hash', $34384157a207241e$var$accessorDescriptor('getHash', 'setHash'));
+}
+// `URL.prototype.toJSON` method
+// https://url.spec.whatwg.org/#dom-url-tojson
+$cd1d0929e9f3f134$exports($34384157a207241e$var$URLPrototype, 'toJSON', function toJSON() {
+    return $34384157a207241e$var$getInternalURLState(this).serialize();
+}, {
+    enumerable: true
+});
+// `URL.prototype.toString` method
+// https://url.spec.whatwg.org/#URL-stringification-behavior
+$cd1d0929e9f3f134$exports($34384157a207241e$var$URLPrototype, 'toString', function toString() {
+    return $34384157a207241e$var$getInternalURLState(this).serialize();
+}, {
+    enumerable: true
+});
+if ($34384157a207241e$var$NativeURL) {
+    var $34384157a207241e$var$nativeCreateObjectURL = $34384157a207241e$var$NativeURL.createObjectURL;
+    var $34384157a207241e$var$nativeRevokeObjectURL = $34384157a207241e$var$NativeURL.revokeObjectURL;
+    // `URL.createObjectURL` method
+    // https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL
+    if ($34384157a207241e$var$nativeCreateObjectURL) $cd1d0929e9f3f134$exports($34384157a207241e$var$URLConstructor, 'createObjectURL', $47d894db7420029c$exports($34384157a207241e$var$nativeCreateObjectURL, $34384157a207241e$var$NativeURL));
+    // `URL.revokeObjectURL` method
+    // https://developer.mozilla.org/en-US/docs/Web/API/URL/revokeObjectURL
+    if ($34384157a207241e$var$nativeRevokeObjectURL) $cd1d0929e9f3f134$exports($34384157a207241e$var$URLConstructor, 'revokeObjectURL', $47d894db7420029c$exports($34384157a207241e$var$nativeRevokeObjectURL, $34384157a207241e$var$NativeURL));
+}
+$dc8b49a2567d5bf5$exports($34384157a207241e$var$URLConstructor, 'URL');
+$a4386f1de3d17f70$exports({
+    global: true,
+    constructor: true,
+    forced: !$937eb281d2b1db31$exports,
+    sham: !$9ad58a245a9ea542$exports
+}, {
+    URL: $34384157a207241e$var$URLConstructor
+});
+
+
+
+
+'use strict';
+
+
+// `URL.prototype.toJSON` method
+// https://url.spec.whatwg.org/#dom-url-tojson
+$a4386f1de3d17f70$exports({
+    target: 'URL',
+    proto: true,
+    enumerable: true
+}, {
+    toJSON: function toJSON() {
+        return $b51eee67d287dc0c$exports(URL.prototype.toString, this);
+    }
+});
+
+
+'use strict';
+
+
+
 function $05938ccb80026880$export$71511d61b312f219(iterable) {
     var method, async, sync, retry = 2;
     for("undefined" != typeof Symbol && (async = Symbol.asyncIterator, sync = Symbol.iterator); retry--;){
@@ -6429,12 +15493,14 @@ function $35ef01a7e6390a1e$export$637fd9537164f29b() {
     var mediaRecorder = null;
     var recordedChunks = [];
     var stream = null;
+    var audioContext = null;
+    var analyser = null;
     function init() {
         return _init.apply(this, arguments);
     }
     function _init() {
         _init = (0, $034ee189aafc6ae8$export$71511d61b312f219)(function() {
-            var error;
+            var source, error;
             return (0, $7rZYk.__generator)(this, function(_state) {
                 switch(_state.label){
                     case 0:
@@ -6451,8 +15517,12 @@ function $35ef01a7e6390a1e$export$637fd9537164f29b() {
                             })
                         ];
                     case 1:
-                        // Request microphone access
                         stream = _state.sent();
+                        audioContext = new AudioContext();
+                        analyser = audioContext.createAnalyser();
+                        analyser.fftSize = 2048;
+                        source = audioContext.createMediaStreamSource(stream);
+                        source.connect(analyser);
                         mediaRecorder = new MediaRecorder(stream);
                         recordedChunks = [];
                         mediaRecorder.ondataavailable = (event)=>{
@@ -6467,7 +15537,7 @@ function $35ef01a7e6390a1e$export$637fd9537164f29b() {
                         ];
                     case 2:
                         error = _state.sent();
-                        alert("Error initializing MediaRecorder:", error);
+                        alert("Error initializing MediaRecorder.");
                         console.error(error);
                         return [
                             3,
@@ -6482,7 +15552,6 @@ function $35ef01a7e6390a1e$export$637fd9537164f29b() {
         });
         return _init.apply(this, arguments);
     }
-    var recordingTimeout = null;
     function startRecording() {
         return _startRecording.apply(this, arguments);
     }
@@ -6491,7 +15560,7 @@ function $35ef01a7e6390a1e$export$637fd9537164f29b() {
             return (0, $7rZYk.__generator)(this, function(_state) {
                 switch(_state.label){
                     case 0:
-                        if (!(mediaRecorder === null)) return [
+                        if (!!mediaRecorder) return [
                             3,
                             2
                         ];
@@ -6500,25 +15569,15 @@ function $35ef01a7e6390a1e$export$637fd9537164f29b() {
                             init()
                         ];
                     case 1:
-                        _state.sent(); // Initialize when starting recording
+                        _state.sent();
                         _state.label = 2;
                     case 2:
-                        if (!mediaRecorder) {
-                            alert("Failed to initialize MediaRecorder.");
-                            return [
-                                2
-                            ];
-                        }
-                        (0, $739f45b10c9a265e$export$471f7ae5c4103ae1).audio_recording = true;
-                        recordedChunks = []; // Clear previous recordings
+                        if (!mediaRecorder) return [
+                            2,
+                            alert("MediaRecorder init failed.")
+                        ];
+                        recordedChunks = [];
                         mediaRecorder.start();
-                        // Stop recording after 2 minutes (120000 ms)
-                        recordingTimeout = setTimeout(()=>{
-                            if (mediaRecorder && mediaRecorder.state !== "inactive") {
-                                stopRecording();
-                                console.log("Recording stopped after 2 minutes.");
-                            }
-                        }, 120000);
                         return [
                             2
                         ];
@@ -6531,38 +15590,36 @@ function $35ef01a7e6390a1e$export$637fd9537164f29b() {
         return new Promise((resolve, reject)=>{
             if (!mediaRecorder || mediaRecorder.state !== "recording") return reject(new Error("MediaRecorder is not recording."));
             mediaRecorder.onstop = ()=>{
-                var mimeType = mediaRecorder.mimeType || "audio/wav"; // Fallback MIME type
                 var audioBlob = new Blob(recordedChunks, {
-                    type: mimeType
+                    type: mediaRecorder.mimeType
                 });
-                recordedChunks = []; // Clear recorded chunks
-                /*
-         blob: audioBlob,
-            filename: "",
-            filetype: mimeType,
-            */ // Clean up resources after recording is stopped
                 cleanup();
                 resolve({
-                    audioBlob: audioBlob,
-                    mimeType: mimeType
+                    audioBlob: audioBlob
                 });
             };
             mediaRecorder.stop();
         });
     }
+    function getStreamSourceNode() {
+        return stream && audioContext ? audioContext.createMediaStreamSource(stream) : null;
+    }
+    function getAudioContext() {
+        return audioContext;
+    }
     function cleanup() {
-        if (stream) {
-            stream.getTracks().forEach((track)=>track.stop());
-            (0, $739f45b10c9a265e$export$471f7ae5c4103ae1).audio_recording = false;
-        }
+        if (stream) stream.getTracks().forEach((t)=>t.stop());
         mediaRecorder = null;
         recordedChunks = [];
         stream = null;
-        clearTimeout(recordingTimeout);
+        audioContext = null;
+        analyser = null;
     }
     return {
         startRecording: startRecording,
-        stopRecording: stopRecording
+        stopRecording: stopRecording,
+        getAudioContext: getAudioContext,
+        getStreamSourceNode: getStreamSourceNode
     };
 }
 function $35ef01a7e6390a1e$export$70c4ae293293ca1e(buffer) {
@@ -37636,6 +46693,2452 @@ var $98373c88dad2e366$exports = {};
 
 
 
+/**!
+ * audioMotion-analyzer
+ * High-resolution real-time graphic audio spectrum analyzer JS module
+ *
+ * @version 4.5.0
+ * @author  Henrique Avila Vianna <hvianna@gmail.com> <https://henriquevianna.com>
+ * @license AGPL-3.0-or-later
+ */ 
+
+
+var $a7744d5c3ee82091$var$VERSION = '4.5.0';
+// internal constants
+var $a7744d5c3ee82091$var$PI = Math.PI, $a7744d5c3ee82091$var$TAU = 2 * $a7744d5c3ee82091$var$PI, $a7744d5c3ee82091$var$HALF_PI = $a7744d5c3ee82091$var$PI / 2, $a7744d5c3ee82091$var$C_1 = 8.17579892; // frequency for C -1
+var $a7744d5c3ee82091$var$CANVAS_BACKGROUND_COLOR = '#000', $a7744d5c3ee82091$var$CHANNEL_COMBINED = 'dual-combined', $a7744d5c3ee82091$var$CHANNEL_HORIZONTAL = 'dual-horizontal', $a7744d5c3ee82091$var$CHANNEL_SINGLE = 'single', $a7744d5c3ee82091$var$CHANNEL_VERTICAL = 'dual-vertical', $a7744d5c3ee82091$var$COLOR_BAR_INDEX = 'bar-index', $a7744d5c3ee82091$var$COLOR_BAR_LEVEL = 'bar-level', $a7744d5c3ee82091$var$COLOR_GRADIENT = 'gradient', $a7744d5c3ee82091$var$DEBOUNCE_TIMEOUT = 60, $a7744d5c3ee82091$var$EVENT_CLICK = 'click', $a7744d5c3ee82091$var$EVENT_FULLSCREENCHANGE = 'fullscreenchange', $a7744d5c3ee82091$var$EVENT_RESIZE = 'resize', $a7744d5c3ee82091$var$GRADIENT_DEFAULT_BGCOLOR = '#111', $a7744d5c3ee82091$var$FILTER_NONE = '', $a7744d5c3ee82091$var$FILTER_A = 'A', $a7744d5c3ee82091$var$FILTER_B = 'B', $a7744d5c3ee82091$var$FILTER_C = 'C', $a7744d5c3ee82091$var$FILTER_D = 'D', $a7744d5c3ee82091$var$FILTER_468 = '468', $a7744d5c3ee82091$var$FONT_FAMILY = 'sans-serif', $a7744d5c3ee82091$var$FPS_COLOR = '#0f0', $a7744d5c3ee82091$var$LEDS_UNLIT_COLOR = '#7f7f7f22', $a7744d5c3ee82091$var$MODE_GRAPH = 10, $a7744d5c3ee82091$var$REASON_CREATE = 'create', $a7744d5c3ee82091$var$REASON_FSCHANGE = 'fschange', $a7744d5c3ee82091$var$REASON_LORES = 'lores', $a7744d5c3ee82091$var$REASON_RESIZE = $a7744d5c3ee82091$var$EVENT_RESIZE, $a7744d5c3ee82091$var$REASON_USER = 'user', $a7744d5c3ee82091$var$SCALEX_BACKGROUND_COLOR = '#000c', $a7744d5c3ee82091$var$SCALEX_LABEL_COLOR = '#fff', $a7744d5c3ee82091$var$SCALEX_HIGHLIGHT_COLOR = '#4f4', $a7744d5c3ee82091$var$SCALEY_LABEL_COLOR = '#888', $a7744d5c3ee82091$var$SCALEY_MIDLINE_COLOR = '#555', $a7744d5c3ee82091$var$SCALE_BARK = 'bark', $a7744d5c3ee82091$var$SCALE_LINEAR = 'linear', $a7744d5c3ee82091$var$SCALE_LOG = 'log', $a7744d5c3ee82091$var$SCALE_MEL = 'mel';
+// built-in gradients
+var $a7744d5c3ee82091$var$PRISM = [
+    '#a35',
+    '#c66',
+    '#e94',
+    '#ed0',
+    '#9d5',
+    '#4d8',
+    '#2cb',
+    '#0bc',
+    '#09c',
+    '#36b'
+], $a7744d5c3ee82091$var$GRADIENTS = [
+    [
+        'classic',
+        {
+            colorStops: [
+                'red',
+                {
+                    color: 'yellow',
+                    level: .85,
+                    pos: .6
+                },
+                {
+                    color: 'lime',
+                    level: .475
+                }
+            ]
+        }
+    ],
+    [
+        'prism',
+        {
+            colorStops: $a7744d5c3ee82091$var$PRISM
+        }
+    ],
+    [
+        'rainbow',
+        {
+            dir: 'h',
+            colorStops: [
+                '#817',
+                ...$a7744d5c3ee82091$var$PRISM,
+                '#639'
+            ]
+        }
+    ],
+    [
+        'orangered',
+        {
+            bgColor: '#3e2f29',
+            colorStops: [
+                'OrangeRed'
+            ]
+        }
+    ],
+    [
+        'steelblue',
+        {
+            bgColor: '#222c35',
+            colorStops: [
+                'SteelBlue'
+            ]
+        }
+    ]
+];
+// settings defaults
+var $a7744d5c3ee82091$var$DEFAULT_SETTINGS = {
+    alphaBars: false,
+    ansiBands: false,
+    barSpace: 0.1,
+    bgAlpha: 0.7,
+    channelLayout: $a7744d5c3ee82091$var$CHANNEL_SINGLE,
+    colorMode: $a7744d5c3ee82091$var$COLOR_GRADIENT,
+    fadePeaks: false,
+    fftSize: 8192,
+    fillAlpha: 1,
+    frequencyScale: $a7744d5c3ee82091$var$SCALE_LOG,
+    gradient: $a7744d5c3ee82091$var$GRADIENTS[0][0],
+    gravity: 3.8,
+    height: undefined,
+    ledBars: false,
+    linearAmplitude: false,
+    linearBoost: 1,
+    lineWidth: 0,
+    loRes: false,
+    lumiBars: false,
+    maxDecibels: -25,
+    maxFPS: 0,
+    maxFreq: 22000,
+    minDecibels: -85,
+    minFreq: 20,
+    mirror: 0,
+    mode: 0,
+    noteLabels: false,
+    outlineBars: false,
+    overlay: false,
+    peakFadeTime: 750,
+    peakHoldTime: 500,
+    peakLine: false,
+    radial: false,
+    radialInvert: false,
+    radius: 0.3,
+    reflexAlpha: 0.15,
+    reflexBright: 1,
+    reflexFit: true,
+    reflexRatio: 0,
+    roundBars: false,
+    showBgColor: true,
+    showFPS: false,
+    showPeaks: true,
+    showScaleX: true,
+    showScaleY: false,
+    smoothing: 0.5,
+    spinSpeed: 0,
+    splitGradient: false,
+    start: true,
+    trueLeds: false,
+    useCanvas: true,
+    volume: 1,
+    weightingFilter: $a7744d5c3ee82091$var$FILTER_NONE,
+    width: undefined
+};
+// custom error messages
+var $a7744d5c3ee82091$var$ERR_AUDIO_CONTEXT_FAIL = [
+    'ERR_AUDIO_CONTEXT_FAIL',
+    'Could not create audio context. Web Audio API not supported?'
+], $a7744d5c3ee82091$var$ERR_INVALID_AUDIO_CONTEXT = [
+    'ERR_INVALID_AUDIO_CONTEXT',
+    'Provided audio context is not valid'
+], $a7744d5c3ee82091$var$ERR_UNKNOWN_GRADIENT = [
+    'ERR_UNKNOWN_GRADIENT',
+    'Unknown gradient'
+], $a7744d5c3ee82091$var$ERR_FREQUENCY_TOO_LOW = [
+    'ERR_FREQUENCY_TOO_LOW',
+    'Frequency values must be >= 1'
+], $a7744d5c3ee82091$var$ERR_INVALID_MODE = [
+    'ERR_INVALID_MODE',
+    'Invalid mode'
+], $a7744d5c3ee82091$var$ERR_REFLEX_OUT_OF_RANGE = [
+    'ERR_REFLEX_OUT_OF_RANGE',
+    'Reflex ratio must be >= 0 and < 1'
+], $a7744d5c3ee82091$var$ERR_INVALID_AUDIO_SOURCE = [
+    'ERR_INVALID_AUDIO_SOURCE',
+    'Audio source must be an instance of HTMLMediaElement or AudioNode'
+], $a7744d5c3ee82091$var$ERR_GRADIENT_INVALID_NAME = [
+    'ERR_GRADIENT_INVALID_NAME',
+    'Gradient name must be a non-empty string'
+], $a7744d5c3ee82091$var$ERR_GRADIENT_NOT_AN_OBJECT = [
+    'ERR_GRADIENT_NOT_AN_OBJECT',
+    'Gradient options must be an object'
+], $a7744d5c3ee82091$var$ERR_GRADIENT_MISSING_COLOR = [
+    'ERR_GRADIENT_MISSING_COLOR',
+    'Gradient colorStops must be a non-empty array'
+];
+class $a7744d5c3ee82091$var$AudioMotionError extends Error {
+    constructor(error, value){
+        var _error = (0, $7640fa9e79c6b7c8$export$71511d61b312f219)(error, 2), code = _error[0], message = _error[1];
+        super(message + (value !== undefined ? `: ${value}` : ''));
+        this.name = 'AudioMotionError';
+        this.code = code;
+    }
+}
+// helper function - output deprecation warning message on console
+var $a7744d5c3ee82091$var$deprecate = (name, alternative)=>console.warn(`${name} is deprecated. Use ${alternative} instead.`);
+// helper function - check if a given object is empty (also returns `true` on null, undefined or any non-object value)
+var $a7744d5c3ee82091$var$isEmpty = (obj)=>{
+    for(var p in obj)return false;
+    return true;
+};
+// helper function - validate a given value with an array of strings (by default, all lowercase)
+// returns the validated value, or the first element of `list` if `value` is not found in the array
+var $a7744d5c3ee82091$var$validateFromList = function(value, list) {
+    var modifier = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : 'toLowerCase';
+    return list[Math.max(0, list.indexOf(('' + value)[modifier]()))];
+};
+// helper function - find the Y-coordinate of a point located between two other points, given its X-coordinate
+var $a7744d5c3ee82091$var$findY = (x1, y1, x2, y2, x)=>y1 + (y2 - y1) * (x - x1) / (x2 - x1);
+// Polyfill for Array.findLastIndex()
+if (!Array.prototype.findLastIndex) Array.prototype.findLastIndex = function(callback) {
+    var index = this.length;
+    while(index-- > 0){
+        if (callback(this[index])) return index;
+    }
+    return -1;
+};
+// AudioMotionAnalyzer class
+class $a7744d5c3ee82091$export$44e9f5d136720861 {
+    /**
+	 * ==========================================================================
+	 *
+	 * PUBLIC PROPERTIES GETTERS AND SETTERS
+	 *
+	 * ==========================================================================
+	 */ get alphaBars() {
+        return this._alphaBars;
+    }
+    set alphaBars(value) {
+        this._alphaBars = !!value;
+        this._calcBars();
+    }
+    get ansiBands() {
+        return this._ansiBands;
+    }
+    set ansiBands(value) {
+        this._ansiBands = !!value;
+        this._calcBars();
+    }
+    get barSpace() {
+        return this._barSpace;
+    }
+    set barSpace(value) {
+        this._barSpace = +value || 0;
+        this._calcBars();
+    }
+    get channelLayout() {
+        return this._chLayout;
+    }
+    set channelLayout(value) {
+        this._chLayout = $a7744d5c3ee82091$var$validateFromList(value, [
+            $a7744d5c3ee82091$var$CHANNEL_SINGLE,
+            $a7744d5c3ee82091$var$CHANNEL_HORIZONTAL,
+            $a7744d5c3ee82091$var$CHANNEL_VERTICAL,
+            $a7744d5c3ee82091$var$CHANNEL_COMBINED
+        ]);
+        // update node connections
+        this._input.disconnect();
+        this._input.connect(this._chLayout != $a7744d5c3ee82091$var$CHANNEL_SINGLE ? this._splitter : this._analyzer[0]);
+        this._analyzer[0].disconnect();
+        if (this._outNodes.length) this._analyzer[0].connect(this._chLayout != $a7744d5c3ee82091$var$CHANNEL_SINGLE ? this._merger : this._output);
+        this._calcBars();
+        this._makeGrad();
+    }
+    get colorMode() {
+        return this._colorMode;
+    }
+    set colorMode(value) {
+        this._colorMode = $a7744d5c3ee82091$var$validateFromList(value, [
+            $a7744d5c3ee82091$var$COLOR_GRADIENT,
+            $a7744d5c3ee82091$var$COLOR_BAR_INDEX,
+            $a7744d5c3ee82091$var$COLOR_BAR_LEVEL
+        ]);
+    }
+    get fadePeaks() {
+        return this._fadePeaks;
+    }
+    set fadePeaks(value) {
+        this._fadePeaks = !!value;
+    }
+    get fftSize() {
+        return this._analyzer[0].fftSize;
+    }
+    set fftSize(value) {
+        for(var _i = 0, _iter = [
+            0,
+            1
+        ]; _i < _iter.length; _i++){
+            var i = _iter[_i];
+            this._analyzer[i].fftSize = value;
+        }
+        var binCount = this._analyzer[0].frequencyBinCount;
+        this._fftData = [
+            new Float32Array(binCount),
+            new Float32Array(binCount)
+        ];
+        this._calcBars();
+    }
+    get frequencyScale() {
+        return this._frequencyScale;
+    }
+    set frequencyScale(value) {
+        this._frequencyScale = $a7744d5c3ee82091$var$validateFromList(value, [
+            $a7744d5c3ee82091$var$SCALE_LOG,
+            $a7744d5c3ee82091$var$SCALE_BARK,
+            $a7744d5c3ee82091$var$SCALE_MEL,
+            $a7744d5c3ee82091$var$SCALE_LINEAR
+        ]);
+        this._calcBars();
+    }
+    get gradient() {
+        return this._selectedGrads[0];
+    }
+    set gradient(value) {
+        this._setGradient(value);
+    }
+    get gradientLeft() {
+        return this._selectedGrads[0];
+    }
+    set gradientLeft(value) {
+        this._setGradient(value, 0);
+    }
+    get gradientRight() {
+        return this._selectedGrads[1];
+    }
+    set gradientRight(value) {
+        this._setGradient(value, 1);
+    }
+    get gravity() {
+        return this._gravity;
+    }
+    set gravity(value) {
+        this._gravity = value > 0 ? +value : this._gravity || $a7744d5c3ee82091$var$DEFAULT_SETTINGS.gravity;
+    }
+    get height() {
+        return this._height;
+    }
+    set height(h) {
+        this._height = h;
+        this._setCanvas($a7744d5c3ee82091$var$REASON_USER);
+    }
+    get ledBars() {
+        return this._showLeds;
+    }
+    set ledBars(value) {
+        this._showLeds = !!value;
+        this._calcBars();
+    }
+    get linearAmplitude() {
+        return this._linearAmplitude;
+    }
+    set linearAmplitude(value) {
+        this._linearAmplitude = !!value;
+    }
+    get linearBoost() {
+        return this._linearBoost;
+    }
+    set linearBoost(value) {
+        this._linearBoost = value >= 1 ? +value : 1;
+    }
+    get lineWidth() {
+        return this._lineWidth;
+    }
+    set lineWidth(value) {
+        this._lineWidth = +value || 0;
+    }
+    get loRes() {
+        return this._loRes;
+    }
+    set loRes(value) {
+        this._loRes = !!value;
+        this._setCanvas($a7744d5c3ee82091$var$REASON_LORES);
+    }
+    get lumiBars() {
+        return this._lumiBars;
+    }
+    set lumiBars(value) {
+        this._lumiBars = !!value;
+        this._calcBars();
+        this._makeGrad();
+    }
+    get maxDecibels() {
+        return this._analyzer[0].maxDecibels;
+    }
+    set maxDecibels(value) {
+        for(var _i = 0, _iter = [
+            0,
+            1
+        ]; _i < _iter.length; _i++){
+            var i = _iter[_i];
+            this._analyzer[i].maxDecibels = value;
+        }
+    }
+    get maxFPS() {
+        return this._maxFPS;
+    }
+    set maxFPS(value) {
+        this._maxFPS = value < 0 ? 0 : +value || 0;
+    }
+    get maxFreq() {
+        return this._maxFreq;
+    }
+    set maxFreq(value) {
+        if (value < 1) throw new $a7744d5c3ee82091$var$AudioMotionError($a7744d5c3ee82091$var$ERR_FREQUENCY_TOO_LOW);
+        else {
+            this._maxFreq = Math.min(value, this.audioCtx.sampleRate / 2);
+            this._calcBars();
+        }
+    }
+    get minDecibels() {
+        return this._analyzer[0].minDecibels;
+    }
+    set minDecibels(value) {
+        for(var _i = 0, _iter = [
+            0,
+            1
+        ]; _i < _iter.length; _i++){
+            var i = _iter[_i];
+            this._analyzer[i].minDecibels = value;
+        }
+    }
+    get minFreq() {
+        return this._minFreq;
+    }
+    set minFreq(value) {
+        if (value < 1) throw new $a7744d5c3ee82091$var$AudioMotionError($a7744d5c3ee82091$var$ERR_FREQUENCY_TOO_LOW);
+        else {
+            this._minFreq = +value;
+            this._calcBars();
+        }
+    }
+    get mirror() {
+        return this._mirror;
+    }
+    set mirror(value) {
+        this._mirror = Math.sign(value) | 0; // ensure only -1, 0 or 1
+        this._calcBars();
+        this._makeGrad();
+    }
+    get mode() {
+        return this._mode;
+    }
+    set mode(value) {
+        var mode = value | 0;
+        if (mode >= 0 && mode <= 10 && mode != 9) {
+            this._mode = mode;
+            this._calcBars();
+            this._makeGrad();
+        } else throw new $a7744d5c3ee82091$var$AudioMotionError($a7744d5c3ee82091$var$ERR_INVALID_MODE, value);
+    }
+    get noteLabels() {
+        return this._noteLabels;
+    }
+    set noteLabels(value) {
+        this._noteLabels = !!value;
+        this._createScales();
+    }
+    get outlineBars() {
+        return this._outlineBars;
+    }
+    set outlineBars(value) {
+        this._outlineBars = !!value;
+        this._calcBars();
+    }
+    get peakFadeTime() {
+        return this._peakFadeTime;
+    }
+    set peakFadeTime(value) {
+        this._peakFadeTime = value >= 0 ? +value : this._peakFadeTime || $a7744d5c3ee82091$var$DEFAULT_SETTINGS.peakFadeTime;
+    }
+    get peakHoldTime() {
+        return this._peakHoldTime;
+    }
+    set peakHoldTime(value) {
+        this._peakHoldTime = +value || 0;
+    }
+    get peakLine() {
+        return this._peakLine;
+    }
+    set peakLine(value) {
+        this._peakLine = !!value;
+    }
+    get radial() {
+        return this._radial;
+    }
+    set radial(value) {
+        this._radial = !!value;
+        this._calcBars();
+        this._makeGrad();
+    }
+    get radialInvert() {
+        return this._radialInvert;
+    }
+    set radialInvert(value) {
+        this._radialInvert = !!value;
+        this._calcBars();
+        this._makeGrad();
+    }
+    get radius() {
+        return this._radius;
+    }
+    set radius(value) {
+        this._radius = +value || 0;
+        this._calcBars();
+        this._makeGrad();
+    }
+    get reflexRatio() {
+        return this._reflexRatio;
+    }
+    set reflexRatio(value) {
+        value = +value || 0;
+        if (value < 0 || value >= 1) throw new $a7744d5c3ee82091$var$AudioMotionError($a7744d5c3ee82091$var$ERR_REFLEX_OUT_OF_RANGE);
+        else {
+            this._reflexRatio = value;
+            this._calcBars();
+            this._makeGrad();
+        }
+    }
+    get roundBars() {
+        return this._roundBars;
+    }
+    set roundBars(value) {
+        this._roundBars = !!value;
+        this._calcBars();
+    }
+    get smoothing() {
+        return this._analyzer[0].smoothingTimeConstant;
+    }
+    set smoothing(value) {
+        for(var _i = 0, _iter = [
+            0,
+            1
+        ]; _i < _iter.length; _i++){
+            var i = _iter[_i];
+            this._analyzer[i].smoothingTimeConstant = value;
+        }
+    }
+    get spinSpeed() {
+        return this._spinSpeed;
+    }
+    set spinSpeed(value) {
+        value = +value || 0;
+        if (this._spinSpeed === undefined || value == 0) this._spinAngle = -$a7744d5c3ee82091$var$HALF_PI; // initialize or reset the rotation angle
+        this._spinSpeed = value;
+    }
+    get splitGradient() {
+        return this._splitGradient;
+    }
+    set splitGradient(value) {
+        this._splitGradient = !!value;
+        this._makeGrad();
+    }
+    get stereo() {
+        $a7744d5c3ee82091$var$deprecate('stereo', 'channelLayout');
+        return this._chLayout != $a7744d5c3ee82091$var$CHANNEL_SINGLE;
+    }
+    set stereo(value) {
+        $a7744d5c3ee82091$var$deprecate('stereo', 'channelLayout');
+        this.channelLayout = value ? $a7744d5c3ee82091$var$CHANNEL_VERTICAL : $a7744d5c3ee82091$var$CHANNEL_SINGLE;
+    }
+    get trueLeds() {
+        return this._trueLeds;
+    }
+    set trueLeds(value) {
+        this._trueLeds = !!value;
+    }
+    get volume() {
+        return this._output.gain.value;
+    }
+    set volume(value) {
+        this._output.gain.value = value;
+    }
+    get weightingFilter() {
+        return this._weightingFilter;
+    }
+    set weightingFilter(value) {
+        this._weightingFilter = $a7744d5c3ee82091$var$validateFromList(value, [
+            $a7744d5c3ee82091$var$FILTER_NONE,
+            $a7744d5c3ee82091$var$FILTER_A,
+            $a7744d5c3ee82091$var$FILTER_B,
+            $a7744d5c3ee82091$var$FILTER_C,
+            $a7744d5c3ee82091$var$FILTER_D,
+            $a7744d5c3ee82091$var$FILTER_468
+        ], 'toUpperCase');
+    }
+    get width() {
+        return this._width;
+    }
+    set width(w) {
+        this._width = w;
+        this._setCanvas($a7744d5c3ee82091$var$REASON_USER);
+    }
+    // Read only properties
+    get audioCtx() {
+        return this._input.context;
+    }
+    get canvas() {
+        return this._ctx.canvas;
+    }
+    get canvasCtx() {
+        return this._ctx;
+    }
+    get connectedSources() {
+        return this._sources;
+    }
+    get connectedTo() {
+        return this._outNodes;
+    }
+    get fps() {
+        return this._fps;
+    }
+    get fsHeight() {
+        return this._fsHeight;
+    }
+    get fsWidth() {
+        return this._fsWidth;
+    }
+    get isAlphaBars() {
+        return this._flg.isAlpha;
+    }
+    get isBandsMode() {
+        return this._flg.isBands;
+    }
+    get isDestroyed() {
+        return this._destroyed;
+    }
+    get isFullscreen() {
+        return this._fsEl && (document.fullscreenElement || document.webkitFullscreenElement) === this._fsEl;
+    }
+    get isLedBars() {
+        return this._flg.isLeds;
+    }
+    get isLumiBars() {
+        return this._flg.isLumi;
+    }
+    get isOctaveBands() {
+        return this._flg.isOctaves;
+    }
+    get isOn() {
+        return !!this._runId;
+    }
+    get isOutlineBars() {
+        return this._flg.isOutline;
+    }
+    get pixelRatio() {
+        return this._pixelRatio;
+    }
+    get isRoundBars() {
+        return this._flg.isRound;
+    }
+    static get version() {
+        return $a7744d5c3ee82091$var$VERSION;
+    }
+    /**
+	 * ==========================================================================
+     *
+	 * PUBLIC METHODS
+	 *
+	 * ==========================================================================
+	 */ /**
+	 * Connects an HTML media element or audio node to the analyzer
+	 *
+	 * @param {object} an instance of HTMLMediaElement or AudioNode
+	 * @returns {object} a MediaElementAudioSourceNode object if created from HTML element, or the same input object otherwise
+	 */ connectInput(source) {
+        var isHTML = source instanceof HTMLMediaElement;
+        if (!(isHTML || source.connect)) throw new $a7744d5c3ee82091$var$AudioMotionError($a7744d5c3ee82091$var$ERR_INVALID_AUDIO_SOURCE);
+        // if source is an HTML element, create an audio node for it; otherwise, use the provided audio node
+        var node = isHTML ? this.audioCtx.createMediaElementSource(source) : source;
+        if (!this._sources.includes(node)) {
+            node.connect(this._input);
+            this._sources.push(node);
+        }
+        return node;
+    }
+    /**
+	 * Connects the analyzer output to another audio node
+	 *
+	 * @param [{object}] an AudioNode; if undefined, the output is connected to the audio context destination (speakers)
+	 */ connectOutput() {
+        var node = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : this.audioCtx.destination;
+        if (this._outNodes.includes(node)) return;
+        this._output.connect(node);
+        this._outNodes.push(node);
+        // when connecting the first node, also connect the analyzer nodes to the merger / output nodes
+        if (this._outNodes.length == 1) for(var _i = 0, _iter = [
+            0,
+            1
+        ]; _i < _iter.length; _i++){
+            var i = _iter[_i];
+            this._analyzer[i].connect(this._chLayout == $a7744d5c3ee82091$var$CHANNEL_SINGLE && !i ? this._output : this._merger, 0, i);
+        }
+    }
+    /**
+	 * Destroys instance
+	 */ destroy() {
+        if (!this._ready) return;
+        var _this = this, audioCtx = _this.audioCtx, canvas = _this.canvas, _controller = _this._controller, _input = _this._input, _merger = _this._merger, _observer = _this._observer, _ownCanvas = _this._ownCanvas, _ownContext = _this._ownContext, _splitter = _this._splitter;
+        this._destroyed = true;
+        this._ready = false;
+        this.stop();
+        // remove event listeners
+        _controller.abort();
+        if (_observer) _observer.disconnect();
+        // clear callbacks and fullscreen element
+        this.onCanvasResize = null;
+        this.onCanvasDraw = null;
+        this._fsEl = null;
+        // disconnect audio nodes
+        this.disconnectInput();
+        this.disconnectOutput(); // also disconnects analyzer nodes
+        _input.disconnect();
+        _splitter.disconnect();
+        _merger.disconnect();
+        // if audio context is our own (not provided by the user), close it
+        if (_ownContext) audioCtx.close();
+        // remove canvas from the DOM (if not provided by the user)
+        if (_ownCanvas) canvas.remove();
+        // reset flags
+        this._calcBars();
+    }
+    /**
+	 * Disconnects audio sources from the analyzer
+	 *
+	 * @param [{object|array}] a connected AudioNode object or an array of such objects; if falsy, all connected nodes are disconnected
+	 * @param [{boolean}] if true, stops/releases audio tracks from disconnected media streams (e.g. microphone)
+	 */ disconnectInput(sources, stopTracks) {
+        if (!sources) sources = Array.from(this._sources);
+        else if (!Array.isArray(sources)) sources = [
+            sources
+        ];
+        var _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
+        try {
+            for(var _iterator = sources[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true){
+                var node = _step.value;
+                var idx = this._sources.indexOf(node);
+                var _iteratorNormalCompletion1 = true, _didIteratorError1 = false, _iteratorError1 = undefined;
+                if (stopTracks && node.mediaStream) try {
+                    for(var _iterator1 = node.mediaStream.getAudioTracks()[Symbol.iterator](), _step1; !(_iteratorNormalCompletion1 = (_step1 = _iterator1.next()).done); _iteratorNormalCompletion1 = true){
+                        var track = _step1.value;
+                        track.stop();
+                    }
+                } catch (err) {
+                    _didIteratorError1 = true;
+                    _iteratorError1 = err;
+                } finally{
+                    try {
+                        if (!_iteratorNormalCompletion1 && _iterator1.return != null) {
+                            _iterator1.return();
+                        }
+                    } finally{
+                        if (_didIteratorError1) {
+                            throw _iteratorError1;
+                        }
+                    }
+                }
+                if (idx >= 0) {
+                    node.disconnect(this._input);
+                    this._sources.splice(idx, 1);
+                }
+            }
+        } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+        } finally{
+            try {
+                if (!_iteratorNormalCompletion && _iterator.return != null) {
+                    _iterator.return();
+                }
+            } finally{
+                if (_didIteratorError) {
+                    throw _iteratorError;
+                }
+            }
+        }
+    }
+    /**
+	 * Disconnects the analyzer output from other audio nodes
+	 *
+	 * @param [{object}] a connected AudioNode object; if undefined, all connected nodes are disconnected
+	 */ disconnectOutput(node) {
+        if (node && !this._outNodes.includes(node)) return;
+        this._output.disconnect(node);
+        this._outNodes = node ? this._outNodes.filter((e)=>e !== node) : [];
+        // if disconnected from all nodes, also disconnect the analyzer nodes so they keep working on Chromium
+        // see https://github.com/hvianna/audioMotion-analyzer/issues/13#issuecomment-808764848
+        if (this._outNodes.length == 0) for(var _i = 0, _iter = [
+            0,
+            1
+        ]; _i < _iter.length; _i++){
+            var i = _iter[_i];
+            this._analyzer[i].disconnect();
+        }
+    }
+    /**
+	 * Returns analyzer bars data
+     *
+	 * @returns {array}
+	 */ getBars() {
+        return Array.from(this._bars, (param)=>{
+            var posX = param.posX, freq = param.freq, freqLo = param.freqLo, freqHi = param.freqHi, hold = param.hold, peak = param.peak, value = param.value;
+            return {
+                posX: posX,
+                freq: freq,
+                freqLo: freqLo,
+                freqHi: freqHi,
+                hold: hold,
+                peak: peak,
+                value: value
+            };
+        });
+    }
+    /**
+	 * Returns the energy of a frequency, or average energy of a range of frequencies
+	 *
+	 * @param [{number|string}] single or initial frequency (Hz), or preset name; if undefined, returns the overall energy
+	 * @param [{number}] ending frequency (Hz)
+	 * @returns {number|null} energy value (0 to 1) or null, if the specified preset is unknown
+	 */ getEnergy(startFreq, endFreq) {
+        if (startFreq === undefined) return this._energy.val;
+        // if startFreq is a string, check for presets
+        if (startFreq != +startFreq) {
+            if (startFreq == 'peak') return this._energy.peak;
+            var presets = {
+                bass: [
+                    20,
+                    250
+                ],
+                lowMid: [
+                    250,
+                    500
+                ],
+                mid: [
+                    500,
+                    2e3
+                ],
+                highMid: [
+                    2e3,
+                    4e3
+                ],
+                treble: [
+                    4e3,
+                    16e3
+                ]
+            };
+            if (!presets[startFreq]) return null;
+            var ref;
+            ref = (0, $7640fa9e79c6b7c8$export$71511d61b312f219)(presets[startFreq], 2), startFreq = ref[0], endFreq = ref[1], ref;
+        }
+        var startBin = this._freqToBin(startFreq), endBin = endFreq ? this._freqToBin(endFreq) : startBin, chnCount = this._chLayout == $a7744d5c3ee82091$var$CHANNEL_SINGLE ? 1 : 2;
+        var energy = 0;
+        for(var channel = 0; channel < chnCount; channel++)for(var i = startBin; i <= endBin; i++)energy += this._normalizedB(this._fftData[channel][i]);
+        return energy / (endBin - startBin + 1) / chnCount;
+    }
+    /**
+	 * Returns current analyzer settings in object format
+	 *
+	 * @param [{string|array}] a property name or an array of property names to not include in the returned object
+	 * @returns {object} Options object
+	 */ getOptions(ignore) {
+        if (!Array.isArray(ignore)) ignore = [
+            ignore
+        ];
+        var options = {};
+        var _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
+        try {
+            for(var _iterator = Object.keys($a7744d5c3ee82091$var$DEFAULT_SETTINGS)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true){
+                var prop = _step.value;
+                if (!ignore.includes(prop)) {
+                    if (prop == 'gradient' && this.gradientLeft != this.gradientRight) {
+                        options.gradientLeft = this.gradientLeft;
+                        options.gradientRight = this.gradientRight;
+                    } else if (prop != 'start') options[prop] = this[prop];
+                }
+            }
+        } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+        } finally{
+            try {
+                if (!_iteratorNormalCompletion && _iterator.return != null) {
+                    _iterator.return();
+                }
+            } finally{
+                if (_didIteratorError) {
+                    throw _iteratorError;
+                }
+            }
+        }
+        return options;
+    }
+    /**
+	 * Registers a custom gradient
+	 *
+	 * @param {string} name
+	 * @param {object} options
+	 */ registerGradient(name, options) {
+        if (typeof name != 'string' || name.trim().length == 0) throw new $a7744d5c3ee82091$var$AudioMotionError($a7744d5c3ee82091$var$ERR_GRADIENT_INVALID_NAME);
+        if (typeof options != 'object') throw new $a7744d5c3ee82091$var$AudioMotionError($a7744d5c3ee82091$var$ERR_GRADIENT_NOT_AN_OBJECT);
+        var colorStops = options.colorStops;
+        if (!Array.isArray(colorStops) || !colorStops.length) throw new $a7744d5c3ee82091$var$AudioMotionError($a7744d5c3ee82091$var$ERR_GRADIENT_MISSING_COLOR);
+        var count = colorStops.length, isInvalid = (val)=>+val != val || val < 0 || val > 1;
+        // normalize all colorStops as objects with `pos`, `color` and `level` properties
+        colorStops.forEach((colorStop, index)=>{
+            var pos = index / Math.max(1, count - 1);
+            if (typeof colorStop != 'object') colorStops[index] = {
+                pos: pos,
+                color: colorStop
+            };
+            else if (isInvalid(colorStop.pos)) colorStop.pos = pos;
+            if (isInvalid(colorStop.level)) colorStops[index].level = 1 - index / count;
+        });
+        // make sure colorStops is in descending `level` order and that the first one has `level == 1`
+        // this is crucial for proper operation of 'bar-level' colorMode!
+        colorStops.sort((a, b)=>a.level < b.level ? 1 : a.level > b.level ? -1 : 0);
+        colorStops[0].level = 1;
+        this._gradients[name] = {
+            bgColor: options.bgColor || $a7744d5c3ee82091$var$GRADIENT_DEFAULT_BGCOLOR,
+            dir: options.dir,
+            colorStops: colorStops
+        };
+        // if the registered gradient is one of the currently selected gradients, regenerate them
+        if (this._selectedGrads.includes(name)) this._makeGrad();
+    }
+    /**
+	 * Set dimensions of analyzer's canvas
+	 *
+	 * @param {number} w width in pixels
+	 * @param {number} h height in pixels
+	 */ setCanvasSize(w, h) {
+        this._width = w;
+        this._height = h;
+        this._setCanvas($a7744d5c3ee82091$var$REASON_USER);
+    }
+    /**
+	 * Set desired frequency range
+	 *
+	 * @param {number} min lowest frequency represented in the x-axis
+	 * @param {number} max highest frequency represented in the x-axis
+	 */ setFreqRange(min, max) {
+        if (min < 1 || max < 1) throw new $a7744d5c3ee82091$var$AudioMotionError($a7744d5c3ee82091$var$ERR_FREQUENCY_TOO_LOW);
+        else {
+            this._minFreq = Math.min(min, max);
+            this.maxFreq = Math.max(min, max); // use the setter for maxFreq
+        }
+    }
+    /**
+	 * Set custom parameters for LED effect
+	 * If called with no arguments or if any property is invalid, clears any previous custom parameters
+	 *
+	 * @param {object} [params]
+	 */ setLedParams(params) {
+        var maxLeds, spaceV, spaceH;
+        // coerce parameters to Number; `NaN` results are rejected in the condition below
+        if (params) maxLeds = params.maxLeds | 0, spaceV = +params.spaceV, spaceH = +params.spaceH;
+        this._ledParams = maxLeds > 0 && spaceV > 0 && spaceH >= 0 ? [
+            maxLeds,
+            spaceV,
+            spaceH
+        ] : undefined;
+        this._calcBars();
+    }
+    /**
+	 * Shorthand function for setting several options at once
+	 *
+	 * @param {object} options
+	 */ setOptions(options) {
+        this._setProps(options);
+    }
+    /**
+	 * Adjust the analyzer's sensitivity
+	 *
+	 * @param {number} min minimum decibels value
+	 * @param {number} max maximum decibels value
+	 */ setSensitivity(min, max) {
+        for(var _i = 0, _iter = [
+            0,
+            1
+        ]; _i < _iter.length; _i++){
+            var i = _iter[_i];
+            this._analyzer[i].minDecibels = Math.min(min, max);
+            this._analyzer[i].maxDecibels = Math.max(min, max);
+        }
+    }
+    /**
+	 * Start the analyzer
+	 */ start() {
+        this.toggleAnalyzer(true);
+    }
+    /**
+	 * Stop the analyzer
+	 */ stop() {
+        this.toggleAnalyzer(false);
+    }
+    /**
+	 * Start / stop canvas animation
+	 *
+	 * @param {boolean} [force] if undefined, inverts the current state
+	 * @returns {boolean} resulting state after the change
+	 */ toggleAnalyzer(force) {
+        var hasStarted = this.isOn;
+        if (force === undefined) force = !hasStarted;
+        // Stop the analyzer if it was already running and must be disabled
+        if (hasStarted && !force) {
+            cancelAnimationFrame(this._runId);
+            this._runId = 0;
+        } else if (!hasStarted && force && !this._destroyed) {
+            this._frames = 0;
+            this._time = performance.now();
+            this._runId = requestAnimationFrame((timestamp)=>this._draw(timestamp)); // arrow function preserves the scope of *this*
+        }
+        return this.isOn;
+    }
+    /**
+	 * Toggles canvas full-screen mode
+	 */ toggleFullscreen() {
+        if (this.isFullscreen) {
+            if (document.exitFullscreen) document.exitFullscreen();
+            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        } else {
+            var fsEl = this._fsEl;
+            if (!fsEl) return;
+            if (fsEl.requestFullscreen) fsEl.requestFullscreen();
+            else if (fsEl.webkitRequestFullscreen) fsEl.webkitRequestFullscreen();
+        }
+    }
+    /**
+	 * ==========================================================================
+	 *
+	 * PRIVATE METHODS
+	 *
+	 * ==========================================================================
+	 */ /**
+	 * Return the frequency (in Hz) for a given FFT bin
+	 */ _binToFreq(bin) {
+        return bin * this.audioCtx.sampleRate / this.fftSize || 1; // returns 1 for bin 0
+    }
+    /**
+	 * Compute all internal data required for the analyzer, based on its current settings
+	 */ _calcBars() {
+        var bars = this._bars = []; // initialize object property
+        if (!this._ready) {
+            this._flg = {
+                isAlpha: false,
+                isBands: false,
+                isLeds: false,
+                isLumi: false,
+                isOctaves: false,
+                isOutline: false,
+                isRound: false,
+                noLedGap: false
+            };
+            return;
+        }
+        var _this = this, _ansiBands = _this._ansiBands, _barSpace = _this._barSpace, canvas = _this.canvas, _chLayout = _this._chLayout, _maxFreq = _this._maxFreq, _minFreq = _this._minFreq, _mirror = _this._mirror, _mode = _this._mode, _radial = _this._radial, _radialInvert = _this._radialInvert, _reflexRatio = _this._reflexRatio, centerX = canvas.width >> 1, centerY = canvas.height >> 1, isDualVertical = _chLayout == $a7744d5c3ee82091$var$CHANNEL_VERTICAL && !_radial, isDualHorizontal = _chLayout == $a7744d5c3ee82091$var$CHANNEL_HORIZONTAL, // COMPUTE FLAGS
+        isBands = _mode % 10 != 0, isOctaves = isBands && this._frequencyScale == $a7744d5c3ee82091$var$SCALE_LOG, isLeds = this._showLeds && isBands && !_radial, isLumi = this._lumiBars && isBands && !_radial, isAlpha = this._alphaBars && !isLumi && _mode != $a7744d5c3ee82091$var$MODE_GRAPH, isOutline = this._outlineBars && isBands && !isLumi && !isLeds, isRound = this._roundBars && isBands && !isLumi && !isLeds, noLedGap = _chLayout != $a7744d5c3ee82091$var$CHANNEL_VERTICAL || _reflexRatio > 0 && !isLumi, // COMPUTE AUXILIARY VALUES
+        // channelHeight is the total canvas height dedicated to each channel, including the reflex area, if any)
+        channelHeight = canvas.height - (isDualVertical && !isLeds ? .5 : 0) >> isDualVertical, // analyzerHeight is the effective height used to render the analyzer, excluding the reflex area
+        analyzerHeight = channelHeight * (isLumi || _radial ? 1 : 1 - _reflexRatio) | 0, analyzerWidth = canvas.width - centerX * (isDualHorizontal || _mirror != 0), // channelGap is **0** if isLedDisplay == true (LEDs already have spacing); **1** if canvas height is odd (windowed); **2** if it's even
+        // TODO: improve this, make it configurable?
+        channelGap = isDualVertical ? canvas.height - channelHeight * 2 : 0, initialX = centerX * (_mirror == -1 && !isDualHorizontal && !_radial);
+        var innerRadius = Math.min(canvas.width, canvas.height) * .375 * (_chLayout == $a7744d5c3ee82091$var$CHANNEL_VERTICAL ? 1 : this._radius) | 0, outerRadius = Math.min(centerX, centerY);
+        var ref;
+        if (_radialInvert && _chLayout != $a7744d5c3ee82091$var$CHANNEL_VERTICAL) ref = [
+            outerRadius,
+            innerRadius
+        ], innerRadius = ref[0], outerRadius = ref[1], ref;
+        /**
+		 *	CREATE ANALYZER BANDS
+		 *
+		 *	USES:
+		 *		analyzerWidth
+		 *		initialX
+		 *		isBands
+		 *		isOctaves
+		 *
+		 *	GENERATES:
+		 *		bars (populates this._bars)
+		 *		bardWidth
+		 *		scaleMin
+		 *		unitWidth
+		 */ // helper function to add a bar to the bars array
+        // bar object format:
+        // {
+        //	 posX,
+        //   freq,
+        //   freqLo,
+        //   freqHi,
+        //   binLo,
+        //   binHi,
+        //   ratioLo,
+        //   ratioHi,
+        //   peak,    // peak value
+        //   hold,    // peak hold frames (negative value indicates peak falling / fading)
+        //   alpha,   // peak alpha (used by fadePeaks)
+        //   value    // current bar value
+        // }
+        var barsPush = (args)=>bars.push((0, $84195635a8675dae$export$71511d61b312f219)((0, $2a96eb02b266e888$export$71511d61b312f219)({}, args), {
+                peak: [
+                    0,
+                    0
+                ],
+                hold: [
+                    0
+                ],
+                alpha: [
+                    0
+                ],
+                value: [
+                    0
+                ]
+            }));
+        /*
+			A simple interpolation is used to obtain an approximate amplitude value for any given frequency,
+			from the available FFT data. We find the FFT bin which closer matches the desired frequency	and
+			interpolate its value with that of the next adjacent bin, like so:
+
+				v = v0 + ( v1 - v0 ) * ( log2( f / f0 ) / log2( f1 / f0 ) )
+				                       \__________________________________/
+				                                        |
+				                                      ratio
+				where:
+
+				f  - desired frequency
+				v  - amplitude (volume) of desired frequency
+				f0 - frequency represented by the lower FFT bin
+				f1 - frequency represented by the upper FFT bin
+				v0 - amplitude of f0
+				v1 - amplitude of f1
+
+			ratio is calculated in advance here, to reduce computational complexity during real-time rendering.
+		*/ // helper function to calculate FFT bin and interpolation ratio for a given frequency
+        var calcRatio = (freq)=>{
+            var bin = this._freqToBin(freq, 'floor'), lower = this._binToFreq(bin), upper = this._binToFreq(bin + 1), ratio = Math.log2(freq / lower) / Math.log2(upper / lower);
+            return [
+                bin,
+                ratio
+            ];
+        };
+        var barWidth, scaleMin, unitWidth;
+        if (isOctaves) {
+            // helper function to round a value to a given number of significant digits
+            // `atLeast` set to true prevents reducing the number of integer significant digits
+            var roundSD = (value, digits, atLeast)=>+value.toPrecision(atLeast ? Math.max(digits, 1 + Math.log10(value) | 0) : digits);
+            // helper function to find the nearest preferred number (Renard series) for a given value
+            var nearestPreferred = (value)=>{
+                // R20 series is used here, as it provides closer approximations for 1/2 octave bands (non-standard)
+                var preferred = [
+                    1,
+                    1.12,
+                    1.25,
+                    1.4,
+                    1.6,
+                    1.8,
+                    2,
+                    2.24,
+                    2.5,
+                    2.8,
+                    3.15,
+                    3.55,
+                    4,
+                    4.5,
+                    5,
+                    5.6,
+                    6.3,
+                    7.1,
+                    8,
+                    9,
+                    10
+                ], power = Math.log10(value) | 0, normalized = value / Math.pow(10, power);
+                var i = 1;
+                while(i < preferred.length && normalized > preferred[i])i++;
+                if (normalized - preferred[i - 1] < preferred[i] - normalized) i--;
+                return (preferred[i] * Math.pow(10, power + 5) | 0) / 1e5; // keep 5 significant digits
+            };
+            // ANSI standard octave bands use the base-10 frequency ratio, as preferred by [ANSI S1.11-2004, p.2]
+            // The equal-tempered scale uses the base-2 ratio
+            var bands = [
+                0,
+                24,
+                12,
+                8,
+                6,
+                4,
+                3,
+                2,
+                1
+            ][_mode], bandWidth = _ansiBands ? Math.pow(10, 3 / (bands * 10)) : Math.pow(2, 1 / bands), halfBand = Math.pow(bandWidth, .5);
+            var analyzerBars = [], currFreq = _ansiBands ? 7.94328235 / (bands % 2 ? 1 : halfBand) : $a7744d5c3ee82091$var$C_1;
+            // For ANSI bands with even denominators (all except 1/1 and 1/3), the reference frequency (1 kHz)
+            // must fall on the edges of a pair of adjacent bands, instead of midband [ANSI S1.11-2004, p.2]
+            // In the equal-tempered scale, all midband frequencies represent a musical note or quarter-tone.
+            do {
+                var freq = currFreq; // midband frequency
+                var freqLo = roundSD(freq / halfBand, 4, true), freqHi = roundSD(freq * halfBand, 4, true), _calcRatio = (0, $7640fa9e79c6b7c8$export$71511d61b312f219)(calcRatio(freqLo), 2), binLo = _calcRatio[0], ratioLo = _calcRatio[1], _calcRatio1 = (0, $7640fa9e79c6b7c8$export$71511d61b312f219)(calcRatio(freqHi), 2), binHi = _calcRatio1[0], ratioHi = _calcRatio1[1];
+                // for 1/1, 1/2 and 1/3 ANSI bands, use the preferred numbers to find the nominal midband frequency
+                // for 1/4 to 1/24, round to 2 or 3 significant digits, according to the MSD [ANSI S1.11-2004, p.12]
+                if (_ansiBands) freq = bands < 4 ? nearestPreferred(freq) : roundSD(freq, freq.toString()[0] < 5 ? 3 : 2);
+                else freq = roundSD(freq, 4, true);
+                if (freq >= _minFreq) barsPush({
+                    posX: 0,
+                    freq: freq,
+                    freqLo: freqLo,
+                    freqHi: freqHi,
+                    binLo: binLo,
+                    binHi: binHi,
+                    ratioLo: ratioLo,
+                    ratioHi: ratioHi
+                });
+                currFreq *= bandWidth;
+            }while (currFreq <= _maxFreq);
+            barWidth = analyzerWidth / bars.length;
+            bars.forEach((bar, index)=>bar.posX = initialX + index * barWidth);
+            var firstBar = bars[0], lastBar = bars[bars.length - 1];
+            scaleMin = this._freqScaling(firstBar.freqLo);
+            unitWidth = analyzerWidth / (this._freqScaling(lastBar.freqHi) - scaleMin);
+            // clamp edge frequencies to minFreq / maxFreq, if necessary
+            // this is done after computing scaleMin and unitWidth, for the proper positioning of labels on the X-axis
+            if (firstBar.freqLo < _minFreq) {
+                firstBar.freqLo = _minFreq;
+                var ref1;
+                ref1 = (0, $7640fa9e79c6b7c8$export$71511d61b312f219)(calcRatio(_minFreq), 2), firstBar.binLo = ref1[0], firstBar.ratioLo = ref1[1], ref1;
+            }
+            if (lastBar.freqHi > _maxFreq) {
+                lastBar.freqHi = _maxFreq;
+                var ref2;
+                ref2 = (0, $7640fa9e79c6b7c8$export$71511d61b312f219)(calcRatio(_maxFreq), 2), lastBar.binHi = ref2[0], lastBar.ratioHi = ref2[1], ref2;
+            }
+        } else if (isBands) {
+            var bands1 = [
+                0,
+                24,
+                12,
+                8,
+                6,
+                4,
+                3,
+                2,
+                1
+            ][_mode] * 10;
+            var invFreqScaling = (x)=>{
+                switch(this._frequencyScale){
+                    case $a7744d5c3ee82091$var$SCALE_BARK:
+                        return 1960 / (26.81 / (x + .53) - 1);
+                    case $a7744d5c3ee82091$var$SCALE_MEL:
+                        return 700 * (Math.pow(2, x) - 1);
+                    case $a7744d5c3ee82091$var$SCALE_LINEAR:
+                        return x;
+                }
+            };
+            barWidth = analyzerWidth / bands1;
+            scaleMin = this._freqScaling(_minFreq);
+            unitWidth = analyzerWidth / (this._freqScaling(_maxFreq) - scaleMin);
+            for(var i = 0, posX = 0; i < bands1; i++, posX += barWidth){
+                var freqLo1 = invFreqScaling(scaleMin + posX / unitWidth), freq1 = invFreqScaling(scaleMin + (posX + barWidth / 2) / unitWidth), freqHi1 = invFreqScaling(scaleMin + (posX + barWidth) / unitWidth), _calcRatio2 = (0, $7640fa9e79c6b7c8$export$71511d61b312f219)(calcRatio(freqLo1), 2), binLo1 = _calcRatio2[0], ratioLo1 = _calcRatio2[1], _calcRatio3 = (0, $7640fa9e79c6b7c8$export$71511d61b312f219)(calcRatio(freqHi1), 2), binHi1 = _calcRatio3[0], ratioHi1 = _calcRatio3[1];
+                barsPush({
+                    posX: initialX + posX,
+                    freq: freq1,
+                    freqLo: freqLo1,
+                    freqHi: freqHi1,
+                    binLo: binLo1,
+                    binHi: binHi1,
+                    ratioLo: ratioLo1,
+                    ratioHi: ratioHi1
+                });
+            }
+        } else {
+            barWidth = 1;
+            scaleMin = this._freqScaling(_minFreq);
+            unitWidth = analyzerWidth / (this._freqScaling(_maxFreq) - scaleMin);
+            var minIndex = this._freqToBin(_minFreq, 'floor'), maxIndex = this._freqToBin(_maxFreq);
+            var lastPos = -999;
+            for(var i1 = minIndex; i1 <= maxIndex; i1++){
+                var freq2 = this._binToFreq(i1), posX1 = initialX + Math.round(unitWidth * (this._freqScaling(freq2) - scaleMin)); // avoid fractionary pixel values
+                // if it's on a different X-coordinate, create a new bar for this frequency
+                if (posX1 > lastPos) {
+                    barsPush({
+                        posX: posX1,
+                        freq: freq2,
+                        freqLo: freq2,
+                        freqHi: freq2,
+                        binLo: i1,
+                        binHi: i1,
+                        ratioLo: 0,
+                        ratioHi: 0
+                    });
+                    lastPos = posX1;
+                } else if (bars.length) {
+                    var lastBar1 = bars[bars.length - 1];
+                    lastBar1.binHi = i1;
+                    lastBar1.freqHi = freq2;
+                    lastBar1.freq = Math.pow(lastBar1.freqLo * freq2, .5); // compute center frequency (geometric mean)
+                }
+            }
+        }
+        /**
+		 *  COMPUTE ATTRIBUTES FOR THE LED BARS
+		 *
+		 *	USES:
+		 *		analyzerHeight
+		 *		barWidth
+		 *		noLedGap
+		 *
+		 *	GENERATES:
+		 * 		spaceH
+		 * 		spaceV
+		 *		this._leds
+		 */ var spaceH = 0, spaceV = 0;
+        if (isLeds) {
+            // adjustment for high pixel-ratio values on low-resolution screens (Android TV)
+            var dPR = this._pixelRatio / (window.devicePixelRatio > 1 && window.screen.height <= 540 ? 2 : 1);
+            var params = [
+                [],
+                [
+                    128,
+                    3,
+                    .45
+                ],
+                [
+                    128,
+                    4,
+                    .225
+                ],
+                [
+                    96,
+                    6,
+                    .225
+                ],
+                [
+                    80,
+                    6,
+                    .225
+                ],
+                [
+                    80,
+                    6,
+                    .125
+                ],
+                [
+                    64,
+                    6,
+                    .125
+                ],
+                [
+                    48,
+                    8,
+                    .125
+                ],
+                [
+                    24,
+                    16,
+                    .125
+                ]
+            ];
+            // use custom LED parameters if set, or the default parameters for the current mode
+            var customParams = this._ledParams, _ref = (0, $7640fa9e79c6b7c8$export$71511d61b312f219)(customParams || params[_mode], 3), maxLeds = _ref[0], spaceVRatio = _ref[1], spaceHRatio = _ref[2];
+            var ledCount, maxHeight = analyzerHeight;
+            if (customParams) {
+                var minHeight = 2 * dPR;
+                var blockHeight;
+                ledCount = maxLeds + 1;
+                do {
+                    ledCount--;
+                    blockHeight = maxHeight / ledCount / (1 + spaceVRatio);
+                    spaceV = blockHeight * spaceVRatio;
+                }while ((blockHeight < minHeight || spaceV < minHeight) && ledCount > 1);
+            } else {
+                // calculate vertical spacing - aim for the reference ratio, but make sure it's at least 2px
+                var refRatio = 540 / spaceVRatio;
+                spaceV = Math.min(spaceVRatio * dPR, Math.max(2, maxHeight / refRatio + .1 | 0));
+            }
+            // remove the extra spacing below the last line of LEDs
+            if (noLedGap) maxHeight += spaceV;
+            // recalculate the number of leds, considering the effective spaceV
+            if (!customParams) ledCount = Math.min(maxLeds, maxHeight / (spaceV * 2) | 0);
+            spaceH = spaceHRatio >= 1 ? spaceHRatio : barWidth * spaceHRatio;
+            this._leds = [
+                ledCount,
+                spaceH,
+                spaceV,
+                maxHeight / ledCount - spaceV // ledHeight
+            ];
+        }
+        // COMPUTE ADDITIONAL BAR POSITIONING, ACCORDING TO THE CURRENT SETTINGS
+        // uses: _barSpace, barWidth, spaceH
+        var barSpacePx = Math.min(barWidth - 1, _barSpace * (_barSpace > 0 && _barSpace < 1 ? barWidth : 1));
+        if (isBands) barWidth -= Math.max(isLeds ? spaceH : 0, barSpacePx);
+        bars.forEach((bar, index)=>{
+            var posX = bar.posX, width = barWidth;
+            // in bands modes we need to update bar.posX to account for bar/led spacing
+            if (isBands) {
+                if (_barSpace == 0 && !isLeds) {
+                    // when barSpace == 0 use integer values for perfect gapless positioning
+                    posX |= 0;
+                    width |= 0;
+                    if (index > 0 && posX > bars[index - 1].posX + bars[index - 1].width) {
+                        posX--;
+                        width++;
+                    }
+                } else posX += Math.max(isLeds ? spaceH : 0, barSpacePx) / 2;
+                bar.posX = posX; // update
+            }
+            bar.barCenter = posX + (barWidth == 1 ? 0 : width / 2);
+            bar.width = width;
+        });
+        // COMPUTE CHANNEL COORDINATES (uses spaceV)
+        var channelCoords = [];
+        for(var _i = 0, _iter = [
+            0,
+            1
+        ]; _i < _iter.length; _i++){
+            var channel = _iter[_i];
+            var channelTop = _chLayout == $a7744d5c3ee82091$var$CHANNEL_VERTICAL ? (channelHeight + channelGap) * channel : 0, channelBottom = channelTop + channelHeight, analyzerBottom = channelTop + analyzerHeight - (!isLeds || noLedGap ? 0 : spaceV);
+            channelCoords.push({
+                channelTop: channelTop,
+                channelBottom: channelBottom,
+                analyzerBottom: analyzerBottom
+            });
+        }
+        // SAVE INTERNAL PROPERTIES
+        this._aux = {
+            analyzerHeight: analyzerHeight,
+            analyzerWidth: analyzerWidth,
+            centerX: centerX,
+            centerY: centerY,
+            channelCoords: channelCoords,
+            channelHeight: channelHeight,
+            channelGap: channelGap,
+            initialX: initialX,
+            innerRadius: innerRadius,
+            outerRadius: outerRadius,
+            scaleMin: scaleMin,
+            unitWidth: unitWidth
+        };
+        this._flg = {
+            isAlpha: isAlpha,
+            isBands: isBands,
+            isLeds: isLeds,
+            isLumi: isLumi,
+            isOctaves: isOctaves,
+            isOutline: isOutline,
+            isRound: isRound,
+            noLedGap: noLedGap
+        };
+        // generate the X-axis and radial scales
+        this._createScales();
+    }
+    /**
+	 * Generate the X-axis and radial scales in auxiliary canvases
+	 */ _createScales() {
+        if (!this._ready) return;
+        var _this__aux = this._aux, analyzerWidth = _this__aux.analyzerWidth, initialX = _this__aux.initialX, innerRadius = _this__aux.innerRadius, scaleMin = _this__aux.scaleMin, unitWidth = _this__aux.unitWidth, _this = this, canvas = _this.canvas, _frequencyScale = _this._frequencyScale, _mirror = _this._mirror, _noteLabels = _this._noteLabels, _radial = _this._radial, _scaleX = _this._scaleX, _scaleR = _this._scaleR, canvasX = _scaleX.canvas, canvasR = _scaleR.canvas, freqLabels = [], isDualHorizontal = this._chLayout == $a7744d5c3ee82091$var$CHANNEL_HORIZONTAL, isDualVertical = this._chLayout == $a7744d5c3ee82091$var$CHANNEL_VERTICAL, minDimension = Math.min(canvas.width, canvas.height), scale = [
+            'C',
+            ,
+            'D',
+            ,
+            'E',
+            'F',
+            ,
+            'G',
+            ,
+            'A',
+            ,
+            'B'
+        ], scaleHeight = minDimension / 34 | 0, fontSizeX = canvasX.height >> 1, fontSizeR = scaleHeight >> 1, labelWidthX = fontSizeX * (_noteLabels ? .7 : 1.5), labelWidthR = fontSizeR * (_noteLabels ? 1 : 2), root12 = Math.pow(2, 1 / 12);
+        if (!_noteLabels && (this._ansiBands || _frequencyScale != $a7744d5c3ee82091$var$SCALE_LOG)) {
+            freqLabels.push(16, 31.5, 63, 125, 250, 500, 1e3, 2e3, 4e3);
+            if (_frequencyScale == $a7744d5c3ee82091$var$SCALE_LINEAR) freqLabels.push(6e3, 8e3, 10e3, 12e3, 14e3, 16e3, 18e3, 20e3, 22e3);
+            else freqLabels.push(8e3, 16e3);
+        } else {
+            var freq = $a7744d5c3ee82091$var$C_1;
+            for(var octave = -1; octave < 11; octave++)for(var note = 0; note < 12; note++){
+                if (freq >= this._minFreq && freq <= this._maxFreq) {
+                    var pitch = scale[note], isC = pitch == 'C';
+                    if (pitch && _noteLabels && !_mirror && !isDualHorizontal || isC) freqLabels.push(_noteLabels ? [
+                        freq,
+                        pitch + (isC ? octave : '')
+                    ] : freq);
+                }
+                freq *= root12;
+            }
+        }
+        // in radial dual-vertical layout, the scale is positioned exactly between both channels, by making the canvas a bit larger than the inner diameter
+        canvasR.width = canvasR.height = Math.max(minDimension * .15, (innerRadius << 1) + isDualVertical * scaleHeight);
+        var centerR = canvasR.width >> 1, radialY = centerR - scaleHeight * .7; // vertical position of text labels in the circular scale
+        // helper function
+        var radialLabel = (x, label)=>{
+            var angle = $a7744d5c3ee82091$var$TAU * (x / canvas.width), adjAng = angle - $a7744d5c3ee82091$var$HALF_PI, posX = radialY * Math.cos(adjAng), posY = radialY * Math.sin(adjAng);
+            _scaleR.save();
+            _scaleR.translate(centerR + posX, centerR + posY);
+            _scaleR.rotate(angle);
+            _scaleR.fillText(label, 0, 0);
+            _scaleR.restore();
+        };
+        // clear scale canvas
+        canvasX.width |= 0;
+        _scaleX.fillStyle = _scaleR.strokeStyle = $a7744d5c3ee82091$var$SCALEX_BACKGROUND_COLOR;
+        _scaleX.fillRect(0, 0, canvasX.width, canvasX.height);
+        _scaleR.arc(centerR, centerR, centerR - scaleHeight / 2, 0, $a7744d5c3ee82091$var$TAU);
+        _scaleR.lineWidth = scaleHeight;
+        _scaleR.stroke();
+        _scaleX.fillStyle = _scaleR.fillStyle = $a7744d5c3ee82091$var$SCALEX_LABEL_COLOR;
+        _scaleX.font = `${fontSizeX}px ${$a7744d5c3ee82091$var$FONT_FAMILY}`;
+        _scaleR.font = `${fontSizeR}px ${$a7744d5c3ee82091$var$FONT_FAMILY}`;
+        _scaleX.textAlign = _scaleR.textAlign = 'center';
+        var prevX = -labelWidthX / 4, prevR = -labelWidthR;
+        var _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
+        try {
+            for(var _iterator = freqLabels[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true){
+                var item = _step.value;
+                var _ref = (0, $7640fa9e79c6b7c8$export$71511d61b312f219)(Array.isArray(item) ? item : [
+                    item,
+                    item < 1e3 ? item | 0 : `${(item / 100 | 0) / 10}k`
+                ], 2), freq1 = _ref[0], label = _ref[1], x = unitWidth * (this._freqScaling(freq1) - scaleMin), y = canvasX.height * .75, isC1 = label[0] == 'C', maxW = fontSizeX * (_noteLabels && !_mirror && !isDualHorizontal ? isC1 ? 1.2 : .6 : 3);
+                // set label color - no highlight when mirror effect is active (only Cs displayed)
+                _scaleX.fillStyle = _scaleR.fillStyle = isC1 && !_mirror && !isDualHorizontal ? $a7744d5c3ee82091$var$SCALEX_HIGHLIGHT_COLOR : $a7744d5c3ee82091$var$SCALEX_LABEL_COLOR;
+                // prioritizes which note labels are displayed, due to the restricted space on some ranges/scales
+                if (_noteLabels) {
+                    var isLog = _frequencyScale == $a7744d5c3ee82091$var$SCALE_LOG, isLinear = _frequencyScale == $a7744d5c3ee82091$var$SCALE_LINEAR;
+                    var allowedLabels = [
+                        'C'
+                    ];
+                    if (isLog || freq1 > 2e3 || !isLinear && freq1 > 250 || (!_radial || isDualVertical) && (!isLinear && freq1 > 125 || freq1 > 1e3)) allowedLabels.push('G');
+                    if (isLog || freq1 > 4e3 || !isLinear && freq1 > 500 || (!_radial || isDualVertical) && (!isLinear && freq1 > 250 || freq1 > 2e3)) allowedLabels.push('E');
+                    if (isLinear && freq1 > 4e3 || (!_radial || isDualVertical) && (isLog || freq1 > 2e3 || !isLinear && freq1 > 500)) allowedLabels.push('D', 'F', 'A', 'B');
+                    if (!allowedLabels.includes(label[0])) continue; // skip this label
+                }
+                // linear scale
+                if (x >= prevX + labelWidthX / 2 && x <= analyzerWidth) {
+                    _scaleX.fillText(label, isDualHorizontal && _mirror == -1 ? analyzerWidth - x : initialX + x, y, maxW);
+                    if (isDualHorizontal || _mirror && (x > labelWidthX || _mirror == 1)) _scaleX.fillText(label, isDualHorizontal && _mirror != 1 ? analyzerWidth + x : (initialX || canvas.width) - x, y, maxW);
+                    prevX = x + Math.min(maxW, _scaleX.measureText(label).width) / 2;
+                }
+                // radial scale
+                if (x >= prevR + labelWidthR && x < analyzerWidth - labelWidthR) {
+                    radialLabel(isDualHorizontal && _mirror == 1 ? analyzerWidth - x : x, label);
+                    if (isDualHorizontal || _mirror && (x > labelWidthR || _mirror == 1)) radialLabel(isDualHorizontal && _mirror != -1 ? analyzerWidth + x : -x, label);
+                    prevR = x;
+                }
+            }
+        } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+        } finally{
+            try {
+                if (!_iteratorNormalCompletion && _iterator.return != null) {
+                    _iterator.return();
+                }
+            } finally{
+                if (_didIteratorError) {
+                    throw _iteratorError;
+                }
+            }
+        }
+    }
+    /**
+	 * Redraw the canvas
+	 * this is called 60 times per second by requestAnimationFrame()
+	 */ _draw(timestamp) {
+        var _this, _loop = function(channel) {
+            var _this1, _loop = function(barIndex) {
+                var bar = _bars[barIndex], posX = bar.posX, barCenter = bar.barCenter, width = bar.width, freq = bar.freq, binLo = bar.binLo, binHi = bar.binHi, ratioLo = bar.ratioLo, ratioHi = bar.ratioHi;
+                var barValue = Math.max(interpolate(binLo, ratioLo), interpolate(binHi, ratioHi));
+                // check additional bins (if any) for this bar and keep the highest value
+                for(var j = binLo + 1; j < binHi; j++)if (fftData[j] > barValue) barValue = fftData[j];
+                // normalize bar amplitude in [0;1] range
+                barValue = _this1._normalizedB(barValue);
+                bar.value[channel] = barValue;
+                currentEnergy += barValue;
+                // update bar peak
+                if (bar.peak[channel] > 0 && bar.alpha[channel] > 0) {
+                    bar.hold[channel]--;
+                    // if hold is negative, start peak drop or fade out
+                    if (bar.hold[channel] < 0) {
+                        if (_fadePeaks && !showPeakLine) {
+                            var initialAlpha = !isAlpha || isOutline && _lineWidth > 0 ? 1 : isAlpha ? bar.peak[channel] : fillAlpha;
+                            bar.alpha[channel] = initialAlpha * (1 + bar.hold[channel] / fadeFrames); // hold is negative, so this is <= 1
+                        } else bar.peak[channel] += bar.hold[channel] * gravity / fpsSquared / nominalMaxHeight;
+                        // make sure the peak value is reset when using fadePeaks
+                        if (bar.alpha[channel] <= 0) bar.peak[channel] = 0;
+                    }
+                }
+                // check if it's a new peak for this bar
+                if (barValue >= bar.peak[channel]) {
+                    bar.peak[channel] = barValue;
+                    bar.hold[channel] = holdFrames;
+                    // check whether isAlpha or isOutline are active to start the peak alpha with the proper value
+                    bar.alpha[channel] = !isAlpha || isOutline && _lineWidth > 0 ? 1 : isAlpha ? barValue : fillAlpha;
+                }
+                // if not using the canvas, move earlier to the next bar
+                if (!useCanvas) return "continue";
+                // set opacity for bar effects
+                _ctx.globalAlpha = isLumi || isAlpha ? barValue : isOutline ? fillAlpha : 1;
+                // set fillStyle and strokeStyle for the current bar
+                setBarColor(barValue, barIndex);
+                // compute actual bar height on screen
+                var barHeight = isLumi ? maxBarHeight : isLeds ? ledPosY(barValue) : barValue * maxBarHeight | 0;
+                // Draw current bar or line segment
+                if (_mode == $a7744d5c3ee82091$var$MODE_GRAPH) {
+                    // compute the average between the initial bar (barIndex==0) and the next one
+                    // used to smooth the curve when the initial posX is off the screen, in mirror and radial modes
+                    var nextBarAvg = barIndex ? 0 : (_this1._normalizedB(fftData[_bars[1].binLo]) * maxBarHeight + barHeight) / 2;
+                    if (_radial) {
+                        if (barIndex == 0) {
+                            if (isDualHorizontal) _ctx.moveTo(...radialXY(0, 0));
+                            _ctx.lineTo(...radialXY(0, posX < 0 ? nextBarAvg : barHeight));
+                        }
+                        // draw line to the current point, avoiding overlapping wrap-around frequencies
+                        if (posX >= 0) {
+                            var point = [
+                                posX,
+                                barHeight
+                            ];
+                            _ctx.lineTo(...radialXY(...point));
+                            points.push(point);
+                        }
+                    } else {
+                        if (barIndex == 0) {
+                            // start the line off-screen using the previous FFT bin value as the initial amplitude
+                            if (_mirror == -1 && !isDualHorizontal) _ctx.moveTo(initialX, analyzerBottom - (posX < initialX ? nextBarAvg : barHeight));
+                            else {
+                                var prevFFTData = binLo ? _this1._normalizedB(fftData[binLo - 1]) * maxBarHeight : barHeight; // use previous FFT bin value, when available
+                                _ctx.moveTo(initialX - _lineWidth, analyzerBottom - prevFFTData);
+                            }
+                        }
+                        // draw line to the current point
+                        // avoid X values lower than the origin when mirroring left, otherwise draw them for best graph accuracy
+                        if (isDualHorizontal || _mirror != -1 || posX >= initialX) _ctx.lineTo(posX, analyzerBottom - barHeight);
+                    }
+                } else {
+                    if (isLeds) {
+                        // draw "unlit" leds - avoid drawing it twice on 'dual-combined' channel layout
+                        if (showBgColor && !overlay && (channel == 0 || !isDualCombined)) {
+                            var alpha = _ctx.globalAlpha;
+                            _ctx.strokeStyle = $a7744d5c3ee82091$var$LEDS_UNLIT_COLOR;
+                            _ctx.globalAlpha = 1;
+                            strokeBar(barCenter, channelTop, analyzerBottom);
+                            // restore properties
+                            _ctx.strokeStyle = _ctx.fillStyle;
+                            _ctx.globalAlpha = alpha;
+                        }
+                        if (isTrueLeds) {
+                            // ledPosY() is used below to fit one entire led height into the selected range
+                            var colorIndex = isLumi ? 0 : colorStops.findLastIndex((item)=>ledPosY(barValue) <= ledPosY(item.level));
+                            var last = analyzerBottom;
+                            for(var i = colorCount - 1; i >= colorIndex; i--){
+                                _ctx.strokeStyle = colorStops[i].color;
+                                var y = analyzerBottom - (i == colorIndex ? barHeight : ledPosY(colorStops[i].level));
+                                strokeBar(barCenter, last, y);
+                                last = y - ledSpaceV;
+                            }
+                        } else strokeBar(barCenter, analyzerBottom, analyzerBottom - barHeight);
+                    } else if (posX >= initialX) {
+                        if (_radial) radialPoly(posX, 0, width, barHeight, isOutline);
+                        else if (isRound) {
+                            var halfWidth = width / 2, y1 = analyzerBottom + halfWidth; // round caps have an additional height of half bar width
+                            _ctx.beginPath();
+                            _ctx.moveTo(posX, y1);
+                            _ctx.lineTo(posX, y1 - barHeight);
+                            _ctx.arc(barCenter, y1 - barHeight, halfWidth, $a7744d5c3ee82091$var$PI, $a7744d5c3ee82091$var$TAU);
+                            _ctx.lineTo(posX + width, y1);
+                            strokeIf(isOutline);
+                            _ctx.fill();
+                        } else {
+                            var offset = isOutline ? _ctx.lineWidth : 0;
+                            _ctx.beginPath();
+                            _ctx.rect(posX, analyzerBottom + offset, width, -barHeight - offset);
+                            strokeIf(isOutline);
+                            _ctx.fill();
+                        }
+                    }
+                }
+                // Draw peak
+                var peakValue = bar.peak[channel], peakAlpha = bar.alpha[channel];
+                if (peakValue > 0 && peakAlpha > 0 && showPeaks && !showPeakLine && !isLumi && posX >= initialX && posX < finalX) {
+                    // set opacity for peak
+                    if (_fadePeaks) _ctx.globalAlpha = peakAlpha;
+                    else if (isOutline && _lineWidth > 0) _ctx.globalAlpha = 1;
+                    else if (isAlpha) _ctx.globalAlpha = peakValue;
+                    // select the peak color for 'bar-level' colorMode or 'trueLeds'
+                    if (_colorMode == $a7744d5c3ee82091$var$COLOR_BAR_LEVEL || isTrueLeds) setBarColor(peakValue);
+                    // render peak according to current mode / effect
+                    if (isLeds) {
+                        var ledPeak = ledPosY(peakValue);
+                        if (ledPeak >= ledSpaceV) _ctx.fillRect(posX, analyzerBottom - ledPeak, width, ledHeight);
+                    } else if (!_radial) _ctx.fillRect(posX, analyzerBottom - peakValue * maxBarHeight, width, 2);
+                    else if (_mode != $a7744d5c3ee82091$var$MODE_GRAPH) {
+                        var y2 = peakValue * maxBarHeight;
+                        radialPoly(posX, y2, width, !_this1._radialInvert || isDualVertical || y2 + innerRadius >= 2 ? -2 : 2);
+                    }
+                }
+            };
+            var _this2 = _this;
+            var _channelCoords_channel = channelCoords[channel], channelTop = _channelCoords_channel.channelTop, channelBottom = _channelCoords_channel.channelBottom, analyzerBottom = _channelCoords_channel.analyzerBottom, channelGradient = _this._gradients[_this._selectedGrads[channel]], colorStops = channelGradient.colorStops, colorCount = colorStops.length, bgColor = !showBgColor || isLeds && !overlay ? '#000' : channelGradient.bgColor, radialDirection = isDualVertical && _radial && channel ? -1 : 1, invertedChannel = !channel && _mirror == -1 || channel && _mirror == 1, radialOffsetX = !isDualHorizontal || channel && _mirror != 1 ? 0 : analyzerWidth >> (channel || !invertedChannel), angularDirection = isDualHorizontal && invertedChannel ? -1 : 1; // 1 = clockwise, -1 = counterclockwise
+            /*
+			Expanded logic for radialOffsetX and angularDirection:
+
+			let radialOffsetX = 0,
+				angularDirection = 1;
+
+			if ( isDualHorizontal ) {
+				if ( channel == 0 ) { // LEFT channel
+					if ( _mirror == -1 ) {
+						radialOffsetX = analyzerWidth;
+						angularDirection = -1;
+					}
+					else
+						radialOffsetX = analyzerWidth >> 1;
+				}
+				else {                // RIGHT channel
+					if ( _mirror == 1 ) {
+						radialOffsetX = analyzerWidth >> 1;
+						angularDirection = -1;
+					}
+				}
+			}
+*/ // draw scale on Y-axis (uses: channel, channelTop)
+            var drawScaleY = ()=>{
+                var scaleWidth = canvasX.height, fontSize = scaleWidth >> 1, max = _linearAmplitude ? 100 : maxDecibels, min = _linearAmplitude ? 0 : minDecibels, incr = _linearAmplitude ? 20 : 5, interval = analyzerHeight / (max - min), atStart = _mirror != -1 && (!isDualHorizontal || channel == 0 || _mirror == 1), atEnd = _mirror != 1 && (!isDualHorizontal || channel != _mirror);
+                _ctx.save();
+                _ctx.fillStyle = $a7744d5c3ee82091$var$SCALEY_LABEL_COLOR;
+                _ctx.font = `${fontSize}px ${$a7744d5c3ee82091$var$FONT_FAMILY}`;
+                _ctx.textAlign = 'right';
+                _ctx.lineWidth = 1;
+                for(var val = max; val > min; val -= incr){
+                    var posY = channelTop + (max - val) * interval, even = val % 2 == 0 | 0;
+                    if (even) {
+                        var labelY = posY + fontSize * (posY == channelTop ? .8 : .35);
+                        if (atStart) _ctx.fillText(val, scaleWidth * .85, labelY);
+                        if (atEnd) _ctx.fillText(val, (isDualHorizontal ? analyzerWidth : canvas.width) - scaleWidth * .1, labelY);
+                        _ctx.strokeStyle = $a7744d5c3ee82091$var$SCALEY_LABEL_COLOR;
+                        _ctx.setLineDash([
+                            2,
+                            4
+                        ]);
+                        _ctx.lineDashOffset = 0;
+                    } else {
+                        _ctx.strokeStyle = $a7744d5c3ee82091$var$SCALEY_MIDLINE_COLOR;
+                        _ctx.setLineDash([
+                            2,
+                            8
+                        ]);
+                        _ctx.lineDashOffset = 1;
+                    }
+                    _ctx.beginPath();
+                    _ctx.moveTo(initialX + scaleWidth * even * atStart, ~~posY + .5); // for sharp 1px line (https://stackoverflow.com/a/13879402/2370385)
+                    _ctx.lineTo(finalX - scaleWidth * even * atEnd, ~~posY + .5);
+                    _ctx.stroke();
+                }
+                _ctx.restore();
+            };
+            // FFT bin data interpolation (uses fftData)
+            var interpolate = (bin, ratio)=>{
+                var value = fftData[bin] + (bin < fftData.length - 1 ? (fftData[bin + 1] - fftData[bin]) * ratio : 0);
+                return isNaN(value) ? -Infinity : value;
+            };
+            // converts a given X-coordinate to its corresponding angle in radial mode (uses angularDirection)
+            var getAngle = function(x) {
+                var dir = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : angularDirection;
+                return dir * $a7744d5c3ee82091$var$TAU * ((x + radialOffsetX) / canvas.width) + _this2._spinAngle;
+            };
+            // converts planar X,Y coordinates to radial coordinates (uses: getAngle(), radialDirection)
+            var radialXY = (x, y, dir)=>{
+                var height = innerRadius + y * radialDirection, angle = getAngle(x, dir);
+                return [
+                    centerX + height * Math.cos(angle),
+                    centerY + height * Math.sin(angle)
+                ];
+            };
+            // draws a polygon of width `w` and height `h` at (x,y) in radial mode (uses: angularDirection, radialDirection)
+            var radialPoly = (x, y, w, h, stroke)=>{
+                _ctx.beginPath();
+                var _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
+                try {
+                    for(var _iterator = (_mirror && !isDualHorizontal ? [
+                        1,
+                        -1
+                    ] : [
+                        angularDirection
+                    ])[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true){
+                        var dir = _step.value;
+                        var _ref = (0, $7640fa9e79c6b7c8$export$71511d61b312f219)(isRound ? [
+                            getAngle(x, dir),
+                            getAngle(x + w, dir)
+                        ] : [], 2), startAngle = _ref[0], endAngle = _ref[1];
+                        _ctx.moveTo(...radialXY(x, y, dir));
+                        _ctx.lineTo(...radialXY(x, y + h, dir));
+                        if (isRound) _ctx.arc(centerX, centerY, innerRadius + (y + h) * radialDirection, startAngle, endAngle, dir != 1);
+                        else _ctx.lineTo(...radialXY(x + w, y + h, dir));
+                        _ctx.lineTo(...radialXY(x + w, y, dir));
+                        if (isRound && !stroke) _ctx.arc(centerX, centerY, innerRadius + y * radialDirection, endAngle, startAngle, dir == 1);
+                    }
+                } catch (err) {
+                    _didIteratorError = true;
+                    _iteratorError = err;
+                } finally{
+                    try {
+                        if (!_iteratorNormalCompletion && _iterator.return != null) {
+                            _iterator.return();
+                        }
+                    } finally{
+                        if (_didIteratorError) {
+                            throw _iteratorError;
+                        }
+                    }
+                }
+                strokeIf(stroke);
+                _ctx.fill();
+            };
+            // set fillStyle and strokeStyle according to current colorMode (uses: channel, colorStops, colorCount)
+            var setBarColor = function() {
+                var value = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : 0, barIndex = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
+                var color;
+                // for graph mode, always use the channel gradient (ignore colorMode)
+                if (_colorMode == $a7744d5c3ee82091$var$COLOR_GRADIENT && !isTrueLeds || _mode == $a7744d5c3ee82091$var$MODE_GRAPH) color = _canvasGradients[channel];
+                else {
+                    var selectedIndex = _colorMode == $a7744d5c3ee82091$var$COLOR_BAR_INDEX ? barIndex % colorCount : colorStops.findLastIndex((item)=>isLeds ? ledPosY(value) <= ledPosY(item.level) : value <= item.level);
+                    color = colorStops[selectedIndex].color;
+                }
+                _ctx.fillStyle = _ctx.strokeStyle = color;
+            };
+            // CHANNEL START
+            if (useCanvas) {
+                // set transform (horizontal flip and translation) for dual-horizontal layout
+                if (isDualHorizontal && !_radial) {
+                    var translateX = analyzerWidth * (channel + invertedChannel), flipX = invertedChannel ? -1 : 1;
+                    _ctx.setTransform(flipX, 0, 0, 1, translateX, 0);
+                }
+                // fill the analyzer background if needed (not overlay or overlay + showBgColor)
+                if (!overlay || showBgColor) {
+                    if (overlay) _ctx.globalAlpha = _this.bgAlpha;
+                    _ctx.fillStyle = bgColor;
+                    // exclude the reflection area when overlay is true and reflexAlpha == 1 (avoids alpha over alpha difference, in case bgAlpha < 1)
+                    if (channel == 0 || !_radial && !isDualCombined) _ctx.fillRect(initialX, channelTop - channelGap, analyzerWidth, (overlay && _this.reflexAlpha == 1 ? analyzerHeight : channelHeight) + channelGap);
+                    _ctx.globalAlpha = 1;
+                }
+                // draw dB scale (Y-axis) - avoid drawing it twice on 'dual-combined' channel layout
+                if (_this.showScaleY && !isLumi && !_radial && (channel == 0 || !isDualCombined)) drawScaleY();
+                // set line width and dash for LEDs effect
+                if (isLeds) {
+                    _ctx.setLineDash([
+                        ledHeight,
+                        ledSpaceV
+                    ]);
+                    _ctx.lineWidth = _bars[0].width;
+                } else _ctx.lineWidth = isOutline ? Math.min(_lineWidth, _bars[0].width / 2) : _lineWidth;
+                // set clipping region
+                _ctx.save();
+                if (!_radial) {
+                    var region = new Path2D();
+                    region.rect(0, channelTop, canvas.width, analyzerHeight);
+                    _ctx.clip(region);
+                }
+            } // if ( useCanvas )
+            // get a new array of data from the FFT
+            var fftData = _this._fftData[channel];
+            _this._analyzer[channel].getFloatFrequencyData(fftData);
+            // apply weighting
+            if (_weightingFilter) fftData = fftData.map((val, idx)=>val + weightingdB(_this._binToFreq(idx)));
+            // start drawing path (for graph mode)
+            _ctx.beginPath();
+            // store line graph points to create mirror effect in radial mode
+            var points = [];
+            // draw bars / lines
+            for(var barIndex = 0; barIndex < nBars; barIndex++)_this1 = _this, _loop(barIndex);
+             // for ( let barIndex = 0; barIndex < nBars; barIndex++ )
+            // if not using the canvas, move earlier to the next channel
+            if (!useCanvas) return "continue";
+            // restore global alpha
+            _ctx.globalAlpha = 1;
+            // Fill/stroke drawing path for graph mode
+            if (_mode == $a7744d5c3ee82091$var$MODE_GRAPH) {
+                setBarColor(); // select channel gradient
+                if (_radial && !isDualHorizontal) {
+                    if (_mirror) {
+                        var p = void 0;
+                        while(p = points.pop())_ctx.lineTo(...radialXY(...p, -1));
+                    }
+                    _ctx.closePath();
+                }
+                if (_lineWidth > 0) _ctx.stroke();
+                if (fillAlpha > 0) {
+                    if (_radial) {
+                        // exclude the center circle from the fill area
+                        var start = isDualHorizontal ? getAngle(analyzerWidth >> 1) : 0, end = isDualHorizontal ? getAngle(analyzerWidth) : $a7744d5c3ee82091$var$TAU;
+                        _ctx.moveTo(...radialXY(isDualHorizontal ? analyzerWidth >> 1 : 0, 0));
+                        _ctx.arc(centerX, centerY, innerRadius, start, end, isDualHorizontal ? !invertedChannel : true);
+                    } else {
+                        // close the fill area
+                        _ctx.lineTo(finalX, analyzerBottom);
+                        _ctx.lineTo(initialX, analyzerBottom);
+                    }
+                    _ctx.globalAlpha = fillAlpha;
+                    _ctx.fill();
+                    _ctx.globalAlpha = 1;
+                }
+                // draw peak line (and standard peaks on radial)
+                if (showPeakLine || _radial && showPeaks) {
+                    points = []; // for mirror line on radial
+                    _ctx.beginPath();
+                    _bars.forEach((b, i)=>{
+                        var x = b.posX, h = b.peak[channel], m = i ? 'lineTo' : 'moveTo';
+                        if (_radial && x < 0) {
+                            var nextBar = _bars[i + 1];
+                            h = $a7744d5c3ee82091$var$findY(x, h, nextBar.posX, nextBar.peak[channel], 0);
+                            x = 0;
+                        }
+                        h *= maxBarHeight;
+                        if (showPeakLine) {
+                            _ctx[m](..._radial ? radialXY(x, h) : [
+                                x,
+                                analyzerBottom - h
+                            ]);
+                            if (_radial && _mirror && !isDualHorizontal) points.push([
+                                x,
+                                h
+                            ]);
+                        } else if (h > 0) radialPoly(x, h, 1, -2); // standard peaks (also does mirror)
+                    });
+                    if (showPeakLine) {
+                        var p1 = void 0;
+                        while(p1 = points.pop())_ctx.lineTo(...radialXY(...p1, -1)); // mirror line points
+                        _ctx.lineWidth = 1;
+                        _ctx.stroke(); // stroke peak line
+                    }
+                }
+            }
+            _ctx.restore(); // restore clip region
+            if (isDualHorizontal && !_radial) _ctx.setTransform(1, 0, 0, 1, 0, 0);
+            // create Reflex effect - for dual-combined and dual-horizontal do it only once, after channel 1
+            if (!isDualHorizontal && !isDualCombined || channel) doReflex(channel);
+        };
+        // schedule next canvas update
+        this._runId = requestAnimationFrame((timestamp)=>this._draw(timestamp));
+        // frame rate control
+        var elapsed = timestamp - this._time, frameTime = timestamp - this._last, targetInterval = this._maxFPS ? 975 / this._maxFPS : 0; // small tolerance for best results
+        if (frameTime < targetInterval) return;
+        this._last = timestamp - (targetInterval ? frameTime % targetInterval : 0); // thanks https://stackoverflow.com/a/19772220/2370385
+        this._frames++;
+        if (elapsed >= 1000) {
+            this._fps = this._frames / elapsed * 1000;
+            this._frames = 0;
+            this._time = timestamp;
+        }
+        // initialize local constants
+        var _this__flg = this._flg, isAlpha = _this__flg.isAlpha, isBands = _this__flg.isBands, isLeds = _this__flg.isLeds, isLumi = _this__flg.isLumi, isOctaves = _this__flg.isOctaves, isOutline = _this__flg.isOutline, isRound = _this__flg.isRound, noLedGap = _this__flg.noLedGap, _this__aux = this._aux, analyzerHeight = _this__aux.analyzerHeight, centerX = _this__aux.centerX, centerY = _this__aux.centerY, channelCoords = _this__aux.channelCoords, channelHeight = _this__aux.channelHeight, channelGap = _this__aux.channelGap, initialX = _this__aux.initialX, innerRadius = _this__aux.innerRadius, outerRadius = _this__aux.outerRadius, _this1 = this, _bars = _this1._bars, canvas = _this1.canvas, _canvasGradients = _this1._canvasGradients, _chLayout = _this1._chLayout, _colorMode = _this1._colorMode, _ctx = _this1._ctx, _energy = _this1._energy, _fadePeaks = _this1._fadePeaks, fillAlpha = _this1.fillAlpha, _fps = _this1._fps, _linearAmplitude = _this1._linearAmplitude, _lineWidth = _this1._lineWidth, maxDecibels = _this1.maxDecibels, minDecibels = _this1.minDecibels, _mirror = _this1._mirror, _mode = _this1._mode, overlay = _this1.overlay, _radial = _this1._radial, showBgColor = _this1.showBgColor, showPeaks = _this1.showPeaks, useCanvas = _this1.useCanvas, _weightingFilter = _this1._weightingFilter, canvasX = this._scaleX.canvas, canvasR = this._scaleR.canvas, fadeFrames = _fps * this._peakFadeTime / 1e3, fpsSquared = Math.pow(_fps, 2), gravity = this._gravity * 1e3, holdFrames = _fps * this._peakHoldTime / 1e3, isDualCombined = _chLayout == $a7744d5c3ee82091$var$CHANNEL_COMBINED, isDualHorizontal = _chLayout == $a7744d5c3ee82091$var$CHANNEL_HORIZONTAL, isDualVertical = _chLayout == $a7744d5c3ee82091$var$CHANNEL_VERTICAL, isSingle = _chLayout == $a7744d5c3ee82091$var$CHANNEL_SINGLE, isTrueLeds = isLeds && this._trueLeds && _colorMode == $a7744d5c3ee82091$var$COLOR_GRADIENT, analyzerWidth = _radial ? canvas.width : this._aux.analyzerWidth, finalX = initialX + analyzerWidth, showPeakLine = showPeaks && this._peakLine && _mode == $a7744d5c3ee82091$var$MODE_GRAPH, maxBarHeight = _radial ? outerRadius - innerRadius : analyzerHeight, nominalMaxHeight = maxBarHeight / this._pixelRatio, dbRange = maxDecibels - minDecibels, _ref = (0, $7640fa9e79c6b7c8$export$71511d61b312f219)(this._leds || [], 4), ledCount = _ref[0], ledSpaceH = _ref[1], ledSpaceV = _ref[2], ledHeight = _ref[3];
+        if (_energy.val > 0 && _fps > 0) this._spinAngle += this._spinSpeed * $a7744d5c3ee82091$var$TAU / 60 / _fps; // spinSpeed * angle increment per frame for 1 RPM
+        /* HELPER FUNCTIONS */ // create Reflex effect
+        var doReflex = (channel)=>{
+            if (this._reflexRatio > 0 && !isLumi && !_radial) {
+                var posY, height;
+                if (this.reflexFit || isDualVertical) {
+                    posY = isDualVertical && channel == 0 ? channelHeight + channelGap : 0;
+                    height = channelHeight - analyzerHeight;
+                } else {
+                    posY = canvas.height - analyzerHeight * 2;
+                    height = analyzerHeight;
+                }
+                _ctx.save();
+                // set alpha and brightness for the reflection
+                _ctx.globalAlpha = this.reflexAlpha;
+                if (this.reflexBright != 1) _ctx.filter = `brightness(${this.reflexBright})`;
+                // create the reflection
+                _ctx.setTransform(1, 0, 0, -1, 0, canvas.height);
+                _ctx.drawImage(canvas, 0, channelCoords[channel].channelTop, canvas.width, analyzerHeight, 0, posY, canvas.width, height);
+                _ctx.restore();
+            }
+        };
+        // draw scale on X-axis
+        var drawScaleX = ()=>{
+            if (this.showScaleX) {
+                if (_radial) {
+                    _ctx.save();
+                    _ctx.translate(centerX, centerY);
+                    if (this._spinSpeed) _ctx.rotate(this._spinAngle + $a7744d5c3ee82091$var$HALF_PI);
+                    _ctx.drawImage(canvasR, -canvasR.width >> 1, -canvasR.width >> 1);
+                    _ctx.restore();
+                } else _ctx.drawImage(canvasX, 0, canvas.height - canvasX.height);
+            }
+        };
+        // returns the gain (in dB) for a given frequency, considering the currently selected weighting filter
+        var weightingdB = (freq)=>{
+            var f2 = Math.pow(freq, 2), SQ20_6 = 424.36, SQ107_7 = 11599.29, SQ158_5 = 25122.25, SQ737_9 = 544496.41, SQ12194 = 148693636, linearTodB = (value)=>20 * Math.log10(value);
+            switch(_weightingFilter){
+                case $a7744d5c3ee82091$var$FILTER_A:
+                    var rA = SQ12194 * Math.pow(f2, 2) / ((f2 + SQ20_6) * Math.sqrt((f2 + SQ107_7) * (f2 + SQ737_9)) * (f2 + SQ12194));
+                    return 2 + linearTodB(rA);
+                case $a7744d5c3ee82091$var$FILTER_B:
+                    var rB = SQ12194 * f2 * freq / ((f2 + SQ20_6) * Math.sqrt(f2 + SQ158_5) * (f2 + SQ12194));
+                    return .17 + linearTodB(rB);
+                case $a7744d5c3ee82091$var$FILTER_C:
+                    var rC = SQ12194 * f2 / ((f2 + SQ20_6) * (f2 + SQ12194));
+                    return .06 + linearTodB(rC);
+                case $a7744d5c3ee82091$var$FILTER_D:
+                    var h = (Math.pow(1037918.48 - f2, 2) + 1080768.16 * f2) / (Math.pow(9837328 - f2, 2) + 11723776 * f2), rD = freq / 6.8966888496476e-5 * Math.sqrt(h / ((f2 + 79919.29) * (f2 + 1345600)));
+                    return linearTodB(rD);
+                case $a7744d5c3ee82091$var$FILTER_468:
+                    var h1 = -0.000000000000000000000004737338981378384 * Math.pow(freq, 6) + 2.043828333606125e-15 * Math.pow(freq, 4) - 1.363894795463638e-7 * f2 + 1, h2 = 1.306612257412824e-19 * Math.pow(freq, 5) - 2.118150887518656e-11 * Math.pow(freq, 3) + 5.559488023498642e-4 * freq, rI = 1.246332637532143e-4 * freq / Math.hypot(h1, h2);
+                    return 18.2 + linearTodB(rI);
+            }
+            return 0; // unknown filter
+        };
+        // draws (stroke) a bar from x,y1 to x,y2
+        var strokeBar = (x, y1, y2)=>{
+            _ctx.beginPath();
+            _ctx.moveTo(x, y1);
+            _ctx.lineTo(x, y2);
+            _ctx.stroke();
+        };
+        // conditionally strokes current path on canvas
+        var strokeIf = (flag)=>{
+            if (flag && _lineWidth) {
+                var alpha = _ctx.globalAlpha;
+                _ctx.globalAlpha = 1;
+                _ctx.stroke();
+                _ctx.globalAlpha = alpha;
+            }
+        };
+        // converts a value in [0;1] range to a height in pixels that fits into the current LED elements
+        var ledPosY = (value)=>Math.max(0, (value * ledCount | 0) * (ledHeight + ledSpaceV) - ledSpaceV);
+        // update energy information
+        var updateEnergy = (newVal)=>{
+            _energy.val = newVal;
+            if (_energy.peak > 0) {
+                _energy.hold--;
+                if (_energy.hold < 0) _energy.peak += _energy.hold * gravity / fpsSquared / canvas.height * this._pixelRatio;
+            // TO-DO: replace `canvas.height * this._pixelRatio` with `maxNominalHeight` when implementing dual-channel energy
+            }
+            if (newVal >= _energy.peak) {
+                _energy.peak = newVal;
+                _energy.hold = holdFrames;
+            }
+        };
+        /* MAIN FUNCTION */ if (overlay) _ctx.clearRect(0, 0, canvas.width, canvas.height);
+        var currentEnergy = 0;
+        var nBars = _bars.length, nChannels = isSingle ? 1 : 2;
+        for(var channel = 0; channel < nChannels; channel++)_this = this, _loop(channel);
+         // for ( let channel = 0; channel < nChannels; channel++ ) {
+        updateEnergy(currentEnergy / (nBars << nChannels - 1));
+        if (useCanvas) {
+            // Mirror effect
+            if (_mirror && !_radial && !isDualHorizontal) {
+                _ctx.setTransform(-1, 0, 0, 1, canvas.width - initialX, 0);
+                _ctx.drawImage(canvas, initialX, 0, centerX, canvas.height, 0, 0, centerX, canvas.height);
+                _ctx.setTransform(1, 0, 0, 1, 0, 0);
+            }
+            // restore solid lines
+            _ctx.setLineDash([]);
+            // draw frequency scale (X-axis)
+            drawScaleX();
+        }
+        // display current frame rate
+        if (this.showFPS) {
+            var size = canvasX.height;
+            _ctx.font = `bold ${size}px ${$a7744d5c3ee82091$var$FONT_FAMILY}`;
+            _ctx.fillStyle = $a7744d5c3ee82091$var$FPS_COLOR;
+            _ctx.textAlign = 'right';
+            _ctx.fillText(Math.round(_fps), canvas.width - size, size * 2);
+        }
+        // call callback function, if defined
+        if (this.onCanvasDraw) {
+            _ctx.save();
+            _ctx.fillStyle = _ctx.strokeStyle = _canvasGradients[0];
+            this.onCanvasDraw(this, {
+                timestamp: timestamp,
+                canvasGradients: _canvasGradients
+            });
+            _ctx.restore();
+        }
+    }
+    /**
+	 * Return scaled frequency according to the selected scale
+	 */ _freqScaling(freq) {
+        switch(this._frequencyScale){
+            case $a7744d5c3ee82091$var$SCALE_LOG:
+                return Math.log2(freq);
+            case $a7744d5c3ee82091$var$SCALE_BARK:
+                return 26.81 * freq / (1960 + freq) - .53;
+            case $a7744d5c3ee82091$var$SCALE_MEL:
+                return Math.log2(1 + freq / 700);
+            case $a7744d5c3ee82091$var$SCALE_LINEAR:
+                return freq;
+        }
+    }
+    /**
+	 * Return the FFT data bin (array index) which represents a given frequency
+	 */ _freqToBin(freq) {
+        var method = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 'round';
+        var max = this._analyzer[0].frequencyBinCount - 1, bin = Math[method](freq * this.fftSize / this.audioCtx.sampleRate);
+        return bin < max ? bin : max;
+    }
+    /**
+	 * Generate currently selected gradient
+	 */ _makeGrad() {
+        var _this, _loop = function(_i, _iter) {
+            var channel = _iter[_i];
+            var currGradient = _this._gradients[_this._selectedGrads[channel]], colorStops = currGradient.colorStops, isHorizontal = currGradient.dir == 'h';
+            var grad = void 0;
+            if (_radial) grad = _ctx.createRadialGradient(centerX, centerY, outerRadius, centerX, centerY, innerRadius - (outerRadius - innerRadius) * isDualVertical);
+            else grad = _ctx.createLinearGradient(...isHorizontal ? [
+                initialX,
+                0,
+                initialX + analyzerWidth,
+                0
+            ] : [
+                0,
+                0,
+                0,
+                gradientHeight
+            ]);
+            if (colorStops) {
+                var _loop = function(channelArea) {
+                    var maxIndex = colorStops.length - 1;
+                    colorStops.forEach((colorStop, index)=>{
+                        var offset = colorStop.pos;
+                        // in dual mode (not split), use half the original offset for each channel
+                        if (dual) offset /= 2;
+                        // constrain the offset within the useful analyzer areas (avoid reflex areas)
+                        if (isDualVertical && !isLumi && !_radial && !isHorizontal) {
+                            offset *= analyzerRatio;
+                            // skip the first reflex area in split mode
+                            if (!dual && offset > .5 * analyzerRatio) offset += .5 * _reflexRatio;
+                        }
+                        // only for dual-vertical non-split gradient (creates full gradient on both halves of the canvas)
+                        if (channelArea == 1) {
+                            // add colors in reverse order if radial or lumi are active
+                            if (_radial || isLumi) {
+                                var revIndex = maxIndex - index;
+                                colorStop = colorStops[revIndex];
+                                offset = 1 - colorStop.pos / 2;
+                            } else {
+                                // if the first offset is not 0, create an additional color stop to prevent bleeding from the first channel
+                                if (index == 0 && offset > 0) grad.addColorStop(.5, colorStop.color);
+                                // bump the offset to the second half of the gradient
+                                offset += .5;
+                            }
+                        }
+                        // add gradient color stop
+                        grad.addColorStop(offset, colorStop.color);
+                        // create additional color stop at the end of first channel to prevent bleeding
+                        if (isDualVertical && index == maxIndex && offset < .5) grad.addColorStop(.5, colorStop.color);
+                    });
+                };
+                var dual = isDualVertical && !_this._splitGradient && (!isHorizontal || _radial);
+                for(var channelArea = 0; channelArea < 1 + dual; channelArea++)_loop(channelArea);
+                 // for ( let channelArea = 0; channelArea < 1 + dual; channelArea++ )
+            }
+            _this._canvasGradients[channel] = grad;
+        };
+        if (!this._ready) return;
+        var _this1 = this, canvas = _this1.canvas, _ctx = _this1._ctx, _radial = _this1._radial, _reflexRatio = _this1._reflexRatio, _this__aux = this._aux, analyzerWidth = _this__aux.analyzerWidth, centerX = _this__aux.centerX, centerY = _this__aux.centerY, initialX = _this__aux.initialX, innerRadius = _this__aux.innerRadius, outerRadius = _this__aux.outerRadius, isLumi = this._flg.isLumi, isDualVertical = this._chLayout == $a7744d5c3ee82091$var$CHANNEL_VERTICAL, analyzerRatio = 1 - _reflexRatio, gradientHeight = isLumi ? canvas.height : canvas.height * (1 - _reflexRatio * !isDualVertical) | 0;
+        // for vertical stereo we keep the full canvas height and handle the reflex areas while generating the color stops
+        for(var _i = 0, _iter = [
+            0,
+            1
+        ]; _i < _iter.length; _i++)_this = this, _loop(_i, _iter);
+         // for ( const channel of [0,1] )
+    }
+    /**
+	 * Normalize a dB value in the [0;1] range
+	 */ _normalizedB(value) {
+        var isLinear = this._linearAmplitude, boost = isLinear ? 1 / this._linearBoost : 1, clamp = (val, min, max)=>val <= min ? min : val >= max ? max : val, dBToLinear = (val)=>Math.pow(10, val / 20);
+        var maxValue = this.maxDecibels, minValue = this.minDecibels;
+        if (isLinear) {
+            maxValue = dBToLinear(maxValue);
+            minValue = dBToLinear(minValue);
+            value = Math.pow(dBToLinear(value), boost);
+        }
+        return clamp((value - minValue) / Math.pow(maxValue - minValue, boost), 0, 1);
+    }
+    /**
+	 * Internal function to change canvas dimensions on demand
+	 */ _setCanvas(reason) {
+        if (!this._ready) return;
+        var _this = this, canvas = _this.canvas, _ctx = _this._ctx, canvasX = this._scaleX.canvas, pixelRatio = window.devicePixelRatio / (this._loRes + 1);
+        var screenWidth = window.screen.width * pixelRatio, screenHeight = window.screen.height * pixelRatio;
+        var ref;
+        // Fix for iOS Safari - swap width and height when in landscape
+        if (Math.abs(window.orientation) == 90 && screenWidth < screenHeight) ref = [
+            screenHeight,
+            screenWidth
+        ], screenWidth = ref[0], screenHeight = ref[1], ref;
+        var isFullscreen = this.isFullscreen, isCanvasFs = isFullscreen && this._fsEl == canvas, newWidth = isCanvasFs ? screenWidth : (this._width || this._container.clientWidth || this._defaultWidth) * pixelRatio | 0, newHeight = isCanvasFs ? screenHeight : (this._height || this._container.clientHeight || this._defaultHeight) * pixelRatio | 0;
+        // set/update object properties
+        this._pixelRatio = pixelRatio;
+        this._fsWidth = screenWidth;
+        this._fsHeight = screenHeight;
+        // if this is not the constructor call and canvas dimensions haven't changed, quit
+        if (reason != $a7744d5c3ee82091$var$REASON_CREATE && canvas.width == newWidth && canvas.height == newHeight) return;
+        // apply new dimensions
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+        // if not in overlay mode, paint the canvas black
+        if (!this.overlay) {
+            _ctx.fillStyle = '#000';
+            _ctx.fillRect(0, 0, newWidth, newHeight);
+        }
+        // set lineJoin property for area fill mode (this is reset whenever the canvas size changes)
+        _ctx.lineJoin = 'bevel';
+        // update dimensions of the scale canvas
+        canvasX.width = newWidth;
+        canvasX.height = Math.max(20 * pixelRatio, Math.min(newWidth, newHeight) / 32 | 0);
+        // calculate bar positions and led options
+        this._calcBars();
+        // (re)generate gradient
+        this._makeGrad();
+        // detect fullscreen changes (for Safari)
+        if (this._fsStatus !== undefined && this._fsStatus !== isFullscreen) reason = $a7744d5c3ee82091$var$REASON_FSCHANGE;
+        this._fsStatus = isFullscreen;
+        // call the callback function, if defined
+        if (this.onCanvasResize) this.onCanvasResize(reason, this);
+    }
+    /**
+	 * Select a gradient for one or both channels
+	 *
+	 * @param {string} name gradient name
+	 * @param [{number}] desired channel (0 or 1) - if empty or invalid, sets both channels
+	 */ _setGradient(name, channel) {
+        if (!this._gradients.hasOwnProperty(name)) throw new $a7744d5c3ee82091$var$AudioMotionError($a7744d5c3ee82091$var$ERR_UNKNOWN_GRADIENT, name);
+        if (![
+            0,
+            1
+        ].includes(channel)) {
+            this._selectedGrads[1] = name;
+            channel = 0;
+        }
+        this._selectedGrads[channel] = name;
+        this._makeGrad();
+    }
+    /**
+	 * Set object properties
+	 */ _setProps(options, useDefaults) {
+        // callback functions properties
+        var callbacks = [
+            'onCanvasDraw',
+            'onCanvasResize'
+        ];
+        // properties not in the defaults (`stereo` is deprecated)
+        var extraProps = [
+            'gradientLeft',
+            'gradientRight',
+            'stereo'
+        ];
+        // build an array of valid properties; `start` is not an actual property and is handled after setting everything else
+        var validProps = Object.keys($a7744d5c3ee82091$var$DEFAULT_SETTINGS).filter((e)=>e != 'start').concat(callbacks, extraProps);
+        if (useDefaults || options === undefined) options = (0, $2a96eb02b266e888$export$71511d61b312f219)({}, $a7744d5c3ee82091$var$DEFAULT_SETTINGS, options); // merge options with defaults
+        var _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
+        try {
+            for(var _iterator = Object.keys(options)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true){
+                var prop = _step.value;
+                if (callbacks.includes(prop) && typeof options[prop] !== 'function') this[prop] = undefined;
+                else if (validProps.includes(prop)) this[prop] = options[prop];
+            }
+        } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+        } finally{
+            try {
+                if (!_iteratorNormalCompletion && _iterator.return != null) {
+                    _iterator.return();
+                }
+            } finally{
+                if (_didIteratorError) {
+                    throw _iteratorError;
+                }
+            }
+        }
+        // deprecated - move this to the constructor in the next major release (`start` should be constructor-specific)
+        if (options.start !== undefined) this.toggleAnalyzer(options.start);
+    }
+    /**
+ * CONSTRUCTOR
+ *
+ * @param {object} [container] DOM element where to insert the analyzer; if undefined, uses the document body
+ * @param {object} [options]
+ * @returns {object} AudioMotionAnalyzer object
+ */ constructor(container, ref){
+        var options = ref === void 0 ? {} : ref;
+        this._ready = false;
+        // Initialize internal objects
+        this._aux = {}; // auxiliary variables
+        this._canvasGradients = []; // CanvasGradient objects for channels 0 and 1
+        this._destroyed = false;
+        this._energy = {
+            val: 0,
+            peak: 0,
+            hold: 0
+        };
+        this._flg = {}; // flags
+        this._fps = 0;
+        this._gradients = {}; // registered gradients
+        this._last = 0; // timestamp of last rendered frame
+        this._outNodes = []; // output nodes
+        this._ownContext = false;
+        this._selectedGrads = []; // names of the currently selected gradients for channels 0 and 1
+        this._sources = []; // input nodes
+        // Check if options object passed as first argument
+        if (!(container instanceof Element)) {
+            if ($a7744d5c3ee82091$var$isEmpty(options) && !$a7744d5c3ee82091$var$isEmpty(container)) options = container;
+            container = null;
+        }
+        this._ownCanvas = !(options.canvas instanceof HTMLCanvasElement);
+        // Create a new canvas or use the one provided by the user
+        var canvas = this._ownCanvas ? document.createElement('canvas') : options.canvas;
+        canvas.style = 'max-width: 100%;';
+        this._ctx = canvas.getContext('2d');
+        var _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
+        try {
+            // Register built-in gradients
+            for(var _iterator = $a7744d5c3ee82091$var$GRADIENTS[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true){
+                var _step_value = (0, $7640fa9e79c6b7c8$export$71511d61b312f219)(_step.value, 2), name = _step_value[0], options1 = _step_value[1];
+                this.registerGradient(name, options1);
+            }
+        } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+        } finally{
+            try {
+                if (!_iteratorNormalCompletion && _iterator.return != null) {
+                    _iterator.return();
+                }
+            } finally{
+                if (_didIteratorError) {
+                    throw _iteratorError;
+                }
+            }
+        }
+        // Set container
+        this._container = container || !this._ownCanvas && canvas.parentElement || document.body;
+        // Make sure we have minimal width and height dimensions in case of an inline container
+        this._defaultWidth = this._container.clientWidth || 640;
+        this._defaultHeight = this._container.clientHeight || 270;
+        // Use audio context provided by user, or create a new one
+        var audioCtx;
+        if (options.source && (audioCtx = options.source.context)) ;
+        else if (audioCtx = options.audioCtx) ;
+        else try {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            this._ownContext = true;
+        } catch (err) {
+            throw new $a7744d5c3ee82091$var$AudioMotionError($a7744d5c3ee82091$var$ERR_AUDIO_CONTEXT_FAIL);
+        }
+        // make sure audioContext is valid
+        if (!audioCtx.createGain) throw new $a7744d5c3ee82091$var$AudioMotionError($a7744d5c3ee82091$var$ERR_INVALID_AUDIO_CONTEXT);
+        /*
+			Connection routing:
+			===================
+
+			for dual channel layouts:                +--->  analyzer[0]  ---+
+		    	                                     |                      |
+			(source) --->  input  --->  splitter  ---+                      +--->  merger  --->  output  ---> (destination)
+		    	                                     |                      |
+		        	                                 +--->  analyzer[1]  ---+
+
+			for single channel layout:
+
+			(source) --->  input  ----------------------->  analyzer[0]  --------------------->  output  ---> (destination)
+
+		*/ // create the analyzer nodes, channel splitter and merger, and gain nodes for input/output connections
+        var analyzer = this._analyzer = [
+            audioCtx.createAnalyser(),
+            audioCtx.createAnalyser()
+        ];
+        var splitter = this._splitter = audioCtx.createChannelSplitter(2);
+        var merger = this._merger = audioCtx.createChannelMerger(2);
+        this._input = audioCtx.createGain();
+        this._output = audioCtx.createGain();
+        // connect audio source if provided in the options
+        if (options.source) this.connectInput(options.source);
+        // connect splitter -> analyzers
+        for(var _i = 0, _iter = [
+            0,
+            1
+        ]; _i < _iter.length; _i++){
+            var i = _iter[_i];
+            splitter.connect(analyzer[i], i);
+        }
+        // connect merger -> output
+        merger.connect(this._output);
+        // connect output -> destination (speakers)
+        if (options.connectSpeakers !== false) this.connectOutput();
+        // create auxiliary canvases for the X-axis and radial scale labels
+        for(var _i1 = 0, _iter1 = [
+            '_scaleX',
+            '_scaleR'
+        ]; _i1 < _iter1.length; _i1++){
+            var ctx = _iter1[_i1];
+            this[ctx] = document.createElement('canvas').getContext('2d');
+        }
+        // set fullscreen element (defaults to canvas)
+        this._fsEl = options.fsElement || canvas;
+        // Update canvas size on container / window resize and fullscreen events
+        // Fullscreen changes are handled quite differently across browsers:
+        // 1. Chromium browsers will trigger a `resize` event followed by a `fullscreenchange`
+        // 2. Firefox triggers the `fullscreenchange` first and then the `resize`
+        // 3. Chrome on Android (TV) won't trigger a `resize` event, only `fullscreenchange`
+        // 4. Safari won't trigger `fullscreenchange` events at all, and on iPadOS the `resize`
+        //    event is triggered **on the window** only (last tested on iPadOS 14)
+        // helper function for resize events
+        var onResize = ()=>{
+            if (!this._fsTimeout) // delay the resize to prioritize a possible following `fullscreenchange` event
+            this._fsTimeout = window.setTimeout(()=>{
+                if (!this._fsChanging) {
+                    this._setCanvas($a7744d5c3ee82091$var$REASON_RESIZE);
+                    this._fsTimeout = 0;
+                }
+            }, $a7744d5c3ee82091$var$DEBOUNCE_TIMEOUT);
+        };
+        // if browser supports ResizeObserver, listen for resize on the container
+        if (window.ResizeObserver) {
+            this._observer = new ResizeObserver(onResize);
+            this._observer.observe(this._container);
+        }
+        // create an AbortController to remove event listeners on destroy()
+        this._controller = new AbortController();
+        var signal = this._controller.signal;
+        // listen for resize events on the window - required for fullscreen on iPadOS
+        window.addEventListener($a7744d5c3ee82091$var$EVENT_RESIZE, onResize, {
+            signal: signal
+        });
+        // listen for fullscreenchange events on the canvas - not available on Safari
+        canvas.addEventListener($a7744d5c3ee82091$var$EVENT_FULLSCREENCHANGE, ()=>{
+            // set flag to indicate a fullscreen change in progress
+            this._fsChanging = true;
+            // if there is a scheduled resize event, clear it
+            if (this._fsTimeout) window.clearTimeout(this._fsTimeout);
+            // update the canvas
+            this._setCanvas($a7744d5c3ee82091$var$REASON_FSCHANGE);
+            // delay clearing the flag to prevent any shortly following resize event
+            this._fsTimeout = window.setTimeout(()=>{
+                this._fsChanging = false;
+                this._fsTimeout = 0;
+            }, $a7744d5c3ee82091$var$DEBOUNCE_TIMEOUT);
+        }, {
+            signal: signal
+        });
+        // Resume audio context if in suspended state (browsers' autoplay policy)
+        var unlockContext = ()=>{
+            if (audioCtx.state == 'suspended') audioCtx.resume();
+            window.removeEventListener($a7744d5c3ee82091$var$EVENT_CLICK, unlockContext);
+        };
+        window.addEventListener($a7744d5c3ee82091$var$EVENT_CLICK, unlockContext);
+        // reset FPS-related variables when window becomes visible (avoid FPS drop due to frames not rendered while hidden)
+        document.addEventListener('visibilitychange', ()=>{
+            if (document.visibilityState != 'hidden') {
+                this._frames = 0;
+                this._time = performance.now();
+            }
+        }, {
+            signal: signal
+        });
+        // Set configuration options and use defaults for any missing properties
+        this._setProps(options, true);
+        // Add canvas to the container (only when canvas not provided by user)
+        if (this.useCanvas && this._ownCanvas) this._container.appendChild(canvas);
+        // Finish canvas setup
+        this._ready = true;
+        this._setCanvas($a7744d5c3ee82091$var$REASON_CREATE);
+    }
+}
+var $a7744d5c3ee82091$export$2e2bcd8739ae039 = $a7744d5c3ee82091$export$44e9f5d136720861;
+
+
 var $5424e46c77c1f2ba$exports = {};
 
 /*! @license DOMPurify 3.2.5 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.2.5/LICENSE */ (function(global, factory) {
@@ -45265,6 +56768,592 @@ class $e3d39f7182a6433b$export$d72c7bf8eef50853 extends $e3d39f7182a6433b$export
 var $e3d39f7182a6433b$export$2e2bcd8739ae039 = $e3d39f7182a6433b$export$ecd1fc136c422448;
 
 
+var $e29dd324520561b3$exports = {};
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */ var $e29dd324520561b3$var$runtime = function(exports) {
+    "use strict";
+    var Op = Object.prototype;
+    var hasOwn = Op.hasOwnProperty;
+    var defineProperty = Object.defineProperty || function(obj, key, desc) {
+        obj[key] = desc.value;
+    };
+    var undefined; // More compressible than void 0.
+    var $Symbol = typeof Symbol === "function" ? Symbol : {};
+    var iteratorSymbol = $Symbol.iterator || "@@iterator";
+    var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+    var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+    function define(obj, key, value) {
+        Object.defineProperty(obj, key, {
+            value: value,
+            enumerable: true,
+            configurable: true,
+            writable: true
+        });
+        return obj[key];
+    }
+    try {
+        // IE 8 has a broken Object.defineProperty that only works on DOM objects.
+        define({}, "");
+    } catch (err) {
+        define = function define(obj, key, value) {
+            return obj[key] = value;
+        };
+    }
+    function wrap(innerFn, outerFn, self, tryLocsList) {
+        // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+        var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+        var generator = Object.create(protoGenerator.prototype);
+        var context = new Context(tryLocsList || []);
+        // The ._invoke method unifies the implementations of the .next,
+        // .throw, and .return methods.
+        defineProperty(generator, "_invoke", {
+            value: makeInvokeMethod(innerFn, self, context)
+        });
+        return generator;
+    }
+    exports.wrap = wrap;
+    // Try/catch helper to minimize deoptimizations. Returns a completion
+    // record like context.tryEntries[i].completion. This interface could
+    // have been (and was previously) designed to take a closure to be
+    // invoked without arguments, but in all the cases we care about we
+    // already have an existing method we want to call, so there's no need
+    // to create a new function object. We can even get away with assuming
+    // the method takes exactly one argument, since that happens to be true
+    // in every case, so we don't have to touch the arguments object. The
+    // only additional allocation required is the completion record, which
+    // has a stable shape and so hopefully should be cheap to allocate.
+    function tryCatch(fn, obj, arg) {
+        try {
+            return {
+                type: "normal",
+                arg: fn.call(obj, arg)
+            };
+        } catch (err) {
+            return {
+                type: "throw",
+                arg: err
+            };
+        }
+    }
+    var GenStateSuspendedStart = "suspendedStart";
+    var GenStateSuspendedYield = "suspendedYield";
+    var GenStateExecuting = "executing";
+    var GenStateCompleted = "completed";
+    // Returning this object from the innerFn has the same effect as
+    // breaking out of the dispatch switch statement.
+    var ContinueSentinel = {};
+    // Dummy constructor functions that we use as the .constructor and
+    // .constructor.prototype properties for functions that return Generator
+    // objects. For full spec compliance, you may wish to configure your
+    // minifier not to mangle the names of these two functions.
+    function Generator() {}
+    function GeneratorFunction() {}
+    function GeneratorFunctionPrototype() {}
+    // This is a polyfill for %IteratorPrototype% for environments that
+    // don't natively support it.
+    var IteratorPrototype = {};
+    define(IteratorPrototype, iteratorSymbol, function() {
+        return this;
+    });
+    var getProto = Object.getPrototypeOf;
+    var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+    if (NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+    var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
+    GeneratorFunction.prototype = GeneratorFunctionPrototype;
+    defineProperty(Gp, "constructor", {
+        value: GeneratorFunctionPrototype,
+        configurable: true
+    });
+    defineProperty(GeneratorFunctionPrototype, "constructor", {
+        value: GeneratorFunction,
+        configurable: true
+    });
+    GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction");
+    // Helper for defining the .next, .throw, and .return methods of the
+    // Iterator interface in terms of a single ._invoke method.
+    function defineIteratorMethods(prototype) {
+        [
+            "next",
+            "throw",
+            "return"
+        ].forEach(function(method) {
+            define(prototype, method, function(arg) {
+                return this._invoke(method, arg);
+            });
+        });
+    }
+    exports.isGeneratorFunction = function(genFun) {
+        var ctor = typeof genFun === "function" && genFun.constructor;
+        return ctor ? ctor === GeneratorFunction || // For the native GeneratorFunction constructor, the best we can
+        // do is to check its .name property.
+        (ctor.displayName || ctor.name) === "GeneratorFunction" : false;
+    };
+    exports.mark = function(genFun) {
+        if (Object.setPrototypeOf) Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+        else {
+            genFun.__proto__ = GeneratorFunctionPrototype;
+            define(genFun, toStringTagSymbol, "GeneratorFunction");
+        }
+        genFun.prototype = Object.create(Gp);
+        return genFun;
+    };
+    // Within the body of any async function, `await x` is transformed to
+    // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+    // `hasOwn.call(value, "__await")` to determine if the yielded value is
+    // meant to be awaited.
+    exports.awrap = function(arg) {
+        return {
+            __await: arg
+        };
+    };
+    function AsyncIterator(generator, PromiseImpl) {
+        function invoke(method, arg, resolve, reject) {
+            var record = tryCatch(generator[method], generator, arg);
+            if (record.type === "throw") reject(record.arg);
+            else {
+                var result = record.arg;
+                var value = result.value;
+                if (value && typeof value === "object" && hasOwn.call(value, "__await")) return PromiseImpl.resolve(value.__await).then(function(value) {
+                    invoke("next", value, resolve, reject);
+                }, function(err) {
+                    invoke("throw", err, resolve, reject);
+                });
+                return PromiseImpl.resolve(value).then(function(unwrapped) {
+                    // When a yielded Promise is resolved, its final value becomes
+                    // the .value of the Promise<{value,done}> result for the
+                    // current iteration.
+                    result.value = unwrapped;
+                    resolve(result);
+                }, function(error) {
+                    // If a rejected Promise was yielded, throw the rejection back
+                    // into the async generator function so it can be handled there.
+                    return invoke("throw", error, resolve, reject);
+                });
+            }
+        }
+        var previousPromise;
+        function enqueue(method, arg) {
+            function callInvokeWithMethodAndArg() {
+                return new PromiseImpl(function(resolve, reject) {
+                    invoke(method, arg, resolve, reject);
+                });
+            }
+            return previousPromise = // If enqueue has been called before, then we want to wait until
+            // all previous Promises have been resolved before calling invoke,
+            // so that results are always delivered in the correct order. If
+            // enqueue has not been called before, then it is important to
+            // call invoke immediately, without waiting on a callback to fire,
+            // so that the async generator function has the opportunity to do
+            // any necessary setup in a predictable way. This predictability
+            // is why the Promise constructor synchronously invokes its
+            // executor callback, and why async functions synchronously
+            // execute code before the first await. Since we implement simple
+            // async functions in terms of async generators, it is especially
+            // important to get this right, even though it requires care.
+            previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, // Avoid propagating failures to Promises returned by later
+            // invocations of the iterator.
+            callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
+        }
+        // Define the unified helper method that is used to implement .next,
+        // .throw, and .return (see defineIteratorMethods).
+        defineProperty(this, "_invoke", {
+            value: enqueue
+        });
+    }
+    defineIteratorMethods(AsyncIterator.prototype);
+    define(AsyncIterator.prototype, asyncIteratorSymbol, function() {
+        return this;
+    });
+    exports.AsyncIterator = AsyncIterator;
+    // Note that simple async functions are implemented on top of
+    // AsyncIterator objects; they just return a Promise for the value of
+    // the final result produced by the iterator.
+    exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+        if (PromiseImpl === void 0) PromiseImpl = Promise;
+        var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl);
+        return exports.isGeneratorFunction(outerFn) ? iter // If outerFn is a generator, return the full iterator.
+         : iter.next().then(function(result) {
+            return result.done ? result.value : iter.next();
+        });
+    };
+    function makeInvokeMethod(innerFn, self, context) {
+        var state = GenStateSuspendedStart;
+        return function invoke(method, arg) {
+            if (state === GenStateExecuting) throw new Error("Generator is already running");
+            if (state === GenStateCompleted) {
+                if (method === "throw") throw arg;
+                // Be forgiving, per GeneratorResume behavior specified since ES2015:
+                // ES2015 spec, step 3: https://262.ecma-international.org/6.0/#sec-generatorresume
+                // Latest spec, step 2: https://tc39.es/ecma262/#sec-generatorresume
+                return doneResult();
+            }
+            context.method = method;
+            context.arg = arg;
+            while(true){
+                var delegate = context.delegate;
+                if (delegate) {
+                    var delegateResult = maybeInvokeDelegate(delegate, context);
+                    if (delegateResult) {
+                        if (delegateResult === ContinueSentinel) continue;
+                        return delegateResult;
+                    }
+                }
+                if (context.method === "next") // Setting context._sent for legacy support of Babel's
+                // function.sent implementation.
+                context.sent = context._sent = context.arg;
+                else if (context.method === "throw") {
+                    if (state === GenStateSuspendedStart) {
+                        state = GenStateCompleted;
+                        throw context.arg;
+                    }
+                    context.dispatchException(context.arg);
+                } else if (context.method === "return") context.abrupt("return", context.arg);
+                state = GenStateExecuting;
+                var record = tryCatch(innerFn, self, context);
+                if (record.type === "normal") {
+                    // If an exception is thrown from innerFn, we leave state ===
+                    // GenStateExecuting and loop back for another invocation.
+                    state = context.done ? GenStateCompleted : GenStateSuspendedYield;
+                    if (record.arg === ContinueSentinel) continue;
+                    return {
+                        value: record.arg,
+                        done: context.done
+                    };
+                } else if (record.type === "throw") {
+                    state = GenStateCompleted;
+                    // Dispatch the exception by looping back around to the
+                    // context.dispatchException(context.arg) call above.
+                    context.method = "throw";
+                    context.arg = record.arg;
+                }
+            }
+        };
+    }
+    // Call delegate.iterator[context.method](context.arg) and handle the
+    // result, either by returning a { value, done } result from the
+    // delegate iterator, or by modifying context.method and context.arg,
+    // setting context.delegate to null, and returning the ContinueSentinel.
+    function maybeInvokeDelegate(delegate, context) {
+        var methodName = context.method;
+        var method = delegate.iterator[methodName];
+        if (method === undefined) {
+            // A .throw or .return when the delegate iterator has no .throw
+            // method, or a missing .next method, always terminate the
+            // yield* loop.
+            context.delegate = null;
+            // Note: ["return"] must be used for ES3 parsing compatibility.
+            if (methodName === "throw" && delegate.iterator["return"]) {
+                // If the delegate iterator has a return method, give it a
+                // chance to clean up.
+                context.method = "return";
+                context.arg = undefined;
+                maybeInvokeDelegate(delegate, context);
+                if (context.method === "throw") // If maybeInvokeDelegate(context) changed context.method from
+                // "return" to "throw", let that override the TypeError below.
+                return ContinueSentinel;
+            }
+            if (methodName !== "return") {
+                context.method = "throw";
+                context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method");
+            }
+            return ContinueSentinel;
+        }
+        var record = tryCatch(method, delegate.iterator, context.arg);
+        if (record.type === "throw") {
+            context.method = "throw";
+            context.arg = record.arg;
+            context.delegate = null;
+            return ContinueSentinel;
+        }
+        var info = record.arg;
+        if (!info) {
+            context.method = "throw";
+            context.arg = new TypeError("iterator result is not an object");
+            context.delegate = null;
+            return ContinueSentinel;
+        }
+        if (info.done) {
+            // Assign the result of the finished delegate to the temporary
+            // variable specified by delegate.resultName (see delegateYield).
+            context[delegate.resultName] = info.value;
+            // Resume execution at the desired location (see delegateYield).
+            context.next = delegate.nextLoc;
+            // If context.method was "throw" but the delegate handled the
+            // exception, let the outer generator proceed normally. If
+            // context.method was "next", forget context.arg since it has been
+            // "consumed" by the delegate iterator. If context.method was
+            // "return", allow the original .return call to continue in the
+            // outer generator.
+            if (context.method !== "return") {
+                context.method = "next";
+                context.arg = undefined;
+            }
+        } else // Re-yield the result returned by the delegate method.
+        return info;
+        // The delegate iterator is finished, so forget it and continue with
+        // the outer generator.
+        context.delegate = null;
+        return ContinueSentinel;
+    }
+    // Define Generator.prototype.{next,throw,return} in terms of the
+    // unified ._invoke helper method.
+    defineIteratorMethods(Gp);
+    define(Gp, toStringTagSymbol, "Generator");
+    // A Generator should always return itself as the iterator object when the
+    // @@iterator function is called on it. Some browsers' implementations of the
+    // iterator prototype chain incorrectly implement this, causing the Generator
+    // object to not be returned from this call. This ensures that doesn't happen.
+    // See https://github.com/facebook/regenerator/issues/274 for more details.
+    define(Gp, iteratorSymbol, function() {
+        return this;
+    });
+    define(Gp, "toString", function() {
+        return "[object Generator]";
+    });
+    function pushTryEntry(locs) {
+        var entry = {
+            tryLoc: locs[0]
+        };
+        if (1 in locs) entry.catchLoc = locs[1];
+        if (2 in locs) {
+            entry.finallyLoc = locs[2];
+            entry.afterLoc = locs[3];
+        }
+        this.tryEntries.push(entry);
+    }
+    function resetTryEntry(entry) {
+        var record = entry.completion || {};
+        record.type = "normal";
+        delete record.arg;
+        entry.completion = record;
+    }
+    function Context(tryLocsList) {
+        // The root entry object (effectively a try statement without a catch
+        // or a finally block) gives us a place to store values thrown from
+        // locations where there is no enclosing try statement.
+        this.tryEntries = [
+            {
+                tryLoc: "root"
+            }
+        ];
+        tryLocsList.forEach(pushTryEntry, this);
+        this.reset(true);
+    }
+    exports.keys = function(val) {
+        var object = Object(val);
+        var keys = [];
+        for(var key in object)keys.push(key);
+        keys.reverse();
+        // Rather than returning an object with a next method, we keep
+        // things simple and return the next function itself.
+        return function next() {
+            while(keys.length){
+                var key = keys.pop();
+                if (key in object) {
+                    next.value = key;
+                    next.done = false;
+                    return next;
+                }
+            }
+            // To avoid creating an additional object, we just hang the .value
+            // and .done properties off the next function object itself. This
+            // also ensures that the minifier will not anonymize the function.
+            next.done = true;
+            return next;
+        };
+    };
+    function values(iterable) {
+        if (iterable != null) {
+            var iteratorMethod = iterable[iteratorSymbol];
+            if (iteratorMethod) return iteratorMethod.call(iterable);
+            if (typeof iterable.next === "function") return iterable;
+            if (!isNaN(iterable.length)) {
+                var i = -1, next = function next() {
+                    while(++i < iterable.length)if (hasOwn.call(iterable, i)) {
+                        next.value = iterable[i];
+                        next.done = false;
+                        return next;
+                    }
+                    next.value = undefined;
+                    next.done = true;
+                    return next;
+                };
+                return next.next = next;
+            }
+        }
+        throw new TypeError(typeof iterable + " is not iterable");
+    }
+    exports.values = values;
+    function doneResult() {
+        return {
+            value: undefined,
+            done: true
+        };
+    }
+    Context.prototype = {
+        constructor: Context,
+        reset: function reset(skipTempReset) {
+            this.prev = 0;
+            this.next = 0;
+            // Resetting context._sent for legacy support of Babel's
+            // function.sent implementation.
+            this.sent = this._sent = undefined;
+            this.done = false;
+            this.delegate = null;
+            this.method = "next";
+            this.arg = undefined;
+            this.tryEntries.forEach(resetTryEntry);
+            if (!skipTempReset) {
+                for(var name in this)// Not sure about the optimal order of these conditions:
+                if (name.charAt(0) === "t" && hasOwn.call(this, name) && !isNaN(+name.slice(1))) this[name] = undefined;
+            }
+        },
+        stop: function stop() {
+            this.done = true;
+            var rootEntry = this.tryEntries[0];
+            var rootRecord = rootEntry.completion;
+            if (rootRecord.type === "throw") throw rootRecord.arg;
+            return this.rval;
+        },
+        dispatchException: function dispatchException(exception) {
+            if (this.done) throw exception;
+            var context = this;
+            function handle(loc, caught) {
+                record.type = "throw";
+                record.arg = exception;
+                context.next = loc;
+                if (caught) {
+                    // If the dispatched exception was caught by a catch block,
+                    // then let that catch block handle the exception normally.
+                    context.method = "next";
+                    context.arg = undefined;
+                }
+                return !!caught;
+            }
+            for(var i = this.tryEntries.length - 1; i >= 0; --i){
+                var entry = this.tryEntries[i];
+                var record = entry.completion;
+                if (entry.tryLoc === "root") // Exception thrown outside of any try block that could handle
+                // it, so set the completion value of the entire function to
+                // throw the exception.
+                return handle("end");
+                if (entry.tryLoc <= this.prev) {
+                    var hasCatch = hasOwn.call(entry, "catchLoc");
+                    var hasFinally = hasOwn.call(entry, "finallyLoc");
+                    if (hasCatch && hasFinally) {
+                        if (this.prev < entry.catchLoc) return handle(entry.catchLoc, true);
+                        else if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
+                    } else if (hasCatch) {
+                        if (this.prev < entry.catchLoc) return handle(entry.catchLoc, true);
+                    } else if (hasFinally) {
+                        if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
+                    } else throw new Error("try statement without catch or finally");
+                }
+            }
+        },
+        abrupt: function abrupt(type, arg) {
+            for(var i = this.tryEntries.length - 1; i >= 0; --i){
+                var entry = this.tryEntries[i];
+                if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
+                    var finallyEntry = entry;
+                    break;
+                }
+            }
+            if (finallyEntry && (type === "break" || type === "continue") && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc) // Ignore the finally entry if control is not jumping to a
+            // location outside the try/catch block.
+            finallyEntry = null;
+            var record = finallyEntry ? finallyEntry.completion : {};
+            record.type = type;
+            record.arg = arg;
+            if (finallyEntry) {
+                this.method = "next";
+                this.next = finallyEntry.finallyLoc;
+                return ContinueSentinel;
+            }
+            return this.complete(record);
+        },
+        complete: function complete(record, afterLoc) {
+            if (record.type === "throw") throw record.arg;
+            if (record.type === "break" || record.type === "continue") this.next = record.arg;
+            else if (record.type === "return") {
+                this.rval = this.arg = record.arg;
+                this.method = "return";
+                this.next = "end";
+            } else if (record.type === "normal" && afterLoc) this.next = afterLoc;
+            return ContinueSentinel;
+        },
+        finish: function finish(finallyLoc) {
+            for(var i = this.tryEntries.length - 1; i >= 0; --i){
+                var entry = this.tryEntries[i];
+                if (entry.finallyLoc === finallyLoc) {
+                    this.complete(entry.completion, entry.afterLoc);
+                    resetTryEntry(entry);
+                    return ContinueSentinel;
+                }
+            }
+        },
+        "catch": function(tryLoc) {
+            for(var i = this.tryEntries.length - 1; i >= 0; --i){
+                var entry = this.tryEntries[i];
+                if (entry.tryLoc === tryLoc) {
+                    var record = entry.completion;
+                    if (record.type === "throw") {
+                        var thrown = record.arg;
+                        resetTryEntry(entry);
+                    }
+                    return thrown;
+                }
+            }
+            // The context.catch method must only be called with a location
+            // argument that corresponds to a known catch block.
+            throw new Error("illegal catch attempt");
+        },
+        delegateYield: function delegateYield(iterable, resultName, nextLoc) {
+            this.delegate = {
+                iterator: values(iterable),
+                resultName: resultName,
+                nextLoc: nextLoc
+            };
+            if (this.method === "next") // Deliberately forget the last sent value so that we don't
+            // accidentally pass it on to the delegate.
+            this.arg = undefined;
+            return ContinueSentinel;
+        }
+    };
+    // Regardless of whether this script is executing as a CommonJS module
+    // or not, return the runtime object so that we can declare the variable
+    // regeneratorRuntime in the outer scope, which allows this module to be
+    // injected easily by `bin/regenerator --include-runtime script.js`.
+    return exports;
+}(// If this script is executing as a CommonJS module, use module.exports
+// as the regeneratorRuntime namespace. Otherwise create a new empty
+// object. Either way, the resulting object will be used to initialize
+// the regeneratorRuntime variable at the top of this file.
+(0, $e29dd324520561b3$exports));
+try {
+    regeneratorRuntime = $e29dd324520561b3$var$runtime;
+} catch (accidentalStrictMode) {
+    // This module should not be running in strict mode, so the above
+    // assignment should always work unless something is misconfigured. Just
+    // in case runtime.js accidentally runs in strict mode, in modern engines
+    // we can explicitly access globalThis. In older engines we can escape
+    // strict mode using a global Function call. This could conceivably fail
+    // if a Content Security Policy forbids using Function, but in that case
+    // the proper solution is to fix the accidental strict mode problem. If
+    // you've misconfigured your bundler to force strict mode and applied a
+    // CSP to forbid Function, and you're not willing to fix either of those
+    // problems, please detail your unique predicament in a GitHub issue.
+    if (typeof globalThis === "object") globalThis.regeneratorRuntime = $e29dd324520561b3$var$runtime;
+    else Function("r", "regeneratorRuntime = r")($e29dd324520561b3$var$runtime);
+}
+
+
 "use strict";
 var $739f45b10c9a265e$var$audioRecorder = (0, $35ef01a7e6390a1e$export$637fd9537164f29b)();
 var $739f45b10c9a265e$export$471f7ae5c4103ae1 = {
@@ -45291,7 +57380,8 @@ var $739f45b10c9a265e$export$471f7ae5c4103ae1 = {
     history_of_ids: [],
     readyToClose: false,
     webpush_do_not_annoy: [],
-    files: []
+    files: [],
+    audiocontrol: ""
 };
 var $739f45b10c9a265e$export$a5a6e0b888b2c992 = {};
 var $739f45b10c9a265e$var$userAgent = navigator.userAgent || "";
@@ -45327,8 +57417,8 @@ var $739f45b10c9a265e$var$previousView = ()=>{
 //sometime the key press are delayed
 var $739f45b10c9a265e$var$key_delay = ()=>{
     setTimeout(()=>{
-        $739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady = !$739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady;
-    }, 2000);
+        $739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady = true;
+    }, 1500);
 };
 var $739f45b10c9a265e$var$create_avatar = (string, size)=>{
     var avatar = (0, $4c8c96b488284642$export$b595133eef38c254)($115d9b3c3926db97$exports, {
@@ -45565,7 +57655,6 @@ function $739f45b10c9a265e$var$setupConnectionEvents(conn) {
         } catch (err) {
             console.error(err);
         }
-        console.log(data);
         //Message-POD
         if (data.type == "pod") {
             var a = $739f45b10c9a265e$var$chat_data.find((e)=>{
@@ -45652,7 +57741,7 @@ function $739f45b10c9a265e$var$setupConnectionEvents(conn) {
             if (data.type === "audio") {
                 var audioBlob;
                 var mimetype = data.mimeType || "audio/webm";
-                if (data.content instanceof Blob) audioBlob = data.audio;
+                if (data.audio instanceof Blob) audioBlob = data.audio;
                 else if (data.audio instanceof ArrayBuffer || data.audio instanceof Uint8Array) audioBlob = new Blob([
                     data.audio
                 ], {
@@ -45721,7 +57810,6 @@ function $739f45b10c9a265e$var$setupConnectionEvents(conn) {
             $739f45b10c9a265e$var$restrict_same_id.push(data.id);
             $739f45b10c9a265e$var$storeChatData().then(()=>{
                 (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).redraw();
-                console.log("data stored");
             });
         } else if (data.userlist && $739f45b10c9a265e$export$471f7ae5c4103ae1.groupchat) //connect all users
         //groupchat
@@ -45919,7 +58007,6 @@ var $739f45b10c9a265e$var$chat_data_history = [];
         $739f45b10c9a265e$export$a5a6e0b888b2c992 = defaultValues;
         (0, (/*@__PURE__*/$parcel$interopDefault($d45e15dd9864d0fd$exports))).setItem("settings", $739f45b10c9a265e$export$a5a6e0b888b2c992).then(()=>{});
     }
-    console.log($739f45b10c9a265e$export$a5a6e0b888b2c992);
 }).catch(function(err) {
     console.log(err);
 });
@@ -45932,27 +58019,15 @@ var $739f45b10c9a265e$var$chat_data_history = [];
     });
     else $739f45b10c9a265e$export$471f7ae5c4103ae1.history_of_ids = e;
 }).catch(()=>{});
-var $739f45b10c9a265e$var$write = function write() {
-    if ($739f45b10c9a265e$export$471f7ae5c4103ae1.action != "write") {
-        if (document.getElementById("message-input") != null) {
-            document.getElementById("message-input").style.display = "block";
-            document.querySelector("div#message-input input").focus();
-        }
-        $739f45b10c9a265e$export$471f7ae5c4103ae1.action = "write";
-    } else {
-        if (document.getElementById("message-input") != null) {
-            document.querySelector("div#message-input input").value = "";
-            document.getElementById("message-input").style.display = "none";
-        }
-        $739f45b10c9a265e$var$focus_last_article();
-        $739f45b10c9a265e$export$471f7ae5c4103ae1.action = "";
-    }
+var $739f45b10c9a265e$var$write = ()=>{
+    $739f45b10c9a265e$export$471f7ae5c4103ae1.action = $739f45b10c9a265e$export$471f7ae5c4103ae1.action === "write" ? "" : "write";
+    (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).redraw();
+    console.log("write");
 };
 //list files
-(0, $35ef01a7e6390a1e$export$99c802f9c0aea792)("json", (e)=>{
+if (!$739f45b10c9a265e$export$471f7ae5c4103ae1.notKaiOS) (0, $35ef01a7e6390a1e$export$99c802f9c0aea792)("json", (e)=>{
     $739f45b10c9a265e$export$471f7ae5c4103ae1.files.push(e);
 });
-if (!$739f45b10c9a265e$export$471f7ae5c4103ae1.notKaiOS) (0, $35ef01a7e6390a1e$export$99c802f9c0aea792)();
 var $739f45b10c9a265e$var$focus_last_article = function focus_last_article() {
     var j = (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.get();
     if (!j.startsWith("/chat")) return false;
@@ -45999,6 +58074,7 @@ var $739f45b10c9a265e$var$sendMessage = function() {
             id: messageId
         };
         $739f45b10c9a265e$var$sendMessageToAll(message);
+        console.log("send pod");
     }
     // If the chat partner is currently typing, send a "typing" message to  peer
     // to trigger a "user is typing..." animation or indicator in the UI.
@@ -46131,7 +58207,7 @@ var $739f45b10c9a265e$var$sendMessage = function() {
     if (type === "audio") {
         $739f45b10c9a265e$var$chat_data.push({
             nickname: $739f45b10c9a265e$export$a5a6e0b888b2c992.nickname,
-            content: msg,
+            content: "",
             audio: msg,
             datetime: new Date(),
             type: type,
@@ -46143,7 +58219,7 @@ var $739f45b10c9a265e$var$sendMessage = function() {
         $739f45b10c9a265e$var$focus_last_article();
         msg.arrayBuffer().then((buffer)=>{
             message = {
-                content: buffer,
+                content: "",
                 audio: buffer,
                 nickname: $739f45b10c9a265e$export$a5a6e0b888b2c992.nickname,
                 type: type,
@@ -46161,6 +58237,7 @@ var $739f45b10c9a265e$var$messageQueueStorage = [];
 var $739f45b10c9a265e$var$messageQueue = (m)=>{
     (0, (/*@__PURE__*/$parcel$interopDefault($d45e15dd9864d0fd$exports))).getItem("messageQueue").then((e)=>{
         $739f45b10c9a265e$var$messageQueueStorage = e || [];
+        console.log($739f45b10c9a265e$var$messageQueueStorage.length + " message to send");
         if (m) {
             var test = $739f45b10c9a265e$var$messageQueueStorage.find((e)=>{
                 return e.id == m.id;
@@ -46210,10 +58287,7 @@ function $739f45b10c9a265e$var$_sendMessageToAll() {
                             // remove id after 5min
                             setTimeout(()=>{
                                 var index = $739f45b10c9a265e$export$471f7ae5c4103ae1.webpush_do_not_annoy.indexOf($739f45b10c9a265e$export$471f7ae5c4103ae1.current_clientId);
-                                if (index !== -1) {
-                                    $739f45b10c9a265e$export$471f7ae5c4103ae1.webpush_do_not_annoy.splice(index, 1);
-                                    console.log(`Client ${$739f45b10c9a265e$export$471f7ae5c4103ae1.current_clientId} removed webPush block`);
-                                }
+                                if (index !== -1) $739f45b10c9a265e$export$471f7ae5c4103ae1.webpush_do_not_annoy.splice(index, 1);
                             }, 300000);
                         } else console.log("come on d'not annoy!");
                     } else console.log("no clientID");
@@ -46803,41 +58877,57 @@ function $739f45b10c9a265e$var$_deleteOldChatData() {
     return $739f45b10c9a265e$var$_deleteOldChatData.apply(this, arguments);
 }
 $739f45b10c9a265e$var$deleteOldChatData();
-//audio
 var $739f45b10c9a265e$var$AudioComponent = {
     oninit: (vnode)=>{
+        $739f45b10c9a265e$var$key_delay();
+        $739f45b10c9a265e$var$previousView();
         vnode.state.isPlaying = false;
         vnode.state.audio = null;
-        if (vnode.attrs.src instanceof Blob) vnode.state.audioSrc = URL.createObjectURL(vnode.attrs.src);
+        if ($739f45b10c9a265e$export$471f7ae5c4103ae1.audioBlob instanceof Blob) vnode.state.audioSrc = URL.createObjectURL($739f45b10c9a265e$export$471f7ae5c4103ae1.audioBlob);
         else {
             console.error("Invalid src: Expected a Blob.");
             vnode.state.audioSrc = null;
         }
     },
-    onbeforeupdate: (vnode, old)=>{
-        if (vnode.attrs.src !== old.attrs.src) {
-            if (vnode.state.audioSrc) URL.revokeObjectURL(vnode.state.audioSrc);
-            if (vnode.attrs.src instanceof Blob) vnode.state.audioSrc = URL.createObjectURL(vnode.attrs.src);
-            else {
-                console.error("Invalid src: Expected a Blob.");
-                vnode.state.audioSrc = null;
-            }
-        }
-    },
     onremove: (vnode)=>{
+        $739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady = false;
         if (vnode.state.audioSrc) URL.revokeObjectURL(vnode.state.audioSrc);
         if (vnode.state.audio) {
             vnode.state.audio.pause();
-            vnode.state.audio.src = ""; // Clear the source to release resources
+            vnode.state.audio.src = "";
         }
+        if (vnode.state.audioMotion) {
+            vnode.state.audioMotion.disconnectAudio();
+            vnode.state.audioMotion.destroy();
+            vnode.state.audioMotion = null;
+        }
+        $739f45b10c9a265e$export$471f7ae5c4103ae1.audiocontrol = null;
     },
     view: (vnode)=>{
         return (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div.audio-player", [
             vnode.state.audioSrc ? (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("audio", {
+                id: "audio-elm",
                 src: vnode.state.audioSrc,
                 oncreate: (audioVnode)=>{
                     vnode.state.audio = audioVnode.dom;
+                    $739f45b10c9a265e$export$471f7ae5c4103ae1.audiocontrol = {
+                        play: ()=>{
+                            var _vnode_state_audio;
+                            return (_vnode_state_audio = vnode.state.audio) === null || _vnode_state_audio === void 0 ? void 0 : _vnode_state_audio.play();
+                        },
+                        pause: ()=>{
+                            var _vnode_state_audio;
+                            return (_vnode_state_audio = vnode.state.audio) === null || _vnode_state_audio === void 0 ? void 0 : _vnode_state_audio.pause();
+                        },
+                        toggle: ()=>{
+                            if (vnode.state.audio) vnode.state.audio.paused ? vnode.state.audio.play() : vnode.state.audio.pause();
+                        }
+                    };
+                    (0, $35ef01a7e6390a1e$export$247be4ede8e3a24a)("<img src='assets/image/play.svg'>", "", "");
+                    if ($739f45b10c9a265e$export$471f7ae5c4103ae1.notKaiOS) (0, $35ef01a7e6390a1e$export$7ce2ea7c45ae9a07)("<img src='assets/image/back.svg'>", "", "");
+                    else (0, $35ef01a7e6390a1e$export$7ce2ea7c45ae9a07)("", "", "");
                     audioVnode.dom.controls = false;
+                    audioVnode.dom.autoplay = true;
                     audioVnode.dom.addEventListener("play", ()=>{
                         vnode.state.isPlaying = true;
                         (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).redraw();
@@ -46858,14 +58948,29 @@ var $739f45b10c9a265e$var$AudioComponent = {
                     display: "none"
                 }
             }) : (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("p", "Audio source is invalid or not provided."),
-            (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("button", {
-                onclick: ()=>togglePlayPause(vnode),
-                disabled: !vnode.state.audioSrc
-            }, vnode.state.isPlaying ? "Pause" : "Play")
+            (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
+                id: "audiovis",
+                class: "item",
+                oncreate: ()=>{
+                    var audioMotion = new (0, $a7744d5c3ee82091$export$2e2bcd8739ae039)(document.getElementById("audiovis"), {
+                        source: document.getElementById("audio-elm"),
+                        height: $739f45b10c9a265e$export$471f7ae5c4103ae1.notKaiOS ? 200 : 100,
+                        mode: 0,
+                        gradient: "orangered",
+                        colorMode: "bar-level",
+                        overlay: true,
+                        showBgColor: false,
+                        showScaleX: false,
+                        showScaleY: false,
+                        smoothing: 0.8,
+                        barSpace: 0.2,
+                        reflexRatio: 0,
+                        lineWidth: 10
+                    });
+                    audioMotion.canvas.style.background = "none";
+                }
+            })
         ]);
-        function togglePlayPause(vnode) {
-            if (vnode.state.audio) vnode.state.isPlaying ? vnode.state.audio.pause() : vnode.state.audio.play();
-        }
     }
 };
 //callback geolocation
@@ -47005,7 +59110,7 @@ var $739f45b10c9a265e$var$waiting = {
         $739f45b10c9a265e$var$key_delay();
     },
     onremove: ()=>{
-        $739f45b10c9a265e$var$key_delay();
+        $739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady = false;
     },
     view: function view() {
         var timer1 = "";
@@ -47036,7 +59141,7 @@ var $739f45b10c9a265e$var$filelist = {
         (0, $35ef01a7e6390a1e$export$247be4ede8e3a24a)("", "", "");
     },
     onremove: ()=>{
-        $739f45b10c9a265e$var$key_delay();
+        $739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady = false;
     },
     view: function view() {
         return (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
@@ -47079,7 +59184,7 @@ var $739f45b10c9a265e$var$about = {
         $739f45b10c9a265e$var$key_delay();
     },
     onremove: ()=>{
-        $739f45b10c9a265e$var$key_delay();
+        $739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady = false;
     },
     view: function view() {
         return (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
@@ -47194,7 +59299,7 @@ var $739f45b10c9a265e$var$about_page = {
         $739f45b10c9a265e$var$key_delay();
     },
     onremove: ()=>{
-        $739f45b10c9a265e$var$key_delay();
+        $739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady = false;
     },
     view: function view() {
         return (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
@@ -47249,7 +59354,7 @@ var $739f45b10c9a265e$var$invite = {
         $739f45b10c9a265e$var$key_delay();
     },
     onremove: ()=>{
-        $739f45b10c9a265e$var$key_delay();
+        $739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady = false;
     },
     oncreate: ()=>{
         if ($739f45b10c9a265e$export$471f7ae5c4103ae1.notKaiOS) (0, $35ef01a7e6390a1e$export$7ce2ea7c45ae9a07)("<img src='assets/image/back.svg'>", "", "");
@@ -47279,7 +59384,7 @@ var $739f45b10c9a265e$var$privacy_policy = {
         $739f45b10c9a265e$var$key_delay();
     },
     onremove: ()=>{
-        $739f45b10c9a265e$var$key_delay();
+        $739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady = false;
     },
     view: function view() {
         return (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
@@ -47327,7 +59432,7 @@ var $739f45b10c9a265e$var$settings_page = {
         $739f45b10c9a265e$var$key_delay();
     },
     onremove: ()=>{
-        $739f45b10c9a265e$var$key_delay();
+        $739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady = false;
     },
     view: function view() {
         return (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
@@ -47533,7 +59638,7 @@ var $739f45b10c9a265e$var$options = {
         $739f45b10c9a265e$var$key_delay();
     },
     onremove: ()=>{
-        $739f45b10c9a265e$var$key_delay();
+        $739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady = false;
     },
     view: function view() {
         return (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
@@ -47657,7 +59762,7 @@ var $739f45b10c9a265e$var$start = {
         }, 6000);
     },
     onremove: ()=>{
-        $739f45b10c9a265e$var$key_delay();
+        $739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady = false;
     },
     view: function view() {
         return (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
@@ -47750,51 +59855,65 @@ var $739f45b10c9a265e$var$start = {
         ]);
     }
 };
-var $739f45b10c9a265e$var$audiorecorder_view = {
+var $739f45b10c9a265e$export$54b31340fc90bd34 = {
     oninit: ()=>{
         $739f45b10c9a265e$var$key_delay();
         $739f45b10c9a265e$var$previousView();
     },
     onremove: ()=>{
-        $739f45b10c9a265e$var$key_delay();
+        $739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady = false;
     },
-    view: function view() {
-        return (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
-            id: "audiorecorder",
-            class: "page"
+    view: ()=>(0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
+            class: "page",
+            id: "audiorecorder"
         }, [
             (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
-                class: "playing",
+                id: "audiovis",
+                class: "item",
                 oninit: ()=>{
-                    $739f45b10c9a265e$var$audioRecorder.startRecording().then(()=>{});
+                    $739f45b10c9a265e$var$audioRecorder.startRecording().then(()=>{
+                        console.log("Recording started");
+                        var srcNode = $739f45b10c9a265e$var$audioRecorder.getStreamSourceNode();
+                        var audioCtx = $739f45b10c9a265e$var$audioRecorder.getAudioContext();
+                        if (srcNode && audioCtx) {
+                            var audioMotion = new (0, $a7744d5c3ee82091$export$2e2bcd8739ae039)(document.getElementById("audiovis"), {
+                                audioCtx: audioCtx,
+                                height: 150,
+                                gradient: "orangered",
+                                colorMode: "bar-level",
+                                overlay: true,
+                                showBgColor: false,
+                                showScaleX: false,
+                                showScaleY: false,
+                                smoothing: 0.8,
+                                barSpace: 0.2,
+                                reflexRatio: 0,
+                                lineWidth: 10
+                            });
+                            audioMotion.connectInput(srcNode);
+                            audioMotion.volume = 0;
+                        } else console.warn("AudioContext oder StreamSource nicht vorhanden");
+                    });
                 },
                 onremove: ()=>{
-                    $739f45b10c9a265e$var$audioRecorder.stopRecording(()=>{});
+                    $739f45b10c9a265e$var$audioRecorder.stopRecording().then((param)=>{
+                        var audioBlob = param.audioBlob;
+                        console.log("Recording stopped", audioBlob);
+                    });
                 },
                 oncreate: ()=>{
                     (0, $35ef01a7e6390a1e$export$247be4ede8e3a24a)("<img src='assets/image/send.svg'>", "<img src='assets/image/record-live.svg'>", "<img src='assets/image/cancel.svg'>");
                     (0, $35ef01a7e6390a1e$export$7ce2ea7c45ae9a07)("", "", "");
                 }
-            }, [
-                (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("span", {
-                    class: "playing__bar playing__bar1"
-                }),
-                (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("span", {
-                    class: "playing__bar playing__bar2"
-                }),
-                (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("span", {
-                    class: "playing__bar playing__bar3"
-                })
-            ])
-        ]);
-    }
+            })
+        ])
 };
 var $739f45b10c9a265e$var$scan = {
     oninit: ()=>{
         $739f45b10c9a265e$var$key_delay();
     },
     onremove: ()=>{
-        $739f45b10c9a265e$var$key_delay();
+        $739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady = false;
     },
     view: function view(vnode) {
         return (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
@@ -47813,7 +59932,7 @@ var $739f45b10c9a265e$var$chat = {
         $739f45b10c9a265e$var$load_chat_history($739f45b10c9a265e$export$471f7ae5c4103ae1.current_user_id);
     },
     onremove: ()=>{
-        $739f45b10c9a265e$var$key_delay();
+        $739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady = false;
     },
     onupdate: ()=>{
         //reproduce chat data
@@ -47859,14 +59978,18 @@ var $739f45b10c9a265e$var$chat = {
                     } else console.log("user check not possible");
                 }, 2000);
             }
-        }, (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
+        }, $739f45b10c9a265e$export$471f7ae5c4103ae1.action === "write" ? (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
             id: "message-input",
             type: "text",
             class: "width-100"
         }, [
             (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("input", {
                 type: "text",
+                oncreate: (v)=>{
+                    v.dom.focus();
+                },
                 onblur: ()=>{
+                    $739f45b10c9a265e$var$focus_last_article();
                     setTimeout(()=>{
                         var a = (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.get();
                         if (a.startsWith("/chat")) (0, $35ef01a7e6390a1e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
@@ -47884,9 +60007,9 @@ var $739f45b10c9a265e$var$chat = {
                     if (value !== "" && $739f45b10c9a265e$export$471f7ae5c4103ae1.action === "write") $739f45b10c9a265e$var$sendMessage(undefined, "typing", undefined, undefined, undefined);
                 }
             })
-        ]), $739f45b10c9a265e$var$chat_data.map(function(item, index) {
-            var last = false;
-            if (index === $739f45b10c9a265e$var$chat_data.length - 1) last = true;
+        ]) : null, $739f45b10c9a265e$var$chat_data.map(function(item, index) {
+            var currentIndex = index;
+            var isLast = currentIndex === $739f45b10c9a265e$var$chat_data.length - 1;
             var ff = {
                 lat: "",
                 lng: ""
@@ -47908,7 +60031,7 @@ var $739f45b10c9a265e$var$chat = {
                 "data-lat": ff.lat,
                 "data-lng": ff.lng,
                 oncreate: (vnode)=>{
-                    if (last) {
+                    if (isLast) {
                         vnode.dom.focus();
                         vnode.dom.scrollIntoView({
                             behavior: "smooth",
@@ -47920,6 +60043,12 @@ var $739f45b10c9a265e$var$chat = {
                     if (item.type == "gps" || item.type == "gps_live") {
                         var f = JSON.parse(item.content);
                         (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("/map_view?lat=" + f.lat + "&lng=" + f.lng + "&id=" + item.nickname);
+                    }
+                    if (item.type == "audio") {
+                        if (item.audio instanceof Blob) {
+                            $739f45b10c9a265e$export$471f7ae5c4103ae1.audioBlob = item.audio;
+                            (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("/AudioComponent");
+                        } else (0, $35ef01a7e6390a1e$export$6593825dc0f3a767)("audio file not valid", 2000);
                     }
                 },
                 onfocus: ()=>{
@@ -47939,7 +60068,9 @@ var $739f45b10c9a265e$var$chat = {
                     }
                     if (item.type == "audio") {
                         $739f45b10c9a265e$export$471f7ae5c4103ae1.current_article_type = "audio";
-                        (0, $35ef01a7e6390a1e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/play.svg'>", "<img src='assets/image/option.svg'>");
+                        $739f45b10c9a265e$export$471f7ae5c4103ae1.audioBlob = item.audio;
+                        if ($739f45b10c9a265e$export$471f7ae5c4103ae1.notKaiOS) (0, $35ef01a7e6390a1e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
+                        else (0, $35ef01a7e6390a1e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/play.svg'>", "<img src='assets/image/option.svg'>");
                     }
                     if (item.type == "text") {
                         $739f45b10c9a265e$export$471f7ae5c4103ae1.current_article_type = "text";
@@ -47964,11 +60095,13 @@ var $739f45b10c9a265e$var$chat = {
                 item.type === "gps_live" ? (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
                     class: "message-map"
                 }) : null,
-                item.type === "audio" ? (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
-                    class: "audioplayer"
-                }, (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))($739f45b10c9a265e$var$AudioComponent, {
-                    src: item.content
-                })) : null,
+                item.type === "audio" ? (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("button", {
+                    class: "audioplayer-button"
+                }, [
+                    (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("img", {
+                        src: "./assets/image/audio.png"
+                    })
+                ]) : null,
                 (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
                     class: "flex message-head"
                 }, [
@@ -48001,7 +60134,7 @@ var $739f45b10c9a265e$var$map_view = {
         $739f45b10c9a265e$var$key_delay();
     },
     onremove: ()=>{
-        $739f45b10c9a265e$var$key_delay();
+        $739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady = false;
     },
     view: function view() {
         return (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
@@ -48027,7 +60160,7 @@ var $739f45b10c9a265e$var$intro = {
         $739f45b10c9a265e$var$getIceServers();
     },
     onremove: ()=>{
-        $739f45b10c9a265e$var$key_delay();
+        $739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady = false;
     },
     view: function view() {
         return (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports)))("div", {
@@ -48098,8 +60231,9 @@ var $739f45b10c9a265e$var$intro = {
     "/map_view": $739f45b10c9a265e$var$map_view,
     "/waiting": $739f45b10c9a265e$var$waiting,
     "/invite": $739f45b10c9a265e$var$invite,
-    "/audiorecorder_view": $739f45b10c9a265e$var$audiorecorder_view,
-    "/filelist": $739f45b10c9a265e$var$filelist
+    "/audiorecorder_view": $739f45b10c9a265e$export$54b31340fc90bd34,
+    "/filelist": $739f45b10c9a265e$var$filelist,
+    "/AudioComponent": $739f45b10c9a265e$var$AudioComponent
 });
 function $739f45b10c9a265e$var$scrollToCenter() {
     var activeElement = document.activeElement;
@@ -48226,6 +60360,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
             $739f45b10c9a265e$export$471f7ae5c4103ae1.action = "";
         }
         if ((0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.get() == "/options") (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("/chat?id=" + $739f45b10c9a265e$export$a5a6e0b888b2c992.custom_peer);
+        if ((0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.get() == "/AudioComponent") (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("/chat?id=" + $739f45b10c9a265e$export$a5a6e0b888b2c992.custom_peer_id);
     });
     // Function to simulate key press events
     function simulateKeyPress(k) {
@@ -48325,6 +60460,11 @@ document.addEventListener("DOMContentLoaded", function(e) {
                     $739f45b10c9a265e$var$sendMessage(document.getElementsByTagName("input")[0].value, "text", undefined, undefined);
                     $739f45b10c9a265e$var$write();
                 }
+                if (route.startsWith("/AudioCo")) {
+                    var _status_audiocontrol;
+                    (_status_audiocontrol = $739f45b10c9a265e$export$471f7ae5c4103ae1.audiocontrol) === null || _status_audiocontrol === void 0 ? void 0 : _status_audiocontrol.toggle();
+                    return;
+                }
                 if (route.startsWith("audiorecorder_view")) // Stop recording and get the recorded data
                 $739f45b10c9a265e$var$audioRecorder.stopRecording().then((param)=>{
                     var audioBlob = param.audioBlob, mimeType = param.mimeType;
@@ -48349,10 +60489,9 @@ document.addEventListener("DOMContentLoaded", function(e) {
                 if (route.startsWith("audiorecorder_view")) history.back();
                 break;
             case "Enter":
-                if (route.startsWith("/chat?") && document.getElementById("message-input").style.display == "block") {
-                    //write
-                    if (document.querySelector("div#message-input input").value !== "") return false;
-                    (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("audiorecorder_view");
+                if (route.startsWith("/chat?") && $739f45b10c9a265e$export$471f7ae5c4103ae1.action === "write") {
+                    var input = document.querySelector("div#message-input input");
+                    if (!input || input.value.trim() === "") (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("audiorecorder_view");
                 }
                 if (document.activeElement.classList.contains("input-parent")) document.activeElement.children[0].focus();
                 if ((0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.get() == "/options" && document.activeElement.id == "button-add-user") {
@@ -48373,11 +60512,10 @@ document.addEventListener("DOMContentLoaded", function(e) {
                 }
                 if (route.startsWith("/chat")) {
                     if (document.activeElement.tagName == "ARTICLE") {
-                        if ($739f45b10c9a265e$export$471f7ae5c4103ae1.current_article_type == "audio") document.activeElement.querySelectorAll("div.audio-player").forEach((e)=>{
-                            var playPauseButton = e.querySelector("button");
-                            // Check if the play/pause button exists and trigger a click event
-                            if (playPauseButton) playPauseButton.click();
-                        });
+                        if ($739f45b10c9a265e$export$471f7ae5c4103ae1.current_article_type == "audio") {
+                            if ($739f45b10c9a265e$export$471f7ae5c4103ae1.audioBlob instanceof Blob) (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("/AudioComponent");
+                            else (0, $35ef01a7e6390a1e$export$6593825dc0f3a767)("audio file not valid", 2000);
+                        }
                         if ($739f45b10c9a265e$export$471f7ae5c4103ae1.current_article_type == "gps_live") (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("/map_view");
                         if ($739f45b10c9a265e$export$471f7ae5c4103ae1.current_article_type == "gps") (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("/map_view?lat=" + document.activeElement.getAttribute("data-lat") + "&lng=" + document.activeElement.getAttribute("data-lng") + "&id=" + document.activeElement.getAttribute("data-user-nickname"));
                         if ($739f45b10c9a265e$export$471f7ae5c4103ae1.current_article_type == "image") {
@@ -48396,8 +60534,9 @@ document.addEventListener("DOMContentLoaded", function(e) {
     // //shortpress / longpress logic
     // //////////////////////////////
     function handleKeyDown(evt) {
+        if (!$739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady) return false;
         var route = (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.get();
-        if (evt.key === "Backspace" && route.startsWith("/start") && $739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady) return true;
+        if (evt.key === "Backspace" && route.startsWith("/start")) return true;
         if (evt.key === "EndCall" && route.startsWith("/start")) return true;
         if (evt.key === "Backspace" && document.activeElement) {
             var activeElement = document.activeElement;
@@ -48407,9 +60546,12 @@ document.addEventListener("DOMContentLoaded", function(e) {
             if (!isInputField || isEmpty) evt.preventDefault();
             else return;
         }
-        if (!$739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady) return false;
         if (evt.key == "Enter" && route == "/chat") evt.preventDefault();
         if (evt.key === "Backspace") {
+            if ((0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.get() == "/AudioComponent") {
+                (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("/chat?id=" + $739f45b10c9a265e$export$a5a6e0b888b2c992.custom_peer_id);
+                return;
+            }
             if ((0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.get() == "/scan") {
                 (0, $1360c39828d19466$export$55e6c60a43cc74e2)();
                 (0, (/*@__PURE__*/$parcel$interopDefault($4c95354458441c91$exports))).route.set("/start");
@@ -48457,6 +60599,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
     }
     function handleKeyUp(evt) {
         if ($739f45b10c9a265e$export$471f7ae5c4103ae1.visibility === false) return false;
+        if (!$739f45b10c9a265e$export$471f7ae5c4103ae1.viewReady) return false;
         clearTimeout(timeout);
         if (!longpress) shortpress_action(evt);
     }

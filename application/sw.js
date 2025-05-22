@@ -1,22 +1,26 @@
 import localforage from "localforage";
 
+const userAgent = navigator.userAgent || "";
+
 //KaiOS 3 open app
-self.onsystemmessage = (evt) => {
-  const serviceHandler = () => {
-    if (evt.name === "activity") {
-      handler = evt.data.webActivityRequestHandler();
+if (userAgent && !userAgent.includes("KAIOS")) {
+  self.onsystemmessage = (evt) => {
+    const serviceHandler = () => {
+      if (evt.name === "activity") {
+        handler = evt.data.webActivityRequestHandler();
 
-      if (handler.source.name == "flop") {
-        localforage
-          .setItem("connect_to_id", handler.source.data)
-          .then((e) => {});
+        if (handler.source.name == "flop") {
+          localforage
+            .setItem("connect_to_id", handler.source.data)
+            .then((e) => {});
 
-        self.clients.openWindow("index.html");
+          self.clients.openWindow("index.html");
+        }
       }
-    }
+    };
+    evt.waitUntil(serviceHandler());
   };
-  evt.waitUntil(serviceHandler());
-};
+}
 
 self.addEventListener("push", function (event) {
   if (!event.data) {
@@ -67,10 +71,8 @@ self.addEventListener("notificationclick", (event) => {
   );
 });
 
-const userAgent = navigator.userAgent || "";
-
 if (userAgent && !userAgent.includes("KAIOS")) {
-  const CACHE_NAME = "pwa-cache-v0.2137";
+  const CACHE_NAME = "pwa-cache-v0.2239";
   const FILE_LIST_URL = "/file-list.json"; // URL of the JSON file containing the array of files
 
   self.addEventListener("install", (event) => {

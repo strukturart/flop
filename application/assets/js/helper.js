@@ -951,59 +951,46 @@ export let data_import = function (filename, data, callback) {
   }
 };
 
+// createAudioRecorder.js
 export function createAudioRecorder() {
   let mediaRecorder = null;
   let recordedChunks = [];
   let stream = null;
+  let audioContext = null;
+  let analyser = null;
 
   async function init() {
     try {
-      // Request microphone access
       stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioContext = new AudioContext();
+      analyser = audioContext.createAnalyser();
+      analyser.fftSize = 2048;
+
+      const source = audioContext.createMediaStreamSource(stream);
+      source.connect(analyser);
 
       mediaRecorder = new MediaRecorder(stream);
-
       recordedChunks = [];
 
       mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          recordedChunks.push(event.data);
-        }
+        if (event.data.size > 0) recordedChunks.push(event.data);
       };
 
       mediaRecorder.addEventListener("error", (event) => {
         alert(`Error recording stream: ${event.error.name}`);
       });
     } catch (error) {
-      alert("Error initializing MediaRecorder:", error);
+      alert("Error initializing MediaRecorder.");
       console.error(error);
     }
   }
 
-  let recordingTimeout = null;
-
   async function startRecording() {
-    if (mediaRecorder === null) {
-      await init(); // Initialize when starting recording
-    }
+    if (!mediaRecorder) await init();
+    if (!mediaRecorder) return alert("MediaRecorder init failed.");
 
-    if (!mediaRecorder) {
-      alert("Failed to initialize MediaRecorder.");
-      return;
-    }
-
-    status.audio_recording = true;
-
-    recordedChunks = []; // Clear previous recordings
+    recordedChunks = [];
     mediaRecorder.start();
-
-    // Stop recording after 2 minutes (120000 ms)
-    recordingTimeout = setTimeout(() => {
-      if (mediaRecorder && mediaRecorder.state !== "inactive") {
-        stopRecording();
-        console.log("Recording stopped after 2 minutes.");
-      }
-    }, 120000);
   }
 
   function stopRecording() {
@@ -1013,35 +1000,41 @@ export function createAudioRecorder() {
       }
 
       mediaRecorder.onstop = () => {
-        const mimeType = recordedChunks[0]?.type || mediaRecorder.mimeType;
-
-        const audioBlob = new Blob(recordedChunks, { type: mimeType });
-        recordedChunks = []; // Clear recorded chunks
-
-        // Clean up resources after recording is stopped
+        const audioBlob = new Blob(recordedChunks, {
+          type: mediaRecorder.mimeType,
+        });
         cleanup();
-
-        resolve({ audioBlob, mimeType });
+        resolve({ audioBlob });
       };
 
       mediaRecorder.stop();
     });
   }
 
+  function getStreamSourceNode() {
+    return stream && audioContext
+      ? audioContext.createMediaStreamSource(stream)
+      : null;
+  }
+
+  function getAudioContext() {
+    return audioContext;
+  }
+
   function cleanup() {
-    if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
-      status.audio_recording = false;
-    }
+    if (stream) stream.getTracks().forEach((t) => t.stop());
     mediaRecorder = null;
     recordedChunks = [];
     stream = null;
-    clearTimeout(recordingTimeout);
+    audioContext = null;
+    analyser = null;
   }
 
   return {
     startRecording,
     stopRecording,
+    getAudioContext,
+    getStreamSourceNode,
   };
 }
 

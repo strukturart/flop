@@ -79,11 +79,11 @@
     "url": "^0.11.4"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.12.1",
     "@dicebear/core": "^9.2.2",
     "@dicebear/identicon": "^9.2.2",
     "@dicebear/initials": "^9.2.2",
     "@parcel/service-worker": "^2.8.0",
+    "audiomotion-analyzer": "^4.5.0",
     "browser-image-compression": "^2.0.2",
     "dayjs": "^1.11.13",
     "dompurify": "^3.2.4",

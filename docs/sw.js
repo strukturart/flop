@@ -49,8 +49,9 @@ var parcelRegister = parcelRequire.register;
 parcelRegister("bsmbE", function(module, exports) {
 
 var $9hfyQ = parcelRequire("9hfyQ");
+var $857385147de8908e$var$userAgent = navigator.userAgent || "";
 //KaiOS 3 open app
-self.onsystemmessage = (evt)=>{
+if ($857385147de8908e$var$userAgent && !$857385147de8908e$var$userAgent.includes("KAIOS")) self.onsystemmessage = (evt)=>{
     var serviceHandler = ()=>{
         if (evt.name === "activity") {
             handler = evt.data.webActivityRequestHandler();
@@ -96,9 +97,8 @@ self.addEventListener("notificationclick", (event)=>{
         console.log(err);
     }));
 });
-var $857385147de8908e$var$userAgent = navigator.userAgent || "";
 if ($857385147de8908e$var$userAgent && !$857385147de8908e$var$userAgent.includes("KAIOS")) {
-    var $857385147de8908e$var$CACHE_NAME = "pwa-cache-v0.2137";
+    var $857385147de8908e$var$CACHE_NAME = "pwa-cache-v0.2239";
     var $857385147de8908e$var$FILE_LIST_URL = "/file-list.json"; // URL of the JSON file containing the array of files
     self.addEventListener("install", (event)=>{
         event.waitUntil(caches.open($857385147de8908e$var$CACHE_NAME).then((cache)=>{

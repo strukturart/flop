@@ -29,6 +29,7 @@ import { v4 as uuidv4 } from "uuid";
 import "webrtc-adapter";
 import L from "leaflet";
 import dayjs from "dayjs";
+import AudioMotionAnalyzer from "audiomotion-analyzer";
 
 import DOMPurify from "dompurify";
 
@@ -41,6 +42,9 @@ import { createAvatar } from "@dicebear/core";
 import * as style from "@dicebear/identicon";
 
 import Peer from "peerjs";
+
+import "core-js/stable";
+import "regenerator-runtime/runtime"; // falls async/await
 
 const audioRecorder = createAudioRecorder();
 
@@ -69,6 +73,7 @@ export let status = {
   readyToClose: false,
   webpush_do_not_annoy: [],
   files: [],
+  audiocontrol: "",
 };
 
 // not KaiOS
@@ -124,8 +129,8 @@ let previousView = () => {
 //sometime the key press are delayed
 let key_delay = () => {
   setTimeout(() => {
-    status.viewReady = !status.viewReady;
-  }, 2000);
+    status.viewReady = true;
+  }, 1500);
 };
 
 let create_avatar = (string, size) => {
@@ -449,8 +454,6 @@ function setupConnectionEvents(conn) {
       console.error(err);
     }
 
-    console.log(data);
-
     //Message-POD
     if (data.type == "pod") {
       let a = chat_data.find((e) => {
@@ -569,7 +572,7 @@ function setupConnectionEvents(conn) {
 
         let mimetype = data.mimeType || "audio/webm";
 
-        if (data.content instanceof Blob) {
+        if (data.audio instanceof Blob) {
           audioBlob = data.audio;
         } else if (
           data.audio instanceof ArrayBuffer ||
@@ -659,7 +662,6 @@ function setupConnectionEvents(conn) {
 
       storeChatData().then(() => {
         m.redraw();
-        console.log("data stored");
       });
     } else {
       if (data.userlist && status.groupchat) {
@@ -884,8 +886,6 @@ localforage
       settings = defaultValues;
       localforage.setItem("settings", settings).then(() => {});
     }
-
-    console.log(settings);
   })
   .catch(function (err) {
     console.log(err);
@@ -908,30 +908,18 @@ localforage
   })
   .catch(() => {});
 
-let write = function () {
-  if (status.action != "write") {
-    if (document.getElementById("message-input") != null) {
-      document.getElementById("message-input").style.display = "block";
-      document.querySelector("div#message-input input").focus();
-    }
-    status.action = "write";
-  } else {
-    if (document.getElementById("message-input") != null) {
-      document.querySelector("div#message-input input").value = "";
-      document.getElementById("message-input").style.display = "none";
-    }
-
-    focus_last_article();
-    status.action = "";
-  }
+let write = () => {
+  status.action = status.action === "write" ? "" : "write";
+  m.redraw();
+  console.log("write");
 };
 
 //list files
-list_files("json", (e) => {
-  status.files.push(e);
-});
-
-if (!status.notKaiOS) list_files();
+if (!status.notKaiOS) {
+  list_files("json", (e) => {
+    status.files.push(e);
+  });
+}
 
 const focus_last_article = function () {
   let j = m.route.get();
@@ -997,6 +985,7 @@ let sendMessage = (
     };
 
     sendMessageToAll(message);
+    console.log("send pod");
   }
 
   // If the chat partner is currently typing, send a "typing" message to  peer
@@ -1189,6 +1178,8 @@ let messageQueue = (m) => {
     .getItem("messageQueue")
     .then((e) => {
       messageQueueStorage = e || [];
+      console.log(messageQueueStorage.length + " message to send");
+
       if (m) {
         let test = messageQueueStorage.find((e) => {
           return e.id == m.id;
@@ -1236,9 +1227,6 @@ async function sendMessageToAll(message) {
           );
           if (index !== -1) {
             status.webpush_do_not_annoy.splice(index, 1);
-            console.log(
-              `Client ${status.current_clientId} removed webPush block`
-            );
           }
         }, 5 * 60 * 1000);
       } else {
@@ -1716,54 +1704,71 @@ async function deleteOldChatData(days = 30) {
 
 deleteOldChatData();
 
-//audio
-
 var AudioComponent = {
   oninit: (vnode) => {
+    key_delay();
+    previousView();
+
     vnode.state.isPlaying = false;
     vnode.state.audio = null;
 
-    if (vnode.attrs.src instanceof Blob) {
-      vnode.state.audioSrc = URL.createObjectURL(vnode.attrs.src);
+    if (status.audioBlob instanceof Blob) {
+      vnode.state.audioSrc = URL.createObjectURL(status.audioBlob);
     } else {
       console.error("Invalid src: Expected a Blob.");
       vnode.state.audioSrc = null;
     }
   },
 
-  onbeforeupdate: (vnode, old) => {
-    if (vnode.attrs.src !== old.attrs.src) {
-      if (vnode.state.audioSrc) {
-        URL.revokeObjectURL(vnode.state.audioSrc);
-      }
-      if (vnode.attrs.src instanceof Blob) {
-        vnode.state.audioSrc = URL.createObjectURL(vnode.attrs.src);
-      } else {
-        console.error("Invalid src: Expected a Blob.");
-        vnode.state.audioSrc = null;
-      }
-    }
-  },
-
   onremove: (vnode) => {
+    status.viewReady = false;
+
     if (vnode.state.audioSrc) {
       URL.revokeObjectURL(vnode.state.audioSrc);
     }
     if (vnode.state.audio) {
       vnode.state.audio.pause();
-      vnode.state.audio.src = ""; // Clear the source to release resources
+      vnode.state.audio.src = "";
     }
+    if (vnode.state.audioMotion) {
+      vnode.state.audioMotion.disconnectAudio();
+      vnode.state.audioMotion.destroy();
+      vnode.state.audioMotion = null;
+    }
+    status.audiocontrol = null;
   },
 
   view: (vnode) => {
     return m("div.audio-player", [
       vnode.state.audioSrc
         ? m("audio", {
+            id: "audio-elm",
             src: vnode.state.audioSrc,
 
             oncreate: (audioVnode) => {
               vnode.state.audio = audioVnode.dom;
+
+              status.audiocontrol = {
+                play: () => vnode.state.audio?.play(),
+                pause: () => vnode.state.audio?.pause(),
+                toggle: () => {
+                  if (vnode.state.audio) {
+                    vnode.state.audio.paused
+                      ? vnode.state.audio.play()
+                      : vnode.state.audio.pause();
+                  }
+                },
+              };
+
+              bottom_bar("<img src='assets/image/play.svg'>", "", "");
+              if (status.notKaiOS) {
+                top_bar("<img src='assets/image/back.svg'>", "", "");
+              } else {
+                top_bar("", "", "");
+              }
+
               audioVnode.dom.controls = false;
+              audioVnode.dom.autoplay = true;
 
               audioVnode.dom.addEventListener("play", () => {
                 vnode.state.isPlaying = true;
@@ -1787,23 +1792,34 @@ var AudioComponent = {
             style: { display: "none" },
           })
         : m("p", "Audio source is invalid or not provided."),
-      m(
-        "button",
-        {
-          onclick: () => togglePlayPause(vnode),
-          disabled: !vnode.state.audioSrc,
-        },
-        vnode.state.isPlaying ? "Pause" : "Play"
-      ),
-    ]);
+      m("div", {
+        id: "audiovis",
+        class: "item",
+        oncreate: () => {
+          const audioMotion = new AudioMotionAnalyzer(
+            document.getElementById("audiovis"),
 
-    function togglePlayPause(vnode) {
-      if (vnode.state.audio) {
-        vnode.state.isPlaying
-          ? vnode.state.audio.pause()
-          : vnode.state.audio.play();
-      }
-    }
+            {
+              source: document.getElementById("audio-elm"),
+              height: status.notKaiOS ? 200 : 100,
+              mode: 0,
+              gradient: "orangered",
+              colorMode: "bar-level",
+              overlay: true,
+              showBgColor: false,
+              showScaleX: false,
+              showScaleY: false,
+              smoothing: 0.8,
+              barSpace: 0.2,
+              reflexRatio: 0,
+              lineWidth: 10,
+            }
+          );
+
+          audioMotion.canvas.style.background = "none";
+        },
+      }),
+    ]);
   },
 };
 
@@ -1980,7 +1996,7 @@ var waiting = {
     key_delay();
   },
   onremove: () => {
-    key_delay();
+    status.viewReady = false;
   },
 
   view: function () {
@@ -2018,7 +2034,7 @@ var filelist = {
   },
 
   onremove: () => {
-    key_delay();
+    status.viewReady = false;
   },
 
   view: function () {
@@ -2075,7 +2091,7 @@ var about = {
     key_delay();
   },
   onremove: () => {
-    key_delay();
+    status.viewReady = false;
   },
   view: function () {
     return m(
@@ -2268,7 +2284,7 @@ var about_page = {
     key_delay();
   },
   onremove: () => {
-    key_delay();
+    status.viewReady = false;
   },
 
   view: function () {
@@ -2357,7 +2373,7 @@ var invite = {
     key_delay();
   },
   onremove: () => {
-    key_delay();
+    status.viewReady = false;
   },
 
   oncreate: () => {
@@ -2388,7 +2404,7 @@ var privacy_policy = {
     key_delay();
   },
   onremove: () => {
-    key_delay();
+    status.viewReady = false;
   },
 
   view: function () {
@@ -2458,7 +2474,7 @@ var settings_page = {
     key_delay();
   },
   onremove: () => {
-    key_delay();
+    status.viewReady = false;
   },
 
   view: function () {
@@ -2790,7 +2806,7 @@ var options = {
     key_delay();
   },
   onremove: () => {
-    key_delay();
+    status.viewReady = false;
   },
 
   view: function () {
@@ -2972,7 +2988,7 @@ var start = {
     }, 6000);
   },
   onremove: () => {
-    key_delay();
+    status.viewReady = false;
   },
 
   view: function () {
@@ -3126,13 +3142,14 @@ var start = {
   },
 };
 
+/*
 var audiorecorder_view = {
   oninit: () => {
     key_delay();
     previousView();
   },
   onremove: () => {
-    key_delay();
+    status.viewReady = false;
   },
   view: function () {
     return m("div", { id: "audiorecorder", class: "page" }, [
@@ -3141,7 +3158,11 @@ var audiorecorder_view = {
         {
           class: "playing",
           oninit: () => {
-            audioRecorder.startRecording().then(() => {});
+            audioRecorder.startRecording().then((e) => {
+              audioRecorder.onVolumeChange((rms) => {
+                console.log(rms);
+              });
+            });
           },
           onremove: () => {
             audioRecorder.stopRecording(() => {});
@@ -3164,13 +3185,79 @@ var audiorecorder_view = {
     ]);
   },
 };
+*/
+
+export const audiorecorder_view = {
+  oninit: () => {
+    key_delay();
+    previousView();
+  },
+  onremove: () => {
+    status.viewReady = false;
+  },
+
+  view: () =>
+    m("div", { class: "page", id: "audiorecorder" }, [
+      m("div", {
+        id: "audiovis",
+        class: "item",
+
+        oninit: () => {
+          audioRecorder.startRecording().then(() => {
+            console.log("Recording started");
+
+            const srcNode = audioRecorder.getStreamSourceNode();
+            const audioCtx = audioRecorder.getAudioContext();
+
+            if (srcNode && audioCtx) {
+              const audioMotion = new AudioMotionAnalyzer(
+                document.getElementById("audiovis"),
+                {
+                  audioCtx,
+                  height: 150,
+                  gradient: "orangered",
+                  colorMode: "bar-level",
+                  overlay: true,
+                  showBgColor: false,
+                  showScaleX: false,
+                  showScaleY: false,
+                  smoothing: 0.8,
+                  barSpace: 0.2,
+                  reflexRatio: 0,
+                  lineWidth: 10,
+                }
+              );
+
+              audioMotion.connectInput(srcNode);
+              audioMotion.volume = 0;
+            } else {
+              console.warn("AudioContext oder StreamSource nicht vorhanden");
+            }
+          });
+        },
+        onremove: () => {
+          audioRecorder.stopRecording().then(({ audioBlob }) => {
+            console.log("Recording stopped", audioBlob);
+          });
+        },
+        oncreate: () => {
+          bottom_bar(
+            "<img src='assets/image/send.svg'>",
+            "<img src='assets/image/record-live.svg'>",
+            "<img src='assets/image/cancel.svg'>"
+          );
+          top_bar("", "", "");
+        },
+      }),
+    ]),
+};
 
 var scan = {
   oninit: () => {
     key_delay();
   },
   onremove: () => {
-    key_delay();
+    status.viewReady = false;
   },
 
   view: function (vnode) {
@@ -3191,10 +3278,10 @@ var chat = {
     //reproduce chat data
     load_chat_history(status.current_user_id);
   },
-  onremove: () => {
-    key_delay();
-  },
 
+  onremove: () => {
+    status.viewReady = false;
+  },
   onupdate: () => {
     //reproduce chat data
     load_chat_history(status.current_user_id);
@@ -3310,49 +3397,60 @@ var chat = {
         },
       },
 
-      m("div", { id: "message-input", type: "text", class: "width-100" }, [
-        m("input", {
-          type: "text",
-          onblur: () => {
-            setTimeout(() => {
-              let a = m.route.get();
-              if (a.startsWith("/chat"))
+      status.action === "write"
+        ? m("div", { id: "message-input", type: "text", class: "width-100" }, [
+            m("input", {
+              type: "text",
+              oncreate: (v) => {
+                v.dom.focus();
+              },
+              onblur: () => {
+                focus_last_article();
+
+                setTimeout(() => {
+                  let a = m.route.get();
+                  if (a.startsWith("/chat"))
+                    bottom_bar(
+                      "<img src='assets/image/pencil.svg'>",
+                      "",
+                      "<img src='assets/image/option.svg'>"
+                    );
+                  if (status.action === "write") write();
+                }, 1000);
+              },
+              onfocus: () => {
                 bottom_bar(
-                  "<img src='assets/image/pencil.svg'>",
+                  "<img src='assets/image/send.svg'>",
+                  "<img src='assets/image/record.svg'>",
+                  "<img src='assets/image/option.svg'>"
+                );
+              },
+              oninput: () => {
+                bottom_bar(
+                  "<img src='assets/image/send.svg'>",
                   "",
                   "<img src='assets/image/option.svg'>"
                 );
-              if (status.action === "write") write();
-            }, 1000);
-          },
-          onfocus: () => {
-            bottom_bar(
-              "<img src='assets/image/send.svg'>",
-              "<img src='assets/image/record.svg'>",
-              "<img src='assets/image/option.svg'>"
-            );
-          },
-          oninput: () => {
-            bottom_bar(
-              "<img src='assets/image/send.svg'>",
-              "",
-              "<img src='assets/image/option.svg'>"
-            );
-          },
-          onkeyup: (e) => {
-            const value = e.target.value.trim();
-            if (value !== "" && status.action === "write") {
-              sendMessage(undefined, "typing", undefined, undefined, undefined);
-            }
-          },
-        }),
-      ]),
+              },
+              onkeyup: (e) => {
+                const value = e.target.value.trim();
+                if (value !== "" && status.action === "write") {
+                  sendMessage(
+                    undefined,
+                    "typing",
+                    undefined,
+                    undefined,
+                    undefined
+                  );
+                }
+              },
+            }),
+          ])
+        : null,
 
       chat_data.map(function (item, index) {
-        let last = false;
-        if (index === chat_data.length - 1) {
-          last = true;
-        }
+        const currentIndex = index;
+        const isLast = currentIndex === chat_data.length - 1;
 
         let ff = { lat: "", lng: "" };
         if (item.type == "gps" || item.type == "gps_live") {
@@ -3379,7 +3477,7 @@ var chat = {
             "data-lng": ff.lng,
 
             oncreate: (vnode) => {
-              if (last) {
+              if (isLast) {
                 vnode.dom.focus();
                 vnode.dom.scrollIntoView({
                   behavior: "smooth",
@@ -3400,6 +3498,14 @@ var chat = {
                     "&id=" +
                     item.nickname
                 );
+              }
+              if (item.type == "audio") {
+                if (item.audio instanceof Blob) {
+                  status.audioBlob = item.audio;
+                  m.route.set("/AudioComponent");
+                } else {
+                  side_toaster("audio file not valid", 2000);
+                }
               }
             },
 
@@ -3436,11 +3542,21 @@ var chat = {
 
               if (item.type == "audio") {
                 status.current_article_type = "audio";
-                bottom_bar(
-                  "<img src='assets/image/pencil.svg'>",
-                  "<img src='assets/image/play.svg'>",
-                  "<img src='assets/image/option.svg'>"
-                );
+                status.audioBlob = item.audio;
+
+                if (status.notKaiOS) {
+                  bottom_bar(
+                    "<img src='assets/image/pencil.svg'>",
+                    "",
+                    "<img src='assets/image/option.svg'>"
+                  );
+                } else {
+                  bottom_bar(
+                    "<img src='assets/image/pencil.svg'>",
+                    "<img src='assets/image/play.svg'>",
+                    "<img src='assets/image/option.svg'>"
+                  );
+                }
               }
 
               if (item.type == "text") {
@@ -3497,12 +3613,11 @@ var chat = {
 
             item.type === "audio"
               ? m(
-                  "div",
+                  "button",
                   {
-                    class: "audioplayer",
+                    class: "audioplayer-button",
                   },
-
-                  m(AudioComponent, { src: item.audio })
+                  [m("img", { src: "./assets/image/audio.png" })]
                 )
               : null,
 
@@ -3545,7 +3660,7 @@ let map_view = {
     key_delay();
   },
   onremove: () => {
-    key_delay();
+    status.viewReady = false;
   },
 
   view: function () {
@@ -3584,7 +3699,7 @@ var intro = {
     getIceServers();
   },
   onremove: () => {
-    key_delay();
+    status.viewReady = false;
   },
   view: function () {
     return m(
@@ -3681,6 +3796,7 @@ m.route(root, "/intro", {
   "/invite": invite,
   "/audiorecorder_view": audiorecorder_view,
   "/filelist": filelist,
+  "/AudioComponent": AudioComponent,
 });
 
 function scrollToCenter() {
@@ -3872,6 +3988,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
       if (m.route.get() == "/options") {
         m.route.set("/chat?id=" + settings.custom_peer);
       }
+
+      if (m.route.get() == "/AudioComponent") {
+        m.route.set("/chat?id=" + settings.custom_peer_id);
+      }
     });
 
   // Function to simulate key press events
@@ -4029,6 +4149,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
           write();
         }
 
+        if (route.startsWith("/AudioCo")) {
+          status.audiocontrol?.toggle();
+          return;
+        }
+
         if (route.startsWith("audiorecorder_view")) {
           // Stop recording and get the recorded data
           audioRecorder.stopRecording().then(({ audioBlob, mimeType }) => {
@@ -4090,15 +4215,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
         break;
 
       case "Enter":
-        if (
-          route.startsWith("/chat?") &&
-          document.getElementById("message-input").style.display == "block"
-        ) {
-          //write
-          if (document.querySelector("div#message-input input").value !== "")
-            return false;
+        if (route.startsWith("/chat?") && status.action === "write") {
+          const input = document.querySelector("div#message-input input");
 
-          m.route.set("audiorecorder_view");
+          if (!input || input.value.trim() === "") {
+            m.route.set("audiorecorder_view");
+          }
         }
 
         if (document.activeElement.classList.contains("input-parent")) {
@@ -4148,16 +4270,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
         if (route.startsWith("/chat")) {
           if (document.activeElement.tagName == "ARTICLE") {
             if (status.current_article_type == "audio") {
-              document.activeElement
-                .querySelectorAll("div.audio-player")
-                .forEach((e) => {
-                  var playPauseButton = e.querySelector("button");
-
-                  // Check if the play/pause button exists and trigger a click event
-                  if (playPauseButton) {
-                    playPauseButton.click();
-                  }
-                });
+              if (status.audioBlob instanceof Blob) {
+                m.route.set("/AudioComponent");
+              } else {
+                side_toaster("audio file not valid", 2000);
+              }
             }
 
             if (status.current_article_type == "gps_live") {
@@ -4200,13 +4317,13 @@ document.addEventListener("DOMContentLoaded", function (e) {
   // //////////////////////////////
 
   function handleKeyDown(evt) {
+    if (!status.viewReady) {
+      return false;
+    }
+
     let route = m.route.get();
 
-    if (
-      evt.key === "Backspace" &&
-      route.startsWith("/start") &&
-      status.viewReady
-    ) {
+    if (evt.key === "Backspace" && route.startsWith("/start")) {
       return true;
     }
 
@@ -4233,13 +4350,16 @@ document.addEventListener("DOMContentLoaded", function (e) {
       }
     }
 
-    if (!status.viewReady) return false;
-
     if (evt.key == "Enter" && route == "/chat") {
       evt.preventDefault();
     }
 
     if (evt.key === "Backspace") {
+      if (m.route.get() == "/AudioComponent") {
+        m.route.set("/chat?id=" + settings.custom_peer_id);
+        return;
+      }
+
       if (m.route.get() == "/scan") {
         stop_scan();
         m.route.set("/start");
@@ -4309,6 +4429,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
   function handleKeyUp(evt) {
     if (status.visibility === false) return false;
+
+    if (!status.viewReady) {
+      return false;
+    }
 
     clearTimeout(timeout);
     if (!longpress) {
