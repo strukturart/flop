@@ -170,6 +170,17 @@ button:focus, button:hover {
   animation: 5s linear infinite scrollText;
 }
 
+button.audioplayer-button {
+  border: 0 solid gray;
+  width: 50px;
+  padding: 5px;
+}
+
+button.audioplayer-button img {
+  width: 30px;
+  display: block;
+}
+
 @keyframes scrollText {
   0% {
     transform: translateX(0%);
@@ -500,6 +511,16 @@ div#intro img {
   animation-delay: -3.7s;
 }
 
+#audiovis {
+  background: none;
+  width: 80vw;
+  height: 200px;
+  position: absolute;
+  top: 30%;
+  left: 0;
+  right: 0;
+}
+
 @keyframes up-and-down {
   10% {
     height: 30%;
@@ -647,7 +668,7 @@ div#bottom-bar {
   height: 60px;
   display: flex;
   position: fixed;
-  bottom: 0;
+  bottom: 10px;
   left: 0;
   right: 0;
 }
@@ -966,7 +987,6 @@ div#message-input {
   height: 40px;
   margin: 0 auto;
   padding: 5px;
-  display: none;
   position: fixed;
   bottom: 70px;
 }
@@ -1119,6 +1139,10 @@ span.user-offline {
   #addressbook button.addressbook-item .inner {
     width: 80%;
     padding: 0 0 15px 10px !important;
+  }
+
+  #chat article:focus {
+    background: #b4c7a857;
   }
 }
 

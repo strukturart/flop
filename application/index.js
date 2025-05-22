@@ -29,6 +29,7 @@ import { v4 as uuidv4 } from "uuid";
 import "webrtc-adapter";
 import L from "leaflet";
 import dayjs from "dayjs";
+import AudioMotionAnalyzer from "audiomotion-analyzer";
 
 import DOMPurify from "dompurify";
 
@@ -69,6 +70,7 @@ export let status = {
   readyToClose: false,
   webpush_do_not_annoy: [],
   files: [],
+  audiocontrol: "",
 };
 
 // not KaiOS
@@ -569,7 +571,7 @@ function setupConnectionEvents(conn) {
 
         let mimetype = data.mimeType || "audio/webm";
 
-        if (data.content instanceof Blob) {
+        if (data.audio instanceof Blob) {
           audioBlob = data.audio;
         } else if (
           data.audio instanceof ArrayBuffer ||
@@ -908,6 +910,7 @@ localforage
   })
   .catch(() => {});
 
+/*
 let write = function () {
   if (status.action != "write") {
     if (document.getElementById("message-input") != null) {
@@ -924,6 +927,13 @@ let write = function () {
     focus_last_article();
     status.action = "";
   }
+};
+*/
+
+let write = () => {
+  status.action = status.action === "write" ? "" : "write";
+  m.redraw();
+  console.log("yeah");
 };
 
 //list files
@@ -1716,54 +1726,71 @@ async function deleteOldChatData(days = 30) {
 
 deleteOldChatData();
 
-//audio
-
 var AudioComponent = {
   oninit: (vnode) => {
+    key_delay();
+    previousView();
+
     vnode.state.isPlaying = false;
     vnode.state.audio = null;
 
-    if (vnode.attrs.src instanceof Blob) {
-      vnode.state.audioSrc = URL.createObjectURL(vnode.attrs.src);
+    if (status.audioBlob instanceof Blob) {
+      vnode.state.audioSrc = URL.createObjectURL(status.audioBlob);
     } else {
       console.error("Invalid src: Expected a Blob.");
       vnode.state.audioSrc = null;
     }
   },
 
-  onbeforeupdate: (vnode, old) => {
-    if (vnode.attrs.src !== old.attrs.src) {
-      if (vnode.state.audioSrc) {
-        URL.revokeObjectURL(vnode.state.audioSrc);
-      }
-      if (vnode.attrs.src instanceof Blob) {
-        vnode.state.audioSrc = URL.createObjectURL(vnode.attrs.src);
-      } else {
-        console.error("Invalid src: Expected a Blob.");
-        vnode.state.audioSrc = null;
-      }
-    }
-  },
-
   onremove: (vnode) => {
+    key_delay();
+
     if (vnode.state.audioSrc) {
       URL.revokeObjectURL(vnode.state.audioSrc);
     }
     if (vnode.state.audio) {
       vnode.state.audio.pause();
-      vnode.state.audio.src = ""; // Clear the source to release resources
+      vnode.state.audio.src = "";
     }
+    if (vnode.state.audioMotion) {
+      vnode.state.audioMotion.disconnectAudio();
+      vnode.state.audioMotion.destroy();
+      vnode.state.audioMotion = null;
+    }
+    status.audiocontrol = null;
   },
 
   view: (vnode) => {
     return m("div.audio-player", [
       vnode.state.audioSrc
         ? m("audio", {
+            id: "audio-elm",
             src: vnode.state.audioSrc,
 
             oncreate: (audioVnode) => {
               vnode.state.audio = audioVnode.dom;
+
+              status.audiocontrol = {
+                play: () => vnode.state.audio?.play(),
+                pause: () => vnode.state.audio?.pause(),
+                toggle: () => {
+                  if (vnode.state.audio) {
+                    vnode.state.audio.paused
+                      ? vnode.state.audio.play()
+                      : vnode.state.audio.pause();
+                  }
+                },
+              };
+
+              bottom_bar("<img src='assets/image/play.svg'>", "", "");
+              if (status.notKaiOS) {
+                top_bar("<img src='assets/image/back.svg'>", "", "");
+              } else {
+                top_bar("", "", "");
+              }
+
               audioVnode.dom.controls = false;
+              audioVnode.dom.autoplay = true;
 
               audioVnode.dom.addEventListener("play", () => {
                 vnode.state.isPlaying = true;
@@ -1787,23 +1814,34 @@ var AudioComponent = {
             style: { display: "none" },
           })
         : m("p", "Audio source is invalid or not provided."),
-      m(
-        "button",
-        {
-          onclick: () => togglePlayPause(vnode),
-          disabled: !vnode.state.audioSrc,
-        },
-        vnode.state.isPlaying ? "Pause" : "Play"
-      ),
-    ]);
+      m("div", {
+        id: "audiovis",
+        class: "item",
+        oncreate: () => {
+          const audioMotion = new AudioMotionAnalyzer(
+            document.getElementById("audiovis"),
 
-    function togglePlayPause(vnode) {
-      if (vnode.state.audio) {
-        vnode.state.isPlaying
-          ? vnode.state.audio.pause()
-          : vnode.state.audio.play();
-      }
-    }
+            {
+              source: document.getElementById("audio-elm"),
+              height: status.notKaiOS ? 200 : 100,
+              mode: 0,
+              gradient: "orangered",
+              colorMode: "bar-level",
+              overlay: true,
+              showBgColor: false,
+              showScaleX: false,
+              showScaleY: false,
+              smoothing: 0.8,
+              barSpace: 0.2,
+              reflexRatio: 0,
+              lineWidth: 10,
+            }
+          );
+
+          audioMotion.canvas.style.background = "none";
+        },
+      }),
+    ]);
   },
 };
 
@@ -3310,49 +3348,60 @@ var chat = {
         },
       },
 
-      m("div", { id: "message-input", type: "text", class: "width-100" }, [
-        m("input", {
-          type: "text",
-          onblur: () => {
-            setTimeout(() => {
-              let a = m.route.get();
-              if (a.startsWith("/chat"))
+      status.action === "write"
+        ? m("div", { id: "message-input", type: "text", class: "width-100" }, [
+            m("input", {
+              type: "text",
+              oncreate: (v) => {
+                v.dom.focus();
+              },
+              onblur: () => {
+                focus_last_article();
+
+                setTimeout(() => {
+                  let a = m.route.get();
+                  if (a.startsWith("/chat"))
+                    bottom_bar(
+                      "<img src='assets/image/pencil.svg'>",
+                      "",
+                      "<img src='assets/image/option.svg'>"
+                    );
+                  if (status.action === "write") write();
+                }, 1000);
+              },
+              onfocus: () => {
                 bottom_bar(
-                  "<img src='assets/image/pencil.svg'>",
+                  "<img src='assets/image/send.svg'>",
+                  "<img src='assets/image/record.svg'>",
+                  "<img src='assets/image/option.svg'>"
+                );
+              },
+              oninput: () => {
+                bottom_bar(
+                  "<img src='assets/image/send.svg'>",
                   "",
                   "<img src='assets/image/option.svg'>"
                 );
-              if (status.action === "write") write();
-            }, 1000);
-          },
-          onfocus: () => {
-            bottom_bar(
-              "<img src='assets/image/send.svg'>",
-              "<img src='assets/image/record.svg'>",
-              "<img src='assets/image/option.svg'>"
-            );
-          },
-          oninput: () => {
-            bottom_bar(
-              "<img src='assets/image/send.svg'>",
-              "",
-              "<img src='assets/image/option.svg'>"
-            );
-          },
-          onkeyup: (e) => {
-            const value = e.target.value.trim();
-            if (value !== "" && status.action === "write") {
-              sendMessage(undefined, "typing", undefined, undefined, undefined);
-            }
-          },
-        }),
-      ]),
+              },
+              onkeyup: (e) => {
+                const value = e.target.value.trim();
+                if (value !== "" && status.action === "write") {
+                  sendMessage(
+                    undefined,
+                    "typing",
+                    undefined,
+                    undefined,
+                    undefined
+                  );
+                }
+              },
+            }),
+          ])
+        : null,
 
       chat_data.map(function (item, index) {
-        let last = false;
-        if (index === chat_data.length - 1) {
-          last = true;
-        }
+        const currentIndex = index;
+        const isLast = currentIndex === chat_data.length - 1;
 
         let ff = { lat: "", lng: "" };
         if (item.type == "gps" || item.type == "gps_live") {
@@ -3379,7 +3428,7 @@ var chat = {
             "data-lng": ff.lng,
 
             oncreate: (vnode) => {
-              if (last) {
+              if (isLast) {
                 vnode.dom.focus();
                 vnode.dom.scrollIntoView({
                   behavior: "smooth",
@@ -3400,6 +3449,14 @@ var chat = {
                     "&id=" +
                     item.nickname
                 );
+              }
+              if (item.type == "audio") {
+                if (item.audio instanceof Blob) {
+                  status.audioBlob = item.audio;
+                  m.route.set("/AudioComponent");
+                } else {
+                  side_toaster("audio file not valid", 2000);
+                }
               }
             },
 
@@ -3436,11 +3493,21 @@ var chat = {
 
               if (item.type == "audio") {
                 status.current_article_type = "audio";
-                bottom_bar(
-                  "<img src='assets/image/pencil.svg'>",
-                  "<img src='assets/image/play.svg'>",
-                  "<img src='assets/image/option.svg'>"
-                );
+                status.audioBlob = item.audio;
+
+                if (status.notKaiOS) {
+                  bottom_bar(
+                    "<img src='assets/image/pencil.svg'>",
+                    "",
+                    "<img src='assets/image/option.svg'>"
+                  );
+                } else {
+                  bottom_bar(
+                    "<img src='assets/image/pencil.svg'>",
+                    "<img src='assets/image/play.svg'>",
+                    "<img src='assets/image/option.svg'>"
+                  );
+                }
               }
 
               if (item.type == "text") {
@@ -3497,12 +3564,11 @@ var chat = {
 
             item.type === "audio"
               ? m(
-                  "div",
+                  "button",
                   {
-                    class: "audioplayer",
+                    class: "audioplayer-button",
                   },
-
-                  m(AudioComponent, { src: item.audio })
+                  [m("img", { src: "./assets/image/audio.png" })]
                 )
               : null,
 
@@ -3681,6 +3747,7 @@ m.route(root, "/intro", {
   "/invite": invite,
   "/audiorecorder_view": audiorecorder_view,
   "/filelist": filelist,
+  "/AudioComponent": AudioComponent,
 });
 
 function scrollToCenter() {
@@ -3872,6 +3939,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
       if (m.route.get() == "/options") {
         m.route.set("/chat?id=" + settings.custom_peer);
       }
+
+      if (m.route.get() == "/AudioComponent") {
+        m.route.set("/chat?id=" + settings.custom_peer_id);
+      }
     });
 
   // Function to simulate key press events
@@ -3925,6 +3996,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
     if (!status.viewReady) {
       return false;
     }
+
+    console.log("next");
 
     let route = m.route.get();
 
@@ -4027,6 +4100,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
             undefined
           );
           write();
+        }
+
+        if (route.startsWith("/AudioCo")) {
+          status.audiocontrol?.toggle();
+          return;
         }
 
         if (route.startsWith("audiorecorder_view")) {
@@ -4148,16 +4226,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
         if (route.startsWith("/chat")) {
           if (document.activeElement.tagName == "ARTICLE") {
             if (status.current_article_type == "audio") {
-              document.activeElement
-                .querySelectorAll("div.audio-player")
-                .forEach((e) => {
-                  var playPauseButton = e.querySelector("button");
-
-                  // Check if the play/pause button exists and trigger a click event
-                  if (playPauseButton) {
-                    playPauseButton.click();
-                  }
-                });
+              if (status.audioBlob instanceof Blob) {
+                m.route.set("/AudioComponent");
+              } else {
+                side_toaster("audio file not valid", 2000);
+              }
             }
 
             if (status.current_article_type == "gps_live") {
@@ -4240,6 +4313,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
     }
 
     if (evt.key === "Backspace") {
+      if (m.route.get() == "/AudioComponent") {
+        m.route.set("/chat?id=" + settings.custom_peer_id);
+        return;
+      }
+
       if (m.route.get() == "/scan") {
         stop_scan();
         m.route.set("/start");

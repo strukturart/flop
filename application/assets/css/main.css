@@ -200,6 +200,17 @@ button:hover {
   animation: scrollText 5s linear infinite;
 }
 
+button.audioplayer-button {
+  width: 50px;
+  border: 0px solid gray;
+  padding: 5px;
+}
+
+button.audioplayer-button img {
+  display: block;
+  width: 30px;
+}
+
 @keyframes scrollText {
   0% {
     transform: translateX(0%);
@@ -538,6 +549,16 @@ div#intro img {
   background: rgb(29, 165, 59);
 }
 
+#audiovis {
+  position: absolute;
+  top: 30%;
+  left: 0px;
+  right: 0px;
+  width: 80vw;
+  height: 200px;
+  background: none;
+}
+
 @keyframes up-and-down {
   10% {
     height: 30%;
@@ -693,7 +714,7 @@ div#description div img {
 div#bottom-bar {
   position: fixed;
   z-index: 2000;
-  bottom: 0px;
+  bottom: 10px;
   left: 0px;
   right: 0px;
   height: 60px;
@@ -1057,7 +1078,6 @@ div#message-input {
   height: 40px;
   padding: 5px;
   bottom: 70px;
-  display: none;
   margin: 0px auto;
 }
 
@@ -1231,6 +1251,10 @@ span.user-offline {
   #addressbook button.addressbook-item .inner {
     width: 80%;
     padding: 0 0 15px 10px !important;
+  }
+
+  #chat article:focus {
+    background: rgba(180, 199, 168, 0.34);
   }
 }
 

@@ -7297,16 +7297,13 @@ function $e3f93859bd66fa1e$export$637fd9537164f29b() {
         return new Promise(function(resolve, reject) {
             if (!mediaRecorder || mediaRecorder.state !== "recording") return reject(new Error("MediaRecorder is not recording."));
             mediaRecorder.onstop = function() {
-                var mimeType = mediaRecorder.mimeType || "audio/wav"; // Fallback MIME type
+                var _recordedChunks_;
+                var mimeType = ((_recordedChunks_ = recordedChunks[0]) === null || _recordedChunks_ === void 0 ? void 0 : _recordedChunks_.type) || mediaRecorder.mimeType;
                 var audioBlob = new Blob(recordedChunks, {
                     type: mimeType
                 });
                 recordedChunks = []; // Clear recorded chunks
-                /*
-         blob: audioBlob,
-            filename: "",
-            filetype: mimeType,
-            */ // Clean up resources after recording is stopped
+                // Clean up resources after recording is stopped
                 cleanup();
                 resolve({
                     audioBlob: audioBlob,
@@ -38524,7 +38521,21 @@ var $f8EIX = parcelRequire("f8EIX");
 
 
 
-var $482cca33c902e464$exports = {};
+/**!
+ * audioMotion-analyzer
+ * High-resolution real-time graphic audio spectrum analyzer JS module
+ *
+ * @version 4.5.0
+ * @author  Henrique Avila Vianna <hvianna@gmail.com> <https://henriquevianna.com>
+ * @license AGPL-3.0-or-later
+ */ function $1c383a15c332f34f$export$71511d61b312f219(o) {
+    $1c383a15c332f34f$export$71511d61b312f219 = Object.setPrototypeOf ? Object.getPrototypeOf : function getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+    };
+    return $1c383a15c332f34f$export$71511d61b312f219(o);
+}
+
+
 function $18cab26a80e59e50$export$71511d61b312f219() {
     // Since Reflect.construct can't be properly polyfilled, some
     // implementations (e.g. core-js@2) don't set the correct internal slots.
@@ -38541,6 +38552,31 @@ function $18cab26a80e59e50$export$71511d61b312f219() {
 }
 
 
+function $eacc8cf69cab628a$export$71511d61b312f219(self) {
+    if (self === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    return self;
+}
+
+
+
+var $f8EIX = parcelRequire("f8EIX");
+function $365beb3c3a7a84b0$export$71511d61b312f219(self, call) {
+    if (call && ((0, $f8EIX._)(call) === "object" || typeof call === "function")) return call;
+    return (0, $eacc8cf69cab628a$export$71511d61b312f219)(self);
+}
+
+
+function $1ddf5ed2eb9e5507$export$71511d61b312f219(_this, derived, args) {
+    // Super
+    derived = (0, $1c383a15c332f34f$export$71511d61b312f219)(derived);
+    return (0, $365beb3c3a7a84b0$export$71511d61b312f219)(_this, (0, $18cab26a80e59e50$export$71511d61b312f219)() ? Reflect.construct(derived, args || [], (0, $1c383a15c332f34f$export$71511d61b312f219)(_this).constructor) : derived.apply(_this, args));
+}
+
+
+
+var $j7t5x = parcelRequire("j7t5x");
+
+var $7P1Gj = parcelRequire("7P1Gj");
 function $4044e6f65c8ffd33$export$71511d61b312f219(o, p) {
     $4044e6f65c8ffd33$export$71511d61b312f219 = Object.setPrototypeOf || function setPrototypeOf(o, p) {
         o.__proto__ = p;
@@ -38548,6 +38584,27 @@ function $4044e6f65c8ffd33$export$71511d61b312f219(o, p) {
     };
     return $4044e6f65c8ffd33$export$71511d61b312f219(o, p);
 }
+
+
+function $fbf4429d6978b43d$export$71511d61b312f219(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
+    subClass.prototype = Object.create(superClass && superClass.prototype, {
+        constructor: {
+            value: subClass,
+            writable: true,
+            configurable: true
+        }
+    });
+    if (superClass) (0, $4044e6f65c8ffd33$export$71511d61b312f219)(subClass, superClass);
+}
+
+
+
+
+
+
+
+var $f8EIX = parcelRequire("f8EIX");
 
 
 function $e5c6d136e62d2d82$export$71511d61b312f219(Parent, args, Class) {
@@ -38565,6 +38622,2816 @@ function $e5c6d136e62d2d82$export$71511d61b312f219(Parent, args, Class) {
     return $e5c6d136e62d2d82$export$71511d61b312f219.apply(null, arguments);
 }
 
+
+
+function $d4b7d21ff144f6bc$export$71511d61b312f219(fn) {
+    return Function.toString.call(fn).indexOf("[native code]") !== -1;
+}
+
+
+
+function $5d11f9b7d75f07a0$export$71511d61b312f219(Class) {
+    var _cache = typeof Map === "function" ? new Map() : undefined;
+    $5d11f9b7d75f07a0$export$71511d61b312f219 = function(Class) {
+        if (Class === null || !(0, $d4b7d21ff144f6bc$export$71511d61b312f219)(Class)) return Class;
+        if (typeof Class !== "function") throw new TypeError("Super expression must either be null or a function");
+        if (typeof _cache !== "undefined") {
+            if (_cache.has(Class)) return _cache.get(Class);
+            _cache.set(Class, Wrapper);
+        }
+        function Wrapper() {
+            return (0, $e5c6d136e62d2d82$export$71511d61b312f219)(Class, arguments, (0, $1c383a15c332f34f$export$71511d61b312f219)(this).constructor);
+        }
+        Wrapper.prototype = Object.create(Class.prototype, {
+            constructor: {
+                value: Wrapper,
+                enumerable: false,
+                writable: true,
+                configurable: true
+            }
+        });
+        return (0, $4044e6f65c8ffd33$export$71511d61b312f219)(Wrapper, Class);
+    };
+    return $5d11f9b7d75f07a0$export$71511d61b312f219(Class);
+}
+
+
+var $f42824ca2289e973$var$VERSION = '4.5.0';
+// internal constants
+var $f42824ca2289e973$var$PI = Math.PI, $f42824ca2289e973$var$TAU = 2 * $f42824ca2289e973$var$PI, $f42824ca2289e973$var$HALF_PI = $f42824ca2289e973$var$PI / 2, $f42824ca2289e973$var$C_1 = 8.17579892; // frequency for C -1
+var $f42824ca2289e973$var$CANVAS_BACKGROUND_COLOR = '#000', $f42824ca2289e973$var$CHANNEL_COMBINED = 'dual-combined', $f42824ca2289e973$var$CHANNEL_HORIZONTAL = 'dual-horizontal', $f42824ca2289e973$var$CHANNEL_SINGLE = 'single', $f42824ca2289e973$var$CHANNEL_VERTICAL = 'dual-vertical', $f42824ca2289e973$var$COLOR_BAR_INDEX = 'bar-index', $f42824ca2289e973$var$COLOR_BAR_LEVEL = 'bar-level', $f42824ca2289e973$var$COLOR_GRADIENT = 'gradient', $f42824ca2289e973$var$DEBOUNCE_TIMEOUT = 60, $f42824ca2289e973$var$EVENT_CLICK = 'click', $f42824ca2289e973$var$EVENT_FULLSCREENCHANGE = 'fullscreenchange', $f42824ca2289e973$var$EVENT_RESIZE = 'resize', $f42824ca2289e973$var$GRADIENT_DEFAULT_BGCOLOR = '#111', $f42824ca2289e973$var$FILTER_NONE = '', $f42824ca2289e973$var$FILTER_A = 'A', $f42824ca2289e973$var$FILTER_B = 'B', $f42824ca2289e973$var$FILTER_C = 'C', $f42824ca2289e973$var$FILTER_D = 'D', $f42824ca2289e973$var$FILTER_468 = '468', $f42824ca2289e973$var$FONT_FAMILY = 'sans-serif', $f42824ca2289e973$var$FPS_COLOR = '#0f0', $f42824ca2289e973$var$LEDS_UNLIT_COLOR = '#7f7f7f22', $f42824ca2289e973$var$MODE_GRAPH = 10, $f42824ca2289e973$var$REASON_CREATE = 'create', $f42824ca2289e973$var$REASON_FSCHANGE = 'fschange', $f42824ca2289e973$var$REASON_LORES = 'lores', $f42824ca2289e973$var$REASON_RESIZE = $f42824ca2289e973$var$EVENT_RESIZE, $f42824ca2289e973$var$REASON_USER = 'user', $f42824ca2289e973$var$SCALEX_BACKGROUND_COLOR = '#000c', $f42824ca2289e973$var$SCALEX_LABEL_COLOR = '#fff', $f42824ca2289e973$var$SCALEX_HIGHLIGHT_COLOR = '#4f4', $f42824ca2289e973$var$SCALEY_LABEL_COLOR = '#888', $f42824ca2289e973$var$SCALEY_MIDLINE_COLOR = '#555', $f42824ca2289e973$var$SCALE_BARK = 'bark', $f42824ca2289e973$var$SCALE_LINEAR = 'linear', $f42824ca2289e973$var$SCALE_LOG = 'log', $f42824ca2289e973$var$SCALE_MEL = 'mel';
+// built-in gradients
+var $f42824ca2289e973$var$PRISM = [
+    '#a35',
+    '#c66',
+    '#e94',
+    '#ed0',
+    '#9d5',
+    '#4d8',
+    '#2cb',
+    '#0bc',
+    '#09c',
+    '#36b'
+], $f42824ca2289e973$var$GRADIENTS = [
+    [
+        'classic',
+        {
+            colorStops: [
+                'red',
+                {
+                    color: 'yellow',
+                    level: .85,
+                    pos: .6
+                },
+                {
+                    color: 'lime',
+                    level: .475
+                }
+            ]
+        }
+    ],
+    [
+        'prism',
+        {
+            colorStops: $f42824ca2289e973$var$PRISM
+        }
+    ],
+    [
+        'rainbow',
+        {
+            dir: 'h',
+            colorStops: [
+                '#817'
+            ].concat((0, $2f989756f431e05e$export$71511d61b312f219)($f42824ca2289e973$var$PRISM), [
+                '#639'
+            ])
+        }
+    ],
+    [
+        'orangered',
+        {
+            bgColor: '#3e2f29',
+            colorStops: [
+                'OrangeRed'
+            ]
+        }
+    ],
+    [
+        'steelblue',
+        {
+            bgColor: '#222c35',
+            colorStops: [
+                'SteelBlue'
+            ]
+        }
+    ]
+];
+// settings defaults
+var $f42824ca2289e973$var$DEFAULT_SETTINGS = {
+    alphaBars: false,
+    ansiBands: false,
+    barSpace: 0.1,
+    bgAlpha: 0.7,
+    channelLayout: $f42824ca2289e973$var$CHANNEL_SINGLE,
+    colorMode: $f42824ca2289e973$var$COLOR_GRADIENT,
+    fadePeaks: false,
+    fftSize: 8192,
+    fillAlpha: 1,
+    frequencyScale: $f42824ca2289e973$var$SCALE_LOG,
+    gradient: $f42824ca2289e973$var$GRADIENTS[0][0],
+    gravity: 3.8,
+    height: undefined,
+    ledBars: false,
+    linearAmplitude: false,
+    linearBoost: 1,
+    lineWidth: 0,
+    loRes: false,
+    lumiBars: false,
+    maxDecibels: -25,
+    maxFPS: 0,
+    maxFreq: 22000,
+    minDecibels: -85,
+    minFreq: 20,
+    mirror: 0,
+    mode: 0,
+    noteLabels: false,
+    outlineBars: false,
+    overlay: false,
+    peakFadeTime: 750,
+    peakHoldTime: 500,
+    peakLine: false,
+    radial: false,
+    radialInvert: false,
+    radius: 0.3,
+    reflexAlpha: 0.15,
+    reflexBright: 1,
+    reflexFit: true,
+    reflexRatio: 0,
+    roundBars: false,
+    showBgColor: true,
+    showFPS: false,
+    showPeaks: true,
+    showScaleX: true,
+    showScaleY: false,
+    smoothing: 0.5,
+    spinSpeed: 0,
+    splitGradient: false,
+    start: true,
+    trueLeds: false,
+    useCanvas: true,
+    volume: 1,
+    weightingFilter: $f42824ca2289e973$var$FILTER_NONE,
+    width: undefined
+};
+// custom error messages
+var $f42824ca2289e973$var$ERR_AUDIO_CONTEXT_FAIL = [
+    'ERR_AUDIO_CONTEXT_FAIL',
+    'Could not create audio context. Web Audio API not supported?'
+], $f42824ca2289e973$var$ERR_INVALID_AUDIO_CONTEXT = [
+    'ERR_INVALID_AUDIO_CONTEXT',
+    'Provided audio context is not valid'
+], $f42824ca2289e973$var$ERR_UNKNOWN_GRADIENT = [
+    'ERR_UNKNOWN_GRADIENT',
+    'Unknown gradient'
+], $f42824ca2289e973$var$ERR_FREQUENCY_TOO_LOW = [
+    'ERR_FREQUENCY_TOO_LOW',
+    'Frequency values must be >= 1'
+], $f42824ca2289e973$var$ERR_INVALID_MODE = [
+    'ERR_INVALID_MODE',
+    'Invalid mode'
+], $f42824ca2289e973$var$ERR_REFLEX_OUT_OF_RANGE = [
+    'ERR_REFLEX_OUT_OF_RANGE',
+    'Reflex ratio must be >= 0 and < 1'
+], $f42824ca2289e973$var$ERR_INVALID_AUDIO_SOURCE = [
+    'ERR_INVALID_AUDIO_SOURCE',
+    'Audio source must be an instance of HTMLMediaElement or AudioNode'
+], $f42824ca2289e973$var$ERR_GRADIENT_INVALID_NAME = [
+    'ERR_GRADIENT_INVALID_NAME',
+    'Gradient name must be a non-empty string'
+], $f42824ca2289e973$var$ERR_GRADIENT_NOT_AN_OBJECT = [
+    'ERR_GRADIENT_NOT_AN_OBJECT',
+    'Gradient options must be an object'
+], $f42824ca2289e973$var$ERR_GRADIENT_MISSING_COLOR = [
+    'ERR_GRADIENT_MISSING_COLOR',
+    'Gradient colorStops must be a non-empty array'
+];
+var $f42824ca2289e973$var$AudioMotionError = /*#__PURE__*/ function(Error1) {
+    "use strict";
+    (0, $fbf4429d6978b43d$export$71511d61b312f219)(AudioMotionError, Error1);
+    function AudioMotionError(error, value) {
+        (0, $j7t5x._)(this, AudioMotionError);
+        var _this;
+        var _error = (0, $d4bbeea26fcd8fa1$export$71511d61b312f219)(error, 2), code = _error[0], message = _error[1];
+        _this = (0, $1ddf5ed2eb9e5507$export$71511d61b312f219)(this, AudioMotionError, [
+            message + (value !== undefined ? ": ".concat(value) : '')
+        ]);
+        _this.name = 'AudioMotionError';
+        _this.code = code;
+        return _this;
+    }
+    return AudioMotionError;
+}((0, $5d11f9b7d75f07a0$export$71511d61b312f219)(Error));
+// helper function - output deprecation warning message on console
+var $f42824ca2289e973$var$deprecate = function(name, alternative) {
+    return console.warn("".concat(name, " is deprecated. Use ").concat(alternative, " instead."));
+};
+// helper function - check if a given object is empty (also returns `true` on null, undefined or any non-object value)
+var $f42824ca2289e973$var$isEmpty = function(obj) {
+    for(var p in obj)return false;
+    return true;
+};
+// helper function - validate a given value with an array of strings (by default, all lowercase)
+// returns the validated value, or the first element of `list` if `value` is not found in the array
+var $f42824ca2289e973$var$validateFromList = function(value, list) {
+    var modifier = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : 'toLowerCase';
+    return list[Math.max(0, list.indexOf(('' + value)[modifier]()))];
+};
+// helper function - find the Y-coordinate of a point located between two other points, given its X-coordinate
+var $f42824ca2289e973$var$findY = function(x1, y1, x2, y2, x) {
+    return y1 + (y2 - y1) * (x - x1) / (x2 - x1);
+};
+// Polyfill for Array.findLastIndex()
+if (!Array.prototype.findLastIndex) Array.prototype.findLastIndex = function(callback) {
+    var index = this.length;
+    while(index-- > 0){
+        if (callback(this[index])) return index;
+    }
+    return -1;
+};
+// AudioMotionAnalyzer class
+var $f42824ca2289e973$export$44e9f5d136720861 = /*#__PURE__*/ function() {
+    "use strict";
+    function AudioMotionAnalyzer(container) {
+        var _this = this;
+        var options = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
+        (0, $j7t5x._)(this, AudioMotionAnalyzer);
+        this._ready = false;
+        // Initialize internal objects
+        this._aux = {}; // auxiliary variables
+        this._canvasGradients = []; // CanvasGradient objects for channels 0 and 1
+        this._destroyed = false;
+        this._energy = {
+            val: 0,
+            peak: 0,
+            hold: 0
+        };
+        this._flg = {}; // flags
+        this._fps = 0;
+        this._gradients = {}; // registered gradients
+        this._last = 0; // timestamp of last rendered frame
+        this._outNodes = []; // output nodes
+        this._ownContext = false;
+        this._selectedGrads = []; // names of the currently selected gradients for channels 0 and 1
+        this._sources = []; // input nodes
+        // Check if options object passed as first argument
+        if (!(container instanceof Element)) {
+            if ($f42824ca2289e973$var$isEmpty(options) && !$f42824ca2289e973$var$isEmpty(container)) options = container;
+            container = null;
+        }
+        this._ownCanvas = !(options.canvas instanceof HTMLCanvasElement);
+        // Create a new canvas or use the one provided by the user
+        var canvas = this._ownCanvas ? document.createElement('canvas') : options.canvas;
+        canvas.style = 'max-width: 100%;';
+        this._ctx = canvas.getContext('2d');
+        var _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
+        try {
+            // Register built-in gradients
+            for(var _iterator = $f42824ca2289e973$var$GRADIENTS[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true){
+                var _step_value = (0, $d4bbeea26fcd8fa1$export$71511d61b312f219)(_step.value, 2), name = _step_value[0], options1 = _step_value[1];
+                this.registerGradient(name, options1);
+            }
+        } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+        } finally{
+            try {
+                if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+                    _iterator["return"]();
+                }
+            } finally{
+                if (_didIteratorError) {
+                    throw _iteratorError;
+                }
+            }
+        }
+        // Set container
+        this._container = container || !this._ownCanvas && canvas.parentElement || document.body;
+        // Make sure we have minimal width and height dimensions in case of an inline container
+        this._defaultWidth = this._container.clientWidth || 640;
+        this._defaultHeight = this._container.clientHeight || 270;
+        // Use audio context provided by user, or create a new one
+        var audioCtx;
+        if (options.source && (audioCtx = options.source.context)) ;
+        else if (audioCtx = options.audioCtx) ;
+        else try {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            this._ownContext = true;
+        } catch (err) {
+            throw new $f42824ca2289e973$var$AudioMotionError($f42824ca2289e973$var$ERR_AUDIO_CONTEXT_FAIL);
+        }
+        // make sure audioContext is valid
+        if (!audioCtx.createGain) throw new $f42824ca2289e973$var$AudioMotionError($f42824ca2289e973$var$ERR_INVALID_AUDIO_CONTEXT);
+        /*
+			Connection routing:
+			===================
+
+			for dual channel layouts:                +--->  analyzer[0]  ---+
+		    	                                     |                      |
+			(source) --->  input  --->  splitter  ---+                      +--->  merger  --->  output  ---> (destination)
+		    	                                     |                      |
+		        	                                 +--->  analyzer[1]  ---+
+
+			for single channel layout:
+
+			(source) --->  input  ----------------------->  analyzer[0]  --------------------->  output  ---> (destination)
+
+		*/ // create the analyzer nodes, channel splitter and merger, and gain nodes for input/output connections
+        var analyzer = this._analyzer = [
+            audioCtx.createAnalyser(),
+            audioCtx.createAnalyser()
+        ];
+        var splitter = this._splitter = audioCtx.createChannelSplitter(2);
+        var merger = this._merger = audioCtx.createChannelMerger(2);
+        this._input = audioCtx.createGain();
+        this._output = audioCtx.createGain();
+        // connect audio source if provided in the options
+        if (options.source) this.connectInput(options.source);
+        // connect splitter -> analyzers
+        for(var _i = 0, _iter = [
+            0,
+            1
+        ]; _i < _iter.length; _i++){
+            var i = _iter[_i];
+            splitter.connect(analyzer[i], i);
+        }
+        // connect merger -> output
+        merger.connect(this._output);
+        // connect output -> destination (speakers)
+        if (options.connectSpeakers !== false) this.connectOutput();
+        // create auxiliary canvases for the X-axis and radial scale labels
+        for(var _i1 = 0, _iter1 = [
+            '_scaleX',
+            '_scaleR'
+        ]; _i1 < _iter1.length; _i1++){
+            var ctx = _iter1[_i1];
+            this[ctx] = document.createElement('canvas').getContext('2d');
+        }
+        // set fullscreen element (defaults to canvas)
+        this._fsEl = options.fsElement || canvas;
+        // Update canvas size on container / window resize and fullscreen events
+        // Fullscreen changes are handled quite differently across browsers:
+        // 1. Chromium browsers will trigger a `resize` event followed by a `fullscreenchange`
+        // 2. Firefox triggers the `fullscreenchange` first and then the `resize`
+        // 3. Chrome on Android (TV) won't trigger a `resize` event, only `fullscreenchange`
+        // 4. Safari won't trigger `fullscreenchange` events at all, and on iPadOS the `resize`
+        //    event is triggered **on the window** only (last tested on iPadOS 14)
+        // helper function for resize events
+        var onResize = function() {
+            if (!_this._fsTimeout) // delay the resize to prioritize a possible following `fullscreenchange` event
+            _this._fsTimeout = window.setTimeout(function() {
+                if (!_this._fsChanging) {
+                    _this._setCanvas($f42824ca2289e973$var$REASON_RESIZE);
+                    _this._fsTimeout = 0;
+                }
+            }, $f42824ca2289e973$var$DEBOUNCE_TIMEOUT);
+        };
+        // if browser supports ResizeObserver, listen for resize on the container
+        if (window.ResizeObserver) {
+            this._observer = new ResizeObserver(onResize);
+            this._observer.observe(this._container);
+        }
+        // create an AbortController to remove event listeners on destroy()
+        this._controller = new AbortController();
+        var signal = this._controller.signal;
+        // listen for resize events on the window - required for fullscreen on iPadOS
+        window.addEventListener($f42824ca2289e973$var$EVENT_RESIZE, onResize, {
+            signal: signal
+        });
+        // listen for fullscreenchange events on the canvas - not available on Safari
+        canvas.addEventListener($f42824ca2289e973$var$EVENT_FULLSCREENCHANGE, function() {
+            // set flag to indicate a fullscreen change in progress
+            _this._fsChanging = true;
+            // if there is a scheduled resize event, clear it
+            if (_this._fsTimeout) window.clearTimeout(_this._fsTimeout);
+            // update the canvas
+            _this._setCanvas($f42824ca2289e973$var$REASON_FSCHANGE);
+            // delay clearing the flag to prevent any shortly following resize event
+            _this._fsTimeout = window.setTimeout(function() {
+                _this._fsChanging = false;
+                _this._fsTimeout = 0;
+            }, $f42824ca2289e973$var$DEBOUNCE_TIMEOUT);
+        }, {
+            signal: signal
+        });
+        // Resume audio context if in suspended state (browsers' autoplay policy)
+        var unlockContext = function() {
+            if (audioCtx.state == 'suspended') audioCtx.resume();
+            window.removeEventListener($f42824ca2289e973$var$EVENT_CLICK, unlockContext);
+        };
+        window.addEventListener($f42824ca2289e973$var$EVENT_CLICK, unlockContext);
+        // reset FPS-related variables when window becomes visible (avoid FPS drop due to frames not rendered while hidden)
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState != 'hidden') {
+                _this._frames = 0;
+                _this._time = performance.now();
+            }
+        }, {
+            signal: signal
+        });
+        // Set configuration options and use defaults for any missing properties
+        this._setProps(options, true);
+        // Add canvas to the container (only when canvas not provided by user)
+        if (this.useCanvas && this._ownCanvas) this._container.appendChild(canvas);
+        // Finish canvas setup
+        this._ready = true;
+        this._setCanvas($f42824ca2289e973$var$REASON_CREATE);
+    }
+    (0, $7P1Gj._)(AudioMotionAnalyzer, [
+        {
+            key: "alphaBars",
+            get: /**
+	 * ==========================================================================
+	 *
+	 * PUBLIC PROPERTIES GETTERS AND SETTERS
+	 *
+	 * ==========================================================================
+	 */ function get() {
+                return this._alphaBars;
+            },
+            set: function set(value) {
+                this._alphaBars = !!value;
+                this._calcBars();
+            }
+        },
+        {
+            key: "ansiBands",
+            get: function get() {
+                return this._ansiBands;
+            },
+            set: function set(value) {
+                this._ansiBands = !!value;
+                this._calcBars();
+            }
+        },
+        {
+            key: "barSpace",
+            get: function get() {
+                return this._barSpace;
+            },
+            set: function set(value) {
+                this._barSpace = +value || 0;
+                this._calcBars();
+            }
+        },
+        {
+            key: "channelLayout",
+            get: function get() {
+                return this._chLayout;
+            },
+            set: function set(value) {
+                this._chLayout = $f42824ca2289e973$var$validateFromList(value, [
+                    $f42824ca2289e973$var$CHANNEL_SINGLE,
+                    $f42824ca2289e973$var$CHANNEL_HORIZONTAL,
+                    $f42824ca2289e973$var$CHANNEL_VERTICAL,
+                    $f42824ca2289e973$var$CHANNEL_COMBINED
+                ]);
+                // update node connections
+                this._input.disconnect();
+                this._input.connect(this._chLayout != $f42824ca2289e973$var$CHANNEL_SINGLE ? this._splitter : this._analyzer[0]);
+                this._analyzer[0].disconnect();
+                if (this._outNodes.length) this._analyzer[0].connect(this._chLayout != $f42824ca2289e973$var$CHANNEL_SINGLE ? this._merger : this._output);
+                this._calcBars();
+                this._makeGrad();
+            }
+        },
+        {
+            key: "colorMode",
+            get: function get() {
+                return this._colorMode;
+            },
+            set: function set(value) {
+                this._colorMode = $f42824ca2289e973$var$validateFromList(value, [
+                    $f42824ca2289e973$var$COLOR_GRADIENT,
+                    $f42824ca2289e973$var$COLOR_BAR_INDEX,
+                    $f42824ca2289e973$var$COLOR_BAR_LEVEL
+                ]);
+            }
+        },
+        {
+            key: "fadePeaks",
+            get: function get() {
+                return this._fadePeaks;
+            },
+            set: function set(value) {
+                this._fadePeaks = !!value;
+            }
+        },
+        {
+            key: "fftSize",
+            get: function get() {
+                return this._analyzer[0].fftSize;
+            },
+            set: function set(value) {
+                for(var _i = 0, _iter = [
+                    0,
+                    1
+                ]; _i < _iter.length; _i++){
+                    var i = _iter[_i];
+                    this._analyzer[i].fftSize = value;
+                }
+                var binCount = this._analyzer[0].frequencyBinCount;
+                this._fftData = [
+                    new Float32Array(binCount),
+                    new Float32Array(binCount)
+                ];
+                this._calcBars();
+            }
+        },
+        {
+            key: "frequencyScale",
+            get: function get() {
+                return this._frequencyScale;
+            },
+            set: function set(value) {
+                this._frequencyScale = $f42824ca2289e973$var$validateFromList(value, [
+                    $f42824ca2289e973$var$SCALE_LOG,
+                    $f42824ca2289e973$var$SCALE_BARK,
+                    $f42824ca2289e973$var$SCALE_MEL,
+                    $f42824ca2289e973$var$SCALE_LINEAR
+                ]);
+                this._calcBars();
+            }
+        },
+        {
+            key: "gradient",
+            get: function get() {
+                return this._selectedGrads[0];
+            },
+            set: function set(value) {
+                this._setGradient(value);
+            }
+        },
+        {
+            key: "gradientLeft",
+            get: function get() {
+                return this._selectedGrads[0];
+            },
+            set: function set(value) {
+                this._setGradient(value, 0);
+            }
+        },
+        {
+            key: "gradientRight",
+            get: function get() {
+                return this._selectedGrads[1];
+            },
+            set: function set(value) {
+                this._setGradient(value, 1);
+            }
+        },
+        {
+            key: "gravity",
+            get: function get() {
+                return this._gravity;
+            },
+            set: function set(value) {
+                this._gravity = value > 0 ? +value : this._gravity || $f42824ca2289e973$var$DEFAULT_SETTINGS.gravity;
+            }
+        },
+        {
+            key: "height",
+            get: function get() {
+                return this._height;
+            },
+            set: function set(h) {
+                this._height = h;
+                this._setCanvas($f42824ca2289e973$var$REASON_USER);
+            }
+        },
+        {
+            key: "ledBars",
+            get: function get() {
+                return this._showLeds;
+            },
+            set: function set(value) {
+                this._showLeds = !!value;
+                this._calcBars();
+            }
+        },
+        {
+            key: "linearAmplitude",
+            get: function get() {
+                return this._linearAmplitude;
+            },
+            set: function set(value) {
+                this._linearAmplitude = !!value;
+            }
+        },
+        {
+            key: "linearBoost",
+            get: function get() {
+                return this._linearBoost;
+            },
+            set: function set(value) {
+                this._linearBoost = value >= 1 ? +value : 1;
+            }
+        },
+        {
+            key: "lineWidth",
+            get: function get() {
+                return this._lineWidth;
+            },
+            set: function set(value) {
+                this._lineWidth = +value || 0;
+            }
+        },
+        {
+            key: "loRes",
+            get: function get() {
+                return this._loRes;
+            },
+            set: function set(value) {
+                this._loRes = !!value;
+                this._setCanvas($f42824ca2289e973$var$REASON_LORES);
+            }
+        },
+        {
+            key: "lumiBars",
+            get: function get() {
+                return this._lumiBars;
+            },
+            set: function set(value) {
+                this._lumiBars = !!value;
+                this._calcBars();
+                this._makeGrad();
+            }
+        },
+        {
+            key: "maxDecibels",
+            get: function get() {
+                return this._analyzer[0].maxDecibels;
+            },
+            set: function set(value) {
+                for(var _i = 0, _iter = [
+                    0,
+                    1
+                ]; _i < _iter.length; _i++){
+                    var i = _iter[_i];
+                    this._analyzer[i].maxDecibels = value;
+                }
+            }
+        },
+        {
+            key: "maxFPS",
+            get: function get() {
+                return this._maxFPS;
+            },
+            set: function set(value) {
+                this._maxFPS = value < 0 ? 0 : +value || 0;
+            }
+        },
+        {
+            key: "maxFreq",
+            get: function get() {
+                return this._maxFreq;
+            },
+            set: function set(value) {
+                if (value < 1) throw new $f42824ca2289e973$var$AudioMotionError($f42824ca2289e973$var$ERR_FREQUENCY_TOO_LOW);
+                else {
+                    this._maxFreq = Math.min(value, this.audioCtx.sampleRate / 2);
+                    this._calcBars();
+                }
+            }
+        },
+        {
+            key: "minDecibels",
+            get: function get() {
+                return this._analyzer[0].minDecibels;
+            },
+            set: function set(value) {
+                for(var _i = 0, _iter = [
+                    0,
+                    1
+                ]; _i < _iter.length; _i++){
+                    var i = _iter[_i];
+                    this._analyzer[i].minDecibels = value;
+                }
+            }
+        },
+        {
+            key: "minFreq",
+            get: function get() {
+                return this._minFreq;
+            },
+            set: function set(value) {
+                if (value < 1) throw new $f42824ca2289e973$var$AudioMotionError($f42824ca2289e973$var$ERR_FREQUENCY_TOO_LOW);
+                else {
+                    this._minFreq = +value;
+                    this._calcBars();
+                }
+            }
+        },
+        {
+            key: "mirror",
+            get: function get() {
+                return this._mirror;
+            },
+            set: function set(value) {
+                this._mirror = Math.sign(value) | 0; // ensure only -1, 0 or 1
+                this._calcBars();
+                this._makeGrad();
+            }
+        },
+        {
+            key: "mode",
+            get: function get() {
+                return this._mode;
+            },
+            set: function set(value) {
+                var mode = value | 0;
+                if (mode >= 0 && mode <= 10 && mode != 9) {
+                    this._mode = mode;
+                    this._calcBars();
+                    this._makeGrad();
+                } else throw new $f42824ca2289e973$var$AudioMotionError($f42824ca2289e973$var$ERR_INVALID_MODE, value);
+            }
+        },
+        {
+            key: "noteLabels",
+            get: function get() {
+                return this._noteLabels;
+            },
+            set: function set(value) {
+                this._noteLabels = !!value;
+                this._createScales();
+            }
+        },
+        {
+            key: "outlineBars",
+            get: function get() {
+                return this._outlineBars;
+            },
+            set: function set(value) {
+                this._outlineBars = !!value;
+                this._calcBars();
+            }
+        },
+        {
+            key: "peakFadeTime",
+            get: function get() {
+                return this._peakFadeTime;
+            },
+            set: function set(value) {
+                this._peakFadeTime = value >= 0 ? +value : this._peakFadeTime || $f42824ca2289e973$var$DEFAULT_SETTINGS.peakFadeTime;
+            }
+        },
+        {
+            key: "peakHoldTime",
+            get: function get() {
+                return this._peakHoldTime;
+            },
+            set: function set(value) {
+                this._peakHoldTime = +value || 0;
+            }
+        },
+        {
+            key: "peakLine",
+            get: function get() {
+                return this._peakLine;
+            },
+            set: function set(value) {
+                this._peakLine = !!value;
+            }
+        },
+        {
+            key: "radial",
+            get: function get() {
+                return this._radial;
+            },
+            set: function set(value) {
+                this._radial = !!value;
+                this._calcBars();
+                this._makeGrad();
+            }
+        },
+        {
+            key: "radialInvert",
+            get: function get() {
+                return this._radialInvert;
+            },
+            set: function set(value) {
+                this._radialInvert = !!value;
+                this._calcBars();
+                this._makeGrad();
+            }
+        },
+        {
+            key: "radius",
+            get: function get() {
+                return this._radius;
+            },
+            set: function set(value) {
+                this._radius = +value || 0;
+                this._calcBars();
+                this._makeGrad();
+            }
+        },
+        {
+            key: "reflexRatio",
+            get: function get() {
+                return this._reflexRatio;
+            },
+            set: function set(value) {
+                value = +value || 0;
+                if (value < 0 || value >= 1) throw new $f42824ca2289e973$var$AudioMotionError($f42824ca2289e973$var$ERR_REFLEX_OUT_OF_RANGE);
+                else {
+                    this._reflexRatio = value;
+                    this._calcBars();
+                    this._makeGrad();
+                }
+            }
+        },
+        {
+            key: "roundBars",
+            get: function get() {
+                return this._roundBars;
+            },
+            set: function set(value) {
+                this._roundBars = !!value;
+                this._calcBars();
+            }
+        },
+        {
+            key: "smoothing",
+            get: function get() {
+                return this._analyzer[0].smoothingTimeConstant;
+            },
+            set: function set(value) {
+                for(var _i = 0, _iter = [
+                    0,
+                    1
+                ]; _i < _iter.length; _i++){
+                    var i = _iter[_i];
+                    this._analyzer[i].smoothingTimeConstant = value;
+                }
+            }
+        },
+        {
+            key: "spinSpeed",
+            get: function get() {
+                return this._spinSpeed;
+            },
+            set: function set(value) {
+                value = +value || 0;
+                if (this._spinSpeed === undefined || value == 0) this._spinAngle = -$f42824ca2289e973$var$HALF_PI; // initialize or reset the rotation angle
+                this._spinSpeed = value;
+            }
+        },
+        {
+            key: "splitGradient",
+            get: function get() {
+                return this._splitGradient;
+            },
+            set: function set(value) {
+                this._splitGradient = !!value;
+                this._makeGrad();
+            }
+        },
+        {
+            key: "stereo",
+            get: function get() {
+                $f42824ca2289e973$var$deprecate('stereo', 'channelLayout');
+                return this._chLayout != $f42824ca2289e973$var$CHANNEL_SINGLE;
+            },
+            set: function set(value) {
+                $f42824ca2289e973$var$deprecate('stereo', 'channelLayout');
+                this.channelLayout = value ? $f42824ca2289e973$var$CHANNEL_VERTICAL : $f42824ca2289e973$var$CHANNEL_SINGLE;
+            }
+        },
+        {
+            key: "trueLeds",
+            get: function get() {
+                return this._trueLeds;
+            },
+            set: function set(value) {
+                this._trueLeds = !!value;
+            }
+        },
+        {
+            key: "volume",
+            get: function get() {
+                return this._output.gain.value;
+            },
+            set: function set(value) {
+                this._output.gain.value = value;
+            }
+        },
+        {
+            key: "weightingFilter",
+            get: function get() {
+                return this._weightingFilter;
+            },
+            set: function set(value) {
+                this._weightingFilter = $f42824ca2289e973$var$validateFromList(value, [
+                    $f42824ca2289e973$var$FILTER_NONE,
+                    $f42824ca2289e973$var$FILTER_A,
+                    $f42824ca2289e973$var$FILTER_B,
+                    $f42824ca2289e973$var$FILTER_C,
+                    $f42824ca2289e973$var$FILTER_D,
+                    $f42824ca2289e973$var$FILTER_468
+                ], 'toUpperCase');
+            }
+        },
+        {
+            key: "width",
+            get: function get() {
+                return this._width;
+            },
+            set: function set(w) {
+                this._width = w;
+                this._setCanvas($f42824ca2289e973$var$REASON_USER);
+            }
+        },
+        {
+            key: "audioCtx",
+            get: // Read only properties
+            function get() {
+                return this._input.context;
+            }
+        },
+        {
+            key: "canvas",
+            get: function get() {
+                return this._ctx.canvas;
+            }
+        },
+        {
+            key: "canvasCtx",
+            get: function get() {
+                return this._ctx;
+            }
+        },
+        {
+            key: "connectedSources",
+            get: function get() {
+                return this._sources;
+            }
+        },
+        {
+            key: "connectedTo",
+            get: function get() {
+                return this._outNodes;
+            }
+        },
+        {
+            key: "fps",
+            get: function get() {
+                return this._fps;
+            }
+        },
+        {
+            key: "fsHeight",
+            get: function get() {
+                return this._fsHeight;
+            }
+        },
+        {
+            key: "fsWidth",
+            get: function get() {
+                return this._fsWidth;
+            }
+        },
+        {
+            key: "isAlphaBars",
+            get: function get() {
+                return this._flg.isAlpha;
+            }
+        },
+        {
+            key: "isBandsMode",
+            get: function get() {
+                return this._flg.isBands;
+            }
+        },
+        {
+            key: "isDestroyed",
+            get: function get() {
+                return this._destroyed;
+            }
+        },
+        {
+            key: "isFullscreen",
+            get: function get() {
+                return this._fsEl && (document.fullscreenElement || document.webkitFullscreenElement) === this._fsEl;
+            }
+        },
+        {
+            key: "isLedBars",
+            get: function get() {
+                return this._flg.isLeds;
+            }
+        },
+        {
+            key: "isLumiBars",
+            get: function get() {
+                return this._flg.isLumi;
+            }
+        },
+        {
+            key: "isOctaveBands",
+            get: function get() {
+                return this._flg.isOctaves;
+            }
+        },
+        {
+            key: "isOn",
+            get: function get() {
+                return !!this._runId;
+            }
+        },
+        {
+            key: "isOutlineBars",
+            get: function get() {
+                return this._flg.isOutline;
+            }
+        },
+        {
+            key: "pixelRatio",
+            get: function get() {
+                return this._pixelRatio;
+            }
+        },
+        {
+            key: "isRoundBars",
+            get: function get() {
+                return this._flg.isRound;
+            }
+        },
+        {
+            /**
+	 * ==========================================================================
+     *
+	 * PUBLIC METHODS
+	 *
+	 * ==========================================================================
+	 */ /**
+	 * Connects an HTML media element or audio node to the analyzer
+	 *
+	 * @param {object} an instance of HTMLMediaElement or AudioNode
+	 * @returns {object} a MediaElementAudioSourceNode object if created from HTML element, or the same input object otherwise
+	 */ key: "connectInput",
+            value: function connectInput(source) {
+                var isHTML = source instanceof HTMLMediaElement;
+                if (!(isHTML || source.connect)) throw new $f42824ca2289e973$var$AudioMotionError($f42824ca2289e973$var$ERR_INVALID_AUDIO_SOURCE);
+                // if source is an HTML element, create an audio node for it; otherwise, use the provided audio node
+                var node = isHTML ? this.audioCtx.createMediaElementSource(source) : source;
+                if (!this._sources.includes(node)) {
+                    node.connect(this._input);
+                    this._sources.push(node);
+                }
+                return node;
+            }
+        },
+        {
+            /**
+	 * Connects the analyzer output to another audio node
+	 *
+	 * @param [{object}] an AudioNode; if undefined, the output is connected to the audio context destination (speakers)
+	 */ key: "connectOutput",
+            value: function connectOutput() {
+                var node = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : this.audioCtx.destination;
+                if (this._outNodes.includes(node)) return;
+                this._output.connect(node);
+                this._outNodes.push(node);
+                // when connecting the first node, also connect the analyzer nodes to the merger / output nodes
+                if (this._outNodes.length == 1) for(var _i = 0, _iter = [
+                    0,
+                    1
+                ]; _i < _iter.length; _i++){
+                    var i = _iter[_i];
+                    this._analyzer[i].connect(this._chLayout == $f42824ca2289e973$var$CHANNEL_SINGLE && !i ? this._output : this._merger, 0, i);
+                }
+            }
+        },
+        {
+            /**
+	 * Destroys instance
+	 */ key: "destroy",
+            value: function destroy() {
+                if (!this._ready) return;
+                var _this = this, audioCtx = _this.audioCtx, canvas = _this.canvas, _controller = _this._controller, _input = _this._input, _merger = _this._merger, _observer = _this._observer, _ownCanvas = _this._ownCanvas, _ownContext = _this._ownContext, _splitter = _this._splitter;
+                this._destroyed = true;
+                this._ready = false;
+                this.stop();
+                // remove event listeners
+                _controller.abort();
+                if (_observer) _observer.disconnect();
+                // clear callbacks and fullscreen element
+                this.onCanvasResize = null;
+                this.onCanvasDraw = null;
+                this._fsEl = null;
+                // disconnect audio nodes
+                this.disconnectInput();
+                this.disconnectOutput(); // also disconnects analyzer nodes
+                _input.disconnect();
+                _splitter.disconnect();
+                _merger.disconnect();
+                // if audio context is our own (not provided by the user), close it
+                if (_ownContext) audioCtx.close();
+                // remove canvas from the DOM (if not provided by the user)
+                if (_ownCanvas) canvas.remove();
+                // reset flags
+                this._calcBars();
+            }
+        },
+        {
+            /**
+	 * Disconnects audio sources from the analyzer
+	 *
+	 * @param [{object|array}] a connected AudioNode object or an array of such objects; if falsy, all connected nodes are disconnected
+	 * @param [{boolean}] if true, stops/releases audio tracks from disconnected media streams (e.g. microphone)
+	 */ key: "disconnectInput",
+            value: function disconnectInput(sources, stopTracks) {
+                if (!sources) sources = Array.from(this._sources);
+                else if (!Array.isArray(sources)) sources = [
+                    sources
+                ];
+                var _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
+                try {
+                    for(var _iterator = sources[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true){
+                        var node = _step.value;
+                        var idx = this._sources.indexOf(node);
+                        var _iteratorNormalCompletion1 = true, _didIteratorError1 = false, _iteratorError1 = undefined;
+                        if (stopTracks && node.mediaStream) try {
+                            for(var _iterator1 = node.mediaStream.getAudioTracks()[Symbol.iterator](), _step1; !(_iteratorNormalCompletion1 = (_step1 = _iterator1.next()).done); _iteratorNormalCompletion1 = true){
+                                var track = _step1.value;
+                                track.stop();
+                            }
+                        } catch (err) {
+                            _didIteratorError1 = true;
+                            _iteratorError1 = err;
+                        } finally{
+                            try {
+                                if (!_iteratorNormalCompletion1 && _iterator1["return"] != null) {
+                                    _iterator1["return"]();
+                                }
+                            } finally{
+                                if (_didIteratorError1) {
+                                    throw _iteratorError1;
+                                }
+                            }
+                        }
+                        if (idx >= 0) {
+                            node.disconnect(this._input);
+                            this._sources.splice(idx, 1);
+                        }
+                    }
+                } catch (err) {
+                    _didIteratorError = true;
+                    _iteratorError = err;
+                } finally{
+                    try {
+                        if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+                            _iterator["return"]();
+                        }
+                    } finally{
+                        if (_didIteratorError) {
+                            throw _iteratorError;
+                        }
+                    }
+                }
+            }
+        },
+        {
+            /**
+	 * Disconnects the analyzer output from other audio nodes
+	 *
+	 * @param [{object}] a connected AudioNode object; if undefined, all connected nodes are disconnected
+	 */ key: "disconnectOutput",
+            value: function disconnectOutput(node) {
+                if (node && !this._outNodes.includes(node)) return;
+                this._output.disconnect(node);
+                this._outNodes = node ? this._outNodes.filter(function(e) {
+                    return e !== node;
+                }) : [];
+                // if disconnected from all nodes, also disconnect the analyzer nodes so they keep working on Chromium
+                // see https://github.com/hvianna/audioMotion-analyzer/issues/13#issuecomment-808764848
+                if (this._outNodes.length == 0) for(var _i = 0, _iter = [
+                    0,
+                    1
+                ]; _i < _iter.length; _i++){
+                    var i = _iter[_i];
+                    this._analyzer[i].disconnect();
+                }
+            }
+        },
+        {
+            /**
+	 * Returns analyzer bars data
+     *
+	 * @returns {array}
+	 */ key: "getBars",
+            value: function getBars() {
+                return Array.from(this._bars, function(param) {
+                    var posX = param.posX, freq = param.freq, freqLo = param.freqLo, freqHi = param.freqHi, hold = param.hold, peak = param.peak, value = param.value;
+                    return {
+                        posX: posX,
+                        freq: freq,
+                        freqLo: freqLo,
+                        freqHi: freqHi,
+                        hold: hold,
+                        peak: peak,
+                        value: value
+                    };
+                });
+            }
+        },
+        {
+            /**
+	 * Returns the energy of a frequency, or average energy of a range of frequencies
+	 *
+	 * @param [{number|string}] single or initial frequency (Hz), or preset name; if undefined, returns the overall energy
+	 * @param [{number}] ending frequency (Hz)
+	 * @returns {number|null} energy value (0 to 1) or null, if the specified preset is unknown
+	 */ key: "getEnergy",
+            value: function getEnergy(startFreq, endFreq) {
+                if (startFreq === undefined) return this._energy.val;
+                // if startFreq is a string, check for presets
+                if (startFreq != +startFreq) {
+                    if (startFreq == 'peak') return this._energy.peak;
+                    var presets = {
+                        bass: [
+                            20,
+                            250
+                        ],
+                        lowMid: [
+                            250,
+                            500
+                        ],
+                        mid: [
+                            500,
+                            2e3
+                        ],
+                        highMid: [
+                            2e3,
+                            4e3
+                        ],
+                        treble: [
+                            4e3,
+                            16e3
+                        ]
+                    };
+                    if (!presets[startFreq]) return null;
+                    var ref;
+                    ref = (0, $d4bbeea26fcd8fa1$export$71511d61b312f219)(presets[startFreq], 2), startFreq = ref[0], endFreq = ref[1], ref;
+                }
+                var startBin = this._freqToBin(startFreq), endBin = endFreq ? this._freqToBin(endFreq) : startBin, chnCount = this._chLayout == $f42824ca2289e973$var$CHANNEL_SINGLE ? 1 : 2;
+                var energy = 0;
+                for(var channel = 0; channel < chnCount; channel++)for(var i = startBin; i <= endBin; i++)energy += this._normalizedB(this._fftData[channel][i]);
+                return energy / (endBin - startBin + 1) / chnCount;
+            }
+        },
+        {
+            /**
+	 * Returns current analyzer settings in object format
+	 *
+	 * @param [{string|array}] a property name or an array of property names to not include in the returned object
+	 * @returns {object} Options object
+	 */ key: "getOptions",
+            value: function getOptions(ignore) {
+                if (!Array.isArray(ignore)) ignore = [
+                    ignore
+                ];
+                var options = {};
+                var _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
+                try {
+                    for(var _iterator = Object.keys($f42824ca2289e973$var$DEFAULT_SETTINGS)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true){
+                        var prop = _step.value;
+                        if (!ignore.includes(prop)) {
+                            if (prop == 'gradient' && this.gradientLeft != this.gradientRight) {
+                                options.gradientLeft = this.gradientLeft;
+                                options.gradientRight = this.gradientRight;
+                            } else if (prop != 'start') options[prop] = this[prop];
+                        }
+                    }
+                } catch (err) {
+                    _didIteratorError = true;
+                    _iteratorError = err;
+                } finally{
+                    try {
+                        if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+                            _iterator["return"]();
+                        }
+                    } finally{
+                        if (_didIteratorError) {
+                            throw _iteratorError;
+                        }
+                    }
+                }
+                return options;
+            }
+        },
+        {
+            /**
+	 * Registers a custom gradient
+	 *
+	 * @param {string} name
+	 * @param {object} options
+	 */ key: "registerGradient",
+            value: function registerGradient(name, options) {
+                if (typeof name != 'string' || name.trim().length == 0) throw new $f42824ca2289e973$var$AudioMotionError($f42824ca2289e973$var$ERR_GRADIENT_INVALID_NAME);
+                if ((typeof options === "undefined" ? "undefined" : (0, $f8EIX._)(options)) != 'object') throw new $f42824ca2289e973$var$AudioMotionError($f42824ca2289e973$var$ERR_GRADIENT_NOT_AN_OBJECT);
+                var colorStops = options.colorStops;
+                if (!Array.isArray(colorStops) || !colorStops.length) throw new $f42824ca2289e973$var$AudioMotionError($f42824ca2289e973$var$ERR_GRADIENT_MISSING_COLOR);
+                var count = colorStops.length, isInvalid = function(val) {
+                    return +val != val || val < 0 || val > 1;
+                };
+                // normalize all colorStops as objects with `pos`, `color` and `level` properties
+                colorStops.forEach(function(colorStop, index) {
+                    var pos = index / Math.max(1, count - 1);
+                    if ((typeof colorStop === "undefined" ? "undefined" : (0, $f8EIX._)(colorStop)) != 'object') colorStops[index] = {
+                        pos: pos,
+                        color: colorStop
+                    };
+                    else if (isInvalid(colorStop.pos)) colorStop.pos = pos;
+                    if (isInvalid(colorStop.level)) colorStops[index].level = 1 - index / count;
+                });
+                // make sure colorStops is in descending `level` order and that the first one has `level == 1`
+                // this is crucial for proper operation of 'bar-level' colorMode!
+                colorStops.sort(function(a, b) {
+                    return a.level < b.level ? 1 : a.level > b.level ? -1 : 0;
+                });
+                colorStops[0].level = 1;
+                this._gradients[name] = {
+                    bgColor: options.bgColor || $f42824ca2289e973$var$GRADIENT_DEFAULT_BGCOLOR,
+                    dir: options.dir,
+                    colorStops: colorStops
+                };
+                // if the registered gradient is one of the currently selected gradients, regenerate them
+                if (this._selectedGrads.includes(name)) this._makeGrad();
+            }
+        },
+        {
+            /**
+	 * Set dimensions of analyzer's canvas
+	 *
+	 * @param {number} w width in pixels
+	 * @param {number} h height in pixels
+	 */ key: "setCanvasSize",
+            value: function setCanvasSize(w, h) {
+                this._width = w;
+                this._height = h;
+                this._setCanvas($f42824ca2289e973$var$REASON_USER);
+            }
+        },
+        {
+            /**
+	 * Set desired frequency range
+	 *
+	 * @param {number} min lowest frequency represented in the x-axis
+	 * @param {number} max highest frequency represented in the x-axis
+	 */ key: "setFreqRange",
+            value: function setFreqRange(min, max) {
+                if (min < 1 || max < 1) throw new $f42824ca2289e973$var$AudioMotionError($f42824ca2289e973$var$ERR_FREQUENCY_TOO_LOW);
+                else {
+                    this._minFreq = Math.min(min, max);
+                    this.maxFreq = Math.max(min, max); // use the setter for maxFreq
+                }
+            }
+        },
+        {
+            /**
+	 * Set custom parameters for LED effect
+	 * If called with no arguments or if any property is invalid, clears any previous custom parameters
+	 *
+	 * @param {object} [params]
+	 */ key: "setLedParams",
+            value: function setLedParams(params) {
+                var maxLeds, spaceV, spaceH;
+                // coerce parameters to Number; `NaN` results are rejected in the condition below
+                if (params) maxLeds = params.maxLeds | 0, spaceV = +params.spaceV, spaceH = +params.spaceH;
+                this._ledParams = maxLeds > 0 && spaceV > 0 && spaceH >= 0 ? [
+                    maxLeds,
+                    spaceV,
+                    spaceH
+                ] : undefined;
+                this._calcBars();
+            }
+        },
+        {
+            /**
+	 * Shorthand function for setting several options at once
+	 *
+	 * @param {object} options
+	 */ key: "setOptions",
+            value: function setOptions(options) {
+                this._setProps(options);
+            }
+        },
+        {
+            /**
+	 * Adjust the analyzer's sensitivity
+	 *
+	 * @param {number} min minimum decibels value
+	 * @param {number} max maximum decibels value
+	 */ key: "setSensitivity",
+            value: function setSensitivity(min, max) {
+                for(var _i = 0, _iter = [
+                    0,
+                    1
+                ]; _i < _iter.length; _i++){
+                    var i = _iter[_i];
+                    this._analyzer[i].minDecibels = Math.min(min, max);
+                    this._analyzer[i].maxDecibels = Math.max(min, max);
+                }
+            }
+        },
+        {
+            /**
+	 * Start the analyzer
+	 */ key: "start",
+            value: function start() {
+                this.toggleAnalyzer(true);
+            }
+        },
+        {
+            /**
+	 * Stop the analyzer
+	 */ key: "stop",
+            value: function stop() {
+                this.toggleAnalyzer(false);
+            }
+        },
+        {
+            /**
+	 * Start / stop canvas animation
+	 *
+	 * @param {boolean} [force] if undefined, inverts the current state
+	 * @returns {boolean} resulting state after the change
+	 */ key: "toggleAnalyzer",
+            value: function toggleAnalyzer(force) {
+                var _this = this;
+                var hasStarted = this.isOn;
+                if (force === undefined) force = !hasStarted;
+                // Stop the analyzer if it was already running and must be disabled
+                if (hasStarted && !force) {
+                    cancelAnimationFrame(this._runId);
+                    this._runId = 0;
+                } else if (!hasStarted && force && !this._destroyed) {
+                    this._frames = 0;
+                    this._time = performance.now();
+                    this._runId = requestAnimationFrame(function(timestamp) {
+                        return _this._draw(timestamp);
+                    }); // arrow function preserves the scope of *this*
+                }
+                return this.isOn;
+            }
+        },
+        {
+            /**
+	 * Toggles canvas full-screen mode
+	 */ key: "toggleFullscreen",
+            value: function toggleFullscreen() {
+                if (this.isFullscreen) {
+                    if (document.exitFullscreen) document.exitFullscreen();
+                    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+                } else {
+                    var fsEl = this._fsEl;
+                    if (!fsEl) return;
+                    if (fsEl.requestFullscreen) fsEl.requestFullscreen();
+                    else if (fsEl.webkitRequestFullscreen) fsEl.webkitRequestFullscreen();
+                }
+            }
+        },
+        {
+            /**
+	 * ==========================================================================
+	 *
+	 * PRIVATE METHODS
+	 *
+	 * ==========================================================================
+	 */ /**
+	 * Return the frequency (in Hz) for a given FFT bin
+	 */ key: "_binToFreq",
+            value: function _binToFreq(bin) {
+                return bin * this.audioCtx.sampleRate / this.fftSize || 1; // returns 1 for bin 0
+            }
+        },
+        {
+            /**
+	 * Compute all internal data required for the analyzer, based on its current settings
+	 */ key: "_calcBars",
+            value: function _calcBars() {
+                var _this = this;
+                var bars = this._bars = []; // initialize object property
+                if (!this._ready) {
+                    this._flg = {
+                        isAlpha: false,
+                        isBands: false,
+                        isLeds: false,
+                        isLumi: false,
+                        isOctaves: false,
+                        isOutline: false,
+                        isRound: false,
+                        noLedGap: false
+                    };
+                    return;
+                }
+                var _this1 = this, _ansiBands = _this1._ansiBands, _barSpace = _this1._barSpace, canvas = _this1.canvas, _chLayout = _this1._chLayout, _maxFreq = _this1._maxFreq, _minFreq = _this1._minFreq, _mirror = _this1._mirror, _mode = _this1._mode, _radial = _this1._radial, _radialInvert = _this1._radialInvert, _reflexRatio = _this1._reflexRatio, centerX = canvas.width >> 1, centerY = canvas.height >> 1, isDualVertical = _chLayout == $f42824ca2289e973$var$CHANNEL_VERTICAL && !_radial, isDualHorizontal = _chLayout == $f42824ca2289e973$var$CHANNEL_HORIZONTAL, // COMPUTE FLAGS
+                isBands = _mode % 10 != 0, isOctaves = isBands && this._frequencyScale == $f42824ca2289e973$var$SCALE_LOG, isLeds = this._showLeds && isBands && !_radial, isLumi = this._lumiBars && isBands && !_radial, isAlpha = this._alphaBars && !isLumi && _mode != $f42824ca2289e973$var$MODE_GRAPH, isOutline = this._outlineBars && isBands && !isLumi && !isLeds, isRound = this._roundBars && isBands && !isLumi && !isLeds, noLedGap = _chLayout != $f42824ca2289e973$var$CHANNEL_VERTICAL || _reflexRatio > 0 && !isLumi, // COMPUTE AUXILIARY VALUES
+                // channelHeight is the total canvas height dedicated to each channel, including the reflex area, if any)
+                channelHeight = canvas.height - (isDualVertical && !isLeds ? .5 : 0) >> isDualVertical, // analyzerHeight is the effective height used to render the analyzer, excluding the reflex area
+                analyzerHeight = channelHeight * (isLumi || _radial ? 1 : 1 - _reflexRatio) | 0, analyzerWidth = canvas.width - centerX * (isDualHorizontal || _mirror != 0), // channelGap is **0** if isLedDisplay == true (LEDs already have spacing); **1** if canvas height is odd (windowed); **2** if it's even
+                // TODO: improve this, make it configurable?
+                channelGap = isDualVertical ? canvas.height - channelHeight * 2 : 0, initialX = centerX * (_mirror == -1 && !isDualHorizontal && !_radial);
+                var innerRadius = Math.min(canvas.width, canvas.height) * .375 * (_chLayout == $f42824ca2289e973$var$CHANNEL_VERTICAL ? 1 : this._radius) | 0, outerRadius = Math.min(centerX, centerY);
+                var ref;
+                if (_radialInvert && _chLayout != $f42824ca2289e973$var$CHANNEL_VERTICAL) ref = [
+                    outerRadius,
+                    innerRadius
+                ], innerRadius = ref[0], outerRadius = ref[1], ref;
+                /**
+		 *	CREATE ANALYZER BANDS
+		 *
+		 *	USES:
+		 *		analyzerWidth
+		 *		initialX
+		 *		isBands
+		 *		isOctaves
+		 *
+		 *	GENERATES:
+		 *		bars (populates this._bars)
+		 *		bardWidth
+		 *		scaleMin
+		 *		unitWidth
+		 */ // helper function to add a bar to the bars array
+                // bar object format:
+                // {
+                //	 posX,
+                //   freq,
+                //   freqLo,
+                //   freqHi,
+                //   binLo,
+                //   binHi,
+                //   ratioLo,
+                //   ratioHi,
+                //   peak,    // peak value
+                //   hold,    // peak hold frames (negative value indicates peak falling / fading)
+                //   alpha,   // peak alpha (used by fadePeaks)
+                //   value    // current bar value
+                // }
+                var barsPush = function(args) {
+                    return bars.push((0, $1c440eeecb0dd6d0$export$71511d61b312f219)((0, $7d9dc0a4a5ea26ca$export$71511d61b312f219)({}, args), {
+                        peak: [
+                            0,
+                            0
+                        ],
+                        hold: [
+                            0
+                        ],
+                        alpha: [
+                            0
+                        ],
+                        value: [
+                            0
+                        ]
+                    }));
+                };
+                /*
+			A simple interpolation is used to obtain an approximate amplitude value for any given frequency,
+			from the available FFT data. We find the FFT bin which closer matches the desired frequency	and
+			interpolate its value with that of the next adjacent bin, like so:
+
+				v = v0 + ( v1 - v0 ) * ( log2( f / f0 ) / log2( f1 / f0 ) )
+				                       \__________________________________/
+				                                        |
+				                                      ratio
+				where:
+
+				f  - desired frequency
+				v  - amplitude (volume) of desired frequency
+				f0 - frequency represented by the lower FFT bin
+				f1 - frequency represented by the upper FFT bin
+				v0 - amplitude of f0
+				v1 - amplitude of f1
+
+			ratio is calculated in advance here, to reduce computational complexity during real-time rendering.
+		*/ // helper function to calculate FFT bin and interpolation ratio for a given frequency
+                var calcRatio = function(freq) {
+                    var bin = _this._freqToBin(freq, 'floor'), lower = _this._binToFreq(bin), upper = _this._binToFreq(bin + 1), ratio = Math.log2(freq / lower) / Math.log2(upper / lower);
+                    return [
+                        bin,
+                        ratio
+                    ];
+                };
+                var barWidth, scaleMin, unitWidth;
+                if (isOctaves) {
+                    // helper function to round a value to a given number of significant digits
+                    // `atLeast` set to true prevents reducing the number of integer significant digits
+                    var roundSD = function(value, digits, atLeast) {
+                        return +value.toPrecision(atLeast ? Math.max(digits, 1 + Math.log10(value) | 0) : digits);
+                    };
+                    // helper function to find the nearest preferred number (Renard series) for a given value
+                    var nearestPreferred = function(value) {
+                        // R20 series is used here, as it provides closer approximations for 1/2 octave bands (non-standard)
+                        var preferred = [
+                            1,
+                            1.12,
+                            1.25,
+                            1.4,
+                            1.6,
+                            1.8,
+                            2,
+                            2.24,
+                            2.5,
+                            2.8,
+                            3.15,
+                            3.55,
+                            4,
+                            4.5,
+                            5,
+                            5.6,
+                            6.3,
+                            7.1,
+                            8,
+                            9,
+                            10
+                        ], power = Math.log10(value) | 0, normalized = value / Math.pow(10, power);
+                        var i = 1;
+                        while(i < preferred.length && normalized > preferred[i])i++;
+                        if (normalized - preferred[i - 1] < preferred[i] - normalized) i--;
+                        return (preferred[i] * Math.pow(10, power + 5) | 0) / 1e5; // keep 5 significant digits
+                    };
+                    // ANSI standard octave bands use the base-10 frequency ratio, as preferred by [ANSI S1.11-2004, p.2]
+                    // The equal-tempered scale uses the base-2 ratio
+                    var bands = [
+                        0,
+                        24,
+                        12,
+                        8,
+                        6,
+                        4,
+                        3,
+                        2,
+                        1
+                    ][_mode], bandWidth = _ansiBands ? Math.pow(10, 3 / (bands * 10)) : Math.pow(2, 1 / bands), halfBand = Math.pow(bandWidth, .5);
+                    var analyzerBars = [], currFreq = _ansiBands ? 7.94328235 / (bands % 2 ? 1 : halfBand) : $f42824ca2289e973$var$C_1;
+                    // For ANSI bands with even denominators (all except 1/1 and 1/3), the reference frequency (1 kHz)
+                    // must fall on the edges of a pair of adjacent bands, instead of midband [ANSI S1.11-2004, p.2]
+                    // In the equal-tempered scale, all midband frequencies represent a musical note or quarter-tone.
+                    do {
+                        var freq = currFreq; // midband frequency
+                        var freqLo = roundSD(freq / halfBand, 4, true), freqHi = roundSD(freq * halfBand, 4, true), _calcRatio = (0, $d4bbeea26fcd8fa1$export$71511d61b312f219)(calcRatio(freqLo), 2), binLo = _calcRatio[0], ratioLo = _calcRatio[1], _calcRatio1 = (0, $d4bbeea26fcd8fa1$export$71511d61b312f219)(calcRatio(freqHi), 2), binHi = _calcRatio1[0], ratioHi = _calcRatio1[1];
+                        // for 1/1, 1/2 and 1/3 ANSI bands, use the preferred numbers to find the nominal midband frequency
+                        // for 1/4 to 1/24, round to 2 or 3 significant digits, according to the MSD [ANSI S1.11-2004, p.12]
+                        if (_ansiBands) freq = bands < 4 ? nearestPreferred(freq) : roundSD(freq, freq.toString()[0] < 5 ? 3 : 2);
+                        else freq = roundSD(freq, 4, true);
+                        if (freq >= _minFreq) barsPush({
+                            posX: 0,
+                            freq: freq,
+                            freqLo: freqLo,
+                            freqHi: freqHi,
+                            binLo: binLo,
+                            binHi: binHi,
+                            ratioLo: ratioLo,
+                            ratioHi: ratioHi
+                        });
+                        currFreq *= bandWidth;
+                    }while (currFreq <= _maxFreq);
+                    barWidth = analyzerWidth / bars.length;
+                    bars.forEach(function(bar, index) {
+                        return bar.posX = initialX + index * barWidth;
+                    });
+                    var firstBar = bars[0], lastBar = bars[bars.length - 1];
+                    scaleMin = this._freqScaling(firstBar.freqLo);
+                    unitWidth = analyzerWidth / (this._freqScaling(lastBar.freqHi) - scaleMin);
+                    // clamp edge frequencies to minFreq / maxFreq, if necessary
+                    // this is done after computing scaleMin and unitWidth, for the proper positioning of labels on the X-axis
+                    if (firstBar.freqLo < _minFreq) {
+                        firstBar.freqLo = _minFreq;
+                        var ref1;
+                        ref1 = (0, $d4bbeea26fcd8fa1$export$71511d61b312f219)(calcRatio(_minFreq), 2), firstBar.binLo = ref1[0], firstBar.ratioLo = ref1[1], ref1;
+                    }
+                    if (lastBar.freqHi > _maxFreq) {
+                        lastBar.freqHi = _maxFreq;
+                        var ref2;
+                        ref2 = (0, $d4bbeea26fcd8fa1$export$71511d61b312f219)(calcRatio(_maxFreq), 2), lastBar.binHi = ref2[0], lastBar.ratioHi = ref2[1], ref2;
+                    }
+                } else if (isBands) {
+                    var bands1 = [
+                        0,
+                        24,
+                        12,
+                        8,
+                        6,
+                        4,
+                        3,
+                        2,
+                        1
+                    ][_mode] * 10;
+                    var invFreqScaling = function(x) {
+                        switch(_this._frequencyScale){
+                            case $f42824ca2289e973$var$SCALE_BARK:
+                                return 1960 / (26.81 / (x + .53) - 1);
+                            case $f42824ca2289e973$var$SCALE_MEL:
+                                return 700 * (Math.pow(2, x) - 1);
+                            case $f42824ca2289e973$var$SCALE_LINEAR:
+                                return x;
+                        }
+                    };
+                    barWidth = analyzerWidth / bands1;
+                    scaleMin = this._freqScaling(_minFreq);
+                    unitWidth = analyzerWidth / (this._freqScaling(_maxFreq) - scaleMin);
+                    for(var i = 0, posX = 0; i < bands1; i++, posX += barWidth){
+                        var freqLo1 = invFreqScaling(scaleMin + posX / unitWidth), freq1 = invFreqScaling(scaleMin + (posX + barWidth / 2) / unitWidth), freqHi1 = invFreqScaling(scaleMin + (posX + barWidth) / unitWidth), _calcRatio2 = (0, $d4bbeea26fcd8fa1$export$71511d61b312f219)(calcRatio(freqLo1), 2), binLo1 = _calcRatio2[0], ratioLo1 = _calcRatio2[1], _calcRatio3 = (0, $d4bbeea26fcd8fa1$export$71511d61b312f219)(calcRatio(freqHi1), 2), binHi1 = _calcRatio3[0], ratioHi1 = _calcRatio3[1];
+                        barsPush({
+                            posX: initialX + posX,
+                            freq: freq1,
+                            freqLo: freqLo1,
+                            freqHi: freqHi1,
+                            binLo: binLo1,
+                            binHi: binHi1,
+                            ratioLo: ratioLo1,
+                            ratioHi: ratioHi1
+                        });
+                    }
+                } else {
+                    barWidth = 1;
+                    scaleMin = this._freqScaling(_minFreq);
+                    unitWidth = analyzerWidth / (this._freqScaling(_maxFreq) - scaleMin);
+                    var minIndex = this._freqToBin(_minFreq, 'floor'), maxIndex = this._freqToBin(_maxFreq);
+                    var lastPos = -999;
+                    for(var i1 = minIndex; i1 <= maxIndex; i1++){
+                        var freq2 = this._binToFreq(i1), posX1 = initialX + Math.round(unitWidth * (this._freqScaling(freq2) - scaleMin)); // avoid fractionary pixel values
+                        // if it's on a different X-coordinate, create a new bar for this frequency
+                        if (posX1 > lastPos) {
+                            barsPush({
+                                posX: posX1,
+                                freq: freq2,
+                                freqLo: freq2,
+                                freqHi: freq2,
+                                binLo: i1,
+                                binHi: i1,
+                                ratioLo: 0,
+                                ratioHi: 0
+                            });
+                            lastPos = posX1;
+                        } else if (bars.length) {
+                            var lastBar1 = bars[bars.length - 1];
+                            lastBar1.binHi = i1;
+                            lastBar1.freqHi = freq2;
+                            lastBar1.freq = Math.pow(lastBar1.freqLo * freq2, .5); // compute center frequency (geometric mean)
+                        }
+                    }
+                }
+                /**
+		 *  COMPUTE ATTRIBUTES FOR THE LED BARS
+		 *
+		 *	USES:
+		 *		analyzerHeight
+		 *		barWidth
+		 *		noLedGap
+		 *
+		 *	GENERATES:
+		 * 		spaceH
+		 * 		spaceV
+		 *		this._leds
+		 */ var spaceH = 0, spaceV = 0;
+                if (isLeds) {
+                    // adjustment for high pixel-ratio values on low-resolution screens (Android TV)
+                    var dPR = this._pixelRatio / (window.devicePixelRatio > 1 && window.screen.height <= 540 ? 2 : 1);
+                    var params = [
+                        [],
+                        [
+                            128,
+                            3,
+                            .45
+                        ],
+                        [
+                            128,
+                            4,
+                            .225
+                        ],
+                        [
+                            96,
+                            6,
+                            .225
+                        ],
+                        [
+                            80,
+                            6,
+                            .225
+                        ],
+                        [
+                            80,
+                            6,
+                            .125
+                        ],
+                        [
+                            64,
+                            6,
+                            .125
+                        ],
+                        [
+                            48,
+                            8,
+                            .125
+                        ],
+                        [
+                            24,
+                            16,
+                            .125
+                        ]
+                    ];
+                    // use custom LED parameters if set, or the default parameters for the current mode
+                    var customParams = this._ledParams, _ref = (0, $d4bbeea26fcd8fa1$export$71511d61b312f219)(customParams || params[_mode], 3), maxLeds = _ref[0], spaceVRatio = _ref[1], spaceHRatio = _ref[2];
+                    var ledCount, maxHeight = analyzerHeight;
+                    if (customParams) {
+                        var minHeight = 2 * dPR;
+                        var blockHeight;
+                        ledCount = maxLeds + 1;
+                        do {
+                            ledCount--;
+                            blockHeight = maxHeight / ledCount / (1 + spaceVRatio);
+                            spaceV = blockHeight * spaceVRatio;
+                        }while ((blockHeight < minHeight || spaceV < minHeight) && ledCount > 1);
+                    } else {
+                        // calculate vertical spacing - aim for the reference ratio, but make sure it's at least 2px
+                        var refRatio = 540 / spaceVRatio;
+                        spaceV = Math.min(spaceVRatio * dPR, Math.max(2, maxHeight / refRatio + .1 | 0));
+                    }
+                    // remove the extra spacing below the last line of LEDs
+                    if (noLedGap) maxHeight += spaceV;
+                    // recalculate the number of leds, considering the effective spaceV
+                    if (!customParams) ledCount = Math.min(maxLeds, maxHeight / (spaceV * 2) | 0);
+                    spaceH = spaceHRatio >= 1 ? spaceHRatio : barWidth * spaceHRatio;
+                    this._leds = [
+                        ledCount,
+                        spaceH,
+                        spaceV,
+                        maxHeight / ledCount - spaceV // ledHeight
+                    ];
+                }
+                // COMPUTE ADDITIONAL BAR POSITIONING, ACCORDING TO THE CURRENT SETTINGS
+                // uses: _barSpace, barWidth, spaceH
+                var barSpacePx = Math.min(barWidth - 1, _barSpace * (_barSpace > 0 && _barSpace < 1 ? barWidth : 1));
+                if (isBands) barWidth -= Math.max(isLeds ? spaceH : 0, barSpacePx);
+                bars.forEach(function(bar, index) {
+                    var posX = bar.posX, width = barWidth;
+                    // in bands modes we need to update bar.posX to account for bar/led spacing
+                    if (isBands) {
+                        if (_barSpace == 0 && !isLeds) {
+                            // when barSpace == 0 use integer values for perfect gapless positioning
+                            posX |= 0;
+                            width |= 0;
+                            if (index > 0 && posX > bars[index - 1].posX + bars[index - 1].width) {
+                                posX--;
+                                width++;
+                            }
+                        } else posX += Math.max(isLeds ? spaceH : 0, barSpacePx) / 2;
+                        bar.posX = posX; // update
+                    }
+                    bar.barCenter = posX + (barWidth == 1 ? 0 : width / 2);
+                    bar.width = width;
+                });
+                // COMPUTE CHANNEL COORDINATES (uses spaceV)
+                var channelCoords = [];
+                for(var _i = 0, _iter = [
+                    0,
+                    1
+                ]; _i < _iter.length; _i++){
+                    var channel = _iter[_i];
+                    var channelTop = _chLayout == $f42824ca2289e973$var$CHANNEL_VERTICAL ? (channelHeight + channelGap) * channel : 0, channelBottom = channelTop + channelHeight, analyzerBottom = channelTop + analyzerHeight - (!isLeds || noLedGap ? 0 : spaceV);
+                    channelCoords.push({
+                        channelTop: channelTop,
+                        channelBottom: channelBottom,
+                        analyzerBottom: analyzerBottom
+                    });
+                }
+                // SAVE INTERNAL PROPERTIES
+                this._aux = {
+                    analyzerHeight: analyzerHeight,
+                    analyzerWidth: analyzerWidth,
+                    centerX: centerX,
+                    centerY: centerY,
+                    channelCoords: channelCoords,
+                    channelHeight: channelHeight,
+                    channelGap: channelGap,
+                    initialX: initialX,
+                    innerRadius: innerRadius,
+                    outerRadius: outerRadius,
+                    scaleMin: scaleMin,
+                    unitWidth: unitWidth
+                };
+                this._flg = {
+                    isAlpha: isAlpha,
+                    isBands: isBands,
+                    isLeds: isLeds,
+                    isLumi: isLumi,
+                    isOctaves: isOctaves,
+                    isOutline: isOutline,
+                    isRound: isRound,
+                    noLedGap: noLedGap
+                };
+                // generate the X-axis and radial scales
+                this._createScales();
+            }
+        },
+        {
+            /**
+	 * Generate the X-axis and radial scales in auxiliary canvases
+	 */ key: "_createScales",
+            value: function _createScales() {
+                if (!this._ready) return;
+                var _this__aux = this._aux, analyzerWidth = _this__aux.analyzerWidth, initialX = _this__aux.initialX, innerRadius = _this__aux.innerRadius, scaleMin = _this__aux.scaleMin, unitWidth = _this__aux.unitWidth, _this = this, canvas = _this.canvas, _frequencyScale = _this._frequencyScale, _mirror = _this._mirror, _noteLabels = _this._noteLabels, _radial = _this._radial, _scaleX = _this._scaleX, _scaleR = _this._scaleR, canvasX = _scaleX.canvas, canvasR = _scaleR.canvas, freqLabels = [], isDualHorizontal = this._chLayout == $f42824ca2289e973$var$CHANNEL_HORIZONTAL, isDualVertical = this._chLayout == $f42824ca2289e973$var$CHANNEL_VERTICAL, minDimension = Math.min(canvas.width, canvas.height), scale = [
+                    'C',
+                    ,
+                    'D',
+                    ,
+                    'E',
+                    'F',
+                    ,
+                    'G',
+                    ,
+                    'A',
+                    ,
+                    'B'
+                ], scaleHeight = minDimension / 34 | 0, fontSizeX = canvasX.height >> 1, fontSizeR = scaleHeight >> 1, labelWidthX = fontSizeX * (_noteLabels ? .7 : 1.5), labelWidthR = fontSizeR * (_noteLabels ? 1 : 2), root12 = Math.pow(2, 1 / 12);
+                if (!_noteLabels && (this._ansiBands || _frequencyScale != $f42824ca2289e973$var$SCALE_LOG)) {
+                    freqLabels.push(16, 31.5, 63, 125, 250, 500, 1e3, 2e3, 4e3);
+                    if (_frequencyScale == $f42824ca2289e973$var$SCALE_LINEAR) freqLabels.push(6e3, 8e3, 10e3, 12e3, 14e3, 16e3, 18e3, 20e3, 22e3);
+                    else freqLabels.push(8e3, 16e3);
+                } else {
+                    var freq = $f42824ca2289e973$var$C_1;
+                    for(var octave = -1; octave < 11; octave++)for(var note = 0; note < 12; note++){
+                        if (freq >= this._minFreq && freq <= this._maxFreq) {
+                            var pitch = scale[note], isC = pitch == 'C';
+                            if (pitch && _noteLabels && !_mirror && !isDualHorizontal || isC) freqLabels.push(_noteLabels ? [
+                                freq,
+                                pitch + (isC ? octave : '')
+                            ] : freq);
+                        }
+                        freq *= root12;
+                    }
+                }
+                // in radial dual-vertical layout, the scale is positioned exactly between both channels, by making the canvas a bit larger than the inner diameter
+                canvasR.width = canvasR.height = Math.max(minDimension * .15, (innerRadius << 1) + isDualVertical * scaleHeight);
+                var centerR = canvasR.width >> 1, radialY = centerR - scaleHeight * .7; // vertical position of text labels in the circular scale
+                // helper function
+                var radialLabel = function(x, label) {
+                    var angle = $f42824ca2289e973$var$TAU * (x / canvas.width), adjAng = angle - $f42824ca2289e973$var$HALF_PI, posX = radialY * Math.cos(adjAng), posY = radialY * Math.sin(adjAng);
+                    _scaleR.save();
+                    _scaleR.translate(centerR + posX, centerR + posY);
+                    _scaleR.rotate(angle);
+                    _scaleR.fillText(label, 0, 0);
+                    _scaleR.restore();
+                };
+                // clear scale canvas
+                canvasX.width |= 0;
+                _scaleX.fillStyle = _scaleR.strokeStyle = $f42824ca2289e973$var$SCALEX_BACKGROUND_COLOR;
+                _scaleX.fillRect(0, 0, canvasX.width, canvasX.height);
+                _scaleR.arc(centerR, centerR, centerR - scaleHeight / 2, 0, $f42824ca2289e973$var$TAU);
+                _scaleR.lineWidth = scaleHeight;
+                _scaleR.stroke();
+                _scaleX.fillStyle = _scaleR.fillStyle = $f42824ca2289e973$var$SCALEX_LABEL_COLOR;
+                _scaleX.font = "".concat(fontSizeX, "px ").concat($f42824ca2289e973$var$FONT_FAMILY);
+                _scaleR.font = "".concat(fontSizeR, "px ").concat($f42824ca2289e973$var$FONT_FAMILY);
+                _scaleX.textAlign = _scaleR.textAlign = 'center';
+                var prevX = -labelWidthX / 4, prevR = -labelWidthR;
+                var _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
+                try {
+                    for(var _iterator = freqLabels[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true){
+                        var item = _step.value;
+                        var _ref = (0, $d4bbeea26fcd8fa1$export$71511d61b312f219)(Array.isArray(item) ? item : [
+                            item,
+                            item < 1e3 ? item | 0 : "".concat((item / 100 | 0) / 10, "k")
+                        ], 2), freq1 = _ref[0], label = _ref[1], x = unitWidth * (this._freqScaling(freq1) - scaleMin), y = canvasX.height * .75, isC1 = label[0] == 'C', maxW = fontSizeX * (_noteLabels && !_mirror && !isDualHorizontal ? isC1 ? 1.2 : .6 : 3);
+                        // set label color - no highlight when mirror effect is active (only Cs displayed)
+                        _scaleX.fillStyle = _scaleR.fillStyle = isC1 && !_mirror && !isDualHorizontal ? $f42824ca2289e973$var$SCALEX_HIGHLIGHT_COLOR : $f42824ca2289e973$var$SCALEX_LABEL_COLOR;
+                        // prioritizes which note labels are displayed, due to the restricted space on some ranges/scales
+                        if (_noteLabels) {
+                            var isLog = _frequencyScale == $f42824ca2289e973$var$SCALE_LOG, isLinear = _frequencyScale == $f42824ca2289e973$var$SCALE_LINEAR;
+                            var allowedLabels = [
+                                'C'
+                            ];
+                            if (isLog || freq1 > 2e3 || !isLinear && freq1 > 250 || (!_radial || isDualVertical) && (!isLinear && freq1 > 125 || freq1 > 1e3)) allowedLabels.push('G');
+                            if (isLog || freq1 > 4e3 || !isLinear && freq1 > 500 || (!_radial || isDualVertical) && (!isLinear && freq1 > 250 || freq1 > 2e3)) allowedLabels.push('E');
+                            if (isLinear && freq1 > 4e3 || (!_radial || isDualVertical) && (isLog || freq1 > 2e3 || !isLinear && freq1 > 500)) allowedLabels.push('D', 'F', 'A', 'B');
+                            if (!allowedLabels.includes(label[0])) continue; // skip this label
+                        }
+                        // linear scale
+                        if (x >= prevX + labelWidthX / 2 && x <= analyzerWidth) {
+                            _scaleX.fillText(label, isDualHorizontal && _mirror == -1 ? analyzerWidth - x : initialX + x, y, maxW);
+                            if (isDualHorizontal || _mirror && (x > labelWidthX || _mirror == 1)) _scaleX.fillText(label, isDualHorizontal && _mirror != 1 ? analyzerWidth + x : (initialX || canvas.width) - x, y, maxW);
+                            prevX = x + Math.min(maxW, _scaleX.measureText(label).width) / 2;
+                        }
+                        // radial scale
+                        if (x >= prevR + labelWidthR && x < analyzerWidth - labelWidthR) {
+                            radialLabel(isDualHorizontal && _mirror == 1 ? analyzerWidth - x : x, label);
+                            if (isDualHorizontal || _mirror && (x > labelWidthR || _mirror == 1)) radialLabel(isDualHorizontal && _mirror != -1 ? analyzerWidth + x : -x, label);
+                            prevR = x;
+                        }
+                    }
+                } catch (err) {
+                    _didIteratorError = true;
+                    _iteratorError = err;
+                } finally{
+                    try {
+                        if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+                            _iterator["return"]();
+                        }
+                    } finally{
+                        if (_didIteratorError) {
+                            throw _iteratorError;
+                        }
+                    }
+                }
+            }
+        },
+        {
+            /**
+	 * Redraw the canvas
+	 * this is called 60 times per second by requestAnimationFrame()
+	 */ key: "_draw",
+            value: function _draw(timestamp) {
+                var _this, _loop = function(channel) {
+                    var _this2, _loop = function(barIndex) {
+                        var bar = _bars[barIndex], posX = bar.posX, barCenter = bar.barCenter, width = bar.width, freq = bar.freq, binLo = bar.binLo, binHi = bar.binHi, ratioLo = bar.ratioLo, ratioHi = bar.ratioHi;
+                        var barValue = Math.max(interpolate(binLo, ratioLo), interpolate(binHi, ratioHi));
+                        // check additional bins (if any) for this bar and keep the highest value
+                        for(var j = binLo + 1; j < binHi; j++)if (fftData[j] > barValue) barValue = fftData[j];
+                        // normalize bar amplitude in [0;1] range
+                        barValue = _this2._normalizedB(barValue);
+                        bar.value[channel] = barValue;
+                        currentEnergy += barValue;
+                        // update bar peak
+                        if (bar.peak[channel] > 0 && bar.alpha[channel] > 0) {
+                            bar.hold[channel]--;
+                            // if hold is negative, start peak drop or fade out
+                            if (bar.hold[channel] < 0) {
+                                if (_fadePeaks && !showPeakLine) {
+                                    var initialAlpha = !isAlpha || isOutline && _lineWidth > 0 ? 1 : isAlpha ? bar.peak[channel] : fillAlpha;
+                                    bar.alpha[channel] = initialAlpha * (1 + bar.hold[channel] / fadeFrames); // hold is negative, so this is <= 1
+                                } else bar.peak[channel] += bar.hold[channel] * gravity / fpsSquared / nominalMaxHeight;
+                                // make sure the peak value is reset when using fadePeaks
+                                if (bar.alpha[channel] <= 0) bar.peak[channel] = 0;
+                            }
+                        }
+                        // check if it's a new peak for this bar
+                        if (barValue >= bar.peak[channel]) {
+                            bar.peak[channel] = barValue;
+                            bar.hold[channel] = holdFrames;
+                            // check whether isAlpha or isOutline are active to start the peak alpha with the proper value
+                            bar.alpha[channel] = !isAlpha || isOutline && _lineWidth > 0 ? 1 : isAlpha ? barValue : fillAlpha;
+                        }
+                        // if not using the canvas, move earlier to the next bar
+                        if (!useCanvas) return "continue";
+                        // set opacity for bar effects
+                        _ctx.globalAlpha = isLumi || isAlpha ? barValue : isOutline ? fillAlpha : 1;
+                        // set fillStyle and strokeStyle for the current bar
+                        setBarColor(barValue, barIndex);
+                        // compute actual bar height on screen
+                        var barHeight = isLumi ? maxBarHeight : isLeds ? ledPosY(barValue) : barValue * maxBarHeight | 0;
+                        // Draw current bar or line segment
+                        if (_mode == $f42824ca2289e973$var$MODE_GRAPH) {
+                            // compute the average between the initial bar (barIndex==0) and the next one
+                            // used to smooth the curve when the initial posX is off the screen, in mirror and radial modes
+                            var nextBarAvg = barIndex ? 0 : (_this2._normalizedB(fftData[_bars[1].binLo]) * maxBarHeight + barHeight) / 2;
+                            if (_radial) {
+                                if (barIndex == 0) {
+                                    var _ctx1, _ctx2;
+                                    if (isDualHorizontal) (_ctx1 = _ctx).moveTo.apply(_ctx1, (0, $2f989756f431e05e$export$71511d61b312f219)(radialXY(0, 0)));
+                                    (_ctx2 = _ctx).lineTo.apply(_ctx2, (0, $2f989756f431e05e$export$71511d61b312f219)(radialXY(0, posX < 0 ? nextBarAvg : barHeight)));
+                                }
+                                // draw line to the current point, avoiding overlapping wrap-around frequencies
+                                if (posX >= 0) {
+                                    var _ctx3;
+                                    var point = [
+                                        posX,
+                                        barHeight
+                                    ];
+                                    (_ctx3 = _ctx).lineTo.apply(_ctx3, (0, $2f989756f431e05e$export$71511d61b312f219)(radialXY.apply(void 0, (0, $2f989756f431e05e$export$71511d61b312f219)(point))));
+                                    points.push(point);
+                                }
+                            } else {
+                                if (barIndex == 0) {
+                                    // start the line off-screen using the previous FFT bin value as the initial amplitude
+                                    if (_mirror == -1 && !isDualHorizontal) _ctx.moveTo(initialX, analyzerBottom - (posX < initialX ? nextBarAvg : barHeight));
+                                    else {
+                                        var prevFFTData = binLo ? _this2._normalizedB(fftData[binLo - 1]) * maxBarHeight : barHeight; // use previous FFT bin value, when available
+                                        _ctx.moveTo(initialX - _lineWidth, analyzerBottom - prevFFTData);
+                                    }
+                                }
+                                // draw line to the current point
+                                // avoid X values lower than the origin when mirroring left, otherwise draw them for best graph accuracy
+                                if (isDualHorizontal || _mirror != -1 || posX >= initialX) _ctx.lineTo(posX, analyzerBottom - barHeight);
+                            }
+                        } else {
+                            if (isLeds) {
+                                // draw "unlit" leds - avoid drawing it twice on 'dual-combined' channel layout
+                                if (showBgColor && !overlay && (channel == 0 || !isDualCombined)) {
+                                    var alpha = _ctx.globalAlpha;
+                                    _ctx.strokeStyle = $f42824ca2289e973$var$LEDS_UNLIT_COLOR;
+                                    _ctx.globalAlpha = 1;
+                                    strokeBar(barCenter, channelTop, analyzerBottom);
+                                    // restore properties
+                                    _ctx.strokeStyle = _ctx.fillStyle;
+                                    _ctx.globalAlpha = alpha;
+                                }
+                                if (isTrueLeds) {
+                                    // ledPosY() is used below to fit one entire led height into the selected range
+                                    var colorIndex = isLumi ? 0 : colorStops.findLastIndex(function(item) {
+                                        return ledPosY(barValue) <= ledPosY(item.level);
+                                    });
+                                    var last = analyzerBottom;
+                                    for(var i = colorCount - 1; i >= colorIndex; i--){
+                                        _ctx.strokeStyle = colorStops[i].color;
+                                        var y = analyzerBottom - (i == colorIndex ? barHeight : ledPosY(colorStops[i].level));
+                                        strokeBar(barCenter, last, y);
+                                        last = y - ledSpaceV;
+                                    }
+                                } else strokeBar(barCenter, analyzerBottom, analyzerBottom - barHeight);
+                            } else if (posX >= initialX) {
+                                if (_radial) radialPoly(posX, 0, width, barHeight, isOutline);
+                                else if (isRound) {
+                                    var halfWidth = width / 2, y1 = analyzerBottom + halfWidth; // round caps have an additional height of half bar width
+                                    _ctx.beginPath();
+                                    _ctx.moveTo(posX, y1);
+                                    _ctx.lineTo(posX, y1 - barHeight);
+                                    _ctx.arc(barCenter, y1 - barHeight, halfWidth, $f42824ca2289e973$var$PI, $f42824ca2289e973$var$TAU);
+                                    _ctx.lineTo(posX + width, y1);
+                                    strokeIf(isOutline);
+                                    _ctx.fill();
+                                } else {
+                                    var offset = isOutline ? _ctx.lineWidth : 0;
+                                    _ctx.beginPath();
+                                    _ctx.rect(posX, analyzerBottom + offset, width, -barHeight - offset);
+                                    strokeIf(isOutline);
+                                    _ctx.fill();
+                                }
+                            }
+                        }
+                        // Draw peak
+                        var peakValue = bar.peak[channel], peakAlpha = bar.alpha[channel];
+                        if (peakValue > 0 && peakAlpha > 0 && showPeaks && !showPeakLine && !isLumi && posX >= initialX && posX < finalX) {
+                            // set opacity for peak
+                            if (_fadePeaks) _ctx.globalAlpha = peakAlpha;
+                            else if (isOutline && _lineWidth > 0) _ctx.globalAlpha = 1;
+                            else if (isAlpha) _ctx.globalAlpha = peakValue;
+                            // select the peak color for 'bar-level' colorMode or 'trueLeds'
+                            if (_colorMode == $f42824ca2289e973$var$COLOR_BAR_LEVEL || isTrueLeds) setBarColor(peakValue);
+                            // render peak according to current mode / effect
+                            if (isLeds) {
+                                var ledPeak = ledPosY(peakValue);
+                                if (ledPeak >= ledSpaceV) _ctx.fillRect(posX, analyzerBottom - ledPeak, width, ledHeight);
+                            } else if (!_radial) _ctx.fillRect(posX, analyzerBottom - peakValue * maxBarHeight, width, 2);
+                            else if (_mode != $f42824ca2289e973$var$MODE_GRAPH) {
+                                var y2 = peakValue * maxBarHeight;
+                                radialPoly(posX, y2, width, !_this2._radialInvert || isDualVertical || y2 + innerRadius >= 2 ? -2 : 2);
+                            }
+                        }
+                    };
+                    var _this3 = _this;
+                    var _channelCoords_channel = channelCoords[channel], channelTop = _channelCoords_channel.channelTop, channelBottom = _channelCoords_channel.channelBottom, analyzerBottom = _channelCoords_channel.analyzerBottom, channelGradient = _this._gradients[_this._selectedGrads[channel]], colorStops = channelGradient.colorStops, colorCount = colorStops.length, bgColor = !showBgColor || isLeds && !overlay ? '#000' : channelGradient.bgColor, radialDirection = isDualVertical && _radial && channel ? -1 : 1, invertedChannel = !channel && _mirror == -1 || channel && _mirror == 1, radialOffsetX = !isDualHorizontal || channel && _mirror != 1 ? 0 : analyzerWidth >> (channel || !invertedChannel), angularDirection = isDualHorizontal && invertedChannel ? -1 : 1; // 1 = clockwise, -1 = counterclockwise
+                    /*
+			Expanded logic for radialOffsetX and angularDirection:
+
+			let radialOffsetX = 0,
+				angularDirection = 1;
+
+			if ( isDualHorizontal ) {
+				if ( channel == 0 ) { // LEFT channel
+					if ( _mirror == -1 ) {
+						radialOffsetX = analyzerWidth;
+						angularDirection = -1;
+					}
+					else
+						radialOffsetX = analyzerWidth >> 1;
+				}
+				else {                // RIGHT channel
+					if ( _mirror == 1 ) {
+						radialOffsetX = analyzerWidth >> 1;
+						angularDirection = -1;
+					}
+				}
+			}
+*/ // draw scale on Y-axis (uses: channel, channelTop)
+                    var drawScaleY = function() {
+                        var scaleWidth = canvasX.height, fontSize = scaleWidth >> 1, max = _linearAmplitude ? 100 : maxDecibels, min = _linearAmplitude ? 0 : minDecibels, incr = _linearAmplitude ? 20 : 5, interval = analyzerHeight / (max - min), atStart = _mirror != -1 && (!isDualHorizontal || channel == 0 || _mirror == 1), atEnd = _mirror != 1 && (!isDualHorizontal || channel != _mirror);
+                        _ctx.save();
+                        _ctx.fillStyle = $f42824ca2289e973$var$SCALEY_LABEL_COLOR;
+                        _ctx.font = "".concat(fontSize, "px ").concat($f42824ca2289e973$var$FONT_FAMILY);
+                        _ctx.textAlign = 'right';
+                        _ctx.lineWidth = 1;
+                        for(var val = max; val > min; val -= incr){
+                            var posY = channelTop + (max - val) * interval, even = val % 2 == 0 | 0;
+                            if (even) {
+                                var labelY = posY + fontSize * (posY == channelTop ? .8 : .35);
+                                if (atStart) _ctx.fillText(val, scaleWidth * .85, labelY);
+                                if (atEnd) _ctx.fillText(val, (isDualHorizontal ? analyzerWidth : canvas.width) - scaleWidth * .1, labelY);
+                                _ctx.strokeStyle = $f42824ca2289e973$var$SCALEY_LABEL_COLOR;
+                                _ctx.setLineDash([
+                                    2,
+                                    4
+                                ]);
+                                _ctx.lineDashOffset = 0;
+                            } else {
+                                _ctx.strokeStyle = $f42824ca2289e973$var$SCALEY_MIDLINE_COLOR;
+                                _ctx.setLineDash([
+                                    2,
+                                    8
+                                ]);
+                                _ctx.lineDashOffset = 1;
+                            }
+                            _ctx.beginPath();
+                            _ctx.moveTo(initialX + scaleWidth * even * atStart, ~~posY + .5); // for sharp 1px line (https://stackoverflow.com/a/13879402/2370385)
+                            _ctx.lineTo(finalX - scaleWidth * even * atEnd, ~~posY + .5);
+                            _ctx.stroke();
+                        }
+                        _ctx.restore();
+                    };
+                    // FFT bin data interpolation (uses fftData)
+                    var interpolate = function(bin, ratio) {
+                        var value = fftData[bin] + (bin < fftData.length - 1 ? (fftData[bin + 1] - fftData[bin]) * ratio : 0);
+                        return isNaN(value) ? -Infinity : value;
+                    };
+                    // converts a given X-coordinate to its corresponding angle in radial mode (uses angularDirection)
+                    var getAngle = function(x) {
+                        var dir = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : angularDirection;
+                        return dir * $f42824ca2289e973$var$TAU * ((x + radialOffsetX) / canvas.width) + _this3._spinAngle;
+                    };
+                    // converts planar X,Y coordinates to radial coordinates (uses: getAngle(), radialDirection)
+                    var radialXY = function(x, y, dir) {
+                        var height = innerRadius + y * radialDirection, angle = getAngle(x, dir);
+                        return [
+                            centerX + height * Math.cos(angle),
+                            centerY + height * Math.sin(angle)
+                        ];
+                    };
+                    // draws a polygon of width `w` and height `h` at (x,y) in radial mode (uses: angularDirection, radialDirection)
+                    var radialPoly = function(x, y, w, h, stroke) {
+                        _ctx.beginPath();
+                        var _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
+                        try {
+                            for(var _iterator = (_mirror && !isDualHorizontal ? [
+                                1,
+                                -1
+                            ] : [
+                                angularDirection
+                            ])[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true){
+                                var dir = _step.value;
+                                var _ctx1, _ctx2, _ctx3, _ctx4;
+                                var _ref = (0, $d4bbeea26fcd8fa1$export$71511d61b312f219)(isRound ? [
+                                    getAngle(x, dir),
+                                    getAngle(x + w, dir)
+                                ] : [], 2), startAngle = _ref[0], endAngle = _ref[1];
+                                (_ctx1 = _ctx).moveTo.apply(_ctx1, (0, $2f989756f431e05e$export$71511d61b312f219)(radialXY(x, y, dir)));
+                                (_ctx2 = _ctx).lineTo.apply(_ctx2, (0, $2f989756f431e05e$export$71511d61b312f219)(radialXY(x, y + h, dir)));
+                                if (isRound) _ctx.arc(centerX, centerY, innerRadius + (y + h) * radialDirection, startAngle, endAngle, dir != 1);
+                                else (_ctx3 = _ctx).lineTo.apply(_ctx3, (0, $2f989756f431e05e$export$71511d61b312f219)(radialXY(x + w, y + h, dir)));
+                                (_ctx4 = _ctx).lineTo.apply(_ctx4, (0, $2f989756f431e05e$export$71511d61b312f219)(radialXY(x + w, y, dir)));
+                                if (isRound && !stroke) _ctx.arc(centerX, centerY, innerRadius + y * radialDirection, endAngle, startAngle, dir == 1);
+                            }
+                        } catch (err) {
+                            _didIteratorError = true;
+                            _iteratorError = err;
+                        } finally{
+                            try {
+                                if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+                                    _iterator["return"]();
+                                }
+                            } finally{
+                                if (_didIteratorError) {
+                                    throw _iteratorError;
+                                }
+                            }
+                        }
+                        strokeIf(stroke);
+                        _ctx.fill();
+                    };
+                    // set fillStyle and strokeStyle according to current colorMode (uses: channel, colorStops, colorCount)
+                    var setBarColor = function() {
+                        var value = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : 0, barIndex = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
+                        var color;
+                        // for graph mode, always use the channel gradient (ignore colorMode)
+                        if (_colorMode == $f42824ca2289e973$var$COLOR_GRADIENT && !isTrueLeds || _mode == $f42824ca2289e973$var$MODE_GRAPH) color = _canvasGradients[channel];
+                        else {
+                            var selectedIndex = _colorMode == $f42824ca2289e973$var$COLOR_BAR_INDEX ? barIndex % colorCount : colorStops.findLastIndex(function(item) {
+                                return isLeds ? ledPosY(value) <= ledPosY(item.level) : value <= item.level;
+                            });
+                            color = colorStops[selectedIndex].color;
+                        }
+                        _ctx.fillStyle = _ctx.strokeStyle = color;
+                    };
+                    // CHANNEL START
+                    if (useCanvas) {
+                        // set transform (horizontal flip and translation) for dual-horizontal layout
+                        if (isDualHorizontal && !_radial) {
+                            var translateX = analyzerWidth * (channel + invertedChannel), flipX = invertedChannel ? -1 : 1;
+                            _ctx.setTransform(flipX, 0, 0, 1, translateX, 0);
+                        }
+                        // fill the analyzer background if needed (not overlay or overlay + showBgColor)
+                        if (!overlay || showBgColor) {
+                            if (overlay) _ctx.globalAlpha = _this.bgAlpha;
+                            _ctx.fillStyle = bgColor;
+                            // exclude the reflection area when overlay is true and reflexAlpha == 1 (avoids alpha over alpha difference, in case bgAlpha < 1)
+                            if (channel == 0 || !_radial && !isDualCombined) _ctx.fillRect(initialX, channelTop - channelGap, analyzerWidth, (overlay && _this.reflexAlpha == 1 ? analyzerHeight : channelHeight) + channelGap);
+                            _ctx.globalAlpha = 1;
+                        }
+                        // draw dB scale (Y-axis) - avoid drawing it twice on 'dual-combined' channel layout
+                        if (_this.showScaleY && !isLumi && !_radial && (channel == 0 || !isDualCombined)) drawScaleY();
+                        // set line width and dash for LEDs effect
+                        if (isLeds) {
+                            _ctx.setLineDash([
+                                ledHeight,
+                                ledSpaceV
+                            ]);
+                            _ctx.lineWidth = _bars[0].width;
+                        } else _ctx.lineWidth = isOutline ? Math.min(_lineWidth, _bars[0].width / 2) : _lineWidth;
+                        // set clipping region
+                        _ctx.save();
+                        if (!_radial) {
+                            var region = new Path2D();
+                            region.rect(0, channelTop, canvas.width, analyzerHeight);
+                            _ctx.clip(region);
+                        }
+                    } // if ( useCanvas )
+                    // get a new array of data from the FFT
+                    var fftData = _this._fftData[channel];
+                    _this._analyzer[channel].getFloatFrequencyData(fftData);
+                    // apply weighting
+                    if (_weightingFilter) fftData = fftData.map(function(val, idx) {
+                        return val + weightingdB(_this1._binToFreq(idx));
+                    });
+                    // start drawing path (for graph mode)
+                    _ctx.beginPath();
+                    // store line graph points to create mirror effect in radial mode
+                    var points = [];
+                    // draw bars / lines
+                    for(var barIndex = 0; barIndex < nBars; barIndex++)_this2 = _this, _loop(barIndex);
+                     // for ( let barIndex = 0; barIndex < nBars; barIndex++ )
+                    // if not using the canvas, move earlier to the next channel
+                    if (!useCanvas) return "continue";
+                    // restore global alpha
+                    _ctx.globalAlpha = 1;
+                    // Fill/stroke drawing path for graph mode
+                    if (_mode == $f42824ca2289e973$var$MODE_GRAPH) {
+                        setBarColor(); // select channel gradient
+                        if (_radial && !isDualHorizontal) {
+                            if (_mirror) {
+                                var _ctx1;
+                                var p = void 0;
+                                while(p = points.pop())(_ctx1 = _ctx).lineTo.apply(_ctx1, (0, $2f989756f431e05e$export$71511d61b312f219)(radialXY.apply(void 0, (0, $2f989756f431e05e$export$71511d61b312f219)(p).concat([
+                                    -1
+                                ]))));
+                            }
+                            _ctx.closePath();
+                        }
+                        if (_lineWidth > 0) _ctx.stroke();
+                        if (fillAlpha > 0) {
+                            if (_radial) {
+                                var _ctx2;
+                                // exclude the center circle from the fill area
+                                var start = isDualHorizontal ? getAngle(analyzerWidth >> 1) : 0, end = isDualHorizontal ? getAngle(analyzerWidth) : $f42824ca2289e973$var$TAU;
+                                (_ctx2 = _ctx).moveTo.apply(_ctx2, (0, $2f989756f431e05e$export$71511d61b312f219)(radialXY(isDualHorizontal ? analyzerWidth >> 1 : 0, 0)));
+                                _ctx.arc(centerX, centerY, innerRadius, start, end, isDualHorizontal ? !invertedChannel : true);
+                            } else {
+                                // close the fill area
+                                _ctx.lineTo(finalX, analyzerBottom);
+                                _ctx.lineTo(initialX, analyzerBottom);
+                            }
+                            _ctx.globalAlpha = fillAlpha;
+                            _ctx.fill();
+                            _ctx.globalAlpha = 1;
+                        }
+                        // draw peak line (and standard peaks on radial)
+                        if (showPeakLine || _radial && showPeaks) {
+                            points = []; // for mirror line on radial
+                            _ctx.beginPath();
+                            _bars.forEach(function(b, i) {
+                                var x = b.posX, h = b.peak[channel], m = i ? 'lineTo' : 'moveTo';
+                                if (_radial && x < 0) {
+                                    var nextBar = _bars[i + 1];
+                                    h = $f42824ca2289e973$var$findY(x, h, nextBar.posX, nextBar.peak[channel], 0);
+                                    x = 0;
+                                }
+                                h *= maxBarHeight;
+                                if (showPeakLine) {
+                                    var _ctx1;
+                                    (_ctx1 = _ctx)[m].apply(_ctx1, (0, $2f989756f431e05e$export$71511d61b312f219)(_radial ? radialXY(x, h) : [
+                                        x,
+                                        analyzerBottom - h
+                                    ]));
+                                    if (_radial && _mirror && !isDualHorizontal) points.push([
+                                        x,
+                                        h
+                                    ]);
+                                } else if (h > 0) radialPoly(x, h, 1, -2); // standard peaks (also does mirror)
+                            });
+                            if (showPeakLine) {
+                                var _ctx3;
+                                var p1 = void 0;
+                                while(p1 = points.pop())(_ctx3 = _ctx).lineTo.apply(_ctx3, (0, $2f989756f431e05e$export$71511d61b312f219)(radialXY.apply(void 0, (0, $2f989756f431e05e$export$71511d61b312f219)(p1).concat([
+                                    -1
+                                ])))); // mirror line points
+                                _ctx.lineWidth = 1;
+                                _ctx.stroke(); // stroke peak line
+                            }
+                        }
+                    }
+                    _ctx.restore(); // restore clip region
+                    if (isDualHorizontal && !_radial) _ctx.setTransform(1, 0, 0, 1, 0, 0);
+                    // create Reflex effect - for dual-combined and dual-horizontal do it only once, after channel 1
+                    if (!isDualHorizontal && !isDualCombined || channel) doReflex(channel);
+                };
+                var _this1 = this;
+                // schedule next canvas update
+                this._runId = requestAnimationFrame(function(timestamp) {
+                    return _this1._draw(timestamp);
+                });
+                // frame rate control
+                var elapsed = timestamp - this._time, frameTime = timestamp - this._last, targetInterval = this._maxFPS ? 975 / this._maxFPS : 0; // small tolerance for best results
+                if (frameTime < targetInterval) return;
+                this._last = timestamp - (targetInterval ? frameTime % targetInterval : 0); // thanks https://stackoverflow.com/a/19772220/2370385
+                this._frames++;
+                if (elapsed >= 1000) {
+                    this._fps = this._frames / elapsed * 1000;
+                    this._frames = 0;
+                    this._time = timestamp;
+                }
+                // initialize local constants
+                var _this__flg = this._flg, isAlpha = _this__flg.isAlpha, isBands = _this__flg.isBands, isLeds = _this__flg.isLeds, isLumi = _this__flg.isLumi, isOctaves = _this__flg.isOctaves, isOutline = _this__flg.isOutline, isRound = _this__flg.isRound, noLedGap = _this__flg.noLedGap, _this__aux = this._aux, analyzerHeight = _this__aux.analyzerHeight, centerX = _this__aux.centerX, centerY = _this__aux.centerY, channelCoords = _this__aux.channelCoords, channelHeight = _this__aux.channelHeight, channelGap = _this__aux.channelGap, initialX = _this__aux.initialX, innerRadius = _this__aux.innerRadius, outerRadius = _this__aux.outerRadius, _this2 = this, _bars = _this2._bars, canvas = _this2.canvas, _canvasGradients = _this2._canvasGradients, _chLayout = _this2._chLayout, _colorMode = _this2._colorMode, _ctx = _this2._ctx, _energy = _this2._energy, _fadePeaks = _this2._fadePeaks, fillAlpha = _this2.fillAlpha, _fps = _this2._fps, _linearAmplitude = _this2._linearAmplitude, _lineWidth = _this2._lineWidth, maxDecibels = _this2.maxDecibels, minDecibels = _this2.minDecibels, _mirror = _this2._mirror, _mode = _this2._mode, overlay = _this2.overlay, _radial = _this2._radial, showBgColor = _this2.showBgColor, showPeaks = _this2.showPeaks, useCanvas = _this2.useCanvas, _weightingFilter = _this2._weightingFilter, canvasX = this._scaleX.canvas, canvasR = this._scaleR.canvas, fadeFrames = _fps * this._peakFadeTime / 1e3, fpsSquared = Math.pow(_fps, 2), gravity = this._gravity * 1e3, holdFrames = _fps * this._peakHoldTime / 1e3, isDualCombined = _chLayout == $f42824ca2289e973$var$CHANNEL_COMBINED, isDualHorizontal = _chLayout == $f42824ca2289e973$var$CHANNEL_HORIZONTAL, isDualVertical = _chLayout == $f42824ca2289e973$var$CHANNEL_VERTICAL, isSingle = _chLayout == $f42824ca2289e973$var$CHANNEL_SINGLE, isTrueLeds = isLeds && this._trueLeds && _colorMode == $f42824ca2289e973$var$COLOR_GRADIENT, analyzerWidth = _radial ? canvas.width : this._aux.analyzerWidth, finalX = initialX + analyzerWidth, showPeakLine = showPeaks && this._peakLine && _mode == $f42824ca2289e973$var$MODE_GRAPH, maxBarHeight = _radial ? outerRadius - innerRadius : analyzerHeight, nominalMaxHeight = maxBarHeight / this._pixelRatio, dbRange = maxDecibels - minDecibels, _ref = (0, $d4bbeea26fcd8fa1$export$71511d61b312f219)(this._leds || [], 4), ledCount = _ref[0], ledSpaceH = _ref[1], ledSpaceV = _ref[2], ledHeight = _ref[3];
+                if (_energy.val > 0 && _fps > 0) this._spinAngle += this._spinSpeed * $f42824ca2289e973$var$TAU / 60 / _fps; // spinSpeed * angle increment per frame for 1 RPM
+                /* HELPER FUNCTIONS */ // create Reflex effect
+                var doReflex = function(channel) {
+                    if (_this1._reflexRatio > 0 && !isLumi && !_radial) {
+                        var posY, height;
+                        if (_this1.reflexFit || isDualVertical) {
+                            posY = isDualVertical && channel == 0 ? channelHeight + channelGap : 0;
+                            height = channelHeight - analyzerHeight;
+                        } else {
+                            posY = canvas.height - analyzerHeight * 2;
+                            height = analyzerHeight;
+                        }
+                        _ctx.save();
+                        // set alpha and brightness for the reflection
+                        _ctx.globalAlpha = _this1.reflexAlpha;
+                        if (_this1.reflexBright != 1) _ctx.filter = "brightness(".concat(_this1.reflexBright, ")");
+                        // create the reflection
+                        _ctx.setTransform(1, 0, 0, -1, 0, canvas.height);
+                        _ctx.drawImage(canvas, 0, channelCoords[channel].channelTop, canvas.width, analyzerHeight, 0, posY, canvas.width, height);
+                        _ctx.restore();
+                    }
+                };
+                // draw scale on X-axis
+                var drawScaleX = function() {
+                    if (_this1.showScaleX) {
+                        if (_radial) {
+                            _ctx.save();
+                            _ctx.translate(centerX, centerY);
+                            if (_this1._spinSpeed) _ctx.rotate(_this1._spinAngle + $f42824ca2289e973$var$HALF_PI);
+                            _ctx.drawImage(canvasR, -canvasR.width >> 1, -canvasR.width >> 1);
+                            _ctx.restore();
+                        } else _ctx.drawImage(canvasX, 0, canvas.height - canvasX.height);
+                    }
+                };
+                // returns the gain (in dB) for a given frequency, considering the currently selected weighting filter
+                var weightingdB = function(freq) {
+                    var f2 = Math.pow(freq, 2), SQ20_6 = 424.36, SQ107_7 = 11599.29, SQ158_5 = 25122.25, SQ737_9 = 544496.41, SQ12194 = 148693636, linearTodB = function(value) {
+                        return 20 * Math.log10(value);
+                    };
+                    switch(_weightingFilter){
+                        case $f42824ca2289e973$var$FILTER_A:
+                            var rA = SQ12194 * Math.pow(f2, 2) / ((f2 + SQ20_6) * Math.sqrt((f2 + SQ107_7) * (f2 + SQ737_9)) * (f2 + SQ12194));
+                            return 2 + linearTodB(rA);
+                        case $f42824ca2289e973$var$FILTER_B:
+                            var rB = SQ12194 * f2 * freq / ((f2 + SQ20_6) * Math.sqrt(f2 + SQ158_5) * (f2 + SQ12194));
+                            return .17 + linearTodB(rB);
+                        case $f42824ca2289e973$var$FILTER_C:
+                            var rC = SQ12194 * f2 / ((f2 + SQ20_6) * (f2 + SQ12194));
+                            return .06 + linearTodB(rC);
+                        case $f42824ca2289e973$var$FILTER_D:
+                            var h = (Math.pow(1037918.48 - f2, 2) + 1080768.16 * f2) / (Math.pow(9837328 - f2, 2) + 11723776 * f2), rD = freq / 6.8966888496476e-5 * Math.sqrt(h / ((f2 + 79919.29) * (f2 + 1345600)));
+                            return linearTodB(rD);
+                        case $f42824ca2289e973$var$FILTER_468:
+                            var h1 = -0.000000000000000000000004737338981378384 * Math.pow(freq, 6) + 2.043828333606125e-15 * Math.pow(freq, 4) - 1.363894795463638e-7 * f2 + 1, h2 = 1.306612257412824e-19 * Math.pow(freq, 5) - 2.118150887518656e-11 * Math.pow(freq, 3) + 5.559488023498642e-4 * freq, rI = 1.246332637532143e-4 * freq / Math.hypot(h1, h2);
+                            return 18.2 + linearTodB(rI);
+                    }
+                    return 0; // unknown filter
+                };
+                // draws (stroke) a bar from x,y1 to x,y2
+                var strokeBar = function(x, y1, y2) {
+                    _ctx.beginPath();
+                    _ctx.moveTo(x, y1);
+                    _ctx.lineTo(x, y2);
+                    _ctx.stroke();
+                };
+                // conditionally strokes current path on canvas
+                var strokeIf = function(flag) {
+                    if (flag && _lineWidth) {
+                        var alpha = _ctx.globalAlpha;
+                        _ctx.globalAlpha = 1;
+                        _ctx.stroke();
+                        _ctx.globalAlpha = alpha;
+                    }
+                };
+                // converts a value in [0;1] range to a height in pixels that fits into the current LED elements
+                var ledPosY = function(value) {
+                    return Math.max(0, (value * ledCount | 0) * (ledHeight + ledSpaceV) - ledSpaceV);
+                };
+                // update energy information
+                var updateEnergy = function(newVal) {
+                    _energy.val = newVal;
+                    if (_energy.peak > 0) {
+                        _energy.hold--;
+                        if (_energy.hold < 0) _energy.peak += _energy.hold * gravity / fpsSquared / canvas.height * _this1._pixelRatio;
+                    // TO-DO: replace `canvas.height * this._pixelRatio` with `maxNominalHeight` when implementing dual-channel energy
+                    }
+                    if (newVal >= _energy.peak) {
+                        _energy.peak = newVal;
+                        _energy.hold = holdFrames;
+                    }
+                };
+                /* MAIN FUNCTION */ if (overlay) _ctx.clearRect(0, 0, canvas.width, canvas.height);
+                var currentEnergy = 0;
+                var nBars = _bars.length, nChannels = isSingle ? 1 : 2;
+                for(var channel = 0; channel < nChannels; channel++)_this = this, _loop(channel);
+                 // for ( let channel = 0; channel < nChannels; channel++ ) {
+                updateEnergy(currentEnergy / (nBars << nChannels - 1));
+                if (useCanvas) {
+                    // Mirror effect
+                    if (_mirror && !_radial && !isDualHorizontal) {
+                        _ctx.setTransform(-1, 0, 0, 1, canvas.width - initialX, 0);
+                        _ctx.drawImage(canvas, initialX, 0, centerX, canvas.height, 0, 0, centerX, canvas.height);
+                        _ctx.setTransform(1, 0, 0, 1, 0, 0);
+                    }
+                    // restore solid lines
+                    _ctx.setLineDash([]);
+                    // draw frequency scale (X-axis)
+                    drawScaleX();
+                }
+                // display current frame rate
+                if (this.showFPS) {
+                    var size = canvasX.height;
+                    _ctx.font = "bold ".concat(size, "px ").concat($f42824ca2289e973$var$FONT_FAMILY);
+                    _ctx.fillStyle = $f42824ca2289e973$var$FPS_COLOR;
+                    _ctx.textAlign = 'right';
+                    _ctx.fillText(Math.round(_fps), canvas.width - size, size * 2);
+                }
+                // call callback function, if defined
+                if (this.onCanvasDraw) {
+                    _ctx.save();
+                    _ctx.fillStyle = _ctx.strokeStyle = _canvasGradients[0];
+                    this.onCanvasDraw(this, {
+                        timestamp: timestamp,
+                        canvasGradients: _canvasGradients
+                    });
+                    _ctx.restore();
+                }
+            }
+        },
+        {
+            /**
+	 * Return scaled frequency according to the selected scale
+	 */ key: "_freqScaling",
+            value: function _freqScaling(freq) {
+                switch(this._frequencyScale){
+                    case $f42824ca2289e973$var$SCALE_LOG:
+                        return Math.log2(freq);
+                    case $f42824ca2289e973$var$SCALE_BARK:
+                        return 26.81 * freq / (1960 + freq) - .53;
+                    case $f42824ca2289e973$var$SCALE_MEL:
+                        return Math.log2(1 + freq / 700);
+                    case $f42824ca2289e973$var$SCALE_LINEAR:
+                        return freq;
+                }
+            }
+        },
+        {
+            /**
+	 * Return the FFT data bin (array index) which represents a given frequency
+	 */ key: "_freqToBin",
+            value: function _freqToBin(freq) {
+                var method = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 'round';
+                var max = this._analyzer[0].frequencyBinCount - 1, bin = Math[method](freq * this.fftSize / this.audioCtx.sampleRate);
+                return bin < max ? bin : max;
+            }
+        },
+        {
+            /**
+	 * Generate currently selected gradient
+	 */ key: "_makeGrad",
+            value: function _makeGrad() {
+                var _this, _loop = function(_i, _iter) {
+                    var channel = _iter[_i];
+                    var _ctx1;
+                    var currGradient = _this._gradients[_this._selectedGrads[channel]], colorStops = currGradient.colorStops, isHorizontal = currGradient.dir == 'h';
+                    var grad = void 0;
+                    if (_radial) grad = _ctx.createRadialGradient(centerX, centerY, outerRadius, centerX, centerY, innerRadius - (outerRadius - innerRadius) * isDualVertical);
+                    else grad = (_ctx1 = _ctx).createLinearGradient.apply(_ctx1, (0, $2f989756f431e05e$export$71511d61b312f219)(isHorizontal ? [
+                        initialX,
+                        0,
+                        initialX + analyzerWidth,
+                        0
+                    ] : [
+                        0,
+                        0,
+                        0,
+                        gradientHeight
+                    ]));
+                    if (colorStops) {
+                        var _loop = function(channelArea) {
+                            var maxIndex = colorStops.length - 1;
+                            colorStops.forEach(function(colorStop, index) {
+                                var offset = colorStop.pos;
+                                // in dual mode (not split), use half the original offset for each channel
+                                if (dual) offset /= 2;
+                                // constrain the offset within the useful analyzer areas (avoid reflex areas)
+                                if (isDualVertical && !isLumi && !_radial && !isHorizontal) {
+                                    offset *= analyzerRatio;
+                                    // skip the first reflex area in split mode
+                                    if (!dual && offset > .5 * analyzerRatio) offset += .5 * _reflexRatio;
+                                }
+                                // only for dual-vertical non-split gradient (creates full gradient on both halves of the canvas)
+                                if (channelArea == 1) {
+                                    // add colors in reverse order if radial or lumi are active
+                                    if (_radial || isLumi) {
+                                        var revIndex = maxIndex - index;
+                                        colorStop = colorStops[revIndex];
+                                        offset = 1 - colorStop.pos / 2;
+                                    } else {
+                                        // if the first offset is not 0, create an additional color stop to prevent bleeding from the first channel
+                                        if (index == 0 && offset > 0) grad.addColorStop(.5, colorStop.color);
+                                        // bump the offset to the second half of the gradient
+                                        offset += .5;
+                                    }
+                                }
+                                // add gradient color stop
+                                grad.addColorStop(offset, colorStop.color);
+                                // create additional color stop at the end of first channel to prevent bleeding
+                                if (isDualVertical && index == maxIndex && offset < .5) grad.addColorStop(.5, colorStop.color);
+                            });
+                        };
+                        var dual = isDualVertical && !_this._splitGradient && (!isHorizontal || _radial);
+                        for(var channelArea = 0; channelArea < 1 + dual; channelArea++)_loop(channelArea);
+                         // for ( let channelArea = 0; channelArea < 1 + dual; channelArea++ )
+                    }
+                    _this._canvasGradients[channel] = grad;
+                };
+                if (!this._ready) return;
+                var _this1 = this, canvas = _this1.canvas, _ctx = _this1._ctx, _radial = _this1._radial, _reflexRatio = _this1._reflexRatio, _this__aux = this._aux, analyzerWidth = _this__aux.analyzerWidth, centerX = _this__aux.centerX, centerY = _this__aux.centerY, initialX = _this__aux.initialX, innerRadius = _this__aux.innerRadius, outerRadius = _this__aux.outerRadius, isLumi = this._flg.isLumi, isDualVertical = this._chLayout == $f42824ca2289e973$var$CHANNEL_VERTICAL, analyzerRatio = 1 - _reflexRatio, gradientHeight = isLumi ? canvas.height : canvas.height * (1 - _reflexRatio * !isDualVertical) | 0;
+                // for vertical stereo we keep the full canvas height and handle the reflex areas while generating the color stops
+                for(var _i = 0, _iter = [
+                    0,
+                    1
+                ]; _i < _iter.length; _i++)_this = this, _loop(_i, _iter);
+                 // for ( const channel of [0,1] )
+            }
+        },
+        {
+            /**
+	 * Normalize a dB value in the [0;1] range
+	 */ key: "_normalizedB",
+            value: function _normalizedB(value) {
+                var isLinear = this._linearAmplitude, boost = isLinear ? 1 / this._linearBoost : 1, clamp = function(val, min, max) {
+                    return val <= min ? min : val >= max ? max : val;
+                }, dBToLinear = function(val) {
+                    return Math.pow(10, val / 20);
+                };
+                var maxValue = this.maxDecibels, minValue = this.minDecibels;
+                if (isLinear) {
+                    maxValue = dBToLinear(maxValue);
+                    minValue = dBToLinear(minValue);
+                    value = Math.pow(dBToLinear(value), boost);
+                }
+                return clamp((value - minValue) / Math.pow(maxValue - minValue, boost), 0, 1);
+            }
+        },
+        {
+            /**
+	 * Internal function to change canvas dimensions on demand
+	 */ key: "_setCanvas",
+            value: function _setCanvas(reason) {
+                if (!this._ready) return;
+                var _this = this, canvas = _this.canvas, _ctx = _this._ctx, canvasX = this._scaleX.canvas, pixelRatio = window.devicePixelRatio / (this._loRes + 1);
+                var screenWidth = window.screen.width * pixelRatio, screenHeight = window.screen.height * pixelRatio;
+                var ref;
+                // Fix for iOS Safari - swap width and height when in landscape
+                if (Math.abs(window.orientation) == 90 && screenWidth < screenHeight) ref = [
+                    screenHeight,
+                    screenWidth
+                ], screenWidth = ref[0], screenHeight = ref[1], ref;
+                var isFullscreen = this.isFullscreen, isCanvasFs = isFullscreen && this._fsEl == canvas, newWidth = isCanvasFs ? screenWidth : (this._width || this._container.clientWidth || this._defaultWidth) * pixelRatio | 0, newHeight = isCanvasFs ? screenHeight : (this._height || this._container.clientHeight || this._defaultHeight) * pixelRatio | 0;
+                // set/update object properties
+                this._pixelRatio = pixelRatio;
+                this._fsWidth = screenWidth;
+                this._fsHeight = screenHeight;
+                // if this is not the constructor call and canvas dimensions haven't changed, quit
+                if (reason != $f42824ca2289e973$var$REASON_CREATE && canvas.width == newWidth && canvas.height == newHeight) return;
+                // apply new dimensions
+                canvas.width = newWidth;
+                canvas.height = newHeight;
+                // if not in overlay mode, paint the canvas black
+                if (!this.overlay) {
+                    _ctx.fillStyle = '#000';
+                    _ctx.fillRect(0, 0, newWidth, newHeight);
+                }
+                // set lineJoin property for area fill mode (this is reset whenever the canvas size changes)
+                _ctx.lineJoin = 'bevel';
+                // update dimensions of the scale canvas
+                canvasX.width = newWidth;
+                canvasX.height = Math.max(20 * pixelRatio, Math.min(newWidth, newHeight) / 32 | 0);
+                // calculate bar positions and led options
+                this._calcBars();
+                // (re)generate gradient
+                this._makeGrad();
+                // detect fullscreen changes (for Safari)
+                if (this._fsStatus !== undefined && this._fsStatus !== isFullscreen) reason = $f42824ca2289e973$var$REASON_FSCHANGE;
+                this._fsStatus = isFullscreen;
+                // call the callback function, if defined
+                if (this.onCanvasResize) this.onCanvasResize(reason, this);
+            }
+        },
+        {
+            /**
+	 * Select a gradient for one or both channels
+	 *
+	 * @param {string} name gradient name
+	 * @param [{number}] desired channel (0 or 1) - if empty or invalid, sets both channels
+	 */ key: "_setGradient",
+            value: function _setGradient(name, channel) {
+                if (!this._gradients.hasOwnProperty(name)) throw new $f42824ca2289e973$var$AudioMotionError($f42824ca2289e973$var$ERR_UNKNOWN_GRADIENT, name);
+                if (![
+                    0,
+                    1
+                ].includes(channel)) {
+                    this._selectedGrads[1] = name;
+                    channel = 0;
+                }
+                this._selectedGrads[channel] = name;
+                this._makeGrad();
+            }
+        },
+        {
+            /**
+	 * Set object properties
+	 */ key: "_setProps",
+            value: function _setProps(options, useDefaults) {
+                // callback functions properties
+                var callbacks = [
+                    'onCanvasDraw',
+                    'onCanvasResize'
+                ];
+                // properties not in the defaults (`stereo` is deprecated)
+                var extraProps = [
+                    'gradientLeft',
+                    'gradientRight',
+                    'stereo'
+                ];
+                // build an array of valid properties; `start` is not an actual property and is handled after setting everything else
+                var validProps = Object.keys($f42824ca2289e973$var$DEFAULT_SETTINGS).filter(function(e) {
+                    return e != 'start';
+                }).concat(callbacks, extraProps);
+                if (useDefaults || options === undefined) options = (0, $7d9dc0a4a5ea26ca$export$71511d61b312f219)({}, $f42824ca2289e973$var$DEFAULT_SETTINGS, options); // merge options with defaults
+                var _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
+                try {
+                    for(var _iterator = Object.keys(options)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true){
+                        var prop = _step.value;
+                        if (callbacks.includes(prop) && typeof options[prop] !== 'function') this[prop] = undefined;
+                        else if (validProps.includes(prop)) this[prop] = options[prop];
+                    }
+                } catch (err) {
+                    _didIteratorError = true;
+                    _iteratorError = err;
+                } finally{
+                    try {
+                        if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+                            _iterator["return"]();
+                        }
+                    } finally{
+                        if (_didIteratorError) {
+                            throw _iteratorError;
+                        }
+                    }
+                }
+                // deprecated - move this to the constructor in the next major release (`start` should be constructor-specific)
+                if (options.start !== undefined) this.toggleAnalyzer(options.start);
+            }
+        }
+    ], [
+        {
+            key: "version",
+            get: function get() {
+                return $f42824ca2289e973$var$VERSION;
+            }
+        }
+    ]);
+    return AudioMotionAnalyzer;
+}();
+var $f42824ca2289e973$export$2e2bcd8739ae039 = $f42824ca2289e973$export$44e9f5d136720861;
+
+
+var $482cca33c902e464$exports = {};
 
 
 
@@ -41278,37 +44145,8 @@ var $7559dd03e6565bae$export$185802fd694ee1f5 = function(param) {
 };
 
 
-function $eacc8cf69cab628a$export$71511d61b312f219(self) {
-    if (self === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return self;
-}
 
 
-
-
-function $1c383a15c332f34f$export$71511d61b312f219(o) {
-    $1c383a15c332f34f$export$71511d61b312f219 = Object.setPrototypeOf ? Object.getPrototypeOf : function getPrototypeOf(o) {
-        return o.__proto__ || Object.getPrototypeOf(o);
-    };
-    return $1c383a15c332f34f$export$71511d61b312f219(o);
-}
-
-
-
-
-
-var $f8EIX = parcelRequire("f8EIX");
-function $365beb3c3a7a84b0$export$71511d61b312f219(self, call) {
-    if (call && ((0, $f8EIX._)(call) === "object" || typeof call === "function")) return call;
-    return (0, $eacc8cf69cab628a$export$71511d61b312f219)(self);
-}
-
-
-function $1ddf5ed2eb9e5507$export$71511d61b312f219(_this, derived, args) {
-    // Super
-    derived = (0, $1c383a15c332f34f$export$71511d61b312f219)(derived);
-    return (0, $365beb3c3a7a84b0$export$71511d61b312f219)(_this, (0, $18cab26a80e59e50$export$71511d61b312f219)() ? Reflect.construct(derived, args || [], (0, $1c383a15c332f34f$export$71511d61b312f219)(_this).constructor) : derived.apply(_this, args));
-}
 
 
 
@@ -41340,56 +44178,10 @@ function $f094e668382c6e3b$export$71511d61b312f219(target, property, receiver) {
 
 
 
-function $fbf4429d6978b43d$export$71511d61b312f219(subClass, superClass) {
-    if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
-    subClass.prototype = Object.create(superClass && superClass.prototype, {
-        constructor: {
-            value: subClass,
-            writable: true,
-            configurable: true
-        }
-    });
-    if (superClass) (0, $4044e6f65c8ffd33$export$71511d61b312f219)(subClass, superClass);
-}
 
 
 
 
-
-
-
-
-
-function $d4b7d21ff144f6bc$export$71511d61b312f219(fn) {
-    return Function.toString.call(fn).indexOf("[native code]") !== -1;
-}
-
-
-
-function $5d11f9b7d75f07a0$export$71511d61b312f219(Class) {
-    var _cache = typeof Map === "function" ? new Map() : undefined;
-    $5d11f9b7d75f07a0$export$71511d61b312f219 = function(Class) {
-        if (Class === null || !(0, $d4b7d21ff144f6bc$export$71511d61b312f219)(Class)) return Class;
-        if (typeof Class !== "function") throw new TypeError("Super expression must either be null or a function");
-        if (typeof _cache !== "undefined") {
-            if (_cache.has(Class)) return _cache.get(Class);
-            _cache.set(Class, Wrapper);
-        }
-        function Wrapper() {
-            return (0, $e5c6d136e62d2d82$export$71511d61b312f219)(Class, arguments, (0, $1c383a15c332f34f$export$71511d61b312f219)(this).constructor);
-        }
-        Wrapper.prototype = Object.create(Class.prototype, {
-            constructor: {
-                value: Wrapper,
-                enumerable: false,
-                writable: true,
-                configurable: true
-            }
-        });
-        return (0, $4044e6f65c8ffd33$export$71511d61b312f219)(Wrapper, Class);
-    };
-    return $5d11f9b7d75f07a0$export$71511d61b312f219(Class);
-}
 
 
 
@@ -46396,7 +49188,8 @@ var $2f28d269c6e274ea$export$471f7ae5c4103ae1 = {
     history_of_ids: [],
     readyToClose: false,
     webpush_do_not_annoy: [],
-    files: []
+    files: [],
+    audiocontrol: ""
 };
 var $2f28d269c6e274ea$export$a5a6e0b888b2c992 = {};
 var $2f28d269c6e274ea$var$userAgent = navigator.userAgent || "";
@@ -46771,7 +49564,7 @@ function $2f28d269c6e274ea$var$setupConnectionEvents(conn) {
             if (data.type === "audio") {
                 var audioBlob;
                 var mimetype = data.mimeType || "audio/webm";
-                if (data.content instanceof Blob) audioBlob = data.audio;
+                if (data.audio instanceof Blob) audioBlob = data.audio;
                 else if (data.audio instanceof ArrayBuffer || data.audio instanceof Uint8Array) audioBlob = new Blob([
                     data.audio
                 ], {
@@ -47061,21 +49854,28 @@ var $2f28d269c6e274ea$var$chat_data_history = [];
     });
     else $2f28d269c6e274ea$export$471f7ae5c4103ae1.history_of_ids = e;
 })["catch"](function() {});
-var $2f28d269c6e274ea$var$write = function write() {
-    if ($2f28d269c6e274ea$export$471f7ae5c4103ae1.action != "write") {
-        if (document.getElementById("message-input") != null) {
-            document.getElementById("message-input").style.display = "block";
-            document.querySelector("div#message-input input").focus();
-        }
-        $2f28d269c6e274ea$export$471f7ae5c4103ae1.action = "write";
-    } else {
-        if (document.getElementById("message-input") != null) {
-            document.querySelector("div#message-input input").value = "";
-            document.getElementById("message-input").style.display = "none";
-        }
-        $2f28d269c6e274ea$var$focus_last_article();
-        $2f28d269c6e274ea$export$471f7ae5c4103ae1.action = "";
+/*
+let write = function () {
+  if (status.action != "write") {
+    if (document.getElementById("message-input") != null) {
+      document.getElementById("message-input").style.display = "block";
+      document.querySelector("div#message-input input").focus();
     }
+    status.action = "write";
+  } else {
+    if (document.getElementById("message-input") != null) {
+      document.querySelector("div#message-input input").value = "";
+      document.getElementById("message-input").style.display = "none";
+    }
+
+    focus_last_article();
+    status.action = "";
+  }
+};
+*/ var $2f28d269c6e274ea$var$write = function() {
+    $2f28d269c6e274ea$export$471f7ae5c4103ae1.action = $2f28d269c6e274ea$export$471f7ae5c4103ae1.action === "write" ? "" : "write";
+    (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports))).redraw();
+    console.log("yeah");
 };
 //list files
 (0, $e3f93859bd66fa1e$export$99c802f9c0aea792)("json", function(e) {
@@ -47261,7 +50061,7 @@ var $2f28d269c6e274ea$var$sendMessage = function() {
     if (type === "audio") {
         $2f28d269c6e274ea$var$chat_data.push({
             nickname: $2f28d269c6e274ea$export$a5a6e0b888b2c992.nickname,
-            content: msg,
+            content: "",
             audio: msg,
             datetime: new Date(),
             type: type,
@@ -47273,7 +50073,7 @@ var $2f28d269c6e274ea$var$sendMessage = function() {
         $2f28d269c6e274ea$var$focus_last_article();
         msg.arrayBuffer().then(function(buffer) {
             message = {
-                content: buffer,
+                content: "",
                 audio: buffer,
                 nickname: $2f28d269c6e274ea$export$a5a6e0b888b2c992.nickname,
                 type: type,
@@ -47956,44 +50756,57 @@ function $2f28d269c6e274ea$var$_deleteOldChatData() {
     return $2f28d269c6e274ea$var$_deleteOldChatData.apply(this, arguments);
 }
 $2f28d269c6e274ea$var$deleteOldChatData();
-//audio
 var $2f28d269c6e274ea$var$AudioComponent = {
     oninit: function(vnode) {
+        $2f28d269c6e274ea$var$key_delay();
+        $2f28d269c6e274ea$var$previousView();
         vnode.state.isPlaying = false;
         vnode.state.audio = null;
-        if (vnode.attrs.src instanceof Blob) vnode.state.audioSrc = URL.createObjectURL(vnode.attrs.src);
+        if ($2f28d269c6e274ea$export$471f7ae5c4103ae1.audioBlob instanceof Blob) vnode.state.audioSrc = URL.createObjectURL($2f28d269c6e274ea$export$471f7ae5c4103ae1.audioBlob);
         else {
             console.error("Invalid src: Expected a Blob.");
             vnode.state.audioSrc = null;
         }
     },
-    onbeforeupdate: function(vnode, old) {
-        if (vnode.attrs.src !== old.attrs.src) {
-            if (vnode.state.audioSrc) URL.revokeObjectURL(vnode.state.audioSrc);
-            if (vnode.attrs.src instanceof Blob) vnode.state.audioSrc = URL.createObjectURL(vnode.attrs.src);
-            else {
-                console.error("Invalid src: Expected a Blob.");
-                vnode.state.audioSrc = null;
-            }
-        }
-    },
     onremove: function(vnode) {
+        $2f28d269c6e274ea$var$key_delay();
         if (vnode.state.audioSrc) URL.revokeObjectURL(vnode.state.audioSrc);
         if (vnode.state.audio) {
             vnode.state.audio.pause();
-            vnode.state.audio.src = ""; // Clear the source to release resources
+            vnode.state.audio.src = "";
         }
+        if (vnode.state.audioMotion) {
+            vnode.state.audioMotion.disconnectAudio();
+            vnode.state.audioMotion.destroy();
+            vnode.state.audioMotion = null;
+        }
+        $2f28d269c6e274ea$export$471f7ae5c4103ae1.audiocontrol = null;
     },
     view: function(vnode) {
-        var togglePlayPause = function togglePlayPause(vnode) {
-            if (vnode.state.audio) vnode.state.isPlaying ? vnode.state.audio.pause() : vnode.state.audio.play();
-        };
         return (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports)))("div.audio-player", [
             vnode.state.audioSrc ? (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports)))("audio", {
+                id: "audio-elm",
                 src: vnode.state.audioSrc,
                 oncreate: function(audioVnode) {
                     vnode.state.audio = audioVnode.dom;
+                    $2f28d269c6e274ea$export$471f7ae5c4103ae1.audiocontrol = {
+                        play: function() {
+                            var _vnode_state_audio;
+                            return (_vnode_state_audio = vnode.state.audio) === null || _vnode_state_audio === void 0 ? void 0 : _vnode_state_audio.play();
+                        },
+                        pause: function() {
+                            var _vnode_state_audio;
+                            return (_vnode_state_audio = vnode.state.audio) === null || _vnode_state_audio === void 0 ? void 0 : _vnode_state_audio.pause();
+                        },
+                        toggle: function() {
+                            if (vnode.state.audio) vnode.state.audio.paused ? vnode.state.audio.play() : vnode.state.audio.pause();
+                        }
+                    };
+                    (0, $e3f93859bd66fa1e$export$247be4ede8e3a24a)("<img src='assets/image/play.svg'>", "", "");
+                    if ($2f28d269c6e274ea$export$471f7ae5c4103ae1.notKaiOS) (0, $e3f93859bd66fa1e$export$7ce2ea7c45ae9a07)("<img src='assets/image/back.svg'>", "", "");
+                    else (0, $e3f93859bd66fa1e$export$7ce2ea7c45ae9a07)("", "", "");
                     audioVnode.dom.controls = false;
+                    audioVnode.dom.autoplay = true;
                     audioVnode.dom.addEventListener("play", function() {
                         vnode.state.isPlaying = true;
                         (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports))).redraw();
@@ -48014,12 +50827,28 @@ var $2f28d269c6e274ea$var$AudioComponent = {
                     display: "none"
                 }
             }) : (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports)))("p", "Audio source is invalid or not provided."),
-            (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports)))("button", {
-                onclick: function() {
-                    return togglePlayPause(vnode);
-                },
-                disabled: !vnode.state.audioSrc
-            }, vnode.state.isPlaying ? "Pause" : "Play")
+            (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports)))("div", {
+                id: "audiovis",
+                "class": "item",
+                oncreate: function() {
+                    var audioMotion = new (0, $f42824ca2289e973$export$2e2bcd8739ae039)(document.getElementById("audiovis"), {
+                        source: document.getElementById("audio-elm"),
+                        height: 200,
+                        mode: 0,
+                        gradient: "orangered",
+                        colorMode: "bar-level",
+                        overlay: true,
+                        showBgColor: false,
+                        showScaleX: false,
+                        showScaleY: false,
+                        smoothing: 0.8,
+                        barSpace: 0.2,
+                        reflexRatio: 0,
+                        lineWidth: 10
+                    });
+                    audioMotion.canvas.style.background = "none";
+                }
+            })
         ]);
     }
 };
@@ -49020,14 +51849,18 @@ var $2f28d269c6e274ea$var$chat = {
                     } else console.log("user check not possible");
                 }, 2000);
             }
-        }, (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports)))("div", {
+        }, $2f28d269c6e274ea$export$471f7ae5c4103ae1.action === "write" ? (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports)))("div", {
             id: "message-input",
             type: "text",
             "class": "width-100"
         }, [
             (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports)))("input", {
                 type: "text",
+                oncreate: function(v) {
+                    v.dom.focus();
+                },
                 onblur: function() {
+                    $2f28d269c6e274ea$var$focus_last_article();
                     setTimeout(function() {
                         var a = (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports))).route.get();
                         if (a.startsWith("/chat")) (0, $e3f93859bd66fa1e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
@@ -49045,9 +51878,9 @@ var $2f28d269c6e274ea$var$chat = {
                     if (value !== "" && $2f28d269c6e274ea$export$471f7ae5c4103ae1.action === "write") $2f28d269c6e274ea$var$sendMessage(undefined, "typing", undefined, undefined, undefined);
                 }
             })
-        ]), $2f28d269c6e274ea$var$chat_data.map(function(item, index) {
-            var last = false;
-            if (index === $2f28d269c6e274ea$var$chat_data.length - 1) last = true;
+        ]) : null, $2f28d269c6e274ea$var$chat_data.map(function(item, index) {
+            var currentIndex = index;
+            var isLast = currentIndex === $2f28d269c6e274ea$var$chat_data.length - 1;
             var ff = {
                 lat: "",
                 lng: ""
@@ -49069,7 +51902,7 @@ var $2f28d269c6e274ea$var$chat = {
                 "data-lat": ff.lat,
                 "data-lng": ff.lng,
                 oncreate: function(vnode) {
-                    if (last) {
+                    if (isLast) {
                         vnode.dom.focus();
                         vnode.dom.scrollIntoView({
                             behavior: "smooth",
@@ -49081,6 +51914,12 @@ var $2f28d269c6e274ea$var$chat = {
                     if (item.type == "gps" || item.type == "gps_live") {
                         var f = JSON.parse(item.content);
                         (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports))).route.set("/map_view?lat=" + f.lat + "&lng=" + f.lng + "&id=" + item.nickname);
+                    }
+                    if (item.type == "audio") {
+                        if (item.audio instanceof Blob) {
+                            $2f28d269c6e274ea$export$471f7ae5c4103ae1.audioBlob = item.audio;
+                            (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports))).route.set("/AudioComponent");
+                        } else (0, $e3f93859bd66fa1e$export$6593825dc0f3a767)("audio file not valid", 2000);
                     }
                 },
                 onfocus: function() {
@@ -49100,7 +51939,9 @@ var $2f28d269c6e274ea$var$chat = {
                     }
                     if (item.type == "audio") {
                         $2f28d269c6e274ea$export$471f7ae5c4103ae1.current_article_type = "audio";
-                        (0, $e3f93859bd66fa1e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/play.svg'>", "<img src='assets/image/option.svg'>");
+                        $2f28d269c6e274ea$export$471f7ae5c4103ae1.audioBlob = item.audio;
+                        if ($2f28d269c6e274ea$export$471f7ae5c4103ae1.notKaiOS) (0, $e3f93859bd66fa1e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "", "<img src='assets/image/option.svg'>");
+                        else (0, $e3f93859bd66fa1e$export$247be4ede8e3a24a)("<img src='assets/image/pencil.svg'>", "<img src='assets/image/play.svg'>", "<img src='assets/image/option.svg'>");
                     }
                     if (item.type == "text") {
                         $2f28d269c6e274ea$export$471f7ae5c4103ae1.current_article_type = "text";
@@ -49125,11 +51966,13 @@ var $2f28d269c6e274ea$var$chat = {
                 item.type === "gps_live" ? (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports)))("div", {
                     "class": "message-map"
                 }) : null,
-                item.type === "audio" ? (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports)))("div", {
-                    "class": "audioplayer"
-                }, (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports)))($2f28d269c6e274ea$var$AudioComponent, {
-                    src: item.content
-                })) : null,
+                item.type === "audio" ? (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports)))("button", {
+                    "class": "audioplayer-button"
+                }, [
+                    (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports)))("img", {
+                        src: "./assets/image/audio.png"
+                    })
+                ]) : null,
                 (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports)))("div", {
                     "class": "flex message-head"
                 }, [
@@ -49262,7 +52105,8 @@ var $2f28d269c6e274ea$var$intro = {
     "/waiting": $2f28d269c6e274ea$var$waiting,
     "/invite": $2f28d269c6e274ea$var$invite,
     "/audiorecorder_view": $2f28d269c6e274ea$var$audiorecorder_view,
-    "/filelist": $2f28d269c6e274ea$var$filelist
+    "/filelist": $2f28d269c6e274ea$var$filelist,
+    "/AudioComponent": $2f28d269c6e274ea$var$AudioComponent
 });
 function $2f28d269c6e274ea$var$scrollToCenter() {
     var activeElement = document.activeElement;
@@ -49391,6 +52235,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
             $2f28d269c6e274ea$export$471f7ae5c4103ae1.action = "";
         }
         if ((0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports))).route.get() == "/options") (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports))).route.set("/chat?id=" + $2f28d269c6e274ea$export$a5a6e0b888b2c992.custom_peer);
+        if ((0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports))).route.get() == "/AudioComponent") (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports))).route.set("/chat?id=" + $2f28d269c6e274ea$export$a5a6e0b888b2c992.custom_peer_id);
     });
     // Function to simulate key press events
     function simulateKeyPress(k) {
@@ -49432,6 +52277,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
     // ////////////
     function shortpress_action(param) {
         if (!$2f28d269c6e274ea$export$471f7ae5c4103ae1.viewReady) return false;
+        console.log("next");
         var route = (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports))).route.get();
         switch(param.key){
             case "Backspace":
@@ -49490,6 +52336,11 @@ document.addEventListener("DOMContentLoaded", function(e) {
                     $2f28d269c6e274ea$var$sendMessage(document.getElementsByTagName("input")[0].value, "text", undefined, undefined);
                     $2f28d269c6e274ea$var$write();
                 }
+                if (route.startsWith("/AudioCo")) {
+                    var _status_audiocontrol;
+                    (_status_audiocontrol = $2f28d269c6e274ea$export$471f7ae5c4103ae1.audiocontrol) === null || _status_audiocontrol === void 0 ? void 0 : _status_audiocontrol.toggle();
+                    return;
+                }
                 if (route.startsWith("audiorecorder_view")) // Stop recording and get the recorded data
                 $2f28d269c6e274ea$var$audioRecorder.stopRecording().then(function(param) {
                     var audioBlob = param.audioBlob, mimeType = param.mimeType;
@@ -49538,11 +52389,10 @@ document.addEventListener("DOMContentLoaded", function(e) {
                 }
                 if (route.startsWith("/chat")) {
                     if (document.activeElement.tagName == "ARTICLE") {
-                        if ($2f28d269c6e274ea$export$471f7ae5c4103ae1.current_article_type == "audio") document.activeElement.querySelectorAll("div.audio-player").forEach(function(e) {
-                            var playPauseButton = e.querySelector("button");
-                            // Check if the play/pause button exists and trigger a click event
-                            if (playPauseButton) playPauseButton.click();
-                        });
+                        if ($2f28d269c6e274ea$export$471f7ae5c4103ae1.current_article_type == "audio") {
+                            if ($2f28d269c6e274ea$export$471f7ae5c4103ae1.audioBlob instanceof Blob) (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports))).route.set("/AudioComponent");
+                            else (0, $e3f93859bd66fa1e$export$6593825dc0f3a767)("audio file not valid", 2000);
+                        }
                         if ($2f28d269c6e274ea$export$471f7ae5c4103ae1.current_article_type == "gps_live") (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports))).route.set("/map_view");
                         if ($2f28d269c6e274ea$export$471f7ae5c4103ae1.current_article_type == "gps") (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports))).route.set("/map_view?lat=" + document.activeElement.getAttribute("data-lat") + "&lng=" + document.activeElement.getAttribute("data-lng") + "&id=" + document.activeElement.getAttribute("data-user-nickname"));
                         if ($2f28d269c6e274ea$export$471f7ae5c4103ae1.current_article_type == "image") {
@@ -49575,6 +52425,10 @@ document.addEventListener("DOMContentLoaded", function(e) {
         if (!$2f28d269c6e274ea$export$471f7ae5c4103ae1.viewReady) return false;
         if (evt.key == "Enter" && route == "/chat") evt.preventDefault();
         if (evt.key === "Backspace") {
+            if ((0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports))).route.get() == "/AudioComponent") {
+                (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports))).route.set("/chat?id=" + $2f28d269c6e274ea$export$a5a6e0b888b2c992.custom_peer_id);
+                return;
+            }
             if ((0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports))).route.get() == "/scan") {
                 (0, $18ce1d5e1f5a962a$export$55e6c60a43cc74e2)();
                 (0, (/*@__PURE__*/$parcel$interopDefault($85db5bf750b256bd$exports))).route.set("/start");
