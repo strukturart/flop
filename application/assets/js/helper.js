@@ -612,7 +612,7 @@ export let top_bar = function (left, center, right) {
   if (left == "" && center == "" && right == "") {
     document.querySelector("div#top-bar").style.display = "none";
   } else {
-    document.querySelector("div#top-bar").style.display = "flex";
+    document.querySelector("div#top-bar").style.display = "block";
   }
 };
 
@@ -1035,6 +1035,7 @@ export function createAudioRecorder() {
     stopRecording,
     getAudioContext,
     getStreamSourceNode,
+    cleanup,
   };
 }
 

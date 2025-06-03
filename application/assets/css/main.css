@@ -39,6 +39,11 @@
   display: none !important;
 }
 
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
 :focus {
   outline: none;
 }
@@ -58,18 +63,15 @@ body {
   position: relative;
   margin: 0px;
   padding: 0px;
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1.4rem;
   max-height: 100%;
   max-width: 100%;
   height: 100%;
   width: 100%;
   max-width: 100vw;
-  overflow: hidden;
   background: white;
-
-  background-image: radial-gradient(circle, #e2dddd 10%, transparent 11%);
-  background-size: 5px 5px;
+  overflow: scroll;
 }
 
 video {
@@ -78,25 +80,26 @@ video {
 }
 
 small {
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 #app {
   position: relative;
   height: 100%;
   width: 100%;
+  background: white;
+  background-image: radial-gradient(circle, #e2dddd 10%, transparent 11%);
+  background-size: 5px 5px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 #wrapper {
-  min-width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
   overflow: hidden;
 }
 
 h1 {
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 h2 {
@@ -136,19 +139,6 @@ img[src=" "] {
   background: rgb(7, 7, 7);
 }
 
-#top-bar .avatar {
-  margin: 5px 0 0 0;
-
-  min-height: 35px;
-  min-width: 35px;
-
-  max-height: 35px;
-  max-width: 35px;
-
-  background: rgb(7, 7, 7);
-  border-radius: 50%;
-}
-
 button.vip-button {
   background: rgb(45, 100, 208);
   color: white;
@@ -166,16 +156,15 @@ button.vip-button:focus {
 }
 
 button {
-  font-size: 1rem;
   background: rgb(255, 255, 255);
-  width: 100%;
-  padding: 10px;
+  padding: 8px;
+  width: 90%;
   margin: 0px 0 15px 0px;
   color: black;
   border-radius: 10px;
   border: 2px solid gray;
+  font-size: 1rem;
   font-weight: 700;
-  max-height: 40px;
   font-family: "Roboto" !important;
   touch-action: none;
   overflow: hidden;
@@ -221,9 +210,9 @@ button.audioplayer-button img {
 }
 
 .addressbook-box {
-  width: 100%;
-  margin: 20vh 0 0 0;
+  margin: 10vh 0 0 0;
   padding: 0 0 60px 0;
+  min-width: 100%;
 }
 
 #addressbook button.addressbook-item {
@@ -234,6 +223,7 @@ button.audioplayer-button img {
   border: 0px;
   margin: 0 0 30px 0;
   position: relative;
+  min-width: 100%;
 }
 
 #addressbook button.addressbook-item img {
@@ -241,10 +231,15 @@ button.audioplayer-button img {
   width: 50px;
   background: rgb(7, 7, 7);
   border-radius: 50%;
+  position: absolute;
+  left: 5px;
+}
+
+#addressbook .addressbook-item-name {
+  text-align: left;
 }
 
 #addressbook button.addressbook-item .inner {
-  width: 90%;
   padding: 0 0 15px 10px !important;
 }
 
@@ -261,8 +256,7 @@ button.audioplayer-button img {
 }
 
 #addressbook button.addressbook-item .last-conversation-message {
-  min-width: 50%;
-  max-width: 50%;
+  max-height: 20px;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: left;
@@ -270,6 +264,8 @@ button.audioplayer-button img {
   margin: 10px 0 0 0;
   font-size: small;
   font-weight: 100;
+  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 #addressbook button.addressbook-item .last-conversation-date {
@@ -278,6 +274,7 @@ button.audioplayer-button img {
   margin: 10px 0 0 0;
   font-size: small;
   font-weight: 100;
+  text-align: right;
 }
 
 #addressbook button.addressbook-item .online-indicator {
@@ -291,6 +288,7 @@ button.audioplayer-button img {
   position: absolute;
   left: 10px;
   display: block;
+  z-index: 3;
 }
 
 #addressbook button[data-online="true"] .online-indicator {
@@ -318,7 +316,6 @@ button.audioplayer-button img {
 }
 
 a.button-style {
-  font-size: 1rem;
   background: rgb(255, 255, 255);
   width: 95%;
   padding: 5px;
@@ -410,6 +407,13 @@ label {
 
 #waiting {
   background: rgb(228, 100, 14);
+  min-width: 100vw;
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0px;
+  z-index: 2;
 }
 
 #waiting span {
@@ -455,7 +459,7 @@ div#intro img {
 #intro #version-box kbd {
   border: 2px solid pink;
   box-shadow: 2px 2px pink;
-  font-size: 0.6em;
+  font-size: small;
   line-height: 0.85em;
   display: block;
   font-weight: 600;
@@ -471,6 +475,7 @@ div#intro img {
   display: block;
   width: 100%;
   height: auto;
+  padding: 20px;
 }
 
 @keyframes intro_img {
@@ -503,50 +508,6 @@ div#intro img {
     display: none;
     opacity: 0;
   }
-}
-
-/*sound anomation*/
-
-.playing {
-  background: rgba(255, 255, 255, 0.1);
-  width: 4rem;
-  height: 4rem;
-  border-radius: 0.3rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding: 0.5rem;
-  box-sizing: border-box;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-}
-
-.playing__bar {
-  display: inline-block;
-  background: white;
-  width: 30%;
-  height: 100%;
-  animation: up-and-down 1.3s ease infinite alternate;
-}
-
-.playing__bar1 {
-  height: 60%;
-  background: red;
-}
-
-.playing__bar2 {
-  height: 30%;
-  animation-delay: -2.2s;
-  background: blue;
-}
-
-.playing__bar3 {
-  height: 75%;
-  animation-delay: -3.7s;
-  background: rgb(29, 165, 59);
 }
 
 #audiovis {
@@ -599,11 +560,8 @@ div#intro img {
 }
 
 .page {
-  padding: 10px;
-  width: 100%;
+  padding: 80px 10px 10px 10px;
 
-  min-width: 30%;
-  max-width: 30%;
   position: relative;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -656,26 +614,6 @@ div.nickname {
 /*/ //////////////////////////
 ///VIEWS////////////////*/
 
-div#options {
-  display: none;
-  position: absolute;
-  z-index: 4;
-  top: 0;
-  display: none;
-  padding: 5px;
-  height: 92vh;
-  overflow: hidden;
-  padding: 10px 0 0 0;
-}
-
-div#options div#import-text {
-  padding: 10px;
-  font-weight: bold;
-  margin: 0 0 20px 0;
-  text-align: center;
-  display: none;
-}
-
 div#map-container {
   width: 100%;
   position: fixed;
@@ -714,36 +652,31 @@ div#description div img {
 div#bottom-bar {
   position: fixed;
   z-index: 2000;
-  bottom: 10px;
+  bottom: 20px;
   left: 0px;
   right: 0px;
-  height: 60px;
+  height: 45px;
   z-index: 6;
   background: none;
-  min-width: 10vw;
-  display: flex;
-  justify-content: center; /* Horizontally center all child elements */
-  align-items: center; /* Vertically center all child elements */
 }
 
-div#bottom-bar div#inner {
+div#bottom-bar div div.inner {
   position: relative;
+  padding: 5px 10px 15px 10px;
+  background: white;
+  box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.3);
 }
 
-div#bottom-bar div {
+div#bottom-bar div div div {
   background: none;
   color: white;
-  padding: 2px;
-  font-size: 0.8rem;
+  padding: 3px;
 }
 
 div#bottom-bar div.button-left {
   background: none;
   color: white;
   padding: 2px;
-  width: 33.33%;
-  display: flex;
-  justify-content: flex-start;
 }
 
 div#bottom-bar div.button-left img {
@@ -762,23 +695,12 @@ div#bottom-bar div.button-right {
   background: none;
   color: white;
   padding: 2px;
-  width: 33.33%;
-  display: flex;
-  justify-content: flex-end;
 }
 
 div#bottom-bar div.button-center {
-  display: flex; /* Enable flexbox for the button-center div */
-  justify-content: center; /* Horizontally center the image */
-  align-items: center; /* Vertically center the image */
   background: none;
   color: white;
   padding: 2px;
-  width: 33.33%;
-}
-
-div#bottom-bar div.button-center img {
-  width: 30px;
 }
 
 div#bottom-bar div.button-left:hover {
@@ -801,65 +723,40 @@ div#top-bar {
   z-index: 2000;
   top: 0px;
   left: 0px;
-  height: 60px;
+  right: 0px;
+  height: 40px;
   z-index: 6;
+  background: none;
+}
+
+div#top-bar div.inner {
+  position: relative;
+  padding: 2px 10px 2px 10px;
   background: white;
-  min-width: 100vw;
-
-  display: none;
-  justify-content: center;
-  align-items: center;
-
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
 
-div#top-bar div.button-left:hover {
-  cursor: pointer;
+#top-bar .avatar {
+  margin: 5px 0 0 0;
+
+  min-height: 35px;
+  min-width: 35px;
+
+  max-height: 35px;
+  max-width: 35px;
+
+  background: rgb(7, 7, 7);
+  border-radius: 50%;
 }
 
-div#top-bar div.button-right:hover {
-  cursor: pointer;
-}
-
-div#top-bar div.button-center:hover {
-  cursor: pointer;
-}
-
-div#top-bar div#inner {
-  position: relative;
-}
-
-div#top-bar div {
+div#top-bar div div div {
   background: none;
-  color: black;
-  padding: 2px;
-  font-size: 0.8rem;
+  color: white;
 }
 
 div#top-bar div.button-left {
   background: none;
-  padding: 2px;
-  width: 32%;
-  display: flex;
-  justify-content: flex-start;
-}
-
-div#top-bar div.button-right {
-  background: none;
-  padding: 2px;
-  width: 32%;
-  display: flex;
-  justify-content: flex-end;
-  position: relative;
-}
-
-div#top-bar div.button-center {
-  display: flex; /* Enable flexbox for the button-center div */
-  justify-content: center; /* Horizontally center the image */
-  align-items: center; /* Vertically center the image */
-  background: none;
-  padding: 2px;
-  width: 32%;
+  color: white;
 }
 
 div#top-bar div.button-left img {
@@ -874,12 +771,36 @@ div#top-bar div.button-center img {
   width: 50px;
 }
 
+div#top-bar div.button-right {
+  background: none;
+  color: white;
+  padding: 2px;
+}
+
+div#top-bar div.button-center {
+  background: none;
+  color: white;
+  padding: 2px;
+}
+
+div#top-bar div.button-left:hover {
+  cursor: pointer;
+}
+
+div#top-bar div.button-right:hover {
+  cursor: pointer;
+}
+
+div#top-bar div.button-center:hover {
+  cursor: pointer;
+}
+
 div#top-bar #name {
   width: fit-content;
   background: silver !important;
   border-radius: 10px;
   padding: 3px 7px 3px 7px !important;
-  font-size: 1.2rem !important;
+  margin-top: 4px;
 }
 
 article {
@@ -892,7 +813,7 @@ article {
 }
 
 article div.user-date {
-  font-size: 0.8rem;
+  font-size: small;
   margin: 0 0 5px 0;
 }
 
@@ -1013,7 +934,7 @@ div.text {
 }
 
 article div.message-head {
-  font-size: 0.7rem;
+  font-size: small;
   color: gray;
   background: none;
   padding: 3px 3px 0px 3px;
@@ -1026,7 +947,7 @@ article div.message-head img.pod-icon {
 }
 
 article div.new-date {
-  font-size: 0.7rem;
+  font-size: small;
   color: rgb(0, 0, 0);
   background: none;
   padding: 3px;
@@ -1072,20 +993,19 @@ article div.message-head div:nth-child(2) {
 }
 
 div#message-input {
-  position: fixed;
   z-index: 5;
   background: none;
-  height: 40px;
   padding: 5px;
-  bottom: 70px;
-  margin: 0px auto;
+  height: 100vh;
 }
 
 div#message-input input {
   margin: 0 auto;
   border: 2px solid silver;
   border-radius: 10px;
-  width: 30vw;
+  position: absolute;
+  bottom: 80px;
+  height: 40px;
 }
 
 #start {
@@ -1094,13 +1014,13 @@ div#message-input input {
 
 #start p {
   overflow-y: scroll !important;
-  max-width: 700px;
+  padding: 50px 15px;
 }
 
 #start-text {
   overflow-y: scroll !important;
   padding: 20vh 0 50px 0;
-  height: 100vh;
+  margin: 20% 0;
 }
 
 #start-text > div {
@@ -1111,10 +1031,57 @@ div#message-input input {
   background: none;
 }
 
+#start #logo img {
+  width: 100%;
+  left: 0;
+  top: 0;
+  display: block;
+}
+
+#start #logo {
+  width: 120px;
+  height: auto;
+  position: relative;
+  margin-top: 30px;
+}
+
+#start #liberapay {
+  width: 100px;
+  height: auto;
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 2;
+}
+
+#start kbd#version {
+  border: 2px solid rgb(17, 2, 5);
+  box-shadow: 8px 8px rgb(46, 96, 233);
+  font-size: small;
+  line-height: 0.85em;
+  display: block;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 3px 5px;
+  white-space: nowrap;
+  color: white;
+  width: fit-content;
+  height: 20px;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 2;
+  color: black;
+}
+
 #app {
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
   padding: 0px 0 0 0;
   min-height: 100vh;
+  max-height: 100vh;
+  outline: 10px solid rgb(174, 173, 179);
 }
 
 article {
@@ -1126,14 +1093,13 @@ article img {
 }
 
 #chat {
-  max-width: 30vw;
   padding-bottom: 60px;
   padding-top: 60px;
 }
 
 #chat article {
   min-width: 100%;
-  max-width: 100vw;
+  max-width: 100%;
   margin: 0 0 5px 0;
   padding: 0px 10px 0 10px;
 }
@@ -1170,8 +1136,15 @@ span.user-offline {
 
 @media screen and (min-width: 400px) and (max-width: 1000px) {
   #app {
-    overflow: scroll;
-    padding: 50px 0 0 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 20px 0 0 0;
+
+    background-image: radial-gradient(circle, #e2dddd 10%, transparent 11%);
+    background-size: 5px 5px;
+
+    outline: 0px solid black;
+    box-shadow: 0px 0px lightblue;
   }
 
   article {
@@ -1181,12 +1154,15 @@ span.user-offline {
 
   #wrapper {
     overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
 
   .page {
-    min-width: 100%;
-    max-width: 100%;
-    padding: 10px;
+    padding: 40px 10px 10px 10px;
+    position: relative;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
 
   div#bottom-bar div.button-left img {
@@ -1201,9 +1177,21 @@ span.user-offline {
     width: 50px;
   }
 
+  div#bottom-bar div div.inner div {
+    position: relative;
+    padding: 0px 10px 0px 10px;
+  }
+
   div#top-bar {
     margin: 0 0 20px 0;
-    height: 55px;
+    height: 40px;
+  }
+
+  div#top-bar div.inner {
+    position: relative;
+    padding: 2px 20px 2px 20px;
+    background: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   }
 
   div#top-bar div.button-left img {
@@ -1232,11 +1220,10 @@ span.user-offline {
     height: 100%;
     width: 100%;
     max-width: 100vw;
-    overflow: scroll;
-    background: white;
+    overflow-y: scroll;
+    overflow-x: hidden;
 
-    background-image: radial-gradient(circle, #e2dddd 10%, transparent 11%);
-    background-size: 5px 5px;
+    background: white;
   }
 
   article .map-component {
@@ -1256,11 +1243,35 @@ span.user-offline {
   #chat article:focus {
     background: rgba(180, 199, 168, 0.34);
   }
+
+  #chat article {
+    margin: 0 0 5px 0;
+    padding: 0px 20px 0 20px;
+  }
 }
 
 @media screen and (max-width: 320px) {
+  button {
+    font-size: 0.8rem;
+  }
+  h1 {
+    font-size: 1rem;
+  }
+
+  h2 {
+    font-size: 1rem;
+    width: 100%;
+  }
+
+  h3 {
+    font-size: 1rem;
+  }
+
+  .small {
+    font-size: 0.9rem;
+  }
   .page {
-    min-width: 100vw;
+    padding: 40px 10px 10px 10px;
   }
   .input-parent:focus {
     background: orange;
@@ -1280,16 +1291,13 @@ span.user-offline {
   }
 
   div#message-input {
-    bottom: 40px;
-  }
-
-  div#message-input input {
-    min-width: 95vw;
+    bottom: 70px;
   }
 
   body {
     background-image: radial-gradient(circle, #e2dddd 10%, transparent 11%);
     background-size: 3px 3px;
+    font-size: 1rem;
   }
 
   #addressbook .item:focus {
@@ -1325,7 +1333,6 @@ span.user-offline {
   }
 
   .addressbook-box {
-    width: 100%;
     max-height: 80vh;
     margin: 0vh 0 0 0;
     padding: 0 0 100px 0;

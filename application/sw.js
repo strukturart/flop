@@ -72,7 +72,7 @@ self.addEventListener("notificationclick", (event) => {
 });
 
 if (userAgent && !userAgent.includes("KAIOS")) {
-  const CACHE_NAME = "pwa-cache-v0.2239";
+  const CACHE_NAME = "pwa-cache-v0.2326";
   const FILE_LIST_URL = "/file-list.json"; // URL of the JSON file containing the array of files
 
   self.addEventListener("install", (event) => {
@@ -106,7 +106,7 @@ if (userAgent && !userAgent.includes("KAIOS")) {
             });
         })
         .then(() => {
-          return self.skipWaiting(); // Skip waiting and activate the new SW immediately
+          return self.skipWaiting();
         })
     );
   });

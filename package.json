@@ -19,10 +19,10 @@
           "Firefox 48"
         ]
       },
-      "outputFormat": "global",
+      "outputFormat": "esmodule",
       "isLibrary": false,
       "sourceMap": false,
-      "optimize": false
+      "optimize": true
     }
   },
   "babel": {
@@ -34,7 +34,8 @@
             "firefox": "48"
           },
           "useBuiltIns": "usage",
-          "corejs": "3.32"
+          "corejs": "3.32",
+          "loose": true
         }
       ]
     ],
@@ -42,7 +43,25 @@
       "@babel/plugin-syntax-dynamic-import",
       "@babel/plugin-transform-named-capturing-groups-regex",
       "@babel/plugin-transform-runtime",
-      "babel-plugin-transform-async-to-promises"
+      "babel-plugin-transform-async-to-promises",
+      [
+        "@babel/plugin-proposal-class-properties",
+        {
+          "loose": true
+        }
+      ],
+      [
+        "@babel/plugin-proposal-private-methods",
+        {
+          "loose": true
+        }
+      ],
+      [
+        "@babel/plugin-transform-classes",
+        {
+          "loose": true
+        }
+      ]
     ]
   },
   "devDependencies": {
@@ -54,7 +73,7 @@
     "@babel/plugin-transform-runtime": "^7.18.5",
     "@babel/preset-env": "^7.27.2",
     "@parcel/packager-raw-url": "^2.12.0",
-    "@parcel/resolver-default": "^2.14.4",
+    "@parcel/resolver-default": "^2.15.2",
     "@parcel/transformer-html": "^2.13.3",
     "@parcel/transformer-webmanifest": "^2.12.0",
     "assert": "^2.1.0",
@@ -66,7 +85,7 @@
     "events": "^3.3.0",
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
-    "parcel": "^2.12.0",
+    "parcel": "^2.15.2",
     "parcel-namer-rewrite": "^2.10.3-rc.2",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
@@ -93,7 +112,7 @@
     "linkifyjs": "^3.0.5",
     "localforage": "^1.10.0",
     "mithril": "^2.0.4",
-    "peerjs": "^1.5.4",
+    "peerjs": "^1.3.2",
     "qrious": "^4.0.2",
     "swiped-events": "^1.2.0",
     "url-search-params-polyfill": "^8.1.1",
