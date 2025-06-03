@@ -43,11 +43,6 @@ import * as style from "@dicebear/identicon";
 
 import Peer from "peerjs";
 
-import "core-js/stable";
-import "regenerator-runtime/runtime"; // falls async/await
-
-const audioRecorder = createAudioRecorder();
-
 export let status = {
   visibility: true,
   action: "",
@@ -120,11 +115,6 @@ if (status.debug) {
     return true;
   };
 }
-
-//store previous view
-let previousView = () => {
-  status.previousView = m.route.get();
-};
 
 //sometime the key press are delayed
 let key_delay = () => {
@@ -224,7 +214,9 @@ setTimeout(() => {
     },
   ];
 }, 1000);
+
 */
+
 localforage
   .getItem("addressbook")
   .then((e) => {
@@ -329,8 +321,6 @@ function setupConnectionEvents(conn) {
   let pc = conn.peerConnection;
 
   pc.addEventListener("iceconnectionstatechange", () => {
-    console.log("state: " + pc.iceConnectionState);
-
     switch (pc.iceConnectionState) {
       case "disconnected":
       case "failed":
@@ -410,6 +400,7 @@ function setupConnectionEvents(conn) {
 
   //receive data
   conn.on("data", function (data) {
+    //block is not from flop app
     if (conn.label !== "flop") return;
 
     if (data.type === "typing") {
@@ -471,7 +462,6 @@ function setupConnectionEvents(conn) {
       if (index !== -1) {
         messageQueueStorage.splice(index, 1);
         localforage.setItem("messageQueue", messageQueueStorage);
-        storeChatData().then(() => {});
       }
     }
 
@@ -911,7 +901,6 @@ localforage
 let write = () => {
   status.action = status.action === "write" ? "" : "write";
   m.redraw();
-  console.log("write");
 };
 
 //list files
@@ -1178,7 +1167,6 @@ let messageQueue = (m) => {
     .getItem("messageQueue")
     .then((e) => {
       messageQueueStorage = e || [];
-      console.log(messageQueueStorage.length + " message to send");
 
       if (m) {
         let test = messageQueueStorage.find((e) => {
@@ -1707,7 +1695,6 @@ deleteOldChatData();
 var AudioComponent = {
   oninit: (vnode) => {
     key_delay();
-    previousView();
 
     vnode.state.isPlaying = false;
     vnode.state.audio = null;
@@ -2006,7 +1993,7 @@ var waiting = {
       "div",
       {
         id: "waiting",
-        class: "width-100 height-100 flex align-center justify-center",
+        class: "row middle-xs center-xs middle-md center-md",
         oninit: () => {
           top_bar("", "", "");
           bottom_bar("", "", "");
@@ -2014,7 +2001,7 @@ var waiting = {
           timer1 = setTimeout(() => {
             let route = m.route.get();
             route.startsWith("/waiting") ? m.route.set("/start") : null;
-          }, 30000);
+          }, 10000);
         },
         onbeforeremove: () => {
           clearTimeout(timer1);
@@ -2388,7 +2375,13 @@ var invite = {
   view: () => {
     return m(
       "div",
-      { class: "flex justify-center align-center page", id: "invite" },
+      {
+        class: "flex justify-center align-center page",
+        id: "invite",
+        oncreate: () => {
+          console.log(status);
+        },
+      },
       [
         m("div", { class: "flex justify-center" }, [
           m("img", { src: status.invite_qr }),
@@ -2976,30 +2969,50 @@ var options = {
   },
 };
 
-var start = {
+var intro = {
   oninit: () => {
     key_delay();
-    previousView();
-    status.addressbook_in_focus = "";
+    //create peer on start
+    getIceServers();
     generate_contact();
-
-    setTimeout(() => {
-      peer_is_online();
-    }, 6000);
   },
   onremove: () => {
     status.viewReady = false;
   },
-
   view: function () {
     return m(
       "div",
       {
-        class: "page",
-        id: "start",
+        class: "width-100 height-100",
+        id: "intro",
+        onremove: () => {
+          localStorage.setItem("version", status.version);
+        },
+        oninit: function () {
+          const protocol = window.location.protocol;
+          const host = window.location.host;
+          const pathname = window.location.pathname;
+          const search = window.location.search;
+          const hash = window.location.hash;
 
-        oncreate: () => {
-          top_bar("", "", "");
+          const fullUrl = `${protocol}//${host}${pathname}${search}${hash}`;
+          // Get the current hash
+          if (fullUrl.includes("?id=")) {
+            localforage.setItem("connect_to_id", { data: fullUrl });
+            status.launching = true;
+            if (!status.notKaiOS) {
+              app_launcher();
+            } else {
+              setTimeout(function () {
+                let m = fullUrl.split("id=");
+                connect_to_peer(m[1], "/start");
+              }, 1000);
+            }
+          } else {
+            setTimeout(function () {
+              m.route.set("/start");
+            }, 1000);
+          }
 
           //auto connect if id is given
           localforage
@@ -3018,7 +3031,81 @@ var start = {
             .catch((error) => {
               console.error("Error retrieving data:", error);
             });
+        },
+      },
+      [
+        m("img", {
+          src: "./assets/icons/intro.svg",
 
+          oncreate: () => {
+            let get_manifest_callback = (e) => {
+              try {
+                status.version = e.manifest.version;
+                document.querySelector("#version").textContent =
+                  e.manifest.version;
+              } catch (e) {}
+
+              if ("b2g" in navigator || status.notKaiOS) {
+                fetch("/manifest.webmanifest")
+                  .then((r) => r.json())
+                  .then((parsedResponse) => {
+                    status.version = parsedResponse.b2g_features.version;
+                  });
+              }
+            };
+            getManifest(get_manifest_callback);
+          },
+        }),
+        m(
+          "div",
+          {
+            class: "flex width-100 justify-center",
+            id: "version-box",
+          },
+          [
+            m(
+              "kbd",
+              {
+                id: "version",
+              },
+              localStorage.getItem("version") || 0
+            ),
+          ]
+        ),
+      ]
+    );
+  },
+};
+
+var start = {
+  oninit: () => {
+    key_delay();
+    status.addressbook_in_focus = "";
+
+    setTimeout(() => {
+      peer_is_online();
+    }, 8000);
+  },
+  onremove: () => {
+    status.viewReady = false;
+  },
+
+  view: function () {
+    return m(
+      "div",
+      {
+        class: "page row center-xs center-md",
+        id: "start",
+
+        oncreate: () => {
+          top_bar("", "", "");
+
+          top_bar(
+            "<img src='assets/image/invite.svg'>",
+            "",
+            "<img src='assets/image/option.svg'>"
+          );
+          status.messageToSend = messageQueueStorage.length;
           bottom_bar(
             "<img src='assets/image/invite.svg'>",
             "",
@@ -3032,6 +3119,7 @@ var start = {
               "p",
               {
                 id: "start-text",
+                class: "col-xs-12 col-md-12",
                 oncreate: (vnode) => {
                   vnode.dom.focus();
                   setTabindex();
@@ -3047,93 +3135,102 @@ var start = {
           ? m(
               "div",
               {
-                class: "addressbook-box flex justify-center",
+                class: "addressbook-box col-xs-12 col-md-8",
                 id: "addressbook",
               },
               [
-                addressbook.map((e, i) => {
-                  return m(
-                    "button",
-                    {
-                      class: "item addressbook-item  flex justify-spacebetween",
-                      "data-id": e.id,
-                      "data-client-id": e.client_id || "null",
-                      "data-nickname": e.nickname,
-                      "data-online": e.live ? "true" : "false",
+                m("div", { class: "row" }, [
+                  addressbook.map((e, i) =>
+                    m("div", { class: "col-xs-12 col-md-12" }, [
+                      m(
+                        "button",
+                        {
+                          class: "item addressbook-item row between-md",
+                          "data-id": e.id,
+                          "data-client-id": e.client_id || "null",
+                          "data-nickname": e.nickname,
+                          "data-online": e.live ? "true" : "false",
 
-                      oncreate: (vnode) => {
-                        setTabindex();
-                        if (i == 0) vnode.dom.focus();
-                      },
-                      onfocus: () => {
-                        status.addressbook_in_focus = e.id;
-                      },
+                          oncreate: (vnode) => {
+                            setTabindex();
+                            if (i == 0) vnode.dom.focus();
+                          },
+                          onfocus: () => {
+                            status.addressbook_in_focus = e.id;
+                          },
+                          onclick: () => {
+                            if (e.live == true) {
+                              connect_to_peer(
+                                document.activeElement.getAttribute("data-id")
+                              );
+                            } else {
+                              side_toaster("The user is not online", 3000);
+                              status.current_user_id =
+                                document.activeElement.getAttribute("data-id");
+                              status.current_user_nickname = e.nickname;
+                              status.current_user_name = e.name;
+                              m.route.set(
+                                "/chat?id=" +
+                                  settings.custom_peer_id +
+                                  "&peer=" +
+                                  status.current_user_id
+                              );
 
-                      onclick: () => {
-                        if (e.live == true) {
-                          connect_to_peer(
-                            document.activeElement.getAttribute("data-id")
-                          );
-                        } else {
-                          side_toaster("The user is not online", 3000);
-                          status.current_user_id =
-                            document.activeElement.getAttribute("data-id");
+                              let pid =
+                                document.activeElement.getAttribute(
+                                  "data-client-id"
+                                );
+                              if (pid && pid !== settings.clientID) {
+                                status.current_clientId = pid;
+                              }
+                            }
+                          },
+                        },
+                        [
+                          m("div", { class: "" }, [
+                            m("div", { class: "online-indicator" }, ""),
+                            m("img", {
+                              class: "aavatar",
+                              src: create_avatar(e.nickname, 30),
+                            }),
+                          ]),
 
-                          status.current_user_nickname = e.nickname;
-                          status.current_user_name = e.name;
-
-                          m.route.set(
-                            "/chat?id=" +
-                              settings.custom_peer_id +
-                              "&peer=" +
-                              status.current_user_id
-                          );
-
-                          let pid =
-                            document.activeElement.getAttribute(
-                              "data-client-id"
-                            );
-
-                          if (pid && pid !== settings.clientID) {
-                            status.current_clientId = pid;
-                          }
-                        }
-                      },
-                    },
-                    [
-                      m("div", { class: "online-indicator" }, ""),
-                      m("img", {
-                        class: "aavatar",
-                        src: create_avatar(e.nickname, 30),
-                      }),
-                      m("div", { class: "inner" }, [
-                        m(
-                          "div",
-                          { class: "flex justify-spacebetweenm" },
-                          !e.name ? e.nickname : e.name
-                        ),
-                        m("div", { class: "flex justify-spacebetween" }, [
-                          e.last_conversation_message
-                            ? m(
-                                "small",
-                                { class: "last-conversation-message" },
-                                e.last_conversation_message
-                              )
-                            : null,
-                          e.last_conversation_datetime
-                            ? m(
-                                "small",
-                                { class: "last-conversation-date" },
-                                dayjs(
-                                  e.last_conversation_datetime * 1000
-                                ).format("HH:mm")
-                              )
-                            : null,
-                        ]),
-                      ]),
-                    ]
-                  );
-                }),
+                          m("div", { class: "inner col-xs col-md-10" }, [
+                            m(
+                              "div",
+                              { class: "addressbook-item-name" },
+                              !e.name ? e.nickname : e.name
+                            ),
+                            m("div", { class: "row between-md" }, [
+                              e.last_conversation_message
+                                ? m(
+                                    "small",
+                                    {
+                                      class:
+                                        "last-conversation-message col-xs-8 col-md-8",
+                                    },
+                                    e.last_conversation_message
+                                  )
+                                : null,
+                              e.last_conversation_datetime
+                                ? m(
+                                    "small",
+                                    {
+                                      class:
+                                        "last-conversation-date col-xs-3 col-md-3",
+                                    },
+                                    dayjs(
+                                      e.last_conversation_datetime * 1000
+                                    ).format("HH:mm")
+                                  )
+                                : null,
+                            ]),
+                          ]),
+                        ]
+                      ),
+                    ])
+                  ),
+                ]),
               ]
             )
           : null,
@@ -3142,55 +3239,11 @@ var start = {
   },
 };
 
-/*
+let audioRecorder = null;
 var audiorecorder_view = {
   oninit: () => {
     key_delay();
-    previousView();
-  },
-  onremove: () => {
-    status.viewReady = false;
-  },
-  view: function () {
-    return m("div", { id: "audiorecorder", class: "page" }, [
-      m(
-        "div",
-        {
-          class: "playing",
-          oninit: () => {
-            audioRecorder.startRecording().then((e) => {
-              audioRecorder.onVolumeChange((rms) => {
-                console.log(rms);
-              });
-            });
-          },
-          onremove: () => {
-            audioRecorder.stopRecording(() => {});
-          },
-          oncreate: () => {
-            bottom_bar(
-              "<img src='assets/image/send.svg'>",
-              "<img src='assets/image/record-live.svg'>",
-              "<img src='assets/image/cancel.svg'>"
-            );
-            top_bar("", "", "");
-          },
-        },
-        [
-          m("span", { class: "playing__bar playing__bar1" }),
-          m("span", { class: "playing__bar playing__bar2" }),
-          m("span", { class: "playing__bar playing__bar3" }),
-        ]
-      ),
-    ]);
-  },
-};
-*/
-
-export const audiorecorder_view = {
-  oninit: () => {
-    key_delay();
-    previousView();
+    audioRecorder = createAudioRecorder();
   },
   onremove: () => {
     status.viewReady = false;
@@ -3236,9 +3289,15 @@ export const audiorecorder_view = {
           });
         },
         onremove: () => {
-          audioRecorder.stopRecording().then(({ audioBlob }) => {
-            console.log("Recording stopped", audioBlob);
-          });
+          if (audioRecorder) {
+            // Aufnahme stoppen, wenn noch aktiv
+            audioRecorder.stopRecording?.().catch(() => {});
+
+            // Ressourcen freigeben
+            audioRecorder.cleanup?.();
+            audioRecorder = null;
+          }
+          status.viewReady = false;
         },
         oncreate: () => {
           bottom_bar(
@@ -3692,95 +3751,6 @@ let map_view = {
   },
 };
 
-var intro = {
-  oninit: () => {
-    key_delay();
-    //create peer on start
-    getIceServers();
-  },
-  onremove: () => {
-    status.viewReady = false;
-  },
-  view: function () {
-    return m(
-      "div",
-      {
-        class: "width-100 height-100",
-        id: "intro",
-        onremove: () => {
-          localStorage.setItem("version", status.version);
-        },
-        oninit: function () {
-          const protocol = window.location.protocol;
-          const host = window.location.host;
-          const pathname = window.location.pathname;
-          const search = window.location.search;
-          const hash = window.location.hash;
-
-          const fullUrl = `${protocol}//${host}${pathname}${search}${hash}`;
-          // Get the current hash
-          if (fullUrl.includes("?id=")) {
-            localforage.setItem("connect_to_id", { data: fullUrl });
-            status.launching = true;
-            if (!status.notKaiOS) {
-              app_launcher();
-            } else {
-              setTimeout(function () {
-                let m = fullUrl.split("id=");
-                connect_to_peer(m[1], "/start");
-              }, 1000);
-            }
-          } else {
-            setTimeout(function () {
-              m.route.set("/start");
-            }, 5000);
-          }
-        },
-      },
-      [
-        m("img", {
-          src: "./assets/icons/intro.svg",
-
-          oncreate: () => {
-            let get_manifest_callback = (e) => {
-              try {
-                status.version = e.manifest.version;
-                document.querySelector("#version").textContent =
-                  e.manifest.version;
-              } catch (e) {}
-
-              if ("b2g" in navigator || status.notKaiOS) {
-                fetch("/manifest.webmanifest")
-                  .then((r) => r.json())
-                  .then((parsedResponse) => {
-                    status.version = parsedResponse.b2g_features.version;
-                  });
-              }
-            };
-            getManifest(get_manifest_callback);
-          },
-        }),
-        m(
-          "div",
-          {
-            class: "flex width-100 justify-center",
-            id: "version-box",
-          },
-          [
-            m(
-              "kbd",
-              {
-                id: "version",
-              },
-              localStorage.getItem("version") || 0
-            ),
-          ]
-        ),
-      ]
-    );
-  },
-};
-
 m.route(root, "/intro", {
   "/intro": intro,
   "/start": start,
@@ -4014,7 +3984,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
   // ////////////////////////////
 
   let longpress = false;
-  const longpress_timespan = 2000;
+  const longpress_timespan = 3000;
   let timeout;
 
   function repeat_action(param) {
@@ -4028,12 +3998,12 @@ document.addEventListener("DOMContentLoaded", function (e) {
   let users_geolocation_count = 0;
 
   function longpress_action(param) {
-    if (!status.viewReady) return false;
-
-    switch (param.key) {
-      case "Backspace":
-        window.close();
-        break;
+    if (status.viewReady) {
+      switch (param.key) {
+        case "Backspace":
+          window.close();
+          break;
+      }
     }
   }
 
@@ -4050,6 +4020,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
     switch (param.key) {
       case "Backspace":
+        if (route.startsWith("/start")) {
+          preventDefault();
+          return true;
+        }
+
         if (route.startsWith("audiorecorder_view")) {
           history.back();
           return;
@@ -4063,6 +4038,57 @@ document.addEventListener("DOMContentLoaded", function (e) {
           stop_scan();
           m.route.set("/start");
           status.action = "";
+        }
+
+        if (m.route.get() == "/AudioComponent") {
+          m.route.set("/chat?id=" + settings.custom_peer_id);
+          return;
+        }
+
+        if (m.route.get() == "/scan") {
+          stop_scan();
+          m.route.set("/start");
+          status.action = "";
+        }
+
+        if (m.route.get() == "/filelist") {
+          m.route.set("/about");
+        }
+
+        if (
+          route.startsWith("/chat?") ||
+          m.route.get() == "/settings_page" ||
+          m.route.get() == "/about" ||
+          route.startsWith("/map_view") ||
+          route.startsWith("/waiting") ||
+          route.startsWith("/invite")
+        ) {
+          m.route.set("/start");
+          status.action = "";
+        }
+
+        if (m.route.get() == "/settings") {
+          status.action = "";
+          m.route.set("/about");
+        }
+
+        if (m.route.get() == "/privacy_policy") {
+          status.action = "";
+          m.route.set("/about");
+        }
+
+        if (m.route.get() == "/about_page") {
+          status.action = "";
+          m.route.set("/about");
+        }
+
+        if (route.startsWith("/map_view")) {
+          status.action = "";
+          m.route.set("/chat?id=" + settings.custom_peer_id);
+        }
+
+        if (m.route.get() == "/options") {
+          m.route.set("/chat?id=" + settings.custom_peer_id);
         }
         break;
 
@@ -4223,8 +4249,24 @@ document.addEventListener("DOMContentLoaded", function (e) {
           }
         }
 
-        if (document.activeElement.classList.contains("input-parent")) {
-          document.activeElement.children[0].focus();
+        if (document.activeElement) {
+          const activeElement = document.activeElement;
+
+          const isInputField =
+            activeElement.tagName === "INPUT" ||
+            activeElement.tagName === "TEXTAREA" ||
+            activeElement.isContentEditable;
+
+          // test if field empty
+          const isEmpty =
+            activeElement.value !== undefined &&
+            activeElement.value.length === 0;
+
+          if (!isInputField || isEmpty) {
+            evt.preventDefault();
+          } else {
+            return;
+          }
         }
 
         if (
@@ -4317,99 +4359,14 @@ document.addEventListener("DOMContentLoaded", function (e) {
   // //////////////////////////////
 
   function handleKeyDown(evt) {
-    if (!status.viewReady) {
-      return false;
-    }
-
-    let route = m.route.get();
-
-    if (evt.key === "Backspace" && route.startsWith("/start")) {
-      return true;
-    }
-
-    if (evt.key === "EndCall" && route.startsWith("/start")) {
-      return true;
-    }
-
-    if (evt.key === "Backspace" && document.activeElement) {
-      const activeElement = document.activeElement;
-
-      const isInputField =
-        activeElement.tagName === "INPUT" ||
-        activeElement.tagName === "TEXTAREA" ||
-        activeElement.isContentEditable;
-
-      // test if field empty
-      const isEmpty =
-        activeElement.value !== undefined && activeElement.value.length === 0;
-
-      if (!isInputField || isEmpty) {
-        evt.preventDefault();
-      } else {
-        return;
-      }
-    }
-
-    if (evt.key == "Enter" && route == "/chat") {
+    if (evt.key == "Backspace" && document.activeElement.tagName != "INPUT") {
       evt.preventDefault();
     }
 
-    if (evt.key === "Backspace") {
-      if (m.route.get() == "/AudioComponent") {
-        m.route.set("/chat?id=" + settings.custom_peer_id);
-        return;
-      }
+    if (!status.viewReady) {
+      evt.preventDefault();
 
-      if (m.route.get() == "/scan") {
-        stop_scan();
-        m.route.set("/start");
-        status.action = "";
-      }
-
-      if (m.route.get() == "/filelist") {
-        m.route.set("/about");
-      }
-
-      if (
-        route.startsWith("/chat?") ||
-        m.route.get() == "/settings_page" ||
-        m.route.get() == "/about" ||
-        route.startsWith("/map_view") ||
-        route.startsWith("/waiting") ||
-        route.startsWith("/invite")
-      ) {
-        evt.preventDefault();
-        m.route.set("/start");
-        status.action = "";
-      }
-
-      if (m.route.get() == "/settings") {
-        evt.preventDefault();
-        status.action = "";
-        m.route.set("/about");
-      }
-
-      if (m.route.get() == "/privacy_policy") {
-        evt.preventDefault();
-        status.action = "";
-        m.route.set("/about");
-      }
-
-      if (m.route.get() == "/about_page") {
-        evt.preventDefault();
-        status.action = "";
-        m.route.set("/about");
-      }
-
-      if (route.startsWith("/map_view")) {
-        evt.preventDefault();
-        status.action = "";
-        m.route.set("/chat?id=" + settings.custom_peer_id);
-      }
-
-      if (m.route.get() == "/options") {
-        m.route.set("/chat?id=" + settings.custom_peer_id);
-      }
+      return false;
     }
 
     if (!evt.repeat) {
@@ -4428,6 +4385,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
   }
 
   function handleKeyUp(evt) {
+    if (evt.key == "Backspace") evt.preventDefault();
+
     if (status.visibility === false) return false;
 
     if (!status.viewReady) {

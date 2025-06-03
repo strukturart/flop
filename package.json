@@ -22,7 +22,7 @@
       "outputFormat": "global",
       "isLibrary": false,
       "sourceMap": false,
-      "optimize": false
+      "optimize": true
     }
   },
   "babel": {
