@@ -217,11 +217,11 @@ button.audioplayer-button img {
 
 #addressbook button.addressbook-item {
   border-radius: 0px;
-  min-height: 60px;
+  min-height: 30px;
   color: black;
   outline: 0px;
   border: 0px;
-  margin: 0 0 30px 0;
+  margin: 0 0 0px 0;
   position: relative;
   min-width: 100%;
 }
@@ -240,7 +240,7 @@ button.audioplayer-button img {
 }
 
 #addressbook button.addressbook-item .inner {
-  padding: 0 0 15px 10px !important;
+  padding: 0 0 0px 10px !important;
 }
 
 #addressbook button.addressbook-item:hover {
@@ -371,7 +371,7 @@ input {
   padding: 10px;
   border: 2px solid silver;
   border-radius: 4px;
-  margin: 0 0 0 0px;
+  margin: 0 0 0px 0px;
 }
 
 label {
@@ -379,11 +379,6 @@ label {
   min-width: 100%;
   margin: 0 0 10px 0;
   text-align: center;
-}
-.input-parent {
-  min-width: 100%;
-  padding: 10px;
-  margin: 0 0 20px 0;
 }
 
 .input-parent:focus {
@@ -751,7 +746,7 @@ div#top-bar div.inner {
 
 div#top-bar div div div {
   background: none;
-  color: white;
+  color: black;
 }
 
 div#top-bar div.button-left {
@@ -779,7 +774,7 @@ div#top-bar div.button-right {
 
 div#top-bar div.button-center {
   background: none;
-  color: white;
+  color: black;
   padding: 2px;
 }
 
@@ -993,19 +988,20 @@ article div.message-head div:nth-child(2) {
 }
 
 div#message-input {
-  z-index: 5;
   background: none;
-  padding: 5px;
   height: 100vh;
+  width: 100%;
+  padding: 5px;
 }
 
 div#message-input input {
-  margin: 0 auto;
   border: 2px solid silver;
   border-radius: 10px;
-  position: absolute;
-  bottom: 80px;
   height: 40px;
+  position: absolute;
+  left: 10%;
+  width: 80%;
+  bottom: 80px;
 }
 
 #start {
@@ -1231,10 +1227,6 @@ span.user-offline {
     height: 200px;
   }
 
-  div#message-input input {
-    width: 95vw;
-  }
-
   #addressbook button.addressbook-item .inner {
     width: 80%;
     padding: 0 0 15px 10px !important;
@@ -1267,18 +1259,23 @@ span.user-offline {
     font-size: 1rem;
   }
 
-  .small {
-    font-size: 0.9rem;
+  #settings-page .avatar {
+    margin: -10px 0 10px 0;
   }
+
+  #settings-page input {
+    max-width: 80%;
+  }
+
   .page {
-    padding: 40px 10px 10px 10px;
+    padding: 40px 0px 10px 0px;
   }
   .input-parent:focus {
     background: orange;
   }
 
   #top-bar .avatar {
-    margin: 2px 0 0 0;
+    margin: 2px 15px 0 0;
 
     min-height: 27px;
     min-width: 27px;
@@ -1290,8 +1287,13 @@ span.user-offline {
     border-radius: 50%;
   }
 
-  div#message-input {
-    bottom: 70px;
+  div#message-input input {
+    height: 40px;
+    position: absolute;
+    left: 10%;
+    width: 80%;
+    bottom: 80px;
+    z-index: 3;
   }
 
   body {
@@ -1300,15 +1302,15 @@ span.user-offline {
     font-size: 1rem;
   }
 
-  #addressbook .item:focus {
-    background: rgba(45, 100, 208, 0.6) !important;
+  #chat article {
+    padding: 0 15px 10px 15px;
   }
 
   #chat article:focus {
     background: rgba(180, 199, 168, 0.34);
   }
   #start {
-    padding: 40px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
     overflow: hidden;
   }
 
@@ -1316,24 +1318,40 @@ span.user-offline {
     overflow-y: scroll !important;
     padding: 0vh 0 50px 0;
     height: 100vh;
+    font-size: 0.8rem;
+    line-height: 1rem;
   }
 
-  #addressbook button.addressbook-item .last-conversation-message {
-    width: 40%;
+  #start p {
+    overflow-y: scroll !important;
+    padding: 20px 10px 10px 10px;
+  }
+
+  #addressbook .item:focus {
+    background: rgba(45, 100, 208, 0.6) !important;
+  }
+
+  #addressbook button.addressbook-item {
+    padding: 10px;
   }
 
   #addressbook button.addressbook-item .inner {
-    width: 80%;
     padding: 0 0 8px 0 !important;
+  }
+
+  #addressbook button.addressbook-item .icon {
+    min-width: 30px;
+    height: 30px;
   }
 
   #addressbook button.addressbook-item img {
     height: 30px;
     width: 30px;
+    position: absolute;
+    left: 10px;
   }
 
   .addressbook-box {
-    max-height: 80vh;
     margin: 0vh 0 0 0;
     padding: 0 0 100px 0;
     overflow: hidden;
@@ -1343,13 +1361,29 @@ span.user-offline {
     margin: 0 0 30px 0;
   }
 
+  #addressbook button.addressbook-item .last-conversation-message {
+    font-size: 0.7rem !important;
+  }
+
+  #addressbook div.addressbook-item .last-conversation-date {
+    font-size: 0.7rem !important;
+  }
+
+  #addressbook button.addressbook-item {
+    margin: 0px 0 10px 0 !important;
+  }
+
   #chat:last-child {
     padding-bottom: 60px;
   }
 
+  small {
+    font-size: 0.7rem;
+  }
+
   div#bottom-bar {
-    height: 37px;
-    bottom: 0px;
+    height: 30px;
+    bottom: 10px;
   }
 
   div#bottom-bar div.button-left img {
@@ -1364,8 +1398,13 @@ span.user-offline {
     width: 30px;
   }
 
+  div#bottom-bar div div.inner {
+    position: relative;
+    padding: 0px 20px 15px 20px;
+  }
+
   div#top-bar {
-    height: 42px;
+    height: 32px;
   }
 
   div#top-bar div.button-left img {
@@ -1392,5 +1431,17 @@ span.user-offline {
     animation-delay: 0s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
+  }
+
+  #KaiOSads-Wrapper {
+    padding: 0px;
+    height: 200px !important;
+    width: 100vw;
+    overflow: hidden;
+    margin: 0 0 0 10px;
+  }
+
+  #KaiOSAds-Wrapper iframe {
+    min-width: 100vw;
   }
 }

@@ -2,67 +2,15 @@
   "name": "flop",
   "version": "2.0.1",
   "source": "application/index.html",
+  "author": "strukturart",
+  "license": "MPL-2.0",
   "browserslist": [
     "Firefox <= 48"
   ],
   "scripts": {
-    "build": "rm -rf dist/* && parcel build --no-source-maps application/index.html && cp application/manifest.webapp dist && mkdir -p dist/assets/js && cp -r application/assets/icons dist/assets/ && cp -r application/assets/image dist/assets/ && cp application/assets/js/kaiads.v5.min.js dist/assets/js/",
+    "build": "rm -rf dist/* && parcel build --no-source-maps application/index.html && mkdir -p dist/assets/js && cp -r application/assets/icons dist/assets/ && cp -r application/assets/image dist/assets/ && cp application/assets/js/kaiads.v5.min.js dist/assets/js/ && mkdir -p build && (cd dist && zip -r ../build/flop.zip .)",
     "run": "parcel",
-    "web": "rm -rf docs/* && parcel build --dist-dir docs --public-url ./ --no-source-maps --no-content-hash application/index.html && cp application/manifest.webapp docs && cp application/manifest.webmanifest docs && mkdir -p docs/assets/js && mkdir -p docs/assets/image && cp -r application/assets/image docs/assets/ && cp -r application/assets/fonts docs/assets/ && ./generate_file_list.sh",
-    "check-es": "es-check es5 'dist/**/*.js'"
-  },
-  "targets": {
-    "default": {
-      "context": "browser",
-      "engines": {
-        "browsers": [
-          "Firefox 48"
-        ]
-      },
-      "outputFormat": "esmodule",
-      "isLibrary": false,
-      "sourceMap": false,
-      "optimize": true
-    }
-  },
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "targets": {
-            "firefox": "48"
-          },
-          "useBuiltIns": "usage",
-          "corejs": "3.32",
-          "loose": true
-        }
-      ]
-    ],
-    "plugins": [
-      "@babel/plugin-syntax-dynamic-import",
-      "@babel/plugin-transform-named-capturing-groups-regex",
-      "@babel/plugin-transform-runtime",
-      "babel-plugin-transform-async-to-promises",
-      [
-        "@babel/plugin-proposal-class-properties",
-        {
-          "loose": true
-        }
-      ],
-      [
-        "@babel/plugin-proposal-private-methods",
-        {
-          "loose": true
-        }
-      ],
-      [
-        "@babel/plugin-transform-classes",
-        {
-          "loose": true
-        }
-      ]
-    ]
+    "web": "rm -rf docs/* && parcel build --dist-dir docs --public-url ./ --no-source-maps --no-content-hash application/index.html &&  cp application/manifest.webmanifest docs && mkdir -p docs/assets/js && mkdir -p docs/assets/image && cp -r application/assets/image docs/assets/ && cp -r application/assets/fonts docs/assets/ && cp -r application/assets/icons docs/assets/ && ./generate_file_list.sh"
   },
   "devDependencies": {
     "@agragregra/parcel-namer-beautify": "^1.0.1",
@@ -72,20 +20,19 @@
     "@babel/plugin-transform-named-capturing-groups-regex": "^7.17.12",
     "@babel/plugin-transform-runtime": "^7.18.5",
     "@babel/preset-env": "^7.27.2",
-    "@parcel/packager-raw-url": "^2.12.0",
+    "@parcel/packager-raw-url": "^2.13.3",
     "@parcel/resolver-default": "^2.15.2",
     "@parcel/transformer-html": "^2.13.3",
-    "@parcel/transformer-webmanifest": "^2.12.0",
+    "@parcel/transformer-webmanifest": "^2.13.3",
     "assert": "^2.1.0",
     "babel-plugin-transform-async-to-promises": "^0.8.18",
     "buffer": "^6.0.3",
-    "core-js": "^3.42.0",
+    "core-js": "^3.43.0",
     "crypto-browserify": "^3.12.0",
     "es-check": "^9.1.2",
     "events": "^3.3.0",
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
-    "parcel": "^2.15.2",
     "parcel-namer-rewrite": "^2.10.3-rc.2",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
@@ -98,6 +45,7 @@
     "url": "^0.11.4"
   },
   "dependencies": {
+    "@babel/runtime": "^7.27.1",
     "@dicebear/core": "^9.2.2",
     "@dicebear/identicon": "^9.2.2",
     "@dicebear/initials": "^9.2.2",

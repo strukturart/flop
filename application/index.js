@@ -29,7 +29,6 @@ import { v4 as uuidv4 } from "uuid";
 import "webrtc-adapter";
 import L from "leaflet";
 import dayjs from "dayjs";
-import duration from "dayjs/plugin/duration";
 
 import AudioMotionAnalyzer from "audiomotion-analyzer";
 
@@ -42,7 +41,6 @@ import markerIconRetina from "./assets/css/images/marker-icon-2x.png";
 
 import { createAvatar } from "@dicebear/core";
 import * as style from "@dicebear/identicon";
-
 import Peer from "peerjs";
 
 export let status = {
@@ -71,6 +69,7 @@ export let status = {
   webpush_do_not_annoy: [],
   files: [],
   audiocontrol: "",
+  peerjsServerConnection: false,
 };
 
 // not KaiOS
@@ -217,6 +216,7 @@ setTimeout(() => {
   ];
 }, 1000);
 */
+
 localforage
   .getItem("addressbook")
   .then((e) => {
@@ -338,10 +338,11 @@ function setupConnectionEvents(conn) {
 
       case "connected":
         //Que
+        console.log("connected");
         try {
           messageQueue();
           if (messageQueueStorage.length > 0) {
-            // console.log("should send to " + conn.peer);
+            console.log("should send to " + conn.peer);
 
             messageQueueStorage.map((e) => {
               if (e.to == conn.peer && e.type != "typing") {
@@ -349,7 +350,9 @@ function setupConnectionEvents(conn) {
               }
             });
           }
-        } catch (e) {}
+        } catch (e) {
+          console.log(e);
+        }
 
         /*
         Users can change their peer ID to avoid losing their connection, 
@@ -406,9 +409,10 @@ function setupConnectionEvents(conn) {
     if (data.type === "typing") {
       const chat = document.querySelector("#chat");
       const typingIndicator = document.querySelector("#typing-indicator");
-      typingIndicator.classList.add("typing");
 
       if (chat && typingIndicator) {
+        typingIndicator.classList.add("typing");
+
         setTimeout(() => {
           typingIndicator.classList.remove("typing");
         }, 3000);
@@ -694,7 +698,6 @@ let ice_servers = {
 async function getIceServers() {
   //only set new peer if no peer exist
   if (peer) {
-    console.log("peer exist");
     return;
   }
 
@@ -739,12 +742,12 @@ async function getIceServers() {
       debug: 0,
       secure: false,
       config: ice_servers,
-      referrerPolicy: "no-referrer",
     });
 
     //connection from peer
     peer.on("connection", function (c) {
       setupConnectionEvents(c);
+      status.peerjsServerConnection = true;
     });
 
     peer.on("disconnected", () => {
@@ -755,6 +758,7 @@ async function getIceServers() {
     //connection to peer-server
     peer.on("open", function (id) {
       console.log("PeerJS connected with server ID:", id);
+      status.peerjsServerConnection = true;
       if (peer.socket && peer.socket._socket) {
         peer.socket._socket.addEventListener("error", function (event) {
           console.error("WebSocket Error:", event);
@@ -800,7 +804,6 @@ async function getIceServers() {
               if (!webrtcCounter) {
                 webrtcCounter = true;
                 hh.close();
-                console.log("try to connect" + h);
                 connect_to_peer(h, undefined, undefined, false);
               }
             }, 15000);
@@ -1199,21 +1202,25 @@ async function sendMessageToAll(message) {
     (conn) => conn.open
   );
 
+  // send webPush
   if (openConnections.length === 0) {
-    console.log("The user is not online. Message couldn't be sent.");
-    // send webPush
-    if (status.current_clientId != "") {
-      if (!status.webpush_do_not_annoy.includes(status.current_clientId)) {
-        if (message.type == "typing") return;
-        console.log("try to send webpush");
-        sendPushMessage(status.current_clientId, "Flop");
+    let getClientId = addressbook.find((e) => e.id == message.to);
 
-        status.webpush_do_not_annoy.push(status.current_clientId);
+    if (getClientId.client_id != "") {
+      if (!status.webpush_do_not_annoy.includes(getClientId.client_id)) {
+        if (message.type == "typing") return;
+
+        console.log(
+          "The user is not online. Message couldn't be sent. Try to send WebPush"
+        );
+        sendPushMessage(getClientId.client_id, "Flop");
+
+        status.webpush_do_not_annoy.push(getClientId.client_id);
 
         // remove id after 5min
         setTimeout(() => {
           const index = status.webpush_do_not_annoy.indexOf(
-            status.current_clientId
+            getClientId.client_id
           );
           if (index !== -1) {
             status.webpush_do_not_annoy.splice(index, 1);
@@ -1386,6 +1393,8 @@ let peer_is_online = async function () {
 
   if (addressbook.length == 0) {
     return false;
+  } else {
+    console.log("try to connect");
   }
 
   try {
@@ -1403,7 +1412,6 @@ let peer_is_online = async function () {
       }
 
       try {
-        console.log("addressbook chk: try to connect");
         let user_meta = {
           "history_of_ids": status.history_of_ids,
           "unique_id": settings.unique_id,
@@ -1416,18 +1424,19 @@ let peer_is_online = async function () {
 
         if (tempConn) {
           tempConn.on("open", () => {
+            console.log(entry.id + " connected");
+
             entry.live = true;
             setupConnectionEvents(tempConn);
             m.redraw();
           });
 
-          tempConn.on("error", () => {
+          tempConn.on("error", (error) => {
             entry.live = false;
             m.redraw();
           });
         }
       } catch (error) {
-        console.log("peer is online error: " + error);
         entry.live = false;
         m.redraw();
       }
@@ -1435,7 +1444,8 @@ let peer_is_online = async function () {
     return true;
   } catch (error) {
     console.log("peer is online error: " + error);
-    return false;
+    entry.live = false;
+    m.redraw();
   }
 };
 
@@ -1490,9 +1500,7 @@ let connect_to_peer = function (
 
       setTimeout(() => {
         if (!peer) {
-          if (waiting) m.route.set("/start");
           side_toaster("Peer mo set", 5000);
-          return;
         }
 
         try {
@@ -1507,48 +1515,37 @@ let connect_to_peer = function (
             metadata: JSON.stringify(user_meta),
           });
 
+          let inAddressbook = addressbook.find((e) => e.id === id);
+
+          status.current_user_id = id;
+          if (inAddressbook) status.current_user_nickname = inAddressbook.name;
+
+          m.route.set("/chat?id=" + settings.custom_peer_id + "&peer=" + id);
+
           if (conn) {
-            //successfull connected with peer
-            conn.on("open", () => {
-              status.current_user_id = id;
-              let inAddressbook = addressbook.find((e) => e.id === id);
-
-              if (inAddressbook) {
-                status.current_user_nickname = inAddressbook.name;
-              } else {
-                status.current_user_nickname = nickname;
+            const timeout = setTimeout(() => {
+              if (!conn.open) {
+                console.log("can't connect");
+                side_toaster("Connection timeout", 3000);
               }
+            }, 6000);
 
+            conn.on("open", () => {
+              clearTimeout(timeout);
               setupConnectionEvents(conn);
-              m.route.set(
-                "/chat?id=" + settings.custom_peer_id + "&peer=" + id
-              );
             });
 
             conn.on("error", (e) => {
-              if (route_target == null || route_target == undefined) {
-                side_toaster("Connection could not be established", 5000);
-              } else {
-                side_toaster("Connection could not be established", 5000);
-                if (waiting) m.route.set(route_target);
-              }
+              clearTimeout(timeout);
+              console.log(e);
             });
-
-            // Fallback in case 'open' or 'error' events are not triggered
-            setTimeout(() => {
-              if (!conn.open) {
-                side_toaster("Connection timeout", 3000);
-                if (waiting) m.route.set("/start");
-              }
-            }, 12000);
           } else {
             side_toaster("Connection could not be established", 5000);
-            if (waiting) m.route.set("/start");
           }
         } catch (e) {
           side_toaster("Connection could not be established", 5000);
         }
-      }, 6000);
+      }, 8000);
     })
     .catch((e) => {
       side_toaster("Connection could not be established", 5000);
@@ -2007,7 +2004,6 @@ var waiting = {
         },
         onbeforeremove: () => {
           clearTimeout(timer1);
-          console.log("timer killed");
         },
       },
       [m("span", "connecting")]
@@ -2304,9 +2300,9 @@ var about_page = {
     return m(
       "div",
       {
-        class: "page about-page",
-        oncreate: ({ dom }) => {
-          dom.focus();
+        class: "page scroll about-page",
+        oncreate: (vnode) => {
+          vnode.dom.focus();
           top_bar("", "", "");
 
           if (status.notKaiOS)
@@ -2316,49 +2312,65 @@ var about_page = {
       [
         m(
           "div",
-          { class: "item scroll", id: "about-text" },
+          { class: "scroll", id: "about-text" },
           "With flop you can communicate directly with another person/machine (p2p). To do this you need a stable internet connection and you must know the other person's ID. When you start a chat you can share your ID via the options menu."
         ),
 
         m("div", { id: "description" }, [
           m("h2", {}, "Icons"),
 
-          m(
-            "div",
-            { class: "flex width-100 item" },
-            m.trust("<img src='assets/image/pencil.svg'>write")
-          ),
+          m("div", { class: "row  middle-xs" }, [
+            m(
+              "div",
+              { class: "col-xs-2" },
+              m("img", { src: "assets/image/pencil.svg" })
+            ),
+            m("div", { class: "col-xs-9 text-left" }, m("span", "write")),
+          ]),
 
-          m(
-            "div",
-            { class: "flex width-100 item" },
-            m.trust("<img src='assets/image/send.svg'>send")
-          ),
+          m("div", { class: "row  middle-xs" }, [
+            m(
+              "div",
+              { class: "col-xs-2" },
+              m("img", { src: "assets/image/send.svg" })
+            ),
+            m("div", { class: "col-xs-9 text-left" }, m("span", "send")),
+          ]),
 
-          m(
-            "div",
-            { class: "flex width-100 item" },
-            m.trust("<img src='assets/image/option.svg'>option")
-          ),
+          m("div", { class: "row  middle-xs" }, [
+            m(
+              "div",
+              { class: "col-xs-2" },
+              m("img", { src: "assets/image/option.svg" })
+            ),
+            m("div", { class: "col-xs-9 text-left" }, m("span", "option")),
+          ]),
 
-          m(
-            "div",
-            { class: "flex width-100" },
-            m.trust("<img src='assets/image/record.svg'>audio message")
-          ),
+          m("div", { class: "row  middle-xs" }, [
+            m(
+              "div",
+              { class: "col-xs-2" },
+              m("img", { src: "assets/image/record.svg" })
+            ),
+            m(
+              "div",
+              { class: "col-xs-9 text-left" },
+              m("span", "audio message")
+            ),
+          ]),
 
-          m(
-            "div",
-            { class: "flex width-100 item" },
-            m.trust(
-              "<img src='assets/image/record-live.svg'>recording audio message"
-            )
-          ),
+          m("div", { class: "row middle-xs" }, [
+            m(
+              "div",
+              { class: "col-xs-2" },
+              m("img", { src: "assets/image/record-live.svg" })
+            ),
+            m("div", { class: "col-xs-9 text-left" }, m("span", "recording")),
+          ]),
         ]),
-
         m(
           "div",
-          { class: "item scroll", id: "about-text" },
+          { class: "", id: "about-text" },
           m.trust(
             "The code of the software is freely available: <a href='https://github.com/strukturart/flop'>gitHub</a>"
           )
@@ -2366,7 +2378,7 @@ var about_page = {
         m(
           "div",
           {
-            class: "item scroll",
+            class: "scroll",
             id: "about-text",
             oncreate: () => {
               setTabindex();
@@ -2501,7 +2513,7 @@ var settings_page = {
     return m(
       "div",
       {
-        class: "flex justify-center page",
+        class: "page",
         id: "settings-page",
         oncreate: () => {
           bottom_bar("", "", "");
@@ -2519,7 +2531,7 @@ var settings_page = {
             oncreate: ({ dom }) => {
               dom.focus();
             },
-            class: "item input-parent flex justify-spacearound",
+            class: "item input-parent",
           },
           [
             m(
@@ -2555,34 +2567,23 @@ var settings_page = {
                 document.querySelector(".avatar").src = avatar.toDataUri();
               },
             }),
-            m("img", {
-              class: "avatar",
-              src: "",
-            }),
           ]
         ),
+        m("div", { class: "row around-xs" }, [
+          m("img", {
+            class: "avatar",
+            src: "",
+          }),
+        ]),
 
-        m(
-          "div",
-          {
-            class: "item input-parent  flex justify-spacearound",
-          },
-          [
-            m(
-              "label",
-              {
-                for: "custom-peer-id",
-              },
-              "Custom ID"
-            ),
-            m("input", {
-              readonly: true,
-              id: "custom-peer-id",
-              placeholder: "ID",
-              value: settings.custom_peer_id,
-            }),
-          ]
-        ),
+        m("input", {
+          readonly: true,
+          id: "custom-peer-id",
+          placeholder: "ID",
+          value: settings.custom_peer_id,
+        }),
+
+        ,
         m(
           "button",
           {
@@ -2682,7 +2683,7 @@ var settings_page = {
               e.target.remove();
 
               document.querySelectorAll(".advanced-settings").forEach((el) => {
-                el.style.display = "flex";
+                el.style.display = "block";
               });
 
               setTabindex();
@@ -2699,8 +2700,7 @@ var settings_page = {
         m(
           "div",
           {
-            class:
-              "item input-parent  flex justify-spacearound advanced-settings",
+            class: "item input-parent advanced-settings",
             style: "display:none",
           },
           [
@@ -2722,8 +2722,7 @@ var settings_page = {
         m(
           "div",
           {
-            class:
-              "item input-parent  flex  justify-spacearound advanced-settings",
+            class: "item input-parent   advanced-settings",
             style: "display:none",
           },
           [
@@ -2745,8 +2744,7 @@ var settings_page = {
         m(
           "div",
           {
-            class:
-              "item input-parent  flex justify-spacearound advanced-settings",
+            class: "item input-parent  advanced-settings",
             style: "display:none",
           },
           [
@@ -2768,8 +2766,7 @@ var settings_page = {
         m(
           "div",
           {
-            class:
-              "item input-parent flex justify-spacearound advanced-settings",
+            class: "item input-parent  advanced-settings",
             style: "display:none",
           },
           [
@@ -2791,8 +2788,7 @@ var settings_page = {
         m(
           "div",
           {
-            class:
-              "item input-parent flex justify-spacearound advanced-settings",
+            class: "item input-parent  advanced-settings",
             style: "display:none",
           },
           [
@@ -2901,7 +2897,6 @@ var options = {
                   }, 500),
                 class: "item",
                 id: "button-add-user",
-                style: { display: status.userOnline ? "" : "none" },
 
                 onfocus: () => {
                   bottom_bar("", "", "");
@@ -3058,7 +3053,7 @@ var intro = {
             } else {
               setTimeout(function () {
                 let m = fullUrl.split("id=");
-                connect_to_peer(m[1], "/start");
+                connect_to_peer(m[1]);
               }, 1000);
             }
           } else {
@@ -3076,7 +3071,7 @@ var intro = {
                 if (params.length > 1) {
                   let id = params[1];
                   localforage.removeItem("connect_to_id").then(() => {
-                    connect_to_peer(id, "/chat");
+                    connect_to_peer(id);
                   });
                 }
               }
@@ -3167,7 +3162,7 @@ var start = {
           {
             id: "logo",
             oncreate: (vnode) => {
-              if (!status.notKaiOS) vnode.dom.display = "none";
+              if (!status.notKaiOS) vnode.dom.style.display = "none";
             },
           },
           [m("img", { class: "", src: "./assets/image/logo-style.svg" })]
@@ -3203,10 +3198,12 @@ var start = {
                       m(
                         "button",
                         {
-                          class: "item addressbook-item row between-md",
+                          class: "item debug addressbook-item row between-md",
                           "data-id": e.id,
                           "data-client-id": e.client_id || "null",
-                          "data-nickname": e.nickname,
+                          "data-nickname": e.nickname || e.name,
+                          "data-name": e.name || e.nickname,
+
                           "data-online": e.live ? "true" : "false",
 
                           oncreate: (vnode) => {
@@ -3249,7 +3246,7 @@ var start = {
                             m("div", { class: "online-indicator" }, ""),
                             m("img", {
                               class: "aavatar",
-                              src: create_avatar(e.nickname, 30),
+                              src: create_avatar(e.name, 25),
                             }),
                           ]),
 
@@ -3275,7 +3272,7 @@ var start = {
                                     "small",
                                     {
                                       class:
-                                        "last-conversation-date col-xs-3 col-md-3",
+                                        "last-conversation-date col-xs-4 col-md-4",
                                     },
                                     dayjs(
                                       e.last_conversation_datetime * 1000
@@ -3297,6 +3294,9 @@ var start = {
           "kbd",
           {
             id: "version",
+            oncreate: (vnode) => {
+              if (!status.notKaiOS) vnode.dom.style.display = "none";
+            },
           },
           "Version " + localStorage.getItem("version") || 0
         ),
@@ -3306,6 +3306,9 @@ var start = {
             id: "liberapay",
             href: "https://liberapay.com/perry_______",
             target: "_blank",
+            oncreate: (vnode) => {
+              if (!status.notKaiOS) vnode.dom.style.display = "none";
+            },
           },
           [m("img", { src: "./assets/image/liberapay.svg" })]
         ),
@@ -3315,6 +3318,7 @@ var start = {
 };
 
 let audioRecorder = null;
+let audio_recorder_time = null;
 let audioRecorderDuration = 0;
 var audiorecorder_view = {
   oninit: () => {
@@ -3333,15 +3337,11 @@ var audiorecorder_view = {
 
         oninit: () => {
           audioRecorder.startRecording().then(() => {
-            console.log("Recording started");
-
-            let timer = setInterval(() => {
-              audioRecorderDuration++;
+            audio_recorder_time = setInterval(() => {
+              audioRecorderDuration++; // jede Sekunde +1
               top_bar(
                 "",
-                dayjs
-                  .duration(audioRecorderDuration / 1000, "seconds")
-                  .format("mm:ss"),
+                dayjs.utc(audioRecorderDuration * 1000).format("mm:ss"),
                 ""
               );
             }, 1000);
@@ -3383,6 +3383,8 @@ var audiorecorder_view = {
             // Ressourcen freigeben
             audioRecorder.cleanup?.();
             audioRecorder = null;
+            clearInterval(audio_recorder_time);
+            audioRecorderDuration = 0;
           }
           status.viewReady = false;
         },
@@ -3495,7 +3497,7 @@ var chat = {
                   top_bar(
                     "<img src='assets/image/back.svg'>",
                     "<div id='name'>" + username.slice(0, 8) + "</div>",
-                    "<span class='online-indicator'>k</span><img class='avatar' src=" +
+                    "<span class='online-indicator'></span><img class='avatar' src=" +
                       create_avatar(username, 30) +
                       ">"
                   );
@@ -3523,7 +3525,7 @@ var chat = {
                   top_bar(
                     "<img src='assets/image/back.svg'>",
                     "<div id='name'>" + username.slice(0, 8) + "</div>",
-                    "<span class='online-indicator'>k</span><img class='avatar' src=" +
+                    "<span class='online-indicator'></span><img class='avatar' src=" +
                       create_avatar(username, 30) +
                       ">"
                   );
@@ -3805,7 +3807,7 @@ var chat = {
           ]
         );
       }),
-      m("div", { id: "typing-indicator" }, "")
+      m("div", { id: "typing-indicator", class: "" }, "")
     );
   },
 };
@@ -3918,6 +3920,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
       return false;
 
     if (document.activeElement.classList.contains("scroll")) {
+      console.log("scroll");
       const scrollableElement = document.querySelector(".scroll");
       if (move == 1) {
         scrollableElement.scrollBy({ left: 0, top: 10 });
@@ -4116,6 +4119,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
     switch (param.key) {
       case "Backspace":
+        if (document.activeElement.tagName == "INPUT") return;
+
         if (route.startsWith("/start")) {
           preventDefault();
           return true;
@@ -4345,6 +4350,18 @@ document.addEventListener("DOMContentLoaded", function (e) {
           }
         }
 
+        if (document.activeElement.classList.contains("input-parent")) {
+          document.activeElement.children[1].focus();
+
+          if (document.activeElement.classList.contains("check-box")) {
+            document.activeElement.checked == true
+              ? (document.activeElement.checked = false)
+              : (document.activeElement.checked = true);
+          }
+
+          return true;
+        }
+
         if (document.activeElement) {
           const activeElement = document.activeElement;
 
@@ -4359,7 +4376,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
             activeElement.value.length === 0;
 
           if (!isInputField || isEmpty) {
-            evt.preventDefault();
+            //preventDefault();
           } else {
             return;
           }
@@ -4515,6 +4532,7 @@ try {
 }
 
 if (!status.notKaiOS) {
+  //webActivity KaiOS 2
   try {
     navigator.mozSetMessageHandler("activity", function (activityRequest) {
       var option = activityRequest.source;
@@ -4522,14 +4540,13 @@ if (!status.notKaiOS) {
       let id = params[1];
       if (id) {
         setTimeout(() => {
-          connect_to_peer(id, "/start");
+          connect_to_peer(id);
         }, 5000);
       }
     });
   } catch (e) {}
 
   //webActivity KaiOS 3
-
   try {
     navigator.serviceWorker
       .register(new URL("sw.js", import.meta.url), {

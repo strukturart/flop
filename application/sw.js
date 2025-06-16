@@ -1,7 +1,5 @@
 import localforage from "localforage";
-
 const userAgent = navigator.userAgent || "";
-
 //KaiOS 3 open app
 if (userAgent && !userAgent.includes("KAIOS")) {
   self.onsystemmessage = (evt) => {
@@ -72,7 +70,7 @@ self.addEventListener("notificationclick", (event) => {
 });
 
 if (userAgent && !userAgent.includes("KAIOS")) {
-  const CACHE_NAME = "pwa-cache-v0.2326";
+  const CACHE_NAME = "pwa-cache-v0.2376";
   const FILE_LIST_URL = "/file-list.json"; // URL of the JSON file containing the array of files
 
   self.addEventListener("install", (event) => {
