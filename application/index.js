@@ -29,7 +29,6 @@ import { v4 as uuidv4 } from "uuid";
 import "webrtc-adapter";
 import L from "leaflet";
 import dayjs from "dayjs";
-import duration from "dayjs/plugin/duration";
 
 import AudioMotionAnalyzer from "audiomotion-analyzer";
 
@@ -42,7 +41,6 @@ import markerIconRetina from "./assets/css/images/marker-icon-2x.png";
 
 import { createAvatar } from "@dicebear/core";
 import * as style from "@dicebear/identicon";
-
 import Peer from "peerjs";
 
 export let status = {
@@ -3167,7 +3165,7 @@ var start = {
           {
             id: "logo",
             oncreate: (vnode) => {
-              if (!status.notKaiOS) vnode.dom.display = "none";
+              if (!status.notKaiOS) vnode.dom.style.display = "none";
             },
           },
           [m("img", { class: "", src: "./assets/image/logo-style.svg" })]
@@ -3297,6 +3295,9 @@ var start = {
           "kbd",
           {
             id: "version",
+            oncreate: (vnode) => {
+              if (!status.notKaiOS) vnode.dom.style.display = "none";
+            },
           },
           "Version " + localStorage.getItem("version") || 0
         ),
@@ -3306,6 +3307,9 @@ var start = {
             id: "liberapay",
             href: "https://liberapay.com/perry_______",
             target: "_blank",
+            oncreate: (vnode) => {
+              if (!status.notKaiOS) vnode.dom.style.display = "none";
+            },
           },
           [m("img", { src: "./assets/image/liberapay.svg" })]
         ),
@@ -3315,6 +3319,7 @@ var start = {
 };
 
 let audioRecorder = null;
+let audio_recorder_time = null;
 let audioRecorderDuration = 0;
 var audiorecorder_view = {
   oninit: () => {
@@ -3333,15 +3338,11 @@ var audiorecorder_view = {
 
         oninit: () => {
           audioRecorder.startRecording().then(() => {
-            console.log("Recording started");
-
-            let timer = setInterval(() => {
-              audioRecorderDuration++;
+            audio_recorder_time = setInterval(() => {
+              audioRecorderDuration++; // jede Sekunde +1
               top_bar(
                 "",
-                dayjs
-                  .duration(audioRecorderDuration / 1000, "seconds")
-                  .format("mm:ss"),
+                dayjs.utc(audioRecorderDuration * 1000).format("mm:ss"),
                 ""
               );
             }, 1000);
@@ -3383,6 +3384,7 @@ var audiorecorder_view = {
             // Ressourcen freigeben
             audioRecorder.cleanup?.();
             audioRecorder = null;
+            clearInterval(audio_recorder_time);
           }
           status.viewReady = false;
         },
@@ -3495,7 +3497,7 @@ var chat = {
                   top_bar(
                     "<img src='assets/image/back.svg'>",
                     "<div id='name'>" + username.slice(0, 8) + "</div>",
-                    "<span class='online-indicator'>k</span><img class='avatar' src=" +
+                    "<span class='online-indicator'></span><img class='avatar' src=" +
                       create_avatar(username, 30) +
                       ">"
                   );
@@ -3523,7 +3525,7 @@ var chat = {
                   top_bar(
                     "<img src='assets/image/back.svg'>",
                     "<div id='name'>" + username.slice(0, 8) + "</div>",
-                    "<span class='online-indicator'>k</span><img class='avatar' src=" +
+                    "<span class='online-indicator'></span><img class='avatar' src=" +
                       create_avatar(username, 30) +
                       ">"
                   );
