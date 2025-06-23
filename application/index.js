@@ -70,6 +70,7 @@ export let status = {
   files: [],
   audiocontrol: "",
   peerjsServerConnection: false,
+  lastPingSentAt: Date.now(),
 };
 
 // not KaiOS
@@ -405,6 +406,26 @@ function setupConnectionEvents(conn) {
   conn.on("data", function (data) {
     //block is not from flop app
     if (conn.label !== "flop") return;
+
+    //test connection stable
+    try {
+      if (data.type === "ping") {
+        const now = Date.now();
+        if (now - status.lastPingSentAt >= 30000) {
+          // 30 Sekunden
+          sendMessage("", "ping", "", data.from, undefined);
+          status.lastPingSentAt = now;
+        }
+      }
+
+      console.log("ping received");
+
+      addressbook.forEach((e) => {
+        if (e.id == data.from) {
+          e.live = true;
+        }
+      });
+    } catch (e) {}
 
     if (data.type === "typing") {
       const chat = document.querySelector("#chat");
@@ -742,6 +763,7 @@ async function getIceServers() {
       debug: 0,
       secure: false,
       config: ice_servers,
+      referrerPolicy: "no-referrer",
     });
 
     //connection from peer
@@ -804,7 +826,7 @@ async function getIceServers() {
               if (!webrtcCounter) {
                 webrtcCounter = true;
                 hh.close();
-                connect_to_peer(h, undefined, undefined, false);
+                connect_to_peer(h, undefined, false);
               }
             }, 15000);
           }
@@ -965,6 +987,22 @@ let sendMessage = (
   messageId = uuidv4(16)
 ) => {
   let message = {};
+
+  //PING
+  //test connection
+  if (type == "ping") {
+    message = {
+      nickname: settings.nickname,
+      type: type,
+      content: msg,
+      mimeType: "",
+      from: settings.custom_peer_id,
+      to: to,
+      id: messageId,
+    };
+
+    sendMessageToAll(message);
+  }
 
   //POD
   if (type == "pod") {
@@ -1203,7 +1241,7 @@ async function sendMessageToAll(message) {
   );
 
   // send webPush
-  if (openConnections.length === 0) {
+  if (openConnections.length === 0 && message.type !== "ping") {
     let getClientId = addressbook.find((e) => e.id == message.to);
 
     if (getClientId.client_id != "") {
@@ -1245,17 +1283,17 @@ async function sendMessageToAll(message) {
   if (message.type == "pod") {
     console.log("send pod");
   } else {
+    if (message.type == "ping" || message.type == "typing") return;
+
     setTimeout(() => {
       const result = chat_data.find(
         (e) => e.id === message.id && e.pod == true
       );
       if (!result) {
         //store and send later
-        if (message.type != "typing") {
-          console.log("store it to send it later");
+        console.log("store it to send it later");
 
-          messageQueue(message);
-        }
+        messageQueue(message);
       }
     }, 5000);
   }
@@ -1377,9 +1415,11 @@ function sendPushMessage(userId, message) {
 
 //connect to peer
 //test is other peer is online
-let lastCheck = 0;
+let lastCheck = Date.now();
 
 let peer_is_online = async function () {
+  console.log("try to connect");
+
   if (!navigator.onLine) {
     top_bar("", "<img src='assets/image/offline.svg'>", "");
     return false;
@@ -1452,7 +1492,6 @@ let peer_is_online = async function () {
 //connect to peer
 let connect_to_peer = function (
   id,
-  route_target = "/start",
   nickname = generateRandomString(10),
   waiting = true
 ) {
@@ -3213,13 +3252,12 @@ var start = {
                           onfocus: () => {
                             status.addressbook_in_focus = e.id;
                           },
-                          onclick: () => {
-                            if (e.live == true) {
+                          onkeydown: (h) => {
+                            if (h.key === "Enter") {
                               connect_to_peer(
                                 document.activeElement.getAttribute("data-id")
                               );
-                            } else {
-                              side_toaster("The user is not online", 3000);
+
                               status.current_user_id =
                                 document.activeElement.getAttribute("data-id");
                               status.current_user_nickname = e.nickname;
@@ -3238,6 +3276,30 @@ var start = {
                               if (pid && pid !== settings.clientID) {
                                 status.current_clientId = pid;
                               }
+                            }
+                          },
+                          onclick: () => {
+                            connect_to_peer(
+                              document.activeElement.getAttribute("data-id")
+                            );
+
+                            status.current_user_id =
+                              document.activeElement.getAttribute("data-id");
+                            status.current_user_nickname = e.nickname;
+                            status.current_user_name = e.name;
+                            m.route.set(
+                              "/chat?id=" +
+                                settings.custom_peer_id +
+                                "&peer=" +
+                                status.current_user_id
+                            );
+
+                            let pid =
+                              document.activeElement.getAttribute(
+                                "data-client-id"
+                              );
+                            if (pid && pid !== settings.clientID) {
+                              status.current_clientId = pid;
                             }
                           },
                         },
@@ -3477,7 +3539,17 @@ var chat = {
             "",
             "<img src='assets/image/option.svg'>"
           );
+          let every_10_secs = 0;
           user_check = setInterval(() => {
+            //ping
+            if (every_10_secs >= 0) {
+              every_10_secs++;
+            }
+            if (every_10_secs == 10) {
+              sendMessage("", "ping", "", status.current_user_id, undefined);
+              every_10_secs = 0;
+            }
+
             if (connectedPeers) {
               status.userOnline = connectedPeers.length;
 
@@ -3550,15 +3622,14 @@ var chat = {
             "div",
             {
               id: "message-input",
-              type: "text",
-              class: "row center-xs center-md",
             },
             [
               m("input", {
                 type: "text",
-                class: "col-xs-11 col-md-10",
-                oncreate: (v) => {
-                  v.dom.focus();
+
+                oncreate: (vnode) => {
+                  vnode.dom.focus();
+                  vnode.dom.scrollIntoView();
                 },
                 onblur: () => {
                   focus_last_article();

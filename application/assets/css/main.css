@@ -217,7 +217,7 @@ button.audioplayer-button img {
 
 #addressbook button.addressbook-item {
   border-radius: 0px;
-  min-height: 30px;
+  min-height: 60px;
   color: black;
   outline: 0px;
   border: 0px;
@@ -1371,6 +1371,7 @@ span.user-offline {
 
   #addressbook button.addressbook-item {
     margin: 0px 0 10px 0 !important;
+    min-height: 60px;
   }
 
   #chat:last-child {
