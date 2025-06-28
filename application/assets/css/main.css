@@ -218,10 +218,11 @@ button.audioplayer-button img {
 #addressbook button.addressbook-item {
   border-radius: 0px;
   min-height: 60px;
+  max-height: 60px;
   color: black;
   outline: 0px;
   border: 0px;
-  margin: 0 0 0px 0;
+  margin: 0 0 25px 0 !important;
   position: relative;
   min-width: 100%;
 }
@@ -312,7 +313,7 @@ button.audioplayer-button img {
 }
 
 #addressbook button.addressbook-item:last-child {
-  margin-bottom: 50px;
+  margin-bottom: 0px;
 }
 
 a.button-style {
@@ -1370,8 +1371,8 @@ span.user-offline {
   }
 
   #addressbook button.addressbook-item {
-    margin: 0px 0 10px 0 !important;
     min-height: 60px;
+    max-height: 60px;
   }
 
   #chat:last-child {

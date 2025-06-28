@@ -6,12 +6,11 @@
 [![badge-bhackers](https://img.shields.io/badge/bHackers-bHackerStore-orange)](https://store.bananahackers.net/#watermelon)
 ![badge-downloads](https://img.shields.io/github/downloads/strukturart/watermelon/total)
 
-Is a <a href="https://en.wikipedia.org/wiki/WebRTC">WebRTC</a> chat-client, for the KaiOS.
-Currently you can exchange text messages, pictures and your location with each other. You can create new chats and join chats.
+Is a <a href="https://en.wikipedia.org/wiki/WebRTC">WebRTC</a> chat client for KaiOS, built with a local-first approach — your data stays on your device by default.
+Currently, you can exchange text messages, pictures, and your location with others. You can create new chats and join existing ones, all without relying on a central server.
 
 ### Features
 
-- create chat
 - join chat
 - share location
 - share live location
@@ -21,7 +20,7 @@ Currently you can exchange text messages, pictures and your location with each o
 
 ## yes, but
 
-In order to establish a connection between 2 peers, you have to know the id of the peers. To do this, I use the API: mozActivity / webActivity, which enables the exchange via a URL (sharing by SMS or EMAIL). In KaiOS there is also the option of deep linking, which I don't use because KaiOS 3 is not very widespread.
+In order to establish a connection between 2 peers, you have to know the id of the peers. To do this, I use the API: mozActivity / webActivity, which enables the exchange via a URL (sharing by SMS or EMAIL).
 
 ## How to install
 
@@ -30,15 +29,15 @@ In order to establish a connection between 2 peers, you have to know the id of t
 
 ## Test Version
 
-<a href="https://flop.bhackers.uber.space/">https://flop.bhackers.uber.space/</a>
+<a href="https://flop.chat/">https://flop.chat/</a>
 
 ### Build your own
 
 Installing the dependencies<br>
 `npm -i`
 
-`run build.sh`<br>
-Two zip files will be created, one for KaiOS 2 and one for KaiOS 3
+Build KaiOS 3 app<br>
+`npm run build`<br>
 
 If you want to create a browser version<br>
 `npm run web`

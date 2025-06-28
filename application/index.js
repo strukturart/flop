@@ -69,8 +69,8 @@ export let status = {
   webpush_do_not_annoy: [],
   files: [],
   audiocontrol: "",
-  peerjsServerConnection: false,
   lastPingSentAt: Date.now(),
+  notificationLastCall: Date.now(),
 };
 
 // not KaiOS
@@ -108,6 +108,7 @@ let peer = null;
 
 let conn = "";
 let connectedPeers = [];
+let connectedPeersObject = [];
 
 if (status.debug) {
   window.onerror = function (msg, url, linenumber) {
@@ -221,8 +222,18 @@ setTimeout(() => {
 localforage
   .getItem("addressbook")
   .then((e) => {
-    if (e !== null) addressbook = e;
-    if (e.length == 0) addressbook = [];
+    if (e !== null) {
+      addressbook = e;
+      if (addressbook.length === 0) addressbook = [];
+      else {
+        // live = true setzen bei allen Einträgen
+        addressbook.forEach((entry) => {
+          entry.live = false;
+        });
+      }
+    } else {
+      addressbook = [];
+    }
   })
   .catch(() => {});
 
@@ -318,10 +329,13 @@ let load_chat_history = (id) => {
 //to update connections list
 let restrict_same_id = [];
 function setupConnectionEvents(conn) {
+  connectedPeersObject.push(conn);
   connectedPeers.push(conn.peer);
   let pc = conn.peerConnection;
 
   pc.addEventListener("iceconnectionstatechange", () => {
+    console.log(pc.iceConnectionState);
+
     switch (pc.iceConnectionState) {
       case "disconnected":
       case "failed":
@@ -329,6 +343,10 @@ function setupConnectionEvents(conn) {
         peer_is_online();
 
         connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
+
+        connectedPeersObject = connectedPeersObject.filter(
+          (c) => c.peer !== conn.peer
+        );
 
         updateConnections();
         break;
@@ -340,6 +358,8 @@ function setupConnectionEvents(conn) {
       case "connected":
         //Que
         console.log("connected");
+        peer_is_online();
+
         try {
           messageQueue();
           if (messageQueueStorage.length > 0) {
@@ -407,24 +427,19 @@ function setupConnectionEvents(conn) {
     //block is not from flop app
     if (conn.label !== "flop") return;
 
-    //test connection stable
+    //test ping
+    //KaiOS 2
     try {
       if (data.type === "ping") {
         const now = Date.now();
         if (now - status.lastPingSentAt >= 30000) {
-          // 30 Sekunden
           sendMessage("", "ping", "", data.from, undefined);
           status.lastPingSentAt = now;
+          console.log("ping send");
         }
       }
 
       console.log("ping received");
-
-      addressbook.forEach((e) => {
-        if (e.id == data.from) {
-          e.live = true;
-        }
-      });
     } catch (e) {}
 
     if (data.type === "typing") {
@@ -512,7 +527,13 @@ function setupConnectionEvents(conn) {
           conn.close();
         }
       } else {
-        pushLocalNotification("New message from " + inAddressbook.name);
+        const now = Date.now();
+
+        if (now - status.notificationLastCall >= 60000) {
+          status.notificationLastCall = now;
+          pushLocalNotification("New message from " + inAddressbook.name);
+        }
+
         let r = m.route.get();
         if (r.startsWith("/start")) {
           peer_is_online();
@@ -571,7 +592,7 @@ function setupConnectionEvents(conn) {
 
         if (inAddressbook) {
           inAddressbook.last_conversation_message = data.content;
-          inAddressbook.last_conversation_datetime = Date.now();
+          inAddressbook.last_conversation_datetime = dayjs().format("HH:mm");
 
           localforage
             .setItem("addressbook", addressbook)
@@ -697,12 +718,23 @@ function setupConnectionEvents(conn) {
   conn.on("close", () => {
     side_toaster(`User has left the chat`, 1000);
     connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
+
+    connectedPeersObject = connectedPeersObject.filter(
+      (c) => c.peer !== conn.peer
+    );
+    peer_is_online();
+
     updateConnections();
   });
 
   conn.on("error", () => {
     // side_toaster(`User has been disconnected`, 1000);
     connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
+    connectedPeersObject = connectedPeersObject.filter(
+      (c) => c.peer !== conn.peer
+    );
+    peer_is_online();
+
     updateConnections();
   });
 }
@@ -733,7 +765,7 @@ async function getIceServers() {
     );
 
     if (!response.ok) {
-      side_toaster("Server not reachable", 5000);
+      side_toaster("TURN Server not reachable", 5000);
       //retry get turn
       getIceServers();
       if (p.startsWith("/start"))
@@ -763,90 +795,42 @@ async function getIceServers() {
       debug: 0,
       secure: false,
       config: ice_servers,
-      referrerPolicy: "no-referrer",
-    });
-
-    //connection from peer
-    peer.on("connection", function (c) {
-      setupConnectionEvents(c);
-      status.peerjsServerConnection = true;
     });
 
     peer.on("disconnected", () => {
       console.log(`server error`);
+
       attemptReconnect();
     });
 
     //connection to peer-server
     peer.on("open", function (id) {
       console.log("PeerJS connected with server ID:", id);
-      status.peerjsServerConnection = true;
-      if (peer.socket && peer.socket._socket) {
-        peer.socket._socket.addEventListener("error", function (event) {
-          console.error("WebSocket Error:", event);
-          attemptReconnect();
-        });
-
-        peer.socket._socket.addEventListener("close", function (event) {
-          console.warn("WebSocket closed:", event);
-          attemptReconnect();
-        });
-      } else {
-        console.warn("WebSocket not initialized yet.");
-      }
     });
-
-    let h;
-    let hh;
-    peer.on("connection", (conn) => {
-      h = conn.peer;
-      hh = conn;
-    });
-
-    let webrtcCounter = false;
 
     peer.on("error", function (err) {
-      //retry to connect
-      switch (err.type) {
-        case "server-error":
-          side_toaster(
-            "The connection server is not reachable: server error",
-            6000
-          );
-          break;
+      console.error("Peer error:", err.type, err.message || err);
+      attemptReconnect();
+    });
 
-        case "webrtc":
-          if (!status.notKaiOS && navigator.userAgent.includes("KaiOS/2")) {
-            //TO DO
-            //There are difficulties connecting to a KaiOS 2 device,
-            //  but KaiOS devices can connect to other devices;
-            // the webrtc error is an indication of this.
-
-            setTimeout(() => {
-              if (!webrtcCounter) {
-                webrtcCounter = true;
-                hh.close();
-                connect_to_peer(h, undefined, false);
-              }
-            }, 15000);
-          }
-
-          break;
-
-        case "socket-closed":
-          side_toaster("The connection server is not reachable.", 6000);
-          break;
-
-        case "network":
-          console.log("Network error");
-          break;
-
-        default:
-          break;
+    //connection from peer
+    //pass connection objekt to tracker
+    peer.on("connection", function (conn) {
+      console.log("Hello remote" + conn.peer);
+      setupConnectionEvents(conn);
+      if (!status.notKaiOS) {
+        connect_to_peer(conn.peer, undefined, false, false);
       }
     });
+
+    //connection from remote peer
+    //dosent work in KaiOS 2.x
+    peer.on("connection", function (conn) {
+      console.log("Hello remote" + conn.peer);
+      connect_to_peer(conn.peer, undefined, false, false);
+    });
   } catch (error) {
-    side_toaster("The connection server is not reachable " + error, 6000);
+    console.log(error);
   }
 }
 
@@ -1231,13 +1215,9 @@ async function sendMessageToAll(message) {
   message.from = settings.custom_peer_id;
   message.to = message.to ?? status.current_user_id;
 
-  if (!peer.connections[message.to]) {
-    console.warn("No valid peer to send");
-    return;
-  }
-
-  const openConnections = peer.connections[message.to].filter(
-    (conn) => conn.open
+  //get all open connection with peer.id
+  const openConnections = connectedPeersObject.filter(
+    (c) => c.peer === message.to && c.open
   );
 
   // send webPush
@@ -1270,14 +1250,19 @@ async function sendMessageToAll(message) {
     } else {
       console.log("no clientID");
     }
-    messageQueue(message);
-    await storeChatData();
-    m.redraw();
-    return;
-  }
 
-  openConnections.forEach((e) => {
-    e.send(message);
+    if (message.type != "pod") {
+      console.log("store it to send it later");
+
+      messageQueue(message);
+      await storeChatData();
+      m.redraw();
+      return;
+    }
+  }
+  //send messages
+  openConnections.forEach((conn) => {
+    conn.send(message);
   });
 
   if (message.type == "pod") {
@@ -1418,8 +1403,6 @@ function sendPushMessage(userId, message) {
 let lastCheck = Date.now();
 
 let peer_is_online = async function () {
-  console.log("try to connect");
-
   if (!navigator.onLine) {
     top_bar("", "<img src='assets/image/offline.svg'>", "");
     return false;
@@ -1427,20 +1410,23 @@ let peer_is_online = async function () {
 
   let now = Date.now();
 
-  if (now - lastCheck < 5000) {
-    return;
+  if (now - lastCheck < 10000) {
+    return false;
   }
+
+  lastCheck = now;
 
   if (addressbook.length == 0) {
     return false;
-  } else {
-    console.log("try to connect");
   }
+
+  console.log("try to connect");
 
   try {
     for (let i = 0; i < addressbook.length; i++) {
       let entry = addressbook[i];
       entry.live = false;
+      m.redraw();
 
       if (!entry.id || entry.id == "") continue;
 
@@ -1448,6 +1434,13 @@ let peer_is_online = async function () {
         entry.live = true;
         console.log("allready connected");
         m.redraw();
+
+        messageQueueStorage.map((e) => {
+          if (e.to == entry.id && e.type != "typing") {
+            console.log("try to send old messages");
+            sendMessageToAll(e);
+          }
+        });
         continue;
       }
 
@@ -1493,7 +1486,8 @@ let peer_is_online = async function () {
 let connect_to_peer = function (
   id,
   nickname = generateRandomString(10),
-  waiting = true
+  waiting = true,
+  open_view = true
 ) {
   if (!navigator.onLine) {
     top_bar("", "<img src='assets/image/offline.svg'>", "");
@@ -1512,79 +1506,85 @@ let connect_to_peer = function (
         let inAddressbook = addressbook.find((e) => e.id === id);
 
         if (inAddressbook) {
-          status.current_user_nickname = inAddressbook.name;
+          status.current_user_nickname = inAddressbook.nickname || "";
+          status.current_user_name = inAddressbook.name || "";
         } else {
           status.current_user_nickname = nickname;
         }
       }
 
-      if (connectedPeers > 0) {
-        const openConnections = peer.connections[id].filter(
-          (conn) => conn.open
-        );
-
-        if (openConnections.length > 0) {
-          status.current_user_id = id;
-          m.route.set(
-            "/chat?id=" +
-              settings.custom_peer_id +
-              "&peer=" +
-              status.current_user_id
-          );
-          connectedPeers.push(id);
-        }
-      }
-
       chat_data = [];
 
-      setTimeout(() => {
-        if (!peer) {
-          side_toaster("Peer mo set", 5000);
-        }
+      const openConn = connectedPeersObject.find(
+        (c) => c.peer === id && c.open
+      );
 
-        try {
-          console.log("Attempting to connect to peer with ID:", id);
-          let user_meta = {
-            "history_of_ids": status.history_of_ids,
-            "unique_id": settings.unique_id,
-          };
-          conn = peer.connect(id, {
-            label: "flop",
-            reliable: true,
-            metadata: JSON.stringify(user_meta),
-          });
-
-          let inAddressbook = addressbook.find((e) => e.id === id);
-
-          status.current_user_id = id;
-          if (inAddressbook) status.current_user_nickname = inAddressbook.name;
-
-          m.route.set("/chat?id=" + settings.custom_peer_id + "&peer=" + id);
-
-          if (conn) {
-            const timeout = setTimeout(() => {
-              if (!conn.open) {
-                console.log("can't connect");
-                side_toaster("Connection timeout", 3000);
-              }
-            }, 6000);
-
-            conn.on("open", () => {
-              clearTimeout(timeout);
-              setupConnectionEvents(conn);
+      //test connection is open
+      //if not open new connection
+      if (openConn != undefined && openConn && open_view) {
+        console.log("allready connected", 3000);
+        status.current_user_id = id;
+        m.route.set("/chat?id=" + settings.custom_peer_id + "&peer=" + id);
+        return;
+      } else {
+        setTimeout(() => {
+          try {
+            console.log("Attempting to connect to peer with ID:", id);
+            let user_meta = {
+              "history_of_ids": status.history_of_ids,
+              "unique_id": settings.unique_id,
+            };
+            let conn = peer.connect(id, {
+              label: "flop",
+              reliable: true,
+              metadata: JSON.stringify(user_meta),
             });
 
-            conn.on("error", (e) => {
-              clearTimeout(timeout);
-              console.log(e);
-            });
-          } else {
+            let inAddressbook = addressbook.find((e) => e.id === id);
+
+            status.current_user_id = id;
+
+            if (inAddressbook) {
+              status.current_user_nickname = inAddressbook.nickname || "";
+              status.current_user_name = inAddressbook.name || "";
+            } else {
+              status.current_user_nickname = nickname;
+            }
+            if (open_view)
+              m.route.set(
+                "/chat?id=" + settings.custom_peer_id + "&peer=" + id
+              );
+
+            if (conn) {
+              const timeout = setTimeout(() => {
+                if (!conn.open) {
+                  console.log("can't connect");
+                  side_toaster("Connection timeout", 3000);
+                }
+              }, 6000);
+
+              conn.on("open", () => {
+                clearTimeout(timeout);
+                setupConnectionEvents(conn);
+              });
+
+              conn.on("error", (err) => {
+                clearTimeout(timeout);
+                console.error(
+                  "Connection error:",
+                  err.type || err.name,
+                  err.message || err
+                );
+                side_toaster("Connection error: " + (err.message || err), 5000);
+              });
+            } else {
+              side_toaster("Connection could not be established", 5000);
+            }
+          } catch (e) {
             side_toaster("Connection could not be established", 5000);
           }
-        } catch (e) {
-          side_toaster("Connection could not be established", 5000);
-        }
-      }, 8000);
+        }, 8000);
+      }
     })
     .catch((e) => {
       side_toaster("Connection could not be established", 5000);
@@ -2138,41 +2138,6 @@ var about = {
           "button",
           {
             class: "item",
-            oncreate: ({ dom }) => {
-              dom.focus();
-            },
-            onclick: () => {
-              m.route.set("/about_page");
-            },
-          },
-          "About"
-        ),
-        m(
-          "button",
-          {
-            class: "item",
-            onclick: () => {
-              m.route.set("/settings_page");
-            },
-          },
-          "Settings"
-        ),
-
-        m(
-          "button",
-          {
-            class: "item",
-            onclick: () => {
-              m.route.set("/privacy_policy");
-            },
-          },
-          "Privacy Policy"
-        ),
-
-        m(
-          "button",
-          {
-            class: "item",
             onclick: () => {
               m.route.set("/invite");
             },
@@ -2212,12 +2177,47 @@ var about = {
           {
             class: "item",
             onclick: () => {
+              m.route.set("/settings_page");
+            },
+          },
+          "Settings"
+        ),
+
+        m(
+          "button",
+          {
+            class: "item",
+            onclick: () => {
+              m.route.set("/privacy_policy");
+            },
+          },
+          "Privacy Policy"
+        ),
+
+        m(
+          "button",
+          {
+            class: "item",
+            oncreate: ({ dom }) => {
+              dom.focus();
+            },
+            onclick: () => {
+              m.route.set("/about_page");
+            },
+          },
+          "About"
+        ),
+
+        m(
+          "button",
+          {
+            class: "item",
+            onclick: () => {
               //convert to base64
               let a = chat_data_history.map((e) => {
-                return {
-                  ...e,
+                return Object.assign({}, e, {
                   audio: e.audio ? arrayBufferToBase64(e.audio) : undefined,
-                };
+                });
               });
 
               data_export("flop", a, () => {
@@ -2316,7 +2316,7 @@ var about = {
           : null,
         m("div", {
           id: "KaiOSads-Wrapper",
-          class: "width-100",
+          class: "row",
 
           oncreate: () => {
             if (!status.notKaiOS) load_ads();
@@ -2448,7 +2448,11 @@ var invite = {
       top_bar("", "", "");
     }
 
-    bottom_bar("<img class='not-desktop' src='assets/image/link.svg'>", "", "");
+    bottom_bar(
+      "<img class='not-desktop' src='assets/image/link.svg'>",
+      "",
+      "<img class='not-desktop' src='assets/image/qr.svg'>"
+    );
   },
   view: () => {
     return m(
@@ -3171,7 +3175,7 @@ var start = {
 
     setTimeout(() => {
       peer_is_online();
-    }, 8000);
+    }, 1000);
   },
   onremove: () => {
     status.viewReady = false;
@@ -3237,7 +3241,7 @@ var start = {
                       m(
                         "button",
                         {
-                          class: "item debug addressbook-item row between-md",
+                          class: "item addressbook-item row between-md",
                           "data-id": e.id,
                           "data-client-id": e.client_id || "null",
                           "data-nickname": e.nickname || e.name,
@@ -3336,9 +3340,7 @@ var start = {
                                       class:
                                         "last-conversation-date col-xs-4 col-md-4",
                                     },
-                                    dayjs(
-                                      e.last_conversation_datetime * 1000
-                                    ).format("HH:mm")
+                                    e.last_conversation_datetime
                                   )
                                 : null,
                             ]),
@@ -3510,9 +3512,6 @@ var chat = {
           var x = document.querySelector("div#side-toast");
           x.style.transform = "translate(-100vw,0px)";
 
-          document.querySelector("body").classList.add("user-online");
-          document.querySelector("body").classList.remove("user-offline");
-
           try {
             localforage.removeItem("connect_to_id");
           } catch (e) {}
@@ -3554,9 +3553,6 @@ var chat = {
               status.userOnline = connectedPeers.length;
 
               if (connectedPeers.includes(status.current_user_id)) {
-                document.querySelector("body").classList.add("user-online");
-                document.querySelector("body").classList.remove("user-offline");
-
                 top_bar(
                   "",
                   "<div id='name'>" + username.slice(0, 6) + "</div>",
@@ -3582,9 +3578,6 @@ var chat = {
                   .querySelector("span.online-indicator")
                   .classList.add("user-online");
               } else {
-                document.querySelector("body").classList.add("user-offline");
-                document.querySelector("body").classList.remove("user-online");
-
                 top_bar(
                   "",
                   "<div id='name'>" + username.slice(0, 8) + "</div>",
@@ -3666,7 +3659,7 @@ var chat = {
                       undefined,
                       "typing",
                       undefined,
-                      undefined,
+                      status.current_user_id,
                       undefined
                     );
                   }
@@ -4333,6 +4326,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
           history.back();
         }
 
+        if (route.startsWith("/invite")) {
+          m.route.set("/scan");
+        }
+
         break;
 
       case "SoftLeft":
@@ -4386,13 +4383,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
           !status.audio_recording
         ) {
           write();
-
-          if (
-            status.userOnline == 0 &&
-            !connectedPeers.includes(status.current_user_id)
-          ) {
-            side_toaster("The user is not online.", 3000);
-          }
         }
 
         if (route.startsWith("/start")) {
