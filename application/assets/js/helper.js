@@ -687,20 +687,22 @@ export let pick_image = function (callback) {
   }
 
   // Desktop / Android Browser
-  const fileInput = document.createElement("input");
-  fileInput.type = "file";
-  fileInput.accept = "image/*";
-  fileInput.style.display = "none";
-  document.body.appendChild(fileInput);
+  if (status.notKaiOS) {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/*";
+    fileInput.style.display = "none";
+    document.body.appendChild(fileInput);
 
-  fileInput.click();
+    fileInput.click();
 
-  fileInput.addEventListener("change", function (event) {
-    const file = event.target.files[0];
-    if (file) {
-      compressImage(file, file.name, file.type);
-    }
-  });
+    fileInput.addEventListener("change", function (event) {
+      const file = event.target.files[0];
+      if (file) {
+        compressImage(file, file.name, file.type);
+      }
+    });
+  }
 };
 
 // Pick JSON file

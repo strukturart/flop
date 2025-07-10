@@ -171,12 +171,12 @@ button {
 }
 button:focus {
   background: orange;
-  border: 0px solid gray;
+  border: 2px solid orange;
 }
 
 button:hover {
   background: orange;
-  border: 0px solid gray;
+  border: 2px solid orange;
 }
 
 .button-marquee span {
@@ -387,7 +387,7 @@ label {
 }
 
 .input-parent input {
-  margin: 20px 0 0px 0;
+  margin: 0px 0 10px 0;
 }
 
 #svg {
@@ -916,6 +916,14 @@ article .message-map {
   display: none;
 }
 
+#settings-page #custom-peer-id {
+  margin: 10px 0 10px 0;
+}
+
+#settings-page .avatar {
+  margin: 10px 0 10px 0;
+}
+
 #about-text {
   margin: 15px 0 0 0;
 }
@@ -1071,6 +1079,24 @@ div#message-input input {
   color: black;
 }
 
+#start #local-by-design {
+  border: 2px solid rgb(17, 2, 5);
+  box-shadow: 8px 8px rgb(51, 240, 13);
+  font-size: small;
+  line-height: 0.85em;
+  display: block;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 3px 5px;
+  white-space: nowrap;
+  color: black;
+  width: fit-content;
+  height: 20px;
+  position: fixed;
+  right: 20px;
+  top: 20px;
+}
+
 #app {
   overflow-y: scroll;
   overflow-x: hidden;
@@ -1160,6 +1186,10 @@ span.user-offline {
     position: relative;
     overflow-y: scroll;
     overflow-x: hidden;
+  }
+
+  #start #local-by-design {
+    display: none;
   }
 
   div#bottom-bar div.button-left img {
@@ -1260,12 +1290,20 @@ span.user-offline {
     font-size: 1rem;
   }
 
+  #settings-page #custom-peer-id {
+    margin: 10px 0 10px 0;
+  }
+
   #settings-page .avatar {
-    margin: -10px 0 10px 0;
+    margin: 10px 0 10px 0;
   }
 
   #settings-page input {
     max-width: 80%;
+  }
+
+  #start #local-by-design {
+    display: none;
   }
 
   .page {

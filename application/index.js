@@ -26,19 +26,14 @@ import { geolocation, pushLocalNotification } from "./assets/js/helper.js";
 import m from "mithril";
 import qrious from "qrious";
 import { v4 as uuidv4 } from "uuid";
-import "webrtc-adapter";
 import L from "leaflet";
 import dayjs from "dayjs";
 
 import AudioMotionAnalyzer from "audiomotion-analyzer";
-
 import DOMPurify from "dompurify";
-
 import "swiped-events";
-
 import markerIcon from "./assets/css/images/marker-icon.png";
 import markerIconRetina from "./assets/css/images/marker-icon-2x.png";
-
 import { createAvatar } from "@dicebear/core";
 import * as style from "@dicebear/identicon";
 import Peer from "peerjs";
@@ -224,8 +219,10 @@ localforage
   .then((e) => {
     if (e !== null) {
       addressbook = e;
-      if (addressbook.length === 0) addressbook = [];
-      else {
+
+      if (addressbook.length === 0) {
+        addressbook = [];
+      } else {
         // live = true setzen bei allen Einträgen
         addressbook.forEach((entry) => {
           entry.live = false;
@@ -314,7 +311,7 @@ let addUserToAddressBook = (a, b, c = "") => {
 };
 
 //reproduce chatHistory
-let load_chat_history = (id) => {
+let load_chat_data = (id) => {
   let c = chat_data_history.filter((e) => {
     return (
       (e.from === settings.custom_peer_id && e.to === id) ||
@@ -331,6 +328,7 @@ let restrict_same_id = [];
 function setupConnectionEvents(conn) {
   connectedPeersObject.push(conn);
   connectedPeers.push(conn.peer);
+
   let pc = conn.peerConnection;
 
   pc.addEventListener("iceconnectionstatechange", () => {
@@ -357,14 +355,12 @@ function setupConnectionEvents(conn) {
 
       case "connected":
         //Que
-        console.log("connected");
+        console.log("connected" + conn.peer);
         peer_is_online();
 
         try {
           messageQueue();
           if (messageQueueStorage.length > 0) {
-            console.log("should send to " + conn.peer);
-
             messageQueueStorage.map((e) => {
               if (e.to == conn.peer && e.type != "typing") {
                 sendMessageToAll(e);
@@ -427,6 +423,8 @@ function setupConnectionEvents(conn) {
     //block is not from flop app
     if (conn.label !== "flop") return;
 
+    peer_is_online();
+
     //test ping
     //KaiOS 2
     try {
@@ -435,11 +433,8 @@ function setupConnectionEvents(conn) {
         if (now - status.lastPingSentAt >= 30000) {
           sendMessage("", "ping", "", data.from, undefined);
           status.lastPingSentAt = now;
-          console.log("ping send");
         }
       }
-
-      console.log("ping received");
     } catch (e) {}
 
     if (data.type === "typing") {
@@ -455,8 +450,20 @@ function setupConnectionEvents(conn) {
       }
     }
 
-    //to prevent to post same message
-    if (restrict_same_id.includes(data.id)) return;
+    //Message-POD
+    if (data.type == "pod") {
+      let match = chat_data_history.find((e) => e.id == data.id);
+      if (match) {
+        match.pod = true;
+        localforage.setItem("chatData", chat_data_history).then(() => {
+          let index = messageQueueStorage.findIndex((e) => e.id === data.id);
+          if (index !== -1) {
+            messageQueueStorage.splice(index, 1);
+            localforage.setItem("messageQueue", messageQueueStorage);
+          }
+        });
+      }
+    }
 
     //get clienID
     //from chat partner
@@ -485,24 +492,10 @@ function setupConnectionEvents(conn) {
       console.error(err);
     }
 
-    //Message-POD
-    if (data.type == "pod") {
-      let a = chat_data.find((e) => {
-        return e.id == data.id;
-      });
-      if (a) {
-        a.pod = true;
-
-        storeChatData().then(() => {
-          m.redraw();
-        });
-      }
-      //delete message from messageQueue
-      let index = messageQueueStorage.findIndex((e) => e.id === data.id);
-      if (index !== -1) {
-        messageQueueStorage.splice(index, 1);
-        localforage.setItem("messageQueue", messageQueueStorage);
-      }
+    //to prevent to post same message
+    if (restrict_same_id.includes(data.id)) {
+      console.log("duplicate");
+      return;
     }
 
     if (
@@ -551,6 +544,7 @@ function setupConnectionEvents(conn) {
           type: data.type,
           from: data.from,
           to: data.to,
+          id: data.id,
         });
 
         sendMessage(data.id, "pod", "", data.from, data.id);
@@ -749,9 +743,9 @@ let ice_servers = {
 
 //load ICE Server
 async function getIceServers() {
-  //only set new peer if no peer exist
-  if (peer) {
-    return;
+  if (peer && peer.open) {
+    console.log("peer exist");
+    return true;
   }
 
   let p = m.route.get();
@@ -780,25 +774,21 @@ async function getIceServers() {
     a.forEach((credential) => {
       if (
         !ice_servers.iceServers.some(
-          (server) => server.urls === credential.urls
+          (s) => JSON.stringify(s) === JSON.stringify(credential)
         )
       ) {
         ice_servers.iceServers.push(credential);
       }
     });
 
-    if (peer) {
-      peer.destroy();
-    }
-
     peer = new Peer(settings.custom_peer_id, {
       debug: 0,
       secure: false,
-      config: ice_servers,
+      config: { iceServers: ice_servers.iceServers },
     });
 
     peer.on("disconnected", () => {
-      console.log(`server error`);
+      console.log(`disconnected from server`);
 
       attemptReconnect();
     });
@@ -818,16 +808,7 @@ async function getIceServers() {
     peer.on("connection", function (conn) {
       console.log("Hello remote" + conn.peer);
       setupConnectionEvents(conn);
-      if (!status.notKaiOS) {
-        connect_to_peer(conn.peer, undefined, false, false);
-      }
-    });
-
-    //connection from remote peer
-    //dosent work in KaiOS 2.x
-    peer.on("connection", function (conn) {
-      console.log("Hello remote" + conn.peer);
-      connect_to_peer(conn.peer, undefined, false, false);
+      // connect_to_peer(conn.peer, undefined, false, false);
     });
   } catch (error) {
     console.log(error);
@@ -847,7 +828,6 @@ function attemptReconnect() {
 
 //load chat data
 let chat_data_history = [];
-
 localforage.getItem("chatData").then((e) => {
   chat_data_history = e || [];
 });
@@ -1034,6 +1014,7 @@ let sendMessage = (
         from: settings.custom_peer_id,
         to: to,
         id: messageId,
+        pod: false,
       });
 
       message = {
@@ -1079,6 +1060,7 @@ let sendMessage = (
       to: to,
       id: messageId,
       datetime: new Date(),
+      pod: false,
     });
 
     sendMessageToAll(message);
@@ -1103,6 +1085,7 @@ let sendMessage = (
         from: settings.custom_peer_id,
         to: to,
         id: messageId,
+        pod: false,
       });
 
       status.geolocation_last_autoupdate_id = messageId;
@@ -1134,6 +1117,7 @@ let sendMessage = (
       from: settings.custom_peer_id,
       to: to,
       id: messageId,
+      pod: false,
     });
 
     message = {
@@ -1163,6 +1147,7 @@ let sendMessage = (
       from: settings.custom_peer_id,
       to: to,
       id: messageId,
+      pod: false,
     });
 
     focus_last_article();
@@ -1189,7 +1174,7 @@ let sendMessage = (
 
 let messageQueueStorage = [];
 
-let messageQueue = (m) => {
+let messageQueue = (m = null) => {
   localforage
     .getItem("messageQueue")
     .then((e) => {
@@ -1202,6 +1187,44 @@ let messageQueue = (m) => {
         if (!test) {
           messageQueueStorage.push(m);
           localforage.setItem("messageQueue", messageQueueStorage);
+        }
+      }
+
+      //clean if user not anymore in addressbook
+
+      if (
+        m == null &&
+        addressbook.length > 0 &&
+        messageQueueStorage.length > 0
+      ) {
+        const ids = addressbook.map((e) => e.id);
+
+        messageQueueStorage = messageQueueStorage.filter((message) =>
+          ids.includes(String(message.to))
+        );
+        //find not send message in chat_data_history
+        //todo
+        /*
+        const notSentMessages = chat_data_history.filter(
+          (item) => item.pod === false
+        );
+        notSentMessages.forEach((msg) => {
+          const exists = messageQueueStorage.some((m) => m.id === msg.id);
+          if (!exists) {
+            console.log("data not sent:", msg);
+            messageQueueStorage.push(msg);
+          }
+        });
+        */
+        if (messageQueueStorage.length > 0) {
+          localforage
+            .setItem("messageQueue", messageQueueStorage)
+            .then(() => {
+              console.log("messageQueue cleaned");
+            })
+            .catch((err) => {
+              console.error(err);
+            });
         }
       }
     })
@@ -1221,7 +1244,11 @@ async function sendMessageToAll(message) {
   );
 
   // send webPush
-  if (openConnections.length === 0 && message.type !== "ping") {
+  if (
+    openConnections.length === 0 &&
+    message.type !== "ping" &&
+    message.type !== "pod"
+  ) {
     let getClientId = addressbook.find((e) => e.id == message.to);
 
     if (getClientId.client_id != "") {
@@ -1244,15 +1271,13 @@ async function sendMessageToAll(message) {
             status.webpush_do_not_annoy.splice(index, 1);
           }
         }, 5 * 60 * 1000);
-      } else {
-        console.log("come on d'not annoy!");
       }
     } else {
       console.log("no clientID");
     }
 
-    if (message.type != "pod") {
-      console.log("store it to send it later");
+    if (message.type != "pod" && message.type != "typing") {
+      // console.log("store it to send it later");
 
       messageQueue(message);
       await storeChatData();
@@ -1286,29 +1311,6 @@ async function sendMessageToAll(message) {
   await storeChatData();
   m.redraw();
 }
-
-let turn = async function () {
-  const response = await fetch(
-    `https://${process.env.TURN_APP_NAME}.metered.live/api/v1/turn/credentials?apiKey=${process.env.TURN_APP_KEY}`
-  );
-
-  if (!response.ok) {
-    alert("Can't load TURN");
-    return false;
-  }
-
-  const credentials = await response.json();
-
-  credentials.forEach((credential) => {
-    if (
-      !ice_servers.iceServers.some((server) => server.urls === credential.urls)
-    ) {
-      ice_servers.iceServers.push(credential);
-    }
-  });
-};
-
-turn();
 
 //webPush
 const webPush_reg = async (action) => {
@@ -1428,7 +1430,10 @@ let peer_is_online = async function () {
       entry.live = false;
       m.redraw();
 
-      if (!entry.id || entry.id == "") continue;
+      if (!entry.id || entry.id == "") {
+        console.log("Eintrag ohne ID, überspringe.");
+        continue;
+      }
 
       if (connectedPeers.includes(entry.id)) {
         entry.live = true;
@@ -1477,8 +1482,7 @@ let peer_is_online = async function () {
     return true;
   } catch (error) {
     console.log("peer is online error: " + error);
-    entry.live = false;
-    m.redraw();
+    return false;
   }
 };
 
@@ -1519,10 +1523,12 @@ let connect_to_peer = function (
         (c) => c.peer === id && c.open
       );
 
+      let route = m.route.get();
+
       //test connection is open
       //if not open new connection
       if (openConn != undefined && openConn && open_view) {
-        console.log("allready connected", 3000);
+        console.log("allready connected");
         status.current_user_id = id;
         m.route.set("/chat?id=" + settings.custom_peer_id + "&peer=" + id);
         return;
@@ -1551,17 +1557,27 @@ let connect_to_peer = function (
               status.current_user_nickname = nickname;
             }
             if (open_view)
-              m.route.set(
-                "/chat?id=" + settings.custom_peer_id + "&peer=" + id
-              );
+              if (route.startsWith("/start"))
+                m.route.set(
+                  "/chat?id=" + settings.custom_peer_id + "&peer=" + id
+                );
 
             if (conn) {
               const timeout = setTimeout(() => {
                 if (!conn.open) {
                   console.log("can't connect");
-                  side_toaster("Connection timeout", 3000);
+                  //side_toaster("Connection timeout", 3000);
+                  /*
+                  connectedPeers = connectedPeers.filter(
+                    (c) => c !== conn.peer
+                  );
+
+                  connectedPeersObject = connectedPeersObject.filter(
+                    (c) => c.peer !== conn.peer
+                  );
+                  */
                 }
-              }, 6000);
+              }, 500);
 
               conn.on("open", () => {
                 clearTimeout(timeout);
@@ -1645,8 +1661,9 @@ async function checkStorageUsage() {
 checkStorageUsage();
 
 //store chat data
+
+//todo use hash from string to compare
 let storeChatData = async () => {
-  // Ensure only new data is added
   let newData = chat_data.filter((item) => {
     return !chat_data_history.some(
       (historyItem) => JSON.stringify(historyItem) === JSON.stringify(item)
@@ -1654,18 +1671,19 @@ let storeChatData = async () => {
   });
 
   if (newData.length > 0) {
-    // Append new data to history
-    chat_data_history.push(...newData);
+    newData.forEach((item) => {
+      chat_data_history.push(item);
+    });
 
-    // Sort by datetime
     chat_data_history.sort(
       (a, b) => new Date(a.datetime) - new Date(b.datetime)
     );
 
-    // Save to localForage
-    localforage.setItem("chatData", chat_data_history).then(() => {
-      console.log("data stored");
-    });
+    try {
+      await localforage.setItem("chatData", chat_data_history);
+    } catch (err) {
+      console.error(err);
+    }
   }
 };
 
@@ -2263,6 +2281,9 @@ var about = {
           "button",
           {
             class: "item",
+            oncreate: (vnode) => {
+              vnode.dom.style.display = "none";
+            },
             onclick: () => {
               let cb = (e) => {
                 import_chatdata();
@@ -2930,36 +2951,6 @@ var options = {
           "share image"
         ),
 
-        status.current_user_id
-          ? m(
-              "button",
-              {
-                oncreate: () =>
-                  setTimeout(function () {
-                    setTabindex();
-                  }, 500),
-                class: "item",
-                id: "button-add-user",
-
-                onfocus: () => {
-                  bottom_bar("", "", "");
-                },
-                onclick: function () {
-                  if (status.current_user_id) {
-                    addUserToAddressBook(
-                      status.current_user_id,
-                      status.current_user_nickname
-                    );
-                  } else {
-                    console.log(status);
-                    side_toaster("contact could not be created", 3000);
-                  }
-                },
-              },
-              "add user to addressbook"
-            )
-          : null,
-
         m(
           "button",
           {
@@ -3023,38 +3014,34 @@ var options = {
           ""
         ),
 
-        m(
-          "button",
-          {
-            class: "item share-id-button",
-            oninit: () => {
-              setTabindex();
+        status.current_user_id
+          ? m(
+              "button",
+              {
+                oncreate: () =>
+                  setTimeout(function () {
+                    setTabindex();
+                  }, 500),
+                class: "item",
+                id: "button-add-user",
 
-              if (status.userOnline == 0) {
-                setTimeout(() => {
-                  document.querySelector(".share-id-button").focus();
-                }, 500);
-              }
-            },
-
-            onclick: function () {
-              share(
-                settings.invite_url + "?id=" + settings.custom_peer_id
-              ).then((success) => {
-                if (success) {
-                  console.log("Sharing was successful.");
-                  m.route.set("/chat?id=" + settings.custom_peer_id);
-                } else {
-                  console.log("Sharing failed.");
-                }
-              });
-            },
-            onfocus: () => {
-              bottom_bar("", "", "");
-            },
-          },
-          "Invite users"
-        ),
+                onfocus: () => {
+                  bottom_bar("", "", "");
+                },
+                onclick: function () {
+                  if (status.current_user_id) {
+                    addUserToAddressBook(
+                      status.current_user_id,
+                      status.current_user_nickname
+                    );
+                  } else {
+                    side_toaster("contact could not be created", 3000);
+                  }
+                },
+              },
+              "add user to addressbook"
+            )
+          : null,
       ]
     );
   },
@@ -3175,7 +3162,7 @@ var start = {
 
     setTimeout(() => {
       peer_is_online();
-    }, 1000);
+    }, 4000);
   },
   onremove: () => {
     status.viewReady = false;
@@ -3376,6 +3363,13 @@ var start = {
           },
           [m("img", { src: "./assets/image/liberapay.svg" })]
         ),
+        m(
+          "kbd",
+          {
+            id: "local-by-design",
+          },
+          "local by design"
+        ),
       ]
     );
   },
@@ -3488,7 +3482,7 @@ var chat = {
   oninit: () => {
     key_delay();
     //reproduce chat data
-    load_chat_history(status.current_user_id);
+    load_chat_data(status.current_user_id);
   },
 
   onremove: () => {
@@ -3496,7 +3490,7 @@ var chat = {
   },
   onupdate: () => {
     //reproduce chat data
-    load_chat_history(status.current_user_id);
+    load_chat_data(status.current_user_id);
   },
 
   view: function () {
@@ -3517,6 +3511,13 @@ var chat = {
           } catch (e) {}
         },
         oncreate: () => {
+          //try to send old messages
+          messageQueueStorage.map((e) => {
+            if (e.to == status.current_user_id && e.type != "typing") {
+              sendMessageToAll(e);
+            }
+          });
+
           let username =
             status.current_user_name || status.current_user_nickname;
           top_bar(
@@ -3861,7 +3862,7 @@ var chat = {
                 },
                 "  Live location"
               ),
-              item.pod
+              item.pod == true
                 ? m("img", {
                     class: "pod-icon",
                     src: "./assets/image/ok.svg",
