@@ -636,11 +636,14 @@ export let pick_image = function (callback) {
       })
       .catch((error) => {
         console.log("Image compression failed:", error);
+
+        /*
         callback({
           blob: fileOrBlob,
           filename: filename || null,
           filetype: filetype || "image/jpeg",
         });
+        */
       });
   };
 
@@ -701,6 +704,8 @@ export let pick_image = function (callback) {
       if (file) {
         compressImage(file, file.name, file.type);
       }
+
+      fileInput.remove();
     });
   }
 };
