@@ -66,6 +66,7 @@ export let status = {
   audiocontrol: "",
   lastPingSentAt: Date.now(),
   notificationLastCall: Date.now(),
+  maxImageSize: 640,
 };
 
 // not KaiOS
@@ -78,6 +79,7 @@ const userAgent = navigator.userAgent || "";
 
 if (userAgent && userAgent.includes("KAIOS")) {
   status.notKaiOS = false;
+  status.maxImageSize = 320;
 }
 
 if (!status.notKaiOS) {
@@ -1624,12 +1626,19 @@ let generate_contact = function () {
   status.invite_qr = qrs.toDataURL();
 };
 
+let only_once = false;
 let handleImage = function (t) {
+  if (only_once) return false;
+  console.log("handle image");
   m.route.set("/chat?id=" + settings.custom_peer);
   if (t != "") sendMessage(t, "image", undefined, undefined, undefined);
   let a = document.querySelectorAll("div#app article");
   a[a.length - 1].focus();
   status.action = "";
+  only_once = true;
+  setTimeout(() => {
+    only_once = false;
+  }, 3000);
 };
 
 //callback qr-code scan
