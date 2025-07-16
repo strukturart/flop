@@ -17,6 +17,7 @@ import {
   list_files,
   get_file,
   arrayBufferToBase64,
+  getTURN,
 } from "./assets/js/helper.js";
 import { stop_scan, start_scan } from "./assets/js/scan.js";
 import localforage from "localforage";
@@ -313,6 +314,7 @@ let addUserToAddressBook = (a, b, c = "") => {
 };
 
 //reproduce chatHistory
+
 let load_chat_data = (id) => {
   let c = chat_data_history.filter((e) => {
     return (
@@ -323,6 +325,45 @@ let load_chat_data = (id) => {
 
   if (c.length > 0) chat_data = c;
 };
+
+/*
+let max_page = 0;
+
+let load_chat_data = (id, page = 0) => {
+  const perPage = 20;
+  const overlap = 5;
+
+  // Filtere nur relevante Nachrichten
+  let c = chat_data_history.filter((e) => {
+    return (
+      (e.from === settings.custom_peer_id && e.to === id) ||
+      (e.from === id && e.to === settings.custom_peer_id)
+    );
+  });
+
+  if (c.length > 0) {
+    max_page = Math.ceil(c.length / (perPage - overlap));
+    const total = c.length;
+
+    const end = total - page * (perPage - overlap);
+    const start = Math.max(0, end - perPage);
+
+    let pageItems = c.slice(start, end);
+
+    // Optional: Index setzen
+    pageItems.forEach((e, i) => {
+      e.index = start + i;
+    });
+
+    chat_data = pageItems;
+  } else {
+    chat_data = [];
+  }
+
+  console.log("Page " + page);
+};
+
+*/
 
 //track single connections
 //to update connections list
@@ -357,7 +398,7 @@ function setupConnectionEvents(conn) {
 
       case "connected":
         //Que
-        console.log("connected" + conn.peer);
+        console.log("connected " + conn.peer);
         peer_is_online();
 
         try {
@@ -514,9 +555,12 @@ function setupConnectionEvents(conn) {
         let ask = confirm("Do you want to chat with " + data.nickname + "?");
         if (ask) {
           status.current_user_id = data.from;
-
+          status.current_user_name = "";
           m.route.set(
-            "/chat?id=" + settings.custom_peer_id + "&peer=" + data.from
+            "/chat?id=" +
+              settings.custom_peer_id +
+              "&peer=" +
+              status.current_user_id
           );
         } else {
           conn.close();
@@ -712,7 +756,7 @@ function setupConnectionEvents(conn) {
   // Event handler for connection closure
 
   conn.on("close", () => {
-    side_toaster(`User has left the chat`, 1000);
+    //side_toaster(`User has left the chat`, 1000);
     connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
 
     connectedPeersObject = connectedPeersObject.filter(
@@ -738,6 +782,58 @@ function setupConnectionEvents(conn) {
 function updateConnections() {
   status.userOnline = connectedPeers.length;
 }
+//cloudfare
+/*
+
+getTURN();
+
+let ice_servers = null;
+localforage.getItem("turn_urls").then((e) => {
+  ice_servers = e;
+});
+
+//load ICE Server
+async function getIceServers() {
+  if (peer && peer.open) {
+    console.log("peer exist");
+    return true;
+  }
+
+  try {
+    peer = new Peer(settings.custom_peer_id, {
+      debug: 0,
+      secure: false,
+      config: ice_servers,
+    });
+
+    peer.on("disconnected", () => {
+      console.log(`disconnected from server`);
+
+      attemptReconnect();
+    });
+
+    //connection to peer-server
+    peer.on("open", function (id) {
+      console.log("PeerJS connected with server ID: ", id);
+    });
+
+    peer.on("error", function (err) {
+      console.error("Peer error:", err.type, err.message || err);
+      attemptReconnect();
+    });
+
+    //connection from peer
+    //pass connection objekt to tracker
+    peer.on("connection", function (conn) {
+      console.log("Remote " + conn.peer);
+      setupConnectionEvents(conn);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+*/
 
 let ice_servers = {
   "iceServers": [],
@@ -745,9 +841,10 @@ let ice_servers = {
 
 //load ICE Server
 async function getIceServers() {
-  if (peer && peer.open) {
+  //only set new peer if no peer exist
+  if (peer) {
     console.log("peer exist");
-    return true;
+    return;
   }
 
   let p = m.route.get();
@@ -761,7 +858,7 @@ async function getIceServers() {
     );
 
     if (!response.ok) {
-      side_toaster("TURN Server not reachable", 5000);
+      side_toaster("Server not reachable", 5000);
       //retry get turn
       getIceServers();
       if (p.startsWith("/start"))
@@ -776,7 +873,7 @@ async function getIceServers() {
     a.forEach((credential) => {
       if (
         !ice_servers.iceServers.some(
-          (s) => JSON.stringify(s) === JSON.stringify(credential)
+          (server) => server.urls === credential.urls
         )
       ) {
         ice_servers.iceServers.push(credential);
@@ -786,12 +883,11 @@ async function getIceServers() {
     peer = new Peer(settings.custom_peer_id, {
       debug: 0,
       secure: false,
-      config: { iceServers: ice_servers.iceServers },
+      config: ice_servers,
     });
 
+    //disconnected from server try to reconnect
     peer.on("disconnected", () => {
-      console.log(`disconnected from server`);
-
       attemptReconnect();
     });
 
@@ -800,20 +896,21 @@ async function getIceServers() {
       console.log("PeerJS connected with server ID:", id);
     });
 
+    //connection from remote peer
+    //dosent work in KaiOS 2.x
+    peer.on("connection", function (conn) {
+      console.log("Hello remote " + conn.peer);
+      setupConnectionEvents(conn);
+    });
+
     peer.on("error", function (err) {
       console.error("Peer error:", err.type, err.message || err);
       attemptReconnect();
-    });
 
-    //connection from peer
-    //pass connection objekt to tracker
-    peer.on("connection", function (conn) {
-      console.log("Hello remote" + conn.peer);
-      setupConnectionEvents(conn);
-      // connect_to_peer(conn.peer, undefined, false, false);
+      //retry to connect
     });
   } catch (error) {
-    console.log(error);
+    side_toaster("The connection server is not reachable " + error, 6000);
   }
 }
 
@@ -1452,6 +1549,10 @@ let peer_is_online = async function () {
       }
 
       try {
+        if (!peer.open) {
+          getIceServers();
+          console.log("peer not open, open new connection to peerJS server");
+        }
         let user_meta = {
           "history_of_ids": status.history_of_ids,
           "unique_id": settings.unique_id,
@@ -1525,14 +1626,16 @@ let connect_to_peer = function (
         (c) => c.peer === id && c.open
       );
 
-      let route = m.route.get();
-
       //test connection is open
       //if not open new connection
+
+      if (open_view) {
+        m.route.set("/chat?id=" + settings.custom_peer_id + "&peer=" + id);
+      }
+
       if (openConn != undefined && openConn && open_view) {
         console.log("allready connected");
         status.current_user_id = id;
-        m.route.set("/chat?id=" + settings.custom_peer_id + "&peer=" + id);
         return;
       } else {
         setTimeout(() => {
@@ -1558,11 +1661,6 @@ let connect_to_peer = function (
             } else {
               status.current_user_nickname = nickname;
             }
-            if (open_view)
-              if (route.startsWith("/start"))
-                m.route.set(
-                  "/chat?id=" + settings.custom_peer_id + "&peer=" + id
-                );
 
             if (conn) {
               const timeout = setTimeout(() => {
@@ -1579,7 +1677,7 @@ let connect_to_peer = function (
                   );
                   */
                 }
-              }, 500);
+              }, 4500);
 
               conn.on("open", () => {
                 clearTimeout(timeout);
@@ -1593,19 +1691,19 @@ let connect_to_peer = function (
                   err.type || err.name,
                   err.message || err
                 );
-                side_toaster("Connection error: " + (err.message || err), 5000);
+                //side_toaster("Connection error: " + (err.message || err), 5000);
               });
             } else {
-              side_toaster("Connection could not be established", 5000);
+              // side_toaster("Connection could not be established", 5000);
             }
           } catch (e) {
-            side_toaster("Connection could not be established", 5000);
+            //side_toaster("Connection could not be established", 5000);
           }
         }, 8000);
       }
     })
     .catch((e) => {
-      side_toaster("Connection could not be established", 5000);
+      alert(e);
     });
 };
 
@@ -1643,7 +1741,9 @@ let handleImage = function (t) {
 
 //callback qr-code scan
 let scan_callback = function (n) {
+  console.log(n);
   if (n == "error") {
+    alert("QR is not valid");
     m.route.set("/start");
   } else {
     let m = n.split("id=");
@@ -2974,8 +3074,6 @@ var options = {
                 geolocation(geolocation_callback);
                 status.geolocation_onTimeRequest = true;
                 m.route.set("/chat?id=" + settings.custom_peer);
-              } else {
-                side_toaster("no user online", 3000);
               }
             },
           },
@@ -3015,8 +3113,6 @@ var options = {
                   status.geolocation_autoupdate_id = uuidv4(16);
                   m.route.set("/chat?id=" + settings.custom_peer);
                 }
-              } else {
-                side_toaster("no user online", 3000);
               }
             },
           },
@@ -3027,10 +3123,20 @@ var options = {
           ? m(
               "button",
               {
-                oncreate: () =>
+                oncreate: function () {
                   setTimeout(function () {
                     setTabindex();
-                  }, 500),
+                  }, 500);
+
+                  const isInAddressbook = addressbook.find((e) => {
+                    e.id == status.current_user_id;
+                  });
+
+                  if (isInAddressbook) {
+                    vnode.dom.style.display = "none";
+                  }
+                },
+
                 class: "item",
                 id: "button-add-user",
 
@@ -3487,11 +3593,44 @@ var scan = {
 };
 
 let user_check;
+let throttle = false;
+let page_counter = 0;
 var chat = {
   oninit: () => {
     key_delay();
-    //reproduce chat data
     load_chat_data(status.current_user_id);
+
+    //load more content
+    //triggerd by scroll
+
+    let per_page = 20;
+    page_counter = chat_data.length - per_page;
+
+    let el = document.querySelector("#app");
+
+    function isElementInViewport(l) {
+      const rect = l.getBoundingClientRect();
+      return rect.top < window.innerHeight && rect.bottom >= 0;
+    }
+
+    function onScrollCheck() {
+      if (throttle) return;
+      throttle = true;
+      setTimeout(() => {
+        throttle = false;
+
+        const lastEl = document.querySelector("[data-first='true']");
+        if (lastEl && isElementInViewport(lastEl)) {
+          page_counter = Math.max(0, page_counter - per_page);
+
+          m.redraw();
+        }
+      }, 200);
+    }
+
+    el.addEventListener("scroll", () => {
+      onScrollCheck();
+    });
   },
 
   onremove: () => {
@@ -3680,8 +3819,10 @@ var chat = {
         : null,
 
       chat_data.map(function (item, index) {
+        if (index < page_counter) return;
         const currentIndex = index;
         const isLast = currentIndex === chat_data.length - 1;
+        const isFirst = index == page_counter ? true : false;
 
         let ff = { lat: "", lng: "" };
         if (item.type == "gps" || item.type == "gps_live") {
@@ -3706,16 +3847,8 @@ var chat = {
             "data-user-nickname": item.nickname,
             "data-lat": ff.lat,
             "data-lng": ff.lng,
-
-            oncreate: (vnode) => {
-              if (isLast) {
-                vnode.dom.focus();
-                vnode.dom.scrollIntoView({
-                  behavior: "smooth",
-                  block: "end",
-                });
-              }
-            },
+            "data-last": isLast ? "true" : "false",
+            "data-first": isFirst ? "true" : "false",
 
             onclick: () => {
               if (item.type == "gps" || item.type == "gps_live") {
@@ -3737,6 +3870,14 @@ var chat = {
                 } else {
                   side_toaster("audio file not valid", 2000);
                 }
+              }
+            },
+
+            oncreate: (e) => {
+              if (isLast) {
+                setTimeout(() => {
+                  e.dom.scrollIntoView();
+                }, 200);
               }
             },
 

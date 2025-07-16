@@ -3,6 +3,7 @@
 import dayjs from "dayjs";
 import { status, settings } from "../../index.js";
 import imageCompression from "browser-image-compression";
+import localforage from "localforage";
 
 export let info_badge = (show) => {
   let badge = document.getElementById("info-badge");
@@ -613,6 +614,54 @@ export let top_bar = function (left, center, right) {
     document.querySelector("div#top-bar").style.display = "none";
   } else {
     document.querySelector("div#top-bar").style.display = "block";
+  }
+};
+
+//get turn server urls
+export let getTURN = async () => {
+  const now = Date.now();
+
+  // 1. Prüfe, ob TURN-Daten vorhanden und gültig sind
+  const [cached, expiresAt] = await Promise.all([
+    localforage.getItem("turn_urls"),
+    localforage.getItem("turn_urls_expires"),
+  ]);
+
+  if (cached && expiresAt && now < expiresAt) {
+    console.log("TURN-Server OK");
+    return cached;
+  }
+
+  // 2. Neue TURN-Daten vom Server holen
+  try {
+    const response = await fetch(process.env.CLOUDFARE_WORKER_URL, {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + process.env.ACCESS_KEY,
+      },
+      body: JSON.stringify({}),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP-Error: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    const ttl = 86400; // 1day
+    const expires = Date.now() + ttl * 1000;
+
+    await Promise.all([
+      localforage.setItem("turn_urls", data),
+      localforage.setItem("turn_urls_expires", expires),
+    ]);
+
+    return data;
+  } catch (error) {
+    console.error("TURN-Server:", error);
+    return null;
   }
 };
 
