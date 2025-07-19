@@ -70,7 +70,7 @@ self.addEventListener("notificationclick", (event) => {
 });
 
 if (userAgent && !userAgent.includes("KAIOS")) {
-  const CACHE_NAME = "pwa-cache-v0.24668";
+  const CACHE_NAME = "pwa-cache-v0.24682";
   const FILE_LIST_URL = "/file-list.json"; // URL of the JSON file containing the array of files
 
   self.addEventListener("install", (event) => {
@@ -78,8 +78,6 @@ if (userAgent && !userAgent.includes("KAIOS")) {
       caches
         .open(CACHE_NAME)
         .then((cache) => {
-          console.log("Opened cache");
-
           // Fetch the file list JSON and cache the URLs
           return fetch(FILE_LIST_URL)
             .then((response) => {

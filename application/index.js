@@ -226,10 +226,11 @@ localforage
       if (addressbook.length === 0) {
         addressbook = [];
       } else {
-        // live = true setzen bei allen Einträgen
         addressbook.forEach((entry) => {
           entry.live = false;
         });
+
+        clean_chat_data();
       }
     } else {
       addressbook = [];
@@ -313,6 +314,15 @@ let addUserToAddressBook = (a, b, c = "") => {
   }
 };
 
+//clean messageQueue
+let clean_chat_data = async () => {
+  if (addressbook.length > 0 && chat_data_history.length > 0) {
+    console.log("clean chat data");
+  } else {
+    console.log("nothing to clean");
+  }
+};
+
 //reproduce chatHistory
 
 let load_chat_data = (id) => {
@@ -325,45 +335,6 @@ let load_chat_data = (id) => {
 
   if (c.length > 0) chat_data = c;
 };
-
-/*
-let max_page = 0;
-
-let load_chat_data = (id, page = 0) => {
-  const perPage = 20;
-  const overlap = 5;
-
-  // Filtere nur relevante Nachrichten
-  let c = chat_data_history.filter((e) => {
-    return (
-      (e.from === settings.custom_peer_id && e.to === id) ||
-      (e.from === id && e.to === settings.custom_peer_id)
-    );
-  });
-
-  if (c.length > 0) {
-    max_page = Math.ceil(c.length / (perPage - overlap));
-    const total = c.length;
-
-    const end = total - page * (perPage - overlap);
-    const start = Math.max(0, end - perPage);
-
-    let pageItems = c.slice(start, end);
-
-    // Optional: Index setzen
-    pageItems.forEach((e, i) => {
-      e.index = start + i;
-    });
-
-    chat_data = pageItems;
-  } else {
-    chat_data = [];
-  }
-
-  console.log("Page " + page);
-};
-
-*/
 
 //track single connections
 //to update connections list
@@ -417,18 +388,19 @@ function setupConnectionEvents(conn) {
         /*
         Users can change their peer ID to avoid losing their connection, 
         and it will be updated automatically. 
-        The prerequisite is that the user is in the address book.
+        The prerequisite is that the user is in the addressbook.
         */
         try {
           let k = JSON.parse(conn.metadata);
           k = k.history_of_ids;
+          console.log("meta " + k);
 
           if (Array.isArray(k) && k.length > 1) {
             addressbook.forEach((e) => {
               if (k.includes(e.id)) {
                 console.log("user in addressbook");
                 if (e.id == k[k.length - 1]) {
-                  console.log("id is at last postion, no update needed");
+                  //console.log("id is at last postion, no update needed");
                 } else {
                   console.log("id is not at last postion, update needed");
                   let old_id = e.id;
@@ -438,7 +410,7 @@ function setupConnectionEvents(conn) {
                     .then(() => {
                       console.log("Addressbook updated!");
                       updateChatData(old_id, k[k.length - 1]).then(() => {
-                        "chatData updated";
+                        console.log("chatData updated");
                       });
                     })
                     .catch((error) => {
@@ -450,11 +422,9 @@ function setupConnectionEvents(conn) {
                 }
               }
             });
-          } else {
-            console.log("only one ids history item");
           }
         } catch (e) {
-          console.log("JSON-Parsing-Fehler:", e);
+          console.log(e);
         }
 
         break;
@@ -975,11 +945,7 @@ localforage
   .getItem("history_of_ids")
   .then((e) => {
     if (e == null) {
-      localforage
-        .setItem("history_of_ids", [settings.custom_peer_id])
-        .then((e) => {
-          console.log("done");
-        });
+      localforage.setItem("history_of_ids", [settings.custom_peer_id]);
     } else {
       status.history_of_ids = e;
     }
@@ -1301,20 +1267,7 @@ let messageQueue = (m = null) => {
         messageQueueStorage = messageQueueStorage.filter((message) =>
           ids.includes(String(message.to))
         );
-        //find not send message in chat_data_history
-        //todo
-        /*
-        const notSentMessages = chat_data_history.filter(
-          (item) => item.pod === false
-        );
-        notSentMessages.forEach((msg) => {
-          const exists = messageQueueStorage.some((m) => m.id === msg.id);
-          if (!exists) {
-            console.log("data not sent:", msg);
-            messageQueueStorage.push(msg);
-          }
-        });
-        */
+
         if (messageQueueStorage.length > 0) {
           localforage
             .setItem("messageQueue", messageQueueStorage)
@@ -1752,6 +1705,24 @@ let scan_callback = function (n) {
   }
 };
 
+function roughSizeOfObject(obj) {
+  const str = JSON.stringify(obj);
+  return str.length * 2;
+}
+
+async function estimateLocalForageSize() {
+  let totalSize = 0;
+
+  await localforage.iterate((value, key) => {
+    totalSize += roughSizeOfObject(value);
+  });
+
+  console.log(`localForage total size: ~${(totalSize / 1024).toFixed(2)} KB`);
+  return totalSize;
+}
+
+estimateLocalForageSize();
+
 async function checkStorageUsage() {
   if ("storage" in navigator && "estimate" in navigator.storage) {
     let { usage, quota } = await navigator.storage.estimate();
@@ -1763,6 +1734,9 @@ async function checkStorageUsage() {
     console.log(`Aviable storage: ${totalMB} MB`);
   } else {
     console.log("Storage api not supported");
+  }
+
+  if (status.notKaiOS) {
   }
 }
 
@@ -1808,16 +1782,27 @@ async function updateChatData(targetValue, newValue) {
       return;
     }
 
-    // update values
-    let updatedChatData = chatData.map((obj) => ({
-      ...obj,
-      from: obj.from === targetValue ? newValue : obj.from,
-      to: obj.to === targetValue ? newValue : obj.to,
-    }));
+    let isChanged = false;
 
-    // Store updated data
-    await localforage.setItem("chatData", updatedChatData);
-    console.log("Chat data updated successfully.");
+    let updatedChatData = chatData.map((obj) => {
+      let updated = { ...obj };
+      if (obj.from === targetValue) {
+        updated.from = newValue;
+        isChanged = true;
+      }
+      if (obj.to === targetValue) {
+        updated.to = newValue;
+        isChanged = true;
+      }
+      return updated;
+    });
+
+    if (isChanged) {
+      await localforage.setItem("chatData", updatedChatData);
+      console.log("Chat data updated successfully.");
+    } else {
+      console.log("No changes made to chat data.");
+    }
   } catch (error) {
     console.error("Error updating chat data:", error);
   }
@@ -1836,18 +1821,15 @@ async function deleteOldChatData(days = 30) {
       return;
     }
 
-    // Daten filtern
     let updatedChatData = chatData.filter(
       (e) => new Date(e.datetime) > threshold
     );
 
-    // Prüfen, ob sich etwas geändert hat
     if (updatedChatData.length === chatData.length) {
       console.log("No data older than 30 days. Nothing to delete.");
       return;
     }
 
-    // Falls alte Daten entfernt wurden, aktualisierte Liste speichern
     await localforage.setItem("chatData", updatedChatData);
     console.log("Old chat data deleted.");
   } catch (error) {
@@ -2762,33 +2744,33 @@ var settings_page = {
           {
             class: "item",
             onclick: () => {
+              //store history of peer id
               localforage
                 .getItem("history_of_ids")
                 .then((e) => {
-                  // Sicherstellen, dass es ein Array ist
                   status.history_of_ids = Array.isArray(e) ? e : [];
 
-                  // Neue ID generieren
                   const newId = "flop-" + uuidv4(16);
 
-                  // ID ins Array hinzufügen
                   status.history_of_ids.push(newId);
 
-                  // In localForage speichern
                   return localforage
                     .setItem("history_of_ids", status.history_of_ids)
                     .then(() => newId);
                 })
                 .then((newId) => {
-                  // Neue ID in settings speichern
+                  updateChatData(settings.custom_peer_id, newId).then(() => {
+                    console.log("chatData updated");
+                  });
                   settings.custom_peer_id = newId;
 
-                  // Mithril neu rendern
                   m.redraw();
+
+                  alert(
+                    "The next time you start the app, other users can reach you with the new ID."
+                  );
                 })
-                .catch(() => {
-                  console.error("Fehler beim Zugriff auf localForage.");
-                });
+                .catch(() => {});
             },
           },
           "generate new ID"
@@ -3067,7 +3049,6 @@ var options = {
             onfocus: () => {
               bottom_bar("", "", "");
             },
-            style: { display: status.userOnline ? "" : "none" },
 
             onclick: function () {
               if (status.userOnline) {
@@ -3097,7 +3078,6 @@ var options = {
             onfocus: () => {
               bottom_bar("", "", "");
             },
-            style: { display: status.userOnline ? "" : "none" },
 
             onclick: function () {
               if (status.userOnline) {
@@ -3123,14 +3103,14 @@ var options = {
           ? m(
               "button",
               {
-                oncreate: function () {
+                oncreate: function (vnode) {
                   setTimeout(function () {
                     setTabindex();
                   }, 500);
 
-                  const isInAddressbook = addressbook.find((e) => {
-                    e.id == status.current_user_id;
-                  });
+                  const isInAddressbook = addressbook.some(
+                    (e) => e.id == status.current_user_id
+                  );
 
                   if (isInAddressbook) {
                     vnode.dom.style.display = "none";
