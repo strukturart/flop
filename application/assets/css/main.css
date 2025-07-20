@@ -620,6 +620,40 @@ div#map-container {
   z-index: 0;
 }
 
+#crosshair {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+  pointer-events: none; /* damit Mausereignisse durchgehen */
+  z-index: 1000000;
+}
+
+#crosshair .hline {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: black;
+  outline: 2px solid white;
+  transform: translateY(-50%);
+}
+
+#crosshair .vline {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  height: 100%;
+  width: 2px;
+  outline: 2px solid white;
+
+  background: black;
+  transform: translateX(-50%);
+}
+
 img.myMarker {
   filter: hue-rotate(120deg);
 }
@@ -1271,6 +1305,14 @@ span.user-offline {
     margin: 0 0 5px 0;
     padding: 0px 20px 0 20px;
   }
+
+  #chat article.gps.me {
+    border: 2px solid blue;
+  }
+
+  #chat article.gps_live.me {
+    border: 2px solid blue;
+  }
 }
 
 @media screen and (max-width: 320px) {
@@ -1411,6 +1453,14 @@ span.user-offline {
   #addressbook button.addressbook-item {
     min-height: 60px;
     max-height: 60px;
+  }
+
+  #chat article.gps.me {
+    border: 2px solid blue;
+  }
+
+  #chat article.gps_live.me {
+    border: 2px solid blue;
   }
 
   #chat:last-child {
