@@ -669,14 +669,6 @@ export let pick_image = function (callback) {
       })
       .catch((error) => {
         console.log("Image compression failed:", error);
-
-        /*
-        callback({
-          blob: fileOrBlob,
-          filename: filename || null,
-          filetype: filetype || "image/jpeg",
-        });
-        */
       });
   };
 
@@ -692,7 +684,12 @@ export let pick_image = function (callback) {
       pick.onsuccess = function () {
         const result = this.result;
         const blob = result.blob || result;
-        compressImage(blob, result.name, result.type);
+
+        callback({
+          blob: blob,
+          filename: result.name || null,
+          filetype: result.type || "image/jpeg",
+        });
       };
 
       pick.onerror = function () {
@@ -990,7 +987,7 @@ export let data_import = function (filename, data, callback) {
   }
 };
 
-// createAudioRecorder.js
+// createAudioRecorder
 export function createAudioRecorder() {
   let mediaRecorder = null;
   let recordedChunks = [];
@@ -1012,6 +1009,7 @@ export function createAudioRecorder() {
       recordedChunks = [];
 
       mediaRecorder.ondataavailable = (event) => {
+        console.log(event.data);
         if (event.data.size > 0) recordedChunks.push(event.data);
       };
 

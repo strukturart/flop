@@ -16,6 +16,8 @@ Currently, you can exchange text messages, pictures, and your location with othe
 - share live location
 - share image
 - audio message
+- download chats
+- download addressbook
   ![image-4](/images/mockup.png)
 
 ## yes, but
@@ -38,6 +40,9 @@ Installing the dependencies<br>
 
 Build KaiOS 3 app<br>
 `npm run build`<br>
+
+Build KaiOS 2 app<br>
+`npm run build-k2`<br>
 
 If you want to create a browser version<br>
 `npm run web`

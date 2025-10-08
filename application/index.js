@@ -17,7 +17,6 @@ import {
   list_files,
   get_file,
   arrayBufferToBase64,
-  getTURN,
 } from "./assets/js/helper.js";
 import { stop_scan, start_scan } from "./assets/js/scan.js";
 import localforage from "localforage";
@@ -38,6 +37,13 @@ import markerIconRetina from "./assets/css/images/marker-icon-2x.png";
 import { createAvatar } from "@dicebear/core";
 import * as style from "@dicebear/identicon";
 import Peer from "peerjs";
+import { setConfig } from "dompurify";
+
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
+
+console.log(navigator.mozApps);
 
 export let status = {
   visibility: true,
@@ -196,7 +202,7 @@ let compareUserList = (userlist) => {
 
 //add to addressbook
 let addressbook = [];
-/*
+
 setTimeout(() => {
   addressbook = [
     {
@@ -215,7 +221,6 @@ setTimeout(() => {
     },
   ];
 }, 1000);
-*/
 
 localforage
   .getItem("addressbook")
@@ -246,6 +251,7 @@ let delete_addressbook_item = (userIdToDelete) => {
     .setItem("addressbook", addressbook)
     .then((e) => {
       side_toaster("deleted", 3000);
+      deleteChatDataByUser(userIdToDelete);
     })
     .catch((error) => {
       console.error("Error saving address book:", error);
@@ -546,8 +552,11 @@ function setupConnectionEvents(conn) {
               "&peer=" +
               status.current_user_id
           );
-
-          addUserToAddressBook(status.current_user_id, data.nickname);
+          if (!status.notKaiOS) {
+            setTimeout(() => {
+              addUserToAddressBook(status.current_user_id, data.nickname);
+            }, 1000);
+          }
         } else {
           conn.close();
         }
@@ -760,58 +769,6 @@ function setupConnectionEvents(conn) {
 function updateConnections() {
   status.userOnline = connectedPeers.length;
 }
-//cloudfare
-/*
-
-getTURN();
-
-let ice_servers = null;
-localforage.getItem("turn_urls").then((e) => {
-  ice_servers = e;
-});
-
-//load ICE Server
-async function getIceServers() {
-  if (peer && peer.open) {
-    console.log("peer exist");
-    return true;
-  }
-
-  try {
-    peer = new Peer(settings.custom_peer_id, {
-      debug: 0,
-      secure: false,
-      config: ice_servers,
-    });
-
-    peer.on("disconnected", () => {
-      console.log(`disconnected from server`);
-
-      attemptReconnect();
-    });
-
-    //connection to peer-server
-    peer.on("open", function (id) {
-      console.log("PeerJS connected with server ID: ", id);
-    });
-
-    peer.on("error", function (err) {
-      console.error("Peer error:", err.type, err.message || err);
-      attemptReconnect();
-    });
-
-    //connection from peer
-    //pass connection objekt to tracker
-    peer.on("connection", function (conn) {
-      console.log("Remote " + conn.peer);
-      setupConnectionEvents(conn);
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-*/
 
 let ice_servers = {
   "iceServers": [],
@@ -1845,6 +1802,31 @@ async function deleteOldChatData(days = 30) {
 
 deleteOldChatData();
 
+//delete chat data by user
+
+async function deleteChatDataByUser(id) {
+  try {
+    let chatData = await localforage.getItem("chatData");
+    if (!chatData || chatData.length === 0) {
+      console.log("No chat data found. Nothing to delete.");
+      return;
+    }
+
+    // delete data from or to from given id
+    let updatedChatData = chatData.filter((e) => e.from !== id && e.to !== id);
+
+    if (updatedChatData.length === chatData.length) {
+      console.log("No matching chat data found for deletion.");
+      return;
+    }
+
+    await localforage.setItem("chatData", updatedChatData);
+    console.log("Old chat data deleted.");
+  } catch (error) {
+    console.error("Error deleting old chat data:", error);
+  }
+}
+
 var AudioComponent = {
   oninit: (vnode) => {
     key_delay();
@@ -1883,6 +1865,8 @@ var AudioComponent = {
       vnode.state.audioSrc
         ? m("audio", {
             id: "audio-elm",
+            class: "col-xs-12 item",
+
             src: vnode.state.audioSrc,
 
             oncreate: (audioVnode) => {
@@ -1910,6 +1894,17 @@ var AudioComponent = {
               audioVnode.dom.controls = false;
               audioVnode.dom.autoplay = true;
 
+              audioVnode.dom.addEventListener("timeupdate", () => {
+                vnode.state.currentTime = audioVnode.dom.currentTime;
+                top_bar(
+                  "<img src='assets/image/back.svg'>",
+                  dayjs.utc(vnode.state.currentTime * 1000).format("mm:ss"),
+                  ""
+                );
+
+                m.redraw();
+              });
+
               audioVnode.dom.addEventListener("play", () => {
                 vnode.state.isPlaying = true;
                 m.redraw();
@@ -1934,14 +1929,13 @@ var AudioComponent = {
         : m("p", "Audio source is invalid or not provided."),
       m("div", {
         id: "audiovis",
-        class: "item",
+        class: "col-xs-12 item",
         oncreate: () => {
           const audioMotion = new AudioMotionAnalyzer(
             document.getElementById("audiovis"),
 
             {
               source: document.getElementById("audio-elm"),
-              height: status.notKaiOS ? 200 : 100,
               mode: 0,
               gradient: "orangered",
               colorMode: "bar-level",
@@ -3543,57 +3537,106 @@ var audiorecorder_view = {
   },
 
   view: () =>
-    m("div", { class: "page", id: "audiorecorder" }, [
+    m("div", { class: "page  row middle-xs", id: "audiorecorder" }, [
       m("div", {
         id: "audiovis",
-        class: "item",
+        class: "col-xs-12 item",
 
         oninit: () => {
-          audioRecorder.startRecording().then(() => {
-            audio_recorder_time = setInterval(() => {
-              audioRecorderDuration++; // jede Sekunde +1
-              top_bar(
-                "",
-                dayjs.utc(audioRecorderDuration * 1000).format("mm:ss"),
-                ""
-              );
-            }, 1000);
+          audioRecorder
+            .startRecording()
+            .then(() => {
+              audio_recorder_time = setInterval(() => {
+                audioRecorderDuration++;
+                top_bar(
+                  "",
+                  dayjs.utc(audioRecorderDuration * 1000).format("mm:ss"),
+                  ""
+                );
+              }, 1000);
 
-            const srcNode = audioRecorder.getStreamSourceNode();
-            const audioCtx = audioRecorder.getAudioContext();
+              const srcNode = audioRecorder.getStreamSourceNode();
+              const audioCtx = audioRecorder.getAudioContext();
 
-            if (srcNode && audioCtx) {
-              const audioMotion = new AudioMotionAnalyzer(
-                document.getElementById("audiovis"),
-                {
-                  audioCtx,
-                  height: 150,
-                  gradient: "orangered",
-                  colorMode: "bar-level",
-                  overlay: true,
-                  showBgColor: false,
-                  showScaleX: false,
-                  showScaleY: false,
-                  smoothing: 0.8,
-                  barSpace: 0.2,
-                  reflexRatio: 0,
-                  lineWidth: 10,
+              if (srcNode && audioCtx) {
+                const audioMotion = new AudioMotionAnalyzer(
+                  document.getElementById("audiovis"),
+                  {
+                    audioCtx,
+                    mode: 0,
+                    gradient: "orangered",
+                    colorMode: "bar-level",
+                    overlay: true,
+                    showBgColor: false,
+                    showScaleX: false,
+                    showScaleY: false,
+                    smoothing: 0.8,
+                    barSpace: 0.2,
+                    reflexRatio: 0,
+                    lineWidth: 10,
+                  }
+                );
+
+                // 🔊 GainNode + Analyzer
+                const gainNode = audioCtx.createGain();
+                gainNode.gain.value = 2.0; // Startwert
+
+                srcNode.connect(gainNode);
+                audioMotion.connectInput(gainNode);
+                audioMotion.volume = 0;
+
+                // 🎛️ Analyser für Lautstärkemessung
+                const analyser = audioCtx.createAnalyser();
+                analyser.fftSize = 2048;
+                const dataArray = new Uint8Array(analyser.fftSize);
+
+                gainNode.connect(analyser);
+
+                // ⚙️ Automatische Verstärkung
+                let lastAdjust = 0;
+                function autoGainControl() {
+                  analyser.getByteTimeDomainData(dataArray);
+
+                  // Lautstärke-Mittelwert berechnen (0–1)
+                  let sum = 0;
+                  for (let i = 0; i < dataArray.length; i++) {
+                    const val = (dataArray[i] - 128) / 128;
+                    sum += Math.abs(val);
+                  }
+                  const avg = sum / dataArray.length;
+
+                  // Zielpegel ~ 0.3
+                  const targetLevel = 0.3;
+                  const adjustment = targetLevel / (avg + 0.0001);
+
+                  // Nur langsam anpassen (weich)
+                  const smoothed = lastAdjust * 0.9 + adjustment * 0.1;
+                  lastAdjust = smoothed;
+
+                  // Begrenzen auf sinnvolle Verstärkung
+                  gainNode.gain.value = Math.max(1, Math.min(6, smoothed));
+
+                  requestAnimationFrame(autoGainControl);
                 }
-              );
 
-              audioMotion.connectInput(srcNode);
-              audioMotion.volume = 0;
-            } else {
-              console.warn("AudioContext oder StreamSource nicht vorhanden");
-            }
-          });
+                autoGainControl(); // starten
+              } else {
+                console.warn("AudioContext oder StreamSource nicht vorhanden");
+              }
+            })
+            .catch((e) => {
+              console.log(e);
+            });
         },
+
         onremove: () => {
           if (audioRecorder) {
-            // Aufnahme stoppen, wenn noch aktiv
-            audioRecorder.stopRecording?.().catch(() => {});
+            // stopp recording
+            audioRecorder.stopRecording?.().catch((e) => {
+              console.log("error:" + e);
+            });
 
-            // Ressourcen freigeben
+            // cleanup
             audioRecorder.cleanup?.();
             audioRecorder = null;
             clearInterval(audio_recorder_time);
@@ -4607,9 +4650,18 @@ document.addEventListener("DOMContentLoaded", function (e) {
         if (route.startsWith("audiorecorder_view")) {
           // Stop recording and get the recorded data
           audioRecorder.stopRecording().then(({ audioBlob, mimeType }) => {
+            console.log(audioBlob);
+            console.log(mimeType);
+
             status.audio_recording = false;
 
-            sendMessage(audioBlob, "audio", mimeType, undefined, undefined);
+            sendMessage(
+              audioBlob,
+              "audio",
+              mimeType || "",
+              undefined,
+              undefined
+            );
             bottom_bar(
               "<img src='assets/image/pencil.svg'>",
               "",

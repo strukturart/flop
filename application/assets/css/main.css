@@ -507,13 +507,14 @@ div#intro img {
 }
 
 #audiovis {
-  position: absolute;
-  top: 30%;
   left: 0px;
   right: 0px;
   width: 80vw;
-  height: 200px;
+  height: 100vh;
   background: none;
+}
+canvas {
+  min-width: 100%;
 }
 
 @keyframes up-and-down {

@@ -1445,7 +1445,7 @@
     globals "^13.2.0"
     nullthrows "^1.1.1"
 
-"@parcel/packager-raw-url@2.10.0":
+"@parcel/packager-raw-url@^2.10.0":
   version "2.10.0"
   resolved "https://registry.npmjs.org/@parcel/packager-raw-url/-/packager-raw-url-2.10.0.tgz"
   integrity sha512-1eS98fdPD7llGlA731qWpFxYlY8ZMt0/V0YmBdFIriEyD2qKgiCQw17Oh0hVAP7ALeEhzRoWv1Lo8kN6xajRXw==
@@ -1667,7 +1667,7 @@
     lightningcss "^1.16.1"
     nullthrows "^1.1.1"
 
-"@parcel/transformer-html@2.10.0":
+"@parcel/transformer-html@^2.10.0", "@parcel/transformer-html@2.10.0":
   version "2.10.0"
   resolved "https://registry.npmjs.org/@parcel/transformer-html/-/transformer-html-2.10.0.tgz"
   integrity sha512-rc8YKjB+bE7yGHOf674CSzW8ii+m5caBo4akdRIUdhEHJS4FnSwxYIZlMcfV9pZM4Tj5PFMZyrlAHad6YrO8aA==
@@ -1774,7 +1774,7 @@
     posthtml-render "^3.0.0"
     semver "^7.5.2"
 
-"@parcel/transformer-webmanifest@2.10.0":
+"@parcel/transformer-webmanifest@^2.10.0":
   version "2.10.0"
   resolved "https://registry.npmjs.org/@parcel/transformer-webmanifest/-/transformer-webmanifest-2.10.0.tgz"
   integrity sha512-0nKMKBdjWRZf1MZZ6KgGdQ3w/CEA1aXnkdfzhpQMNEbD5SJeypw554252EjWKX4iEjOfCLsQFB1+/A7GeWb40g==
@@ -3598,6 +3598,11 @@ lightningcss-linux-x64-gnu@1.30.1:
   version "1.30.1"
   resolved "https://registry.npmjs.org/lightningcss-linux-x64-gnu/-/lightningcss-linux-x64-gnu-1.30.1.tgz"
   integrity sha512-piWx3z4wN8J8z3+O5kO74+yr6ze/dKmPnI7vLqfSqI8bccaTGY5xiSGVIJBDd5K5BHlvVLpUB3S2YCfelyJ1bw==
+
+lightningcss-linux-x64-musl@1.30.1:
+  version "1.30.1"
+  resolved "https://registry.npmjs.org/lightningcss-linux-x64-musl/-/lightningcss-linux-x64-musl-1.30.1.tgz"
+  integrity sha512-rRomAK7eIkL+tHY0YPxbc5Dra2gXlI63HL+v1Pdi1a3sC+tJTcFrHX+E86sulgAXeI7rSzDYhPSeHHjqFhqfeQ==
 
 lightningcss@^1.16.1:
   version "1.30.1"

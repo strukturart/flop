@@ -1,0 +1,92 @@
+{
+  "version": "0.1.1.78",
+  "name": "flop",
+  "id": "flop",
+  "description": "Flop P2P Messenger is a decentralized messaging application that facilitates direct communication between users without relying on central servers. The app supports the exchange of text messages, audio messages, and location sharing, making it a versatile tool for staying connected. By using peer-to-peer (P2P) technology, Flop ensures that messages are transmitted directly between users, offering a seamless and reliable communication experience.",
+  "launch_path": "/index.html",
+  "categories": ["social"],
+  "subtitle": "flop p2p messenger app",
+  "type": "privileged",
+  "fullscreen": "true",
+  "lang": "en-US",
+  "orientation": "portrait-primary",
+  "theme_color": "#6054EF",
+  "userAgentInfo": "flop / 1.9.755  written by strukturart@gmail.com",
+
+  "icons": {
+    "56": "/assets/icons/icon-56-56.png",
+    "112": "/assets/icons/icon-112-112.png"
+  },
+
+  "developer": {
+    "name": "strukturart",
+    "url": "https://github.com/strukturart/flop-k2"
+  },
+  "dependencies": {
+    "ads-sdk": "1.5.8"
+  },
+  "locales": {
+    "en-US": {
+      "name": "flop",
+      "subtitle": "flop p2p messenger app",
+      "description": "Flop P2P Messenger is a decentralized messaging application that facilitates direct communication between users without relying on central servers. The app supports the exchange of text messages, audio messages, and location sharing, making it a versatile tool for staying connected. By using peer-to-peer (P2P) technology, Flop ensures that messages are transmitted directly between users, offering a seamless and reliable communication experience."
+    }
+  },
+  "default_locale": "en-US",
+  "messages": [
+    {
+      "notification": "/index.html"
+    },
+    { "activity": "/index.html" },
+    { "serviceworker-notification": "/index.html" }
+
+  ],
+
+  "activities": {
+    "flop": {
+      "href": "/index.html"
+    }
+  },
+
+  "serviceworker": {
+    "script_url": "/sw.js"
+  },
+
+  "permissions": {
+    "push":{},
+    "audio-capture": {},
+
+    "serviceworker": {
+      "description": "Needed for assocating service worker"
+    },
+    "desktop-notification": {
+      "description": "Needed to fire system notifications"
+    },
+
+    "geolocation": {
+      "description": "Required to show user's location on map"
+    },
+    "mobiledata": {},
+    "wifidata": {},
+    "calllog": {},
+    "device-storage:sdcard": {
+      "description": "Read/Write from/to sd-card",
+      "access": "readwrite"
+    },
+
+    "video-capture": {
+      "description": "Reading Codes using the Camera"
+    },
+    "audio-channel-content": {
+      "description": "Play audio"
+    },
+
+    "spatialnavigation-app-manage": {
+      "navigator.spatialNavigationEnabled": false
+    },
+    "systemXHR": {
+      "description": "Required to load remote content"
+    },
+    "tcp-socket": {}
+  }
+}
