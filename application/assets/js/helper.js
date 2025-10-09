@@ -998,7 +998,7 @@ export function createAudioRecorder() {
   async function init() {
     try {
       stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      audioContext = new AudioContext();
+      audioContext = status.audioCtx;
       analyser = audioContext.createAnalyser();
       analyser.fftSize = 2048;
 
@@ -1009,7 +1009,6 @@ export function createAudioRecorder() {
       recordedChunks = [];
 
       mediaRecorder.ondataavailable = (event) => {
-        console.log(event.data);
         if (event.data.size > 0) recordedChunks.push(event.data);
       };
 
@@ -1063,7 +1062,6 @@ export function createAudioRecorder() {
     mediaRecorder = null;
     recordedChunks = [];
     stream = null;
-    audioContext = null;
     analyser = null;
   }
 

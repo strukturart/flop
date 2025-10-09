@@ -507,12 +507,11 @@ div#intro img {
 }
 
 #audiovis {
-  left: 0px;
-  right: 0px;
   width: 80vw;
-  height: 100vh;
+  height: 80vh;
   background: none;
 }
+
 canvas {
   min-width: 100%;
 }
