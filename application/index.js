@@ -43,8 +43,6 @@ import utc from "dayjs/plugin/utc";
 
 dayjs.extend(utc);
 
-console.log(navigator.mozApps);
-
 export let status = {
   visibility: true,
   action: "",
@@ -74,7 +72,21 @@ export let status = {
   lastPingSentAt: Date.now(),
   notificationLastCall: Date.now(),
   maxImageSize: 640,
+  test: true,
+  kaiosversion: "unknow",
+  audioCtx: "",
 };
+
+//test os version
+if (navigator.mozApps) {
+  // KaiOS 2.x (Firefox 48)
+  status.kaiosversion = "k2";
+} else if (navigator.b2g || navigator.userAgent.includes("KaiOS/3")) {
+  // KaiOS 3.x (Chromium, mit b2g APIs)
+  status.kaiosversion = "k3";
+} else {
+  status.kaiosversion = "unknown";
+}
 
 // not KaiOS
 //todo get own peer nickname
@@ -203,24 +215,26 @@ let compareUserList = (userlist) => {
 //add to addressbook
 let addressbook = [];
 
-setTimeout(() => {
-  addressbook = [
-    {
-      name: "jj",
-      nickname: "xdd",
-      id: "112",
-      last_conversation_message: "test last xcccxxc",
-      last_conversation_datetime: 1741625898228,
-    },
-    {
-      name: "jj",
-      nickname: "xdd",
-      id: "112",
-      last_conversation_message: "test last xcccxxc",
-      last_conversation_datetime: 1741625898228,
-    },
-  ];
-}, 1000);
+if (status.test) {
+  setTimeout(() => {
+    addressbook = [
+      {
+        name: "jj",
+        nickname: "xdd",
+        id: "112",
+        last_conversation_message: "test last xcccxxc",
+        last_conversation_datetime: 1741625898228,
+      },
+      {
+        name: "jj",
+        nickname: "xdd",
+        id: "112",
+        last_conversation_message: "test last xcccxxc",
+        last_conversation_datetime: 1741625898228,
+      },
+    ];
+  }, 1000);
+}
 
 localforage
   .getItem("addressbook")
@@ -1829,6 +1843,10 @@ async function deleteChatDataByUser(id) {
 
 var AudioComponent = {
   oninit: (vnode) => {
+    if (!status.audioCtx) {
+      status.audioCtx = new (window.AudioContext ||
+        window.webkitAudioContext)();
+    }
     key_delay();
 
     vnode.state.isPlaying = false;
@@ -1907,13 +1925,19 @@ var AudioComponent = {
 
               audioVnode.dom.addEventListener("play", () => {
                 vnode.state.isPlaying = true;
+                bottom_bar("<img src='assets/image/pause.svg'>", "", "");
+
                 m.redraw();
               });
               audioVnode.dom.addEventListener("pause", () => {
                 vnode.state.isPlaying = false;
+                bottom_bar("<img src='assets/image/play.svg'>", "", "");
+
                 m.redraw();
               });
               audioVnode.dom.addEventListener("ended", () => {
+                bottom_bar("<img src='assets/image/play.svg'>", "", "");
+
                 vnode.state.isPlaying = false;
                 m.redraw();
               });
@@ -1930,6 +1954,7 @@ var AudioComponent = {
       m("div", {
         id: "audiovis",
         class: "col-xs-12 item",
+
         oncreate: () => {
           const audioMotion = new AudioMotionAnalyzer(
             document.getElementById("audiovis"),
@@ -1947,6 +1972,7 @@ var AudioComponent = {
               barSpace: 0.2,
               reflexRatio: 0,
               lineWidth: 10,
+              volume: 1.0,
             }
           );
 
@@ -2175,6 +2201,57 @@ let send_gps_position = () => {
   sendMessage(JSON.stringify(latlng), "gps", undefined, undefined, undefined);
   m.route.set("/chat?id=" + settings.custom_peer_id);
 };
+
+function setupVisualizer({ mode, srcNode, audioElement }) {
+  if (!status.audioCtx) {
+    status.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+
+  const ctx = status.audioCtx;
+
+  if (ctx.state === "suspended") {
+    ctx.resume().catch(console.warn);
+  }
+
+  if (!status.audioMotion) {
+    status.audioMotion = new AudioMotionAnalyzer(
+      document.getElementById("audiovis"),
+      {
+        audioCtx: ctx,
+        mode: 0,
+        gradient: "orangered",
+        colorMode: "bar-level",
+        overlay: true,
+        showBgColor: false,
+        showScaleX: false,
+        showScaleY: false,
+        smoothing: 0.8,
+        barSpace: 0.2,
+        reflexRatio: 0,
+        lineWidth: 10,
+        volume: 0.01,
+      }
+    );
+  }
+
+  const motion = status.audioMotion;
+
+  if (mode === "record" && srcNode) {
+    motion.disconnectInput();
+    motion.connectInput(srcNode);
+    return;
+  }
+
+  if (mode === "playback" && audioElement) {
+    if (!status.mediaElementSource) {
+      status.mediaElementSource = ctx.createMediaElementSource(audioElement);
+      status.mediaElementSource.connect(ctx.destination);
+    }
+
+    motion.disconnectInput();
+    motion.connectInput(status.mediaElementSource);
+  }
+}
 
 ///////////////////////
 /*VIEWS*/
@@ -3493,6 +3570,7 @@ var start = {
         m(
           "kbd",
           {
+            class: "only-desktop",
             id: "version",
             oncreate: (vnode) => {
               if (!status.notKaiOS) vnode.dom.style.display = "none";
@@ -3503,6 +3581,8 @@ var start = {
         m(
           "a",
           {
+            class: "only-desktop",
+
             id: "liberapay",
             href: "https://liberapay.com/perry_______",
             target: "_blank",
@@ -3515,6 +3595,8 @@ var start = {
         m(
           "kbd",
           {
+            class: "only-desktop",
+
             id: "local-by-design",
           },
           "local by design"
@@ -3524,133 +3606,143 @@ var start = {
   },
 };
 
-let audioRecorder = null;
-let audio_recorder_time = null;
-let audioRecorderDuration = 0;
+let audioRecorder;
 var audiorecorder_view = {
   oninit: () => {
+    if (!status.audioCtx) {
+      status.audioCtx = new (window.AudioContext ||
+        window.webkitAudioContext)();
+    }
+    status.audioRecorderDuration = 0;
     key_delay();
+
     audioRecorder = createAudioRecorder();
+    status.audioURL = null;
+    status.audioBlob = null;
+    status.audioMimeType = null;
+    status.audio_recording = false;
   },
+
   onremove: () => {
     status.viewReady = false;
+
+    if (audioRecorder) {
+      //cleaning
+      audioRecorder.stopRecording?.().catch(() => {});
+      audioRecorder.cleanup?.();
+      audioRecorder = null;
+      status.audioBlob = null;
+      status.audioMimeType = null;
+      status.audioRecorderDuration = 0;
+
+      clearInterval(status.audio_recorder_time);
+      if (status.audioURL) URL.revokeObjectURL(status.audioURL);
+      status.audioURL = null;
+
+      if (status.mediaElementSource) {
+        try {
+          status.mediaElementSource.disconnect();
+        } catch {}
+        status.mediaElementSource = null;
+      }
+
+      if (status.audioMotion) {
+        try {
+          status.audioMotion.disconnectInput();
+        } catch {}
+      }
+    }
   },
 
   view: () =>
-    m("div", { class: "page  row middle-xs", id: "audiorecorder" }, [
+    m("div", { class: "page row middle-xs", id: "audiorecorder" }, [
+      //Audio-Player
+      m("audio", {
+        id: "audio-player",
+        src: status.audioURL || "",
+        controls: false,
+        autoplay: false,
+        oncreate: (vnode) => {
+          bottom_bar(
+            "<img src='assets/image/send.svg'>",
+            "<img src='assets/image/play.svg'>",
+            "<img src='assets/image/cancel.svg'>"
+          );
+        },
+
+        onplay: (e) => {
+          top_bar("", "00:00", "");
+        },
+        onplaying: (e) => {
+          const player = e.target;
+
+          cancelAnimationFrame(status.playbackTimerRAF);
+
+          const updateTime = () => {
+            const current = player.currentTime || 0;
+            const timeStr = dayjs.utc(current * 1000).format("mm:ss");
+            top_bar("", timeStr, "");
+
+            if (!player.paused && !player.ended) {
+              status.playbackTimerRAF = requestAnimationFrame(updateTime);
+            }
+          };
+
+          bottom_bar(
+            "<img src='assets/image/send.svg'>",
+            "<img src='assets/image/pause.svg'>",
+            "<img src='assets/image/cancel.svg'>"
+          );
+
+          status.playbackTimerRAF = requestAnimationFrame(updateTime);
+        },
+        onpause: () => {
+          cancelAnimationFrame(status.playbackTimerRAF);
+        },
+        onended: () => {
+          cancelAnimationFrame(status.playbackTimerRAF);
+          top_bar("", "00:00", "");
+          bottom_bar(
+            "<img src='assets/image/send.svg'>",
+            "<img src='assets/image/play.svg'>",
+            "<img src='assets/image/cancel.svg'>"
+          );
+        },
+      }),
+      //Visualizer
       m("div", {
         id: "audiovis",
         class: "col-xs-12 item",
 
-        oninit: () => {
+        oncreate: () => {
+          top_bar("", "", "");
+
           audioRecorder
             .startRecording()
             .then(() => {
-              audio_recorder_time = setInterval(() => {
-                audioRecorderDuration++;
+              status.audio_recording = true;
+
+              status.audio_recorder_time = setInterval(() => {
+                status.audioRecorderDuration++;
                 top_bar(
                   "",
-                  dayjs.utc(audioRecorderDuration * 1000).format("mm:ss"),
+                  dayjs
+                    .utc(status.audioRecorderDuration * 1000)
+                    .format("mm:ss"),
                   ""
                 );
               }, 1000);
 
-              const srcNode = audioRecorder.getStreamSourceNode();
-              const audioCtx = audioRecorder.getAudioContext();
+              if (status.kaiosversion != "k2") {
+                const srcNode = audioRecorder.getStreamSourceNode();
+                const audioCtx = audioRecorder.getAudioContext();
 
-              if (srcNode && audioCtx) {
-                const audioMotion = new AudioMotionAnalyzer(
-                  document.getElementById("audiovis"),
-                  {
-                    audioCtx,
-                    mode: 0,
-                    gradient: "orangered",
-                    colorMode: "bar-level",
-                    overlay: true,
-                    showBgColor: false,
-                    showScaleX: false,
-                    showScaleY: false,
-                    smoothing: 0.8,
-                    barSpace: 0.2,
-                    reflexRatio: 0,
-                    lineWidth: 10,
-                  }
-                );
-
-                // 🔊 GainNode + Analyzer
-                const gainNode = audioCtx.createGain();
-                gainNode.gain.value = 2.0; // Startwert
-
-                srcNode.connect(gainNode);
-                audioMotion.connectInput(gainNode);
-                audioMotion.volume = 0;
-
-                // 🎛️ Analyser für Lautstärkemessung
-                const analyser = audioCtx.createAnalyser();
-                analyser.fftSize = 2048;
-                const dataArray = new Uint8Array(analyser.fftSize);
-
-                gainNode.connect(analyser);
-
-                // ⚙️ Automatische Verstärkung
-                let lastAdjust = 0;
-                function autoGainControl() {
-                  analyser.getByteTimeDomainData(dataArray);
-
-                  // Lautstärke-Mittelwert berechnen (0–1)
-                  let sum = 0;
-                  for (let i = 0; i < dataArray.length; i++) {
-                    const val = (dataArray[i] - 128) / 128;
-                    sum += Math.abs(val);
-                  }
-                  const avg = sum / dataArray.length;
-
-                  // Zielpegel ~ 0.3
-                  const targetLevel = 0.3;
-                  const adjustment = targetLevel / (avg + 0.0001);
-
-                  // Nur langsam anpassen (weich)
-                  const smoothed = lastAdjust * 0.9 + adjustment * 0.1;
-                  lastAdjust = smoothed;
-
-                  // Begrenzen auf sinnvolle Verstärkung
-                  gainNode.gain.value = Math.max(1, Math.min(6, smoothed));
-
-                  requestAnimationFrame(autoGainControl);
+                if (srcNode && audioCtx) {
+                  setupVisualizer({ mode: "record", srcNode, audioCtx });
                 }
-
-                autoGainControl(); // starten
-              } else {
-                console.warn("AudioContext oder StreamSource nicht vorhanden");
               }
             })
-            .catch((e) => {
-              console.log(e);
-            });
-        },
-
-        onremove: () => {
-          if (audioRecorder) {
-            // stopp recording
-            audioRecorder.stopRecording?.().catch((e) => {
-              console.log("error:" + e);
-            });
-
-            // cleanup
-            audioRecorder.cleanup?.();
-            audioRecorder = null;
-            clearInterval(audio_recorder_time);
-            audioRecorderDuration = 0;
-          }
-          status.viewReady = false;
-        },
-        oncreate: () => {
-          bottom_bar(
-            "<img src='assets/image/send.svg'>",
-            "<img src='assets/image/record-live.svg'>",
-            "<img src='assets/image/cancel.svg'>"
-          );
-          top_bar("", "", "");
+            .catch(console.log);
         },
       }),
     ]),
@@ -4224,9 +4316,9 @@ m.route(root, "/intro", {
   "/map_view": map_view,
   "/waiting": waiting,
   "/invite": invite,
-  "/audiorecorder_view": audiorecorder_view,
   "/filelist": filelist,
   "/AudioComponent": AudioComponent,
+  "/audiorecorder_view": audiorecorder_view,
 });
 
 function scrollToCenter() {
@@ -4649,29 +4741,42 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
         if (route.startsWith("audiorecorder_view")) {
           // Stop recording and get the recorded data
-          audioRecorder.stopRecording().then(({ audioBlob, mimeType }) => {
-            console.log(audioBlob);
-            console.log(mimeType);
+          if (status.audio_recording) {
+            audioRecorder
+              .stopRecording()
+              .then(({ audioBlob, mimeType }) => {
+                status.audio_recording = false;
+                status.audioBlob = audioBlob;
+                status.audioMimeType = mimeType;
 
-            status.audio_recording = false;
+                sendMessage(
+                  audioBlob,
+                  "audio",
+                  mimeType || "",
+                  undefined,
+                  undefined
+                );
 
+                history.back();
+
+                return;
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+          } else {
             sendMessage(
-              audioBlob,
+              status.audioBlob,
               "audio",
-              mimeType || "",
+              status.audioMimeType || "",
               undefined,
               undefined
             );
-            bottom_bar(
-              "<img src='assets/image/pencil.svg'>",
-              "",
-              "<img src='assets/image/option.svg'>"
-            );
-            history.back();
 
-            return;
-          });
+            history.back();
+          }
         }
+
         if (route.startsWith("/invite")) {
           share(settings.invite_url + "?id=" + settings.custom_peer_id).then(
             (success) => {
@@ -4710,6 +4815,38 @@ document.addEventListener("DOMContentLoaded", function (e) {
         break;
 
       case "Enter":
+        if (route.startsWith("audiorecorder_view")) {
+          if (status.audio_recording) {
+            audioRecorder
+              .stopRecording()
+              .then(({ audioBlob, mimeType }) => {
+                status.audio_recording = false;
+
+                clearInterval(status.audio_recorder_time);
+                let player = document.getElementById("audio-player");
+
+                status.audioURL = URL.createObjectURL(audioBlob);
+                status.audioBlob = audioBlob;
+                status.audioMimeType = mimeType;
+
+                player.src = status.audioURL;
+
+                player.onloadeddata = () => {
+                  player.play().catch(console.warn);
+                  setupVisualizer({ mode: "playback", audioElement: player });
+                };
+              })
+              .catch(console.log);
+          } else {
+            let player = document.getElementById("audio-player");
+            player.src = status.audioURL;
+            player.onloadeddata = () => {
+              player.play().catch(console.warn);
+              setupVisualizer({ mode: "playback", audioElement: player });
+            };
+          }
+        }
+
         if (route.startsWith("/chat?") && status.action === "write") {
           const input = document.querySelector("div#message-input input");
 

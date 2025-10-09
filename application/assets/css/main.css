@@ -507,12 +507,11 @@ div#intro img {
 }
 
 #audiovis {
-  left: 0px;
-  right: 0px;
   width: 80vw;
-  height: 100vh;
+  height: 80vh;
   background: none;
 }
+
 canvas {
   min-width: 100%;
 }
@@ -1192,7 +1191,7 @@ span.user-offline {
   background: red !important;
 }
 
-@media screen and (min-width: 400px) and (max-width: 1000px) {
+@media screen and (min-width: 360px) and (max-width: 1000px) {
   #app {
     overflow-y: scroll;
     overflow-x: hidden;
@@ -1314,9 +1313,17 @@ span.user-offline {
   #chat article.gps_live.me {
     border: 2px solid blue;
   }
+
+  .only-desktop {
+    display: none !important;
+  }
 }
 
 @media screen and (max-width: 320px) {
+  .only-desktop {
+    display: none !important;
+  }
+
   button {
     font-size: 0.8rem;
   }
