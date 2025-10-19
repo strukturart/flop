@@ -446,6 +446,12 @@ div#intro img {
   animation-fill-mode: forwards;
 }
 
+#intro #version {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 #intro #version-box {
   position: absolute;
   bottom: 50px;
@@ -504,6 +510,13 @@ div#intro img {
     display: none;
     opacity: 0;
   }
+}
+
+#audiovis_ {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #audiovis {
@@ -975,13 +988,14 @@ article div.message-head {
   font-size: small;
   color: gray;
   background: none;
-  padding: 3px 3px 0px 3px;
+  padding: 3px 5px 0px 5px;
   width: 100%;
 }
 
 article div.message-head img.pod-icon {
   width: 12px;
-  padding: 0 4px 0 4px 0;
+  padding: 0 0px 0 0px 0;
+  margin: 0 4px 0 4px;
 }
 
 article div.new-date {
@@ -1004,8 +1018,6 @@ article div.message-main:empty {
 }
 
 article.me {
-  -webkit-justify-content: flex-end;
-  justify-content: flex-end;
 }
 
 article.me div.message-main {
@@ -1018,8 +1030,7 @@ article.me div.message-main {
 
 article.me div.message-head {
   width: 100%;
-  -webkit-justify-content: flex-end;
-  justify-content: flex-end;
+  padding: 0 5px 0 5px;
 }
 
 article.image {
@@ -1319,7 +1330,7 @@ span.user-offline {
   }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 340px) {
   .only-desktop {
     display: none !important;
   }
@@ -1357,7 +1368,7 @@ span.user-offline {
   }
 
   .page {
-    padding: 40px 0px 10px 0px;
+    padding: 40px 12px 10px 12px;
   }
   .input-parent:focus {
     background: orange;
@@ -1425,7 +1436,9 @@ span.user-offline {
   }
 
   #addressbook button.addressbook-item .inner {
-    padding: 0 0 8px 0 !important;
+    padding: 0 0 8px 0px !important;
+    /*KaiOS2 hack*/
+    margin-left: 40px;
   }
 
   #addressbook button.addressbook-item .icon {
@@ -1536,7 +1549,7 @@ span.user-offline {
     height: 200px !important;
     width: 100vw;
     overflow: hidden;
-    margin: 0 0 0 10px;
+    margin: 0 0 0 -2px;
   }
 
   #KaiOSAds-Wrapper iframe {

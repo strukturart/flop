@@ -2139,11 +2139,6 @@ async@^3.2.3:
   resolved "https://registry.npmjs.org/async/-/async-3.2.6.tgz"
   integrity sha512-htCUDlxyyCLMgaM3xXg0C0LW2xqfuQ6p05pCEIsXuyQ+a1koYKTuBMzRNwmybfLgvJDMd0r1LTn4+E0Ti6C2AA==
 
-audiomotion-analyzer@4.1.0:
-  version "4.1.0"
-  resolved "https://registry.npmjs.org/audiomotion-analyzer/-/audiomotion-analyzer-4.1.0.tgz"
-  integrity sha512-485VCR7YkYdV14K9sa5gMGKQq4MKrBUesKBSGCEeZMcWtLLSegEc95NJ3zWujD1sJ9k2bLodVrlGBMDs/GhSPA==
-
 available-typed-arrays@^1.0.7:
   version "1.0.7"
   resolved "https://registry.npmjs.org/available-typed-arrays/-/available-typed-arrays-1.0.7.tgz"
@@ -3518,6 +3513,11 @@ jake@^10.8.5:
     chalk "^4.0.2"
     filelist "^1.0.4"
     minimatch "^3.1.2"
+
+js-image-compressor@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/js-image-compressor/-/js-image-compressor-2.0.0.tgz"
+  integrity sha512-HUhGwVxwLsxXjP7ztQ1CF2iE6X1YRW1lcalJZYfNymPvuO4kK1bbLVeumVDZs6OPDUK1c0BPwhVH/SsRso8Jbw==
 
 js-tokens@^4.0.0:
   version "4.0.0"

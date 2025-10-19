@@ -2,7 +2,7 @@
 
 import dayjs from "dayjs";
 import { status, settings } from "../../index.js";
-import imageCompression from "browser-image-compression";
+
 import localforage from "localforage";
 
 export let info_badge = (show) => {
@@ -649,29 +649,57 @@ export let getTURN = async () => {
   }
 };
 
+//compress image
+
+function compressImg(blob, maxSize = 800, quality = 0.8) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = URL.createObjectURL(blob);
+
+    img.onload = function () {
+      let width = img.width;
+      let height = img.height;
+
+      // Verhältnis beibehalten
+      if (width > height) {
+        if (width > maxSize) {
+          height *= maxSize / width;
+          width = maxSize;
+        }
+      } else {
+        if (height > maxSize) {
+          width *= maxSize / height;
+          height = maxSize;
+        }
+      }
+
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
+
+      canvas.toBlob(
+        (compressedBlob) => {
+          URL.revokeObjectURL(img.src);
+          if (!compressedBlob) {
+            reject(new Error("Fehler bei der Kompression."));
+            return;
+          }
+          resolve(compressedBlob);
+        },
+        "image/jpeg",
+        quality
+      );
+    };
+
+    img.onerror = () => reject(new Error("Bild konnte nicht geladen werden."));
+  });
+}
+
 //pick image
 //return blob
 export let pick_image = function (callback) {
-  const compressImage = (fileOrBlob, filename, filetype) => {
-    const options = {
-      maxSizeMB: 1,
-      maxWidthOrHeight: status.maxImageSize,
-      useWebWorker: false,
-    };
-
-    imageCompression(fileOrBlob, options)
-      .then((compressedBlob) => {
-        callback({
-          blob: compressedBlob,
-          filename: filename || null,
-          filetype: filetype || "image/jpeg",
-        });
-      })
-      .catch((error) => {
-        console.log("Image compression failed:", error);
-      });
-  };
-
   if (!status.notKaiOS) {
     try {
       let pick = new MozActivity({
@@ -685,11 +713,22 @@ export let pick_image = function (callback) {
         const result = this.result;
         const blob = result.blob || result;
 
-        callback({
-          blob: blob,
-          filename: result.name || null,
-          filetype: result.type || "image/jpeg",
-        });
+        compressImg(blob, status.maxImageSize, 0.7)
+          .then((compressedBlob) => {
+            callback({
+              blob: compressedBlob,
+              filename: `flop-${Date.now()}.jpg`,
+              filetype: "image/jpeg",
+            });
+          })
+          .catch((err) => {
+            console.error("Kompression fehlgeschlagen:", err);
+            callback({
+              blob,
+              filename: `flop-${Date.now()}.jpg`,
+              filetype: result.type || "image/jpeg",
+            });
+          });
       };
 
       pick.onerror = function () {
@@ -707,7 +746,23 @@ export let pick_image = function (callback) {
       pick.start().then(
         (rv) => {
           const blob = rv.blob || rv;
-          compressImage(blob, rv.name, rv.type);
+          // compressImage(blob, rv.name, rv.type);
+
+          compressImg(blob, status.maxImageSize, 0.7)
+            .then((compressedBlob) => {
+              callback({
+                blob: compressedBlob,
+                filename: `flop-${Date.now()}.jpg`,
+                filetype: rv.type || "image/jpeg",
+              });
+            })
+            .catch((err) => {
+              callback({
+                blob,
+                filename: `flop-${Date.now()}.jpg`,
+                filetype: rv.type || "image/jpeg",
+              });
+            });
         },
         (err) => {
           console.log(err);
@@ -731,7 +786,21 @@ export let pick_image = function (callback) {
     fileInput.addEventListener("change", function (event) {
       const file = event.target.files[0];
       if (file) {
-        compressImage(file, file.name, file.type);
+        compressImg(file, 800, 0.7)
+          .then((compressedBlob) => {
+            callback({
+              blob: compressedBlob,
+              filename: `flop-${Date.now()}.jpg`,
+              filetype: file.type || "image/jpeg",
+            });
+          })
+          .catch((err) => {
+            callback({
+              file,
+              filename: `flop-${Date.now()}.jpg`,
+              filetype: file.type || "image/jpeg",
+            });
+          });
       }
 
       fileInput.remove();
@@ -997,6 +1066,12 @@ export function createAudioRecorder() {
 
   async function init() {
     try {
+      const getUserMedia =
+        (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) ||
+        navigator.getUserMedia ||
+        navigator.mozGetUserMedia ||
+        navigator.webkitGetUserMedia;
+
       stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       audioContext = status.audioCtx;
       analyser = audioContext.createAnalyser();

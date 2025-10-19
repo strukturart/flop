@@ -29,7 +29,6 @@ import { v4 as uuidv4 } from "uuid";
 import L from "leaflet";
 import dayjs from "dayjs";
 
-import AudioMotionAnalyzer from "audiomotion-analyzer";
 import DOMPurify from "dompurify";
 import "swiped-events";
 import markerIcon from "./assets/css/images/marker-icon.png";
@@ -72,34 +71,45 @@ export let status = {
   lastPingSentAt: Date.now(),
   notificationLastCall: Date.now(),
   maxImageSize: 640,
-  test: true,
+  test: false,
   kaiosversion: "unknow",
   audioCtx: "",
 };
 
+//k2 polyfill
+if (!Blob.prototype.arrayBuffer) {
+  Blob.prototype.arrayBuffer = function () {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsArrayBuffer(this);
+    });
+  };
+}
+
 //test os version
 if (navigator.mozApps) {
-  // KaiOS 2.x (Firefox 48)
   status.kaiosversion = "k2";
+  status.notKaiOS = false;
+  status.maxImageSize =
+    window.innerHeight ||
+    document.documentElement.clientHeight ||
+    screen.height ||
+    320;
 } else if (navigator.b2g || navigator.userAgent.includes("KaiOS/3")) {
-  // KaiOS 3.x (Chromium, mit b2g APIs)
   status.kaiosversion = "k3";
+  status.notKaiOS = false;
+  status.maxImageSize =
+    window.innerHeight ||
+    document.documentElement.clientHeight ||
+    screen.height ||
+    320;
 } else {
   status.kaiosversion = "unknown";
 }
 
-// not KaiOS
-//todo get own peer nickname
-//to set the right nickname when storing contact in addressbook
-
 export let settings = {};
-
-const userAgent = navigator.userAgent || "";
-
-if (userAgent && userAgent.includes("KAIOS")) {
-  status.notKaiOS = false;
-  status.maxImageSize = 320;
-}
 
 if (!status.notKaiOS) {
   const scripts = [
@@ -215,6 +225,7 @@ let compareUserList = (userlist) => {
 //add to addressbook
 let addressbook = [];
 
+//test mode with dummy contacts
 if (status.test) {
   setTimeout(() => {
     addressbook = [
@@ -431,9 +442,7 @@ function setupConnectionEvents(conn) {
           if (Array.isArray(k) && k.length > 1) {
             addressbook.forEach((e) => {
               if (k.includes(e.id)) {
-                console.log("user in addressbook");
                 if (e.id == k[k.length - 1]) {
-                  //console.log("id is at last postion, no update needed");
                 } else {
                   console.log("id is not at last postion, update needed");
                   let old_id = e.id;
@@ -469,20 +478,29 @@ function setupConnectionEvents(conn) {
     //block is not from flop app
     if (conn.label !== "flop") return;
 
-    // peer_is_online();
-
     tryConnect(data);
+
     //test ping
     //KaiOS 2
+    //the peerJS listener do not work correct with K2
+    //so let play ping pong
+    //
     try {
       if (data.type === "ping") {
         const now = Date.now();
-        if (now - status.lastPingSentAt >= 30000) {
+        if (now - status.lastPingSentAt >= 20000) {
           sendMessage("", "ping", "", data.from, undefined);
           status.lastPingSentAt = now;
         }
+
+        let updateStatus = addressbook.find((e) => e.id == data.from);
+        if (updateStatus) {
+          updateStatus.live = true;
+        }
       }
     } catch (e) {}
+
+    //receiving data with diffrent types
 
     if (data.type === "typing") {
       const chat = document.querySelector("#chat");
@@ -591,6 +609,7 @@ function setupConnectionEvents(conn) {
 
       if (data.type == "image") {
         chat_data.push({
+          id: data.id,
           nickname: data.nickname,
           content: "",
           datetime: data.datetime || new Date(),
@@ -599,7 +618,6 @@ function setupConnectionEvents(conn) {
           type: data.type,
           from: data.from,
           to: data.to,
-          id: data.id,
         });
 
         sendMessage(data.id, "pod", "", data.from, data.id);
@@ -741,6 +759,7 @@ function setupConnectionEvents(conn) {
         m.redraw();
       });
     } else {
+      //groupchat todo
       if (data.userlist && status.groupchat) {
         //connect all users
         //groupchat
@@ -757,7 +776,6 @@ function setupConnectionEvents(conn) {
   // Event handler for connection closure
 
   conn.on("close", () => {
-    //side_toaster(`User has left the chat`, 1000);
     connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
 
     connectedPeersObject = connectedPeersObject.filter(
@@ -1271,7 +1289,7 @@ async function sendMessageToAll(message) {
     (c) => c.peer === message.to && c.open
   );
 
-  // send webPush
+  // if uswer not onlinesend webPush
 
   if (openConnections.length == 0) {
     if (message.type == "pod") return;
@@ -1660,8 +1678,7 @@ let handleImage = function (t) {
   console.log("handle image");
   m.route.set("/chat?id=" + settings.custom_peer);
   if (t != "") sendMessage(t, "image", undefined, undefined, undefined);
-  let a = document.querySelectorAll("div#app article");
-  a[a.length - 1].focus();
+
   status.action = "";
   only_once = true;
   setTimeout(() => {
@@ -1840,148 +1857,6 @@ async function deleteChatDataByUser(id) {
     console.error("Error deleting old chat data:", error);
   }
 }
-
-var AudioComponent = {
-  oninit: (vnode) => {
-    if (!status.audioCtx) {
-      status.audioCtx = new (window.AudioContext ||
-        window.webkitAudioContext)();
-    }
-    key_delay();
-
-    vnode.state.isPlaying = false;
-    vnode.state.audio = null;
-
-    if (status.audioBlob instanceof Blob) {
-      vnode.state.audioSrc = URL.createObjectURL(status.audioBlob);
-    } else {
-      console.error("Invalid src: Expected a Blob.");
-      vnode.state.audioSrc = null;
-    }
-  },
-
-  onremove: (vnode) => {
-    status.viewReady = false;
-
-    if (vnode.state.audioSrc) {
-      URL.revokeObjectURL(vnode.state.audioSrc);
-    }
-    if (vnode.state.audio) {
-      vnode.state.audio.pause();
-      vnode.state.audio.src = "";
-    }
-    if (vnode.state.audioMotion) {
-      vnode.state.audioMotion.disconnectAudio();
-      vnode.state.audioMotion.destroy();
-      vnode.state.audioMotion = null;
-    }
-    status.audiocontrol = null;
-  },
-
-  view: (vnode) => {
-    return m("div.audio-player", [
-      vnode.state.audioSrc
-        ? m("audio", {
-            id: "audio-elm",
-            class: "col-xs-12 item",
-
-            src: vnode.state.audioSrc,
-
-            oncreate: (audioVnode) => {
-              vnode.state.audio = audioVnode.dom;
-
-              status.audiocontrol = {
-                play: () => vnode.state.audio?.play(),
-                pause: () => vnode.state.audio?.pause(),
-                toggle: () => {
-                  if (vnode.state.audio) {
-                    vnode.state.audio.paused
-                      ? vnode.state.audio.play()
-                      : vnode.state.audio.pause();
-                  }
-                },
-              };
-
-              bottom_bar("<img src='assets/image/play.svg'>", "", "");
-              if (status.notKaiOS) {
-                top_bar("<img src='assets/image/back.svg'>", "", "");
-              } else {
-                top_bar("", "", "");
-              }
-
-              audioVnode.dom.controls = false;
-              audioVnode.dom.autoplay = true;
-
-              audioVnode.dom.addEventListener("timeupdate", () => {
-                vnode.state.currentTime = audioVnode.dom.currentTime;
-                top_bar(
-                  "<img src='assets/image/back.svg'>",
-                  dayjs.utc(vnode.state.currentTime * 1000).format("mm:ss"),
-                  ""
-                );
-
-                m.redraw();
-              });
-
-              audioVnode.dom.addEventListener("play", () => {
-                vnode.state.isPlaying = true;
-                bottom_bar("<img src='assets/image/pause.svg'>", "", "");
-
-                m.redraw();
-              });
-              audioVnode.dom.addEventListener("pause", () => {
-                vnode.state.isPlaying = false;
-                bottom_bar("<img src='assets/image/play.svg'>", "", "");
-
-                m.redraw();
-              });
-              audioVnode.dom.addEventListener("ended", () => {
-                bottom_bar("<img src='assets/image/play.svg'>", "", "");
-
-                vnode.state.isPlaying = false;
-                m.redraw();
-              });
-              audioVnode.dom.addEventListener("error", () => {
-                console.error(
-                  "An error occurred while loading the audio.",
-                  audioVnode.dom.error
-                );
-              });
-            },
-            style: { display: "none" },
-          })
-        : m("p", "Audio source is invalid or not provided."),
-      m("div", {
-        id: "audiovis",
-        class: "col-xs-12 item",
-
-        oncreate: () => {
-          const audioMotion = new AudioMotionAnalyzer(
-            document.getElementById("audiovis"),
-
-            {
-              source: document.getElementById("audio-elm"),
-              mode: 0,
-              gradient: "orangered",
-              colorMode: "bar-level",
-              overlay: true,
-              showBgColor: false,
-              showScaleX: false,
-              showScaleY: false,
-              smoothing: 0.8,
-              barSpace: 0.2,
-              reflexRatio: 0,
-              lineWidth: 10,
-              volume: 1.0,
-            }
-          );
-
-          audioMotion.canvas.style.background = "none";
-        },
-      }),
-    ]);
-  },
-};
 
 //callback geolocation
 //live location
@@ -2202,56 +2077,79 @@ let send_gps_position = () => {
   m.route.set("/chat?id=" + settings.custom_peer_id);
 };
 
-function setupVisualizer({ mode, srcNode, audioElement }) {
-  if (!status.audioCtx) {
-    status.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let setupVisualizer_k2 = function ({ mode, srcNode, audioElement }) {
+  const canvas = document.getElementById("audiovis_");
+  if (!canvas) return;
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const ctx2d = canvas.getContext("2d");
+
+  const audioCtx = status.audioCtx;
+  if (audioCtx.state === "suspended") {
+    try {
+      audioCtx.resume();
+    } catch (e) {
+      console.warn(e);
+    }
   }
 
-  const ctx = status.audioCtx;
-
-  if (ctx.state === "suspended") {
-    ctx.resume().catch(console.warn);
-  }
-
-  if (!status.audioMotion) {
-    status.audioMotion = new AudioMotionAnalyzer(
-      document.getElementById("audiovis"),
-      {
-        audioCtx: ctx,
-        mode: 0,
-        gradient: "orangered",
-        colorMode: "bar-level",
-        overlay: true,
-        showBgColor: false,
-        showScaleX: false,
-        showScaleY: false,
-        smoothing: 0.8,
-        barSpace: 0.2,
-        reflexRatio: 0,
-        lineWidth: 10,
-        volume: 0.01,
-      }
-    );
-  }
-
-  const motion = status.audioMotion;
+  const analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 256;
+  const dataArray = new Uint8Array(analyser.frequencyBinCount);
 
   if (mode === "record" && srcNode) {
-    motion.disconnectInput();
-    motion.connectInput(srcNode);
-    return;
+    srcNode.connect(analyser);
   }
 
   if (mode === "playback" && audioElement) {
-    if (!status.mediaElementSource) {
-      status.mediaElementSource = ctx.createMediaElementSource(audioElement);
-      status.mediaElementSource.connect(ctx.destination);
-    }
-
-    motion.disconnectInput();
-    motion.connectInput(status.mediaElementSource);
+    status.mediaElementSource = audioCtx.createMediaElementSource(audioElement);
+    status.mediaElementSource.connect(audioCtx.destination);
+    status.mediaElementSource.connect(analyser);
   }
-}
+
+  let smoothAvg = 0; // für weicheres Nachfedern
+
+  function draw() {
+    requestAnimationFrame(draw);
+    analyser.getByteFrequencyData(dataArray);
+
+    // statt einfachem Durchschnitt: stärker gewichtete obere Frequenzen
+    let avg = 0;
+    for (let i = 0; i < dataArray.length; i++) {
+      avg += dataArray[i] * (1 + i / dataArray.length); // leichtes Gewicht nach oben
+    }
+    avg /= dataArray.length * 1.5; // normalisieren
+
+    // Empfindlichkeit erhöhen (Exponent)
+    avg = Math.pow(avg / 255, 0.5) * 255;
+
+    // Sanftes Nachfedern (keine harten Sprünge)
+    smoothAvg += (avg - smoothAvg) * 0.25;
+
+    const maxRadius = Math.min(canvas.width, canvas.height) / 3;
+    const radius = Math.max(10, (smoothAvg / 255) * maxRadius * 1.4); // leicht verstärken
+
+    ctx2d.clearRect(0, 0, canvas.width, canvas.height);
+
+    const gradient = ctx2d.createRadialGradient(
+      canvas.width / 2,
+      canvas.height / 2,
+      radius / 4,
+      canvas.width / 2,
+      canvas.height / 2,
+      radius
+    );
+    gradient.addColorStop(0, "rgba(255,80,0,1)");
+    gradient.addColorStop(1, "rgba(255,0,0,0.05)");
+
+    ctx2d.beginPath();
+    ctx2d.arc(canvas.width / 2, canvas.height / 2, radius, 0, Math.PI * 2);
+    ctx2d.fillStyle = gradient;
+    ctx2d.fill();
+  }
+
+  draw();
+};
 
 ///////////////////////
 /*VIEWS*/
@@ -2384,6 +2282,9 @@ var about = {
             onclick: () => {
               m.route.set("/invite");
             },
+            oncreate: (vnode) => {
+              vnode.dom.focus();
+            },
           },
           "Invite"
         ),
@@ -2441,9 +2342,7 @@ var about = {
           "button",
           {
             class: "item",
-            oncreate: ({ dom }) => {
-              dom.focus();
-            },
+
             onclick: () => {
               m.route.set("/about_page");
             },
@@ -2576,6 +2475,7 @@ var about = {
 var about_page = {
   oninit: () => {
     key_delay();
+    document.querySelector("body").classList.add("kaios2");
   },
   onremove: () => {
     status.viewReady = false;
@@ -2704,14 +2604,14 @@ var invite = {
     return m(
       "div",
       {
-        class: "flex justify-center align-center page",
+        class: "page",
         id: "invite",
         oncreate: () => {
           console.log(status);
         },
       },
       [
-        m("div", { class: "flex justify-center" }, [
+        m("div", { class: "" }, [
           m("img", { src: status.invite_qr }),
           m("div", { class: "" }, settings.nickname),
         ]),
@@ -3287,7 +3187,7 @@ var intro = {
     return m(
       "div",
       {
-        class: "width-100 height-100",
+        class: "",
         id: "intro",
         onremove: () => {
           localStorage.setItem("version", status.version);
@@ -3315,7 +3215,7 @@ var intro = {
           } else {
             setTimeout(function () {
               m.route.set("/start");
-            }, 1000);
+            }, 2000);
           }
 
           //auto connect if id is given
@@ -3363,7 +3263,7 @@ var intro = {
         m(
           "div",
           {
-            class: "flex width-100 justify-center",
+            class: "row around-xs debug",
             id: "version-box",
           },
           [
@@ -3454,7 +3354,7 @@ var start = {
                       m(
                         "button",
                         {
-                          class: "item addressbook-item row between-md",
+                          class: "item addressbook-item row between-xs",
                           "data-id": e.id,
                           "data-client-id": e.client_id || "null",
                           "data-nickname": e.nickname || e.name,
@@ -3606,6 +3506,176 @@ var start = {
   },
 };
 
+var AudioComponent = {
+  oninit: (vnode) => {
+    if (!status.audioCtx) {
+      status.audioCtx = new (window.AudioContext ||
+        window.webkitAudioContext)();
+    }
+    key_delay();
+
+    vnode.state.isPlaying = false;
+    vnode.state.audio = null;
+
+    if (status.audioBlob instanceof Blob) {
+      vnode.state.audioSrc = URL.createObjectURL(status.audioBlob);
+    } else {
+      console.error("Invalid src: Expected a Blob.");
+      vnode.state.audioSrc = null;
+    }
+  },
+
+  onremove: (vnode) => {
+    status.viewReady = false;
+
+    if (vnode.state.audioSrc) {
+      URL.revokeObjectURL(vnode.state.audioSrc);
+    }
+    if (vnode.state.audio) {
+      vnode.state.audio.pause();
+      vnode.state.audio.src = "";
+    }
+    if (vnode.state.audioMotion) {
+      vnode.state.audioMotion.disconnectAudio();
+      vnode.state.audioMotion.destroy();
+      vnode.state.audioMotion = null;
+    }
+    status.audiocontrol = null;
+  },
+
+  view: (vnode) => {
+    return m("div.audio-player", [
+      vnode.state.audioSrc
+        ? m("audio", {
+            id: "audio-elm",
+            class: "col-xs-12 item",
+
+            src: vnode.state.audioSrc,
+
+            oncreate: (audioVnode) => {
+              vnode.state.audio = audioVnode.dom;
+
+              status.audiocontrol = {
+                play: () => vnode.state.audio?.play(),
+                pause: () => vnode.state.audio?.pause(),
+                toggle: () => {
+                  if (vnode.state.audio) {
+                    vnode.state.audio.paused
+                      ? vnode.state.audio.play()
+                      : vnode.state.audio.pause();
+                  }
+                },
+              };
+
+              bottom_bar("<img src='assets/image/play.svg'>", "", "");
+              if (status.notKaiOS) {
+                top_bar("<img src='assets/image/back.svg'>", "", "");
+              } else {
+                top_bar("", "", "");
+              }
+
+              audioVnode.dom.controls = false;
+              audioVnode.dom.autoplay = true;
+
+              audioVnode.dom.addEventListener("timeupdate", () => {
+                vnode.state.currentTime = audioVnode.dom.currentTime;
+                if (status.notKaiOS) {
+                  top_bar(
+                    "<img src='assets/image/back.svg'>",
+                    dayjs.utc(vnode.state.currentTime * 1000).format("mm:ss"),
+                    ""
+                  );
+                } else {
+                  top_bar(
+                    "",
+                    dayjs.utc(vnode.state.currentTime * 1000).format("mm:ss"),
+                    ""
+                  );
+                }
+
+                m.redraw();
+              });
+
+              audioVnode.dom.addEventListener("play", () => {
+                vnode.state.isPlaying = true;
+                bottom_bar("<img src='assets/image/pause.svg'>", "", "");
+
+                m.redraw();
+              });
+              audioVnode.dom.addEventListener("pause", () => {
+                vnode.state.isPlaying = false;
+                bottom_bar("<img src='assets/image/play.svg'>", "", "");
+
+                m.redraw();
+              });
+              audioVnode.dom.addEventListener("ended", () => {
+                bottom_bar("<img src='assets/image/play.svg'>", "", "");
+
+                vnode.state.isPlaying = false;
+                m.redraw();
+              });
+              audioVnode.dom.addEventListener("error", () => {
+                console.error(
+                  "An error occurred while loading the audio.",
+                  audioVnode.dom.error
+                );
+              });
+            },
+            style: { display: "none" },
+          })
+        : m("p", "Audio source is invalid or not provided."),
+
+      //Visualizer
+      m("canvas", {
+        id: "audiovis_",
+        class: "",
+        width: 100,
+        height: 100,
+
+        oncreate: () => {
+          top_bar("", "", "");
+
+          let audio = document.getElementById("audio-elm");
+
+          setupVisualizer_k2({
+            mode: "playback",
+            audioElement: audio,
+          });
+        },
+      }),
+
+      m("div", {
+        id: "audiovis",
+        class: "col-xs-12 item",
+
+        oncreate: () => {
+          const audioMotion = new AudioMotionAnalyzer(
+            document.getElementById("audiovis"),
+
+            {
+              source: document.getElementById("audio-elm"),
+              mode: 0,
+              gradient: "orangered",
+              colorMode: "bar-level",
+              overlay: true,
+              showBgColor: false,
+              showScaleX: false,
+              showScaleY: false,
+              smoothing: 0.8,
+              barSpace: 0.2,
+              reflexRatio: 0,
+              lineWidth: 10,
+              volume: 1.0,
+            }
+          );
+
+          audioMotion.canvas.style.background = "none";
+        },
+      }),
+    ]);
+  },
+};
+
 let audioRecorder;
 var audiorecorder_view = {
   oninit: () => {
@@ -3710,9 +3780,11 @@ var audiorecorder_view = {
         },
       }),
       //Visualizer
-      m("div", {
-        id: "audiovis",
-        class: "col-xs-12 item",
+      m("canvas", {
+        id: "audiovis_",
+        class: "",
+        width: 100,
+        height: 100,
 
         oncreate: () => {
           top_bar("", "", "");
@@ -3733,13 +3805,11 @@ var audiorecorder_view = {
                 );
               }, 1000);
 
-              if (status.kaiosversion != "k2") {
-                const srcNode = audioRecorder.getStreamSourceNode();
-                const audioCtx = audioRecorder.getAudioContext();
+              const srcNode = audioRecorder.getStreamSourceNode();
+              const audioCtx = audioRecorder.getAudioContext();
 
-                if (srcNode && audioCtx) {
-                  setupVisualizer({ mode: "record", srcNode, audioCtx });
-                }
+              if (srcNode && audioCtx) {
+                setupVisualizer_k2({ mode: "record", srcNode, audioCtx });
               }
             })
             .catch(console.log);
@@ -3774,6 +3844,7 @@ var chat = {
   oninit: () => {
     key_delay();
     load_chat_data(status.current_user_id);
+    status.action = "";
 
     //load more content
     //triggerd by scroll
@@ -4014,7 +4085,7 @@ var chat = {
         return m(
           "article",
           {
-            class: "flex item " + nickname + " " + item.type,
+            class: "row start-xs item " + nickname + " " + item.type,
             tabindex: index,
             "data-type": item.type,
             "data-user-id": item.from,
@@ -4060,11 +4131,18 @@ var chat = {
               }
             },
 
-            oncreate: (e) => {
+            oncreate: (vnode) => {
+              setTabindex();
               if (isLast) {
                 setTimeout(() => {
-                  e.dom.scrollIntoView();
-                }, 200);
+                  vnode.dom.focus();
+                  vnode.dom.scrollIntoView({
+                    behavior: "smooth",
+                    block: "end",
+                  });
+
+                  focus_last_article();
+                }, 500);
               }
             },
 
@@ -4135,7 +4213,7 @@ var chat = {
               dayjs(chat_data[index - 1].datetime).format("MM.DD.YYYY")
               ? m(
                   "div",
-                  { class: "flex new-date" },
+                  { class: "new-date" },
                   dayjs(item.datetime).format("DD MMM YYYY")
                 )
               : null,
@@ -4180,7 +4258,7 @@ var chat = {
                 )
               : null,
 
-            m("div", { class: "flex message-head" }, [
+            m("div", { class: "row start-xs message-head" }, [
               m("div", dayjs(item.datetime).format("HH:mm")),
               m(
                 "div",
@@ -4725,6 +4803,13 @@ document.addEventListener("DOMContentLoaded", function (e) {
       case "SoftLeft":
       case "Control":
         if (route.startsWith("/chat?") && status.action == "write") {
+          if (document.getElementsByTagName("input")[0].value == "") {
+            side_toaster(
+              "I can't send anything because there is no content.",
+              2000
+            );
+            return;
+          }
           sendMessage(
             document.getElementsByTagName("input")[0].value,
             "text",
@@ -4831,19 +4916,24 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
                 player.src = status.audioURL;
 
-                player.onloadeddata = () => {
-                  player.play().catch(console.warn);
-                  setupVisualizer({ mode: "playback", audioElement: player });
-                };
+                player.play().catch(console.warn);
+
+                setupVisualizer_k2({
+                  mode: "playback",
+                  audioElement: player,
+                });
               })
               .catch(console.log);
           } else {
             let player = document.getElementById("audio-player");
             player.src = status.audioURL;
-            player.onloadeddata = () => {
-              player.play().catch(console.warn);
-              setupVisualizer({ mode: "playback", audioElement: player });
-            };
+
+            player.play().catch(console.warn);
+
+            setupVisualizer_k2({
+              mode: "playback",
+              audioElement: player,
+            });
           }
         }
 
