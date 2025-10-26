@@ -674,6 +674,7 @@ function setupConnectionEvents(conn) {
         let audioBlob;
 
         let mimetype = data.mimeType || "audio/webm";
+        side_toaster(mimetype, 5000);
 
         if (data.audio instanceof Blob) {
           audioBlob = data.audio;
@@ -686,19 +687,50 @@ function setupConnectionEvents(conn) {
           side_toaster("data type not supported", 4000);
           return;
         }
+        //test is audio file is valid
+        //store
+        const audioURL = URL.createObjectURL(audioBlob);
+        const audio = new Audio();
+        audio.preload = "metadata";
+        audio.src = audioURL;
 
-        chat_data.push({
-          id: data.id,
-          nickname: data.nickname,
-          content: "",
-          audio: audioBlob,
-          datetime: data.datetime || new Date(),
-          type: data.type,
-          from: data.from,
-          to: data.to,
-        });
+        audio.onloadedmetadata = async () => {
+          if (!isFinite(audio.duration) || audio.duration <= 0) {
+            URL.revokeObjectURL(audioURL);
+            side_toaster("audio file invalid (no duration)", 2000);
+            return;
+          }
 
-        sendMessage(data.id, "pod", "", data.from, data.id);
+          try {
+            await audio.play();
+            audio.pause();
+            audio.currentTime = 0;
+          } catch (err) {
+            side_toaster("audio not playable: " + err.message, 2000);
+            URL.revokeObjectURL(audioURL);
+            return;
+          }
+
+          URL.revokeObjectURL(audioURL);
+
+          chat_data.push({
+            id: data.id,
+            nickname: data.nickname,
+            content: "",
+            audio: audioBlob,
+            datetime: data.datetime || new Date(),
+            type: data.type,
+            from: data.from,
+            to: data.to,
+          });
+
+          sendMessage(data.id, "pod", "", data.from, data.id);
+        };
+
+        audio.onerror = () => {
+          URL.revokeObjectURL(audioURL);
+          side_toaster("audio file not valid (decode error)", 2000);
+        };
       }
 
       if (data.type == "gps") {
@@ -1364,13 +1396,10 @@ async function sendMessageToAll(message) {
 
 //webPush
 const webPush_reg = async (action) => {
-  // VAPID Public Key (Austausch gegen deinen eigenen)
   const publicKey = process.env.VAPID_PUBLIC;
 
-  // Überprüfen, ob der Service Worker und Push API verfügbar sind
   if ("serviceWorker" in navigator && "PushManager" in window) {
     try {
-      // Service Worker registrieren
       const registration = await navigator.serviceWorker.register(
         new URL("sw.js", import.meta.url),
         {
@@ -1378,15 +1407,18 @@ const webPush_reg = async (action) => {
         }
       );
 
-      console.log("Service Worker registriert", registration);
+      let subscription;
 
-      // Push-Subscription anfordern
-      const subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: publicKey,
-      });
-
-      // Senden der Subscription-Daten an den Server
+      if (status.kaiosversion == "K2") {
+        subscription = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+        });
+      } else {
+        subscription = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: publicKey,
+        });
+      }
 
       fetch(process.env.WEBPUSH_SUBSCRIPE + "?action=" + action, {
         method: "POST",
@@ -1398,10 +1430,10 @@ const webPush_reg = async (action) => {
           subscription: subscription,
         }),
       })
-        .then((response) => response.text()) // Die Antwort als Text zuerst erhalten
+        .then((response) => response.text())
         .then((text) => {
-          console.log("Antwort des Servers:", text); // Text-Antwort loggen
-          return JSON.parse(text); // Versuche, den Text in JSON zu parsen
+          console.log("Antwort des Servers:", text);
+          return JSON.parse(text);
         })
         .then((data) => {
           console.log("JSON-Daten:", data);
@@ -1410,10 +1442,7 @@ const webPush_reg = async (action) => {
           console.error("Fehler:", error);
         });
     } catch (error) {
-      console.error(
-        "Fehler bei der Registrierung der Push-Subscription:",
-        error
-      );
+      console.error("Error Push-Subscription:", error);
     }
   } else {
     alert("Push-Notifications oder Service Worker sind nicht verfügbar!");
@@ -5136,6 +5165,12 @@ if (!status.notKaiOS) {
           connect_to_peer(id);
         }, 5000);
       }
+    });
+  } catch (e) {}
+
+  try {
+    navigator.mozSetMessageHandler("serviceworker-notification", (event) => {
+      alert(event.msg);
     });
   } catch (e) {}
 

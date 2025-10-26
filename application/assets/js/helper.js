@@ -1056,6 +1056,25 @@ export let data_import = function (filename, data, callback) {
   }
 };
 
+function getSupportedAudioMimeForRecorder() {
+  const mimeTypes = [
+    "audio/webm;codecs=opus",
+    "audio/ogg;codecs=opus",
+    "audio/webm",
+    "audio/ogg",
+    "audio/mp4",
+    "audio/wav",
+  ];
+
+  for (const mime of mimeTypes) {
+    if (MediaRecorder.isTypeSupported(mime)) {
+      return mime;
+    }
+  }
+
+  return null;
+}
+
 // createAudioRecorder
 export function createAudioRecorder() {
   let mediaRecorder = null;
@@ -1077,10 +1096,13 @@ export function createAudioRecorder() {
       analyser = audioContext.createAnalyser();
       analyser.fftSize = 2048;
 
+      const mimeType = getSupportedAudioMimeForRecorder();
+      console.log(mimeType);
+
       const source = audioContext.createMediaStreamSource(stream);
       source.connect(analyser);
 
-      mediaRecorder = new MediaRecorder(stream);
+      mediaRecorder = new MediaRecorder(stream, { mimeType });
       recordedChunks = [];
 
       mediaRecorder.ondataavailable = (event) => {
