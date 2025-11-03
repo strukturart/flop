@@ -1321,7 +1321,7 @@ async function sendMessageToAll(message) {
     (c) => c.peer === message.to && c.open
   );
 
-  // if uswer not onlinesend webPush
+  // if user not online send webPush
 
   if (openConnections.length == 0) {
     if (message.type == "pod") return;
@@ -1337,6 +1337,7 @@ async function sendMessageToAll(message) {
         console.log(
           "The user is not online. Message couldn't be sent. Try to send WebPush"
         );
+
         sendPushMessage(getClientId.client_id, "Flop");
 
         status.webpush_do_not_annoy.push(getClientId.client_id);
@@ -1408,8 +1409,7 @@ const webPush_reg = async (action) => {
       );
 
       let subscription;
-
-      if (status.kaiosversion == "K2") {
+      if (status.kaiosversion == "k2") {
         subscription = await registration.pushManager.subscribe({
           userVisibleOnly: true,
         });
@@ -1451,7 +1451,7 @@ const webPush_reg = async (action) => {
 
 // send webPush
 function sendPushMessage(userId, message) {
-  console.log("webPush sent!");
+  console.log("webPush sent to " + userId);
   fetch(process.env.WEBPUSH_SEND, {
     method: "POST",
     mode: "cors",
@@ -1478,6 +1478,20 @@ function sendPushMessage(userId, message) {
       console.error("Fehler:", error);
     });
 }
+
+//check webpush
+setTimeout(() => {
+  fetch(process.env.WEBPUSH_CHECK + "?id=" + settings.unique_id)
+    .then((res) => res.json())
+    .then((r) => {
+      console.log(r);
+      if (r.registered) {
+        settings.webpush = true;
+      } else {
+        settings.webpush = false;
+      }
+    });
+}, 5000);
 
 //connect to peer
 //test is other peer is online
@@ -1510,7 +1524,6 @@ let peer_is_online = async function () {
       m.redraw();
 
       if (!entry.id || entry.id == "") {
-        console.log("Eintrag ohne ID, überspringe.");
         continue;
       }
 
@@ -1668,10 +1681,7 @@ let connect_to_peer = function (
                   err.type || err.name,
                   err.message || err
                 );
-                //side_toaster("Connection error: " + (err.message || err), 5000);
               });
-            } else {
-              // side_toaster("Connection could not be established", 5000);
             }
           } catch (e) {
             //side_toaster("Connection could not be established", 5000);
@@ -1717,7 +1727,6 @@ let handleImage = function (t) {
 
 //callback qr-code scan
 let scan_callback = function (n) {
-  console.log(n);
   if (n == "error") {
     alert("QR is not valid");
     m.route.set("/start");
@@ -2315,18 +2324,7 @@ var about = {
               vnode.dom.focus();
             },
           },
-          "Invite"
-        ),
-
-        m(
-          "button",
-          {
-            class: "item",
-            onclick: () => {
-              m.route.set("/scan");
-            },
-          },
-          "Scan"
+          "Invite and scan"
         ),
 
         m(
@@ -3414,7 +3412,7 @@ var start = {
                                   "&peer=" +
                                   status.current_user_id
                               );
-
+                              /*
                               let pid =
                                 document.activeElement.getAttribute(
                                   "data-client-id"
@@ -3422,6 +3420,7 @@ var start = {
                               if (pid && pid !== settings.clientID) {
                                 status.current_clientId = pid;
                               }
+                                */
                             }
                           },
                           onclick: () => {
@@ -3439,7 +3438,7 @@ var start = {
                                 "&peer=" +
                                 status.current_user_id
                             );
-
+                            /*
                             let pid =
                               document.activeElement.getAttribute(
                                 "data-client-id"
@@ -3447,6 +3446,7 @@ var start = {
                             if (pid && pid !== settings.clientID) {
                               status.current_clientId = pid;
                             }
+                              */
                           },
                         },
                         [

@@ -8,8 +8,8 @@
     "Firefox <= 48"
   ],
   "scripts": {
-    "build": "rm -rf dist/* && parcel build  --no-source-maps application/index.html && mkdir -p dist/assets/js && cp -r application/assets/icons dist/assets/ && cp -r application/assets/image dist/assets/ && cp application/assets/js/kaiads.v5.min.js dist/assets/js/ && mkdir -p build && (cd dist && zip -r ../build/flop.zip .)",
-    "build-k2": "rm -rf dist/* && parcel build application/index.html --no-scope-hoist --no-source-maps && mkdir -p dist/assets/js && cp -r application/assets/icons dist/assets/ && cp -r application/assets/image dist/assets/ && cp application/assets/js/kaiads.v5.min.js dist/assets/js/ && mkdir -p build && (cd dist && zip -r ../build/flop-k2.zip .)",
+    "build": "rm -rf dist/* && parcel build  --no-source-maps application/index.html && mkdir -p dist/assets/js && cp -r application/assets/icons dist/assets/ && cp -r application/assets/image dist/assets/ && cp application/assets/js/kaiads.v5.min.js dist/assets/js/ && mkdir -p build && rm dist/manifest.webapp && (cd dist && zip -r ../build/flop.zip .)",
+    "build-k2": "rm -rf dist/* && parcel build application/index.html --no-scope-hoist --no-source-maps && mkdir -p dist/assets/js && cp -r application/assets/icons dist/assets/ && cp -r application/assets/image dist/assets/ && cp application/assets/js/kaiads.v5.min.js  dist/assets/js/ && mkdir -p build && rm dist/manifest.webmanifest && (cd dist && zip -r ../build/flop-k2.zip .)",
     "run": "parcel",
     "web": "rm -rf docs/* && parcel build --dist-dir docs --public-url ./ --no-source-maps --no-content-hash application/index.html &&  cp application/manifest.webmanifest docs && mkdir -p docs/assets/js && mkdir -p docs/assets/image && cp -r application/assets/image docs/assets/ && cp -r application/assets/fonts docs/assets/ && cp -r application/assets/icons docs/assets/ && ./generate_file_list.sh"
   },
