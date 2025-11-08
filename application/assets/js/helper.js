@@ -82,6 +82,7 @@ export const geolocation = function (callback) {
     const now = Date.now();
 
     // Only proceed if 20 seconds have passed since the last callback
+    console.log(now - lastCallbackTime);
     if (now - lastCallbackTime >= 20000) {
       lastCallbackTime = now;
       callback(position);
@@ -90,12 +91,13 @@ export const geolocation = function (callback) {
 
   let error = function (error) {
     callback("error");
+    console.log("GeoLocation: " + error);
     switch (error.code) {
       case error.PERMISSION_DENIED:
         //side_toaster("Location not provided", 5000);
         break;
       case error.POSITION_UNAVAILABLE:
-        //side_toaster("Current location not available", 5000);
+        console.log("Current location not available", 5000);
         break;
       case error.TIMEOUT:
         // side_toaster("Current location not available", 5000);
@@ -107,9 +109,9 @@ export const geolocation = function (callback) {
   };
 
   // Use watchPosition to continuously monitor location
-  const watchID = navigator.geolocation.watchPosition(showPosition, error, {
+  let watchID = navigator.geolocation.watchPosition(showPosition, error, {
     enableHighAccuracy: true,
-    timeout: 10000,
+    timeout: 5000,
     maximumAge: 1000,
   });
 };
@@ -1184,4 +1186,16 @@ export function base64ToArrayBuffer(base64) {
     bytes[i] = binary.charCodeAt(i);
   }
   return bytes.buffer;
+}
+
+export function dataURLtoBlob(dataURL) {
+  const [header, base64] = dataURL.split(",");
+  const mime = header.match(/:(.*?);/)[1];
+  const binary = atob(base64);
+  const len = binary.length;
+  const u8arr = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+    u8arr[i] = binary.charCodeAt(i);
+  }
+  return new Blob([u8arr], { type: mime });
 }

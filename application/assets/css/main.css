@@ -625,6 +625,7 @@ div.nickname {
 
 div#map-container {
   width: 100%;
+  height: 100%;
   position: fixed;
   overflow: hidden;
   margin: 0px 0 0 0;
@@ -1317,14 +1318,6 @@ span.user-offline {
     padding: 0px 20px 0 20px;
   }
 
-  #chat article.gps.me {
-    border: 2px solid blue;
-  }
-
-  #chat article.gps_live.me {
-    border: 2px solid blue;
-  }
-
   .only-desktop {
     display: none !important;
   }
@@ -1474,14 +1467,6 @@ span.user-offline {
   #addressbook button.addressbook-item {
     min-height: 60px;
     max-height: 60px;
-  }
-
-  #chat article.gps.me {
-    border: 2px solid blue;
-  }
-
-  #chat article.gps_live.me {
-    border: 2px solid blue;
   }
 
   #chat:last-child {

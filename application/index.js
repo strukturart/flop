@@ -23,7 +23,7 @@ import localforage from "localforage";
 
 import * as linkify from "linkifyjs";
 import { geolocation, pushLocalNotification } from "./assets/js/helper.js";
-import m from "mithril";
+import m, { censor } from "mithril";
 import qrious from "qrious";
 import { v4 as uuidv4 } from "uuid";
 import L from "leaflet";
@@ -55,6 +55,7 @@ export let status = {
   current_clientId: "",
   users_geolocation: [],
   userMarkers: [],
+  map_marker_move: false,
   addressbook_in_focus: "",
   geolocation_autoupdate: false,
   geolocation_autoupdate_id: "",
@@ -473,7 +474,10 @@ function setupConnectionEvents(conn) {
     }
   });
 
+  //////////////
   //receive data
+  //////////////
+
   conn.on("data", function (data) {
     //block is not from flop app
     if (conn.label !== "flop") return;
@@ -1037,6 +1041,10 @@ let import_addressbook = (e) => {
 
 let import_chatdata = (e) => {};
 
+///////////
+//send data
+///////////
+
 let sendMessage = (
   msg = "",
   type,
@@ -1122,7 +1130,6 @@ let sendMessage = (
         datetime: new Date(),
       };
       sendMessageToAll(message);
-
       focus_last_article();
     };
     reader.onerror = (e) => {
@@ -1131,11 +1138,44 @@ let sendMessage = (
     reader.readAsDataURL(msg.blob);
   }
 
+  //audio
+  if (type === "audio") {
+    chat_data.push({
+      nickname: settings.nickname,
+      content: "",
+      audio: msg,
+      datetime: new Date(),
+      type: type,
+      mimeType: mimeType,
+      from: settings.custom_peer_id,
+      to: to,
+      id: messageId,
+      pod: false,
+    });
+
+    focus_last_article();
+
+    msg
+      .arrayBuffer()
+      .then((buffer) => {
+        message = {
+          content: "",
+          audio: buffer,
+          nickname: settings.nickname,
+          type: type,
+          mimeType: mimeType,
+          id: messageId,
+          datetime: new Date(),
+        };
+        sendMessageToAll(message);
+      })
+      .catch((error) => {
+        console.error("Error converting Blob to ArrayBuffer:", error);
+      });
+  }
+
   //text
   if (type == "text") {
-    //do not send empty message
-    // if (!msg) return false;
-
     message = {
       nickname: settings.nickname,
       type: type,
@@ -1226,42 +1266,6 @@ let sendMessage = (
     status.geolocation_onTimeRequest = false;
 
     sendMessageToAll(message);
-  }
-
-  //audio
-  if (type === "audio") {
-    chat_data.push({
-      nickname: settings.nickname,
-      content: "",
-      audio: msg,
-      datetime: new Date(),
-      type: type,
-      mimeType: mimeType,
-      from: settings.custom_peer_id,
-      to: to,
-      id: messageId,
-      pod: false,
-    });
-
-    focus_last_article();
-
-    msg
-      .arrayBuffer()
-      .then((buffer) => {
-        message = {
-          content: "",
-          audio: buffer,
-          nickname: settings.nickname,
-          type: type,
-          mimeType: mimeType,
-          id: messageId,
-          datetime: new Date(),
-        };
-        sendMessageToAll(message);
-      })
-      .catch((error) => {
-        console.error("Error converting Blob to ArrayBuffer:", error);
-      });
   }
 };
 
@@ -1714,7 +1718,6 @@ let generate_contact = function () {
 let only_once = false;
 let handleImage = function (t) {
   if (only_once) return false;
-  console.log("handle image");
   m.route.set("/chat?id=" + settings.custom_peer);
   if (t != "") sendMessage(t, "image", undefined, undefined, undefined);
 
@@ -1776,20 +1779,19 @@ async function checkStorageUsage() {
 checkStorageUsage();
 
 //store chat data
-
 //todo use hash from string to compare
+
 let storeChatData = async () => {
+  // Nur neue Einträge mit noch nicht vorhandener ID
   let newData = chat_data.filter((item) => {
-    return !chat_data_history.some(
-      (historyItem) => JSON.stringify(historyItem) === JSON.stringify(item)
-    );
+    return !chat_data_history.some((historyItem) => historyItem.id === item.id);
   });
 
   if (newData.length > 0) {
-    newData.forEach((item) => {
-      chat_data_history.push(item);
-    });
+    // Neue Daten anhängen
+    newData.forEach((item) => chat_data_history.push(item));
 
+    // Nach Datum sortieren
     chat_data_history.sort(
       (a, b) => new Date(a.datetime) - new Date(b.datetime)
     );
@@ -1797,7 +1799,7 @@ let storeChatData = async () => {
     try {
       await localforage.setItem("chatData", chat_data_history);
     } catch (err) {
-      console.error(err);
+      console.error("Fehler beim Speichern von chatData:", err);
     }
   }
 };
@@ -1917,6 +1919,7 @@ let geolocation_callback = function (e) {
 let map;
 let myMarker;
 let peerMarker;
+let once;
 
 // Function to zoom the map
 function ZoomMap(in_out) {
@@ -1934,17 +1937,20 @@ function ZoomMap(in_out) {
 function map_function(
   lat,
   lng,
-  viewOnly,
+  viewOnly = false,
   viewLiveLocation = false,
   messageID = 0
 ) {
   myMarker = "";
   peerMarker = "";
+  map = "";
+  once = false;
 
   map = L.map("map-container", {
     keyboard: true,
     zoomControl: false,
   }).setView([51.505, -0.09], 13);
+
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution:
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -1954,10 +1960,7 @@ function map_function(
     document.querySelector(".leaflet-control-container").style.display = "none";
   }, 5000);
 
-  let once = false;
-
   L.Icon.Default.prototype.options.shadowUrl = "";
-
   L.Icon.Default.prototype.options.iconUrl = markerIcon;
   L.Icon.Default.prototype.options.iconRetinaUrl = markerIconRetina;
 
@@ -2007,43 +2010,69 @@ function map_function(
   });
 
   let geolocation_cb = function (e) {
+    let route = m.route.get();
+
     //prevent to autoupdate marker
     //if marker was set from user
-    if (status.map_marker_set) return;
-    //default or old value
+
     let latitude = null;
     let longitude = null;
     if (e.coords) {
-      latitude = e.coords.latitude || 0;
-      longitude = e.coords.longitude || 0;
-    } else {
-      if (latitude == null) latitude = 0;
-      if (longitude == null) longitude = 0;
+      latitude = e.coords.latitude || 51.43689;
+      longitude = e.coords.longitude || -0.04395;
     }
 
     if (e == "error") {
-      side_toaster("position not found", 2000);
+      if (latitude == null) latitude = 51.43689;
+      if (longitude == null) longitude = -0.04395;
+
+      if (!once) {
+        side_toaster("position not found", 2000);
+
+        // Set the view only once
+        if (!viewOnly) map.setView([latitude, longitude]);
+        once = true;
+        return;
+      }
     }
 
     if (myMarker == "") {
       // Create the marker only once
       myMarker = L.marker([latitude, longitude])
         .addTo(map)
-        .bindPopup("It's me")
+        .bindPopup("Me")
         .openPopup();
       myMarker._icon.classList.add("myMarker");
       myMarker.options.shadowUrl = null;
 
       if (!once) {
-        // Set the view only once
-        if (!viewOnly || !viewLiveLocation) map.setView([lat, lng]);
-        once = true; // Set 'once' to true after the first execution
+        once = true;
+
+        if (!viewOnly) {
+          map.setView([latitude, longitude]);
+          if (route.startsWith("/map_view")) {
+            setTimeout(() => {
+              status.map_marker_move = false;
+              bottom_bar(
+                "<img src='assets/image/plus.svg'>",
+                "<img src='assets/image/send.svg'>",
+                "<img src='assets/image/minus.svg'>"
+              );
+            }, 1000);
+          }
+        }
       }
     } else {
       // Update the marker's position
-      //do not update if customer marker are set
-      if (status.map_marker_set) return;
-      myMarker.setLatLng([lat, lng]);
+      myMarker.setLatLng([latitude, longitude]);
+      console.log("Hello0000" + route);
+      if (route.startsWith("/map_view")) {
+        bottom_bar(
+          "<img src='assets/image/plus.svg'>",
+          "<img src='assets/image/send.svg'>",
+          "<img src='assets/image/minus.svg'>"
+        );
+      }
     }
   };
 
@@ -2051,17 +2080,12 @@ function map_function(
 
   //set peer marker
   if (lat && lng && viewOnly) {
-    let name = "";
-    try {
-      let messageData = chat_data_history.find((e) => {
-        return String(e.id) === String(messageID);
-      });
-    } catch (e) {}
-
-    peerMarker = L.marker([lat, lng]).addTo(map);
+    peerMarker = L.marker([lat, lng]).addTo(map).bindPopup("*_*").openPopup();
     peerMarker.options.shadowUrl = null;
     peerMarker.options.url = "marker-icon.png";
-    map.setView([lat, lng]);
+    setTimeout(() => {
+      map.setView([lat, lng]);
+    }, 1000);
   }
 
   // Function to update or add markers
@@ -2091,10 +2115,8 @@ function MoveMap(direction) {
   const zoomFactor = Math.pow(2, map.getZoom());
   const step = baseStep / zoomFactor;
 
-  // Aktuelle Mitte der Karte
   let center = map.getCenter();
 
-  // Verschiebung berechnen
   if (direction === "left") {
     center.lng -= step;
   } else if (direction === "right") {
@@ -2108,8 +2130,44 @@ function MoveMap(direction) {
 }
 
 let send_gps_position = () => {
-  let center = map.getCenter();
-  let latlng = { "lat": center.lat, "lng": center.lng };
+  if (myMarker == "") side_toaster("please set your position", 3000);
+
+  if (myMarker == "" || status.map_marker_move) {
+    let center = map.getCenter();
+
+    if (myMarker != "") {
+      myMarker.setLatLng([center.lat, center.lng]);
+      status.map_marker_move = false;
+
+      bottom_bar(
+        "<img src='assets/image/plus.svg'>",
+        "<img src='assets/image/send.svg'>",
+        "<img src='assets/image/minus.svg'>"
+      );
+    } else {
+      myMarker = L.marker([center.lat, center.lng])
+        .addTo(map)
+        .bindPopup("It's me")
+        .openPopup();
+      myMarker._icon.classList.add("myMarker");
+      myMarker.options.shadowUrl = null;
+      status.map_marker_move = false;
+
+      bottom_bar(
+        "<img src='assets/image/plus.svg'>",
+        "<img src='assets/image/send.svg'>",
+        "<img src='assets/image/minus.svg'>"
+      );
+    }
+
+    return;
+  }
+  var latlng = myMarker.getLatLng();
+
+  var lat = latlng.lat;
+  var lng = latlng.lng;
+
+  let latlng = { "lat": lat, "lng": lng };
 
   sendMessage(JSON.stringify(latlng), "gps", undefined, undefined, undefined);
   m.route.set("/chat?id=" + settings.custom_peer_id);
@@ -4045,8 +4103,10 @@ var chat = {
                 type: "text",
 
                 oncreate: (vnode) => {
-                  vnode.dom.focus();
-                  vnode.dom.scrollIntoView();
+                  setTimeout(() => {
+                    vnode.dom.focus();
+                    vnode.dom.scrollIntoView();
+                  }, 1000);
                 },
                 onblur: () => {
                   focus_last_article();
@@ -4357,8 +4417,6 @@ let map_view = {
     return m(
       "div",
       {
-        class: "width-100 height-100",
-
         id: "map-container",
 
         oncreate: (vnode) => {
@@ -4367,20 +4425,19 @@ let map_view = {
             "<img src='assets/image/send.svg'>",
             "<img src='assets/image/minus.svg'>"
           );
-          const params = new URLSearchParams(m.route.get().split("?")[1]);
-          const lat = parseFloat(params.get("lat")) || 0;
-          const lng = parseFloat(params.get("lng")) || 0;
+          let params = new URLSearchParams(m.route.get().split("?")[1]);
+          let lat = parseFloat(params.get("lat")) || 0;
+          let lng = parseFloat(params.get("lng")) || 0;
 
-          const messageId = params.get("messageid") || 0;
-
-          const viewOnly = params.get("viewonly") || false;
+          let viewOnly = params.get("viewonly") || false;
           if (viewOnly == "true") viewOnly = true;
           if (viewOnly == "false") viewOnly = false;
 
-          const viewLiveLocation = params.get("viewLiveLocation") || false;
-
+          let viewLiveLocation = params.get("viewLiveLocation") || false;
           if (viewLiveLocation == "true") viewLiveLocation = true;
           if (viewLiveLocation == "false") viewLiveLocation = false;
+
+          let messageId = params.get("messageid") || 0;
 
           if (viewOnly)
             bottom_bar(
@@ -5023,23 +5080,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         if (route.startsWith("/map_view")) {
           //only map is not in view only mode
           if (!status.map_viewonly) {
-            //after seting customer marker
-            //ready to send message
-            if (!status.map_marker_move) {
-              send_gps_position();
-            } else {
-              //ready to set custome marker
-              let center = map.getCenter();
-              myMarker.setLatLng([center.lat, center.lng]);
-              status.map_marker_move = false;
-              status.map_marker_set = true;
-
-              bottom_bar(
-                "<img src='assets/image/plus.svg'>",
-                "<img src='assets/image/send.svg'>",
-                "<img src='assets/image/minus.svg'>"
-              );
-            }
+            send_gps_position();
           }
         }
 
