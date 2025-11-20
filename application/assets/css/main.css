@@ -70,7 +70,7 @@ body {
   height: 100%;
   width: 100%;
   max-width: 100vw;
-  background: white;
+  background: rgb(8, 0, 0);
   overflow: scroll;
 }
 
@@ -87,7 +87,7 @@ small {
   position: relative;
   height: 100%;
   width: 100%;
-  background: white;
+  background: black;
   background-image: radial-gradient(circle, #e2dddd 10%, transparent 11%);
   background-size: 5px 5px;
   overflow-y: scroll;
@@ -96,6 +96,7 @@ small {
 
 #wrapper {
   overflow: hidden;
+  display: none;
 }
 
 h1 {
@@ -193,6 +194,7 @@ button.audioplayer-button {
   width: 50px;
   border: 0px solid gray;
   padding: 5px;
+  margin-top: 8px;
 }
 
 button.audioplayer-button img {
@@ -570,7 +572,6 @@ canvas {
 
 .page {
   padding: 80px 10px 10px 10px;
-
   position: relative;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -672,6 +673,10 @@ img.myMarker {
   filter: hue-rotate(120deg);
 }
 
+/*/////////////////
+///About page////
+////////////////*/
+
 div#description {
   margin: 50px 0px 50px 0;
 }
@@ -702,6 +707,7 @@ div#bottom-bar {
   height: 45px;
   z-index: 6;
   background: none;
+  display: none;
 }
 
 div#bottom-bar div div.inner {
@@ -771,6 +777,7 @@ div#top-bar {
   height: 40px;
   z-index: 6;
   background: none;
+  display: none;
 }
 
 div#top-bar div.inner {
@@ -847,9 +854,13 @@ div#top-bar #name {
   margin-top: 4px;
 }
 
+/*
+////Chat/////
+*/
+
 article {
   margin: 0 0 5px 0;
-  padding: 3px;
+  padding: 5px;
   width: 100%;
   position: relative;
   max-width: 400px;
@@ -909,55 +920,16 @@ article img {
   width: 100%;
 }
 
-article .message-map {
-  width: 100%;
-  height: 150px;
-  position: relative;
-  background: url("map.png");
-  background-size: cover;
+article button.map-button {
+  width: 50px;
+  border: 0px solid gray;
+  padding: 5px;
+  margin-top: 8px;
 }
 
-.loading-spinner {
-  display: none;
-  position: fixed;
-  width: 80px;
-  height: 80px;
-  top: 50%;
-  left: 50%;
-  margin-left: -40px;
-  margin-top: -40px;
-  z-index: 5000000000000;
-}
-
-.loading-spinner div {
-  box-sizing: border-box;
+article button.map-button img {
   display: block;
-  position: absolute;
-  width: 64px;
-  height: 64px;
-  margin: 8px;
-  border: 8px solid rgb(126, 11, 11);
-  border-radius: 50%;
-  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: rgb(238, 27, 27) transparent transparent transparent;
-}
-.loading-spinner div:nth-child(1) {
-  animation-delay: -0.45s;
-}
-.loading-spinner div:nth-child(2) {
-  animation-delay: -0.3s;
-}
-.loading-spinner div:nth-child(3) {
-  animation-delay: -0.15s;
-}
-
-@keyframes lds-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  width: 40px;
 }
 
 .advanced-settings {
@@ -1018,15 +990,13 @@ article div.message-main:empty {
   display: none;
 }
 
-article.me {
-}
-
 article.me div.message-main {
   background: rgb(45, 100, 208) !important;
   border-radius: 7px;
   padding: 5px 5px 5px 5px;
   color: white;
   width: fit-content;
+  margin-top: 8px;
 }
 
 article.me div.message-head {

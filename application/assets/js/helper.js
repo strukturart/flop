@@ -1,6 +1,7 @@
 "use strict";
 
 import dayjs from "dayjs";
+import JSZip from "jszip";
 import { status, settings } from "../../index.js";
 
 import localforage from "localforage";
@@ -952,7 +953,7 @@ export let downloadFile = function (filename, data, callback) {
   }
 };
 
-export let data_export = function (filename, data, callback) {
+export let data_export_addressbook = function (filename, data, callback) {
   const fn = filename + "-" + dayjs().format("YYYY-MM-DD_HH-mm-ss") + ".json";
   if (status.notKaiOS) {
     const jsonString = JSON.stringify(data, null, 2);
@@ -996,6 +997,86 @@ export let data_export = function (filename, data, callback) {
     request.onerror = function () {
       side_toaster(
         "Unable to download the file, the file probably already exists.",
+        4000
+      );
+    };
+  }
+};
+
+export let data_export = async function (filename, data, callback) {
+  const zip = new JSZip();
+  const media = zip.folder("media");
+
+  // filename JSON
+  const fn = filename + "-" + dayjs().format("YYYY-MM-DD_HH-mm-ss") + ".json";
+  const fnz = filename + "-" + dayjs().format("YYYY-MM-DD_HH-mm-ss") + ".zip";
+
+  // Helper: Base64 → Uint8Array
+  function base64ToUint8(base64) {
+    const binary = atob(base64);
+    const len = binary.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) bytes[i] = binary.charCodeAt(i);
+    return bytes;
+  }
+
+  for (const entry of data) {
+    // AUDIO
+    if (entry.audioBlob instanceof Blob) {
+      media.file(entry.filename, entry.audioBlob); // Blob OK
+      delete entry.audioBlob;
+    }
+
+    // IMAGE
+    if (entry.imageBase64) {
+      let base64 = entry.imageBase64.split(",")[1];
+      let bytes = base64ToUint8(base64);
+      media.file(entry.filename, bytes, { binary: true });
+      delete entry.imageBase64;
+    }
+  }
+
+  // JSON in ZIP
+  zip.file(fn, JSON.stringify(data, null, 2));
+
+  // ZIP erzeugen
+  const blob = await zip.generateAsync({ type: "blob" });
+
+  if (status.notKaiOS) {
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fnz;
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    URL.revokeObjectURL(url);
+
+    if (typeof callback === "function") callback();
+  } else {
+    let sdcard = "";
+
+    try {
+      sdcard = navigator.getDeviceStorage("sdcard");
+    } catch (e) {}
+
+    if ("b2g" in navigator) {
+      try {
+        sdcard = navigator.b2g.getDeviceStorage("sdcard");
+      } catch (e) {}
+    }
+
+    let request = sdcard.addNamed(blob, "downloads/" + fnz);
+    request.onsuccess = function () {
+      side_toaster("zip file downloaded", 2000);
+    };
+
+    request.onerror = function () {
+      side_toaster(
+        "Unable to download the zip, the file probably already exists.",
         4000
       );
     };

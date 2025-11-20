@@ -3,6 +3,7 @@
 import {
   pick_file,
   data_export,
+  data_export_addressbook,
   bottom_bar,
   side_toaster,
   pick_image,
@@ -722,6 +723,7 @@ function setupConnectionEvents(conn) {
             nickname: data.nickname,
             content: "",
             audio: audioBlob,
+            filename: data.filename,
             datetime: data.datetime || new Date(),
             type: data.type,
             from: data.from,
@@ -1144,6 +1146,7 @@ let sendMessage = (
       nickname: settings.nickname,
       content: "",
       audio: msg,
+      filename: messageId + ".mp3",
       datetime: new Date(),
       type: type,
       mimeType: mimeType,
@@ -1161,6 +1164,7 @@ let sendMessage = (
         message = {
           content: "",
           audio: buffer,
+          filename: messageId + ".mp3",
           nickname: settings.nickname,
           type: type,
           mimeType: mimeType,
@@ -2023,8 +2027,8 @@ function map_function(
     }
 
     if (e == "error") {
-      if (latitude == null) latitude = 51.43689;
-      if (longitude == null) longitude = -0.04395;
+      if (!latitude) latitude = 51.43689;
+      if (!longitude) longitude = -0.04395;
 
       if (!once) {
         side_toaster("position not found", 2000);
@@ -2032,11 +2036,12 @@ function map_function(
         // Set the view only once
         if (!viewOnly) map.setView([latitude, longitude]);
         once = true;
-        return;
       }
+      return;
     }
 
     if (myMarker == "") {
+      if (!e.coords) return;
       // Create the marker only once
       myMarker = L.marker([latitude, longitude])
         .addTo(map)
@@ -2065,7 +2070,6 @@ function map_function(
     } else {
       // Update the marker's position
       myMarker.setLatLng([latitude, longitude]);
-      console.log("Hello0000" + route);
       if (route.startsWith("/map_view")) {
         bottom_bar(
           "<img src='assets/image/plus.svg'>",
@@ -2167,7 +2171,7 @@ let send_gps_position = () => {
   var lat = latlng.lat;
   var lng = latlng.lng;
 
-  let latlng = { "lat": lat, "lng": lng };
+  latlng = { "lat": lat, "lng": lng };
 
   sendMessage(JSON.stringify(latlng), "gps", undefined, undefined, undefined);
   m.route.set("/chat?id=" + settings.custom_peer_id);
@@ -2371,142 +2375,6 @@ var about = {
         },
       },
       [
-        m(
-          "button",
-          {
-            class: "item",
-            onclick: () => {
-              m.route.set("/invite");
-            },
-            oncreate: (vnode) => {
-              vnode.dom.focus();
-            },
-          },
-          "Invite and scan"
-        ),
-
-        m(
-          "button",
-          {
-            class: "item",
-            onclick: () => {
-              let prp = prompt("Enter the chat ID");
-              if (prp !== null && prp !== "") {
-                connect_to_peer(prp);
-              } else {
-                m.route.set("/start");
-              }
-            },
-          },
-          "Enter ID"
-        ),
-
-        m(
-          "button",
-          {
-            class: "item",
-            onclick: () => {
-              m.route.set("/settings_page");
-            },
-          },
-          "Settings"
-        ),
-
-        m(
-          "button",
-          {
-            class: "item",
-            onclick: () => {
-              m.route.set("/privacy_policy");
-            },
-          },
-          "Privacy Policy"
-        ),
-
-        m(
-          "button",
-          {
-            class: "item",
-
-            onclick: () => {
-              m.route.set("/about_page");
-            },
-          },
-          "About"
-        ),
-
-        m(
-          "button",
-          {
-            class: "item",
-            onclick: () => {
-              //convert to base64
-              let a = chat_data_history.map((e) => {
-                return Object.assign({}, e, {
-                  audio: e.audio ? arrayBufferToBase64(e.audio) : undefined,
-                });
-              });
-
-              data_export("flop", a, () => {
-                side_toaster("download finished", 3000);
-              });
-            },
-          },
-          "download chat data"
-        ),
-
-        m(
-          "button",
-          {
-            class: "item",
-            onclick: () => {
-              data_export("flop-addressbook", addressbook, () => {
-                side_toaster("download finished", 3000);
-              });
-            },
-          },
-          "download addressbook"
-        ),
-
-        m(
-          "button",
-          {
-            class: "item",
-            onclick: () => {
-              let cb = (e) => {
-                import_addressbook(e.json);
-              };
-              if (status.notKaiOS) {
-                pick_file(cb);
-              } else {
-                m.route.set("/filelist");
-              }
-            },
-          },
-          "import addressbook"
-        ),
-
-        m(
-          "button",
-          {
-            class: "item",
-            oncreate: (vnode) => {
-              vnode.dom.style.display = "none";
-            },
-            onclick: () => {
-              let cb = (e) => {
-                import_chatdata();
-              };
-              if (status.notKaiOS) {
-                pick_file(cb);
-              } else {
-                m.route.set("/filelist");
-              }
-            },
-          },
-          "import chat data"
-        ),
-
         status.addressbook_in_focus !== ""
           ? m(
               "button",
@@ -2544,6 +2412,60 @@ var about = {
               "Delete contact"
             )
           : null,
+
+        m(
+          "button",
+          {
+            class: "item",
+            onclick: () => {
+              m.route.set("/invite");
+            },
+            oncreate: (vnode) => {
+              vnode.dom.focus();
+            },
+          },
+          "Invite and scan"
+        ),
+
+        m(
+          "button",
+          {
+            class: "item",
+            onclick: () => {
+              let prp = prompt("Enter the chat ID");
+              if (prp !== null && prp !== "") {
+                connect_to_peer(prp);
+              } else {
+                m.route.set("/start");
+              }
+            },
+          },
+          "Enter ID"
+        ),
+
+        m(
+          "button",
+          {
+            class: "item",
+
+            onclick: () => {
+              m.route.set("/about_page");
+            },
+          },
+          "About"
+        ),
+
+        m(
+          "button",
+          {
+            class: "item",
+            onclick: () => {
+              m.route.set("/settings_page");
+            },
+          },
+          "Settings"
+        ),
+
         m("div", {
           id: "KaiOSads-Wrapper",
           class: "row",
@@ -2586,58 +2508,6 @@ var about_page = {
           "With flop you can communicate directly with another person/machine (p2p). To do this you need a stable internet connection and you must know the other person's ID. When you start a chat you can share your ID via the options menu."
         ),
 
-        m("div", { id: "description" }, [
-          m("h2", {}, "Icons"),
-
-          m("div", { class: "row  middle-xs" }, [
-            m(
-              "div",
-              { class: "col-xs-2" },
-              m("img", { src: "assets/image/pencil.svg" })
-            ),
-            m("div", { class: "col-xs-9 text-left" }, m("span", "write")),
-          ]),
-
-          m("div", { class: "row  middle-xs" }, [
-            m(
-              "div",
-              { class: "col-xs-2" },
-              m("img", { src: "assets/image/send.svg" })
-            ),
-            m("div", { class: "col-xs-9 text-left" }, m("span", "send")),
-          ]),
-
-          m("div", { class: "row  middle-xs" }, [
-            m(
-              "div",
-              { class: "col-xs-2" },
-              m("img", { src: "assets/image/option.svg" })
-            ),
-            m("div", { class: "col-xs-9 text-left" }, m("span", "option")),
-          ]),
-
-          m("div", { class: "row  middle-xs" }, [
-            m(
-              "div",
-              { class: "col-xs-2" },
-              m("img", { src: "assets/image/record.svg" })
-            ),
-            m(
-              "div",
-              { class: "col-xs-9 text-left" },
-              m("span", "audio message")
-            ),
-          ]),
-
-          m("div", { class: "row middle-xs" }, [
-            m(
-              "div",
-              { class: "col-xs-2" },
-              m("img", { src: "assets/image/record-live.svg" })
-            ),
-            m("div", { class: "col-xs-9 text-left" }, m("span", "recording")),
-          ]),
-        ]),
         m(
           "div",
           { class: "", id: "about-text" },
@@ -2655,9 +2525,46 @@ var about_page = {
             },
           },
           m.trust(
-            "<strong>License</strong><br><br>mithrilJS MIT<br>peerJS MIT<br>flop MIT"
+            "<strong>License</strong><br><br>mithrilJS MIT<br>peerJS MIT<br>flop MIT<br><br>"
           )
         ),
+        m("h2", "privacy policy"),
+        m("div", [
+          m.trust(
+            "<div> <h2 class='item'>flop</h2> uses 2 different servers to connect two chat partners: <strong>0.peerjs.com</strong> and <strong>metered.ca</strong>, both of which are freely available. If you want to change that, you can store your own servers in the settings.<br></div>"
+          ),
+          m.trust(
+            "<div><h2 class='item' tabindex=1>PeerJS</h2>We do not collect or store any information. While you are connected to a PeerJS server, your IP address, randomly-generated client ID, and signalling data are kept in the server's memory. With default settings, the server will remove this information from memory 60 seconds after you stop communicating with the service.<br></div>"
+          ),
+
+          m(
+            "button",
+            {
+              class: "item button-style",
+              onclick: function () {
+                window.open(
+                  "https://www.metered.ca/tools/openrelay/#%EF%B8%8Fsecurity"
+                );
+              },
+              onfocus: () => {
+                bottom_bar("", "", "");
+              },
+            },
+            "Privacy Policy Metered"
+          ),
+          m(
+            "div",
+            {
+              class: "item",
+              onfocus: () => {
+                bottom_bar("", "", "");
+              },
+            },
+            m.trust(
+              "<h2>KaiOSAds</h2> This is a third party service that may collect information used to identify you.<br><br><br>"
+            )
+          ),
+        ]),
       ]
     );
   },
@@ -2702,76 +2609,6 @@ var invite = {
         ]),
       ]
     );
-  },
-};
-
-var privacy_policy = {
-  oninit: () => {
-    key_delay();
-  },
-  onremove: () => {
-    status.viewReady = false;
-  },
-
-  view: function () {
-    return m("div", { class: "page" }, [
-      m(
-        "div",
-        {
-          oncreate: ({ dom }) => {
-            dom.focus();
-            top_bar("", "", "");
-
-            if (status.notKaiOS)
-              top_bar("<img src='assets/image/back.svg'>", "", "");
-          },
-          oninit: () => {
-            bottom_bar("", "", "");
-          },
-          onfocus: () => {
-            bottom_bar("", "", "");
-          },
-        },
-        [
-          m.trust(
-            "<div> <h2 class='item' tabindex=0>flop</h2> uses 2 different servers to connect two chat partners: <strong>0.peerjs.com</strong> and <strong>metered.ca</strong>, both of which are freely available. If you want to change that, you can store your own servers in the settings.<br> The app itself does not store any data, but be careful when exchanging sensitive data as no end-to-end encryption is implemented.</div>"
-          ),
-          m.trust(
-            "<div><h2 class='item' tabindex=1>PeerJS</h2>We do not collect or store any information. While you are connected to a PeerJS server, your IP address, randomly-generated client ID, and signalling data are kept in the server's memory. With default settings, the server will remove this information from memory 60 seconds after you stop communicating with the service.</div>"
-          ),
-
-          m(
-            "button",
-            {
-              class: "item button-style",
-              tabindex: 2,
-              onclick: function () {
-                window.open(
-                  "https://www.metered.ca/tools/openrelay/#%EF%B8%8Fsecurity"
-                );
-              },
-              onfocus: () => {
-                bottom_bar("", "", "");
-              },
-            },
-            "Privacy Policy Metered"
-          ),
-          m(
-            "div",
-            {
-              class: "item",
-              tabindex: 3,
-              onfocus: () => {
-                bottom_bar("", "", "");
-              },
-            },
-            m.trust(
-              "<h2>KaiOSAds</h2> This is a third party service that may collect information used to identify you.<br><br><br>"
-            )
-          ),
-        ]
-      ),
-    ]);
   },
 };
 
@@ -3084,6 +2921,91 @@ var settings_page = {
         m(
           "button",
           {
+            class: "item",
+            onclick: () => {
+              let cb = (e) => {
+                import_addressbook(e.json);
+              };
+              if (status.notKaiOS) {
+                pick_file(cb);
+              } else {
+                m.route.set("/filelist");
+              }
+            },
+          },
+          "import addressbook"
+        ),
+
+        m(
+          "button",
+          {
+            class: "item",
+            onclick: () => {
+              let a = chat_data_history.map((e) => {
+                const copy = { ...e };
+
+                if (e.audio instanceof Blob) {
+                  copy.audio = "media/" + e.filename;
+                  copy.audioBlob = e.audio;
+                }
+                if (e.audio) console.log(typeof e.audio);
+
+                if (
+                  typeof e.image === "string" &&
+                  e.image.startsWith("data:image")
+                ) {
+                  copy.image = "media/" + e.filename;
+                  copy.imageBase64 = e.image;
+                }
+
+                return copy;
+              });
+
+              data_export("flop", a, () => {
+                side_toaster("download finished", 3000);
+              });
+            },
+          },
+          "download chat data"
+        ),
+
+        m(
+          "button",
+          {
+            class: "item",
+            onclick: () => {
+              data_export_addressbook("flop-addressbook", addressbook, () => {
+                side_toaster("download finished", 3000);
+              });
+            },
+          },
+          "download addressbook"
+        ),
+
+        m(
+          "button",
+          {
+            class: "",
+            oncreate: (vnode) => {
+              vnode.dom.style.display = "none";
+            },
+            onclick: () => {
+              let cb = (e) => {
+                import_chatdata();
+              };
+              if (status.notKaiOS) {
+                pick_file(cb);
+              } else {
+                m.route.set("/filelist");
+              }
+            },
+          },
+          "import chat data"
+        ),
+
+        m(
+          "button",
+          {
             class: "item vip-button",
             "data-function": "save-settings",
             onclick: function () {
@@ -3272,12 +3194,17 @@ var intro = {
     return m(
       "div",
       {
-        class: "",
         id: "intro",
         onremove: () => {
           localStorage.setItem("version", status.version);
         },
         oninit: function () {
+          //KaiOS to prevent whitescreen on startup
+          document.querySelector("body").style.background = "white";
+          document.querySelector("html").style.background = "white";
+          document.querySelector("#app").style.background = "white";
+          document.querySelector("#wrapper").style.display = "block";
+
           const protocol = window.location.protocol;
           const host = window.location.host;
           const pathname = window.location.pathname;
@@ -3470,15 +3397,6 @@ var start = {
                                   "&peer=" +
                                   status.current_user_id
                               );
-                              /*
-                              let pid =
-                                document.activeElement.getAttribute(
-                                  "data-client-id"
-                                );
-                              if (pid && pid !== settings.clientID) {
-                                status.current_clientId = pid;
-                              }
-                                */
                             }
                           },
                           onclick: () => {
@@ -4326,9 +4244,13 @@ var chat = {
               : null,
 
             item.type === "gps"
-              ? m("div", {
-                  class: "message-map",
-                })
+              ? m(
+                  "button",
+                  {
+                    class: "map-button",
+                  },
+                  [m("img", { src: "./assets/image/map.svg" })]
+                )
               : null,
 
             item.type === "gps_live"
@@ -4476,7 +4398,6 @@ m.route(root, "/intro", {
   "/scan": scan,
   "/about": about,
   "/about_page": about_page,
-  "/privacy_policy": privacy_policy,
   "/map_view": map_view,
   "/waiting": waiting,
   "/invite": invite,
@@ -4776,7 +4697,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
         if (
           route.startsWith("/chat?") ||
-          m.route.get() == "/settings_page" ||
           m.route.get() == "/about" ||
           route.startsWith("/map_view") ||
           route.startsWith("/waiting") ||
@@ -4786,7 +4706,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
           status.action = "";
         }
 
-        if (m.route.get() == "/settings") {
+        if (m.route.get() == "/settings_page") {
           status.action = "";
           m.route.set("/about");
         }
@@ -4812,7 +4732,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         break;
 
       case "ArrowRight":
-        if (route == "/map_view") {
+        if (route.startsWith("/map_view")) {
           MoveMap("right");
         }
 
@@ -4826,7 +4746,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         break;
 
       case "ArrowLeft":
-        if (route == "/map_view") {
+        if (route.startsWith("/map_view")) {
           MoveMap("left");
         }
 
@@ -4848,7 +4768,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
         break;
       case "ArrowDown":
-        if (route == "/map_view") {
+        if (route.startsWith("/map_view")) {
           MoveMap("down");
         } else {
           nav(+1);
