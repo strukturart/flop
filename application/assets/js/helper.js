@@ -1,6 +1,7 @@
 "use strict";
 
 import dayjs from "dayjs";
+import JSZip from "jszip";
 import { status, settings } from "../../index.js";
 
 import localforage from "localforage";
@@ -996,6 +997,61 @@ export let data_export = function (filename, data, callback) {
     request.onerror = function () {
       side_toaster(
         "Unable to download the file, the file probably already exists.",
+        4000
+      );
+    };
+  }
+};
+
+export let data_export_zip_test = async function (filename, data, callback) {
+  const zip = new JSZip();
+
+  const media = zip.folder("media");
+
+  // Datei im ZIP anlegen
+  const fn = filename + "-" + dayjs().format("YYYY-MM-DD_HH-mm-ss") + ".json";
+
+  zip.file(fn, JSON.stringify(data, null, 2));
+
+  // ZIP als Blob erzeugen
+  const blob = await zip.generateAsync({ type: "blob" });
+  const fnz = filename + "-" + dayjs().format("YYYY-MM-DD_HH-mm-ss") + ".zip";
+
+  if (status.notKaiOS) {
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fnz;
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    URL.revokeObjectURL(url);
+
+    if (typeof callback === "function") callback();
+  } else {
+    let sdcard = "";
+
+    try {
+      sdcard = navigator.getDeviceStorage("sdcard");
+    } catch (e) {}
+
+    if ("b2g" in navigator) {
+      try {
+        sdcard = navigator.b2g.getDeviceStorage("sdcard");
+      } catch (e) {}
+    }
+
+    let request = sdcard.addNamed(blob, "downloads/" + fn);
+    request.onsuccess = function () {
+      side_toaster("zip file downloaded", 2000);
+    };
+
+    request.onerror = function () {
+      side_toaster(
+        "Unable to download the zip, the file probably already exists.",
         4000
       );
     };
