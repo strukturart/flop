@@ -618,6 +618,7 @@ function setupConnectionEvents(conn) {
           nickname: data.nickname,
           content: "",
           datetime: data.datetime || new Date(),
+          payload: data.payload,
           image: data.file,
           filename: data.filename,
           type: data.type,
@@ -633,7 +634,7 @@ function setupConnectionEvents(conn) {
 
       //sanitize text
       if (data.type == "text") {
-        let originalContent = data.content;
+        let originalContent = data.payload.text;
         let sanitizedContent = DOMPurify.sanitize(originalContent);
 
         if (originalContent !== sanitizedContent) {
@@ -648,8 +649,8 @@ function setupConnectionEvents(conn) {
         chat_data.push({
           id: data.id,
           nickname: data.nickname,
-          content: data.content,
           datetime: data.datetime || new Date(),
+          payload: data.payload,
           type: data.type,
           from: data.from,
           to: data.to,
@@ -723,6 +724,8 @@ function setupConnectionEvents(conn) {
             nickname: data.nickname,
             content: "",
             audio: audioBlob,
+            payload: data.payload,
+
             filename: data.filename,
             datetime: data.datetime || new Date(),
             type: data.type,
@@ -745,6 +748,8 @@ function setupConnectionEvents(conn) {
           nickname: data.nickname,
           content: data.content,
           datetime: data.datetime || new Date(),
+          payload: data.payload,
+
           type: data.type,
           gps: data.content,
           from: data.from,
@@ -784,6 +789,8 @@ function setupConnectionEvents(conn) {
             nickname: data.nickname,
             content: data.content,
             datetime: data.datetime || new Date(),
+            payload: data.payload,
+
             type: data.type,
             gps: data.content,
             from: data.from,
@@ -930,6 +937,35 @@ function attemptReconnect() {
   }
 }
 
+//migration new dtat structur
+localforage.getItem("chatData").then((list) => {
+  if (!Array.isArray(list)) list = [];
+
+  let changed = false;
+
+  list = list.map((msg) => {
+    //text
+    if (msg.type === "text" && msg.content && !msg.payload) {
+      msg.payload = { text: msg.content };
+      changed = true;
+    }
+    //image
+    if (msg.type === "image" && msg.content && !msg.payload) {
+      msg.payload = {
+        image: msg.image,
+        filename: msg.filename,
+        mimeType: msg.mimeType,
+      };
+      changed = true;
+    }
+    return msg;
+  });
+
+  if (changed) {
+    localforage.setItem("chatData", list);
+  }
+});
+
 //load chat data
 let chat_data_history = [];
 localforage.getItem("chatData").then((e) => {
@@ -1063,7 +1099,7 @@ let sendMessage = (
       nickname: settings.nickname,
       type: type,
       content: msg,
-      mimeType: "",
+      payload: {},
       from: settings.custom_peer_id,
       to: to,
       id: messageId,
@@ -1078,7 +1114,7 @@ let sendMessage = (
       nickname: settings.nickname,
       type: type,
       content: msg,
-      mimeType: "",
+      payload: {},
       from: settings.custom_peer_id,
       to: to,
       id: messageId,
@@ -1094,6 +1130,7 @@ let sendMessage = (
     message = {
       nickname: settings.nickname,
       type: type,
+      payload: {},
       from: settings.custom_peer_id,
       to: to,
       id: messageId,
@@ -1109,12 +1146,18 @@ let sendMessage = (
     reader.onloadend = () => {
       chat_data.push({
         nickname: settings.nickname,
-        content: "",
         datetime: new Date(),
         image: reader.result,
         filename: msg.filename,
-        type: type,
         mimeType: mimeType,
+
+        payload: {
+          image: reader.result,
+          filename: msg.filename,
+          mimeType: mimeType,
+        },
+
+        type: type,
         from: settings.custom_peer_id,
         to: to,
         id: messageId,
@@ -1128,6 +1171,11 @@ let sendMessage = (
         nickname: settings.nickname,
         type: type,
         mimeType: mimeType,
+        payload: {
+          image: reader.result,
+          filename: msg.filename,
+          mimeType: mimeType,
+        },
         id: messageId,
         datetime: new Date(),
       };
@@ -1144,11 +1192,15 @@ let sendMessage = (
   if (type === "audio") {
     chat_data.push({
       nickname: settings.nickname,
-      content: "",
       audio: msg,
       filename: messageId + ".mp3",
       datetime: new Date(),
       type: type,
+      payload: {
+        audio: msg,
+        filename: messageId + ".mp3",
+        mimeType: mimeType,
+      },
       mimeType: mimeType,
       from: settings.custom_peer_id,
       to: to,
@@ -1162,11 +1214,15 @@ let sendMessage = (
       .arrayBuffer()
       .then((buffer) => {
         message = {
-          content: "",
           audio: buffer,
           filename: messageId + ".mp3",
           nickname: settings.nickname,
           type: type,
+          payload: {
+            audio: buffer,
+            filename: messageId + ".mp3",
+            mimeType: mimeType,
+          },
           mimeType: mimeType,
           id: messageId,
           datetime: new Date(),
@@ -1183,21 +1239,19 @@ let sendMessage = (
     message = {
       nickname: settings.nickname,
       type: type,
-      content: msg,
+      payload: { text: msg },
       mimeType: mimeType,
       id: messageId,
       datetime: new Date(),
     };
     chat_data.push({
       nickname: settings.nickname,
-      content: msg,
+      payload: { text: msg },
       datetime: new Date(),
       type: type,
-      mimeType: mimeType,
       from: settings.custom_peer_id,
       to: to,
       id: messageId,
-      datetime: new Date(),
       pod: false,
     });
 
@@ -1219,6 +1273,10 @@ let sendMessage = (
         datetime: new Date(),
         type: type,
         gps: msg,
+        payload: {
+          lat: "",
+          lng: "",
+        },
         mimeType: mimeType,
         from: settings.custom_peer_id,
         to: to,
@@ -1234,6 +1292,10 @@ let sendMessage = (
       nickname: settings.nickname,
       type: type,
       gps: msg,
+      payload: {
+        lat: "",
+        lng: "",
+      },
       mimeType: mimeType,
       id: messageId,
       datetime: new Date(),
@@ -1250,7 +1312,10 @@ let sendMessage = (
       gps: msg,
       datetime: new Date(),
       type: type,
-      mimeType: mimeType,
+      payload: {
+        lat: "",
+        lng: "",
+      },
       from: settings.custom_peer_id,
       to: to,
       id: messageId,
@@ -1262,7 +1327,10 @@ let sendMessage = (
       gps: msg,
       nickname: settings.nickname,
       type: type,
-      mimeType: mimeType,
+      payload: {
+        lat: "",
+        lng: "",
+      },
       id: messageId,
       datetime: new Date(),
     };
@@ -4231,15 +4299,15 @@ var chat = {
                   {
                     class: "message-main",
                   },
-                  item.content
+                  item.payload.text
                 )
               : null,
 
             item.type === "image"
               ? m("img", {
                   class: "message-media",
-                  src: item.image,
-                  "data-filename": item.filename,
+                  src: item.payload.image,
+                  "data-filename": item.payload.filename,
                 })
               : null,
 
