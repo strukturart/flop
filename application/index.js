@@ -78,6 +78,41 @@ export let status = {
   audioCtx: "",
 };
 
+async function generateCoturnCredentials(url, sharedSecret, ttl = 3600) {
+  if (!sharedSecret) throw new Error("Shared secret missing");
+
+  // TURN expects UNIX time + TTL
+  const timestamp = Math.floor(Date.now() / 1000) + ttl; // +1 Stunde
+
+  // Since you have no username, we use a neutral placeholder
+  const username = `${timestamp}:client`;
+
+  const enc = new TextEncoder();
+  const keyData = enc.encode(sharedSecret);
+  const msgData = enc.encode(username);
+
+  // Import HMAC-SHA1 key
+  const key = await crypto.subtle.importKey(
+    "raw",
+    keyData,
+    { name: "HMAC", hash: "SHA-1" },
+    false,
+    ["sign"]
+  );
+
+  // HMAC-SHA1(username)
+  const signature = await crypto.subtle.sign("HMAC", key, msgData);
+
+  // Convert ArrayBuffer → base64
+  const password = btoa(String.fromCharCode(...new Uint8Array(signature)));
+
+  return {
+    urls: url,
+    username,
+    password,
+  };
+}
+
 //k2 polyfill
 if (!Blob.prototype.arrayBuffer) {
   Blob.prototype.arrayBuffer = function () {
@@ -616,11 +651,8 @@ function setupConnectionEvents(conn) {
         chat_data.push({
           id: data.id,
           nickname: data.nickname,
-          content: "",
           datetime: data.datetime || new Date(),
           payload: data.payload,
-          image: data.file,
-          filename: data.filename,
           type: data.type,
           from: data.from,
           to: data.to,
@@ -664,7 +696,7 @@ function setupConnectionEvents(conn) {
         //Last conversation
 
         if (inAddressbook) {
-          inAddressbook.last_conversation_message = data.content;
+          inAddressbook.last_conversation_message = data.payload.text;
           inAddressbook.last_conversation_datetime = dayjs().format("HH:mm");
 
           localforage
@@ -679,16 +711,15 @@ function setupConnectionEvents(conn) {
       if (data.type === "audio") {
         let audioBlob;
 
-        let mimetype = data.mimeType || "audio/webm";
-        side_toaster(mimetype, 5000);
+        let mimetype = data.payload.mimeType || "audio/webm";
 
-        if (data.audio instanceof Blob) {
-          audioBlob = data.audio;
+        if (data.payload.audio instanceof Blob) {
+          audioBlob = data.payload.audio;
         } else if (
-          data.audio instanceof ArrayBuffer ||
-          data.audio instanceof Uint8Array
+          data.payload.audio instanceof ArrayBuffer ||
+          data.payload.audio instanceof Uint8Array
         ) {
-          audioBlob = new Blob([data.audio], { type: mimetype });
+          audioBlob = new Blob([data.payload.audio], { type: mimetype });
         } else {
           side_toaster("data type not supported", 4000);
           return;
@@ -702,9 +733,9 @@ function setupConnectionEvents(conn) {
 
         audio.onloadedmetadata = async () => {
           if (!isFinite(audio.duration) || audio.duration <= 0) {
-            URL.revokeObjectURL(audioURL);
-            side_toaster("audio file invalid (no duration)", 2000);
-            return;
+            // URL.revokeObjectURL(audioURL);
+            // side_toaster("audio file invalid (no duration)", 2000);
+            // return;
           }
 
           try {
@@ -722,11 +753,7 @@ function setupConnectionEvents(conn) {
           chat_data.push({
             id: data.id,
             nickname: data.nickname,
-            content: "",
-            audio: audioBlob,
             payload: data.payload,
-
-            filename: data.filename,
             datetime: data.datetime || new Date(),
             type: data.type,
             from: data.from,
@@ -746,12 +773,9 @@ function setupConnectionEvents(conn) {
         chat_data.push({
           id: data.id,
           nickname: data.nickname,
-          content: data.content,
-          datetime: data.datetime || new Date(),
           payload: data.payload,
-
+          datetime: data.datetime || new Date(),
           type: data.type,
-          gps: data.content,
           from: data.from,
           to: data.to,
         });
@@ -763,9 +787,8 @@ function setupConnectionEvents(conn) {
         let existingMsg = chat_data.find((item) => item.id === data.id);
 
         if (existingMsg) {
-          existingMsg.content = data.content;
-
           existingMsg.datetime = new Date();
+          existingMsg.payload = data.payload;
 
           //store different users location
           //to create/update markers on map
@@ -773,11 +796,11 @@ function setupConnectionEvents(conn) {
             (item) => item.userId === data.from
           );
           if (e) {
-            e.gps = data.content;
+            e.payload = data.payload;
           } else {
             status.users_geolocation.push({
               userId: data.from,
-              gps: data.content,
+              gps: data.payload,
               id: data.id,
             });
           }
@@ -787,12 +810,9 @@ function setupConnectionEvents(conn) {
           chat_data.push({
             id: data.id,
             nickname: data.nickname,
-            content: data.content,
             datetime: data.datetime || new Date(),
             payload: data.payload,
-
             type: data.type,
-            gps: data.content,
             from: data.from,
             to: data.to,
           });
@@ -892,6 +912,15 @@ async function getIceServers() {
       }
     });
 
+    generateCoturnCredentials(
+      process.env.TURN_URL,
+      process.env.TURN_SHAREDSECRET,
+      7200
+    ).then((e) => {
+      // ice_servers.iceServers.push(e);
+      console.log(ice_servers);
+    });
+
     peer = new Peer(settings.custom_peer_id, {
       debug: 0,
       secure: false,
@@ -913,6 +942,18 @@ async function getIceServers() {
     peer.on("connection", function (conn) {
       console.log("Hello remote " + conn.peer);
       setupConnectionEvents(conn);
+
+      const pc = conn.peerConnection;
+      pc.addEventListener("icecandidate", (event) => {
+        if (event.candidate) {
+          console.log("ICE Candidate:", event.candidate.candidate);
+
+          if (event.candidate.type === "relay") {
+            console.log("TURN wird benutzt!");
+            console.log("Server:", event.candidate.candidate);
+          }
+        }
+      });
     });
 
     peer.on("error", function (err) {
@@ -947,21 +988,78 @@ localforage.getItem("chatData").then((list) => {
     //text
     if (msg.type === "text" && msg.content && !msg.payload) {
       msg.payload = { text: msg.content };
+      delete msg.content;
+      delete msg.mimeType;
+
+      changed = true;
+    }
+
+    if (msg.type === "text" && msg.content && msg.payload) {
+      if (msg.content === msg.payload.text) delete msg.content;
+
       changed = true;
     }
     //image
-    if (msg.type === "image" && msg.content && !msg.payload) {
+    if (msg.type === "image" && msg.image && !msg.payload) {
       msg.payload = {
         image: msg.image,
         filename: msg.filename,
         mimeType: msg.mimeType,
       };
       changed = true;
+      delete msg.image;
+      delete msg.filename;
+      delete msg.mimeType;
+      delete msg.content;
+    }
+
+    if (msg.type === "image" && msg.image && msg.payload) {
+      if (msg.image === msg.payload.image) delete msg.image;
+    }
+
+    //audio
+    if (msg.type === "audio" && msg.audio && !msg.payload) {
+      msg.payload = {
+        audio: msg.audio,
+        filename: msg.filename,
+        mimeType: msg.mimeType,
+      };
+      changed = true;
+      delete msg.content;
+      delete msg.audio;
+      delete msg.filename;
+      delete msg.mimeType;
+    }
+
+    if (msg.type === "audio" && msg.audio && msg.payload) {
+      if (msg.audio === msg.payload.audio) delete msg.audio;
+    }
+
+    //gps
+    if (msg.type === "gps" && msg.gps && !msg.payload) {
+      if (typeof msg.gps === "string") {
+        try {
+          let value = JSON.parse(msg.gps);
+
+          msg.payload = {
+            lat: value.lat,
+            lng: value.lng,
+          };
+          delete msg.content;
+          delete msg.gps;
+          delete msg.mimeType;
+        } catch (err) {
+          console.warn("Konnte nicht parsen:", err);
+        }
+      }
+
+      changed = true;
     }
     return msg;
   });
 
   if (changed) {
+    side_toaster("Data migration", 3000);
     localforage.setItem("chatData", list);
   }
 });
@@ -1098,7 +1196,6 @@ let sendMessage = (
     message = {
       nickname: settings.nickname,
       type: type,
-      content: msg,
       payload: {},
       from: settings.custom_peer_id,
       to: to,
@@ -1113,7 +1210,6 @@ let sendMessage = (
     message = {
       nickname: settings.nickname,
       type: type,
-      content: msg,
       payload: {},
       from: settings.custom_peer_id,
       to: to,
@@ -1147,16 +1243,11 @@ let sendMessage = (
       chat_data.push({
         nickname: settings.nickname,
         datetime: new Date(),
-        image: reader.result,
-        filename: msg.filename,
-        mimeType: mimeType,
-
         payload: {
           image: reader.result,
           filename: msg.filename,
           mimeType: mimeType,
         },
-
         type: type,
         from: settings.custom_peer_id,
         to: to,
@@ -1165,12 +1256,8 @@ let sendMessage = (
       });
 
       message = {
-        file: reader.result,
-        filename: msg.filename,
-        filetype: msg.type,
         nickname: settings.nickname,
         type: type,
-        mimeType: mimeType,
         payload: {
           image: reader.result,
           filename: msg.filename,
@@ -1192,8 +1279,6 @@ let sendMessage = (
   if (type === "audio") {
     chat_data.push({
       nickname: settings.nickname,
-      audio: msg,
-      filename: messageId + ".mp3",
       datetime: new Date(),
       type: type,
       payload: {
@@ -1201,7 +1286,6 @@ let sendMessage = (
         filename: messageId + ".mp3",
         mimeType: mimeType,
       },
-      mimeType: mimeType,
       from: settings.custom_peer_id,
       to: to,
       id: messageId,
@@ -1214,8 +1298,6 @@ let sendMessage = (
       .arrayBuffer()
       .then((buffer) => {
         message = {
-          audio: buffer,
-          filename: messageId + ".mp3",
           nickname: settings.nickname,
           type: type,
           payload: {
@@ -1223,7 +1305,6 @@ let sendMessage = (
             filename: messageId + ".mp3",
             mimeType: mimeType,
           },
-          mimeType: mimeType,
           id: messageId,
           datetime: new Date(),
         };
@@ -1240,7 +1321,6 @@ let sendMessage = (
       nickname: settings.nickname,
       type: type,
       payload: { text: msg },
-      mimeType: mimeType,
       id: messageId,
       datetime: new Date(),
     };
@@ -1267,17 +1347,16 @@ let sendMessage = (
       status.geolocation_autoupdate &&
       messageId != status.geolocation_last_autoupdate_id
     ) {
+      let gps = JSON.parse(msg);
+
       chat_data.push({
         nickname: settings.nickname,
-        content: msg,
         datetime: new Date(),
         type: type,
-        gps: msg,
         payload: {
-          lat: "",
-          lng: "",
+          lat: gps.lat,
+          lng: gps.lng,
         },
-        mimeType: mimeType,
         from: settings.custom_peer_id,
         to: to,
         id: messageId,
@@ -1291,10 +1370,9 @@ let sendMessage = (
       content: msg,
       nickname: settings.nickname,
       type: type,
-      gps: msg,
       payload: {
-        lat: "",
-        lng: "",
+        lat: gps.lat,
+        lng: gps.lng,
       },
       mimeType: mimeType,
       id: messageId,
@@ -1306,15 +1384,14 @@ let sendMessage = (
 
   //gps
   if (type == "gps") {
+    let gps = JSON.parse(msg);
     chat_data.push({
       nickname: settings.nickname,
-      content: msg,
-      gps: msg,
       datetime: new Date(),
       type: type,
       payload: {
-        lat: "",
-        lng: "",
+        lat: gps.lat,
+        lng: gps.lng,
       },
       from: settings.custom_peer_id,
       to: to,
@@ -1323,8 +1400,6 @@ let sendMessage = (
     });
 
     message = {
-      content: msg,
-      gps: msg,
       nickname: settings.nickname,
       type: type,
       payload: {
@@ -1676,10 +1751,49 @@ let connect_to_peer = function (
 
   if (waiting) m.route.set("/waiting");
 
-  getIceServers()
-    .then(() => {
-      if (addressbook.length > 0) {
+  if (addressbook.length > 0) {
+    let inAddressbook = addressbook.find((e) => e.id === id);
+
+    if (inAddressbook) {
+      status.current_user_nickname = inAddressbook.nickname || "";
+      status.current_user_name = inAddressbook.name || "";
+    } else {
+      status.current_user_nickname = nickname;
+    }
+  }
+
+  chat_data = [];
+
+  const openConn = connectedPeersObject.find((c) => c.peer === id && c.open);
+
+  //test connection is open
+  //if not open new connection
+
+  if (open_view) {
+    m.route.set("/chat?id=" + settings.custom_peer_id + "&peer=" + id);
+  }
+
+  if (openConn != undefined && openConn && open_view) {
+    console.log("allready connected");
+    status.current_user_id = id;
+    return;
+  } else {
+    setTimeout(() => {
+      try {
+        console.log("Attempting to connect to peer with ID:", id);
+        let user_meta = {
+          "history_of_ids": status.history_of_ids,
+          "unique_id": settings.unique_id,
+        };
+        let conn = peer.connect(id, {
+          label: "flop",
+          reliable: true,
+          metadata: JSON.stringify(user_meta),
+        });
+
         let inAddressbook = addressbook.find((e) => e.id === id);
+
+        status.current_user_id = id;
 
         if (inAddressbook) {
           status.current_user_nickname = inAddressbook.nickname || "";
@@ -1687,87 +1801,38 @@ let connect_to_peer = function (
         } else {
           status.current_user_nickname = nickname;
         }
-      }
 
-      chat_data = [];
+        if (conn) {
+          const timeout = setTimeout(() => {
+            if (!conn.open) {
+              console.log("can't connect");
+              connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
 
-      const openConn = connectedPeersObject.find(
-        (c) => c.peer === id && c.open
-      );
-
-      //test connection is open
-      //if not open new connection
-
-      if (open_view) {
-        m.route.set("/chat?id=" + settings.custom_peer_id + "&peer=" + id);
-      }
-
-      if (openConn != undefined && openConn && open_view) {
-        console.log("allready connected");
-        status.current_user_id = id;
-        return;
-      } else {
-        setTimeout(() => {
-          try {
-            console.log("Attempting to connect to peer with ID:", id);
-            let user_meta = {
-              "history_of_ids": status.history_of_ids,
-              "unique_id": settings.unique_id,
-            };
-            let conn = peer.connect(id, {
-              label: "flop",
-              reliable: true,
-              metadata: JSON.stringify(user_meta),
-            });
-
-            let inAddressbook = addressbook.find((e) => e.id === id);
-
-            status.current_user_id = id;
-
-            if (inAddressbook) {
-              status.current_user_nickname = inAddressbook.nickname || "";
-              status.current_user_name = inAddressbook.name || "";
-            } else {
-              status.current_user_nickname = nickname;
+              connectedPeersObject = connectedPeersObject.filter(
+                (c) => c.peer !== conn.peer
+              );
             }
+          }, 4500);
 
-            if (conn) {
-              const timeout = setTimeout(() => {
-                if (!conn.open) {
-                  console.log("can't connect");
-                  connectedPeers = connectedPeers.filter(
-                    (c) => c !== conn.peer
-                  );
+          conn.on("open", () => {
+            clearTimeout(timeout);
+            setupConnectionEvents(conn);
+          });
 
-                  connectedPeersObject = connectedPeersObject.filter(
-                    (c) => c.peer !== conn.peer
-                  );
-                }
-              }, 4500);
-
-              conn.on("open", () => {
-                clearTimeout(timeout);
-                setupConnectionEvents(conn);
-              });
-
-              conn.on("error", (err) => {
-                clearTimeout(timeout);
-                console.error(
-                  "Connection error:",
-                  err.type || err.name,
-                  err.message || err
-                );
-              });
-            }
-          } catch (e) {
-            //side_toaster("Connection could not be established", 5000);
-          }
-        }, 8000);
+          conn.on("error", (err) => {
+            clearTimeout(timeout);
+            console.error(
+              "Connection error:",
+              err.type || err.name,
+              err.message || err
+            );
+          });
+        }
+      } catch (e) {
+        //side_toaster("Connection could not be established", 5000);
       }
-    })
-    .catch((e) => {
-      alert(e);
-    });
+    }, 8000);
+  }
 };
 
 //create room
@@ -3009,45 +3074,47 @@ var settings_page = {
           {
             class: "item",
             onclick: () => {
-              let a = chat_data_history.map((e) => {
-                const copy = { ...e };
+              let a = chat_data_history
+                .map((e) => {
+                  const copy = { ...e };
 
-                if (e.audio instanceof Blob) {
-                  copy.audio = "media/" + e.filename;
-                  copy.audioBlob = e.audio;
-                }
-                if (e.audio) console.log(typeof e.audio);
+                  try {
+                    // Audio prüfen
+                    if (e.type == "audio") {
+                      if (e.payload.audio instanceof Blob) {
+                        copy.audioBlob = e.payload.audio;
+                        copy.payload.audio = "media/" + e.payload.filename;
+                      } else {
+                        return null; // Audio existiert, ist aber kein Blob → Objekt verwerfen
+                      }
+                    }
+                  } catch (err) {}
 
-                if (
-                  typeof e.image === "string" &&
-                  e.image.startsWith("data:image")
-                ) {
-                  copy.image = "media/" + e.filename;
-                  copy.imageBase64 = e.image;
-                }
+                  try {
+                    // Image prüfen
+                    if (e.type == "image") {
+                      if (
+                        typeof e.payload.image === "string" &&
+                        e.payload.image.startsWith("data:image")
+                      ) {
+                        copy.imageBase64 = e.payload.image;
+                        copy.payload.image = "media/" + e.payload.filename;
+                      } else {
+                        return null; // Image existiert, ist aber kein Base64 → Objekt verwerfen
+                      }
+                    }
+                  } catch (err) {}
 
-                return copy;
-              });
+                  return copy;
+                })
+                .filter((x) => x !== null); // Alle "null"-Objekte rausfiltern
 
-              data_export("flop", a, () => {
+              data_export("flop", a, addressbook, settings, () => {
                 side_toaster("download finished", 3000);
               });
             },
           },
-          "download chat data"
-        ),
-
-        m(
-          "button",
-          {
-            class: "item",
-            onclick: () => {
-              data_export_addressbook("flop-addressbook", addressbook, () => {
-                side_toaster("download finished", 3000);
-              });
-            },
-          },
-          "download addressbook"
+          "download app data"
         ),
 
         m(
@@ -3482,15 +3549,6 @@ var start = {
                                 "&peer=" +
                                 status.current_user_id
                             );
-                            /*
-                            let pid =
-                              document.activeElement.getAttribute(
-                                "data-client-id"
-                              );
-                            if (pid && pid !== settings.clientID) {
-                              status.current_clientId = pid;
-                            }
-                              */
                           },
                         },
                         [
@@ -3919,6 +3977,8 @@ var chat = {
     load_chat_data(status.current_user_id);
     status.action = "";
 
+    peer_is_online();
+
     //load more content
     //triggerd by scroll
 
@@ -4091,8 +4151,11 @@ var chat = {
                 oncreate: (vnode) => {
                   setTimeout(() => {
                     vnode.dom.focus();
-                    vnode.dom.scrollIntoView();
-                  }, 1000);
+                    vnode.dom.scrollIntoView({
+                      behavior: "smooth",
+                      block: "center",
+                    });
+                  }, 400);
                 },
                 onblur: () => {
                   focus_last_article();
@@ -4106,7 +4169,7 @@ var chat = {
                         "<img src='assets/image/option.svg'>"
                       );
                     if (status.action === "write") write();
-                  }, 1000);
+                  }, 1500);
                 },
                 onfocus: () => {
                   bottom_bar(
@@ -4145,11 +4208,9 @@ var chat = {
         const isLast = currentIndex === chat_data.length - 1;
         const isFirst = index == page_counter ? true : false;
 
-        let ff = { lat: "", lng: "" };
+        let ff = { "lat": "", "lng": "" };
         if (item.type == "gps" || item.type == "gps_live") {
-          let n = JSON.parse(item.gps);
-          ff.lat = n.lat;
-          ff.lng = n.lng;
+          if (item.payload) ff = item.payload;
         }
 
         let nickname = "me";
@@ -4197,8 +4258,8 @@ var chat = {
                 );
               }
               if (item.type == "audio") {
-                if (item.audio instanceof Blob) {
-                  status.audioBlob = item.audio;
+                if (item.payload.audio instanceof Blob) {
+                  status.audioBlob = item.payload.audio;
                   m.route.set("/AudioComponent");
                 } else {
                   side_toaster("audio file not valid", 2000);
@@ -4293,7 +4354,7 @@ var chat = {
                 )
               : null,
 
-            item.type === "text"
+            item.type === "text" && item.payload?.text
               ? m(
                   "div",
                   {
@@ -4701,7 +4762,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
   //////////////
   ////LONGPRESS
   /////////////
-  let users_geolocation_count = 0;
 
   function longpress_action(param) {
     if (status.viewReady) {

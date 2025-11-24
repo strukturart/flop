@@ -33,6 +33,30 @@ In order to establish a connection between 2 peers, you have to know the id of t
 
 <a href="https://flop.chat/">https://flop.chat/</a>
 
+## Data structur
+
+`{
+nickname: string,
+type: string, // "text", "image", "audio", "gps","güs_live","pod","ping"
+payload: object, // varies by message type
+id: string, // uuidv4()
+datetime: Date,
+from?: string, // only stored locally in chat_data
+to?: string, // only stored locally in chat_data
+pod?: boolean // only stored locally in chat_data (always false)
+}`
+
+### ping
+
+`{
+  nickname: string,
+  type: "ping",
+  payload: {},
+  from: string,
+  to: string,
+  id: string
+}`
+
 ### Build your own
 
 Installing the dependencies<br>
