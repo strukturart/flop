@@ -1022,18 +1022,22 @@ export let data_export = async function (filename, data, callback) {
 
   for (const entry of data) {
     // AUDIO
-    if (entry.audioBlob instanceof Blob) {
-      media.file(entry.filename, entry.audioBlob); // Blob OK
-      delete entry.audioBlob;
-    }
+    try {
+      if (entry.audioBlob instanceof Blob) {
+        media.file(entry.payload.filename, entry.audioBlob);
+        delete entry.audioBlob;
+      }
+    } catch (e) {}
 
     // IMAGE
-    if (entry.imageBase64) {
-      let base64 = entry.imageBase64.split(",")[1];
-      let bytes = base64ToUint8(base64);
-      media.file(entry.filename, bytes, { binary: true });
-      delete entry.imageBase64;
-    }
+    try {
+      if (entry.imageBase64) {
+        let base64 = entry.imageBase64.split(",")[1];
+        let bytes = base64ToUint8(base64);
+        media.file(entry.payload.filename, bytes, { binary: true });
+        delete entry.imageBase64;
+      }
+    } catch (e) {}
   }
 
   // JSON in ZIP

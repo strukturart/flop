@@ -14,5 +14,6 @@ build
 application/assets/js/google_cred.js
 application/google_cred.js
 .env
+.secret
 webpage-uploader.sh
 

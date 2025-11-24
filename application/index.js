@@ -616,11 +616,8 @@ function setupConnectionEvents(conn) {
         chat_data.push({
           id: data.id,
           nickname: data.nickname,
-          content: "",
           datetime: data.datetime || new Date(),
           payload: data.payload,
-          image: data.file,
-          filename: data.filename,
           type: data.type,
           from: data.from,
           to: data.to,
@@ -679,16 +676,15 @@ function setupConnectionEvents(conn) {
       if (data.type === "audio") {
         let audioBlob;
 
-        let mimetype = data.mimeType || "audio/webm";
-        side_toaster(mimetype, 5000);
+        let mimetype = data.payload.mimeType || "audio/webm";
 
-        if (data.audio instanceof Blob) {
-          audioBlob = data.audio;
+        if (data.payload.audio instanceof Blob) {
+          audioBlob = data.payload.audio;
         } else if (
-          data.audio instanceof ArrayBuffer ||
-          data.audio instanceof Uint8Array
+          data.payload.audio instanceof ArrayBuffer ||
+          data.payload.audio instanceof Uint8Array
         ) {
-          audioBlob = new Blob([data.audio], { type: mimetype });
+          audioBlob = new Blob([data.payload.audio], { type: mimetype });
         } else {
           side_toaster("data type not supported", 4000);
           return;
@@ -722,11 +718,7 @@ function setupConnectionEvents(conn) {
           chat_data.push({
             id: data.id,
             nickname: data.nickname,
-            content: "",
-            audio: audioBlob,
             payload: data.payload,
-
-            filename: data.filename,
             datetime: data.datetime || new Date(),
             type: data.type,
             from: data.from,
@@ -746,12 +738,9 @@ function setupConnectionEvents(conn) {
         chat_data.push({
           id: data.id,
           nickname: data.nickname,
-          content: data.content,
-          datetime: data.datetime || new Date(),
           payload: data.payload,
-
+          datetime: data.datetime || new Date(),
           type: data.type,
-          gps: data.content,
           from: data.from,
           to: data.to,
         });
@@ -763,9 +752,8 @@ function setupConnectionEvents(conn) {
         let existingMsg = chat_data.find((item) => item.id === data.id);
 
         if (existingMsg) {
-          existingMsg.content = data.content;
-
           existingMsg.datetime = new Date();
+          existingMsg.payload = data.payload;
 
           //store different users location
           //to create/update markers on map
@@ -773,11 +761,11 @@ function setupConnectionEvents(conn) {
             (item) => item.userId === data.from
           );
           if (e) {
-            e.gps = data.content;
+            e.payload = data.payload;
           } else {
             status.users_geolocation.push({
               userId: data.from,
-              gps: data.content,
+              gps: data.payload,
               id: data.id,
             });
           }
@@ -787,12 +775,9 @@ function setupConnectionEvents(conn) {
           chat_data.push({
             id: data.id,
             nickname: data.nickname,
-            content: data.content,
             datetime: data.datetime || new Date(),
             payload: data.payload,
-
             type: data.type,
-            gps: data.content,
             from: data.from,
             to: data.to,
           });
@@ -893,7 +878,7 @@ async function getIceServers() {
     });
 
     peer = new Peer(settings.custom_peer_id, {
-      debug: 0,
+      debug: 2,
       secure: false,
       config: ice_servers,
     });
@@ -921,6 +906,17 @@ async function getIceServers() {
 
       //retry to connect
     });
+
+    const pc = peer._pc;
+    if (!pc) return;
+
+    pc.getStats().then((stats) => {
+      stats.forEach((report) => {
+        if (report.type === "candidate-pair" && report.relayProtocol) {
+          console.log("✅ TURN wurde tatsächlich genutzt:", report);
+        }
+      });
+    });
   } catch (error) {
     side_toaster("The connection server is not reachable " + error, 6000);
   }
@@ -947,21 +943,78 @@ localforage.getItem("chatData").then((list) => {
     //text
     if (msg.type === "text" && msg.content && !msg.payload) {
       msg.payload = { text: msg.content };
+      delete msg.content;
+      delete msg.mimeType;
+
+      changed = true;
+    }
+
+    if (msg.type === "text" && msg.content && msg.payload) {
+      if (msg.content === msg.payload.text) delete msg.content;
+
       changed = true;
     }
     //image
-    if (msg.type === "image" && msg.content && !msg.payload) {
+    if (msg.type === "image" && msg.image && !msg.payload) {
       msg.payload = {
         image: msg.image,
         filename: msg.filename,
         mimeType: msg.mimeType,
       };
       changed = true;
+      delete msg.image;
+      delete msg.filename;
+      delete msg.mimeType;
+      delete msg.content;
+    }
+
+    if (msg.type === "image" && msg.image && msg.payload) {
+      if (msg.image === msg.payload.image) delete msg.image;
+    }
+
+    //audio
+    if (msg.type === "audio" && msg.audio && !msg.payload) {
+      msg.payload = {
+        audio: msg.audio,
+        filename: msg.filename,
+        mimeType: msg.mimeType,
+      };
+      changed = true;
+      delete msg.content;
+      delete msg.audio;
+      delete msg.filename;
+      delete msg.mimeType;
+    }
+
+    if (msg.type === "audio" && msg.audio && msg.payload) {
+      if (msg.audio === msg.payload.audio) delete msg.audio;
+    }
+
+    //gps
+    if (msg.type === "gps" && msg.gps && !msg.payload) {
+      if (typeof msg.gps === "string") {
+        try {
+          let value = JSON.parse(msg.gps);
+
+          msg.payload = {
+            lat: value.lat,
+            lng: value.lng,
+          };
+          delete msg.content;
+          delete msg.gps;
+          delete msg.mimeType;
+        } catch (err) {
+          console.warn("Konnte nicht parsen:", err);
+        }
+      }
+
+      changed = true;
     }
     return msg;
   });
 
   if (changed) {
+    side_toaster("Data migration", 3000);
     localforage.setItem("chatData", list);
   }
 });
@@ -1098,7 +1151,6 @@ let sendMessage = (
     message = {
       nickname: settings.nickname,
       type: type,
-      content: msg,
       payload: {},
       from: settings.custom_peer_id,
       to: to,
@@ -1113,7 +1165,6 @@ let sendMessage = (
     message = {
       nickname: settings.nickname,
       type: type,
-      content: msg,
       payload: {},
       from: settings.custom_peer_id,
       to: to,
@@ -1147,16 +1198,11 @@ let sendMessage = (
       chat_data.push({
         nickname: settings.nickname,
         datetime: new Date(),
-        image: reader.result,
-        filename: msg.filename,
-        mimeType: mimeType,
-
         payload: {
           image: reader.result,
           filename: msg.filename,
           mimeType: mimeType,
         },
-
         type: type,
         from: settings.custom_peer_id,
         to: to,
@@ -1165,12 +1211,8 @@ let sendMessage = (
       });
 
       message = {
-        file: reader.result,
-        filename: msg.filename,
-        filetype: msg.type,
         nickname: settings.nickname,
         type: type,
-        mimeType: mimeType,
         payload: {
           image: reader.result,
           filename: msg.filename,
@@ -1192,7 +1234,6 @@ let sendMessage = (
   if (type === "audio") {
     chat_data.push({
       nickname: settings.nickname,
-      audio: msg,
       filename: messageId + ".mp3",
       datetime: new Date(),
       type: type,
@@ -1201,7 +1242,6 @@ let sendMessage = (
         filename: messageId + ".mp3",
         mimeType: mimeType,
       },
-      mimeType: mimeType,
       from: settings.custom_peer_id,
       to: to,
       id: messageId,
@@ -1214,7 +1254,6 @@ let sendMessage = (
       .arrayBuffer()
       .then((buffer) => {
         message = {
-          audio: buffer,
           filename: messageId + ".mp3",
           nickname: settings.nickname,
           type: type,
@@ -1240,7 +1279,6 @@ let sendMessage = (
       nickname: settings.nickname,
       type: type,
       payload: { text: msg },
-      mimeType: mimeType,
       id: messageId,
       datetime: new Date(),
     };
@@ -1267,17 +1305,16 @@ let sendMessage = (
       status.geolocation_autoupdate &&
       messageId != status.geolocation_last_autoupdate_id
     ) {
+      let gps = JSON.parse(msg);
+
       chat_data.push({
         nickname: settings.nickname,
-        content: msg,
         datetime: new Date(),
         type: type,
-        gps: msg,
         payload: {
-          lat: "",
-          lng: "",
+          lat: gps.lat,
+          lng: gps.lng,
         },
-        mimeType: mimeType,
         from: settings.custom_peer_id,
         to: to,
         id: messageId,
@@ -1291,10 +1328,9 @@ let sendMessage = (
       content: msg,
       nickname: settings.nickname,
       type: type,
-      gps: msg,
       payload: {
-        lat: "",
-        lng: "",
+        lat: gps.lat,
+        lng: gps.lng,
       },
       mimeType: mimeType,
       id: messageId,
@@ -1306,15 +1342,14 @@ let sendMessage = (
 
   //gps
   if (type == "gps") {
+    let gps = JSON.parse(msg);
     chat_data.push({
       nickname: settings.nickname,
-      content: msg,
-      gps: msg,
       datetime: new Date(),
       type: type,
       payload: {
-        lat: "",
-        lng: "",
+        lat: gps.lat,
+        lng: gps.lng,
       },
       from: settings.custom_peer_id,
       to: to,
@@ -1323,8 +1358,6 @@ let sendMessage = (
     });
 
     message = {
-      content: msg,
-      gps: msg,
       nickname: settings.nickname,
       type: type,
       payload: {
@@ -3012,19 +3045,24 @@ var settings_page = {
               let a = chat_data_history.map((e) => {
                 const copy = { ...e };
 
-                if (e.audio instanceof Blob) {
-                  copy.audio = "media/" + e.filename;
-                  copy.audioBlob = e.audio;
-                }
-                if (e.audio) console.log(typeof e.audio);
+                try {
+                  if (e.payload.audio instanceof Blob) {
+                    copy.audioBlob = e.payload.audio;
 
-                if (
-                  typeof e.image === "string" &&
-                  e.image.startsWith("data:image")
-                ) {
-                  copy.image = "media/" + e.filename;
-                  copy.imageBase64 = e.image;
-                }
+                    copy.payload.audio = "media/" + e.payload.filename;
+                  }
+                } catch (e) {}
+
+                try {
+                  if (
+                    typeof e.image === "string" &&
+                    e.payload.image.startsWith("data:image")
+                  ) {
+                    copy.imageBase64 = e.payload.image;
+
+                    copy.payload.image = "media/" + e.payload.filename;
+                  }
+                } catch (e) {}
 
                 return copy;
               });
@@ -4092,7 +4130,7 @@ var chat = {
                   setTimeout(() => {
                     vnode.dom.focus();
                     vnode.dom.scrollIntoView();
-                  }, 1000);
+                  }, 1500);
                 },
                 onblur: () => {
                   focus_last_article();
@@ -4145,11 +4183,9 @@ var chat = {
         const isLast = currentIndex === chat_data.length - 1;
         const isFirst = index == page_counter ? true : false;
 
-        let ff = { lat: "", lng: "" };
+        let ff = { "lat": "", "lng": "" };
         if (item.type == "gps" || item.type == "gps_live") {
-          let n = JSON.parse(item.gps);
-          ff.lat = n.lat;
-          ff.lng = n.lng;
+          if (item.payload) ff = item.payload;
         }
 
         let nickname = "me";
@@ -4197,8 +4233,8 @@ var chat = {
                 );
               }
               if (item.type == "audio") {
-                if (item.audio instanceof Blob) {
-                  status.audioBlob = item.audio;
+                if (item.payload.audio instanceof Blob) {
+                  status.audioBlob = item.payload.audio;
                   m.route.set("/AudioComponent");
                 } else {
                   side_toaster("audio file not valid", 2000);
@@ -4293,7 +4329,7 @@ var chat = {
                 )
               : null,
 
-            item.type === "text"
+            item.type === "text" && item.payload?.text
               ? m(
                   "div",
                   {
