@@ -1003,13 +1003,22 @@ export let data_export_addressbook = function (filename, data, callback) {
   }
 };
 
-export let data_export = async function (filename, data, callback) {
+export let data_export = async function (
+  filename,
+  data,
+  addressbook,
+  settings,
+  callback
+) {
   const zip = new JSZip();
   const media = zip.folder("media");
 
   // filename JSON
   const fn = filename + "-" + dayjs().format("YYYY-MM-DD_HH-mm-ss") + ".json";
   const fnz = filename + "-" + dayjs().format("YYYY-MM-DD_HH-mm-ss") + ".zip";
+
+  const addressbook_file = "flop-addressbook.json";
+  const settings_file = "flop-settings.json";
 
   // Helper: Base64 → Uint8Array
   function base64ToUint8(base64) {
@@ -1022,19 +1031,26 @@ export let data_export = async function (filename, data, callback) {
 
   for (const entry of data) {
     // AUDIO
-    if (entry.audioBlob instanceof Blob) {
-      media.file(entry.filename, entry.audioBlob); // Blob OK
-      delete entry.audioBlob;
-    }
+    try {
+      if (entry.audioBlob instanceof Blob) {
+        media.file(entry.payload.filename, entry.audioBlob);
+        delete entry.audioBlob;
+      }
+    } catch (e) {}
 
     // IMAGE
-    if (entry.imageBase64) {
-      let base64 = entry.imageBase64.split(",")[1];
-      let bytes = base64ToUint8(base64);
-      media.file(entry.filename, bytes, { binary: true });
-      delete entry.imageBase64;
-    }
+    try {
+      if (entry.imageBase64) {
+        let base64 = entry.imageBase64.split(",")[1];
+        let bytes = base64ToUint8(base64);
+        media.file(entry.payload.filename, bytes, { binary: true });
+        delete entry.imageBase64;
+      }
+    } catch (e) {}
   }
+  zip.file(settings_file, JSON.stringify(settings, null, 2));
+
+  zip.file(addressbook_file, JSON.stringify(addressbook, null, 2));
 
   // JSON in ZIP
   zip.file(fn, JSON.stringify(data, null, 2));
