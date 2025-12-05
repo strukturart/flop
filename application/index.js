@@ -3,7 +3,6 @@
 import {
   pick_file,
   data_export,
-  data_export_addressbook,
   bottom_bar,
   side_toaster,
   pick_image,
@@ -62,6 +61,7 @@ export let status = {
   geolocation_autoupdate_id: "",
   geolocation_last_autoupdate_id: null,
   geolocation_onTimeRequest: false,
+  gps_live_receiver: [],
   debug: false,
   viewReady: false,
   groupchat: false,
@@ -76,6 +76,7 @@ export let status = {
   test: false,
   kaiosversion: "unknow",
   audioCtx: "",
+  communicationRequest: [],
 };
 
 async function generateCoturnCredentials(url, sharedSecret, ttl = 3600) {
@@ -114,6 +115,7 @@ async function generateCoturnCredentials(url, sharedSecret, ttl = 3600) {
 }
 
 //k2 polyfill
+/*
 if (!Blob.prototype.arrayBuffer) {
   Blob.prototype.arrayBuffer = function () {
     return new Promise((resolve, reject) => {
@@ -124,6 +126,7 @@ if (!Blob.prototype.arrayBuffer) {
     });
   };
 }
+  */
 
 //test os version
 if (navigator.mozApps) {
@@ -452,7 +455,6 @@ function setupConnectionEvents(conn) {
         //Que
         console.log("connected " + conn.peer);
         peer_is_online();
-        console.log(connectedPeers);
 
         try {
           messageQueue();
@@ -528,7 +530,7 @@ function setupConnectionEvents(conn) {
     try {
       if (data.type === "ping") {
         const now = Date.now();
-        if (now - status.lastPingSentAt >= 20000) {
+        if (now - status.lastPingSentAt >= 10000) {
           sendMessage("", "ping", "", data.from, undefined);
           status.lastPingSentAt = now;
         }
@@ -613,6 +615,7 @@ function setupConnectionEvents(conn) {
       //is in addressbook - notify
       let inAddressbook = addressbook.find((e) => e.id === data.from);
       if (!inAddressbook) {
+        if (status.communicationRequest.indexOf(data.from) > 0) return;
         let ask = confirm("Do you want to chat with " + data.nickname + "?");
         if (ask) {
           status.current_user_id = data.from;
@@ -630,6 +633,8 @@ function setupConnectionEvents(conn) {
             }, 1000);
           }
         } else {
+          //prevent to ask multiple times in the session
+          status.communicationRequest.push(data.from);
           conn.close();
         }
       } else {
@@ -657,7 +662,7 @@ function setupConnectionEvents(conn) {
           from: data.from,
           to: data.to,
         });
-
+        //send pod
         sendMessage(data.id, "pod", "", data.from, data.id);
 
         focus_last_article();
@@ -687,7 +692,7 @@ function setupConnectionEvents(conn) {
           from: data.from,
           to: data.to,
         });
-
+        //send pod
         sendMessage(data.id, "pod", "", data.from, data.id);
 
         focus_last_article();
@@ -711,19 +716,41 @@ function setupConnectionEvents(conn) {
       if (data.type === "audio") {
         let audioBlob;
 
-        let mimetype = data.payload.mimeType || "audio/webm";
+        const mimetype = data.payload.mimeType || "audio/webm";
 
-        if (data.payload.audio instanceof Blob) {
-          audioBlob = data.payload.audio;
+        const audioData = data.payload.audio;
+
+        // ---- 1) Already a Blob ----
+        if (audioData instanceof Blob) {
+          console.log("BLOB");
+          audioBlob = audioData;
+
+          // ---- 2) ArrayBuffer or TypedArray ----
         } else if (
-          data.payload.audio instanceof ArrayBuffer ||
-          data.payload.audio instanceof Uint8Array
+          audioData instanceof ArrayBuffer ||
+          ArrayBuffer.isView(audioData)
         ) {
-          audioBlob = new Blob([data.payload.audio], { type: mimetype });
+          console.log("BUFFER");
+
+          audioBlob = new Blob([audioData]);
+        } else if (audioData && typeof audioData === "object") {
+          console.log("OBJECT");
+
+          try {
+            const typed = new Uint8Array(Object.values(audioData));
+            audioBlob = new Blob([typed.buffer], { type: mimetype });
+          } catch (e) {
+            console.error("Failed decoding plain object audio:", e);
+            side_toaster("audio decode failed", 4000);
+            return;
+          }
+
+          // ---- 4) Unknown format ----
         } else {
           side_toaster("data type not supported", 4000);
           return;
         }
+
         //test is audio file is valid
         //store
         const audioURL = URL.createObjectURL(audioBlob);
@@ -732,23 +759,20 @@ function setupConnectionEvents(conn) {
         audio.src = audioURL;
 
         audio.onloadedmetadata = async () => {
-          if (!isFinite(audio.duration) || audio.duration <= 0) {
-            // URL.revokeObjectURL(audioURL);
-            // side_toaster("audio file invalid (no duration)", 2000);
-            // return;
-          }
-
           try {
             await audio.play();
             audio.pause();
             audio.currentTime = 0;
           } catch (err) {
-            side_toaster("audio not playable: " + err.message, 2000);
+            side_toaster("audio not playable", 2000);
+            console.log(err.message);
             URL.revokeObjectURL(audioURL);
-            return;
+            //  return;
           }
 
           URL.revokeObjectURL(audioURL);
+          //store blob
+          data.payload.audio = audioBlob;
 
           chat_data.push({
             id: data.id,
@@ -759,7 +783,7 @@ function setupConnectionEvents(conn) {
             from: data.from,
             to: data.to,
           });
-
+          //send pod
           sendMessage(data.id, "pod", "", data.from, data.id);
         };
 
@@ -768,6 +792,8 @@ function setupConnectionEvents(conn) {
           side_toaster("audio file not valid (decode error)", 2000);
         };
       }
+
+      //GPS
 
       if (data.type == "gps") {
         chat_data.push({
@@ -779,31 +805,16 @@ function setupConnectionEvents(conn) {
           from: data.from,
           to: data.to,
         });
-
+        //send pod
         sendMessage(data.id, "pod", "", data.from, data.id);
       }
-      //to do not stable
+      //update gps_live object
       if (data.type == "gps_live") {
         let existingMsg = chat_data.find((item) => item.id === data.id);
 
         if (existingMsg) {
           existingMsg.datetime = new Date();
           existingMsg.payload = data.payload;
-
-          //store different users location
-          //to create/update markers on map
-          let e = status.users_geolocation.find(
-            (item) => item.userId === data.from
-          );
-          if (e) {
-            e.payload = data.payload;
-          } else {
-            status.users_geolocation.push({
-              userId: data.from,
-              gps: data.payload,
-              id: data.id,
-            });
-          }
         } else {
           // Push a new GPS-Live message if not found
 
@@ -957,7 +968,7 @@ async function getIceServers() {
     });
 
     peer.on("error", function (err) {
-      console.error("Peer error:", err.type, err.message || err);
+      //console.error("Peer error:", err.type, err.message || err);
       attemptReconnect();
 
       //retry to connect
@@ -978,7 +989,7 @@ function attemptReconnect() {
   }
 }
 
-//migration new dtat structur
+//migration new data structur
 localforage.getItem("chatData").then((list) => {
   if (!Array.isArray(list)) list = [];
 
@@ -1217,7 +1228,6 @@ let sendMessage = (
     };
 
     sendMessageToAll(message);
-    console.log("send pod");
   }
 
   // If the chat partner is currently typing, send a "typing" message to  peer
@@ -1294,25 +1304,26 @@ let sendMessage = (
 
     focus_last_article();
 
-    msg
-      .arrayBuffer()
-      .then((buffer) => {
-        message = {
-          nickname: settings.nickname,
-          type: type,
-          payload: {
-            audio: buffer,
-            filename: messageId + ".mp3",
-            mimeType: mimeType,
-          },
-          id: messageId,
-          datetime: new Date(),
-        };
-        sendMessageToAll(message);
-      })
-      .catch((error) => {
-        console.error("Error converting Blob to ArrayBuffer:", error);
-      });
+    const reader = new FileReader();
+    reader.onload = () => {
+      const arrayBuffer = reader.result;
+
+      message = {
+        nickname: settings.nickname,
+        type: type,
+        payload: {
+          audio: arrayBuffer,
+          filename: messageId + ".mp3",
+          mimeType: mimeType,
+        },
+        id: messageId,
+        datetime: new Date(),
+      };
+      console.log(message);
+      sendMessageToAll(message);
+    };
+
+    reader.readAsArrayBuffer(msg);
   }
 
   //text
@@ -1367,14 +1378,12 @@ let sendMessage = (
     }
 
     message = {
-      content: msg,
       nickname: settings.nickname,
       type: type,
       payload: {
         lat: gps.lat,
         lng: gps.lng,
       },
-      mimeType: mimeType,
       id: messageId,
       datetime: new Date(),
     };
@@ -1385,6 +1394,7 @@ let sendMessage = (
   //gps
   if (type == "gps") {
     let gps = JSON.parse(msg);
+
     chat_data.push({
       nickname: settings.nickname,
       datetime: new Date(),
@@ -1403,14 +1413,12 @@ let sendMessage = (
       nickname: settings.nickname,
       type: type,
       payload: {
-        lat: "",
-        lng: "",
+        lat: gps.lat,
+        lng: gps.lng,
       },
       id: messageId,
       datetime: new Date(),
     };
-
-    status.geolocation_onTimeRequest = false;
 
     sendMessageToAll(message);
   }
@@ -1812,7 +1820,7 @@ let connect_to_peer = function (
                 (c) => c.peer !== conn.peer
               );
             }
-          }, 4500);
+          }, 5500);
 
           conn.on("open", () => {
             clearTimeout(timeout);
@@ -1831,7 +1839,7 @@ let connect_to_peer = function (
       } catch (e) {
         //side_toaster("Connection could not be established", 5000);
       }
-    }, 8000);
+    }, 7000);
   }
 };
 
@@ -1856,7 +1864,7 @@ let only_once = false;
 let handleImage = function (t) {
   if (only_once) return false;
   m.route.set("/chat?id=" + settings.custom_peer);
-  if (t != "") sendMessage(t, "image", undefined, undefined, undefined);
+  if (t != "") sendMessage(t, "image", t.filetype, undefined, undefined);
 
   status.action = "";
   only_once = true;
@@ -2038,17 +2046,19 @@ async function deleteChatDataByUser(id) {
 //callback geolocation
 //live location
 let geolocation_callback = function (e) {
-  if (status.geolocation_autoupdate) {
+  if (status.gps_live_receiver.length > 0) {
     if (e.coords) {
       let latlng = { "lat": e.coords.latitude, "lng": e.coords.longitude };
 
-      sendMessage(
-        JSON.stringify(latlng),
-        "gps_live",
-        undefined,
-        undefined,
-        status.geolocation_autoupdate_id
-      );
+      status.gps_live_receiver.forEach((e) => {
+        sendMessage(
+          JSON.stringify(latlng),
+          "gps_live",
+          undefined,
+          e,
+          status.geolocation_autoupdate_id
+        );
+      });
     }
   }
 };
@@ -2222,7 +2232,7 @@ function map_function(
     peerMarker.options.url = "marker-icon.png";
     setTimeout(() => {
       map.setView([lat, lng]);
-    }, 1000);
+    }, 1200);
   }
 
   // Function to update or add markers
@@ -2305,6 +2315,8 @@ let send_gps_position = () => {
   var lng = latlng.lng;
 
   latlng = { "lat": lat, "lng": lng };
+
+  console.log("position" + JSON.stringify(latlng));
 
   sendMessage(JSON.stringify(latlng), "gps", undefined, undefined, undefined);
   m.route.set("/chat?id=" + settings.custom_peer_id);
@@ -3227,7 +3239,6 @@ var options = {
             },
 
             onclick: function () {
-              status.geolocation_onTimeRequest = true;
               m.route.set(
                 "/map_view?lat=" + 0 + "&lng=" + 0 + "&viewonly=false"
               );
@@ -3255,15 +3266,24 @@ var options = {
             },
 
             onclick: function () {
-              if (status.geolocation_autoupdate) {
+              //store receiver id in a list
+              //remove id from list
+
+              if (status.gps_live_receiver.includes(status.current_user_id)) {
+                function removeItem(array, itemToRemove) {
+                  return array.filter((item) => item !== itemToRemove);
+                }
                 //stop gps live
-                status.geolocation_autoupdate = false;
                 status.geolocation_autoupdate_id = "";
                 m.route.set("/chat?id=" + settings.custom_peer);
+                //remove from sender list
+                removeItem(status.gps_live_receiver, status.current_user_id);
               } else {
                 //start gps live
                 geolocation(geolocation_callback);
-                status.geolocation_autoupdate = true;
+                //add to user list
+                status.gps_live_receiver.push(status.current_user_id);
+
                 status.geolocation_autoupdate_id = uuidv4(16);
                 m.route.set("/chat?id=" + settings.custom_peer);
               }
@@ -4149,12 +4169,23 @@ var chat = {
                 type: "text",
 
                 oncreate: (vnode) => {
-                  setTimeout(() => {
+                  setTimeout(function () {
+                    if (!vnode.dom) return;
+
                     vnode.dom.focus();
-                    vnode.dom.scrollIntoView({
-                      behavior: "smooth",
-                      block: "center",
-                    });
+
+                    if (status.kaiosversion === "k2") {
+                      vnode.dom.scrollIntoView(true);
+                    } else {
+                      try {
+                        vnode.dom.scrollIntoView({
+                          behavior: "smooth",
+                          block: "center",
+                        });
+                      } catch (e) {
+                        vnode.dom.scrollIntoView(true);
+                      }
+                    }
                   }, 400);
                 },
                 onblur: () => {
@@ -4315,7 +4346,7 @@ var chat = {
 
               if (item.type == "audio") {
                 status.current_article_type = "audio";
-                status.audioBlob = item.audio;
+                status.audioBlob = item.payload.audio;
 
                 if (status.notKaiOS) {
                   bottom_bar(
@@ -4364,7 +4395,7 @@ var chat = {
                 )
               : null,
 
-            item.type === "image"
+            item.type === "image" && item?.payload?.image
               ? m("img", {
                   class: "message-media",
                   src: item.payload.image,
@@ -4388,7 +4419,7 @@ var chat = {
                 })
               : null,
 
-            item.type === "audio"
+            item.type === "audio" && item?.payload?.audio
               ? m(
                   "button",
                   {

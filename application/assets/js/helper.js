@@ -1181,6 +1181,7 @@ export function createAudioRecorder() {
   let stream = null;
   let audioContext = null;
   let analyser = null;
+  let mimeType = null;
 
   async function init() {
     try {
@@ -1195,7 +1196,7 @@ export function createAudioRecorder() {
       analyser = audioContext.createAnalyser();
       analyser.fftSize = 2048;
 
-      const mimeType = getSupportedAudioMimeForRecorder();
+      mimeType = getSupportedAudioMimeForRecorder();
       console.log(mimeType);
 
       const source = audioContext.createMediaStreamSource(stream);
@@ -1236,7 +1237,7 @@ export function createAudioRecorder() {
           type: mediaRecorder.mimeType,
         });
         cleanup();
-        resolve({ audioBlob });
+        resolve({ audioBlob, mimeType });
       };
 
       mediaRecorder.stop();
@@ -1295,4 +1296,63 @@ export function dataURLtoBlob(dataURL) {
     u8arr[i] = binary.charCodeAt(i);
   }
   return new Blob([u8arr], { type: mime });
+}
+
+export async function toAudioBlob(input, mime = "audio/webm") {
+  try {
+    // --- 1) Already Blob ---
+    if (input instanceof Blob) {
+      return input;
+    }
+
+    // --- 2) ArrayBuffer or TypedArray ---
+    if (input instanceof ArrayBuffer || ArrayBuffer.isView(input)) {
+      const buf =
+        input instanceof ArrayBuffer
+          ? input
+          : input.buffer.slice(
+              input.byteOffset,
+              input.byteOffset + input.byteLength
+            );
+
+      return new Blob([buf], { type: mime });
+    }
+
+    // --- 3) Plain object {0:...,1:...} or array [..] ---
+    if (typeof input === "object") {
+      const values = Array.isArray(input) ? input : Object.values(input);
+
+      const typed = new Uint8Array(values);
+      return new Blob([typed.buffer], { type: mime });
+    }
+
+    // --- 4) Base64 string ---
+    if (typeof input === "string" && input.match(/^[A-Za-z0-9+/=\n\r]+$/)) {
+      const binary = atob(input);
+      const len = binary.length;
+      const buf = new Uint8Array(len);
+
+      for (let i = 0; i < len; i++) buf[i] = binary.charCodeAt(i);
+
+      return new Blob([buf.buffer], { type: mime });
+    }
+
+    // --- 5) Hex string ---
+    if (typeof input === "string" && input.match(/^[0-9a-fA-F]+$/)) {
+      const hex = input;
+      const len = hex.length / 2;
+      const buf = new Uint8Array(len);
+
+      for (let i = 0; i < len; i++) {
+        buf[i] = parseInt(hex.substr(i * 2, 2), 16);
+      }
+
+      return new Blob([buf.buffer], { type: mime });
+    }
+
+    throw new Error("unsupported format");
+  } catch (err) {
+    console.error("Blob decoding failed:", err);
+    return null;
+  }
 }

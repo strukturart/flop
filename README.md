@@ -33,21 +33,61 @@ In order to establish a connection between 2 peers, you have to know the id of t
 
 <a href="https://flop.chat/">https://flop.chat/</a>
 
-## Data structur
+## Data objects
 
-````javascript
+## User profile
+
+### `settings.unique_id`
+
+- Generated **once during installation** of the app.
+- Serves as a **persistent, internal user ID**.
+- Used for internal logic.
+- **Cannot be changed** via the user interface.
+- Typically generated as: `flop-<uuid>`.
+
+### `settings.custom_peer_id`
+
+- Separately generated ID for **identification on the PeerJS server**.
+- Used for **signaling and establishing connections between peers**.
+- Can be changed by the user, e.g., to **prevent spam through identifiable IDs**.
+- Typically generated as: `flop-<uuid>`.
+
+### `nickname`
+
+- The **nickname** is a human-readable identifier for the user.
+- It is used to generate the user's **profile icon**, ensuring a visually identifiable representation.
+- The nickname has **no security relevance** and is **not required to be unique**.
+- It is typically auto-generated (e.g., a random string) and can be changed by the user to personalize their appearance in the app.
+
+### Initial data object
+
+```javascript
+{
+  nickname: generateRandomString(10),
+  custom_peer_id: “flop-” + uuidv4(16),
+  unique_id: “flop-” + uuidv4(16)
+}`
+```
+
+These objects are sent and received; they always have the same structure, only the payload object differs depending on the type.
+
+```javascript
 {
 nickname: string,
-type: string, // "text", "image", "audio", "gps","güs_live","pod","ping"
+type: string, // "text", "image", "audio", "gps","gps_live","pod","ping","typing"
 payload: object, // varies by message type
 id: string, // uuidv4()
 datetime: Date,
 from?: string, // only stored locally in chat_data
 to?: string, // only stored locally in chat_data
 pod?: boolean // only stored locally in chat_data (always false)
-}```
+}
+```
 
 ### ping
+
+fires a silent data packet at regular intervals to update the connection status,
+Mainly used for KaiOS2.
 
 ```javascript
 {
@@ -57,7 +97,149 @@ pod?: boolean // only stored locally in chat_data (always false)
   from: string,
   to: string,
   id: string
-}```
+}
+```
+
+### pod
+
+Proof of delivery  
+A silent message is sent back when a data packet has arrived.
+
+```javascript
+
+{
+  nickname: string,
+  type: "pod",
+  payload: {},
+  from: string,
+  to: string,
+  id: string
+}
+
+```
+
+### typing
+
+when the user is currently writing
+
+```javascript
+
+{
+  nickname: string,
+  type: "typing",
+  payload: {},
+  from: string,
+  to: string,
+  id: string
+}
+
+```
+
+### text
+
+```javascript
+{
+  nickname: string,
+  payload: { text: string },
+  datetime: Date,
+  type: "text",
+  from: string,
+  to: string,
+  id: string,
+  pod: false
+}
+
+```
+
+### image
+
+An image is sent as base64 and stored as blob
+
+```javascript
+{
+  nickname: string,
+  type: "image",
+  payload: {
+    image: string,
+    filename: string,
+    mimeType: string
+  },
+  id: string,
+  datetime: Date
+  pod: false
+
+}
+```
+
+### audio
+
+an audion is sent as a arrayBuffer and stored as blob
+
+```javascript
+
+{
+  nickname: string,
+  datetime: Date,
+  type: "audio",
+  payload: {
+    audio: Blob,
+    filename: string,     // "<id>.mp3"
+    mimeType: string
+  },
+  from: string,
+  to: string,
+  id: string,
+  pod: false
+}
+
+
+
+```
+
+### gps_live
+
+The current geolocation of the device is sent, and the message is updated at the recipient's end.
+
+```javascript
+
+{
+  nickname: string,
+  datetime: Date,
+  type: "gps_live",
+  payload: {
+    lat: number,
+    lng: number
+  },
+  from: string,
+  to: string,
+  id: string,
+  pod: false
+}
+
+
+```
+
+### gps
+
+The current geolocation of the device is sent
+
+```javascript
+
+{
+  nickname: string,
+  type: "gps",
+  payload: {
+    lat: "",
+    lng: ""
+  },
+  id: string,
+  datetime: Date
+  pod: false
+
+}
+
+
+```
 
 ### Build your own
 
@@ -94,4 +276,7 @@ https://www.metered.ca/tools/openrelay/
 If you use the app often, please donate an amount to me.
 
 <a href="https://liberapay.com/perry_______/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
-````
+
+```
+
+```
