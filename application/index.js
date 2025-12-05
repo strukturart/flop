@@ -62,6 +62,7 @@ export let status = {
   geolocation_autoupdate_id: "",
   geolocation_last_autoupdate_id: null,
   geolocation_onTimeRequest: false,
+  gps_live_receiver: [],
   debug: false,
   viewReady: false,
   groupchat: false,
@@ -528,7 +529,7 @@ function setupConnectionEvents(conn) {
     try {
       if (data.type === "ping") {
         const now = Date.now();
-        if (now - status.lastPingSentAt >= 20000) {
+        if (now - status.lastPingSentAt >= 10000) {
           sendMessage("", "ping", "", data.from, undefined);
           status.lastPingSentAt = now;
         }
@@ -657,7 +658,7 @@ function setupConnectionEvents(conn) {
           from: data.from,
           to: data.to,
         });
-
+        //send pod
         sendMessage(data.id, "pod", "", data.from, data.id);
 
         focus_last_article();
@@ -687,7 +688,7 @@ function setupConnectionEvents(conn) {
           from: data.from,
           to: data.to,
         });
-
+        //send pod
         sendMessage(data.id, "pod", "", data.from, data.id);
 
         focus_last_article();
@@ -759,7 +760,7 @@ function setupConnectionEvents(conn) {
             from: data.from,
             to: data.to,
           });
-
+          //send pod
           sendMessage(data.id, "pod", "", data.from, data.id);
         };
 
@@ -779,31 +780,16 @@ function setupConnectionEvents(conn) {
           from: data.from,
           to: data.to,
         });
-
+        //send pod
         sendMessage(data.id, "pod", "", data.from, data.id);
       }
-      //to do not stable
+      //update gps_live object
       if (data.type == "gps_live") {
         let existingMsg = chat_data.find((item) => item.id === data.id);
 
         if (existingMsg) {
           existingMsg.datetime = new Date();
           existingMsg.payload = data.payload;
-
-          //store different users location
-          //to create/update markers on map
-          let e = status.users_geolocation.find(
-            (item) => item.userId === data.from
-          );
-          if (e) {
-            e.payload = data.payload;
-          } else {
-            status.users_geolocation.push({
-              userId: data.from,
-              gps: data.payload,
-              id: data.id,
-            });
-          }
         } else {
           // Push a new GPS-Live message if not found
 
@@ -1217,7 +1203,6 @@ let sendMessage = (
     };
 
     sendMessageToAll(message);
-    console.log("send pod");
   }
 
   // If the chat partner is currently typing, send a "typing" message to  peer
@@ -1367,14 +1352,12 @@ let sendMessage = (
     }
 
     message = {
-      content: msg,
       nickname: settings.nickname,
       type: type,
       payload: {
         lat: gps.lat,
         lng: gps.lng,
       },
-      mimeType: mimeType,
       id: messageId,
       datetime: new Date(),
     };
@@ -1385,6 +1368,7 @@ let sendMessage = (
   //gps
   if (type == "gps") {
     let gps = JSON.parse(msg);
+
     chat_data.push({
       nickname: settings.nickname,
       datetime: new Date(),
@@ -1856,7 +1840,7 @@ let only_once = false;
 let handleImage = function (t) {
   if (only_once) return false;
   m.route.set("/chat?id=" + settings.custom_peer);
-  if (t != "") sendMessage(t, "image", undefined, undefined, undefined);
+  if (t != "") sendMessage(t, "image", t.filetype, undefined, undefined);
 
   status.action = "";
   only_once = true;
@@ -2038,17 +2022,19 @@ async function deleteChatDataByUser(id) {
 //callback geolocation
 //live location
 let geolocation_callback = function (e) {
-  if (status.geolocation_autoupdate) {
+  if (status.gps_live_receiver.length > 0) {
     if (e.coords) {
       let latlng = { "lat": e.coords.latitude, "lng": e.coords.longitude };
 
-      sendMessage(
-        JSON.stringify(latlng),
-        "gps_live",
-        undefined,
-        undefined,
-        status.geolocation_autoupdate_id
-      );
+      status.gps_live_receiver.forEach((e) => {
+        sendMessage(
+          JSON.stringify(latlng),
+          "gps_live",
+          undefined,
+          e,
+          status.geolocation_autoupdate_id
+        );
+      });
     }
   }
 };
@@ -2222,7 +2208,7 @@ function map_function(
     peerMarker.options.url = "marker-icon.png";
     setTimeout(() => {
       map.setView([lat, lng]);
-    }, 1000);
+    }, 1200);
   }
 
   // Function to update or add markers
@@ -3255,15 +3241,24 @@ var options = {
             },
 
             onclick: function () {
-              if (status.geolocation_autoupdate) {
+              //store receiver id in a list
+              //remove id from list
+
+              if (status.gps_live_receiver.includes(status.current_user_id)) {
+                function removeItem(array, itemToRemove) {
+                  return array.filter((item) => item !== itemToRemove);
+                }
                 //stop gps live
-                status.geolocation_autoupdate = false;
                 status.geolocation_autoupdate_id = "";
                 m.route.set("/chat?id=" + settings.custom_peer);
+                //remove from sender list
+                removeItem(status.gps_live_receiver, status.current_user_id);
               } else {
                 //start gps live
                 geolocation(geolocation_callback);
-                status.geolocation_autoupdate = true;
+                //add to user list
+                status.gps_live_receiver.push(status.current_user_id);
+
                 status.geolocation_autoupdate_id = uuidv4(16);
                 m.route.set("/chat?id=" + settings.custom_peer);
               }
