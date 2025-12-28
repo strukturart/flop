@@ -2,12 +2,12 @@
 
 # flop
 
-![badge-release](https://img.shields.io/github/v/release/strukturart/fwatermelon?include_prereleases&style=plastic)
+![badge-release](https://img.shields.io/github/v/release/strukturart/watermelon?include_prereleases&style=plastic)
 [![badge-bhackers](https://img.shields.io/badge/bHackers-bHackerStore-orange)](https://store.bananahackers.net/#watermelon)
 ![badge-downloads](https://img.shields.io/github/downloads/strukturart/watermelon/total)
 
 Is a <a href="https://en.wikipedia.org/wiki/WebRTC">WebRTC</a> chat client for KaiOS, built with a local-first approach — your data stays on your device by default.
-Currently, you can exchange text messages, pictures, and your location with others. You can create new chats and join existing ones, all without relying on a central server.
+Currently, you can exchange text messages, pictures, and your location with others. You can create new chats and join existing ones.
 
 ### Features
 
@@ -16,9 +16,6 @@ Currently, you can exchange text messages, pictures, and your location with othe
 - share live location
 - share image
 - audio message
-- download chats
-- download addressbook
-  ![image-4](/images/mockup.png)
 
 ## yes, but
 
@@ -255,9 +252,9 @@ Build KaiOS 2 app<br>
 If you want to create a browser version<br>
 `npm run web`
 
-### known problems
+### TURN-SERVER
 
-In certain cases a connection between two peers cannot be established. The solution should be a separate TURN server, which can be specified when establishing the connection. The connection data to the TURN server must be saved in an .env
+To establish a connection, a TURN SERVER is usually required. This server does not store any chat data but only forwards it. The default server used is https://www.metered.ca/tools/openrelay/, which offers a free plan and is very reliable. The access data should be stored in an .env file.
 
 `TURN_APP_KEY=xx
 TURN_APP_NAME=xx`
@@ -270,6 +267,7 @@ https://www.metered.ca/tools/openrelay/
 - mithril
 - leaflet
 - dayJS
+- openstreetmap
 
 ## Donation
 

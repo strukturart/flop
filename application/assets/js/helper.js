@@ -663,7 +663,6 @@ function compressImg(blob, maxSize = 800, quality = 0.8) {
       let width = img.width;
       let height = img.height;
 
-      // Verhältnis beibehalten
       if (width > height) {
         if (width > maxSize) {
           height *= maxSize / width;
@@ -696,7 +695,7 @@ function compressImg(blob, maxSize = 800, quality = 0.8) {
       );
     };
 
-    img.onerror = () => reject(new Error("Bild konnte nicht geladen werden."));
+    img.onerror = () => reject(new Error("Error"));
   });
 }
 

@@ -70,7 +70,7 @@ self.addEventListener("notificationclick", (event) => {
 });
 
 if (userAgent && !userAgent.includes("KAIOS")) {
-  const CACHE_NAME = "pwa-cache-v0.24624";
+  const CACHE_NAME = "pwa-cache-v0.24690";
   const FILE_LIST_URL = "/file-list.json"; // URL of the JSON file containing the array of files
 
   self.addEventListener("install", (event) => {
@@ -132,3 +132,40 @@ if (userAgent && !userAgent.includes("KAIOS")) {
     );
   });
 }
+
+const getEntrySize = (data) => {
+  const str = JSON.stringify(obj);
+  return str.length * 2;
+};
+
+async function calculateTotalStorage() {
+  if ("storage" in navigator && "estimate" in navigator.storage) {
+    let { usage, quota } = await navigator.storage.estimate();
+
+    let mb = (usage / (1024 * 1024)).toFixed(2);
+
+    localforage.setItem("app_db_usage_mb", mb);
+  } else {
+    //KAIOS
+    console.log("Storage api not supported");
+    let totalBytes = 0;
+
+    try {
+      await localforage.iterate((value, key) => {
+        totalBytes += getEntrySize(value);
+      });
+
+      let mb = (totalBytes / 1024 / 1024).toFixed(2);
+
+      localforage.setItem("app_db_usage_mb", mb);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+}
+
+self.addEventListener("message", (event) => {
+  if (event.data.action === "recalculateStorage") {
+    calculateTotalStorage();
+  }
+});
