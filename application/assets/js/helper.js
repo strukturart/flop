@@ -13,7 +13,7 @@ export let info_badge = (show) => {
 
 export let setTabindex = () => {
   let visibleElements = document.querySelectorAll(
-    '.item:not([style*="display: none"])'
+    '.item:not([style*="display: none"])',
   );
 
   visibleElements.forEach((element, index) => {
@@ -182,7 +182,7 @@ export let clipboard = function () {
     document.body.removeChild(input);
     side_toaster(
       "You can now open an app of your choice and invite a person to chat, the address that leads to the chat room is in your clipboard",
-      3000
+      3000,
     );
 
     return result; // Returns true if the copy was successful, false otherwise
@@ -228,7 +228,7 @@ export function share(url) {
         (err) => {
           console.log(err);
           resolve(false);
-        }
+        },
       );
     }
 
@@ -296,7 +296,7 @@ export function open(url) {
       },
       (err) => {
         console.log(err);
-      }
+      },
     );
   }
 }
@@ -691,7 +691,7 @@ function compressImg(blob, maxSize = 800, quality = 0.8) {
           resolve(compressedBlob);
         },
         "image/jpeg",
-        quality
+        quality,
       );
     };
 
@@ -768,7 +768,7 @@ export let pick_image = function (callback) {
         },
         (err) => {
           console.log(err);
-        }
+        },
       );
     }
 
@@ -844,7 +844,7 @@ export let pick_file = function (callback) {
         },
         (err) => {
           console.log(err);
-        }
+        },
       );
     }
   }
@@ -882,6 +882,74 @@ export let pick_file = function (callback) {
   }
 };
 
+export let pick_zip_file = function (callback) {
+  if (!status.notKaiOS) {
+    try {
+      let pick = new MozActivity({
+        name: "pick",
+        data: {
+          type: ["application/zip"],
+        },
+      });
+
+      pick.onsuccess = function () {
+        callback(this.result.blob || this.result);
+      };
+
+      pick.onerror = function () {
+        console.log("Pick error:", this.error);
+      };
+    } catch (e) {
+      console.log(e);
+    }
+
+    if ("b2g" in navigator) {
+      let pick = new WebActivity("pick", {
+        type: "application/zip",
+      });
+
+      pick.start().then(
+        (rv) => callback(rv.blob || rv),
+        (err) => console.log(err),
+      );
+    }
+  }
+
+  if (status.notKaiOS) {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".zip,application/zip";
+    input.style.display = "none";
+    document.body.appendChild(input);
+
+    input.click();
+
+    input.onchange = () => {
+      const file = input.files[0];
+      if (file) callback(file);
+      document.body.removeChild(input);
+    };
+  }
+};
+
+export async function unzip_file(zipFile) {
+  try {
+    const zip = await JSZip.loadAsync(zipFile);
+    const file = zip.file("flop-addressbook.json");
+
+    if (!file) {
+      side_toaster("No addressbook found", 3000);
+      return;
+    }
+
+    const addressbook = JSON.parse(await file.async("string"));
+    return addressbook;
+  } catch (e) {
+    console.error("ZIP error:", e);
+    side_toaster("ZIP error", 3000);
+  }
+}
+
 //delete file
 export function deleteFile(storage, path, notification) {
   let sdcard = navigator.getDeviceStorages("sdcard");
@@ -891,7 +959,9 @@ export function deleteFile(storage, path, notification) {
   requestDel.onsuccess = function () {
     if (notification == "notification") {
       helper.toaster(
-        'File "' + name + '" successfully deleted frome the sdcard storage area'
+        'File "' +
+          name +
+          '" successfully deleted frome the sdcard storage area',
       );
     }
   };
@@ -942,7 +1012,7 @@ export let downloadFile = function (filename, data, callback) {
         request.onerror = function () {
           side_toaster(
             "Unable to download the file, the file probably already exists.",
-            4000
+            4000,
           );
         };
       })
@@ -996,7 +1066,7 @@ export let data_export_addressbook = function (filename, data, callback) {
     request.onerror = function () {
       side_toaster(
         "Unable to download the file, the file probably already exists.",
-        4000
+        4000,
       );
     };
   }
@@ -1007,7 +1077,7 @@ export let data_export = async function (
   data,
   addressbook,
   settings,
-  callback
+  callback,
 ) {
   const zip = new JSZip();
   const media = zip.folder("media");
@@ -1092,65 +1162,9 @@ export let data_export = async function (
     request.onerror = function () {
       side_toaster(
         "Unable to download the zip, the file probably already exists.",
-        4000
+        4000,
       );
     };
-  }
-};
-
-export let data_import = function (filename, data, callback) {
-  const fn = filename + "-" + dayjs().format("YYYY-MM-DD_HH-mm-ss") + ".json";
-  if (status.notKaiOS) {
-    // Konvertiere das Array in JSON und dann in einen Blob
-    const jsonString = JSON.stringify(data, null, 2); // schön formatiert
-    const blob = new Blob([jsonString], { type: "application/json" });
-
-    // Erstelle einen temporären Blob-Link
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = fn;
-
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-    // Speicher freigeben
-    URL.revokeObjectURL(url);
-
-    if (typeof callback === "function") callback();
-  } else {
-    let sdcard = "";
-
-    try {
-      sdcard = navigator.getDeviceStorage("sdcard");
-    } catch (e) {}
-
-    if ("b2g" in navigator) {
-      try {
-        sdcard = navigator.b2g.getDeviceStorage("sdcard");
-      } catch (e) {}
-    }
-
-    fetch(data)
-      .then((res) => res.blob())
-      .then((blob) => {
-        let request = sdcard.addNamed(blob, "downloads/" + fn);
-        request.onsuccess = function () {
-          side_toaster("file downloaded", 2000);
-        };
-
-        request.onerror = function () {
-          side_toaster(
-            "Unable to download the file, the file probably already exists.",
-            4000
-          );
-        };
-      })
-      .catch((error) => {
-        side_toaster("Unable to download the file", 2000);
-      });
   }
 };
 
@@ -1311,7 +1325,7 @@ export async function toAudioBlob(input, mime = "audio/webm") {
           ? input
           : input.buffer.slice(
               input.byteOffset,
-              input.byteOffset + input.byteLength
+              input.byteOffset + input.byteLength,
             );
 
       return new Blob([buf], { type: mime });

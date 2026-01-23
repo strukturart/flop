@@ -1,6 +1,10 @@
 import localforage from "localforage";
-import { status } from "./index.js";
-const userAgent = navigator.userAgent || "";
+
+const userAgent =
+  typeof self !== "undefined" && self.navigator && self.navigator.userAgent
+    ? self.navigator.userAgent
+    : "";
+
 //KaiOS 3 open app
 if (userAgent && !userAgent.includes("KAIOS")) {
   self.onsystemmessage = (evt) => {
@@ -41,7 +45,7 @@ self.addEventListener("push", function (event) {
   };
 
   event.waitUntil(
-    self.registration.showNotification(data.title || "New Message", options)
+    self.registration.showNotification(data.title || "New Message", options),
   );
 });
 
@@ -66,12 +70,13 @@ self.addEventListener("notificationclick", (event) => {
       })
       .catch((err) => {
         console.log(err);
-      })
+      }),
   );
 });
+//cache
 
 if (userAgent && !userAgent.includes("KAIOS")) {
-  const CACHE_NAME = status.appVersion;
+  const CACHE_NAME = "V1.17.11";
   const FILE_LIST_URL = "/file-list.json"; // URL of the JSON file containing the array of files
 
   self.addEventListener("install", (event) => {
@@ -94,8 +99,8 @@ if (userAgent && !userAgent.includes("KAIOS")) {
                   urlsToCache.map((url) =>
                     cache.add(url).catch((error) => {
                       console.error(`Failed to cache ${url}:`, error);
-                    })
-                  )
+                    }),
+                  ),
                 );
               } else {
                 console.error("Fetched data is not an array:", urlsToCache);
@@ -104,7 +109,7 @@ if (userAgent && !userAgent.includes("KAIOS")) {
         })
         .then(() => {
           return self.skipWaiting();
-        })
+        }),
     );
   });
 
@@ -117,9 +122,9 @@ if (userAgent && !userAgent.includes("KAIOS")) {
             if (!cacheWhitelist.includes(cacheName)) {
               return caches.delete(cacheName);
             }
-          })
+          }),
         );
-      })
+      }),
     );
   });
 
@@ -129,13 +134,13 @@ if (userAgent && !userAgent.includes("KAIOS")) {
       caches.match(event.request).then((response) => {
         // If the request is in the cache, return it. Otherwise, fetch from the network.
         return response || fetch(event.request);
-      })
+      }),
     );
   });
 }
 
 const getEntrySize = (data) => {
-  const str = JSON.stringify(obj);
+  const str = JSON.stringify(data);
   return str.length * 2;
 };
 
@@ -165,8 +170,17 @@ async function calculateTotalStorage() {
   }
 }
 
-self.addEventListener("message", (event) => {
+self.addEventListener("message", async (event) => {
   if (event.data.action === "recalculateStorage") {
     calculateTotalStorage();
+  }
+
+  if (event.data?.type === "FORCE_UPDATE") {
+    const cacheNames = await caches.keys();
+
+    await Promise.all(cacheNames.map((name) => caches.delete(name)));
+
+    await self.registration.update();
+    await self.skipWaiting();
   }
 });

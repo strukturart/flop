@@ -59,7 +59,7 @@
   ],
 
   "b2g_features": {
-    "version": "0.3424",
+    "version": "0.3427",
     "id": "flop",
     "subtitle": "flop WebRTC chat app",
     "core": true,

@@ -2,6 +2,7 @@
 
 import {
   pick_file,
+  pick_zip_file,
   data_export,
   bottom_bar,
   side_toaster,
@@ -16,6 +17,7 @@ import {
   createAudioRecorder,
   list_files,
   get_file,
+  unzip_file,
 } from "./assets/js/helper.js";
 import { stop_scan, start_scan } from "./assets/js/scan.js";
 import localforage from "localforage";
@@ -76,7 +78,7 @@ export let status = {
   kaiosversion: "unknow",
   audioCtx: "",
   communicationRequest: [],
-  appVersion: "0.24775",
+  appVersion: "0.24808",
 };
 
 async function generateCoturnCredentials(url, sharedSecret, ttl = 3600) {
@@ -98,7 +100,7 @@ async function generateCoturnCredentials(url, sharedSecret, ttl = 3600) {
     keyData,
     { name: "HMAC", hash: "SHA-1" },
     false,
-    ["sign"]
+    ["sign"],
   );
 
   // HMAC-SHA1(username)
@@ -170,7 +172,12 @@ let connectedPeersObject = [];
 if (status.debug) {
   window.onerror = function (msg, url, linenumber) {
     alert(
-      "Error message: " + msg + "\nURL: " + url + "\nLine Number: " + linenumber
+      "Error message: " +
+        msg +
+        "\nURL: " +
+        url +
+        "\nLine Number: " +
+        linenumber,
     );
     return true;
   };
@@ -228,7 +235,7 @@ let app_launcher = () => {
           },
           (err) => {
             alert(err);
-          }
+          },
         );
       } catch (e) {}
     }
@@ -347,7 +354,7 @@ let update_addressbook_item = (userIdToUpdate) => {
   // Prompt the user for new values
   let newName = prompt(
     "Enter the new name of the contact",
-    addressbook[userIndex].name
+    addressbook[userIndex].name,
   );
 
   if (newName !== null && newName.trim() !== "") {
@@ -369,8 +376,19 @@ let update_addressbook_item = (userIdToUpdate) => {
 };
 
 let addUserToAddressBook = (a, b = "", c = "") => {
+  const exists = addressbook.some((e) => e.id === a);
+
+  if (exists) {
+    side_toaster("User already in addressbook", 2000);
+    return false;
+  }
+
   let uname = window.prompt("enter the name of the contact");
-  if (!uname) uname = "";
+
+  if (uname === null) {
+    // Cancel
+    return false;
+  }
 
   addressbook.push({
     id: a,
@@ -444,7 +462,7 @@ function setupConnectionEvents(conn) {
         connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
 
         connectedPeersObject = connectedPeersObject.filter(
-          (c) => c.peer !== conn.peer
+          (c) => c.peer !== conn.peer,
         );
 
         updateConnections();
@@ -501,7 +519,7 @@ function setupConnectionEvents(conn) {
                     .catch((error) => {
                       console.error(
                         "Error saving updated address book:",
-                        error
+                        error,
                       );
                     });
                 }
@@ -622,7 +640,8 @@ function setupConnectionEvents(conn) {
       data.type == "text" ||
       data.type == "gps_live" ||
       data.type == "gps" ||
-      data.type == "audio"
+      data.type == "audio" ||
+      data.type == "contact"
     ) {
       //is not in addressbook - ask
       //is in addressbook - notify
@@ -642,7 +661,7 @@ function setupConnectionEvents(conn) {
               "/chat?id=" +
                 settings.custom_peer_id +
                 "&peer=" +
-                status.current_user_id
+                status.current_user_id,
             );
           } else {
             //prevent to ask multiple times in the session
@@ -689,7 +708,7 @@ function setupConnectionEvents(conn) {
 
         if (originalContent !== sanitizedContent) {
           alert(
-            "The message was blocked because it contains dangerous content"
+            "The message was blocked because it contains dangerous content",
           );
           return;
         }
@@ -724,6 +743,22 @@ function setupConnectionEvents(conn) {
               console.error("Error saving updated address book:", error);
             });
         }
+      }
+
+      if (data.type == "contact") {
+        chat_data.push({
+          id: data.id,
+          nickname: data.nickname,
+          datetime: data.datetime || new Date(),
+          payload: data.payload,
+          type: data.type,
+          from: data.from,
+          to: data.to,
+        });
+        //send pod
+        sendMessage(data.id, "pod", "", data.from, data.id);
+
+        focus_last_article();
       }
 
       if (data.type === "audio") {
@@ -868,7 +903,7 @@ function setupConnectionEvents(conn) {
     connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
 
     connectedPeersObject = connectedPeersObject.filter(
-      (c) => c.peer !== conn.peer
+      (c) => c.peer !== conn.peer,
     );
     peer_is_online();
 
@@ -879,7 +914,7 @@ function setupConnectionEvents(conn) {
     // side_toaster(`User has been disconnected`, 1000);
     connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
     connectedPeersObject = connectedPeersObject.filter(
-      (c) => c.peer !== conn.peer
+      (c) => c.peer !== conn.peer,
     );
     peer_is_online();
 
@@ -910,7 +945,7 @@ async function getIceServers() {
       "https://" +
         process.env.TURN_APP_NAME +
         ".metered.live/api/v1/turn/credentials?apiKey=" +
-        process.env.TURN_APP_KEY
+        process.env.TURN_APP_KEY,
     );
 
     if (!response.ok) {
@@ -929,7 +964,7 @@ async function getIceServers() {
     a.forEach((credential) => {
       if (
         !ice_servers.iceServers.some(
-          (server) => server.urls === credential.urls
+          (server) => server.urls === credential.urls,
         )
       ) {
         ice_servers.iceServers.push(credential);
@@ -1106,17 +1141,6 @@ localforage
   .then(function (value) {
     // If settings are not present, provide default values for each key
     settings = value || {};
-    /*
-    const defaultValues = {
-      nickname: generateRandomString(10),
-      server_url: "0.peerjs.com",
-      server_path: "/",
-      server_port: "443",
-      invite_url: "https://flop.chat/",
-      custom_peer_id: "flop-" + uuidv4(16),
-      unique_id: "flop-" + uuidv4(16),
-    };
-    */
 
     const defaultValues = {
       nickname: generateRandomString(10),
@@ -1176,7 +1200,7 @@ let write = () => {
 
 //list files
 if (!status.notKaiOS) {
-  list_files("json", (e) => {
+  list_files("zip", (e) => {
     status.files.push(e);
   });
 }
@@ -1234,7 +1258,7 @@ let sendMessage = (
   type,
   mimeType = "",
   to = status.current_user_id || "",
-  messageId = uuidv4(16)
+  messageId = uuidv4(16),
 ) => {
   let message = {};
 
@@ -1389,6 +1413,34 @@ let sendMessage = (
     write();
   }
 
+  //contact
+  if (type == "contact") {
+    let contact = JSON.parse(msg);
+
+    message = {
+      nickname: settings.nickname,
+      type: type,
+      payload: { id: contact.id, name: contact.name },
+      id: messageId,
+      datetime: new Date(),
+    };
+    chat_data.push({
+      nickname: settings.nickname,
+      payload: { id: contact.id, name: contact.name },
+      datetime: new Date(),
+      type: type,
+      from: settings.custom_peer_id,
+      to: to,
+      id: messageId,
+      pod: false,
+    });
+
+    sendMessageToAll(message);
+
+    focus_last_article();
+    write();
+  }
+
   //live gps
   if (type == "gps_live") {
     if (
@@ -1489,7 +1541,7 @@ let messageQueue = (m = null) => {
         const ids = addressbook.map((e) => e.id);
 
         messageQueueStorage = messageQueueStorage.filter((message) =>
-          ids.includes(String(message.to))
+          ids.includes(String(message.to)),
         );
 
         if (messageQueueStorage.length > 0) {
@@ -1514,7 +1566,7 @@ async function sendMessageToAll(message) {
 
   //get all open connection with peer.id
   const openConnections = connectedPeersObject.filter(
-    (c) => c.peer === message.to && c.open
+    (c) => c.peer === message.to && c.open,
   );
 
   // if user not online send webPush
@@ -1531,7 +1583,7 @@ async function sendMessageToAll(message) {
         if (message.type == "typing") return;
 
         console.log(
-          "The user is not online. Message couldn't be sent. Try to send WebPush"
+          "The user is not online. Message couldn't be sent. Try to send WebPush",
         );
 
         sendPushMessage(getClientId.client_id, "Flop");
@@ -1539,14 +1591,17 @@ async function sendMessageToAll(message) {
         status.webpush_do_not_annoy.push(getClientId.client_id);
 
         // remove id after 5min
-        setTimeout(() => {
-          const index = status.webpush_do_not_annoy.indexOf(
-            getClientId.client_id
-          );
-          if (index !== -1) {
-            status.webpush_do_not_annoy.splice(index, 1);
-          }
-        }, 5 * 60 * 1000);
+        setTimeout(
+          () => {
+            const index = status.webpush_do_not_annoy.indexOf(
+              getClientId.client_id,
+            );
+            if (index !== -1) {
+              status.webpush_do_not_annoy.splice(index, 1);
+            }
+          },
+          5 * 60 * 1000,
+        );
       }
     } else {
       console.log("no clientID");
@@ -1576,7 +1631,7 @@ async function sendMessageToAll(message) {
 
     setTimeout(() => {
       const result = chat_data.find(
-        (e) => e.id === message.id && e.pod == true
+        (e) => e.id === message.id && e.pod == true,
       );
       if (!result) {
         //store and send later
@@ -1601,7 +1656,7 @@ const webPush_reg = async (action) => {
         new URL("sw.js", import.meta.url),
         {
           type: "module",
-        }
+        },
       );
 
       let subscription;
@@ -1662,7 +1717,7 @@ function sendPushMessage(userId, message) {
     .then((response) => {
       if (!response.ok) {
         throw new Error(
-          `Server returned ${response.status} ${response.statusText}`
+          `Server returned ${response.status} ${response.statusText}`,
         );
       }
       return response.json();
@@ -1781,7 +1836,7 @@ let peer_is_online = async function () {
 let connect_to_peer = function (
   id,
   nickname = generateRandomString(10),
-  open_view = true
+  open_view = true,
 ) {
   if (!navigator.onLine) {
     top_bar("", "<img src='assets/image/offline.svg'>", "");
@@ -1855,7 +1910,7 @@ let connect_to_peer = function (
               connectedPeers = connectedPeers.filter((c) => c !== conn.peer);
 
               connectedPeersObject = connectedPeersObject.filter(
-                (c) => c.peer !== conn.peer
+                (c) => c.peer !== conn.peer,
               );
             }
           }, 5500);
@@ -1870,7 +1925,7 @@ let connect_to_peer = function (
             console.error(
               "Connection error:",
               err.type || err.name,
-              err.message || err
+              err.message || err,
             );
           });
         }
@@ -1938,7 +1993,7 @@ let storeChatData = async () => {
 
     // Nach Datum sortieren
     chat_data_history.sort(
-      (a, b) => new Date(a.datetime) - new Date(b.datetime)
+      (a, b) => new Date(a.datetime) - new Date(b.datetime),
     );
 
     try {
@@ -1991,29 +2046,34 @@ async function updateChatData(targetValue, newValue) {
 //delete old data
 
 async function deleteOldChatData(days = 30) {
+  let ask = confirm(
+    "Would you like to delete chat data that is older than 30 days?",
+  );
+  if (!ask) return;
+
   let now = new Date();
   let threshold = new Date(now.setDate(now.getDate() - days));
 
   try {
     let chatData = await localforage.getItem("chatData");
     if (!chatData || chatData.length === 0) {
-      console.log("No chat data found. Nothing to delete.");
+      side_toaster("No chat data found. Nothing to delete.", 2000);
       return;
     }
 
     let updatedChatData = chatData.filter(
-      (e) => new Date(e.datetime) > threshold
+      (e) => new Date(e.datetime) > threshold,
     );
 
     if (updatedChatData.length === chatData.length) {
-      console.log("No data older than 30 days. Nothing to delete.");
+      side_toaster("No data older than 30 days. Nothing to delete.", 2000);
       return;
     }
 
     await localforage.setItem("chatData", updatedChatData);
-    console.log("Old chat data deleted.");
+    side_toaster("Old chat data deleted.", 2000);
   } catch (error) {
-    console.error("Error deleting old chat data:", error);
+    side_toaster("Failed to delete old chat data.", 3000);
   }
 }
 
@@ -2093,7 +2153,7 @@ let geolocation_callback = function (e) {
           "gps_live",
           undefined,
           e,
-          status.geolocation_autoupdate_id
+          status.geolocation_autoupdate_id,
         );
       });
     }
@@ -2123,7 +2183,7 @@ function map_function(
   lng,
   viewOnly = false,
   viewLiveLocation = false,
-  messageID = 0
+  messageID = 0,
 ) {
   myMarker = "";
   peerMarker = "";
@@ -2152,7 +2212,7 @@ function map_function(
     bottom_bar(
       "<img src='assets/image/plus.svg'>",
       "",
-      "<img src='assets/image/minus.svg'>"
+      "<img src='assets/image/minus.svg'>",
     );
 
     status.map_viewonly = true;
@@ -2182,13 +2242,13 @@ function map_function(
       bottom_bar(
         "<img src='assets/image/plus.svg'>",
         "",
-        "<img src='assets/image/minus.svg'>"
+        "<img src='assets/image/minus.svg'>",
       );
     } else {
       bottom_bar(
         "<img src='assets/image/plus.svg'>",
         "<img src='assets/image/marker.svg'>",
-        "<img src='assets/image/minus.svg'>"
+        "<img src='assets/image/minus.svg'>",
       );
     }
   });
@@ -2241,7 +2301,7 @@ function map_function(
               bottom_bar(
                 "<img src='assets/image/plus.svg'>",
                 "<img src='assets/image/send.svg'>",
-                "<img src='assets/image/minus.svg'>"
+                "<img src='assets/image/minus.svg'>",
               );
             }, 1000);
           }
@@ -2254,7 +2314,7 @@ function map_function(
         bottom_bar(
           "<img src='assets/image/plus.svg'>",
           "<img src='assets/image/send.svg'>",
-          "<img src='assets/image/minus.svg'>"
+          "<img src='assets/image/minus.svg'>",
         );
       }
     }
@@ -2326,7 +2386,7 @@ let send_gps_position = () => {
       bottom_bar(
         "<img src='assets/image/plus.svg'>",
         "<img src='assets/image/send.svg'>",
-        "<img src='assets/image/minus.svg'>"
+        "<img src='assets/image/minus.svg'>",
       );
     } else {
       myMarker = L.marker([center.lat, center.lng])
@@ -2340,7 +2400,7 @@ let send_gps_position = () => {
       bottom_bar(
         "<img src='assets/image/plus.svg'>",
         "<img src='assets/image/send.svg'>",
-        "<img src='assets/image/minus.svg'>"
+        "<img src='assets/image/minus.svg'>",
       );
     }
 
@@ -2419,7 +2479,7 @@ let setupVisualizer_k2 = function ({ mode, srcNode, audioElement }) {
       radius / 4,
       canvas.width / 2,
       canvas.height / 2,
-      radius
+      radius,
     );
     gradient.addColorStop(0, "rgba(255,80,0,1)");
     gradient.addColorStop(1, "rgba(255,0,0,0.05)");
@@ -2483,7 +2543,7 @@ var addressbook_comp = {
                     onkeydown: (h) => {
                       if (h.key === "Enter") {
                         connect_to_peer(
-                          document.activeElement.getAttribute("data-id")
+                          document.activeElement.getAttribute("data-id"),
                         );
 
                         status.current_user_id =
@@ -2494,13 +2554,13 @@ var addressbook_comp = {
                           "/chat?id=" +
                             settings.custom_peer_id +
                             "&peer=" +
-                            status.current_user_id
+                            status.current_user_id,
                         );
                       }
                     },
                     onclick: () => {
                       connect_to_peer(
-                        document.activeElement.getAttribute("data-id")
+                        document.activeElement.getAttribute("data-id"),
                       );
 
                       status.current_user_id =
@@ -2511,7 +2571,7 @@ var addressbook_comp = {
                         "/chat?id=" +
                           settings.custom_peer_id +
                           "&peer=" +
-                          status.current_user_id
+                          status.current_user_id,
                       );
                     },
                   },
@@ -2528,7 +2588,7 @@ var addressbook_comp = {
                       m(
                         "div",
                         { class: "addressbook-item-name" },
-                        !e.name ? e.nickname : e.name
+                        !e.name ? e.nickname : e.name,
                       ),
                       m("div", { class: "row between-md" }, [
                         e.last_conversation_message
@@ -2538,7 +2598,7 @@ var addressbook_comp = {
                                 class:
                                   "last-conversation-message col-xs-8 col-md-8",
                               },
-                              e.last_conversation_message
+                              e.last_conversation_message.slice(0, 10),
                             )
                           : null,
                         e.last_conversation_datetime
@@ -2548,7 +2608,7 @@ var addressbook_comp = {
                                 class:
                                   "last-conversation-date col-xs-4 col-md-4",
                               },
-                              e.last_conversation_datetime
+                              e.last_conversation_datetime,
                             )
                           : null,
 
@@ -2580,7 +2640,7 @@ var addressbook_comp = {
                                 m("img", {
                                   src: "assets/image/pencil.svg",
                                 }),
-                              ]
+                              ],
                             ),
                             m(
                               "span",
@@ -2605,18 +2665,18 @@ var addressbook_comp = {
                                 m("img", {
                                   src: "assets/image/delete.svg",
                                 }),
-                              ]
+                              ],
                             ),
-                          ]
+                          ],
                         ),
                       ]),
                     ]),
-                  ]
+                  ],
                 ),
-              ])
+              ]),
             ),
           ]),
-        ]
+        ],
       ),
     ]);
   },
@@ -2651,7 +2711,7 @@ var waiting = {
           clearTimeout(timer1);
         },
       },
-      [m("span", "connecting")]
+      [m("span", "connecting")],
     );
   },
 };
@@ -2675,43 +2735,51 @@ var filelist = {
         class: "width-100 height-100 page",
       },
       status.files.map((e, i) => {
-        if (e.includes("flop-addressbook")) {
+        if (e.includes("flop")) {
           return m(
             "button",
             {
               class: "item button-marquee",
-              oncreate: ({ dom }) => {
+              oncreate: (vnode) => {
                 setTabindex();
                 if (i == 0) {
-                  dom.focus();
+                  vnode.dom.focus();
                 }
               },
-              onclick: () => {
-                let cb = (a) => {
-                  const reader = new FileReader();
-                  reader.onload = () => {
-                    const text = reader.result;
-                    try {
-                      const data = JSON.parse(text);
 
-                      import_addressbook(data);
+              onkeydown: (h) => {
+                if (h.key === "Enter") {
+                  let cb = (file) => {
+                    const reader = new FileReader();
 
-                      m.route.set("/start");
-                    } catch (e) {}
+                    reader.onload = () => {
+                      const buffer = reader.result;
+
+                      unzip_file(buffer)
+                        .then((result) => {
+                          import_addressbook(result);
+                          m.route.set("/start");
+                        })
+                        .catch(() => {
+                          alert("ZIP error");
+                        });
+                    };
+
+                    reader.onerror = () => {
+                      alert("can't read file");
+                    };
+
+                    reader.readAsArrayBuffer(file);
                   };
 
-                  reader.onerror = () => {
-                    alert("can't read file");
-                  };
-                  reader.readAsText(a);
-                };
-                get_file(e, cb);
+                  get_file(e, cb);
+                }
               },
             },
-            [m("span", e.split("/").pop())]
+            [m("span", e.split("/").pop())],
           );
         }
-      })
+      }),
     );
   },
 };
@@ -2755,7 +2823,7 @@ var about = {
                   }
                 },
               },
-              "Edit contact"
+              "Edit contact",
             )
           : null,
 
@@ -2774,7 +2842,7 @@ var about = {
                   }
                 },
               },
-              "Delete contact"
+              "Delete contact",
             )
           : null,
 
@@ -2789,7 +2857,7 @@ var about = {
               vnode.dom.focus();
             },
           },
-          "Invite and scan"
+          "Invite and scan",
         ),
 
         m(
@@ -2801,7 +2869,7 @@ var about = {
               m.route.set("/about_page");
             },
           },
-          "About"
+          "About",
         ),
 
         m(
@@ -2812,7 +2880,7 @@ var about = {
               m.route.set("/settings_page");
             },
           },
-          "Settings"
+          "Settings",
         ),
 
         m("div", {
@@ -2823,7 +2891,7 @@ var about = {
             if (!status.notKaiOS) load_ads();
           },
         }),
-      ]
+      ],
     );
   },
 };
@@ -2854,15 +2922,15 @@ var about_page = {
         m(
           "div",
           { class: "scroll", id: "about-text" },
-          "With flop you can communicate directly with another person/machine (p2p). To do this you need a stable internet connection and you must know the other person's ID. When you start a chat you can share your ID via the options menu."
+          "With flop you can communicate directly with another person/machine (p2p). To do this you need a stable internet connection and you must know the other person's ID. When you start a chat you can share your ID via the options menu.",
         ),
 
         m(
           "div",
           { class: "", id: "about-text" },
           m.trust(
-            "The code of the software is freely available: <a href='https://github.com/strukturart/flop'>gitHub</a>"
-          )
+            "The code of the software is freely available: <a href='https://github.com/strukturart/flop'>gitHub</a>",
+          ),
         ),
         m(
           "div",
@@ -2874,16 +2942,16 @@ var about_page = {
             },
           },
           m.trust(
-            "<strong>License</strong><br><br>mithrilJS MIT<br>peerJS MIT<br>flop MIT<br><br>"
-          )
+            "<strong>License</strong><br><br>mithrilJS MIT<br>peerJS MIT<br>flop MIT<br><br>",
+          ),
         ),
         m("h2", "privacy policy"),
         m("div", [
           m.trust(
-            "<div> <h2 class='item'>flop</h2> uses 2 different servers to connect two chat partners: <strong>0.peerjs.com</strong> and <strong>metered.ca</strong>, both of which are freely available. If you want to change that, you can store your own servers in the settings.<br></div>"
+            "<div> <h2 class='item'>flop</h2> uses 2 different servers to connect two chat partners: <strong>0.peerjs.com</strong> and <strong>metered.ca</strong>, both of which are freely available. If you want to change that, you can store your own servers in the settings.<br></div>",
           ),
           m.trust(
-            "<div><h2 class='item' tabindex=1>PeerJS</h2>We do not collect or store any information. While you are connected to a PeerJS server, your IP address, randomly-generated client ID, and signalling data are kept in the server's memory. With default settings, the server will remove this information from memory 60 seconds after you stop communicating with the service.<br></div>"
+            "<div><h2 class='item' tabindex=1>PeerJS</h2>We do not collect or store any information. While you are connected to a PeerJS server, your IP address, randomly-generated client ID, and signalling data are kept in the server's memory. With default settings, the server will remove this information from memory 60 seconds after you stop communicating with the service.<br></div>",
           ),
 
           m(
@@ -2892,14 +2960,14 @@ var about_page = {
               class: "item button-style",
               onclick: function () {
                 window.open(
-                  "https://www.metered.ca/tools/openrelay/#%EF%B8%8Fsecurity"
+                  "https://www.metered.ca/tools/openrelay/#%EF%B8%8Fsecurity",
                 );
               },
               onfocus: () => {
                 bottom_bar("", "", "");
               },
             },
-            "Privacy Policy Metered"
+            "Privacy Policy Metered",
           ),
           m(
             "div",
@@ -2910,11 +2978,11 @@ var about_page = {
               },
             },
             m.trust(
-              "<h2>KaiOSAds</h2> This is a third party service that may collect information used to identify you.<br><br><br>"
-            )
+              "<h2>KaiOSAds</h2> This is a third party service that may collect information used to identify you.<br><br><br>",
+            ),
           ),
         ]),
-      ]
+      ],
     );
   },
 };
@@ -2938,7 +3006,7 @@ var invite = {
     bottom_bar(
       "<img class='not-desktop' src='assets/image/link.svg'>",
       "",
-      "<img class='not-desktop' src='assets/image/qr.svg'>"
+      "<img class='not-desktop' src='assets/image/qr.svg'>",
     );
   },
   view: () => {
@@ -2956,7 +3024,7 @@ var invite = {
           m("img", { src: status.invite_qr }),
           m("div", { class: "" }, settings.nickname),
         ]),
-      ]
+      ],
     );
   },
 };
@@ -2999,7 +3067,7 @@ var settings_page = {
               {
                 for: "nickname",
               },
-              "Nickname"
+              "Nickname",
             ),
 
             m("input", {
@@ -3027,7 +3095,7 @@ var settings_page = {
                 document.querySelector(".avatar").src = avatar.toDataUri();
               },
             }),
-          ]
+          ],
         ),
         m("div", { class: "row around-xs" }, [
           m("img", {
@@ -3072,13 +3140,13 @@ var settings_page = {
                   m.redraw();
 
                   alert(
-                    "The next time you start the app, other users can reach you with the new ID."
+                    "The next time you start the app, other users can reach you with the new ID.",
                   );
                 })
                 .catch(() => {});
             },
           },
-          "generate new ID"
+          "generate new ID",
         ),
 
         m(
@@ -3087,7 +3155,7 @@ var settings_page = {
             class: "item",
             onclick: () => {
               share(
-                settings.invite_url + "?id=" + settings.custom_peer_id
+                settings.invite_url + "?id=" + settings.custom_peer_id,
               ).then((success) => {
                 if (success) {
                   console.log("Sharing was successful.");
@@ -3097,7 +3165,7 @@ var settings_page = {
               });
             },
           },
-          "share"
+          "share",
         ),
 
         m(
@@ -3132,7 +3200,7 @@ var settings_page = {
               }
             },
           },
-          settings.webpush ? "Delete WebPush" : "Activate WebPush"
+          settings.webpush ? "Delete WebPush" : "Activate WebPush",
         ),
         m(
           "button",
@@ -3149,12 +3217,12 @@ var settings_page = {
               setTabindex();
             },
           },
-          "advanced settings"
+          "advanced settings",
         ),
         m(
           "H2",
           { class: "text-center advanced-settings", style: "display:none" },
-          m.trust("<br>Server Settings")
+          m.trust("<br>Server Settings"),
         ),
 
         m(
@@ -3169,14 +3237,14 @@ var settings_page = {
               {
                 for: "server_url",
               },
-              "URL"
+              "URL",
             ),
             m("input", {
               id: "server_url",
               placeholder: "Server URL",
               value: settings.server_url,
             }),
-          ]
+          ],
         ),
 
         m(
@@ -3191,14 +3259,14 @@ var settings_page = {
               {
                 for: "server_path",
               },
-              "Path"
+              "Path",
             ),
             m("input", {
               id: "server_path",
               placeholder: "Path",
               value: settings.server_path,
             }),
-          ]
+          ],
         ),
 
         m(
@@ -3213,14 +3281,14 @@ var settings_page = {
               {
                 for: "server_port",
               },
-              "Port"
+              "Port",
             ),
             m("input", {
               id: "server_port",
               placeholder: "Port",
               value: settings.server_port,
             }),
-          ]
+          ],
         ),
 
         m(
@@ -3235,14 +3303,14 @@ var settings_page = {
               {
                 for: "invite_url",
               },
-              "Invite URL"
+              "Invite URL",
             ),
             m("input", {
               id: "invite_url",
               placeholder: "Invite URL",
               value: settings.invite_url,
             }),
-          ]
+          ],
         ),
 
         m(
@@ -3257,14 +3325,14 @@ var settings_page = {
               {
                 for: "metered_aki_key",
               },
-              "metered API key"
+              "metered API key",
             ),
             m("input", {
               id: "metered_api_key",
               placeholder: "API key",
               value: settings.metered_api_key || "",
             }),
-          ]
+          ],
         ),
 
         m(
@@ -3272,17 +3340,36 @@ var settings_page = {
           {
             class: "item",
             onclick: () => {
-              let cb = (e) => {
-                import_addressbook(e.json);
+              let cb = (file) => {
+                const reader = new FileReader();
+
+                reader.onload = () => {
+                  const buffer = reader.result;
+
+                  unzip_file(buffer)
+                    .then((result) => {
+                      import_addressbook(result);
+                      m.route.set("/start");
+                    })
+                    .catch(() => {
+                      alert("ZIP error");
+                    });
+                };
+
+                reader.onerror = () => {
+                  alert("can't read file");
+                };
+
+                reader.readAsArrayBuffer(file);
               };
               if (status.notKaiOS) {
-                pick_file(cb);
+                pick_zip_file(cb);
               } else {
                 m.route.set("/filelist");
               }
             },
           },
-          "import addressbook"
+          "import addressbook",
         ),
 
         m(
@@ -3293,7 +3380,7 @@ var settings_page = {
               deleteOldChatData();
             },
           },
-          "delete old data"
+          "delete old data",
         ),
 
         m(
@@ -3341,7 +3428,7 @@ var settings_page = {
               });
             },
           },
-          "download app data"
+          "download app data",
         ),
 
         m(
@@ -3362,8 +3449,27 @@ var settings_page = {
               }
             },
           },
-          "import chat data"
+          "import chat data",
         ),
+
+        status.notKaiOS
+          ? m(
+              "button",
+              {
+                oncreate: (vnode) => {
+                  vnode.dom.style.display = "none";
+                },
+                onclick: () => {
+                  if (navigator.serviceWorker.controller) {
+                    navigator.serviceWorker.controller.postMessage({
+                      type: "FORCE_UPDATE",
+                    });
+                  }
+                },
+              },
+              "load new version",
+            )
+          : null,
 
         m(
           "button",
@@ -3394,9 +3500,9 @@ var settings_page = {
                 });
             },
           },
-          "save settings"
+          "save settings",
         ),
-      ]
+      ],
     );
   },
 };
@@ -3407,6 +3513,7 @@ var options = {
   },
   onremove: () => {
     status.viewReady = false;
+    status.shareuser = false;
   },
 
   view: function () {
@@ -3442,7 +3549,7 @@ var options = {
               pick_image(handleImage);
             },
           },
-          "share image"
+          "share image",
         ),
 
         m(
@@ -3455,11 +3562,11 @@ var options = {
 
             onclick: function () {
               m.route.set(
-                "/map_view?lat=" + 0 + "&lng=" + 0 + "&viewonly=false"
+                "/map_view?lat=" + 0 + "&lng=" + 0 + "&viewonly=false",
               );
             },
           },
-          "share location"
+          "share location",
         ),
 
         m(
@@ -3504,7 +3611,7 @@ var options = {
               }
             },
           },
-          ""
+          "",
         ),
 
         status.current_user_id
@@ -3517,7 +3624,7 @@ var options = {
                   }, 500);
 
                   const isInAddressbook = addressbook.some(
-                    (e) => e.id == status.current_user_id
+                    (e) => e.id == status.current_user_id,
                   );
 
                   if (isInAddressbook) {
@@ -3534,14 +3641,79 @@ var options = {
                 onclick: function () {
                   addUserToAddressBook(
                     status.current_user_id,
-                    status.current_user_nickname
+                    status.current_user_nickname,
                   );
                 },
               },
-              "add user to addressbook"
+              "add user to addressbook",
             )
           : null,
-      ]
+
+        status.current_user_id
+          ? m(
+              "button",
+              {
+                oncreate: function (vnode) {
+                  setTimeout(function () {
+                    setTabindex();
+                  }, 500);
+                },
+
+                class: "item",
+                id: "button-share-user",
+
+                onfocus: () => {
+                  bottom_bar("", "", "");
+                },
+                onclick: function () {
+                  side_toaster("select user", 5000);
+
+                  status.shareuser = true;
+                  m.redraw();
+                },
+              },
+              "share user",
+            )
+          : null,
+
+        status.shareuser
+          ? m(
+              "div",
+              {
+                id: "user-list",
+                oncreate: () => {
+                  setTimeout(function () {
+                    setTabindex();
+                  }, 500);
+                },
+              },
+              [
+                addressbook.map((e) => {
+                  return m(
+                    "button",
+                    {
+                      class: "item",
+                      onclick: () => {
+                        let c = { id: e.id, name: e.name };
+                        sendMessage(
+                          JSON.stringify(c),
+                          "contact",
+                          undefined,
+                          undefined,
+                        );
+                        setTimeout(() => {
+                          history.back();
+                          status.shareuser = false;
+                        }, 200);
+                      },
+                    },
+                    e.name,
+                  );
+                }),
+              ],
+            )
+          : null,
+      ],
     );
   },
 };
@@ -3564,13 +3736,17 @@ var intro = {
         onremove: () => {
           localStorage.setItem("version", status.version);
         },
-        oninit: function () {
+
+        oncreate() {
           //KaiOS to prevent whitescreen on startup
           document.querySelector("body").style.background = "white";
           document.querySelector("html").style.background = "white";
           document.querySelector("#app").style.background = "white";
           document.querySelector("#wrapper").style.display = "block";
+        },
 
+        oninit: function () {
+          /*
           const protocol = window.location.protocol;
           const host = window.location.host;
           const pathname = window.location.pathname;
@@ -3592,6 +3768,28 @@ var intro = {
             }
           } else {
             setTimeout(function () {
+              m.route.set("/start");
+            }, 2000);
+          }
+            */
+
+          // URL-Logik
+          const fullUrl = window.location.href;
+
+          if (fullUrl.includes("?id=")) {
+            localforage.setItem("connect_to_id", { data: fullUrl });
+            status.launching = true;
+
+            if (!status.notKaiOS) {
+              app_launcher();
+            } else {
+              setTimeout(() => {
+                let m = fullUrl.split("id=");
+                connect_to_peer(m[1]);
+              }, 1000);
+            }
+          } else {
+            setTimeout(() => {
               m.route.set("/start");
             }, 2000);
           }
@@ -3641,7 +3839,7 @@ var intro = {
         m(
           "div",
           {
-            class: "row around-xs debug",
+            class: "row around-xs",
             id: "version-box",
           },
           [
@@ -3650,11 +3848,11 @@ var intro = {
               {
                 id: "version",
               },
-              localStorage.getItem("version") || 0
+              localStorage.getItem("version") || 0,
             ),
-          ]
+          ],
         ),
-      ]
+      ],
     );
   },
 };
@@ -3684,7 +3882,7 @@ var start = {
           bottom_bar(
             "<img src='assets/image/invite.svg'>",
             "",
-            "<img src='assets/image/option.svg'>"
+            "<img src='assets/image/option.svg'>",
           );
 
           status.messageToSend = messageQueueStorage.length;
@@ -3700,7 +3898,7 @@ var start = {
               if (!status.notKaiOS) vnode.dom.style.display = "none";
             },
           },
-          [m("img", { class: "", src: "./assets/image/logo-style.svg" })]
+          [m("img", { class: "", src: "./assets/image/logo-style.svg" })],
         ),
         addressbook.length == 0
           ? m(
@@ -3715,14 +3913,14 @@ var start = {
                   bottom_bar(
                     "<img src='assets/image/invite.svg'>",
                     "",
-                    "<img src='assets/image/option.svg'>"
+                    "<img src='assets/image/option.svg'>",
                   );
                   setTabindex();
                 },
               },
               m.trust(
-                "<div>Flop is a webRTC chat app that allows you to communicate directly with someone (p2p). You can currently exchange text, images, audio and your location with your chat partner. </div><div class='item'></div><br><div>To chat with a person you have to invite them or you will be invited.</div><div class='item'></div><br><br>"
-              )
+                "<div>Flop is a webRTC chat app that allows you to communicate directly with someone (p2p). You can currently exchange text, images, audio and your location with your chat partner. </div><div class='item'></div><br><div>To chat with a person you have to invite them or you will be invited.</div><div class='item'></div><br><br>",
+              ),
             )
           : null,
 
@@ -3735,7 +3933,7 @@ var start = {
               }
             },
           },
-          m(addressbook_comp)
+          m(addressbook_comp),
         ),
 
         m(
@@ -3747,7 +3945,7 @@ var start = {
               if (!status.notKaiOS) vnode.dom.style.display = "none";
             },
           },
-          "Version " + localStorage.getItem("version") || 0
+          "Version " + localStorage.getItem("version") || 0,
         ),
         m(
           "a",
@@ -3761,7 +3959,7 @@ var start = {
               if (!status.notKaiOS) vnode.dom.style.display = "none";
             },
           },
-          [m("img", { src: "./assets/image/liberapay.svg" })]
+          [m("img", { src: "./assets/image/liberapay.svg" })],
         ),
 
         m(
@@ -3776,7 +3974,7 @@ var start = {
               if (!status.notKaiOS) vnode.dom.style.display = "none";
             },
           },
-          [m("img", { src: "./assets/image/git.png" })]
+          [m("img", { src: "./assets/image/git.png" })],
         ),
         m(
           "kbd",
@@ -3784,9 +3982,9 @@ var start = {
             class: "only-desktop",
             id: "local-by-design",
           },
-          "local by design"
+          "local by design",
         ),
-      ]
+      ],
     );
   },
 };
@@ -3794,8 +3992,9 @@ var start = {
 var AudioComponent = {
   oninit: (vnode) => {
     if (!status.audioCtx) {
-      status.audioCtx = new (window.AudioContext ||
-        window.webkitAudioContext)();
+      status.audioCtx = new (
+        window.AudioContext || window.webkitAudioContext
+      )();
     }
     key_delay();
 
@@ -3868,13 +4067,13 @@ var AudioComponent = {
                   top_bar(
                     "<img src='assets/image/back.svg'>",
                     dayjs.utc(vnode.state.currentTime * 1000).format("mm:ss"),
-                    ""
+                    "",
                   );
                 } else {
                   top_bar(
                     "",
                     dayjs.utc(vnode.state.currentTime * 1000).format("mm:ss"),
-                    ""
+                    "",
                   );
                 }
 
@@ -3902,7 +4101,7 @@ var AudioComponent = {
               audioVnode.dom.addEventListener("error", () => {
                 console.error(
                   "An error occurred while loading the audio.",
-                  audioVnode.dom.error
+                  audioVnode.dom.error,
                 );
               });
             },
@@ -3951,7 +4150,7 @@ var AudioComponent = {
               reflexRatio: 0,
               lineWidth: 10,
               volume: 1.0,
-            }
+            },
           );
 
           audioMotion.canvas.style.background = "none";
@@ -3965,8 +4164,9 @@ let audioRecorder;
 var audiorecorder_view = {
   oninit: () => {
     if (!status.audioCtx) {
-      status.audioCtx = new (window.AudioContext ||
-        window.webkitAudioContext)();
+      status.audioCtx = new (
+        window.AudioContext || window.webkitAudioContext
+      )();
     }
     status.audioRecorderDuration = 0;
     key_delay();
@@ -4023,7 +4223,7 @@ var audiorecorder_view = {
           bottom_bar(
             "<img src='assets/image/send.svg'>",
             "<img src='assets/image/play.svg'>",
-            "<img src='assets/image/cancel.svg'>"
+            "<img src='assets/image/cancel.svg'>",
           );
         },
 
@@ -4048,7 +4248,7 @@ var audiorecorder_view = {
           bottom_bar(
             "<img src='assets/image/send.svg'>",
             "<img src='assets/image/pause.svg'>",
-            "<img src='assets/image/cancel.svg'>"
+            "<img src='assets/image/cancel.svg'>",
           );
 
           status.playbackTimerRAF = requestAnimationFrame(updateTime);
@@ -4062,7 +4262,7 @@ var audiorecorder_view = {
           bottom_bar(
             "<img src='assets/image/send.svg'>",
             "<img src='assets/image/play.svg'>",
-            "<img src='assets/image/cancel.svg'>"
+            "<img src='assets/image/cancel.svg'>",
           );
         },
       }),
@@ -4088,7 +4288,7 @@ var audiorecorder_view = {
                   dayjs
                     .utc(status.audioRecorderDuration * 1000)
                     .format("mm:ss"),
-                  ""
+                  "",
                 );
               }, 1000);
 
@@ -4140,7 +4340,7 @@ const Toolbar = {
               src: "assets/image/marker.svg",
               onclick: function () {
                 m.route.set(
-                  "/map_view?lat=" + 0 + "&lng=" + 0 + "&viewonly=false"
+                  "/map_view?lat=" + 0 + "&lng=" + 0 + "&viewonly=false",
                 );
               },
               title: "share location",
@@ -4227,7 +4427,7 @@ var chat = {
         "<div id='name'>" + username.slice(0, 8) + "</div>",
         "<span class='online-indicator'></span><img class='avatar' src=" +
           create_avatar(username, 30) +
-          ">"
+          ">",
       );
     }
   },
@@ -4271,7 +4471,7 @@ var chat = {
             "<div id='name'>" + username.slice(0, 6) + "</div>",
             "<span class='online-indicator'></span><img class='avatar' src=" +
               create_avatar(username, 30) +
-              ">"
+              ">",
           );
           if (status.notKaiOS)
             top_bar(
@@ -4279,13 +4479,13 @@ var chat = {
               "<div id='name'>" + username.slice(0, 8) + "</div>",
               "<span class='online-indicator'></span><img class='avatar' src=" +
                 create_avatar(username, 30) +
-                ">"
+                ">",
             );
 
           bottom_bar(
             "<img src='assets/image/pencil.svg'>",
             "",
-            "<img src='assets/image/option.svg'>"
+            "<img src='assets/image/option.svg'>",
           );
           let every_10_secs = 0;
           user_check = setInterval(() => {
@@ -4365,7 +4565,7 @@ var chat = {
                       bottom_bar(
                         "<img src='assets/image/pencil.svg'>",
                         "",
-                        "<img src='assets/image/option.svg'>"
+                        "<img src='assets/image/option.svg'>",
                       );
                     if (status.action === "write") write();
                   }, 1500);
@@ -4374,14 +4574,14 @@ var chat = {
                   bottom_bar(
                     "<img src='assets/image/send.svg'>",
                     "<img src='assets/image/record.svg'>",
-                    "<img src='assets/image/option.svg'>"
+                    "<img src='assets/image/option.svg'>",
                   );
                 },
                 oninput: () => {
                   bottom_bar(
                     "<img src='assets/image/send.svg'>",
                     "",
-                    "<img src='assets/image/option.svg'>"
+                    "<img src='assets/image/option.svg'>",
                   );
                 },
                 onkeyup: (e) => {
@@ -4392,12 +4592,12 @@ var chat = {
                       "typing",
                       undefined,
                       status.current_user_id,
-                      undefined
+                      undefined,
                     );
                   }
                 },
               }),
-            ]
+            ],
           )
         : null,
 
@@ -4433,6 +4633,12 @@ var chat = {
             "data-first": isFirst ? "true" : "false",
 
             onclick: () => {
+              if (item.type == "contact") {
+                let q = confirm("Do you want add the user");
+                if (q) {
+                  addUserToAddressBook(item.id, item.name);
+                }
+              }
               if (item.type == "gps") {
                 m.route.set(
                   "/map_view?lat=" +
@@ -4441,7 +4647,7 @@ var chat = {
                     ff.lng +
                     "&messageid=" +
                     item.id +
-                    "&viewonly=true"
+                    "&viewonly=true",
                 );
               }
 
@@ -4454,7 +4660,7 @@ var chat = {
                     "&viewLiveLocation=true" +
                     "&messageid=" +
                     item.id +
-                    "&viewonly=true"
+                    "&viewonly=true",
                 );
               }
               if (item.type == "audio") {
@@ -4489,7 +4695,7 @@ var chat = {
                 bottom_bar(
                   "<img src='assets/image/pencil.svg'>",
                   "",
-                  "<img src='assets/image/option.svg'>"
+                  "<img src='assets/image/option.svg'>",
                 );
               }
 
@@ -4499,7 +4705,7 @@ var chat = {
                 bottom_bar(
                   "<img src='assets/image/pencil.svg'>",
                   "",
-                  "<img src='assets/image/option.svg'>"
+                  "<img src='assets/image/option.svg'>",
                 );
               }
 
@@ -4509,7 +4715,17 @@ var chat = {
                 bottom_bar(
                   "<img src='assets/image/pencil.svg'>",
                   "<img src='assets/image/save.svg'>",
-                  "<img src='assets/image/option.svg'>"
+                  "<img src='assets/image/option.svg'>",
+                );
+              }
+
+              if (item.type == "contact") {
+                status.current_article_type = "contact";
+                if (status.notKaiOS) return false;
+                bottom_bar(
+                  "<img src='assets/image/pencil.svg'>",
+                  "<img src='assets/image/save.svg'>",
+                  "<img src='assets/image/option.svg'>",
                 );
               }
 
@@ -4521,13 +4737,13 @@ var chat = {
                   bottom_bar(
                     "<img src='assets/image/pencil.svg'>",
                     "",
-                    "<img src='assets/image/option.svg'>"
+                    "<img src='assets/image/option.svg'>",
                   );
                 } else {
                   bottom_bar(
                     "<img src='assets/image/pencil.svg'>",
                     "<img src='assets/image/play.svg'>",
-                    "<img src='assets/image/option.svg'>"
+                    "<img src='assets/image/option.svg'>",
                   );
                 }
               }
@@ -4538,7 +4754,7 @@ var chat = {
                 bottom_bar(
                   "<img src='assets/image/pencil.svg'>",
                   "",
-                  "<img src='assets/image/option.svg'>"
+                  "<img src='assets/image/option.svg'>",
                 );
               }
             },
@@ -4550,7 +4766,7 @@ var chat = {
               ? m(
                   "div",
                   { class: "new-date" },
-                  dayjs(item.datetime).format("DD MMM YYYY")
+                  dayjs(item.datetime).format("DD MMM YYYY"),
                 )
               : null,
 
@@ -4560,7 +4776,7 @@ var chat = {
                   {
                     class: "message-main",
                   },
-                  item.payload.text
+                  item.payload.text,
                 )
               : null,
 
@@ -4572,13 +4788,26 @@ var chat = {
                 })
               : null,
 
+            item.type === "contact"
+              ? m(
+                  "button",
+                  {
+                    class: "contact-button",
+                  },
+                  [
+                    m("img", { src: "./assets/image/person.svg" }),
+                    m("div", item.payload.name),
+                  ],
+                )
+              : null,
+
             item.type === "gps"
               ? m(
                   "button",
                   {
                     class: "map-button",
                   },
-                  [m("img", { src: "./assets/image/map.svg" })]
+                  [m("img", { src: "./assets/image/map.svg" })],
                 )
               : null,
 
@@ -4594,7 +4823,7 @@ var chat = {
                   {
                     class: "audioplayer-button",
                   },
-                  [m("img", { src: "./assets/image/audio.png" })]
+                  [m("img", { src: "./assets/image/audio.png" })],
                 )
               : null,
 
@@ -4606,7 +4835,7 @@ var chat = {
                   class: "type",
                   style: { display: item.type == "gps" ? "" : "none" },
                 },
-                "  Location"
+                "  Location",
               ),
 
               nickname == "me"
@@ -4616,7 +4845,7 @@ var chat = {
                       class: "type",
                       style: { display: item.type == "gps" ? "" : "none" },
                     },
-                    "  me"
+                    "  me",
                   )
                 : null,
 
@@ -4626,7 +4855,7 @@ var chat = {
                   class: "",
                   style: { display: item.type == "gps_live" ? "" : "none" },
                 },
-                "  Live location"
+                "  Live location",
               ),
 
               nickname == "me"
@@ -4636,7 +4865,7 @@ var chat = {
                       class: "",
                       style: { display: item.type == "gps_live" ? "" : "none" },
                     },
-                    "  me"
+                    "  me",
                   )
                 : null,
 
@@ -4647,7 +4876,7 @@ var chat = {
                   })
                 : null,
             ]),
-          ]
+          ],
         );
       }),
       m("div", { id: "typing-indicator", class: "" }, ""),
@@ -4659,9 +4888,9 @@ var chat = {
               id: "used-storage",
               title: "used storage in mb",
             },
-            status.usedStorage + "MB"
+            status.usedStorage + "MB",
           )
-        : null
+        : null,
     );
   },
 };
@@ -4685,7 +4914,7 @@ let map_view = {
           bottom_bar(
             "<img src='assets/image/plus.svg'>",
             "<img src='assets/image/send.svg'>",
-            "<img src='assets/image/minus.svg'>"
+            "<img src='assets/image/minus.svg'>",
           );
           let params = new URLSearchParams(m.route.get().split("?")[1]);
           let lat = parseFloat(params.get("lat")) || 0;
@@ -4705,7 +4934,7 @@ let map_view = {
             bottom_bar(
               "<img src='assets/image/plus.svg'>",
               "",
-              "<img src='assets/image/minus.svg'>"
+              "<img src='assets/image/minus.svg'>",
             );
 
           map_function(lat, lng, viewOnly, viewLiveLocation, messageId);
@@ -4724,7 +4953,7 @@ let map_view = {
           m("div.hline"),
           m("div.vline"),
         ]),
-      ]
+      ],
     );
   },
 };
@@ -4817,7 +5046,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
     items = document.getElementById("app").querySelectorAll(".item");
     items = Array.from(items).filter(
-      (item) => getComputedStyle(item).display !== "none"
+      (item) => getComputedStyle(item).display !== "none",
     );
 
     if (document.activeElement.parentNode.classList.contains("input-parent")) {
@@ -5145,7 +5374,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
           if (document.getElementsByTagName("input")[0].value == "") {
             side_toaster(
               "I can't send anything because there is no content.",
-              2000
+              2000,
             );
             return;
           }
@@ -5153,7 +5382,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
             document.getElementsByTagName("input")[0].value,
             "text",
             undefined,
-            undefined
+            undefined,
           );
           write();
         }
@@ -5178,7 +5407,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
                   "audio",
                   mimeType || "",
                   undefined,
-                  undefined
+                  undefined,
                 );
 
                 history.back();
@@ -5194,7 +5423,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
               "audio",
               status.audioMimeType || "",
               undefined,
-              undefined
+              undefined,
             );
 
             status.audio_recording = false;
@@ -5211,7 +5440,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
               } else {
                 console.log("Sharing failed.");
               }
-            }
+            },
           );
         }
 
@@ -5327,7 +5556,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
           if (status.current_user_id && status.current_user_nickname) {
             addUserToAddressBook(
               status.current_user_id,
-              status.current_user_nickname
+              status.current_user_nickname,
             );
           } else {
             side_toaster("contact could not be created", 3000);
@@ -5363,7 +5592,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
                   document.activeElement.getAttribute("data-lng") +
                   "&messageid=" +
                   document.activeElement.getAttribute("data-message-id") +
-                  "&viewonly=true"
+                  "&viewonly=true",
               );
             }
             if (status.current_article_type == "image") {
@@ -5377,6 +5606,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
               let download_successfull = () => {};
               downloadFile(filename, data, download_successfull);
+            }
+
+            if (status.current_article_type == "contact") {
+              document.activeElement.click();
             }
           }
 
@@ -5493,7 +5726,7 @@ if (!status.notKaiOS) {
           },
           (error) => {
             console.log(error);
-          }
+          },
         );
       });
   } catch (e) {
@@ -5527,3 +5760,12 @@ function handlePageShow() {
 document.addEventListener("visibilitychange", handleVisibilityChange);
 window.addEventListener("pagehide", handlePageHide);
 window.addEventListener("pageshow", handlePageShow);
+
+const isReload =
+  performance && performance.navigation && performance.navigation.type === 1;
+
+if (isReload) {
+  status.wasReload = true;
+  console.log("was reload");
+  m.route.set("/intro");
+}

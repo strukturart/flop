@@ -990,6 +990,18 @@ article button.map-button img {
   width: 40px;
 }
 
+article button.contact-button {
+  width: auto;
+  border: 0px solid gray;
+  padding: 5px;
+  margin-top: 8px;
+}
+
+article button.contact-button img {
+  display: block;
+  width: 40px;
+}
+
 .advanced-settings {
   display: none;
 }

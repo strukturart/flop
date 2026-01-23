@@ -15,14 +15,12 @@
 "/file-list.json",
 "/icon-56-56.1e9dcdb2.png",
 "/sw.js",
-"/marker-icon.1fbbd958.png",
 "/index.b21b458a.css",
 "/marker-icon.05f15d80.png",
 "/Roboto-Regular.4c37d4e4.ttf",
 "/marker-icon-2x.be24e7dc.png",
 "/index.01bdc06e.css",
 "/icon-192-maskable.01b5535e.png",
-"/marker-icon-2x.a246f82c.png",
 "/index.runtime.f4aa01e2.js",
 "/manifest.webmanifest",
 "/icon-512.0107f5e0.png",
@@ -74,5 +72,7 @@
 "/assets/icons/icon-56-56.svg",
 "/assets/icons/favicon.ico",
 "/assets/icons/icon-192.png",
+"/assets/icons/preview.png",
+"/assets/icons/preview.svg",
 "/assets/fonts/Roboto-Regular.ttf"
 ]
