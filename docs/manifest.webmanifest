@@ -59,7 +59,7 @@
   ],
 
   "b2g_features": {
-    "version": "0.3426",
+    "version": "0.3452",
     "id": "flop",
     "subtitle": "flop WebRTC chat app",
     "core": true,
@@ -92,6 +92,8 @@
       "desktop-notification": {
         "description": "Needed to fire system notifications"
       },
+
+      "tcp-socket": {},
 
       "mobiledata": {},
       "wifidata": {},

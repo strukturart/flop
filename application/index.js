@@ -41,6 +41,11 @@ import { setConfig } from "dompurify";
 
 import utc from "dayjs/plugin/utc";
 
+import { MeshDevice } from "@meshtastic/core";
+import { TransportHTTP } from "@meshtastic/transport-http";
+
+let meshtastic = { users: [] };
+
 dayjs.extend(utc);
 
 export let status = {
@@ -63,7 +68,7 @@ export let status = {
   geolocation_last_autoupdate_id: null,
   geolocation_onTimeRequest: false,
   gps_live_receiver: [],
-  debug: false,
+  debug: true,
   viewReady: false,
   groupchat: false,
   history_of_ids: [],
@@ -81,40 +86,7 @@ export let status = {
   appVersion: "0.24808",
 };
 
-async function generateCoturnCredentials(url, sharedSecret, ttl = 3600) {
-  if (!sharedSecret) throw new Error("Shared secret missing");
-
-  // TURN expects UNIX time + TTL
-  const timestamp = Math.floor(Date.now() / 1000) + ttl; // +1 Stunde
-
-  // Since you have no username, we use a neutral placeholder
-  const username = `${timestamp}:client`;
-
-  const enc = new TextEncoder();
-  const keyData = enc.encode(sharedSecret);
-  const msgData = enc.encode(username);
-
-  // Import HMAC-SHA1 key
-  const key = await crypto.subtle.importKey(
-    "raw",
-    keyData,
-    { name: "HMAC", hash: "SHA-1" },
-    false,
-    ["sign"],
-  );
-
-  // HMAC-SHA1(username)
-  const signature = await crypto.subtle.sign("HMAC", key, msgData);
-
-  // Convert ArrayBuffer → base64
-  const password = btoa(String.fromCharCode(...new Uint8Array(signature)));
-
-  return {
-    urls: url,
-    username,
-    password,
-  };
-}
+status.protocol = window.location.protocol;
 
 //test os version
 if (navigator.mozApps) {
@@ -159,6 +131,110 @@ if (!status.notKaiOS) {
     js.src = src;
     document.head.appendChild(js);
   });
+}
+let device;
+let tryout = 0;
+async function initDevice() {
+  tryout++;
+  try {
+    const connection = await TransportHTTP.create("192.168.1.102", false);
+    device = new MeshDevice(connection);
+
+    //await device.onConnected;
+
+    console.log("Device ready");
+    status.meshtastic = {
+      myNodeInfo: device.myNodeInfo,
+      nodeId: device.myNodeInfo.myNodeNum,
+    };
+
+    // Listen for incoming text messages
+    device.events.onMessagePacket.subscribe((packet) => {
+      console.log(`Message from  ${packet.from}: ${packet.data}`);
+      //receive data
+      let user = addressbook.find((e) => {
+        return packet.from == e.id;
+      });
+      chat_data.push({
+        id: String(packet.id),
+        nickname: user.nickname,
+        datetime: new Date(),
+        payload: { text: packet.data },
+        type: "text",
+        from: String(packet.from),
+        to: settings.custom_peer_id,
+      });
+      storeChatData().then(() => {
+        m.redraw();
+      });
+    });
+
+    device.events.onFromRadio.subscribe((packet) => {
+      console.log(packet.payloadVariant);
+      if (packet.payloadVariant?.case !== "nodeInfo") {
+        return;
+      }
+
+      const node = packet.payloadVariant.value;
+      const index = meshtastic.users.findIndex((user) => user.num === node.num);
+      if (index === -1) {
+        meshtastic.users.push(node);
+      } else {
+        meshtastic.users[index] = node;
+      }
+    });
+
+    await device.configure();
+    console.log("Device config");
+
+    console.log("ALLE NODES:", meshtastic.users);
+    meshtastic.users.forEach((e) => {
+      console.log(e.num, e.user.shortName);
+      if (e.isFavorite)
+        addUserToAddressBook(e.num, e.user.shortName, e.num, "meshtastic");
+    });
+
+    status.meshtastic.connected = true;
+
+    return device;
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error:", JSON.stringify(error));
+
+    setTimeout(() => {
+      if (tryout < 5) {
+        initDevice();
+      }
+    }, 4000);
+
+    return null;
+  }
+}
+
+initDevice().then(() => {
+  setTimeout(() => {
+    m.redraw();
+  }, 2000);
+});
+
+async function sendMessageMesh(id, txt, messageId) {
+  try {
+    console.log("try to send user: " + id);
+    storeChatData();
+    const result = await device.sendText(txt, id, true, 0);
+    let message = chat_data.find((e) => {
+      return e.id == messageId;
+    });
+
+    message.pod = true;
+    m.redraw();
+
+    console.log("OK:", result);
+  } catch (error) {
+    console.error("Error:", error);
+    storeChatData();
+    m.redraw();
+  }
 }
 
 let links = "";
@@ -268,6 +344,7 @@ if (status.test) {
   setTimeout(() => {
     addressbook = [
       {
+        type: "webRTC",
         name: "jj",
         nickname: "xdd",
         id: "112",
@@ -275,6 +352,7 @@ if (status.test) {
         last_conversation_datetime: 1741625898228,
       },
       {
+        type: "webRTC",
         name: "jj",
         nickname: "xdd",
         id: "112",
@@ -375,35 +453,67 @@ let update_addressbook_item = (userIdToUpdate) => {
     });
 };
 
-let addUserToAddressBook = (a, b = "", c = "") => {
+let addUserToAddressBook = (a, b = "", c = "", type = "webRTC") => {
+  status.action = "busy";
   const exists = addressbook.some((e) => e.id === a);
 
   if (exists) {
-    side_toaster("User already in addressbook", 2000);
+    const user = addressbook.find((e) => e.id === a);
+    user.nickname = b;
+    user.name = b;
+
+    localforage
+      .setItem("addressbook", addressbook)
+      .then(() => {
+        side_toaster("Contact updated successfully", 3000);
+      })
+      .catch((error) => {
+        console.error("Error saving updated address book:", error);
+      });
+
+    setTimeout(() => {
+      status.action = "";
+    }, 1000);
     return false;
   }
+  let uname;
+  if (type == "webRTC") {
+    uname = window.prompt("enter the name of the contact");
 
-  let uname = window.prompt("enter the name of the contact");
+    if (uname === null) {
+      // Cancel
+      setTimeout(() => {
+        status.action = "";
+      }, 1000);
 
-  if (uname === null) {
-    // Cancel
-    return false;
+      return false;
+    }
+  } else {
+    uname = b;
+    c = a;
   }
 
   addressbook.push({
+    type: type,
     id: a,
     nickname: b,
     name: uname,
     client_id: c,
-    live: false,
+    live: type == "webRTC" ? false : true,
   });
-
   localforage
     .setItem("addressbook", addressbook)
     .then((e) => {
       side_toaster("user add to addressbook", 3000);
+      setTimeout(() => {
+        status.action = "";
+      }, 1000);
     })
-    .catch(() => {});
+    .catch(() => {
+      setTimeout(() => {
+        status.action = "";
+      }, 1000);
+    });
 };
 
 //clean messageQueue
@@ -600,7 +710,6 @@ function setupConnectionEvents(conn) {
     try {
       let clientID = JSON.parse(conn.metadata);
       let clientServerUrl = clientID.signaling_server_url || "";
-      console.log("test" + clientServerUrl);
 
       clientID = clientID.unique_id;
 
@@ -970,17 +1079,6 @@ async function getIceServers() {
         ice_servers.iceServers.push(credential);
       }
     });
-    /*
-    generateCoturnCredentials(
-      process.env.TURN_URL,
-      process.env.TURN_SHAREDSECRET,
-      7200
-    ).then((e) => {
-      ice_servers.iceServers.push(e);
-      console.log(ice_servers);
-    });
-
-    */
 
     peer = new Peer(settings.custom_peer_id, {
       debug: 0,
@@ -1406,8 +1504,11 @@ let sendMessage = (
       id: messageId,
       pod: false,
     });
-
-    sendMessageToAll(message);
+    if (status.current_com_type == "meshtastic") {
+      sendMessageMesh(status.current_user_id, message.payload.text, messageId);
+    } else {
+      sendMessageToAll(message);
+    }
 
     focus_last_article();
     write();
@@ -1586,7 +1687,8 @@ async function sendMessageToAll(message) {
           "The user is not online. Message couldn't be sent. Try to send WebPush",
         );
 
-        sendPushMessage(getClientId.client_id, "Flop");
+        if (status.current_com_type == "webRTC")
+          sendPushMessage(getClientId.client_id, "Flop");
 
         status.webpush_do_not_annoy.push(getClientId.client_id);
 
@@ -1650,7 +1752,11 @@ async function sendMessageToAll(message) {
 const webPush_reg = async (action) => {
   const publicKey = process.env.VAPID_PUBLIC;
 
-  if ("serviceWorker" in navigator && "PushManager" in window) {
+  if (
+    "serviceWorker" in navigator &&
+    "PushManager" in window &&
+    status.protocol == "https"
+  ) {
     try {
       const registration = await navigator.serviceWorker.register(
         new URL("sw.js", import.meta.url),
@@ -1770,9 +1876,10 @@ let peer_is_online = async function () {
     for (let i = 0; i < addressbook.length; i++) {
       let entry = addressbook[i];
       entry.live = false;
+      if (entry.type == "meshtastic") entry.live = true;
       m.redraw();
 
-      if (!entry.id || entry.id == "") {
+      if (!entry.id || entry.id == "" || entry.type == "meshtastic") {
         continue;
       }
 
@@ -1794,6 +1901,7 @@ let peer_is_online = async function () {
         if (!peer.open) {
           getIceServers();
           console.log("peer not open, open new connection to peerJS server");
+          if (entry.type == "meshtastic") entry.live = true;
         }
         let user_meta = {
           "history_of_ids": status.history_of_ids,
@@ -1820,8 +1928,11 @@ let peer_is_online = async function () {
             m.redraw();
           });
         }
+        if (entry.type == "meshtastic") entry.live = true;
       } catch (error) {
         entry.live = false;
+        if (entry.type == "meshtastic") entry.live = true;
+
         m.redraw();
       }
     }
@@ -2526,62 +2637,107 @@ var addressbook_comp = {
                     "data-id": e.id,
                     "data-client-id": e.client_id || "null",
                     "data-nickname": e.nickname || e.name,
+                    "data-type": e.type,
                     "data-name": e.name || e.nickname,
                     "data-server-url": e.serverUrl || "",
                     "data-activ":
                       e.id == status.current_user_id ? "true" : "false",
 
-                    "data-online": e.live ? "true" : "false",
+                    "data-online":
+                      e.live || e.type == "meshtastic" ? "true" : "false",
+                    oninit: () => {
+                      if (e.type == "meshtastic") {
+                        e.live = true;
+                      }
+                      if (!e.type) {
+                        e.type = "webRTC";
+                      }
+                    },
 
                     oncreate: (vnode) => {
                       setTabindex();
                       if (i == 0) vnode.dom.focus();
+                      if (e.type == "meshtastic") {
+                      }
                     },
                     onfocus: () => {
                       status.addressbook_in_focus = e.id;
                     },
                     onkeydown: (h) => {
                       if (h.key === "Enter") {
-                        connect_to_peer(
-                          document.activeElement.getAttribute("data-id"),
-                        );
+                        if (e.type == "webRTC") {
+                          connect_to_peer(
+                            document.activeElement.getAttribute("data-id"),
+                          );
+                        }
+                        if (
+                          e.type == "meshtastic" &&
+                          !status.meshtastic.connected
+                        ) {
+                          alert("LoRa Device not ready!");
+                          return;
+                        }
 
                         status.current_user_id =
                           document.activeElement.getAttribute("data-id");
                         status.current_user_nickname = e.nickname;
                         status.current_user_name = e.name;
+                        status.current_com_type = e.type;
                         m.route.set(
                           "/chat?id=" +
                             settings.custom_peer_id +
                             "&peer=" +
-                            status.current_user_id,
+                            status.current_user_id +
+                            "&type=" +
+                            e.type,
                         );
                       }
                     },
                     onclick: () => {
-                      connect_to_peer(
-                        document.activeElement.getAttribute("data-id"),
-                      );
+                      if (e.type == "webRTC") {
+                        connect_to_peer(
+                          document.activeElement.getAttribute("data-id"),
+                        );
+                      }
+                      if (
+                        e.type == "meshtastic" &&
+                        !status.meshtastic.connected
+                      ) {
+                        alert("LoRa Device not ready!");
+                        return;
+                      }
 
+                      if (e.type == "meshtastic") {
+                        status.current_com_type = e.type;
+                      }
                       status.current_user_id =
                         document.activeElement.getAttribute("data-id");
                       status.current_user_nickname = e.nickname;
                       status.current_user_name = e.name;
+                      status.current_com_type = e.type;
+
                       m.route.set(
                         "/chat?id=" +
                           settings.custom_peer_id +
                           "&peer=" +
-                          status.current_user_id,
+                          status.current_user_id +
+                          "&type=" +
+                          e.type,
                       );
                     },
                   },
                   [
                     m("div", { class: "col-xs-2 col-md-2" }, [
                       m("div", { class: "online-indicator" }, ""),
-                      m("img", {
-                        class: "aavatar",
-                        src: create_avatar(e.name, 25),
-                      }),
+                      e.type == "meshtastic"
+                        ? m("img", {
+                            class: "aavatar",
+                            src: "assets/image/meshtastic.svg",
+                          })
+                        : m("img", {
+                            class: "aavatar",
+                            src: create_avatar(e.name, 25),
+                          }),
                     ]),
 
                     m("div", { class: "inner col-xs-10 col-md-10" }, [
@@ -3746,33 +3902,6 @@ var intro = {
         },
 
         oninit: function () {
-          /*
-          const protocol = window.location.protocol;
-          const host = window.location.host;
-          const pathname = window.location.pathname;
-          const search = window.location.search;
-          const hash = window.location.hash;
-
-          const fullUrl = `${protocol}//${host}${pathname}${search}${hash}`;
-          // Get the current hash
-          if (fullUrl.includes("?id=")) {
-            localforage.setItem("connect_to_id", { data: fullUrl });
-            status.launching = true;
-            if (!status.notKaiOS) {
-              app_launcher();
-            } else {
-              setTimeout(function () {
-                let m = fullUrl.split("id=");
-                connect_to_peer(m[1]);
-              }, 1000);
-            }
-          } else {
-            setTimeout(function () {
-              m.route.set("/start");
-            }, 2000);
-          }
-            */
-
           // URL-Logik
           const fullUrl = window.location.href;
 
@@ -4379,6 +4508,8 @@ var chat = {
 
     peer_is_online();
 
+    console.log(chat_data);
+
     //load more content
     //triggerd by scroll
 
@@ -4634,9 +4765,16 @@ var chat = {
 
             onclick: () => {
               if (item.type == "contact") {
+                status.action = "busy";
+
                 let q = confirm("Do you want add the user");
                 if (q) {
                   addUserToAddressBook(item.id, item.name);
+                }
+                if (!q) {
+                  setTimeout(() => {
+                    status.action = "";
+                  }, 1000);
                 }
               }
               if (item.type == "gps") {
@@ -5332,8 +5470,15 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
       case "SoftRight":
       case "Alt":
+        if (status.action == "busy") return;
+
         if (route.startsWith("/start")) {
           m.route.set("/about");
+        }
+
+        if (status.audio_recording) {
+          history.back();
+          return;
         }
 
         if (route.startsWith("/chat?") && !status.audio_recording) {
@@ -5349,17 +5494,13 @@ document.addEventListener("DOMContentLoaded", function (e) {
           return;
         }
 
-        if (route.startsWith("/audiorecorder_view")) {
-          m.route.set("/chat?id=" + settings.custom_peer_id);
+        if (route.startsWith("/Audio")) {
+          history.back();
           return;
         }
 
         if (route.startsWith("/map_view")) {
           ZoomMap("out");
-        }
-
-        if (route.startsWith("/audio")) {
-          history.back();
         }
 
         if (route.startsWith("/invite")) {
@@ -5370,6 +5511,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
       case "SoftLeft":
       case "Control":
+        if (status.action == "busy") return;
         if (route.startsWith("/chat?") && status.action == "write") {
           if (document.getElementsByTagName("input")[0].value == "") {
             side_toaster(
@@ -5384,6 +5526,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
             undefined,
             undefined,
           );
+
           write();
         }
 
@@ -5446,7 +5589,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
         if (
           route.startsWith("/chat?") &&
-          status.action !== "write" &&
+          status.action == "" &&
           !status.audio_recording
         ) {
           write();
@@ -5472,6 +5615,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
         break;
 
       case "Enter":
+        if (status.action == "busy") return;
+
         if (route.startsWith("audiorecorder_view")) {
           if (status.audio_recording) {
             audioRecorder
@@ -5666,25 +5811,23 @@ document.addEventListener("DOMContentLoaded", function (e) {
   }
 });
 
-try {
-  navigator.serviceWorker
-    .register(new URL("sw.js", import.meta.url), {
-      type: "module",
-    })
-    .then((registration) => {
-      if (registration.waiting) {
-        // There's a new service worker waiting to activate
-        // You can prompt the user to reload the page to apply the update
-        // For example: show a message to the user
-      } else {
-        // No waiting service worker, registration was successful
-      }
-    });
-} catch (e) {
-  console.log(e);
+if (status.protocol == "https") {
+  try {
+    navigator.serviceWorker
+      .register(new URL("sw.js", import.meta.url), {
+        type: "module",
+      })
+      .then((registration) => {
+        if (registration.waiting) {
+        } else {
+        }
+      });
+  } catch (e) {
+    console.log(e);
+  }
 }
 
-if (!status.notKaiOS) {
+if (!status.notKaiOS && status.protocol == "https") {
   //webActivity KaiOS 2
   try {
     navigator.mozSetMessageHandler("activity", function (activityRequest) {
@@ -5706,6 +5849,7 @@ if (!status.notKaiOS) {
   } catch (e) {}
 
   //webActivity KaiOS 3
+
   try {
     navigator.serviceWorker
       .register(new URL("sw.js", import.meta.url), {

@@ -5,11 +5,11 @@
   "author": "strukturart",
   "license": "MPL-2.0",
   "browserslist": [
-    "Firefox <= 48"
+    "Firefox <= 80"
   ],
   "scripts": {
-    "build": "rm -rf dist/* && parcel build  --no-source-maps application/index.html && mkdir -p dist/assets/js && cp -r application/assets/icons dist/assets/ && cp -r application/assets/image dist/assets/ && cp application/assets/js/kaiads.v5.min.js dist/assets/js/ && mkdir -p build && rm dist/manifest.webapp && (cd dist && zip -r ../build/flop.zip .)",
-    "build-k2": "rm -rf dist/* && parcel build application/index.html --no-scope-hoist --no-source-maps && mkdir -p dist/assets/js && cp -r application/assets/icons dist/assets/ && cp -r application/assets/image dist/assets/ && cp application/assets/js/kaiads.v5.min.js  dist/assets/js/ && mkdir -p build && rm dist/manifest.webmanifest && (cd dist && zip -r ../build/flop-k2.zip .)",
+    "build": "rm -rf dist/* &&  rm -rf build/* && parcel build  --no-source-maps application/index.html && mkdir -p dist/assets/js && cp -r application/assets/icons dist/assets/ && cp -r application/assets/image dist/assets/ && cp application/assets/js/kaiads.v5.min.js dist/assets/js/ && mkdir -p build && rm dist/manifest.webapp && (cd dist && zip -r ../build/flop.zip .)",
+    "build-k2": "rm -rf dist/* &&  rm -rf build/* && parcel build application/index.html --no-scope-hoist --no-source-maps && mkdir -p dist/assets/js && cp -r application/assets/icons dist/assets/ && cp -r application/assets/image dist/assets/ && cp application/assets/js/kaiads.v5.min.js  dist/assets/js/ && mkdir -p build && rm dist/manifest.webmanifest && (cd dist && zip -r ../build/flop-k2.zip .)",
     "run": "parcel",
     "web": "rm -rf docs/* && parcel build --dist-dir docs --public-url ./ --no-source-maps --no-content-hash application/index.html &&  cp application/manifest.webmanifest docs && mkdir -p docs/assets/js && mkdir -p docs/assets/image && cp -r application/assets/image docs/assets/ && cp -r application/assets/fonts docs/assets/ && cp -r application/assets/icons docs/assets/ && ./generate_file_list.sh"
   },
@@ -23,18 +23,18 @@
     "@parcel/packager-raw-url": "^2.10.0",
     "@parcel/resolver-default": "^2.15.2",
     "@parcel/transformer-html": "^2.10.0",
-    "@parcel/transformer-webmanifest": "^2.10.0",
+    "@parcel/transformer-webmanifest": "^2.16.4",
     "assert": "^2.1.0",
     "babel-plugin-transform-async-to-promises": "^0.8.18",
     "buffer": "^6.0.3",
     "core-js": "^3.43.0",
-    "crypto-browserify": "^3.12.0",
+    "crypto-browserify": "^3.3.0",
     "es-check": "^9.1.2",
     "events": "^3.3.0",
     "https-browserify": "^1.0.0",
     "js-image-compressor": "^2.0.0",
     "os-browserify": "^0.3.0",
-    "parcel": "2.10.0",
+    "parcel": "^2.16.4",
     "path-browserify": "^1.0.1",
     "peerjs": "^1.3.2",
     "process": "^0.11.10",
@@ -51,8 +51,11 @@
     "@dicebear/core": "^9.2.2",
     "@dicebear/identicon": "^9.2.2",
     "@dicebear/initials": "^9.2.2",
+    "@meshtastic/core": "^2.6.7",
+    "@meshtastic/transport-http": "^0.2.5",
     "@parcel/service-worker": "^2.8.0",
     "browser-image-compression": "^2.0.2",
+    "crc": "^4.3.2",
     "dayjs": "^1.11.13",
     "dompurify": "^3.2.4",
     "dotenv": "^16.4.1",
@@ -65,6 +68,7 @@
     "qrious": "^4.0.2",
     "swiped-events": "^1.2.0",
     "url-search-params-polyfill": "^8.1.1",
-    "uuid": "^9.0.0"
+    "util": "^0.12.5",
+    "uuid": "^8.3.2"
   }
 }
