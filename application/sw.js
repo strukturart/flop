@@ -53,7 +53,7 @@ if (userAgent && !userAgent.includes("KAIOS")) {
   //cache
 
   if (userAgent && !userAgent.includes("KAIOS")) {
-    const CACHE_NAME = "V1.17.34";
+    const CACHE_NAME = "V1.17.39";
     const FILE_LIST_URL = "/file-list.json"; // URL of the JSON file containing the array of files
 
     self.addEventListener("install", (event) => {

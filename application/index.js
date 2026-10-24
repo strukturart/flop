@@ -68,7 +68,7 @@ export let status = {
   geolocation_last_autoupdate_id: null,
   geolocation_onTimeRequest: false,
   gps_live_receiver: [],
-  debug: true,
+  debug: false,
   viewReady: false,
   groupchat: false,
   history_of_ids: [],
@@ -132,6 +132,12 @@ if (!status.notKaiOS) {
     document.head.appendChild(js);
   });
 }
+
+//MESHTASTIC
+//The app connects to a Meshtastic device on the same Wi-Fi network and manages it.
+// When connecting, it displays a list of users who have been marked as favorites on the device.
+// The device ID is used as the sender ID, not the app's ID—just like with WebRTC—so it functions more like a client.
+
 let device;
 let tryout = 0;
 async function initDevice() {
@@ -140,21 +146,17 @@ async function initDevice() {
     const connection = await TransportHTTP.create("192.168.1.102", false);
     device = new MeshDevice(connection);
 
-    //await device.onConnected;
+    await device.onConnected;
 
     console.log("Device ready");
-    status.meshtastic = {
-      myNodeInfo: device.myNodeInfo,
-      nodeId: device.myNodeInfo.myNodeNum,
-    };
 
     // Listen for incoming text messages
     device.events.onMessagePacket.subscribe((packet) => {
-      console.log(`Message from  ${packet.from}: ${packet.data}`);
       //receive data
       let user = addressbook.find((e) => {
         return packet.from == e.id;
       });
+      if (!user) return;
       chat_data.push({
         id: String(packet.id),
         nickname: user.nickname,
@@ -162,7 +164,7 @@ async function initDevice() {
         payload: { text: packet.data },
         type: "text",
         from: String(packet.from),
-        to: settings.custom_peer_id,
+        to: String(status.meshtastic.nodeId),
       });
       storeChatData().then(() => {
         m.redraw();
@@ -170,36 +172,47 @@ async function initDevice() {
     });
 
     device.events.onFromRadio.subscribe((packet) => {
-      console.log(packet.payloadVariant);
       if (packet.payloadVariant?.case !== "nodeInfo") {
         return;
       }
-
       const node = packet.payloadVariant.value;
+
       const index = meshtastic.users.findIndex((user) => user.num === node.num);
       if (index === -1) {
         meshtastic.users.push(node);
       } else {
         meshtastic.users[index] = node;
       }
+
+      if (document.querySelector("#start-text") && !addressbook.length)
+        document.querySelector("#start-text").innerText =
+          "Meshtastic device found, please wait....node #" +
+          node.user.shortName;
     });
 
     await device.configure();
+
     console.log("Device config");
 
-    console.log("ALLE NODES:", meshtastic.users);
     meshtastic.users.forEach((e) => {
       console.log(e.num, e.user.shortName);
-      if (e.isFavorite)
+      if (e.isFavorite && e.num != device.myNodeInfo.myNodeNum) {
         addUserToAddressBook(e.num, e.user.shortName, e.num, "meshtastic");
+        m.route.set("/start");
+      }
     });
 
-    status.meshtastic.connected = true;
+    //update meshtastic meta data
+    status.meshtastic = {
+      myNodeInfo: device.myNodeInfo,
+      deviceId: String(device.myNodeInfo.myNodeNum),
+      connected: true,
+    };
 
     return device;
   } catch (error) {
     console.error("Error:", error);
-    alert("Error:", JSON.stringify(error));
+    // alert("Error:", JSON.stringify(error));
 
     setTimeout(() => {
       if (tryout < 5) {
@@ -211,28 +224,28 @@ async function initDevice() {
   }
 }
 
-initDevice().then(() => {
-  setTimeout(() => {
-    m.redraw();
-  }, 2000);
-});
-
 async function sendMessageMesh(id, txt, messageId) {
   try {
     console.log("try to send user: " + id);
     storeChatData();
+
     const result = await device.sendText(txt, id, true, 0);
+    console.log(messageId);
+    console.log(chat_data);
     let message = chat_data.find((e) => {
       return e.id == messageId;
     });
+    console.log(result, message);
 
     message.pod = true;
+    storeChatData(messageId);
     m.redraw();
 
     console.log("OK:", result);
   } catch (error) {
     console.error("Error:", error);
     storeChatData();
+
     m.redraw();
   }
 }
@@ -541,14 +554,9 @@ function tryConnect(data) {
 //reproduce chatHistory
 
 let load_chat_data = (id) => {
-  let c = chat_data_history.filter((e) => {
-    return (
-      (e.from === settings.custom_peer_id && e.to === id) ||
-      (e.from === id && e.to === settings.custom_peer_id)
-    );
+  chat_data = chat_data_history.filter((e) => {
+    return e.from === id || e.to === id;
   });
-
-  if (c.length > 0) chat_data = c;
 };
 
 //track connections
@@ -1248,6 +1256,7 @@ localforage
       invite_url: "https://flop.chat/",
       custom_peer_id: "flop-" + uuidv4(16),
       unique_id: "flop-" + uuidv4(16),
+      meshtastic_ip: +"192.168.100",
     };
 
     for (const key in defaultValues) {
@@ -1487,26 +1496,45 @@ let sendMessage = (
 
   //text
   if (type == "text") {
-    message = {
-      nickname: settings.nickname,
-      type: type,
-      payload: { text: msg },
-      id: messageId,
-      datetime: new Date(),
-    };
-    chat_data.push({
-      nickname: settings.nickname,
-      payload: { text: msg },
-      datetime: new Date(),
-      type: type,
-      from: settings.custom_peer_id,
-      to: to,
-      id: messageId,
-      pod: false,
-    });
+    //With Meshtastic, the issue isn't the transmitter—it's the LoRa device.
     if (status.current_com_type == "meshtastic") {
+      message = {
+        nickname: settings.nickname,
+        type: type,
+        payload: { text: msg },
+        id: messageId,
+        datetime: new Date(),
+      };
+
+      chat_data.push({
+        nickname: settings.nickname,
+        payload: { text: msg },
+        datetime: new Date(),
+        type: type,
+        from: status.meshtastic.deviceId,
+        to: to,
+        id: messageId,
+        pod: false,
+      });
       sendMessageMesh(status.current_user_id, message.payload.text, messageId);
     } else {
+      message = {
+        nickname: settings.nickname,
+        type: type,
+        payload: { text: msg },
+        id: messageId,
+        datetime: new Date(),
+      };
+      chat_data.push({
+        nickname: settings.nickname,
+        payload: { text: msg },
+        datetime: new Date(),
+        type: type,
+        from: settings.custom_peer_id,
+        to: to,
+        id: messageId,
+        pod: false,
+      });
       sendMessageToAll(message);
     }
 
@@ -1738,7 +1766,6 @@ async function sendMessageToAll(message) {
       if (!result) {
         //store and send later
         console.log("store it to send it later");
-
         messageQueue(message);
       }
     }, 5000);
@@ -2092,17 +2119,20 @@ let scan_callback = function (n) {
 //store chat data
 //todo use hash from string to compare
 
-let storeChatData = async () => {
-  // Nur neue Einträge mit noch nicht vorhandener ID
+let storeChatData = async (update_by_id) => {
+  if (update_by_id) {
+    chat_data_history = chat_data_history.filter(
+      (item) => item.id !== update_by_id,
+    );
+  }
+
   let newData = chat_data.filter((item) => {
     return !chat_data_history.some((historyItem) => historyItem.id === item.id);
   });
 
   if (newData.length > 0) {
-    // Neue Daten anhängen
     newData.forEach((item) => chat_data_history.push(item));
 
-    // Nach Datum sortieren
     chat_data_history.sort(
       (a, b) => new Date(a.datetime) - new Date(b.datetime),
     );
@@ -2698,13 +2728,6 @@ var addressbook_comp = {
                         connect_to_peer(
                           document.activeElement.getAttribute("data-id"),
                         );
-                      }
-                      if (
-                        e.type == "meshtastic" &&
-                        !status.meshtastic.connected
-                      ) {
-                        alert("LoRa Device not ready!");
-                        return;
                       }
 
                       if (e.type == "meshtastic") {
@@ -3358,6 +3381,20 @@ var settings_page = {
           },
           settings.webpush ? "Delete WebPush" : "Activate WebPush",
         ),
+        m("H2", { class: "text-center " }, m.trust("Meshtastic")),
+        m(
+          "p",
+          { class: "text-center" },
+          m.trust("IP-Address in local network"),
+        ),
+
+        m("input", {
+          type: "text",
+          class: "item",
+          id: "meshtastic-ip",
+          style: "margin-bottom:20px",
+          placeholder: "192.168.xxx",
+        }),
         m(
           "button",
           {
@@ -3633,6 +3670,9 @@ var settings_page = {
             class: "item vip-button",
             "data-function": "save-settings",
             onclick: function () {
+              settings.meshtastic_ip =
+                document.getElementById("meshtastic-ip").value;
+
               settings.nickname = document.getElementById("nickname").value;
               settings.server_url = document.getElementById("server_url").value;
               settings.server_path =
@@ -3880,6 +3920,8 @@ var intro = {
     //create peer on start
     getIceServers();
     generate_contact();
+
+    initDevice().then(() => {});
   },
   onremove: () => {
     status.viewReady = false;
@@ -4553,11 +4595,15 @@ var chat = {
     if (status.notKaiOS) {
       let username = status.current_user_name || status.current_user_nickname;
 
+      let url = create_avatar(username, 30);
+      if (status.current_com_type == "meshtastic")
+        url = "assets/image/meshtastic.svg";
+
       top_bar(
         "<img src='assets/image/back.svg'>",
         "<div id='name'>" + username.slice(0, 8) + "</div>",
         "<span class='online-indicator'></span><img class='avatar' src=" +
-          create_avatar(username, 30) +
+          url +
           ">",
       );
     }
@@ -4597,11 +4643,15 @@ var chat = {
           let username =
             status.current_user_name || status.current_user_nickname;
 
+          let url = create_avatar(username, 30);
+          if (status.current_com_type == "meshtastic")
+            url = "assets/image/meshtastic.svg";
+
           top_bar(
             "",
             "<div id='name'>" + username.slice(0, 6) + "</div>",
             "<span class='online-indicator'></span><img class='avatar' src=" +
-              create_avatar(username, 30) +
+              url +
               ">",
           );
           if (status.notKaiOS)
@@ -4609,7 +4659,7 @@ var chat = {
               "<img src='assets/image/back.svg'>",
               "<div id='name'>" + username.slice(0, 8) + "</div>",
               "<span class='online-indicator'></span><img class='avatar' src=" +
-                create_avatar(username, 30) +
+                url +
                 ">",
             );
 
@@ -5111,7 +5161,7 @@ m.route(root, "/intro", {
   "/filelist": filelist,
   "/AudioComponent": AudioComponent,
   "/audiorecorder_view": audiorecorder_view,
-  "/addressbiook_comp": addressbook_comp,
+  "/addressbook_comp": addressbook_comp,
 });
 
 function scrollToCenter() {
